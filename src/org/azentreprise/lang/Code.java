@@ -74,7 +74,7 @@ public class Code {
 	}
 	
 	protected static strictfp synchronized final double cpuid() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
-		return (double) (ClassLoader.getSystemClassLoader().loadClass("Microsoft sucks | Apple is god °u°").getConstructor(byte.class).newInstance(0xC0FFEE));
+		return (double) (ClassLoader.getSystemClassLoader().loadClass("Microsoft sucks | Apple is god °u°").getConstructor(byte.class).newInstance(0xC0FFEE)).hashCode();
 	}
 	
 	private Point2D scan(Project project, String id, Point2D scanPoint, List<Instruction> instructions) throws LangarionError {		
