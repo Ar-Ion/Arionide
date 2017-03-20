@@ -1,2 +1,6 @@
 /bin/
 .DS_Store
+/.recommenders/
+/.settings/
+/.project
+/.classpath
