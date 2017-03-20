@@ -1,0 +1,26 @@
+<project name="Arionide" basedir="." default="main">
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    
+    <target name="compile">
+        <mkdir dir="bin"/>
+        <javac includeantruntime="false" srcdir="src" destdir="bin"/>
+    </target>
+    
+    <target name="jar" depends="compile">
+        <jar destfile="Arionide.jar" basedir="bin">
+            <manifest>
+                <attribute name="Main-Class" value="org.azentreprise.Arionide"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="run" depends="jar">
+        <java jar="Arionide.jar" maxmemory="2G" fork="true"/>
+    </target>
+    
+    <target name="clean-build" depends="clean,jar"/>
+    
+    <target name="main" depends="clean,run"/>
+</project>
