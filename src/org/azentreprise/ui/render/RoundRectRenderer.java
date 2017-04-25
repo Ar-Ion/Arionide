@@ -26,7 +26,7 @@ import java.awt.Rectangle;
 public class RoundRectRenderer {
 	
 	public static void draw(Graphics2D g2d, int x, int y, int width, int height) {
-		g2d.drawLine(x + 8, y, x + width - 8, y);
+		/*g2d.drawLine(x + 8, y, x + width - 8, y);
 		g2d.drawLine(x, y + 8, x, y + height - 8);
 		g2d.drawLine(x + 8, y + height, x + width - 8, y + height);
 		g2d.drawLine(x + width, y + 8, x + width, y + height - 8);
@@ -34,7 +34,8 @@ public class RoundRectRenderer {
 		g2d.drawArc(x, y, 15, 15, 90, 90);
 		g2d.drawArc(x, y + height - 14, 14, 14, 180, 90);
 		g2d.drawArc(x + width - 14, y, 14, 14, 0, 90);
-		g2d.drawArc(x + width - 14, y + height - 14, 14, 14, 270, 90);
+		g2d.drawArc(x + width - 14, y + height - 14, 14, 14, 270, 90);*/
+		g2d.drawRect(x, y, width, height);
 	}
 	
 	public static void draw(Graphics2D g2d, Rectangle bounds) {

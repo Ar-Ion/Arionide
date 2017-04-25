@@ -35,7 +35,11 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -68,8 +72,17 @@ public class UIMain extends JPanel {
 	
 	private final Animation viewTransition = new FieldModifierAnimation("viewAlpha", this.getClass(), this);
 	private final Animation auxViewTransition = new FieldModifierAnimation("auxViewAlpha", this.getClass(), this);
+	
+	private BufferedImage background;
 
 	public UIMain() {
+		
+		try {
+			this.background = ImageIO.read(new File(Arionide.getRoot(), "bg.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		Rectangle size = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		JFrame frame = new JFrame(Arionide.getClientIdentifier());
 		frame.setSize((int) (size.width * 0.8), (int) (size.height * 0.8));
@@ -79,8 +92,9 @@ public class UIMain extends JPanel {
 				Arionide.shutdown();
 			}
 		});
-		frame.setLocationRelativeTo(null);
 		frame.setContentPane(this);
+		frame.setLocationRelativeTo(null);
+		
 		frame.setVisible(true);
 				
 		UIMain.singleton = this;
@@ -88,9 +102,9 @@ public class UIMain extends JPanel {
 		UIEvents.addListeners(frame);
 		
 		this.setFocusTraversalKeysEnabled(false);
-		this.createKeyStroke("F4", "toggle_debug");
-		this.createKeyStroke("F5", "refresh");
-		this.createKeyStroke("F6", "repair");
+		this.createKeyStroke("control 1", "toggle_debug");
+		this.createKeyStroke("control 2", "refresh");
+		this.createKeyStroke("control 3", "repair");
 		this.createKeyStroke("ENTER", "action");
 		this.createKeyStroke("ESCAPE", "back");
 		this.createKeyStroke("TAB", "next_focus");
@@ -113,8 +127,8 @@ public class UIMain extends JPanel {
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-			
-			g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+		
+			g2d.drawImage(this.background, 0, 0, null);
 			
 			if(this.viewAlpha < 1.0f) {
 				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.viewAlpha));

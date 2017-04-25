@@ -120,8 +120,8 @@ public class Object extends Parseable implements Renderable {
 		return this.args;
 	}
 	
-	public Point2D getPosition(int mult) {
-		return new Point2D.Double(this.position.getX() * mult, this.position.getY() * mult);
+	public Point2D getPosition(float mult, float scalar) {
+		return new Point2D.Double((this.position.getX() + scalar) * mult, (this.position.getY() + scalar) * mult);
 	}
 	
 	public Style getStyle() {

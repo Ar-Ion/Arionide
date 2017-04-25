@@ -62,8 +62,8 @@ public class Link extends Parseable implements Renderable {
 		return new Object[] {Link.objectMapping.get(this.id1), Link.objectMapping.get(this.id2)};
 	}
 	
-	public Line2D getLine(int mult) {
-		return new Line2D.Float(Link.objectMapping.get(this.id1).getPosition(mult), Link.objectMapping.get(this.id2).getPosition(mult));
+	public Line2D getLine(float mult, float scalar) {
+		return new Line2D.Float(Link.objectMapping.get(this.id1).getPosition(mult, scalar), Link.objectMapping.get(this.id2).getPosition(mult, scalar));
 	}
 	
 	public static void uploadObjectMapping(Map<String, Object> objectMapping) {

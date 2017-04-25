@@ -46,7 +46,7 @@ public class Code {
 		Debug.info("Compiling...");
 				
 		for(Object object : project.objects) {
-			if(object.getPosition(1).equals(new Point2D.Double(0, 0)) && object.getType().equals(ObjectType.NATIVE)) {
+			if(object.getPosition(1, 0).equals(new Point2D.Double(0, 0)) && object.getType().equals(ObjectType.NATIVE)) {
 				
 				List<Instruction> instructions = new ArrayList<>();
 				
@@ -82,7 +82,7 @@ public class Code {
 			if(id.chars().filter(ch -> ch == '.').count() == object.getName().chars().filter(ch -> ch == '.').count()) {
 				if(object.getID().startsWith(id.substring(0, id.lastIndexOf('.') - 1))) {
 					
-					Point2D position = object.getPosition(1);
+					Point2D position = object.getPosition(1, 0);
 					
 					double distance = position.distance(scanPoint);
 					

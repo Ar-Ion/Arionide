@@ -21,10 +21,7 @@
 package org.azentreprise.ui.render;
 
 import java.awt.Color;
-import java.awt.GradientPaint;
 import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
@@ -47,16 +44,14 @@ public class SimpleProjectRenderer extends ProjectRenderer {
 		for(Object object : this.project.objects) {
 			if(object.shouldBeRendered()) {
 				g2d.setColor(new Color(object.getStyle().getColorRange().getAverageColor())); 
-				Point2D position = this.tranform(object.getPosition(1), transformX, transformY);
-				Shape ellipse = new Ellipse2D.Double(position.getX() - transformX / 2, position.getY() - transformY / 2, transformX, transformY);
-				g2d.fill(ellipse);
+				Point2D position = this.tranform(object.getPosition(1, 0), transformX, transformY);
+				g2d.fillRect((int) (position.getX() - transformX / 2), (int) (position.getY() - transformY / 2), (int) transformX, (int) transformY);
 			}
 		}
 		
 		for(Link link : this.project.links) {
 			if(link.shouldBeRendered()) {
-				Line2D line = this.tranform(link.getLine(1), transformX, transformY);
-				g2d.setPaint(new GradientPaint(line.getP1(), new Color(link.getObjects()[0].getStyle().getColorRange().getAverageColor()), line.getP2(), new Color(link.getObjects()[1].getStyle().getColorRange().getAverageColor()), false));
+				Line2D line = this.tranform(link.getLine(1, 0), transformX, transformY);
 				g2d.draw(line);
 			}
 		}

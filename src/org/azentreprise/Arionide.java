@@ -88,6 +88,8 @@ public class Arionide {
 		
 		Debug.taskBegin("checking licence agreement"); {
 			File license = new File(root, "LICENSE.txt");
+			File background = new File(root, "bg.jpg");
+			
 			if(!license.exists()) {
 				InputStream input = Arionide.class.getResourceAsStream("LICENSE.txt");
 				
@@ -100,6 +102,18 @@ public class Arionide {
 				output.close();
 				
 				JOptionPane.showMessageDialog(null, "This software is under GNU GPLv3 license.\nThe copy of the license has been installed in '" + license.getAbsolutePath() + "'.\nBy clicking on OK, you agree all the terms of this license.", "User license agreement", JOptionPane.INFORMATION_MESSAGE);
+			}
+			
+			if(!background.exists()) {
+				InputStream input = Arionide.class.getResourceAsStream("bg.jpg");
+				
+				OutputStream output = new FileOutputStream(background);
+				byte[] buffer = new byte[64];
+				int length = 0;
+				while((length = input.read(buffer)) != -1) {
+					output.write(buffer, 0, length);
+				}
+				output.close();
 			}
 		} Debug.taskEnd();
 		

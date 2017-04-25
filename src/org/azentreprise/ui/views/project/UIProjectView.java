@@ -122,17 +122,6 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 		}
 		
 		g2d.setColor(new Color(0x42C0FFEE, true));
-				
-		int gridX = this.project.gridPosX % this.project.pixelsPerCell;
-		int gridY = this.project.gridPosY % this.project.pixelsPerCell;
-
-		for(int x = 0; x < this.bounds.width + this.project.pixelsPerCell; x += this.project.pixelsPerCell) {
-			g2d.drawLine(gridX + x, 0, gridX + x, this.bounds.height);
-		}
-		
-		for(int y = -1; y < this.bounds.height + this.project.pixelsPerCell; y += this.project.pixelsPerCell) {
-			g2d.drawLine(0, gridY + y, this.bounds.width, gridY + y);
-		}
 						
 		for(Point2D point : selected.values()) {
 			g2d.fillRect(this.project.gridPosX + (int) (point.getX() * this.project.pixelsPerCell), this.project.gridPosY + (int) (point.getY() * this.project.pixelsPerCell), this.project.pixelsPerCell, this.project.pixelsPerCell);
@@ -142,18 +131,14 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 			g2d.setColor(entry.getValue());
 			g2d.fillRect(this.project.gridPosX + (int) (entry.getKey().getX() * this.project.pixelsPerCell), this.project.gridPosY + (int) (entry.getKey().getY() * this.project.pixelsPerCell), this.project.pixelsPerCell, this.project.pixelsPerCell);
 		}
-							
+		
 		for(Object object : this.project.objects) {
 			if(object.shouldBeRendered()) {
-				double x = this.project.gridPosX + object.getPosition(1).getX() * this.project.pixelsPerCell;
-				double y = this.project.gridPosY + (object.getPosition(1).getY() - 0.3f) * this.project.pixelsPerCell;
-							
+				double x = this.project.gridPosX + object.getPosition(1, 0).getX() * this.project.pixelsPerCell;
+				double y = this.project.gridPosY + object.getPosition(1, 0).getY() * this.project.pixelsPerCell;
+				
 				if(this.bounds.contains(new Point2D.Double(x + this.project.pixelsPerCell / 2.0D, y + this.project.pixelsPerCell / 2.0D))) {
-					new UILabel(this, 0.0f, 0.0f, 1.0f, 1.0f, object.getName()).setColor(0x80C0FFEE).draw((Graphics2D) g2d.create((int) x, (int) y, this.project.pixelsPerCell, this.project.pixelsPerCell));
-					
-					y += 0.7 * this.project.pixelsPerCell;
-					
-					new UILabel(this, 0.0f, 0.0f, 1.0f, 1.0f, String.join(", ", object.getArgs())).setColor(0xC0FFEE).draw((Graphics2D) g2d.create((int) x, (int) y, this.project.pixelsPerCell, this.project.pixelsPerCell));
+					new UILabel(this, 0.0f, 0.0f, 1.0f, 1.0f, object.getName()).setColor(0x80C0FFEE).draw((Graphics2D) g2d.create((int) x + 10, (int) y + 10, this.project.pixelsPerCell - 20, this.project.pixelsPerCell - 20));					
 				}
 			}
 		}
@@ -224,8 +209,8 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 				
 		for(Object object : this.project.objects) {
 			if(object.shouldBeRendered()) {			
-				if(selection.contains(object.getPosition(1))) {
-					this.select(object.getID(), object.getPosition(1));
+				if(selection.contains(object.getPosition(1, 0))) {
+					this.select(object.getID(), object.getPosition(1, 0));
 				}
 			}
 		}
@@ -376,7 +361,7 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 				int y = (int) Math.round((float) (point.getY() - this.project.gridPosY) / this.project.pixelsPerCell - 0.5f);			
 				
 				for(Entry<String, Object> object : this.project.objectMapping.entrySet()) {
-					if(object.getValue().shouldBeRendered() && object.getValue().getPosition(1).equals(new Point2D.Double(x, y))) {
+					if(object.getValue().shouldBeRendered() && object.getValue().getPosition(1, 0).equals(new Point2D.Double(x, y))) {
 						this.open(object.getKey());
 						break;
 					}

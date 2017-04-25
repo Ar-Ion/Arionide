@@ -25,29 +25,52 @@ import java.awt.FontMetrics;
 
 public class UIFontAdapter {
 	
-	private boolean setup = false;
-	private FontMetrics metrics = null;
-	private Font font = null;
-	private float fontSize = 0.0f;
-	private int fontHeight = 0;
+	private static final int cacheStep = 4;
 	
-	public boolean needSetup() {
-		return !this.setup;
+	private static Font[] cache = new Font[8];
+	private static String hash = new String();
+	
+	private static boolean setup = false;
+	private static FontMetrics metrics = null;
+	private static Font font = null;
+	private static float fontSize = 0.0f;
+	private static int fontHeight = 0;
+	
+	public static boolean needSetup() {
+		return !setup;
 	}
 	
-	public void setup(FontMetrics metrics) {
-		this.setup = true;
-		this.metrics = metrics;
-		this.font = this.metrics.getFont();
-		this.fontHeight = this.metrics.getHeight() + this.metrics.getAscent();
-		this.fontSize = this.font.getSize2D();
+	public static void setup(FontMetrics fm) {
+		setup = true;
+		metrics = fm;
+		font = metrics.getFont();
+		fontHeight = metrics.getHeight() + metrics.getAscent();
+		fontSize = font.getSize2D();
+		
+		for(int i = 0; i < cache.length; i++) {
+			cache[i] = font.deriveFont(i * cacheStep + 1.0f);
+		}
 	}
 	
-	public Font adapt(String str, int width, int height, float relativeSize) {
-		width *= relativeSize;
-		height *= relativeSize;
-		float fontSizeX = (float) width / this.metrics.stringWidth(str);
-		float fontSizeY = (float) height / this.fontHeight;
-		return this.font.deriveFont((float) this.fontSize * Math.min(fontSizeX, fontSizeY));
+	public static Font adapt(String str, int width, int height, float relativeSize) {
+		String localHash = "hash@" + width + height + relativeSize;
+		
+		if(localHash != hash) {
+			float fontSizeX = (float) width * relativeSize / metrics.stringWidth(str);
+			float fontSizeY = (float) height * relativeSize / fontHeight;
+			int size = (int) (fontSize * Math.min(fontSizeX, fontSizeY)) / cacheStep;
+			
+			if(size < 0) {
+				size = 0;
+			} else if(size >= cache.length) {
+				size = cache.length - 1;
+			}
+			
+			hash = localHash;
+			
+			return cache[size];
+		} else {
+			return null;
+		}
 	}
 }

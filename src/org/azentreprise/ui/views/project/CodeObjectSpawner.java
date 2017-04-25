@@ -37,7 +37,7 @@ public interface CodeObjectSpawner {
 		
 		for(org.azentreprise.lang.Object object : project.objects) {
 			if(object.shouldBeRendered()) {
-				cells.add(object.getPosition(1));
+				cells.add(object.getPosition(1, 0));
 			}
 		}
 		

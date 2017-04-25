@@ -20,179 +20,55 @@
  *******************************************************************************/
 package org.azentreprise.ui.render;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ThreadLocalRandom;
 
 import org.azentreprise.configuration.Project;
 import org.azentreprise.lang.Link;
 import org.azentreprise.lang.Object;
-import org.azentreprise.ui.SharedFramebuffer;
-import org.azentreprise.ui.Style.MotionControl;
 
-public class ComplexProjectRenderer extends ProjectRenderer implements Runnable {
+public class ComplexProjectRenderer extends ProjectRenderer {
 	
-	private final Queue<Object> transmission = new ArrayDeque<Object>();
-	
-	private final SharedFramebuffer framebuffer;
-	private final List<Particle> particles = Collections.synchronizedList(new ArrayList<Particle>());
-	private volatile List<Thread> threads = new ArrayList<Thread>();
-	private volatile boolean running = true;
-	
+	public static final Color glow = new Color(Color.HSBtoRGB(0.6f, 0.75f, 0.75f));
+
 	public ComplexProjectRenderer(Project project) {
 		super(project);
-		
-		this.framebuffer = new SharedFramebuffer(project.gridSize * project.pixelsPerCell, project.gridSize * project.pixelsPerCell);
-		
-		this.init();
-	}
-	
-	public void run() {
-		Object obj = this.transmission.poll();
-		
-		int x = (int) ((obj.getPosition(1).getX() + 0.5f) * this.project.pixelsPerCell);
-		int y = (int) ((obj.getPosition(1).getY() + 0.5f) * this.project.pixelsPerCell);
-		
-		ThreadLocalRandom random = ThreadLocalRandom.current();
-		
-		List<Line2D> lines = new ArrayList<Line2D>();
-		
-		for(Link link : this.project.links) {
-			if(link.shouldBeRendered()) {
-				Point2D p1 = link.getLine(1).getP1();
-				Point2D p2 = link.getLine(1).getP2();
-				p1 = new Point2D.Double((p1.getX() + 0.5f) * this.project.pixelsPerCell, (p1.getY() + 0.5f) * this.project.pixelsPerCell);
-				p2 = new Point2D.Double((p2.getX() + 0.5f) * this.project.pixelsPerCell, (p2.getY() + 0.5f) * this.project.pixelsPerCell);
-				lines.add(new Line2D.Double(p1, p2));
-			}
-		}
-		
-		while(this.running) {
-			synchronized(this.particles) {
-
-				for(int i = 0; i < obj.getStyle().getWaveControl().getParticlesPerWave(); i++) {
-					this.particles.add(new Particle(x, y, obj.getStyle().getColorRange().getRandomColor(), random.nextDouble(0.0D, Math.PI * 2), obj.getStyle().getMotionControl(), obj.getStyle().getAlphaConstant(), lines));
-				}
-			}
-			
-			try {
-				Thread.sleep(obj.getStyle().getWaveControl().getTimeBetweenWaves());
-			} catch (InterruptedException e) {
-				;
-			}
-		}
+		UIStructureRenderer.init(0.64f, 0.5f);
+		UILinkRenderer.init(0.64f, 0.5f);
 	}
 	
 	public void render(Graphics2D g2d) {
-		synchronized(this.particles) {
-			Iterator<Particle> iterator = this.particles.iterator();
-			while(iterator.hasNext()) {
-				if(iterator.next().render(this.framebuffer)) {
-					iterator.remove();
-				}
+		Stroke initialContext = g2d.getStroke();
+		
+		g2d.setStroke(new BasicStroke(30));
+		
+		for(Link link : this.project.links) {
+			if(link.shouldBeRendered()) {
+				Line2D line = link.getLine(this.project.pixelsPerCell, 0.5f);
+				UILinkRenderer.render(g2d, (int) (line.getX1() + this.project.gridPosX), (int) (line.getY1() + this.project.gridPosY), (int) (line.getX2() + this.project.gridPosX), (int) (line.getY2() + this.project.gridPosY), 15);
 			}
 		}
 		
-		this.framebuffer.apply(g2d, this.project.gridPosX, this.project.gridPosY);
-	}
-	
-	public void clean() {
-		this.running = false;
-		
-		for(Thread thread : this.threads) {
-			thread.interrupt();
-		}
-		
-		this.threads.clear();
-		this.particles.clear();
-		this.framebuffer.clear();
-		this.transmission.clear();
-		
-		System.gc();
-	}
-	
-	public void init() {
-		this.running = true;
+		g2d.setStroke(initialContext);
 		
 		for(Object obj : this.project.objects) {
 			if(obj.shouldBeRendered()) {
-				this.transmission.add(obj);
-
-				Thread thread = new Thread(this);
-				
-				thread.setName("Arionide Particle Generator");
-				thread.setDaemon(true);
-				
-				this.threads.add(thread);
-				
-				thread.start();
+				Point2D position = obj.getPosition(this.project.pixelsPerCell, 0.5f);
+				UIStructureRenderer.render(g2d, (int) (this.project.gridPosX + position.getX()), (int) (this.project.gridPosY + position.getY()), this.project.pixelsPerCell / 2);
 			}
 		}
+	}
+	
+	public void clean() {
+		System.gc();
 	}
 	
 	public void reset(Project project) {
 		this.project = project;
 		this.clean();
-		this.init();
-	}
-	
-	private static class Particle {
-		
-		private final int color, x, y;
-		private final long initialTime = System.currentTimeMillis();
-		private final double direction, alphaConstant;
-		private final MotionControl motionControl;
-		private final List<Line2D> alphaLines;
-				
-		private Particle(int x, int y, int color, double direction, MotionControl motionControl, double alphaConstant, List<Line2D> alphaLines) {
-			this.x = x;
-			this.y = y;
-			this.color = color;
-			this.direction = direction;
-			this.motionControl = motionControl;
-			this.alphaConstant = alphaConstant;
-			this.alphaLines = alphaLines;
-		}
-		
-		private boolean render(SharedFramebuffer framebuffer) {
-			float delta = (System.currentTimeMillis() - this.initialTime) / 1000.0f;
-			
-			double linearDistance = 0.0D;
-			double angle = this.direction;
-			
-			for(int i = 0; i < this.motionControl.getLinear().length; i++) {
-				linearDistance += this.motionControl.getLinear()[i] * Math.pow(delta, i);
-			}
-			
-			for(int i = 0; i < this.motionControl.getRotation().length; i++) {
-				angle += this.motionControl.getRotation()[i] * Math.pow(delta, i);
-			}
-			
-			
-			double posX = linearDistance * Math.sin(angle);
-			double posY = linearDistance * Math.cos(angle);
-			
-			double alphaLineDelta = 255.0D;
-			
-			for(Line2D line : this.alphaLines) {
-				alphaLineDelta = Math.min(alphaLineDelta, line.ptSegDist(this.x + posX, this.y + posY));
-			}
-			
-			int alpha = (int) (255 * Math.pow(Math.E, -delta * this.alphaConstant) + 255.0D / alphaLineDelta);
-			
-			if(alpha > 1) {
-				framebuffer.draw(this.x + (int) posX, this.y + (int) posY, (Math.min(alpha, 255) << 24) + this.color);
-				return false;
-			} else {
-				return true;
-			}
-		}
 	}
 }

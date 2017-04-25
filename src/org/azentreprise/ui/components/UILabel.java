@@ -36,8 +36,6 @@ public class UILabel extends UIComponent {
 	protected String label;
 	protected Point textRenderPosition;
 
-	protected final UIFontAdapter adapter = new UIFontAdapter();
-
 	public UILabel(UIView parent, float x, float y, float width, float height, String label) {
 		super(parent, x, y, width, height);
 		this.label = label;
@@ -63,14 +61,14 @@ public class UILabel extends UIComponent {
 	}
 	
 	public void drawString(Graphics2D g2d, String str) {
-		if(this.adapter.needSetup()) {
+		if(UIFontAdapter.needSetup()) {
 			g2d.setFont(this.getFont());
-			this.adapter.setup(g2d.getFontMetrics());
+			UIFontAdapter.setup(g2d.getFontMetrics());
 		}
 		
 		Rectangle bounds = g2d.getClipBounds();
 		
-		g2d.setFont(this.adapter.adapt(str, bounds.width, bounds.height, 0.8f));
+		g2d.setFont(UIFontAdapter.adapt(str, bounds.width, bounds.height, 0.8f));
 		
 		FontMetrics metrics = g2d.getFontMetrics();
 		
