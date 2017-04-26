@@ -1,22 +1,22 @@
 /*******************************************************************************
- * This file is part of ArionIDE.
+ * This file is part of Arionide.
  *
- * ArionIDE is an IDE whose purpose is to build a language from assembly. It is the work of Arion Zimmermann in context of his TM.
+ * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
  * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
  *
- * ArionIDE is free software: you can redistribute it and/or modify
+ * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * ArionIDE is distributed in the hope that it will be useful,
+ * Arionide is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with ArionIDE.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'arionide/LICENSE.txt'.
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
 package org.azentreprise.ui.views.project;
 
@@ -46,14 +46,16 @@ public class UIMiscProjectView extends UIProjectView implements UIButtonClickLis
 	public UIMiscProjectView(UIView parent, Frame rootComponent) {
 		super(parent, rootComponent);
 				
-		this.add(new UILabel(this, 0.7f, 0.05f, 0.95f, 0.15f, Projects.getCurrentProject().name).alterFont(Font.BOLD));
-		this.add(new UIButton(this, 0.72f, 0.15f, 0.93f, 0.2f, "Export").setHandler(this, "export"));
-		this.add(new UIButton(this, 0.72f, 0.23f, 0.93f, 0.28f, "Import").setHandler(this, "import"));
-		this.add(new UIButton(this, 0.72f, 0.31f, 0.93f, 0.36f, "Rename").setHandler(this, "rename"));
-		this.add(new UIButton(this, 0.72f, 0.39f, 0.93f, 0.44f, "Delete").setHandler(this, "delete"));
-		this.add(new UIButton(this, 0.72f, 0.47f, 0.93f, 0.52f, "Build").setHandler(this, "build"));
-		this.add(new UIButton(this, 0.72f, 0.55f, 0.93f, 0.6f, "Settings").setHandler(this, "settings"));
-		this.add(new UIButton(this, 0.72f, 0.63f, 0.93f, 0.68f, "Quit").setHandler(this, "quit"));
+		this.add(new UILabel(this, 0.77f, 0.05f, 0.98f, 0.15f, Projects.getCurrentProject().name).alterFont(Font.BOLD));
+		this.add(new UIButton(this, 0.77f, 0.15f, 0.98f, 0.2f, "Export").setHandler(this, "export"));
+		this.add(new UIButton(this, 0.77f, 0.23f, 0.98f, 0.28f, "Import").setHandler(this, "import"));
+		this.add(new UIButton(this, 0.77f, 0.31f, 0.98f, 0.36f, "Rename").setHandler(this, "rename"));
+		this.add(new UIButton(this, 0.77f, 0.39f, 0.98f, 0.44f, "Delete").setHandler(this, "delete"));
+		this.add(new UIButton(this, 0.77f, 0.47f, 0.98f, 0.52f, "Build").setHandler(this, "build"));
+		this.add(new UIButton(this, 0.77f, 0.55f, 0.98f, 0.6f, "Execute").setHandler(this, "execute"));
+		this.add(new UIButton(this, 0.77f, 0.63f, 0.98f, 0.68f, "Debug").setHandler(this, "execute"));
+		this.add(new UIButton(this, 0.77f, 0.71f, 0.98f, 0.76f, "Settings").setHandler(this, "settings"));
+		this.add(new UIButton(this, 0.77f, 0.79f, 0.98f, 0.84f, "Quit").setHandler(this, "quit"));
 	}
 
 	public void onClick(Object... signals) {

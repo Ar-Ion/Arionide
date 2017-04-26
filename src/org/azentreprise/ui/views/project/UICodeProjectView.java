@@ -1,22 +1,22 @@
 /*******************************************************************************
- * This file is part of ArionIDE.
+ * This file is part of Arionide.
  *
- * ArionIDE is an IDE whose purpose is to build a language from assembly. It is the work of Arion Zimmermann in context of his TM.
+ * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
  * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
  *
- * ArionIDE is free software: you can redistribute it and/or modify
+ * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * ArionIDE is distributed in the hope that it will be useful,
+ * Arionide is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with ArionIDE.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'arionide/LICENSE.txt'.
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
 package org.azentreprise.ui.views.project;
 
@@ -25,6 +25,7 @@ import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 
 import org.azentreprise.Projects;
@@ -39,19 +40,17 @@ public class UICodeProjectView extends UIProjectView implements UIButtonClickLis
 	
 	private CodeObjectSpawner theSpawner = null;
 	
+	private final UILabel title = new UILabel(this, 0.75f, 0.05f, 1.0f, 0.17f, "");
+	
 	private final UIButton[] buttons = new UIButton[8];
-	private final UIText[] lines = new UIText[8];
+	private final UIText[] lines = new UIText[this.buttons.length];
 	
 	public UICodeProjectView(UIView parent, Frame rootComponent) {
 		super(parent, rootComponent);
 		
-		String name = Projects.getCurrentProject().current;
-		
-		if(name.isEmpty()) {
-			name = "Root";
-		}
-		
-		this.add(new UILabel(this, 0.75f, 0.05f, 1.0f, 0.17f, name).alterFont(Font.BOLD));
+		this.title.alterFont(Font.BOLD);
+		this.title.setLabel(this.resolveName(Projects.getCurrentProject().current));
+		this.add(this.title);
 		
 		for(int i = 0; i < this.lines.length; i++) {
 			this.lines[i] = new UIText(this, 0.8f, 0.15f + i * 0.1f, 0.98f, 0.2f + i * 0.1f, "");
@@ -59,11 +58,32 @@ public class UICodeProjectView extends UIProjectView implements UIButtonClickLis
 		}
 		
 		for(int i = 0; i < this.lines.length; i++) {
-			this.buttons[i] = new UIButton(this, 0.76f, 0.15f + i * 0.1f, 0.79f, 0.2f + i * 0.1f, Integer.toString(i));
+			this.buttons[i] = new UIButton(this, 0.76f, 0.15f + i * 0.1f, 0.79f, 0.2f + i * 0.1f, Integer.toString(i + 1));
 			this.add(this.buttons[i]);
 		}
+		
+		for(int i = 0; i < this.lines.length; i++) {
+			if(i < this.project.sourceCode.size()) {
+				this.lines[i].setText(this.project.sourceCode.get(i));
+			} else {
+				this.project.sourceCode.add("");
+			}
+		}
 	}
-
+	
+	protected void open(String id) {
+		super.open(id);
+		this.title.setLabel(this.resolveName(id));
+	}
+	
+	private String resolveName(String id) {
+		if(id.isEmpty()) {
+			return "Root";
+		} else {
+			return new org.azentreprise.lang.Object(id, null, 0, null, false).getName();
+		}
+	}
+	
 	public void onClick(Object... signals) {
 		super.onClick(signals);
 		
@@ -86,6 +106,52 @@ public class UICodeProjectView extends UIProjectView implements UIButtonClickLis
 		
 		if(this.theSpawner != null) {
 			this.theSpawner.updateHighlighting(this.accessHighlighting());
+		}
+	}
+	
+	public int getLineNumberCorrespondingToSlot(int id) {
+		return Integer.parseInt(this.buttons[id].toString());
+	}
+	
+	public void syncWithDataStructure() {
+		for(int i = 0; i < this.lines.length; i++) {
+			String line = this.lines[i].toString();
+			this.project.sourceCode.set(this.getLineNumberCorrespondingToSlot(i) - 1, line);
+		}
+	}
+	
+	public void mouseWheelMoved(MouseWheelEvent event) {
+		super.mouseWheelMoved(event);
+		
+		Point point = event.getPoint();
+		
+		UIEvents.transform(point);
+		
+		if(this.controls != null && this.controls.contains(point)) {
+			
+			this.syncWithDataStructure();
+			
+			int scalar = event.getWheelRotation();
+			
+			if(scalar > this.lines.length) {
+				scalar = this.lines.length;
+			}
+			
+			scalar += this.getLineNumberCorrespondingToSlot(0);
+			
+			if(scalar <= 0) {
+				scalar = 1;
+			}
+			
+			for(int i = 0; i < this.lines.length; i++) {								
+				if(i + scalar - 1 < this.project.sourceCode.size()) {
+					this.lines[i].setText(this.project.sourceCode.get(i + scalar - 1));
+				} else {
+					this.project.sourceCode.add("");
+				}
+				
+				this.buttons[i].setLabel(Integer.toString(i + scalar));
+			}
 		}
 	}
 	

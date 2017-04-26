@@ -1,22 +1,22 @@
 /*******************************************************************************
- * This file is part of ArionIDE.
+ * This file is part of Arionide.
  *
- * ArionIDE is an IDE whose purpose is to build a language from assembly. It is the work of Arion Zimmermann in context of his TM.
+ * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
  * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
  *
- * ArionIDE is free software: you can redistribute it and/or modify
+ * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * ArionIDE is distributed in the hope that it will be useful,
+ * Arionide is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with ArionIDE.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'arionide/LICENSE.txt'.
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
 package org.azentreprise.configuration;
 
@@ -34,7 +34,6 @@ import javax.swing.JOptionPane;
 import org.azentreprise.Arionide;
 import org.azentreprise.Debug;
 import org.azentreprise.lang.Code;
-import org.azentreprise.lang.Data;
 import org.azentreprise.lang.ISAMapping;
 import org.azentreprise.lang.LangarionError;
 import org.azentreprise.lang.Link;
@@ -59,14 +58,14 @@ public class Project extends Configuration {
 	public volatile List<String> serializedStyles = new ArrayList<>(Arrays.asList("[Name:<Primary> Parent:<None> Red range:<0 0> Green range:<63 127> Blue range:<191 255> Wave control:<10 1> Linear motion matrix:<2 2 2 2 2 2> Rotation matrix:<0 1 1> Alpha constant:<1.0>]", 
 																				  "[Name:<Secondary> Parent:<None> Red range:<0 63> Green range:<127 255> Blue range:<0 63> Wave control:<10 1> Linear motion matrix:<2 2 2 2 2 2> Rotation matrix:<0 1 1> Alpha constant:<1.0>]",	
 																				  "[Name:<Native> Parent:<None> Red range:<127 255> Green range:<63 127> Blue range:<0 63> Wave control:<10 1> Linear motion matrix:<2 2 2 2 2 2> Rotation matrix:<0 1 1> Alpha constant:<1.0>]"));	
-
+	public volatile List<String> sourceCode = new ArrayList<String>();
+	
 	public final List<Object> objects;
 	public final List<Link> links;
 	public final List<Style> styles;
 	
 	public final Map<String, Object> objectMapping = new HashMap<>();
-	public final Map<String, Data> globalVariables = new HashMap<>();
-	
+
 	public final Code theCode = new Code();
 		
 	public Project(File path, String identifier) throws IOException, NoSuchFieldException,

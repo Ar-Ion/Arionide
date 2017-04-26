@@ -1,22 +1,22 @@
 /*******************************************************************************
- * This file is part of ArionIDE.
+ * This file is part of Arionide.
  *
- * ArionIDE is an IDE whose purpose is to build a language from assembly. It is the work of Arion Zimmermann in context of his TM.
+ * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
  * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
  *
- * ArionIDE is free software: you can redistribute it and/or modify
+ * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * ArionIDE is distributed in the hope that it will be useful,
+ * Arionide is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with ArionIDE.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'arionide/LICENSE.txt'.
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
 package org.azentreprise.ui.views.project;
 
@@ -62,7 +62,6 @@ import org.azentreprise.ui.render.ProjectRenderer;
 import org.azentreprise.ui.render.RoundRectRenderer;
 import org.azentreprise.ui.render.SimpleProjectRenderer;
 import org.azentreprise.ui.views.UIView;
-import org.azentreprise.ui.views.project.editors.UIGlobalVariablesEditorProjectView;
 
 public abstract class UIProjectView extends UIView implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, UIButtonClickListener {
 	
@@ -77,7 +76,8 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 	private final Animation centerYAnimation = new FieldModifierAnimation("gridPosY", Project.class, Projects.getCurrentProject());
 	
 	protected final Project project = Projects.getCurrentProject();
-	
+	protected Shape controls;
+
 	private Point selectionStart;
 	private Point currentMousePosition;
 	private int selectionOpacity = 0;
@@ -85,7 +85,6 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 	private int overlayOpacity = 0;
 	private float rendererOpacity = 1.0f;
 	private String errorMessage = new String();
-	private Shape controls;
 	private Rectangle bounds;
 	private Map<Point2D, Color> highlighted = new HashMap<>();
 	private Shape miniGrid;
@@ -242,7 +241,7 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 		return this.highlighted;
 	}
 	
-	private void open(String id) {
+	protected void open(String id) {
 		if(id != this.project.current) {
 			if(id == "" || this.project.objectMapping.get(id).getType().equals(ObjectType.STRUCTURE)) {
 				int animationDuration = 50;
@@ -359,12 +358,15 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 			int next = this.project.pixelsPerCell + event.getWheelRotation();
 							
 			if(next < 256) {
-				if(next > 8) {
-					this.project.pixelsPerCell = next;
-				} else {
+				if(next < 8) {
+					next = 8;
 					this.onClick("back");
 				}
+			} else {
+				next = 256;
 			}
+			
+			this.project.pixelsPerCell = next;
 		}
 	}
 
@@ -457,8 +459,6 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 			UIMain.show(new UIMiscProjectView(this, this.getRootComponent()));
 		} else if(event.getKeyCode() == KeyEvent.VK_ALT) {			
 			UIMain.show(new UIDesignProjectView(this, this.getRootComponent()));
-		} else if(event.getKeyCode() == KeyEvent.VK_G) {
-			UIMain.show(new UIGlobalVariablesEditorProjectView(this, this.getRootComponent()));
 		} else if(event.getKeyCode() == KeyEvent.VK_SPACE) {
 			this.centerOn(new Object("Object.center", new Point2D.Float(0, 0), 0, null, false), this.project.pixelsPerCell, 50);
 		}
