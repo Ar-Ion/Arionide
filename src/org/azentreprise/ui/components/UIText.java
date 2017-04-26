@@ -44,14 +44,14 @@ public class UIText extends UIButton {
 	
 	private final Animation animation = new FieldModifierAnimation("cursorOpacity", UIText.class, this);
 	
-	private String placeholder;
-	private StringBuilder text = new StringBuilder();
+	protected String placeholder;
+	protected StringBuilder text = new StringBuilder();
 	
-	private int cursorPosition = 0;
-	private int cursorOpacity = 255;
+	protected int cursorPosition = 0;
+	protected int cursorOpacity = 255;
 	
 	private long counter = 0L;
-	private boolean highlighted = false;
+	protected boolean highlighted = false;
 	
 	public UIText(UIView parent, float x, float y, float width, float height, String placeholder) {
 		super(parent, x, y, width, height, placeholder);
@@ -225,6 +225,7 @@ public class UIText extends UIButton {
 					this.counter = System.currentTimeMillis();
 					this.highlighted = false;
 				}
+				
 				break;
 		}
 	}

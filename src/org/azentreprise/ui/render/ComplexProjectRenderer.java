@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.ui.render;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -43,22 +44,25 @@ public class ComplexProjectRenderer extends ProjectRenderer {
 	
 	public void render(Graphics2D g2d) {
 		Stroke initialContext = g2d.getStroke();
-		
-		g2d.setStroke(new BasicStroke(30));
+		AlphaComposite composite = (AlphaComposite) g2d.getComposite();
+
+		g2d.setStroke(new BasicStroke((float) Math.ceil(this.project.pixelsPerCell / 4.0f)));
+		g2d.setComposite(composite.derive((float) Math.pow(composite.getAlpha(), 8)));
 		
 		for(Link link : this.project.links) {
 			if(link.shouldBeRendered()) {
 				Line2D line = link.getLine(this.project.pixelsPerCell, 0.5f);
-				UILinkRenderer.render(g2d, (int) (line.getX1() + this.project.gridPosX), (int) (line.getY1() + this.project.gridPosY), (int) (line.getX2() + this.project.gridPosX), (int) (line.getY2() + this.project.gridPosY), 15);
+				UILinkRenderer.render(g2d, (int) (line.getX1() + this.project.gridPosX), (int) (line.getY1() + this.project.gridPosY), (int) (line.getX2() + this.project.gridPosX), (int) (line.getY2() + this.project.gridPosY), (int) Math.ceil(this.project.pixelsPerCell / 8.0f));
 			}
 		}
 		
 		g2d.setStroke(initialContext);
+		g2d.setComposite(composite);
 		
 		for(Object obj : this.project.objects) {
 			if(obj.shouldBeRendered()) {
 				Point2D position = obj.getPosition(this.project.pixelsPerCell, 0.5f);
-				UIStructureRenderer.render(g2d, (int) (this.project.gridPosX + position.getX()), (int) (this.project.gridPosY + position.getY()), this.project.pixelsPerCell / 2);
+				UIStructureRenderer.render(g2d, (int) (this.project.gridPosX + position.getX()), (int) (this.project.gridPosY + position.getY()), (int) Math.ceil(this.project.pixelsPerCell / 2.0f));
 			}
 		}
 	}

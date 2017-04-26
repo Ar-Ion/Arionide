@@ -68,10 +68,12 @@ public class FieldModifierAnimation extends Animation {
 	}
 	
 	public void tick() {
-		double progression = this.getProgression();
-		if(progression <= 1.0d) {
-			try {				
-				double doubleValue = (this.target.doubleValue() - this.initial.doubleValue()) * progression + this.initial.doubleValue();
+		double t = this.getProgression();
+		if(t <= 1.0d) {
+			try {
+				double real = -2 * t * t * t + 3 * t * t;
+				
+				double doubleValue = (this.target.doubleValue() - this.initial.doubleValue()) * real + this.initial.doubleValue();
 				Object value = null;
 																
 				switch(this.field.getType().getName()) {

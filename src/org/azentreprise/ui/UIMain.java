@@ -155,6 +155,7 @@ public class UIMain extends JPanel {
 		}
 	}
 	
+	
 	public void showView(UIView view, boolean transition) {
 		if(this.view != view) {
 			if(!(this.view instanceof UIProjectView) && view instanceof UIProjectView) {

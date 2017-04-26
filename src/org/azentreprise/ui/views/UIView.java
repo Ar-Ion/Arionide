@@ -58,7 +58,7 @@ public abstract class UIView implements Drawable {
 		this.x2 = x2;
 		this.y2 = y2;
 	}
-	
+
 	public void drawView(Graphics2D g2d) {
 		Rectangle bounds = g2d.getClipBounds();
 		this.absoluteBounds = bounds;

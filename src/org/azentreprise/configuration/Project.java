@@ -51,7 +51,7 @@ public class Project extends Configuration {
 	public volatile int pixelsPerCell = 128;
 	public volatile int gridPosX = 0;
 	public volatile int gridPosY = 0;
-	public volatile int gridSize = 32;
+	public volatile int gridSize = 256;
 	public volatile boolean isGridInitialized = false;
 	public volatile String current = ""; // root
 	public volatile List<String> serializedObjects = new ArrayList<>(Arrays.asList("Compiler [-2 -1 1 mutable structure]",  "Project [2 -1 0 mutable structure]", "Native [0 2 2 immutable structure]"));

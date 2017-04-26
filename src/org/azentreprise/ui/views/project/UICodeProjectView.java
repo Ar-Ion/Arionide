@@ -29,16 +29,18 @@ import java.awt.geom.Point2D;
 
 import org.azentreprise.Projects;
 import org.azentreprise.ui.UIEvents;
-import org.azentreprise.ui.UIMain;
 import org.azentreprise.ui.components.UIButton;
 import org.azentreprise.ui.components.UIButton.UIButtonClickListener;
 import org.azentreprise.ui.components.UILabel;
+import org.azentreprise.ui.components.UIText;
 import org.azentreprise.ui.views.UIView;
-import org.azentreprise.ui.views.project.editors.UIAutoCompletionEditorProjectView;
 
 public class UICodeProjectView extends UIProjectView implements UIButtonClickListener {
 	
 	private CodeObjectSpawner theSpawner = null;
+	
+	private final UIButton[] buttons = new UIButton[8];
+	private final UIText[] lines = new UIText[8];
 	
 	public UICodeProjectView(UIView parent, Frame rootComponent) {
 		super(parent, rootComponent);
@@ -49,11 +51,17 @@ public class UICodeProjectView extends UIProjectView implements UIButtonClickLis
 			name = "Root";
 		}
 		
-		this.add(new UILabel(this, 0.7f, 0.05f, 0.95f, 0.17f, name).alterFont(Font.BOLD));
-		this.add(new UIButton(this, 0.72f, 0.17f, 0.93f, 0.27f, "New structure").setHandler(this, "struct"));
-		this.add(new UIButton(this, 0.72f, 0.3f, 0.93f, 0.4f, "New constant").setHandler(this, "const"));
-		this.add(new UIButton(this, 0.72f, 0.43f, 0.93f, 0.53f, "New explicit call").setHandler(this, "call"));
-		this.add(new UIButton(this, 0.72f, 0.56f, 0.93f, 0.66f, "Do nothing").setHandler(this, "nothing"));
+		this.add(new UILabel(this, 0.75f, 0.05f, 1.0f, 0.17f, name).alterFont(Font.BOLD));
+		
+		for(int i = 0; i < this.lines.length; i++) {
+			this.lines[i] = new UIText(this, 0.8f, 0.15f + i * 0.1f, 0.98f, 0.2f + i * 0.1f, "");
+			this.add(this.lines[i]);
+		}
+		
+		for(int i = 0; i < this.lines.length; i++) {
+			this.buttons[i] = new UIButton(this, 0.76f, 0.15f + i * 0.1f, 0.79f, 0.2f + i * 0.1f, Integer.toString(i));
+			this.add(this.buttons[i]);
+		}
 	}
 
 	public void onClick(Object... signals) {
@@ -99,12 +107,12 @@ public class UICodeProjectView extends UIProjectView implements UIButtonClickLis
 	public void keyReleased(KeyEvent event) {
 		super.keyReleased(event);
 		
-		if(event.getKeyCode() == KeyEvent.VK_SPACE) {
+		/*if(event.getKeyCode() == KeyEvent.VK_SPACE) {
 			UIProjectView view = new UIAutoCompletionEditorProjectView(this, this.getRootComponent());
 	
 			view.keyReleased(event);
 		
 			UIMain.show(view);
-		}
+		}*/
 	}
 }

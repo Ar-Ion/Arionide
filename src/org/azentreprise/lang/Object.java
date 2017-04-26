@@ -97,15 +97,11 @@ public class Object extends Parseable implements Renderable {
 	}
 	
 	public boolean shouldBeRendered() {
-		if(Object.currentID == "") {
-			if(this.id.indexOf('.') < 0) {
-				return true;
-			}
-		} else if(this.id.startsWith(Object.currentID) && this.id.chars().filter(ch -> ch == '.').count() == Object.currentID.chars().filter(ch -> ch == '.').count() + 1) {
-			return true;
-		}
-		
-		return false;
+		return this.id.startsWith(Object.currentID) && getHierarchyLevel(this.id) == getHierarchyLevel(Object.currentID) + 1;
+	}
+	
+	public static int getHierarchyLevel(String id) {
+		return id == "" ? -1 : (int) id.chars().filter(ch -> ch == '.').count();
 	}
 	
 	public String getID() {

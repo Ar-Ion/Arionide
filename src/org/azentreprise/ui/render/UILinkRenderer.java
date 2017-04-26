@@ -32,7 +32,7 @@ public class UILinkRenderer {
 	public static void render(Graphics2D g2d, int x1, int y1, int x2, int y2, int lineRadius) {
 		Rectangle bounds = new Rectangle(x1, y1, x2 - x1, y2 - y1);
 		
-		double delta = (bounds.getHeight()) / (bounds.getWidth());
+		double delta = bounds.getHeight() / bounds.getWidth();
 		double partial = Math.sqrt(1.0D + delta * delta);
 		
 		Point2D p1 = new Point2D.Double(bounds.getCenterX(), bounds.getCenterY());

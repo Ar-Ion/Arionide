@@ -20,7 +20,9 @@
  *******************************************************************************/
 package org.azentreprise.ui.views.project;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -34,7 +36,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +71,10 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 	private final Animation selectionAnimation = new FieldModifierAnimation("selectionOpacity", UIProjectView.class, this);
 	private final Animation errorMessageAnimation = new FieldModifierAnimation("errorMessageOpacity", UIProjectView.class, this);
 	private final Animation overlayAnimation = new FieldModifierAnimation("overlayOpacity", UIProjectView.class, this);
+	private final Animation pixelsPerCellAnimation = new FieldModifierAnimation("pixelsPerCell", Project.class, Projects.getCurrentProject());
+	private final Animation rendererOpacityAnimation = new FieldModifierAnimation("rendererOpacity", UIProjectView.class, this);
+	private final Animation centerXAnimation = new FieldModifierAnimation("gridPosX", Project.class, Projects.getCurrentProject());
+	private final Animation centerYAnimation = new FieldModifierAnimation("gridPosY", Project.class, Projects.getCurrentProject());
 	
 	protected final Project project = Projects.getCurrentProject();
 	
@@ -78,6 +83,7 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 	private int selectionOpacity = 0;
 	private int errorMessageOpacity = 0;
 	private int overlayOpacity = 0;
+	private float rendererOpacity = 1.0f;
 	private String errorMessage = new String();
 	private Shape controls;
 	private Rectangle bounds;
@@ -97,17 +103,25 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 		rootComponent.addMouseMotionListener(this);
 		rootComponent.addMouseWheelListener(this);
 		((JFrame) rootComponent).getContentPane().addKeyListener(this);
-				
-		this.add(new UIButton(this, 0.72f, 0.73f, 0.77f, 0.92f, "<").setHandler(this, "back"));
+		
+		this.add(new UIButton(this, 0.3f, -0.0f, 0.4f, 0.05f, "Hierarchy").setHandler(this, "hierarchy"));
+		this.add(new UIButton(this, 0.45f, -0.0f, 0.55f, 0.05f, "Inheritance").setHandler(this, "inheritance"));
+		this.add(new UIButton(this, 0.6f, -0.0f, 0.7f, 0.05f, "Callers - Callees").setHandler(this, "call"));
+
 	}
 	
 	public void draw(Graphics2D g2d) {
 		this.bounds = g2d.getClipBounds();
 		
-		this.centerGridPosition(this.bounds.width, this.bounds.height);
+		Composite context = g2d.getComposite();
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.rendererOpacity * ((AlphaComposite) context).getAlpha()));
 		
 		UIProjectView.complexRenderer.render(g2d);
 		
+		g2d.setComposite(context);
+
+		this.centerGridPosition(this.bounds.width, this.bounds.height);
+				
 		if(this.selectionStart != null && this.currentMousePosition != null) {
 			int x = this.selectionStart.x, y = this.selectionStart.y;
 			int w = this.currentMousePosition.x - x, h = this.currentMousePosition.y - y;
@@ -146,40 +160,20 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 		g2d.setColor(new Color(0, 0, 0, this.overlayOpacity));
 		g2d.fillRect(0, 0, this.bounds.width, this.bounds.height);
 		
-		this.controls = new RoundRectangle2D.Float(this.bounds.width * 0.7f, this.bounds.height * 0.05f, this.bounds.width * 0.25f, this.bounds.height * 0.9f, 15, 15);
+		this.controls = new RoundRectangle2D.Float(this.bounds.width * 0.75f, this.bounds.height * 0.05f, this.bounds.width * 0.255f, this.bounds.height * 0.9f, 15, 15);
 		
 		g2d.setColor(new Color(0, 0, 0, 127));
 		RoundRectRenderer.fill(g2d, this.controls.getBounds());
 		g2d.setColor(new Color(0xCAFE));
 		RoundRectRenderer.draw(g2d, this.controls.getBounds());
-		g2d.drawLine((int) (this.bounds.width * 0.7f), (int) (this.bounds.height * 0.7f), (int) (this.bounds.width * 0.95f), (int) (this.bounds.height * 0.7f));
 		
 		g2d.setFont(Arionide.getSystemFont());
 		g2d.setColor(new Color(255, 0, 0, this.errorMessageOpacity));
 		g2d.drawString(this.errorMessage, 20, 30);
 		
-		this.miniGrid = new Rectangle2D.Float(this.bounds.width * 0.79f, this.bounds.height * 0.73f, this.bounds.width * 0.14f, this.bounds.height * 0.19f);
-		
-		g2d.setColor(new Color(0, 0, 0, 127));
-		g2d.fill(this.miniGrid);
 		g2d.setColor(new Color(0xCAFE));
-		g2d.draw(this.miniGrid);
-		
-		int width = this.miniGrid.getBounds().width;
-		int height = this.miniGrid.getBounds().height;
-		
-		Graphics2D miniGfx = (Graphics2D) g2d.create(this.miniGrid.getBounds().x, this.miniGrid.getBounds().y, width, height);
-		
-		this.xMult = (this.project.gridSize * this.project.pixelsPerCell) / (float) width;
-		this.yMult = (this.project.gridSize * this.project.pixelsPerCell) / (float) height;
-				
-		UIProjectView.simpleRenderer.render((Graphics2D) miniGfx.create());
-		
-		Shape proj = new Rectangle2D.Double(width / 2.0D - this.project.gridPosX / this.xMult, height / 2.0D - this.project.gridPosY / this.yMult, this.bounds.getWidth() / this.xMult, this.bounds.getHeight() / this.yMult);
-		g2d.setColor(new Color(0xCAFE));
-		miniGfx.draw(proj);
 	}
-	
+		
 	private void centerGridPosition(int width, int height) {
 		if(!this.project.isGridInitialized) {
 			this.project.isGridInitialized = true;
@@ -249,22 +243,76 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 	}
 	
 	private void open(String id) {
-		if(id == "" || this.project.objectMapping.get(id).getType().equals(ObjectType.STRUCTURE)) {
-			Debug.info("The current branch is '" + (id != "" ? id : "root") + "'");
-			selected.clear();
-			
-			this.project.current = id;
-			this.project.isGridInitialized = false;
-			
-			Object.uploadCurrentID(id);
-			
-			UIProjectView.complexRenderer.reset(this.project);
-			UIProjectView.simpleRenderer.reset(this.project);
-			
-			this.highlighted.clear();
-		} else {
-			this.error("This object is atomic");
+		if(id != this.project.current) {
+			if(id == "" || this.project.objectMapping.get(id).getType().equals(ObjectType.STRUCTURE)) {
+				int animationDuration = 50;
+				
+				this.needValidation = true;
+
+				Debug.info("The current branch is '" + (id != "" ? id : "root") + "'");
+				
+				selected.clear();
+				this.highlighted.clear();
+
+				int initialPixelsPerCell = this.project.pixelsPerCell;
+				boolean zoomIn = Object.getHierarchyLevel(this.project.current) < Object.getHierarchyLevel(id);
+				
+				if(zoomIn) {
+					this.centerOn(this.project.objectMapping.get(id), 2048, animationDuration);
+				}
+				
+				this.pixelsPerCellAnimation.startAnimation(animationDuration, after -> {
+					this.project.pixelsPerCell = zoomIn ? 8 : 2048;
+					
+					String old = this.project.current;
+					this.project.current = id;
+					
+					Object.uploadCurrentID(id);
+					
+					UIProjectView.complexRenderer.reset(this.project);
+					UIProjectView.simpleRenderer.reset(this.project);
+					
+					after.startAnimation(50, after2 -> {
+						this.needValidation = false;
+					}, initialPixelsPerCell);
+					
+					if(zoomIn) {
+						this.project.gridPosX = this.bounds.width / 2 - initialPixelsPerCell / 2;
+						this.project.gridPosY = this.bounds.height / 2 - initialPixelsPerCell / 2;
+						this.rendererOpacity = 0.0f;
+						this.rendererOpacityAnimation.startAnimation(animationDuration, 1.0f);
+					} else {
+						Object object = this.project.objectMapping.get(old);
+						
+						Point2D point = new Point(0, 0);
+						
+						if(object != null) {
+							point = object.getPosition(initialPixelsPerCell, 0.5f);
+						}
+						
+						this.project.gridPosX = (int) (this.bounds.width / 2 - point.getX());
+						this.project.gridPosY = (int) (this.bounds.height / 2 - point.getY());
+					}
+				}, zoomIn ? 2048 : 8);
+				
+				this.rendererOpacityAnimation.startAnimation(animationDuration, after -> {
+					this.rendererOpacity = 1.0f;
+				}, 0.0f);
+			} else {
+				this.error("This object is atomic");
+			}
 		}
+	}
+	
+	private void centerOn(Object object, int pixelsPerCell, int animationDuration) {
+		Point2D point = new Point(0, 0);
+		
+		if(object != null) {
+			point = object.getPosition(pixelsPerCell, 0.5f);
+		}
+		
+		this.centerXAnimation.startAnimation(animationDuration, this.bounds.width / 2 - point.getX());
+		this.centerYAnimation.startAnimation(animationDuration, this.bounds.height / 2 - point.getY());
 	}
 	
 	private void resetSelection() {
@@ -303,7 +351,21 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 	}
 	
 	public void mouseWheelMoved(MouseWheelEvent event) {
-		;
+		Point point = event.getPoint();
+		
+		UIEvents.transform(point);
+		
+		if(this.controls != null && !this.controls.contains(point)) {
+			int next = this.project.pixelsPerCell + event.getWheelRotation();
+							
+			if(next < 256) {
+				if(next > 8) {
+					this.project.pixelsPerCell = next;
+				} else {
+					this.onClick("back");
+				}
+			}
+		}
 	}
 
 	public void mouseDragged(MouseEvent event) {
@@ -397,6 +459,8 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 			UIMain.show(new UIDesignProjectView(this, this.getRootComponent()));
 		} else if(event.getKeyCode() == KeyEvent.VK_G) {
 			UIMain.show(new UIGlobalVariablesEditorProjectView(this, this.getRootComponent()));
+		} else if(event.getKeyCode() == KeyEvent.VK_SPACE) {
+			this.centerOn(new Object("Object.center", new Point2D.Float(0, 0), 0, null, false), this.project.pixelsPerCell, 50);
 		}
 	}
 	
@@ -421,7 +485,7 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 				case "back":
 					if(this.project.current.indexOf('.') > -1) {
 						this.open(this.project.current.substring(0, this.project.current.lastIndexOf('.')));
-					} else {
+					} else if(this.project.current != "") {
 						this.open("");
 					}
 					break;
