@@ -58,7 +58,7 @@ public class Project extends Configuration {
 	public volatile List<String> serializedStyles = new ArrayList<>(Arrays.asList("[Name:<Primary> Parent:<None> Red range:<0 0> Green range:<63 127> Blue range:<191 255> Wave control:<10 1> Linear motion matrix:<2 2 2 2 2 2> Rotation matrix:<0 1 1> Alpha constant:<1.0>]", 
 																				  "[Name:<Secondary> Parent:<None> Red range:<0 63> Green range:<127 255> Blue range:<0 63> Wave control:<10 1> Linear motion matrix:<2 2 2 2 2 2> Rotation matrix:<0 1 1> Alpha constant:<1.0>]",	
 																				  "[Name:<Native> Parent:<None> Red range:<127 255> Green range:<63 127> Blue range:<0 63> Wave control:<10 1> Linear motion matrix:<2 2 2 2 2 2> Rotation matrix:<0 1 1> Alpha constant:<1.0>]"));	
-	public volatile List<String> sourceCode = new ArrayList<String>();
+	public volatile Map<String, List<String>> sourceCode = new HashMap<>();
 	
 	public final List<Object> objects;
 	public final List<Link> links;

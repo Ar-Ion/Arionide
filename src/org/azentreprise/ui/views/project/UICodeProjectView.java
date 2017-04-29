@@ -63,11 +63,7 @@ public class UICodeProjectView extends UIProjectView implements UIButtonClickLis
 		}
 		
 		for(int i = 0; i < this.lines.length; i++) {
-			if(i < this.project.sourceCode.size()) {
-				this.lines[i].setText(this.project.sourceCode.get(i));
-			} else {
-				this.project.sourceCode.add("");
-			}
+			this.lines[i].setText(this.getSourceForLine(i));
 		}
 	}
 	
@@ -116,7 +112,16 @@ public class UICodeProjectView extends UIProjectView implements UIButtonClickLis
 	public void syncWithDataStructure() {
 		for(int i = 0; i < this.lines.length; i++) {
 			String line = this.lines[i].toString();
-			this.project.sourceCode.set(this.getLineNumberCorrespondingToSlot(i) - 1, line);
+			this.project.sourceCode.get(this.project.current).add(this.getLineNumberCorrespondingToSlot(i) - 1, line);
+		}
+	}
+	
+	public String getSourceForLine(int line) {
+		if(line < this.project.sourceCode.size()) {
+			return this.project.sourceCode.get(this.project.current).get(line);
+		} else {
+			this.project.sourceCode.get(this.project.current).add("");
+			return "";
 		}
 	}
 	
@@ -144,12 +149,7 @@ public class UICodeProjectView extends UIProjectView implements UIButtonClickLis
 			}
 			
 			for(int i = 0; i < this.lines.length; i++) {								
-				if(i + scalar - 1 < this.project.sourceCode.size()) {
-					this.lines[i].setText(this.project.sourceCode.get(i + scalar - 1));
-				} else {
-					this.project.sourceCode.add("");
-				}
-				
+				this.lines[i].setText(this.getSourceForLine(i + scalar - 1));
 				this.buttons[i].setLabel(Integer.toString(i + scalar));
 			}
 		}
