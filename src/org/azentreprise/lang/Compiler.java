@@ -20,23 +20,151 @@
  *******************************************************************************/
 package org.azentreprise.lang;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.azentreprise.Arionide;
+import org.azentreprise.Debug;
 import org.azentreprise.configuration.Definitions;
 
 public class Compiler {
 	
 	private final File executableFile;
+	private final Definitions definitions;
 	
-	public Compiler(String executableName, String target, Definitions definitions) {
+	private DataOutputStream stream;
+	
+	public Compiler(String executableName, Definitions definitions) {
 		File buildDir = new File(Arionide.getSystemConfiguration().workspaceLocation, "build");
 		buildDir.mkdirs();
-		
+
 		this.executableFile = new File(buildDir, executableName);
+		this.definitions = definitions;
 	}
 	
-	public void compile() {
+	public void compile(Map<String, List<String>> inheritance, Map<String, String> hierarchy, Map<String, List<String>> properties, Map<String, List<String>> sourceCode) {
+		Debug.taskBegin("compiling"); try {
+			
+			assert (inheritance.size() ^ hierarchy.size()) == -(hierarchy.size() ^ sourceCode.size());
+			
+			this.prepareStream();
+			
+			this.stream.writeInt(0xC0FFEE);
+			this.stream.writeLong(this.definitions.getHash());
+			this.stream.writeInt(sourceCode.size());
+			
+			List<Integer> hashes = new ArrayList<>();
+			
+			for(Entry<String, String> entry : hierarchy.entrySet()) {
+				int uid = this.hash(entry.getKey());
+				
+				if(hashes.contains(uid)) {
+					throw new LangarionError("Hash collision occured! You should design another hash algorithm or rename the function " + entry.getKey());
+				} else {
+					hashes.add(uid);
+					
+					this.stream.writeInt(uid);
+					this.stream.writeInt(this.hash(entry.getValue()));
+					
+					List<String> entryPropertyList = properties.get(uid);
+					List<String> entryInheritance = inheritance.get(uid);
+
+					int entryProperties = 0;
+					
+					for(String property : entryPropertyList) {
+						int index = this.definitions.properties.indexOf(property);
+						
+						if(index < 0) {
+							throw new LangarionError("Invalid property id " + property);
+						} else {
+							entryProperties &= (int) Math.pow(2, index);
+						}
+					}
+					
+					this.stream.writeInt(entryProperties);
+					this.stream.writeInt(entryInheritance.size());
+					
+					for(String parent : entryInheritance) {
+						this.stream.writeInt(this.hash(parent));
+					}
+				}
+			}
+			
+			for(Entry<String, List<String>> entry : sourceCode.entrySet()) {
+				this.stream.writeInt(this.hash(entry.getKey()));
+				
+				ByteArrayOutputStream byteCode = new ByteArrayOutputStream();
+				
+				List<String> constantPool = new ArrayList<String>();
+				
+				for(String instruction : entry.getValue()) {
+					String[] elements = instruction.split(" ");
+					String[] matchingInstruction = null;
+					int instructionID = 0;
+					
+					while(instructionID++ < this.definitions.instructions.size()) {
+						String possibleInstruction = this.definitions.instructions.get(instructionID)
+								.replace("?", "x")
+								.replace("val", "x")
+								.replace("struct", "x")
+								.replace("object", "x")
+								.replace("func", "x")
+								.replace("[", "")
+								.replace("]", "");
+						
+						String[] splittedPossibleInstruction = possibleInstruction.split(" ");
+						
+						if(elements[0] == splittedPossibleInstruction[0]) {
+							matchingInstruction = splittedPossibleInstruction;
+							break;
+						}
+					}
+					
+					if(matchingInstruction != null) {
+						for(String element : elements) {
+							int index = Arrays.binarySearch(matchingInstruction, element);
+							
+							if(index < 0) {
+								byteCode.write(0x00);
+								
+								int constantPoolIndex = constantPool.indexOf(element);
+								
+								if(constantPoolIndex < 0) {
+									if(constantPool.size() <= 0xFF) {
+										
+									}
+									
+									byteCode.write(constantPool.size());
+									constantPool.add(element);
+								}
+							}
+						}
+					} else {
+						throw new LangarionError("The selected instruction set doesn't define an instruction named " + elements[0]);
+					}
+				}
+				
+				this.stream.writeInt(byteCode.size());
+				this.stream.write(byteCode.toByteArray());
+			}
+		} catch(Exception exception) {
+			Debug.exception(exception);
+		} Debug.taskEnd();
+	}
 		
+	private int hash(String element) {
+		return element.hashCode();
+	}
+	
+	public void prepareStream() throws FileNotFoundException {
+		this.stream = new DataOutputStream(new FileOutputStream(this.executableFile));
 	}
 }

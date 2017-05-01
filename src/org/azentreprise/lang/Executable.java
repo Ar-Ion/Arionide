@@ -26,28 +26,26 @@ import java.nio.ByteBuffer;
 
 public class Executable {
 	private final int magic = 0xC0FFEE;
-	private final int type;
 	private final long definitionsHashcode;
 	private final int numberOfFunctions;
 	private final FunctionDescriptor[] functionDescriptors;
+	private final CodeDescriptor[] codeDescriptors;
 	
 	public Executable(InputStream stream) throws LangarionError {
 		if(this.read(stream, 4) != this.magic) {
 			throw new LangarionError("Invalid magic number");
 		}
 		
-		this.type = (int) this.read(stream, 4);
 		this.definitionsHashcode = this.read(stream, 8);
 		this.numberOfFunctions = (int) this.read(stream, 4);
+		
 		this.functionDescriptors = new FunctionDescriptor[this.numberOfFunctions];
+		this.codeDescriptors = new CodeDescriptor[this.numberOfFunctions];
 		
 		for(int i = 0; i < this.numberOfFunctions; i++) {
 			this.functionDescriptors[i] = new FunctionDescriptor(stream);
+			this.codeDescriptors[i] = new CodeDescriptor(stream);
 		}
-	}
-	
-	public int getType() {
-		return this.type;
 	}
 	
 	public long getDefinitionsHashcode() {
@@ -73,12 +71,14 @@ public class Executable {
 	public class FunctionDescriptor {
 		private final int uid;
 		private final int superiorUID;
+		private final int properties;
 		private final int numberOfParents;
 		private final int[] parentsUID;
 		
 		private FunctionDescriptor(InputStream stream) throws LangarionError {
 			this.uid = (int) Executable.this.read(stream, 4);
 			this.superiorUID = (int) Executable.this.read(stream, 4);
+			this.properties = (int) Executable.this.read(stream, 4);
 			this.numberOfParents = (int) Executable.this.read(stream, 4);
 			
 			this.parentsUID = new int[this.numberOfParents];
@@ -96,8 +96,39 @@ public class Executable {
 			return this.superiorUID;
 		}
 		
+		public boolean hasProperty(int propertyID) {
+			return ((this.properties >>> propertyID) & 0b1) != 0;
+		}
+		
 		public int[] getParentsUID() {
 			return this.parentsUID;
+		}
+	}
+	
+	public class CodeDescriptor {
+		private final int uid;
+		private final int size;
+		private final byte code[];
+		
+		private CodeDescriptor(InputStream stream) throws LangarionError {
+			this.uid = (int) Executable.this.read(stream, 4);
+			this.size = (int) Executable.this.read(stream, 4);
+			
+			this.code = new byte[this.size];
+			
+			try {
+				stream.read(this.code);
+			} catch (IOException e) {
+				throw new LangarionError("Corrupted source code");
+			}
+		}
+		
+		public int getUID() {
+			return this.uid;
+		}
+		
+		public byte[] getCode() {
+			return this.code;
 		}
 	}
 }

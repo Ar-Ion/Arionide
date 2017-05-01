@@ -31,9 +31,14 @@ public class Definitions extends Configuration {
 
 	public volatile List<String> instructions = new ArrayList<>();
 	public volatile Map<String, String> transcriptions = new HashMap<>();
+	public volatile List<String> properties = new ArrayList<>();
 	
 	public Definitions(File path, String identifier) throws IOException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		super(path, identifier);
 		this.loadConfiguration();
+	}
+
+	public long getHash() {
+		return ((long) this.instructions.hashCode() << 32) | (this.transcriptions.hashCode() & 0xFFFFFFFFL);
 	}
 }
