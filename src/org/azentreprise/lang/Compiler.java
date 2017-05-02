@@ -25,6 +25,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -147,6 +148,10 @@ public class Compiler {
 									if(constantPool.size() <= 0xFF) {
 										throw new LangarionError("Constant pool overflow");
 									}
+									
+									if(element.getBytes(Charset.forName("utf8")).length > 255) {
+										throw new LangarionError("Length overflow for constant " + element);
+									}
 
 									byteCode.write(constantPool.size());
 									constantPool.add(element);
@@ -161,6 +166,17 @@ public class Compiler {
 					} else {
 						throw new LangarionError("The selected instruction set doesn't define an instruction named " + elements[0]);
 					}
+				}
+				
+				this.stream.writeInt(constantPool.size());
+				
+				for(String constant : constantPool) {
+					byte[] data = constant.getBytes(Charset.forName("utf8"));
+					
+					assert data.length < 256;
+					
+					this.stream.write(data.length);
+					this.stream.write(data);
 				}
 				
 				this.stream.writeInt(byteCode.size());

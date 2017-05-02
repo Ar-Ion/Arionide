@@ -23,6 +23,7 @@ package org.azentreprise.lang;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 
 public class Executable {
 	private final int magic = 0xC0FFEE;
@@ -107,13 +108,31 @@ public class Executable {
 	
 	public class CodeDescriptor {
 		private final int uid;
+		private final int constantPoolSize;
+		private final String[] constantPool;
 		private final int size;
 		private final byte code[];
 		
 		private CodeDescriptor(InputStream stream) throws LangarionError {
 			this.uid = (int) Executable.this.read(stream, 4);
-			this.size = (int) Executable.this.read(stream, 4);
 			
+			this.constantPoolSize = (int) Executable.this.read(stream, 4);
+			this.constantPool = new String[this.constantPoolSize];
+			
+			try {
+				for(int i = 0; i < this.constantPoolSize; i++) {
+					int constantLength = stream.read();
+					byte[] data = new byte[constantLength];
+					
+					stream.read(data);
+					
+					this.constantPool[i] = new String(data, Charset.forName("utf8"));
+				}
+			} catch(IOException e) {
+				throw new LangarionError("Corrupted constant pool");
+			}
+			
+			this.size = (int) Executable.this.read(stream, 4);
 			this.code = new byte[this.size];
 			
 			try {
