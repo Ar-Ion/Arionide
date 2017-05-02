@@ -170,12 +170,6 @@ public class Compiler {
 			Debug.exception(exception);
 		} Debug.taskEnd();
 	}
-	
-	private int allocConstantPoolElement(List<String> constantPool, String element) {
-		
-		
-		return constantPoolIndex;
-	}
 		
 	private int hash(String element) {
 		return element.hashCode();
