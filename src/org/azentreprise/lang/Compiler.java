@@ -112,11 +112,11 @@ public class Compiler {
 					
 					while(instructionID++ < this.definitions.instructions.size()) {
 						String possibleInstruction = this.definitions.instructions.get(instructionID)
-								.replace("?", "x")
-								.replace("val", "x")
-								.replace("struct", "x")
-								.replace("object", "x")
-								.replace("func", "x")
+								.replace("? ", "")
+								.replace("val ", "")
+								.replace("struct ", "")
+								.replace("object ", "")
+								.replace("func ", "")
 								.replace("[", "")
 								.replace("]", "");
 						
@@ -129,22 +129,33 @@ public class Compiler {
 					}
 					
 					if(matchingInstruction != null) {
+						
+						boolean hasParameter = false;
+						
 						for(String element : elements) {
 							int index = Arrays.binarySearch(matchingInstruction, element);
 							
 							if(index < 0) {
-								byteCode.write(0x00);
+								if(!hasParameter) {
+									byteCode.write(0x00);
+									hasParameter = false;
+								}
 								
 								int constantPoolIndex = constantPool.indexOf(element);
 								
 								if(constantPoolIndex < 0) {
 									if(constantPool.size() <= 0xFF) {
-										
+										throw new LangarionError("Constant pool overflow");
 									}
-									
+
 									byteCode.write(constantPool.size());
 									constantPool.add(element);
+								} else {
+									byteCode.write(constantPoolIndex);
 								}
+							} else {
+								byteCode.write(index);
+								hasParameter = true;
 							}
 						}
 					} else {
@@ -158,6 +169,12 @@ public class Compiler {
 		} catch(Exception exception) {
 			Debug.exception(exception);
 		} Debug.taskEnd();
+	}
+	
+	private int allocConstantPoolElement(List<String> constantPool, String element) {
+		
+		
+		return constantPoolIndex;
 	}
 		
 	private int hash(String element) {
