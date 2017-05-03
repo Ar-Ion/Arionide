@@ -57,6 +57,10 @@ public class Executable {
 		return this.functionDescriptors;
 	}
 	
+	public CodeDescriptor[] getCodeDescriptors() {
+		return this.codeDescriptors;
+	}
+	
 	private long read(InputStream stream, int length) throws LangarionError {
 		byte[] data = new byte[length];
 
@@ -99,6 +103,10 @@ public class Executable {
 		
 		public boolean hasProperty(int propertyID) {
 			return ((this.properties >>> propertyID) & 0b1) != 0;
+		}
+		
+		public int getProperties() {
+			return this.properties;
 		}
 		
 		public int[] getParentsUID() {
@@ -144,6 +152,10 @@ public class Executable {
 		
 		public int getUID() {
 			return this.uid;
+		}
+		
+		public String[] getConstantPool() {
+			return this.constantPool;
 		}
 		
 		public byte[] getCode() {

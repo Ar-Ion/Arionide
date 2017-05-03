@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class Definitions extends Configuration {
 
-	public volatile List<String> instructions = new ArrayList<>();
+	public volatile List<String> objects = new ArrayList<>();
 	public volatile Map<String, String> transcriptions = new HashMap<>();
 	public volatile List<String> properties = new ArrayList<>();
 	
@@ -39,6 +39,6 @@ public class Definitions extends Configuration {
 	}
 
 	public long getHash() {
-		return ((long) this.instructions.hashCode() << 32) | (this.transcriptions.hashCode() & 0xFFFFFFFFL);
+		return ((long) this.objects.hashCode() << 32) | (this.transcriptions.hashCode() & 0xFFFFFFFFL);
 	}
 }

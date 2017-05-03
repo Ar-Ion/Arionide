@@ -47,7 +47,7 @@ public class Compiler {
 		File buildDir = new File(Arionide.getSystemConfiguration().workspaceLocation, "build");
 		buildDir.mkdirs();
 
-		this.executableFile = new File(buildDir, executableName);
+		this.executableFile = new File(buildDir, executableName + ".pre");
 		this.definitions = definitions;
 	}
 	
@@ -111,8 +111,8 @@ public class Compiler {
 					String[] matchingInstruction = null;
 					int instructionID = 0;
 					
-					while(instructionID++ < this.definitions.instructions.size()) {
-						String possibleInstruction = this.definitions.instructions.get(instructionID)
+					while(instructionID++ < this.definitions.objects.size()) {
+						String possibleInstruction = this.definitions.objects.get(instructionID)
 								.replace("? ", "")
 								.replace("val ", "")
 								.replace("struct ", "")
@@ -140,6 +140,10 @@ public class Compiler {
 								if(!hasParameter) {
 									byteCode.write(0x00);
 									hasParameter = false;
+								}
+								
+								if(this.definitions.transcriptions.containsKey(element)) {
+									element = this.definitions.transcriptions.get(element);
 								}
 								
 								int constantPoolIndex = constantPool.indexOf(element);
