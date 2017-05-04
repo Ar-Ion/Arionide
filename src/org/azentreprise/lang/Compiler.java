@@ -65,7 +65,7 @@ public class Compiler {
 			List<Integer> hashes = new ArrayList<>();
 			
 			for(Entry<String, String> entry : hierarchy.entrySet()) {
-				int uid = this.hash(entry.getKey());
+				int uid = Compiler.getHashForElement(entry.getKey());
 				
 				if(hashes.contains(uid)) {
 					throw new LangarionError("Hash collision occured! You should design another hash algorithm or rename the function " + entry.getKey());
@@ -73,7 +73,7 @@ public class Compiler {
 					hashes.add(uid);
 					
 					this.stream.writeInt(uid);
-					this.stream.writeInt(this.hash(entry.getValue()));
+					this.stream.writeInt(Compiler.getHashForElement(entry.getValue()));
 					
 					List<String> entryPropertyList = properties.get(uid);
 					List<String> entryInheritance = inheritance.get(uid);
@@ -94,13 +94,13 @@ public class Compiler {
 					this.stream.writeInt(entryInheritance.size());
 					
 					for(String parent : entryInheritance) {
-						this.stream.writeInt(this.hash(parent));
+						this.stream.writeInt(Compiler.getHashForElement(parent));
 					}
 				}
 			}
 			
 			for(Entry<String, List<String>> entry : sourceCode.entrySet()) {
-				this.stream.writeInt(this.hash(entry.getKey()));
+				this.stream.writeInt(Compiler.getHashForElement(entry.getKey()));
 				
 				ByteArrayOutputStream byteCode = new ByteArrayOutputStream();
 				
@@ -191,8 +191,8 @@ public class Compiler {
 		} Debug.taskEnd();
 	}
 		
-	private int hash(String element) {
-		return element.hashCode();
+	public static int getHashForElement(String element) {
+		return Arrays.hashCode(element.getBytes(Charset.forName("utf8")));
 	}
 	
 	public void prepareStream() throws FileNotFoundException {

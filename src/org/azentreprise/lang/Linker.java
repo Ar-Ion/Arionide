@@ -40,8 +40,8 @@ public class Linker {
 	
 	private static volatile boolean DEBUG_OVERWRITES = false;
 	
-	private final Definitions configuration;
 	private final File targetExecutableFile;
+	private final Definitions configuration;
 	
 	private DataOutputStream stream;
 	
@@ -54,7 +54,7 @@ public class Linker {
 	}
 	
 	public void link() {
-		Debug.taskBegin("compiling"); try {
+		Debug.taskBegin("linking"); try {
 			if(this.configuration.objects.size() > 0) {
 				this.prepareStream();
 				

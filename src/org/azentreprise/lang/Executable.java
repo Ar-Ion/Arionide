@@ -101,10 +101,6 @@ public class Executable {
 			return this.superiorUID;
 		}
 		
-		public boolean hasProperty(int propertyID) {
-			return ((this.properties >>> propertyID) & 0b1) != 0;
-		}
-		
 		public int getProperties() {
 			return this.properties;
 		}
