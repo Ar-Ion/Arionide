@@ -1,55 +1,44 @@
 package org.azentreprise.lang;
 
+import java.io.IOException;
+
 import org.azentreprise.configuration.Definitions;
 import org.azentreprise.lang.Executable.FunctionDescriptor;
 
 public class NativeRuntime extends Runtime {
 
-	public NativeRuntime(String executableName, Definitions definitions) {
-		super(executableName, definitions);
-		// TODO Auto-generated constructor stub
+	public NativeRuntime(String executableName, Definitions definitions) throws SecurityException, IllegalArgumentException, IllegalAccessException, IOException {
+		super(executableName, new NativeDefinitions());
 	}
 
-	@Override
 	public int checkInternalCoherance(FunctionDescriptor descriptor) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public int dispatchInstruction(byte id, byte[] arguments, String[] constantPool) {
-		// TODO Auto-generated method stub
+		System.out.println(id);
 		return 0;
 	}
 
-	@Override
-	public int getMaximalMemorySize() {
-		// TODO Auto-generated method stub
-		return 0;
+	// 64-bits compatible
+	public long getMaximalMemorySize() {
+		return Integer.MAX_VALUE;
 	}
 
-	@Override
-	public int getMaximalStackSize() {
-		// TODO Auto-generated method stub
-		return 0;
+	public long getMaximalStackSize() {
+		return 1024;
 	}
 
-	@Override
 	public int getUndefinedSymbolErrorCode() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 0x1;
 	}
 
-	@Override
 	public int getMemoryOverflowErrorCode() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 0x2;
 	}
 
-	@Override
 	public int getStackOverflowErrorCode() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 0x3;
 	}
 
 }

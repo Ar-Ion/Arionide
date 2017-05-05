@@ -154,8 +154,8 @@ public abstract class Runtime {
 	public abstract int checkInternalCoherance(FunctionDescriptor descriptor);
 	public abstract int dispatchInstruction(byte id, byte[] arguments, String[] constantPool);
 	
-	public abstract int getMaximalMemorySize();
-	public abstract int getMaximalStackSize();
+	public abstract long getMaximalMemorySize();
+	public abstract long getMaximalStackSize();
 	
 	public abstract int getUndefinedSymbolErrorCode();
 	public abstract int getMemoryOverflowErrorCode();
