@@ -42,12 +42,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.azentreprise.Arionide;
 import org.azentreprise.Debug;
 import org.azentreprise.Projects;
 import org.azentreprise.configuration.Project;
+import org.azentreprise.lang.Function;
 import org.azentreprise.lang.Object;
 import org.azentreprise.lang.ObjectType;
 import org.azentreprise.ui.UIEvents;
@@ -91,6 +93,7 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 	private float xMult, yMult;
 	private boolean isMovingUsingMinigrid = false;
 	private boolean needValidation = false;
+	private String newFunction;
 	
 	public static final ProjectRenderer simpleRenderer = new SimpleProjectRenderer(Projects.getCurrentProject());
 	public static final ProjectRenderer complexRenderer = new ComplexProjectRenderer(Projects.getCurrentProject());
@@ -103,10 +106,11 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 		rootComponent.addMouseWheelListener(this);
 		((JFrame) rootComponent).getContentPane().addKeyListener(this);
 		
-		this.add(new UIButton(this, 0.3f, -0.0f, 0.4f, 0.05f, "Hierarchy").setHandler(this, "hierarchy"));
-		this.add(new UIButton(this, 0.45f, -0.0f, 0.55f, 0.05f, "Inheritance").setHandler(this, "inheritance"));
-		this.add(new UIButton(this, 0.6f, -0.0f, 0.7f, 0.05f, "Callers - Callees").setHandler(this, "call"));
+		this.add(new UIButton(this, 0.3f, -0.01f, 0.4f, 0.05f, "Hierarchy").setHandler(this, "hierarchy"));
+		this.add(new UIButton(this, 0.45f, -0.01f, 0.55f, 0.05f, "Inheritance").setHandler(this, "inheritance"));
+		this.add(new UIButton(this, 0.6f, -0.01f, 0.7f, 0.05f, "Callers - Callees").setHandler(this, "call"));
 
+		this.add(new UIButton(this, 0.05f, 0.45f, 0.1f, 0.55f, "+").setHandler(this, "add"));
 	}
 	
 	public void draw(Graphics2D g2d) {
@@ -225,7 +229,7 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 		} else {
 			if(selected.size() > 0) {
 				
-				Object object = this.project.objectMapping.get(this.project.current);
+				Object object = this.project.objectMapping.get(id);
 				
 				if(object != null && object.isMutable()) {
 					UIMain.show(new UISelectionProjectView(this, this.getRootComponent()));
@@ -424,10 +428,23 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 				int x = (int) Math.round((float) (point.getX() - this.project.gridPosX) / this.project.pixelsPerCell - 0.5f);
 				int y = (int) Math.round((float) (point.getY() - this.project.gridPosY) / this.project.pixelsPerCell - 0.5f);			
 				
-				for(Entry<String, Object> object : this.project.objectMapping.entrySet()) {
-					if(object.getValue().shouldBeRendered() && object.getValue().getPosition(1, 0).equals(new Point2D.Double(x, y))) {
-						this.open(object.getKey());
-						break;
+				if(this.newFunction != null) {
+					if(!this.project.current.isEmpty()) {
+						this.newFunction = this.project.current + "." + this.newFunction;
+					}
+					
+					Object object = new Object(this.newFunction, new Point2D.Double(x, y), 0, ObjectType.STRUCTURE, true);
+					
+					this.project.objects.add(object);
+					this.project.objectMapping.put(this.newFunction, object);
+					this.project.source.put(this.newFunction,new Function(new String()));
+					this.newFunction = null;
+				} else {
+					for(Entry<String, Object> object : this.project.objectMapping.entrySet()) {
+						if(object.getValue().shouldBeRendered() && object.getValue().getPosition(1, 0).equals(new Point2D.Double(x, y))) {
+							this.open(object.getKey());
+							break;
+						}
 					}
 				}
 			}
@@ -488,6 +505,14 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 					} else if(this.project.current != "") {
 						this.open("");
 					}
+					break;
+				case "add":
+					new Thread() {
+						public void run() {
+							UIProjectView.this.newFunction = JOptionPane.showInputDialog(UIProjectView.this.getRootComponent(), "Enter function's name:", "New function", JOptionPane.QUESTION_MESSAGE);
+						}
+					}.start();
+					
 					break;
 			}
 		}

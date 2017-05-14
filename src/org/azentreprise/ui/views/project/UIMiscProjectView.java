@@ -33,8 +33,6 @@ import javax.swing.filechooser.FileFilter;
 import org.azentreprise.Debug;
 import org.azentreprise.ProjectFormatConverter;
 import org.azentreprise.Projects;
-import org.azentreprise.configuration.Project;
-import org.azentreprise.lang.LangarionError;
 import org.azentreprise.ui.UIMain;
 import org.azentreprise.ui.components.UIButton;
 import org.azentreprise.ui.components.UIButton.UIButtonClickListener;
@@ -131,14 +129,6 @@ public class UIMiscProjectView extends UIProjectView implements UIButtonClickLis
 	}
 	
 	public void build() {
-		Project project = Projects.getCurrentProject();
-		
-		try {
-			project.theCode.compile(project);
-			project.theCode.run();
-		} catch (LangarionError exception) {
-			this.error(exception.getMessage());
-		}
 	}
 	
 	public void keyPressed(KeyEvent event) {		

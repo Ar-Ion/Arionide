@@ -107,6 +107,10 @@ public class Compiler {
 				List<String> constantPool = new ArrayList<String>();
 				
 				for(String instruction : entry.getValue()) {
+					if(instruction.isEmpty()) {
+						continue;
+					}
+					
 					String[] elements = instruction.split(" ");
 					String[] matchingInstruction = null;
 					int instructionID = 0;

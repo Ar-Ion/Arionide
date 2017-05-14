@@ -40,7 +40,6 @@ public class NativeRuntime extends Runtime {
 		return 0;
 	}
 
-	// 64-bits compatible
 	public long getMaximalMemorySize() {
 		return Integer.MAX_VALUE;
 	}

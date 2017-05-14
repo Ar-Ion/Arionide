@@ -112,11 +112,13 @@ public class Configuration {
 	
 	private void decodeAssignement(String assignement, int lineNumber) throws IOException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		Debug.taskBegin("decoding line " + lineNumber + " of [" + this.identifier + "]");
-		String[] splitted = assignement.split("=");
-		if(splitted.length > 0) {
-			Field field = this.getClass().getField(splitted[0]);
+		
+		int index = assignement.indexOf("=");
+		
+		if(index > 0) {
+			Field field = this.getClass().getField(assignement.substring(0, index));
 			
-			Object value = this.decode0(field.getType().getName(), splitted.length != 2 ? "" : splitted[1]);
+			Object value = this.decode0(field.getType().getName(), assignement.substring(index + 1, assignement.length()));
 			
 			field.set(this, value);
 			
@@ -126,6 +128,14 @@ public class Configuration {
 		}
 		Debug.taskEnd();
 	}
+	
+	// map decoder "local" variables
+	boolean toggleList = false;
+	boolean isKey = true;
+	int index = 0;
+	
+	String k = new String();
+	String v = new String();
 	
 	private Object decode0(String type, String value) throws IOException {
 		switch(type) {
@@ -150,13 +160,16 @@ public class Configuration {
 				
 				return array;
 			case "java.util.Map":
-				String[] map = value.substring(1, value.length() - 1).split(", ");
+				String[] elements = value.substring(1, value.length() - 1).split(", ");
 				
-				HashMap<String, String> hashMap = new HashMap<String, String>();
+				HashMap<String, String> hashMap = new HashMap<>();
 				
-				for(String entry : map) {
-					String[] splittedEntry = entry.split("=");
-					hashMap.put(splittedEntry[0], splittedEntry[1]);
+				for(String element : elements) {
+					int index = element.indexOf('=');
+					
+					if(index > -1) {
+						hashMap.put(element.substring(0, index), element.substring(index + 1));
+					}
 				}
 				
 				return hashMap;

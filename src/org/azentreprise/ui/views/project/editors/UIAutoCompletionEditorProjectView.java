@@ -29,13 +29,11 @@ import org.azentreprise.configuration.Project;
 import org.azentreprise.lang.AutoCompletionType;
 import org.azentreprise.lang.ISAMapping;
 import org.azentreprise.lang.InstructionInfo;
-import org.azentreprise.lang.ObjectType;
 import org.azentreprise.lang.isa.FuncParamType;
 import org.azentreprise.ui.components.UIAutoCompletion;
 import org.azentreprise.ui.components.UILabel;
 import org.azentreprise.ui.components.UIText;
 import org.azentreprise.ui.views.UIView;
-import org.azentreprise.ui.views.project.UIProjectView;
 
 public class UIAutoCompletionEditorProjectView extends UIEditorProjectView {
 		
@@ -100,13 +98,13 @@ public class UIAutoCompletionEditorProjectView extends UIEditorProjectView {
 			
 			String id = project.current + "." + String.join(":", data);
 			
-			org.azentreprise.lang.Object object = new org.azentreprise.lang.Object(id, Projects.getCurrentProject().theCode.getNext(), 0, ObjectType.NATIVE, true);
+			/*org.azentreprise.lang.Object object = new org.azentreprise.lang.Object(id, Projects.getCurrentProject().theCode.getNext(), 0, ObjectType.NATIVE, true);
 			
 			project.objects.add(object);
 			project.objectMapping.put(id, object);
 			
 			UIProjectView.simpleRenderer.reset(project);
-			UIProjectView.complexRenderer.reset(project);
+			UIProjectView.complexRenderer.reset(project);*/
 			
 			return true;
 		} else {

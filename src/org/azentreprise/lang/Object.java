@@ -23,6 +23,7 @@ package org.azentreprise.lang;
 import java.awt.geom.Point2D;
 import java.util.List;
 
+import org.azentreprise.Projects;
 import org.azentreprise.configuration.Parseable;
 import org.azentreprise.ui.Renderable;
 import org.azentreprise.ui.Style;
@@ -97,11 +98,11 @@ public class Object extends Parseable implements Renderable {
 	}
 	
 	public boolean shouldBeRendered() {
-		return this.id.startsWith(Object.currentID) && getHierarchyLevel(this.id) == getHierarchyLevel(Object.currentID) + 1;
+		return this.id.startsWith(Object.currentID) && getHierarchyLevel(this.id) == getHierarchyLevel(Projects.getCurrentProject().current) + 1;
 	}
 	
 	public static int getHierarchyLevel(String id) {
-		return id == "" ? -1 : (int) id.chars().filter(ch -> ch == '.').count();
+		return id.isEmpty() ? -1 : (int) id.chars().filter(ch -> ch == '.').count();
 	}
 	
 	public String getID() {

@@ -27,7 +27,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
+import java.io.IOException;
 
+import org.azentreprise.Debug;
 import org.azentreprise.Projects;
 import org.azentreprise.ui.UIEvents;
 import org.azentreprise.ui.components.UIButton;
@@ -63,13 +65,20 @@ public class UICodeProjectView extends UIProjectView implements UIButtonClickLis
 		}
 		
 		for(int i = 0; i < this.lines.length; i++) {
-			this.lines[i].setText(this.getSourceForLine(i));
+			String line = this.project.source.get(this.project.current).getSourceForLine(i);
+			this.lines[i].setText(line);
 		}
 	}
 	
 	protected void open(String id) {
 		super.open(id);
+		
 		this.title.setLabel(this.resolveName(id));
+		
+		for(int i = 0; i < this.lines.length; i++) {
+			String line = this.project.source.get(id).getSourceForLine(i);
+			this.lines[i].setText(line);
+		}
 	}
 	
 	private String resolveName(String id) {
@@ -112,16 +121,16 @@ public class UICodeProjectView extends UIProjectView implements UIButtonClickLis
 	public void syncWithDataStructure() {
 		for(int i = 0; i < this.lines.length; i++) {
 			String line = this.lines[i].toString();
-			this.project.sourceCode.get(this.project.current).add(this.getLineNumberCorrespondingToSlot(i) - 1, line);
+			
+			if(!this.project.current.isEmpty()) {
+				this.project.source.get(this.project.current).setSourceForLine(this.getLineNumberCorrespondingToSlot(i) - 1, line);
+			}
 		}
-	}
-	
-	public String getSourceForLine(int line) {
-		if(line < this.project.sourceCode.size()) {
-			return this.project.sourceCode.get(this.project.current).get(line);
-		} else {
-			this.project.sourceCode.get(this.project.current).add("");
-			return "";
+		
+		try {
+			this.project.save();
+		} catch (IllegalArgumentException | IllegalAccessException | IOException exception) {
+			Debug.exception(exception);
 		}
 	}
 	
@@ -149,7 +158,7 @@ public class UICodeProjectView extends UIProjectView implements UIButtonClickLis
 			}
 			
 			for(int i = 0; i < this.lines.length; i++) {								
-				this.lines[i].setText(this.getSourceForLine(i + scalar - 1));
+				this.lines[i].setText(this.project.source.get(this.project.current).getSourceForLine(i + scalar - 1));
 				this.buttons[i].setLabel(Integer.toString(i + scalar));
 			}
 		}

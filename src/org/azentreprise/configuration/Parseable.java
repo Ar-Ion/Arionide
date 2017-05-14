@@ -21,7 +21,10 @@
 package org.azentreprise.configuration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.azentreprise.Debug;
 
@@ -31,12 +34,26 @@ public abstract class Parseable {
 	
 	protected abstract String serialize();
 	
-	public static <T> List<T> parse(List<String> source, Class<T> clazz) {	
-		List<T> output = new ArrayList<T>();
+	public static <T extends Parseable> List<T> parse(List<String> source, Class<T> clazz) {	
+		List<T> output = new ArrayList<>();
 		
 		for(String serialized : source) {
 			try {
 				output.add(clazz.getDeclaredConstructor(String.class).newInstance(serialized));
+			} catch (Exception exception) {
+				Debug.exception(exception);
+			}
+		}
+		
+		return output;
+	}
+	
+	public static <T extends Parseable> Map<String, T> parse(Map<String, String> source, Class<T> clazz) {
+		Map<String, T> output = new HashMap<>();
+		
+		for(Entry<String, String> entry : source.entrySet()) {
+			try {
+				output.put(entry.getKey(), clazz.getDeclaredConstructor(String.class).newInstance(entry.getValue()));
 			} catch (Exception exception) {
 				Debug.exception(exception);
 			}
@@ -51,6 +68,18 @@ public abstract class Parseable {
 		for(Parseable parseable : source) {
 			try {
 				target.add(parseable.serialize());
+			} catch (Exception exception) {
+				Debug.exception(exception);
+			}
+		}
+	}
+	
+	public static void serialize(Map<String, ? extends Parseable> source, Map<String, String> target) {
+		target.clear();
+		
+		for(Entry<String, ? extends Parseable> parseable : source.entrySet()) {
+			try {
+				target.put(parseable.getKey(), parseable.getValue().serialize());
 			} catch (Exception exception) {
 				Debug.exception(exception);
 			}

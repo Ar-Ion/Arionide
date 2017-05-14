@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +32,7 @@ import javax.swing.JOptionPane;
 
 import org.azentreprise.Arionide;
 import org.azentreprise.Debug;
-import org.azentreprise.lang.Code;
-import org.azentreprise.lang.ISAMapping;
-import org.azentreprise.lang.LangarionError;
+import org.azentreprise.lang.Function;
 import org.azentreprise.lang.Link;
 import org.azentreprise.lang.Object;
 import org.azentreprise.ui.Style;
@@ -53,29 +50,23 @@ public class Project extends Configuration {
 	public volatile int gridSize = 256;
 	public volatile boolean isGridInitialized = false;
 	public volatile String current = ""; // root
-	public volatile List<String> serializedObjects = new ArrayList<>(Arrays.asList("Compiler [-2 -1 1 mutable structure]",  "Project [2 -1 0 mutable structure]", "Native [0 2 2 immutable structure]"));
-	public volatile	List<String> serializedLinks = new ArrayList<>(Arrays.asList("Compiler<-->Project", "Compiler<-->Native", "Native<-->Project"));
-	public volatile List<String> serializedStyles = new ArrayList<>(Arrays.asList("[Name:<Primary> Parent:<None> Red range:<0 0> Green range:<63 127> Blue range:<191 255> Wave control:<10 1> Linear motion matrix:<2 2 2 2 2 2> Rotation matrix:<0 1 1> Alpha constant:<1.0>]", 
-																				  "[Name:<Secondary> Parent:<None> Red range:<0 63> Green range:<127 255> Blue range:<0 63> Wave control:<10 1> Linear motion matrix:<2 2 2 2 2 2> Rotation matrix:<0 1 1> Alpha constant:<1.0>]",	
-																				  "[Name:<Native> Parent:<None> Red range:<127 255> Green range:<63 127> Blue range:<0 63> Wave control:<10 1> Linear motion matrix:<2 2 2 2 2 2> Rotation matrix:<0 1 1> Alpha constant:<1.0>]"));	
-	public volatile Map<String, List<String>> sourceCode = new HashMap<>();
+	public volatile List<String> serializedObjects = new ArrayList<>();
+	public volatile List<String> serializedLinks = new ArrayList<>();
+	public volatile List<String> serializedStyles = new ArrayList<>();	
+	public volatile Map<String, String> serializedSource = new HashMap<>();
 	
 	public final List<Object> objects;
 	public final List<Link> links;
 	public final List<Style> styles;
+	public final Map<String, Function> source;
 	
 	public final Map<String, Object> objectMapping = new HashMap<>();
-
-	public final Code theCode = new Code();
 		
 	public Project(File path, String identifier) throws IOException, NoSuchFieldException,
 			SecurityException, IllegalArgumentException, IllegalAccessException {
 		super(path, identifier);
 		
 		Debug.taskBegin("loading project " + path.getAbsolutePath());
-		
-		ISAMapping.loadISADesignObjects("Native.name [x y 2 immutable native]", this.serializedObjects);
-		ISAMapping.loadISADesignLinks("Native.x<-->Native.y", this.serializedLinks);
 		
 		this.loadConfiguration();
 		
@@ -91,6 +82,11 @@ public class Project extends Configuration {
 		this.objects = Parseable.parse(this.serializedObjects, Object.class);
 		this.links = Parseable.parse(this.serializedLinks, Link.class);
 		this.styles = Parseable.parse(this.serializedStyles, Style.class);
+		this.source = Parseable.parse(this.serializedSource, Function.class);
+		
+		if(!this.source.containsKey("")) {
+			this.source.put("", new Function(""));
+		}
 		
 		this.createMapping(Object.class, "id", this.objects, this.objectMapping);
 		
@@ -99,12 +95,6 @@ public class Project extends Configuration {
 		
 		Link.uploadObjectMapping(this.objectMapping);
 		
-		try {
-			this.theCode.compile(this);
-		} catch (LangarionError e) {
-			;
-		}
-		
 		Debug.taskEnd();
 	}
 	
@@ -112,6 +102,7 @@ public class Project extends Configuration {
 		Parseable.serialize(this.objects, this.serializedObjects);
 		Parseable.serialize(this.links, this.serializedLinks);
 		Parseable.serialize(this.styles, this.serializedStyles);
+		Parseable.serialize(this.source, this.serializedSource);
 		
 		super.save();
 	}
