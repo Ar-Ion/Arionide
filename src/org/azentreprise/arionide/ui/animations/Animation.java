@@ -18,43 +18,57 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.lang;
+package org.azentreprise.arionide.ui.animations;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.function.Consumer;
 
-import org.azentreprise.configuration.Parseable;
+import org.azentreprise.Arionide;
+import org.azentreprise.Tickable;
 
-public class Function extends Parseable {
-
-	private final List<String> source = new ArrayList<String>();
+public abstract class Animation extends Tickable {
 	
-	public Function(String serialized) {
-		super(serialized);
+	private int duration;
+	private Consumer<Animation> animateAfter;
+	
+	public Animation() {
+		Arionide.registerTickable(this);
+	}
+	
+	public void startAnimation(int duration, Consumer<Animation> animateAfter, Object... params) {
+		this.startAnimation(duration, params);
+		this.animateAfter = animateAfter;
+	}
+	
+	public void startAnimation(int duration, Object... params) {
+		this.stopAnimation();
+		this.tickIgnore = false;
+		this.resetTickCounter();
+		this.duration = duration;
+	}
+	
+	public void stopAnimation() {
+		this.tickIgnore = true;
 		
-		this.source.addAll(Arrays.asList(serialized.split("<§>")));
-	}
-
-	protected String serialize() {
-		return String.join("<§>", this.source);
-	}
-	
-	public void setSourceForLine(int line, String source) {
-		if(!source.isEmpty()) {
-			while(this.source.size() - 1 < line) {
-				this.source.add(new String());
-			}
-
-			this.source.set(line, source);
+		if(this.animateAfter != null) {
+			Consumer<Animation> clone = this.animateAfter;
+			this.animateAfter = null;
+			clone.accept(this);
 		}
 	}
 	
-	public String getSourceForLine(int line) {
-		if(line < this.source.size()) {
-			return this.source.get(line);
-		} else {
-			return new String();
-		}
+	protected int getDuration() {
+		return this.duration;
+	}
+	
+	protected double getProgression() {
+		return (double) this.getTickID() / this.duration;
+	}
+
+	public int getTicksBetweenExecutions() {
+		return 1;
+	}
+	
+	public String getTickableDescriptor() {
+		return "a user interface animation";
 	}
 }

@@ -18,43 +18,8 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.lang;
+package org.azentreprise.arionide.encoders;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.azentreprise.configuration.Parseable;
-
-public class Function extends Parseable {
-
-	private final List<String> source = new ArrayList<String>();
-	
-	public Function(String serialized) {
-		super(serialized);
-		
-		this.source.addAll(Arrays.asList(serialized.split("<§>")));
-	}
-
-	protected String serialize() {
-		return String.join("<§>", this.source);
-	}
-	
-	public void setSourceForLine(int line, String source) {
-		if(!source.isEmpty()) {
-			while(this.source.size() - 1 < line) {
-				this.source.add(new String());
-			}
-
-			this.source.set(line, source);
-		}
-	}
-	
-	public String getSourceForLine(int line) {
-		if(line < this.source.size()) {
-			return this.source.get(line);
-		} else {
-			return new String();
-		}
-	}
+public interface Decoder<T> extends Coder<T> {
+	public T decode(String encoded);
 }

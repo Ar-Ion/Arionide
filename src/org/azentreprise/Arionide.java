@@ -188,10 +188,10 @@ public class Arionide {
 	}
 	
 	public static int getVersion() {
-		return 73;
+		return 97;
 	}
 	
 	public static int getBackwardCompatibility() {
-		return 19;
+		return 25;
 	}
 }

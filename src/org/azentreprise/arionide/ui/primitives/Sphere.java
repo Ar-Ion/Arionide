@@ -18,43 +18,40 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.lang;
+package org.azentreprise.arionide.ui.primitives;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RadialGradientPaint;
+import java.awt.geom.Point2D;
 
-import org.azentreprise.configuration.Parseable;
+import org.azentreprise.ui.render.ComplexProjectRenderer;
 
-public class Function extends Parseable {
-
-	private final List<String> source = new ArrayList<String>();
+public class Sphere {
 	
-	public Function(String serialized) {
-		super(serialized);
-		
-		this.source.addAll(Arrays.asList(serialized.split("<§>")));
+	private static volatile float[] fractions;
+	private static volatile Color[] colors;
+	
+	public static void init(float hue, float saturation) {
+		fractions = new float[] {
+				0.0f,
+				0.7f,
+				0.75f,
+				1.0f
+			};
+			
+		colors = new Color[] { 
+			new Color(Color.HSBtoRGB(hue, saturation, 0.5f)),
+			new Color(Color.HSBtoRGB(hue, saturation, 0.7f)), 
+			ComplexProjectRenderer.glow,
+			new Color(0, true)
+		};
 	}
 
-	protected String serialize() {
-		return String.join("<§>", this.source);
-	}
-	
-	public void setSourceForLine(int line, String source) {
-		if(!source.isEmpty()) {
-			while(this.source.size() - 1 < line) {
-				this.source.add(new String());
-			}
-
-			this.source.set(line, source);
-		}
-	}
-	
-	public String getSourceForLine(int line) {
-		if(line < this.source.size()) {
-			return this.source.get(line);
-		} else {
-			return new String();
-		}
+	public static void render(Graphics2D g2d, int x, int y, int radius) {     
+        Paint gradient = new RadialGradientPaint(new Point2D.Float(x, y), radius, fractions, colors);
+        g2d.setPaint(gradient);
+        g2d.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
 	}
 }

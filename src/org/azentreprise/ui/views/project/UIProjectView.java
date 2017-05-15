@@ -94,6 +94,7 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 	private boolean isMovingUsingMinigrid = false;
 	private boolean needValidation = false;
 	private String newFunction;
+	private boolean editableView = true;
 	
 	public static final ProjectRenderer simpleRenderer = new SimpleProjectRenderer(Projects.getCurrentProject());
 	public static final ProjectRenderer complexRenderer = new ComplexProjectRenderer(Projects.getCurrentProject());
@@ -216,6 +217,11 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 	}
 	
 	private void select(String id, Point2D position) {
+		if(!this.editableView) {
+			this.error("You can't edit anything in a representation view");
+			return;
+		}
+		
 		if(selected.containsKey(id)) {
 			selected.remove(id);
 		} else {
@@ -246,6 +252,11 @@ public abstract class UIProjectView extends UIView implements KeyListener, Mouse
 	}
 	
 	protected void open(String id) {
+		if(!this.editableView) {
+			this.error("You can't open anything in a representation view");
+			return;
+		}
+		
 		if(id != this.project.current) {
 			if(id == "" || this.project.objectMapping.get(id).getType().equals(ObjectType.STRUCTURE)) {
 				int animationDuration = 50;
