@@ -20,6 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events;
 
-public class Dispatcher {
+public class EventDispatcher {
 
 }
