@@ -16,7 +16,7 @@ public interface Arionide {
 	}
 	
 	@IAm("setting up the workspace")
-	public Workspace setupWorkspace();
+	public IWorkspace setupWorkspace();
 	
 	@IAm("preparing the core threads for processing")
 	public void startThreads();
@@ -28,7 +28,7 @@ public interface Arionide {
 	public AppDrawingContext setupAppDrawingContext();
 
 	@IAm("loading the system resources")
-	public Resources loadResources(Workspace workspace, AppDrawingContext context);
+	public Resources loadResources(IWorkspace workspace, AppDrawingContext context);
 	
 	@IAm("loading the core renderer")
 	public CoreRenderer loadCoreRenderer(AppDrawingContext context, EventDispatcher dispatcher, Resources resources);
@@ -37,7 +37,7 @@ public interface Arionide {
 	public LayoutManager setupLayoutManager(AppDrawingContext context, EventDispatcher dispatcher);
 	
 	@IAm("showing up the user interface")
-	public void loadUI(Arionide theInstance, Workspace workspace, AppDrawingContext context, EventDispatcher dispatcher, Resources resources, CoreRenderer renderer, LayoutManager manager);
+	public void loadUI(Arionide theInstance, IWorkspace workspace, AppDrawingContext context, EventDispatcher dispatcher, Resources resources, CoreRenderer renderer, LayoutManager manager);
 	
 	@IAm("running the watchdog")
 	public WatchdogState runWatchdog();

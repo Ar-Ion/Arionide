@@ -20,7 +20,16 @@
  *******************************************************************************/
 package org.azentreprise.arionide.coders;
 
+import java.nio.charset.Charset;
+
 public interface Coder<T> {
+	
+	/* Since UTF-8 is 8-bits, an index of 0 for the byte array is safe to use. */
+	public static final byte sectionStart = "{".getBytes(Charset.forName("utf8"))[0];
+	public static final byte sectionEnd = "}".getBytes(Charset.forName("utf8"))[0];
+	public static final byte separator = ":".getBytes(Charset.forName("utf8"))[0];
+	public static final String whitespaceRegex = "\\s";
+	
 	public int getVersionUID();
 	public int getBackwardCompatibileVersionUID();
 }

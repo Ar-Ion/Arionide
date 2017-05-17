@@ -21,5 +21,5 @@
 package org.azentreprise.arionide.coders;
 
 public interface Decoder<T> extends Coder<T> {
-	public T decode(String encoded);
+	public T decode(byte[] encoded);
 }

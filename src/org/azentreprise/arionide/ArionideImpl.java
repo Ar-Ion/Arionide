@@ -1,5 +1,7 @@
 package org.azentreprise.arionide;
 
+import java.io.File;
+
 import org.azentreprise.arionide.events.EventDispatcher;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
@@ -8,8 +10,9 @@ import org.azentreprise.arionide.ui.primitives.Resources;
 
 public class ArionideImpl implements Arionide {
 
-	public Workspace setupWorkspace() {
-		return null;
+	public IWorkspace setupWorkspace() {
+		File path = new File(System.getProperty("user.home") + File.separator + "Arionide Workspace");
+		return new Workspace(path);
 	}
 
 	public void startThreads() {
@@ -48,7 +51,7 @@ public class ArionideImpl implements Arionide {
 		
 	}
 
-	public Resources loadResources(Workspace workspace, AppDrawingContext context) {
+	public Resources loadResources(IWorkspace workspace, AppDrawingContext context) {
 		return null;
 	}
 
@@ -60,8 +63,7 @@ public class ArionideImpl implements Arionide {
 		return null;
 	}
 
-	public void loadUI(Arionide theInstance, Workspace workspace, AppDrawingContext context, EventDispatcher dispatcher,
-			Resources resources, CoreRenderer renderer, LayoutManager manager) {
+	public void loadUI(Arionide theInstance, IWorkspace workspace, AppDrawingContext context, EventDispatcher dispatcher, Resources resources, CoreRenderer renderer, LayoutManager manager) {
 		
 	}
 

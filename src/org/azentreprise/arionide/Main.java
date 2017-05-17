@@ -43,7 +43,7 @@ public class Main {
 			throw new RuntimeException(exception);
 		}
 		
-		Workspace workspace = theInstance.setupWorkspace();
+		IWorkspace workspace = theInstance.setupWorkspace();
 		
 		theInstance.startThreads();
 		
