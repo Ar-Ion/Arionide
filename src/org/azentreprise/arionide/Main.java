@@ -21,6 +21,11 @@
 package org.azentreprise.arionide;
 
 import org.azentreprise.arionide.Arionide.WatchdogState;
+import org.azentreprise.arionide.events.EventDispatcher;
+import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.core.CoreRenderer;
+import org.azentreprise.arionide.ui.layout.LayoutManager;
+import org.azentreprise.arionide.ui.primitives.Resources;
 
 public class Main {
 	
@@ -38,17 +43,18 @@ public class Main {
 			throw new RuntimeException(exception);
 		}
 		
-		theInstance.setupWorkspace();
+		Workspace workspace = theInstance.setupWorkspace();
 		
 		theInstance.startThreads();
-		theInstance.setupAppDrawingContext();
-		theInstance.setupEventDispatcher();
 		
-		theInstance.loadResources();
-		theInstance.loadCoreRenderer();
-		theInstance.setupLayoutManager();
+		EventDispatcher dispatcher = theInstance.setupEventDispatcher();
+
+		AppDrawingContext context = theInstance.setupAppDrawingContext();
+		Resources resources = theInstance.loadResources(workspace, context);
+		CoreRenderer renderer = theInstance.loadCoreRenderer(context, dispatcher, resources);
+		LayoutManager manager = theInstance.setupLayoutManager(context, dispatcher);
 		
-		theInstance.showUI();
+		theInstance.loadUI(theInstance, workspace, context, dispatcher, resources, renderer, manager);
 		
 		WatchdogState state = null;
 		

@@ -8,8 +8,8 @@ import org.azentreprise.arionide.ui.primitives.Resources;
 
 public class ArionideImpl implements Arionide {
 
-	public void setupWorkspace() {
-		
+	public Workspace setupWorkspace() {
+		return null;
 	}
 
 	public void startThreads() {
@@ -45,6 +45,23 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public void shutdown() {
+		
+	}
+
+	public Resources loadResources(Workspace workspace, AppDrawingContext context) {
+		return null;
+	}
+
+	public CoreRenderer loadCoreRenderer(AppDrawingContext context, EventDispatcher dispatcher, Resources resources) {
+		return null;
+	}
+
+	public LayoutManager setupLayoutManager(AppDrawingContext context, EventDispatcher dispatcher) {
+		return null;
+	}
+
+	public void loadUI(Arionide theInstance, Workspace workspace, AppDrawingContext context, EventDispatcher dispatcher,
+			Resources resources, CoreRenderer renderer, LayoutManager manager) {
 		
 	}
 

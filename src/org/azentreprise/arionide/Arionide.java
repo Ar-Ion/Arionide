@@ -12,34 +12,32 @@ public interface Arionide {
 	public static enum WatchdogState {
 		NO_PROBLEM,
 		SHUTDOWN,
-		RESTART,
-		BUG,
 		CRASH
 	}
 	
 	@IAm("setting up the workspace")
-	public void setupWorkspace();
+	public Workspace setupWorkspace();
 	
 	@IAm("preparing the core threads for processing")
 	public void startThreads();
 	
-	@IAm("setting up the application drawing context")
-	public AppDrawingContext setupAppDrawingContext();
-	
 	@IAm("setting up the event dispatcher")
 	public EventDispatcher setupEventDispatcher();
 	
+	@IAm("setting up the application drawing context")
+	public AppDrawingContext setupAppDrawingContext();
+
 	@IAm("loading the system resources")
-	public Resources loadResources();
+	public Resources loadResources(Workspace workspace, AppDrawingContext context);
 	
 	@IAm("loading the core renderer")
-	public CoreRenderer loadCoreRenderer();
+	public CoreRenderer loadCoreRenderer(AppDrawingContext context, EventDispatcher dispatcher, Resources resources);
 	
 	@IAm("setting up the layout manager")
-	public LayoutManager setupLayoutManager();
+	public LayoutManager setupLayoutManager(AppDrawingContext context, EventDispatcher dispatcher);
 	
 	@IAm("showing up the user interface")
-	public void showUI();
+	public void loadUI(Arionide theInstance, Workspace workspace, AppDrawingContext context, EventDispatcher dispatcher, Resources resources, CoreRenderer renderer, LayoutManager manager);
 	
 	@IAm("running the watchdog")
 	public WatchdogState runWatchdog();

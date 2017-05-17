@@ -18,8 +18,9 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.arionide.encoders;
+package org.azentreprise.arionide.coders;
 
-public interface Decoder<T> extends Coder<T> {
-	public T decode(String encoded);
+public interface Coder<T> {
+	public int getVersionUID();
+	public int getBackwardCompatibileVersionUID();
 }
