@@ -64,13 +64,14 @@ public class Project implements IProject {
 
 	public <T> void setProperty(String key, T value, Encoder<T> encoder) {
 		this.properties.put(key, encoder.encode(value));
+		this.save();
 	}
 
 	public void save() {
 		
 	}
 
-	@Override
-	public void checkVersionCompatibility() {
+	public boolean checkVersionCompatibility() {
+		return true;
 	}
 }
