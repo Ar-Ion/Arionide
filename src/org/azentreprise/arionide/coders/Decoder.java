@@ -20,6 +20,10 @@
  *******************************************************************************/
 package org.azentreprise.arionide.coders;
 
+import org.azentreprise.arionide.debugging.IAm;
+
 public interface Decoder<T> extends Coder<T> {
+	
+	@IAm("decoding an object")
 	public T decode(byte[] encoded);
 }
