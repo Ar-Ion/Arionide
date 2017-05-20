@@ -21,7 +21,7 @@
 package org.azentreprise.arionide;
 
 import org.azentreprise.arionide.debugging.IAm;
-import org.azentreprise.arionide.events.EventDispatcher;
+import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
@@ -35,29 +35,29 @@ public interface Arionide {
 		CRASH
 	}
 	
-	@IAm("setting up the workspace")
-	public IWorkspace setupWorkspace();
-	
 	@IAm("preparing the core threads for processing")
 	public void startThreads();
 	
 	@IAm("setting up the event dispatcher")
-	public EventDispatcher setupEventDispatcher();
+	public IEventDispatcher setupEventDispatcher();
+	
+	@IAm("setting up the workspace")
+	public IWorkspace setupWorkspace(IEventDispatcher dispatcher);
 	
 	@IAm("setting up the application drawing context")
-	public AppDrawingContext setupAppDrawingContext();
+	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher);
 
 	@IAm("loading the system resources")
 	public Resources loadResources(IWorkspace workspace, AppDrawingContext context);
 	
 	@IAm("loading the core renderer")
-	public CoreRenderer loadCoreRenderer(AppDrawingContext context, EventDispatcher dispatcher, Resources resources);
+	public CoreRenderer loadCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher, Resources resources);
 	
 	@IAm("setting up the layout manager")
-	public LayoutManager setupLayoutManager(AppDrawingContext context, EventDispatcher dispatcher);
+	public LayoutManager setupLayoutManager(AppDrawingContext context, IEventDispatcher dispatcher);
 	
 	@IAm("showing up the user interface")
-	public void loadUI(Arionide theInstance, IWorkspace workspace, AppDrawingContext context, EventDispatcher dispatcher, Resources resources, CoreRenderer renderer, LayoutManager manager);
+	public void loadUI(Arionide theInstance, IWorkspace workspace, AppDrawingContext context, IEventDispatcher dispatcher, Resources resources, CoreRenderer renderer, LayoutManager manager);
 	
 	@IAm("running the watchdog")
 	public WatchdogState runWatchdog();

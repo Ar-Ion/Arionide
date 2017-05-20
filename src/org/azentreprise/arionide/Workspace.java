@@ -21,17 +21,26 @@
 package org.azentreprise.arionide;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.coders.Decoder;
 import org.azentreprise.arionide.coders.Encoder;
 import org.azentreprise.arionide.debugging.Debug;
+import org.azentreprise.arionide.debugging.IAm;
+import org.azentreprise.arionide.events.IEventDispatcher;
+import org.azentreprise.arionide.events.ProjectCloseEvent;
+import org.azentreprise.arionide.events.ProjectOpenEvent;
 
 public class Workspace implements IWorkspace {
+	
+	private static final String configurationAssignementSymbol = new String("=");
 	
 	private static final Map<?, ?> workspaceProtocolMapping = new HashMap<>();
 	
@@ -43,15 +52,20 @@ public class Workspace implements IWorkspace {
 	private final File path;
 	private final File configurationFile;
 
+	private final IEventDispatcher dispatcher;
+	
 	private final Map<String, String> properties = new HashMap<>();
 	
 	private final List<? super IProject> projects = new ArrayList<>();
+	private IProject current = null;
 	
-	public Workspace(File path) {
+	public Workspace(File path, IEventDispatcher dispatcher) {
 		this.path = path;
 		this.configurationFile = new File(this.path, "workspace.config");
+		this.dispatcher = dispatcher;
 	}
 	
+	@IAm("loading the workspace")
 	public void load() {
 		try {
 			this.projects.clear();
@@ -65,7 +79,7 @@ public class Workspace implements IWorkspace {
 			}
 		
 			Files.readAllLines(this.configurationFile.toPath()).forEach(property -> {
-				String[] elements = property.split("=");
+				String[] elements = property.split(Workspace.configurationAssignementSymbol);
 				
 				if(elements.length > 1) {
 					this.properties.put(elements[0], elements[1]);
@@ -76,8 +90,17 @@ public class Workspace implements IWorkspace {
 		}
 	}
 
+	@IAm("saving the workspace")
 	public void save() {
-		
+		try {
+			Files.write(this.configurationFile.toPath(), this.properties.entrySet().stream()
+					.map(entry -> entry.getKey()
+							.concat(Workspace.configurationAssignementSymbol)
+							.concat(entry.getValue()))
+					.collect(Collectors.toList()), Coder.charset);
+		} catch (IOException exception) {
+			Debug.exception(exception);
+		}
 	}
 	
 	public String getName() {
@@ -87,37 +110,45 @@ public class Workspace implements IWorkspace {
 	public File getPath() {
 		return this.path;
 	}
-	
-	public void requestDiscover() {
-		this.discover0();
-	}
-	
-	private void discover0() {
-		
-	}
 
-	public List<? extends IProject> getProjectList() {
-		return null;
+	public List<? super IProject> getProjectList() {
+		return this.projects;
 	}
 
 	public IProject getCurrentProject() {
-		return null;
+		return this.current;
 	}
 
-	public void loadProject(String name) {
-		
+	public void loadProject(IProject project) {
+		if(this.current != project) {
+			project.load();
+			this.current = project;
+			this.dispatcher.dispatchEvent(new ProjectOpenEvent(project));
+		}
 	}
 
-	public void closeProject(String name) {
-		
+	public void closeProject(IProject project) {
+		project.save();
+		this.close0(project);
 	}
 
 	public void createProject(String name) {
-		
+		IProject project = new Project(new File(this.path, name.toLowerCase().replaceAll(Coder.whitespaceRegex, "_").concat(".proj")));
+		project.load();
+		project.save();
 	}
 
-	public void deleteProject(String name) {
-		
+	public void deleteProject(IProject project) {
+		project.getPath().delete();
+		this.projects.remove(project);
+		this.close0(project);
+	}
+	
+	private void close0(IProject project) {
+		if(this.current == project) {
+			this.current = null;
+			this.dispatcher.dispatchEvent(new ProjectCloseEvent());
+		}
 	}
 
 	public <T> T getProperty(String key, Decoder<T> decoder) {

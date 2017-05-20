@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events;
 
-public class EventDispatcher {
-
+public interface IEventDispatcher {
+	public void dispatchEvent(Event event);
+	public void registerHandler(EventHandler<?> handler);
 }

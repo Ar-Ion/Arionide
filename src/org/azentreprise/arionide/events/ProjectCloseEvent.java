@@ -18,30 +18,8 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.arionide;
+package org.azentreprise.arionide.events;
 
-import java.util.List;
+public class ProjectCloseEvent implements Event {
 
-import org.azentreprise.arionide.debugging.IAm;
-
-public interface IWorkspace extends IResource, IMappedStructure, ISaveable, ILoadable {
-	
-	public List<? super IProject> getProjectList();
-	
-	@IAm("getting the list of available projects")
-	public IProject getCurrentProject();
-	
-	
-	@IAm("loading a project")
-	public void loadProject(IProject project);
-	
-	@IAm("closing a project")
-	public void closeProject(IProject project);
-	
-	
-	@IAm("creating a project")
-	public void createProject(String name);
-	
-	@IAm("deleting a project")
-	public void deleteProject(IProject project);
 }

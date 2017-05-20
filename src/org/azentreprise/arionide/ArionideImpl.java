@@ -22,44 +22,44 @@ package org.azentreprise.arionide;
 
 import java.io.File;
 
-import org.azentreprise.arionide.events.EventDispatcher;
+import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.primitives.Resources;
 
 public class ArionideImpl implements Arionide {
-
-	public IWorkspace setupWorkspace() {
-		File path = new File(System.getProperty("user.home") + File.separator + "Arionide Workspace");
-		return new Workspace(path);
-	}
-
 	public void startThreads() {
 		
 	}
 
-	public AppDrawingContext setupAppDrawingContext() {
+	public IEventDispatcher setupEventDispatcher() {
+		return null;
+	}
+	
+	public IWorkspace setupWorkspace(IEventDispatcher dispatcher) {
+		File path = new File(System.getProperty("user.home") + File.separator + "Arionide Workspace");
+		return new Workspace(path, dispatcher);
+	}
+
+	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher) {
 		return null;
 	}
 
-	public EventDispatcher setupEventDispatcher() {
+	public Resources loadResources(IWorkspace workspace, AppDrawingContext context) {
 		return null;
 	}
 
-	public Resources loadResources() {
+	public CoreRenderer loadCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher, Resources resources) {
 		return null;
 	}
 
-	public CoreRenderer loadCoreRenderer() {
+	public LayoutManager setupLayoutManager(AppDrawingContext context, IEventDispatcher dispatcher) {
 		return null;
 	}
 
-	public LayoutManager setupLayoutManager() {
-		return null;
-	}
-
-	public void showUI() {
+	public void loadUI(Arionide theInstance, IWorkspace workspace, AppDrawingContext context,
+			IEventDispatcher dispatcher, Resources resources, CoreRenderer renderer, LayoutManager manager) {
 		
 	}
 
@@ -70,21 +70,4 @@ public class ArionideImpl implements Arionide {
 	public void shutdown() {
 		
 	}
-
-	public Resources loadResources(IWorkspace workspace, AppDrawingContext context) {
-		return null;
-	}
-
-	public CoreRenderer loadCoreRenderer(AppDrawingContext context, EventDispatcher dispatcher, Resources resources) {
-		return null;
-	}
-
-	public LayoutManager setupLayoutManager(AppDrawingContext context, EventDispatcher dispatcher) {
-		return null;
-	}
-
-	public void loadUI(Arionide theInstance, IWorkspace workspace, AppDrawingContext context, EventDispatcher dispatcher, Resources resources, CoreRenderer renderer, LayoutManager manager) {
-		
-	}
-
 }

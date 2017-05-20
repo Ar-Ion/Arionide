@@ -21,7 +21,7 @@
 package org.azentreprise.arionide;
 
 import org.azentreprise.arionide.Arionide.WatchdogState;
-import org.azentreprise.arionide.events.EventDispatcher;
+import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
@@ -39,17 +39,17 @@ public class Main {
 		try {
 			theInstance = Main.implementation.newInstance();
 		} catch (InstantiationException | IllegalAccessException exception) {
-			System.err.println("FATAL: This implementation of Arionide is not working");
+			System.err.println("FATAL: This implementation of Arionide is invalid");
 			throw new RuntimeException(exception);
 		}
-		
-		IWorkspace workspace = theInstance.setupWorkspace();
-		
+				
 		theInstance.startThreads();
 		
-		EventDispatcher dispatcher = theInstance.setupEventDispatcher();
+		IEventDispatcher dispatcher = theInstance.setupEventDispatcher();
 
-		AppDrawingContext context = theInstance.setupAppDrawingContext();
+		IWorkspace workspace = theInstance.setupWorkspace(dispatcher);
+
+		AppDrawingContext context = theInstance.setupAppDrawingContext(dispatcher);
 		Resources resources = theInstance.loadResources(workspace, context);
 		CoreRenderer renderer = theInstance.loadCoreRenderer(context, dispatcher, resources);
 		LayoutManager manager = theInstance.setupLayoutManager(context, dispatcher);

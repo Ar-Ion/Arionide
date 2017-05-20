@@ -33,6 +33,7 @@ import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.coders.Decoder;
 import org.azentreprise.arionide.coders.Encoder;
 import org.azentreprise.arionide.debugging.Debug;
+import org.azentreprise.arionide.debugging.IAm;
 
 public class Project implements IProject {
 
@@ -53,6 +54,7 @@ public class Project implements IProject {
 		this.load();
 	}
 	
+	@IAm("loading a project")
 	public void load() {
 		try {
 			this.properties.clear();
@@ -80,6 +82,7 @@ public class Project implements IProject {
 		}
 	}
 
+	@IAm("saving a project")
 	public void save() {
 		try {
 			OutputStream stream = new FileOutputStream(this.path);
