@@ -22,7 +22,7 @@ package org.azentreprise.arionide;
 
 import org.azentreprise.arionide.debugging.IAm;
 
-public interface IProject extends Resource, IMappedStructure, ISaveable {
+public interface IProject extends IResource, IMappedStructure, ILoadable, ISaveable {
 	
 	@IAm("checking the version compatibility")
 	public boolean checkVersionCompatibility();

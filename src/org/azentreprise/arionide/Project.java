@@ -21,20 +21,30 @@
 package org.azentreprise.arionide;
 
 import java.io.File;
-import java.nio.charset.Charset;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.coders.Decoder;
 import org.azentreprise.arionide.coders.Encoder;
 import org.azentreprise.arionide.debugging.Debug;
-import org.azentreprise.arionide.debugging.IAm;
 
 public class Project implements IProject {
 
+	public static final long versionUID = 100L;
+	
+	private static final Map<String, byte[]> projectProtocolMapping = new HashMap<>();
+	
+	static {
+		projectProtocolMapping.put("version", Long.toString(versionUID).getBytes(Coder.charset));
+	}
+	
+	
 	private final File path;
 	private final Map<String, byte[]> properties = new HashMap<>();
 	
@@ -43,9 +53,10 @@ public class Project implements IProject {
 		this.load();
 	}
 	
-	@IAm("loading a project")
-	private void load() {
+	public void load() {
 		try {
+			this.properties.clear();
+			
 			byte[] data = Files.readAllBytes(this.path.toPath());
 			
 			int startIndex = 0;
@@ -60,22 +71,45 @@ public class Project implements IProject {
 				byte[] valueBuffer = new byte[endIndex - startIndex];
 				System.arraycopy(data, startIndex, valueBuffer, 0, valueBuffer.length);
 				
-				this.properties.put(new String(keyBuffer, Charset.forName("utf8")).replaceAll(Coder.whitespaceRegex, ""), valueBuffer);
+				this.properties.put(new String(keyBuffer, Coder.charset).replaceAll(Coder.whitespaceRegex, Coder.empty), valueBuffer);
 				
 				startIndex = endIndex;
 			}
-			
 		} catch (Exception exception) {
 			Debug.exception(exception);
 		}
 	}
-	
-	public String getName() {
-		return null;
-	}
 
-	public File getPath() {
-		return this.path;
+	public void save() {
+		try {
+			OutputStream stream = new FileOutputStream(this.path);
+			
+			for(Entry<String, byte[]> property : this.properties.entrySet()) {
+				stream.write(property.getKey().getBytes(Coder.charset));
+				stream.write(Coder.separator);
+				stream.write(Coder.space);
+				stream.write(Coder.sectionStart);
+				
+				if(property.getValue().length > 64) {
+					stream.write(Coder.newline);
+					stream.write(Coder.tab);
+					stream.write(property.getValue());
+					stream.write(Coder.newline);
+					stream.write(Coder.sectionEnd);
+					stream.write(Coder.newline);
+				} else {
+					stream.write(property.getValue());
+					stream.write(Coder.sectionEnd);
+					stream.write(Coder.newline);
+				}
+				
+				stream.write(Coder.newline);
+			}
+			
+			stream.close();
+		} catch(Exception exception) {
+			Debug.exception(exception);
+		}
 	}
 
 	public <T> T getProperty(String key, Decoder<T> decoder) {
@@ -87,11 +121,19 @@ public class Project implements IProject {
 		this.save();
 	}
 
-	public void save() {
-		
+	public Map<String, byte[]> getProtocolMapping() {
+		return Project.projectProtocolMapping;
+	}
+	
+	public String getName() {
+		return this.getProperty("name", Coder.stringDecoder);
+	}
+
+	public File getPath() {
+		return this.path;
 	}
 
 	public boolean checkVersionCompatibility() {
-		return true;
+		return this.getProperty("version", Coder.integerDecoder) == Project.versionUID;
 	}
 }

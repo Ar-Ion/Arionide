@@ -22,7 +22,7 @@ package org.azentreprise.arionide;
 
 import java.io.File;
 
-public interface Resource {
+public interface IResource {
 	public String getName();
 	public File getPath();
 }

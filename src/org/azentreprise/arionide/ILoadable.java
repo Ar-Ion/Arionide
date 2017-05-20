@@ -20,28 +20,9 @@
  *******************************************************************************/
 package org.azentreprise.arionide;
 
-import java.util.List;
-
 import org.azentreprise.arionide.debugging.IAm;
 
-public interface IWorkspace extends IResource, IMappedStructure, ISaveable, ILoadable {
-	
-	public List<? extends IProject> getProjectList();
-	
-	@IAm("getting the list of available projects")
-	public IProject getCurrentProject();
-	
-	
-	@IAm("loading a project")
-	public void loadProject(String name);
-	
-	@IAm("closing a project")
-	public void closeProject(String name);
-	
-	
-	@IAm("creating a project")
-	public void createProject(String name);
-	
-	@IAm("deleting a project")
-	public void deleteProject(String name);
+public interface ILoadable {
+	@IAm("loading")
+	public void load();
 }

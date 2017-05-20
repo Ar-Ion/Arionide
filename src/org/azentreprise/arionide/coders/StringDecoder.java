@@ -18,30 +18,18 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.arionide;
+package org.azentreprise.arionide.coders;
 
-import java.util.List;
+public class StringDecoder implements Decoder<String> {
+	public int getVersionUID() {
+		return 1;
+	}
 
-import org.azentreprise.arionide.debugging.IAm;
+	public int getBackwardCompatibileVersionUID() {
+		return 1;
+	}
 
-public interface IWorkspace extends IResource, IMappedStructure, ISaveable, ILoadable {
-	
-	public List<? extends IProject> getProjectList();
-	
-	@IAm("getting the list of available projects")
-	public IProject getCurrentProject();
-	
-	
-	@IAm("loading a project")
-	public void loadProject(String name);
-	
-	@IAm("closing a project")
-	public void closeProject(String name);
-	
-	
-	@IAm("creating a project")
-	public void createProject(String name);
-	
-	@IAm("deleting a project")
-	public void deleteProject(String name);
+	public String decode(byte[] encoded) {
+		return new String(encoded, Coder.charset);
+	}
 }

@@ -24,11 +24,27 @@ import java.nio.charset.Charset;
 
 public interface Coder<T> {
 	
-	/* Since UTF-8 is 8-bits, an index of 0 for the byte array is safe to use. */
-	public static final byte sectionStart = "{".getBytes(Charset.forName("utf8"))[0];
-	public static final byte sectionEnd = "}".getBytes(Charset.forName("utf8"))[0];
-	public static final byte separator = ":".getBytes(Charset.forName("utf8"))[0];
+	public static final Charset charset = Charset.forName("utf8");
+	
+	
+	public static final Encoder<String> stringEncoder = new StringEncoder();
+	public static final Decoder<String> stringDecoder = new StringDecoder();
+
+	public static final Encoder<Long> integerEncoder = new IntegerEncoder();
+	public static final Decoder<Long> integerDecoder = new IntegerDecoder();
+	
+	/* We may change this if the encoding takes more than one byte for a character */
+	public static final byte sectionStart = new String("{").getBytes(Coder.charset)[0];
+	public static final byte sectionEnd = new String("}").getBytes(Coder.charset)[0];
+	public static final byte separator = new String(":").getBytes(Coder.charset)[0];
+	
 	public static final String whitespaceRegex = "\\s";
+	
+	public static final String empty = new String();
+	public static final byte space = new String(" ").getBytes(Coder.charset)[0];
+	public static final byte tab = new String("\t").getBytes(Coder.charset)[0];
+	public static final byte newline = new String("\n").getBytes(Coder.charset)[0];
+
 	
 	public int getVersionUID();
 	public int getBackwardCompatibileVersionUID();

@@ -23,9 +23,11 @@ package org.azentreprise.arionide.debugging;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Stack;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -33,21 +35,6 @@ import javax.swing.SwingUtilities;
 public class Debug {
 	
 	private static PrintStream output = null;
-	private static final Stack<String> tasks = new Stack<String>();
-	
-	public static void taskBegin(String description) {
-		if(System.getProperty("debug") != null) {
-			Debug.print("Task '" + description + "' has begun.");
-		}
-		
-		Debug.tasks.push(description);
-	}
-	
-	public static void taskEnd() {
-		if(System.getProperty("debug") != null) {
-			Debug.print("Task '" + Debug.tasks.pop() + "' has terminated.");
-		}
-	}
 		
 	public static void exception(Exception exception) {
 		if(Debug.output != null) {
@@ -57,11 +44,43 @@ public class Debug {
 
 		exception.printStackTrace();
 		
+		String[] stacktrace = Debug.buildNiceStacktrace(exception);
+		
+		System.out.println(String.join("\n", stacktrace));
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane.showMessageDialog(null, "An internal error occured while " + Debug.tasks.peek() + ".\n\"" + exception.getClass().getSimpleName() + ": " + exception.getMessage() + "\".", "An error occured", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "An internal error occured" + (stacktrace.length > 1 ? " " + stacktrace[1] : "") + ".\n\"" + exception.getClass().getSimpleName() + ": " + exception.getMessage() + "\".", "An error occured", JOptionPane.ERROR_MESSAGE);
 			}
 		});
+	}
+	
+	private static String[] buildNiceStacktrace(Exception exception) {
+		List<String> stacktrace = new ArrayList<>();
+		
+		stacktrace.add("A very sad problem occured to Arionide! It's an " + exception.getClass().getName() + "!");
+		
+		StackTraceElement[] elements = exception.getStackTrace();
+		
+		for(StackTraceElement element : elements) {
+			try {
+				Method[] methods = Class.forName(element.getClassName()).getDeclaredMethods();
+				
+				
+				for(Method method : methods) {
+					IAm annotation = method.getAnnotation(IAm.class);
+					
+					if(annotation != null) {
+						stacktrace.add("while " + annotation.value());
+						break;
+					}
+				}
+			} catch (ClassNotFoundException e) {
+				;
+			}
+		}
+		
+		return stacktrace.toArray(new String[0]);
 	}
 	
 	public static void setDebugOutput(OutputStream output) throws IOException {
@@ -78,23 +97,11 @@ public class Debug {
 		Debug.print("[WARN] " + message);
 	}
 	
-	public static String getExecutionState() {
-		return Debug.tasks.peek();
-	}
-	
 	private static void print(String text) {
 		if(Debug.output != null) {
-			Debug.print(text, Debug.output);
+			Debug.output.println(text);
 		}
 		
-		Debug.print(text, System.out);
-	}
-	
-	private static void print(String text, PrintStream stream) {
-		for(int i = 0; i < Debug.tasks.size(); i++) {
-			stream.print("    ");
-		}
-		
-		stream.println(text);
+		System.out.println(text);
 	}
 }

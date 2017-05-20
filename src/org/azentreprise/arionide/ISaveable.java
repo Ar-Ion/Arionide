@@ -23,6 +23,6 @@ package org.azentreprise.arionide;
 import org.azentreprise.arionide.debugging.IAm;
 
 public interface ISaveable {
-	@IAm("saveing a file")
+	@IAm("saving")
 	public void save();
 }

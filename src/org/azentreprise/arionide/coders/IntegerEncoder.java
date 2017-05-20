@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.coders;
 
-import java.nio.charset.Charset;
-
 public class IntegerEncoder implements Encoder<Long> {
 	public int getVersionUID() {
 		return 1;
@@ -32,6 +30,6 @@ public class IntegerEncoder implements Encoder<Long> {
 	}
 
 	public byte[] encode(Long decoded) {
-		return decoded.toString().getBytes(Charset.forName("utf8"));
+		return decoded.toString().getBytes(Coder.charset);
 	}
 }

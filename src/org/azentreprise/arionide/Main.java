@@ -58,7 +58,7 @@ public class Main {
 		
 		WatchdogState state = null;
 		
-		while(theInstance.hashCode() != implementation.hashCode()) {
+		while(theInstance.hashCode() != dispatcher.hashCode()) {
 			
 			state = theInstance.runWatchdog();
 			

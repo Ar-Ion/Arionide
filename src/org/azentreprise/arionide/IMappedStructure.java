@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.azentreprise.arionide;
 
+import java.util.Map;
+
 import org.azentreprise.arionide.coders.Decoder;
 import org.azentreprise.arionide.coders.Encoder;
 import org.azentreprise.arionide.debugging.IAm;
@@ -30,4 +32,7 @@ public interface IMappedStructure {
 	
 	@IAm("setting a property")
 	public <T> void setProperty(String key, T value, Encoder<T> encoder);
+	
+	@IAm("getting the protocol mapping")
+	public Map<?, ?> getProtocolMapping();
 }

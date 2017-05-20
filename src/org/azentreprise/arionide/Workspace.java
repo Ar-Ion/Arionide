@@ -21,19 +21,63 @@
 package org.azentreprise.arionide;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.azentreprise.arionide.coders.Decoder;
 import org.azentreprise.arionide.coders.Encoder;
+import org.azentreprise.arionide.debugging.Debug;
 
 public class Workspace implements IWorkspace {
 	
+	private static final Map<?, ?> workspaceProtocolMapping = new HashMap<>();
+	
+	static {
+		
+	}
+	
+	
 	private final File path;
+	private final File configurationFile;
+
+	private final Map<String, String> properties = new HashMap<>();
+	
 	private final List<? super IProject> projects = new ArrayList<>();
 	
 	public Workspace(File path) {
 		this.path = path;
+		this.configurationFile = new File(this.path, "workspace.config");
+	}
+	
+	public void load() {
+		try {
+			this.projects.clear();
+		
+			File[] files = this.path.listFiles();
+			
+			for(File potential : files) {
+				if(potential.isFile() && potential.getName().endsWith(".proj")) {
+					this.projects.add(new Project(potential));
+				}
+			}
+		
+			Files.readAllLines(this.configurationFile.toPath()).forEach(property -> {
+				String[] elements = property.split("=");
+				
+				if(elements.length > 1) {
+					this.properties.put(elements[0], elements[1]);
+				}
+			});
+		} catch (Exception exception) {
+			Debug.exception(exception);
+		}
+	}
+
+	public void save() {
+		
 	}
 	
 	public String getName() {
@@ -49,15 +93,7 @@ public class Workspace implements IWorkspace {
 	}
 	
 	private void discover0() {
-		this.projects.clear();
 		
-		File[] files = this.path.listFiles();
-		
-		for(File potential : files) {
-			if(potential.isFile() && potential.getName().endsWith(".proj")) {
-				this.projects.add(new Project(potential));
-			}
-		}
 	}
 
 	public List<? extends IProject> getProjectList() {
@@ -91,8 +127,8 @@ public class Workspace implements IWorkspace {
 	public <T> void setProperty(String key, T value, Encoder<T> encoder) {
 		
 	}
-
-	public void save() {
-		
+	
+	public Map<?, ?> getProtocolMapping() {
+		return Workspace.workspaceProtocolMapping;
 	}
 }
