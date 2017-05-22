@@ -20,6 +20,15 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events;
 
-public interface Event {
-
+public abstract class Event {
+	
+	private boolean aborted = false;
+	
+	protected boolean hasBeenAborted() {
+		return this.aborted;
+	}
+	
+	public void abortDispatching() {
+		this.aborted = true;
+	}
 }

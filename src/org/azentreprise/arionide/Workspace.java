@@ -45,7 +45,7 @@ public class Workspace implements IWorkspace {
 	private static final Map<?, ?> workspaceProtocolMapping = new HashMap<>();
 	
 	static {
-		
+		// add elements to protocol mapping
 	}
 	
 	

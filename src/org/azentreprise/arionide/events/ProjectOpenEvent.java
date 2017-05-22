@@ -22,7 +22,7 @@ package org.azentreprise.arionide.events;
 
 import org.azentreprise.arionide.IProject;
 
-public class ProjectOpenEvent implements Event {
+public class ProjectOpenEvent extends Event {
 	
 	private final IProject project;
 	

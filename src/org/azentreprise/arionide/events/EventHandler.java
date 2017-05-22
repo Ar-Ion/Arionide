@@ -21,5 +21,5 @@
 package org.azentreprise.arionide.events;
 
 public interface EventHandler<T extends Event> {
-	public void handleEvent(T event);
+	public void handleEvent(Event event); // this can be safe casted
 }

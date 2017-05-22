@@ -20,6 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events;
 
-public class ProjectCloseEvent implements Event {
+public class ProjectCloseEvent extends Event {
 
 }
