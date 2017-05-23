@@ -20,6 +20,15 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
-public interface AppDrawingContext {
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 
+import org.azentreprise.arionide.events.IEventDispatcher;
+
+public interface AppDrawingContext {
+	public void setup(IEventDispatcher dispatcher);
+	public void draw(Graphics2D g2d);
+	public Dimension getSize();
+	public void update();
+	public void setupRenderingProperties();
 }

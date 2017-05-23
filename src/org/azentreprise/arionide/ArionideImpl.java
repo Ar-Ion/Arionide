@@ -22,6 +22,7 @@ package org.azentreprise.arionide;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -78,8 +79,7 @@ public class ArionideImpl implements Arionide {
 		return null;
 	}
 
-	public void loadUI(Arionide theInstance, IWorkspace workspace, AppDrawingContext context,
-			IEventDispatcher dispatcher, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+	public void loadUI(Arionide theInstance, IWorkspace workspace, AppDrawingContext context, Resources resources, CoreRenderer renderer, LayoutManager manager) {
 		
 	}
 	
@@ -89,9 +89,32 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public WatchdogState runWatchdog() {
-		Stream<Float> lagRates = this.getSystemThreads().stream()
-				.map(thread -> thread.requestLagRate());
-				
+		Stream<WorkingThread> threads = this.getSystemThreads().stream();
+		Stream<WorkingThread> notRespondingThreads = threads.filter(thread -> thread.getLagRate() > 10.0f);
+
+		threads.forEach(thread -> System.out.println("Lag rate for thread '" + thread.getDescriptor() + "' is " + thread.getLagRate() * 100 + "%."));
+		
+		Iterator<WorkingThread> iterator = notRespondingThreads.iterator();
+		
+		while(iterator.hasNext()) {
+			WorkingThread thread = iterator.next();
+			
+			System.err.println("Thread '" + thread.getName() + "' is not responding... trying to respawn...");
+			
+			boolean crashed = true;
+			
+			for(int i = 0; i < Arionide.RESPAWN_MAX_ATTEMPTS; i++) {
+				if(thread.respawn(i)) {
+					crashed = false;
+					break;
+				}
+			}
+			
+			if(crashed) {
+				return WatchdogState.CRASH;
+			}
+		}
+		
 		return WatchdogState.NO_PROBLEM;
 	}
 

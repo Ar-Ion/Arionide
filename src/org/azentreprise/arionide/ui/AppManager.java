@@ -20,6 +20,24 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
-public class AppManager {
+import java.awt.Graphics2D;
 
+import org.azentreprise.arionide.Arionide;
+import org.azentreprise.arionide.IWorkspace;
+import org.azentreprise.arionide.ui.core.CoreRenderer;
+import org.azentreprise.arionide.ui.layout.LayoutManager;
+import org.azentreprise.arionide.ui.primitives.Resources;
+
+public class AppManager {
+	public void draw(Graphics2D g2d) {
+		
+	}
+	
+	public void loadUI(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+		
+	}
+	
+	public void shutdown() {
+		
+	}
 }

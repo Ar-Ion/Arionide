@@ -35,6 +35,8 @@ public interface Arionide {
 		CRASH
 	}
 	
+	public static final int RESPAWN_MAX_ATTEMPTS = 5;
+	
 	@IAm("preparing the core threads for processing")
 	public void startThreads();
 	
@@ -57,7 +59,7 @@ public interface Arionide {
 	public LayoutManager setupLayoutManager(AppDrawingContext context, IEventDispatcher dispatcher);
 	
 	@IAm("showing up the user interface")
-	public void loadUI(Arionide theInstance, IWorkspace workspace, AppDrawingContext context, IEventDispatcher dispatcher, Resources resources, CoreRenderer renderer, LayoutManager manager);
+	public void loadUI(Arionide theInstance, IWorkspace workspace, AppDrawingContext context, Resources resources, CoreRenderer renderer, LayoutManager manager);
 	
 	@IAm("running the watchdog")
 	public WatchdogState runWatchdog();

@@ -49,12 +49,12 @@ public abstract class WorkingThread extends Thread {
 		}
 	}
 	
-	public float requestLagRate() {
-		return System.currentTimeMillis() - this.initTime / (float) this.getRefreshDelay();
+	public float getLagRate() {
+		return (float) this.getRefreshDelay() / (System.currentTimeMillis() - this.initTime);
 	}
 	
 	public abstract void tick();
 	public abstract long getRefreshDelay();
 	public abstract String getDescriptor();
-	public abstract boolean respawn(int attempt);
+	public abstract boolean respawn(int attempt); // the implementation must be safe and not thread-blocking. Please catch any exceptions 
 }
