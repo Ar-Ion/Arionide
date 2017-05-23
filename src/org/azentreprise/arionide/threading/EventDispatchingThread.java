@@ -22,12 +22,24 @@ package org.azentreprise.arionide.threading;
 
 import org.azentreprise.arionide.events.AbstractThreadedEventDispatcher;
 
-public class EventDispatchingThread extends Thread {
+public class EventDispatchingThread extends WorkingThread {
 	public void setup(AbstractThreadedEventDispatcher dispatcher) {
 		
 	}
-	
-	public void run() {
+
+	public void tick() {
 		
+	}
+
+	public long getRefreshDelay() {
+		return 0;
+	}
+
+	public String getDescriptor() {
+		return null;
+	}
+
+	public boolean respawn(int attempt) {
+		return false;
 	}
 }

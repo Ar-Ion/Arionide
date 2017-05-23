@@ -20,6 +20,20 @@
  *******************************************************************************/
 package org.azentreprise.arionide.threading;
 
-public class UIDrawingThread {
+public class UIDrawingThread extends WorkingThread {
+	public void tick() {
+		
+	}
 
+	public long getRefreshDelay() {
+		return 0;
+	}
+
+	public String getDescriptor() {
+		return null;
+	}
+
+	public boolean respawn(int attempt) {
+		return false;
+	}
 }

@@ -20,6 +20,41 @@
  *******************************************************************************/
 package org.azentreprise.arionide.threading;
 
-public interface WorkingThread {
+public abstract class WorkingThread extends Thread {
 
+	private static final long CONTROL_DELAY = 500L;
+	
+	private boolean running = true;
+	private long initTime = System.currentTimeMillis();
+	
+	public void run() {
+		while(true) {
+			try {
+				while(this.running) {
+					this.initTime = System.currentTimeMillis();
+					
+					this.tick();
+					
+					long delta = System.currentTimeMillis() - this.initTime - this.getRefreshDelay();
+					
+					if(delta > 0) {
+						Thread.sleep(delta);
+					}
+				}
+			
+				Thread.sleep(WorkingThread.CONTROL_DELAY);
+			} catch (InterruptedException e) {
+				; // thread killed
+			}			
+		}
+	}
+	
+	public float requestLagRate() {
+		return System.currentTimeMillis() - this.initTime / (float) this.getRefreshDelay();
+	}
+	
+	public abstract void tick();
+	public abstract long getRefreshDelay();
+	public abstract String getDescriptor();
+	public abstract boolean respawn(int attempt);
 }

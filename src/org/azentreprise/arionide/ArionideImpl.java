@@ -21,6 +21,9 @@
 package org.azentreprise.arionide;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.events.MainEventDispatcher;
@@ -28,6 +31,7 @@ import org.azentreprise.arionide.threading.EventDispatchingThread;
 import org.azentreprise.arionide.threading.MiscProcessingThread;
 import org.azentreprise.arionide.threading.UIDrawingThread;
 import org.azentreprise.arionide.threading.UserHelpingThread;
+import org.azentreprise.arionide.threading.WorkingThread;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
@@ -36,16 +40,15 @@ import org.azentreprise.arionide.ui.primitives.Resources;
 public class ArionideImpl implements Arionide {
 	
 	private EventDispatchingThread eventThread;
-	private MiscProcessingThread miscThread;
 	private UIDrawingThread uiThread;
 	private UserHelpingThread userThread;
-	
+	private MiscProcessingThread miscThread;
 	
 	public void startThreads() {
 		this.eventThread = new EventDispatchingThread();
-		this.miscThread = new MiscProcessingThread();
 		this.uiThread = new UIDrawingThread();
 		this.userThread = new UserHelpingThread();
+		this.miscThread = new MiscProcessingThread();
 		
 		this.eventThread.start();
 	}
@@ -79,8 +82,16 @@ public class ArionideImpl implements Arionide {
 			IEventDispatcher dispatcher, Resources resources, CoreRenderer renderer, LayoutManager manager) {
 		
 	}
+	
+	// note: this list is not mutable
+	private List<WorkingThread> getSystemThreads() {
+		return Arrays.asList(this.eventThread, this.uiThread, this.userThread, this.miscThread);
+	}
 
 	public WatchdogState runWatchdog() {
+		Stream<Float> lagRates = this.getSystemThreads().stream()
+				.map(thread -> thread.requestLagRate());
+				
 		return WatchdogState.NO_PROBLEM;
 	}
 

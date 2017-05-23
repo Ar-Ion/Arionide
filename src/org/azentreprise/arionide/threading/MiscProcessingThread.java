@@ -20,6 +20,20 @@
  *******************************************************************************/
 package org.azentreprise.arionide.threading;
 
-public class MiscProcessingThread {
+public class MiscProcessingThread extends WorkingThread {
+	public void tick() {
+		
+	}
 
+	public long getRefreshDelay() {
+		return 0;
+	}
+
+	public String getDescriptor() {
+		return null;
+	}
+
+	public boolean respawn(int attempt) {
+		return false;
+	}
 }
