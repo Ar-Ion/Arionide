@@ -21,16 +21,33 @@
 package org.azentreprise.arionide.events;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
-public class MainEventDispatcher implements IEventDispatcher {
+import org.azentreprise.arionide.threading.EventDispatchingThread;
+
+public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 
 	private final List<EventHandler> handlers = new ArrayList<>();
+	private final Queue<Event> events = new LinkedList<>();
 	
-	public void dispatchEvent(Event event) {
-		this.handlers.stream()
-			.filter(handler -> handler.getHandlableEvents().contains(event.getClass()))
-			.forEach(handler -> handler.handleEvent(event));
+	public MainEventDispatcher(EventDispatchingThread thread) {
+		
+	}
+	
+	public void fire(Event event) {
+		this.events.add(event);
+	}
+	
+	protected void dispatchEvents() {
+		while(!this.events.isEmpty()) {
+			Event event = this.events.poll();
+			
+			this.handlers.stream()
+				.filter(handler -> handler.getHandlableEvents().contains(event.getClass()))
+				.forEach(handler -> handler.handleEvent(event));
+		}
 	}
 
 	public void registerHandler(EventHandler handler, float priority) {

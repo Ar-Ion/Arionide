@@ -23,18 +23,35 @@ package org.azentreprise.arionide;
 import java.io.File;
 
 import org.azentreprise.arionide.events.IEventDispatcher;
+import org.azentreprise.arionide.events.MainEventDispatcher;
+import org.azentreprise.arionide.threading.EventDispatchingThread;
+import org.azentreprise.arionide.threading.MiscProcessingThread;
+import org.azentreprise.arionide.threading.UIDrawingThread;
+import org.azentreprise.arionide.threading.UserHelpingThread;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.primitives.Resources;
 
 public class ArionideImpl implements Arionide {
+	
+	private EventDispatchingThread eventThread;
+	private MiscProcessingThread miscThread;
+	private UIDrawingThread uiThread;
+	private UserHelpingThread userThread;
+	
+	
 	public void startThreads() {
+		this.eventThread = new EventDispatchingThread();
+		this.miscThread = new MiscProcessingThread();
+		this.uiThread = new UIDrawingThread();
+		this.userThread = new UserHelpingThread();
 		
+		this.eventThread.start();
 	}
 
 	public IEventDispatcher setupEventDispatcher() {
-		return null;
+		return new MainEventDispatcher(this.eventThread);
 	}
 	
 	public IWorkspace setupWorkspace(IEventDispatcher dispatcher) {

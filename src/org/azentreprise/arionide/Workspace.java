@@ -123,7 +123,7 @@ public class Workspace implements IWorkspace {
 		if(this.current != project) {
 			project.load();
 			this.current = project;
-			this.dispatcher.dispatchEvent(new ProjectOpenEvent(project));
+			this.dispatcher.fire(new ProjectOpenEvent(project));
 		}
 	}
 
@@ -147,7 +147,7 @@ public class Workspace implements IWorkspace {
 	private void close0(IProject project) {
 		if(this.current == project) {
 			this.current = null;
-			this.dispatcher.dispatchEvent(new ProjectCloseEvent());
+			this.dispatcher.fire(new ProjectCloseEvent());
 		}
 	}
 

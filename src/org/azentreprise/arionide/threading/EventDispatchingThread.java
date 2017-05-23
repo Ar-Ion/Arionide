@@ -20,6 +20,14 @@
  *******************************************************************************/
 package org.azentreprise.arionide.threading;
 
-public class EventDispatchingThread {
+import org.azentreprise.arionide.events.AbstractThreadedEventDispatcher;
 
+public class EventDispatchingThread extends Thread {
+	public void setup(AbstractThreadedEventDispatcher dispatcher) {
+		
+	}
+	
+	public void run() {
+		
+	}
 }
