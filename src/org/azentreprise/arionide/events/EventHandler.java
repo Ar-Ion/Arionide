@@ -20,6 +20,9 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events;
 
-public interface EventHandler<T extends Event> {
-	public void handleEvent(Event event); // this can be safe casted
+import java.util.List;
+
+public interface EventHandler {
+	public <T extends Event> void handleEvent(T event);
+	public List<Class<? extends Event>> getHandlableEvents();
 }

@@ -29,5 +29,5 @@ public interface IEventDispatcher {
 	public static final float LOWEST_PRIORITY = 1.0f;
 	
 	public void dispatchEvent(Event event);
-	public void registerHandler(EventHandler<?> handler, float priority);
+	public void registerHandler(EventHandler handler, float priority);
 }

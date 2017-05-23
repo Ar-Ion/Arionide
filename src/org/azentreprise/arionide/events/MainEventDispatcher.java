@@ -21,20 +21,19 @@
 package org.azentreprise.arionide.events;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainEventDispatcher implements IEventDispatcher {
 
-	private final List<EventHandler<?>> handlers = new ArrayList<>();
+	private final List<EventHandler> handlers = new ArrayList<>();
 	
 	public void dispatchEvent(Event event) {
 		this.handlers.stream()
-			.filter(handler -> Arrays.binarySearch(handler.getClass().getGenericInterfaces(), event.getClass()) > -1)
+			.filter(handler -> handler.getHandlableEvents().contains(event.getClass()))
 			.forEach(handler -> handler.handleEvent(event));
 	}
 
-	public void registerHandler(EventHandler<?> handler, float priority) {
+	public void registerHandler(EventHandler handler, float priority) {
 		this.handlers.add((int) ((this.handlers.size() - 1) * priority), handler);
 	}
 }
