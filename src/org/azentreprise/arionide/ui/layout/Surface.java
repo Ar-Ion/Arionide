@@ -20,6 +20,39 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.layout;
 
-public interface Surface {
+import java.awt.Color;
+import java.awt.Graphics2D;
 
+import org.azentreprise.arionide.ui.Drawable;
+
+public abstract class Surface implements Drawable {
+	
+	private int x;
+	private int y;
+	private int width;
+	private int height;
+	
+	private Color backgroundColor;
+		
+	public void setLayoutBounds(int x, int y, int width, int height) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+	}
+	
+	public void setBackgroundColor(Color color) {
+		this.backgroundColor = color;
+	}
+	
+	public final void draw(Graphics2D g2d) {
+		g2d = (Graphics2D) g2d.create(this.x, this.y, this.width, this.height);
+	
+		g2d.setColor(this.backgroundColor);
+		g2d.fillRect(this.x, this.y, this.width, this.height);
+		
+		this.drawSurface(g2d);
+	}
+	
+	public abstract void drawSurface(Graphics2D g2d);
 }

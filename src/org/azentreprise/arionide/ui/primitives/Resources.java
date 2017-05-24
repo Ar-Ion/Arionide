@@ -20,6 +20,10 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.primitives;
 
-public class Resources {
+import java.awt.Image;
 
+public class Resources {
+	public Image getBackground() {
+		return null;
+	}
 }

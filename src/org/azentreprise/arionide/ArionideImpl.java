@@ -30,7 +30,6 @@ import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.events.MainEventDispatcher;
 import org.azentreprise.arionide.threading.EventDispatchingThread;
 import org.azentreprise.arionide.threading.MiscProcessingThread;
-import org.azentreprise.arionide.threading.UIDrawingThread;
 import org.azentreprise.arionide.threading.UserHelpingThread;
 import org.azentreprise.arionide.threading.WorkingThread;
 import org.azentreprise.arionide.ui.AppDrawingContext;
@@ -41,13 +40,11 @@ import org.azentreprise.arionide.ui.primitives.Resources;
 public class ArionideImpl implements Arionide {
 	
 	private EventDispatchingThread eventThread;
-	private UIDrawingThread uiThread;
 	private UserHelpingThread userThread;
 	private MiscProcessingThread miscThread;
 	
 	public void startThreads() {
 		this.eventThread = new EventDispatchingThread();
-		this.uiThread = new UIDrawingThread();
 		this.userThread = new UserHelpingThread();
 		this.miscThread = new MiscProcessingThread();
 		
@@ -79,13 +76,13 @@ public class ArionideImpl implements Arionide {
 		return null;
 	}
 
-	public void loadUI(Arionide theInstance, IWorkspace workspace, AppDrawingContext context, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+	public void loadUI(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
 		
 	}
 	
 	// note: this list is not mutable
 	private List<WorkingThread> getSystemThreads() {
-		return Arrays.asList(this.eventThread, this.uiThread, this.userThread, this.miscThread);
+		return Arrays.asList(this.eventThread, this.userThread, this.miscThread);
 	}
 
 	public WatchdogState runWatchdog() {

@@ -18,29 +18,21 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.overlay.components;
+package org.azentreprise.arionide.ui.overlay;
 
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 
 import org.azentreprise.Arionide;
-import org.azentreprise.ui.Drawable;
+import org.azentreprise.arionide.ui.layout.Surface;
 import org.azentreprise.ui.views.UIView;
 
-public abstract class UIComponent implements Drawable {
+public abstract class Component extends Surface {
 	
 	private Font font = Arionide.getSystemFont();
 	private UIView parent;
-	protected final float x1, y1, x2, y2;
-	private int renderXPos = 0, renderYPos = 0, renderWidth = 0, renderHeight;
 	
-	public UIComponent(UIView parent, float x1, float y1, float x2, float y2) {
+	public Component(UIView parent) {
 		this.parent = parent;
-		this.x1 = x1;
-		this.y1 = y1;
-		this.x2 = x2;
-		this.y2 = y2;
 	}
 	
 	public abstract boolean isFocusable();
@@ -49,40 +41,17 @@ public abstract class UIComponent implements Drawable {
 		return this.parent;
 	}
 	
-	public void prerender(int width, int height) {
-		this.renderXPos = (int) (this.x1 * width);
-		this.renderYPos = (int) (this.y1 * height);
-		this.renderWidth = (int) (this.x2 * width) - this.renderXPos;
-		this.renderHeight = (int) (this.y2 * height) - this.renderYPos;
-	}
-	
-	public Rectangle getPrerenderBounds() {
-		return new Rectangle(this.renderXPos, this.renderYPos, this.renderWidth, this.renderHeight);
-	}
-	
-	public void render(Graphics2D g2d) {
-		this.draw((Graphics2D) g2d.create(this.renderXPos, this.renderYPos, this.renderWidth, this.renderHeight));
-	}
-	
-	public void handleMouseEvent(byte event) {
-		return;
-	}
-
-	public boolean handleKeyboardEvent(int keyCode, char keyChar, int modifiers) {
-		return true;
-	}
-	
-	public UIComponent alterFont(int style, float size) {
+	public Component alterFont(int style, float size) {
 		this.font = this.font.deriveFont(style, size);
 		return this;
 	}
 	
-	public UIComponent alterFont(int style) {
+	public Component alterFont(int style) {
 		this.font = this.font.deriveFont(style);
 		return this;
 	}
 	
-	public UIComponent alterFont(float size) {
+	public Component alterFont(float size) {
 		this.font = this.font.deriveFont(size);
 		return this;
 	}

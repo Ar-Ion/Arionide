@@ -26,10 +26,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.ui.UIFontAdapter;
 import org.azentreprise.ui.views.UIView;
 
-public class UILabel extends UIComponent {
+public class UILabel extends Component {
 	
 	protected int color;
 	protected int opacity;

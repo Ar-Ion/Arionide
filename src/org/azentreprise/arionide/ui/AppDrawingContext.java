@@ -29,6 +29,5 @@ public interface AppDrawingContext {
 	public void setup(IEventDispatcher dispatcher);
 	public void draw(Graphics2D g2d);
 	public Dimension getSize();
-	public void update();
 	public void setupRenderingProperties();
 }

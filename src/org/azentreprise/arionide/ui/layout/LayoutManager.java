@@ -20,6 +20,108 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.layout;
 
-public class LayoutManager {
+import java.awt.Rectangle;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
+public class LayoutManager {
+	
+	private final Map<Surface, LayoutConfiguration> surfaces = new LinkedHashMap<>();
+	
+	private int frameWidth;
+	private int frameHeight;
+	
+	public void register(Surface surface, Surface parent, float x, float y, float width, float height) {
+		if(this.surfaces.containsKey(parent)) {
+			this.surfaces.put(surface, new LayoutConfiguration(parent, x, y, width, height));
+		} else {
+			throw new RuntimeException("Parent surface is not registered");
+		}
+	}
+	
+	public void unregister(Surface surface) {
+		this.surfaces.remove(surface);
+		this.unregister0(surface, this.surfaces.entrySet().iterator());
+	}
+	
+	private void unregister0(Surface surface, Iterator<Entry<Surface, LayoutConfiguration>> children) {
+		while(children.hasNext()) {
+			Entry<Surface, LayoutConfiguration> child = children.next();
+			
+			if(child.getValue().getParent().equals(surface)) {
+				children.remove();
+				this.unregister0(child.getKey(), children);
+			}
+		}
+	}
+	
+	public void compute() {
+		Map<Surface, Rectangle> layout = new HashMap<>();
+		
+		this.surfaces.forEach((surface, configuration) -> {
+			if(configuration.getParent() != null) {
+				if(layout.containsKey(configuration.getParent())) {
+					Rectangle parentBounds = layout.get(configuration.getParent());
+					
+					int x = (int) (parentBounds.x + parentBounds.width * configuration.getX());
+					int y = (int) (parentBounds.y + parentBounds.height * configuration.getY());
+					int width = (int) (parentBounds.width * configuration.getWidth());
+					int height = (int) (parentBounds.height * configuration.getHeight());
+					
+					layout.put(surface, new Rectangle(x, y, width, height));
+					
+					surface.setLayoutBounds(x, y, width, height);
+				} else {
+					throw new RuntimeException("Parent surface has not been computed");
+				}
+			} else {
+				int width = (int) (this.frameWidth * configuration.width);
+				int height = (int) (this.frameHeight * configuration.height);
+				
+				layout.put(surface, new Rectangle(0, 0, width, height));
+				
+				surface.setLayoutBounds(0, 0, width, height);
+			}
+		});
+	}
+	
+	private final class LayoutConfiguration {
+		
+		private final Surface parent;
+		private final float x;
+		private final float y;
+		private final float width;
+		private final float height;
+		
+		private LayoutConfiguration(Surface parent, float x, float y, float width, float height) {
+			this.parent = parent;
+			this.x = x;
+			this.y = y;
+			this.width = width;
+			this.height = height;
+		}
+		
+		private Surface getParent() {
+			return this.parent;
+		}
+		
+		private float getX() {
+			return this.x;
+		}
+		
+		private float getY() {
+			return this.y;
+		}
+		
+		private float getWidth() {
+			return this.width;
+		}
+		
+		private float getHeight() {
+			return this.height;
+		}
+	}
 }

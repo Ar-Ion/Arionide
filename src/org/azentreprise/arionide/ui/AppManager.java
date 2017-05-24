@@ -26,18 +26,72 @@ import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.IWorkspace;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
+import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.primitives.Resources;
 
 public class AppManager {
+	
+	private View view;
+	private View auxView;
+
+	private Arionide theInstance;
+	private IWorkspace workspace;
+	private Resources resources;
+	private CoreRenderer renderer;
+	private LayoutManager layoutManager;
+	
 	public void draw(Graphics2D g2d) {
+		g2d.drawImage(this.resources.getBackground(), 0, 0, null);
 		
+		if(this.view != null) {
+			this.view.draw(g2d);
+		}
+		
+		if(this.auxView != null) {
+			this.auxView.draw(g2d);
+		}
 	}
 	
 	public void loadUI(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+		this.theInstance = theInstance;
+		this.workspace = workspace;
+		this.resources = resources;
+		this.renderer = renderer;
+		this.layoutManager = manager;
 		
+		// this.showView(new MainView(), true);
+	}
+	
+	public void showView(View view, boolean transition) {
+		if(this.view != view && view != null) {
+			if(this.view != null) {
+				this.view.getAlphaAnimation().stopAnimation();
+			}
+			
+			if(this.auxView != null) {
+				this.auxView.getAlphaAnimation().stopAnimation();
+			}
+			
+			this.layoutManager.unregister(this.view);
+			
+			if(transition) {
+				if(this.view != null) {
+					this.auxView = this.view;
+					this.view = view;
+					
+					this.view.getAlphaAnimation().startAnimation(30, 1.0f);
+					this.auxView.getAlphaAnimation().startAnimation(30, 0.0f);
+				} else {
+					this.view = view;
+					this.view.getAlphaAnimation().startAnimation(30, 1.0f);
+				}
+			} else {
+				this.view = view;
+			}
+		}
 	}
 	
 	public void shutdown() {
-		
+		this.theInstance.shutdown();
 	}
 }

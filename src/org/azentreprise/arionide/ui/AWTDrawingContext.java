@@ -49,10 +49,6 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		this.draw((Graphics2D) g);
 	}
 	
-	public void update() {
-		this.repaint();
-	}
-	
 	public void loadUI(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
 		this.theFrame.setVisible(true);
 		this.theManager.loadUI(theInstance, workspace, resources, renderer, manager);
@@ -61,10 +57,14 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	public void draw(Graphics2D g2d) {
 		g2d.setRenderingHints(this.renderingHints);
 		this.theManager.draw(g2d);
+		this.repaint();
 	}
 
 	public void setupRenderingProperties() {
 		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		this.renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		this.renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 	}
 
 	public void windowOpened(WindowEvent e) {
