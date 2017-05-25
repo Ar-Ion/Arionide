@@ -18,52 +18,8 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.overlay;
+package org.azentreprise.arionide.ui.overlay.components;
 
-import java.awt.Font;
-
-import org.azentreprise.Arionide;
-import org.azentreprise.arionide.ui.layout.Surface;
-
-public abstract class Component extends Surface {
-	
-	private Font font = Arionide.getSystemFont();
-	private View parent;
-	
-	public Component(View parent) {
-		this.parent = parent;
-	}
-	
-	public abstract boolean isFocusable();
-	
-	public View getParentView() {
-		return this.parent;
-	}
-	
-	public Component alterFont(int style, float size) {
-		this.font = this.font.deriveFont(style, size);
-		return this;
-	}
-	
-	public Component alterFont(int style) {
-		this.font = this.font.deriveFont(style);
-		return this;
-	}
-	
-	public Component alterFont(float size) {
-		this.font = this.font.deriveFont(size);
-		return this;
-	}
-	
-	protected Font getFont() {
-		return this.font;
-	}
-	
-	public void focusGained() {
-		return;
-	}
-	
-	public void focusLost() {
-		return;
-	}
+public interface ClickListener {
+	public void onClick(Object... signals);
 }

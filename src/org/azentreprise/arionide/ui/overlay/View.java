@@ -52,6 +52,7 @@ public abstract class View extends Surface {
 		this.parent = parent;
 		this.appManager = appManager;
 		this.layoutManager = layoutManager;
+		
 		this.layoutManager.register(this, parent, 0.0f, 0.0f, 1.0f, 1.0f);
 	}
 	

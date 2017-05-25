@@ -27,33 +27,33 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.azentreprise.arionide.ui.overlay.Component;
+import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.ui.UIFontAdapter;
-import org.azentreprise.ui.views.UIView;
 
-public class UILabel extends Component {
+public class Label extends Component {
 	
 	protected int color;
 	protected int opacity;
 	protected String label;
 	protected Point textRenderPosition;
 
-	public UILabel(UIView parent, float x, float y, float width, float height, String label) {
-		super(parent, x, y, width, height);
+	public Label(View parent, String label) {
+		super(parent);
 		this.label = label;
 	}
 	
-	public UILabel setLabel(String label) {
+	public Label setLabel(String label) {
 		this.label = label;
 		return this;
 	}
 	
-	public UILabel setColor(int argb) {
+	public Label setColor(int argb) {
 		this.color = argb;
 		this.opacity = argb >>> 24;
 		return this;
 	}
 
-	public void draw(Graphics2D g2d) {		
+	public void drawSurface(Graphics2D g2d) {		
 		if(this.opacity > 0) {
 			g2d.setColor(new Color((this.opacity << 24) | (this.color & 0xFFFFFF), true));
 		}

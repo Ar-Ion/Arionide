@@ -32,17 +32,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.azentreprise.Arionide;
+import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.ui.UIEvents;
 import org.azentreprise.ui.UIMain;
 import org.azentreprise.ui.animations.Animation;
 import org.azentreprise.ui.animations.FieldModifierAnimation;
 import org.azentreprise.ui.views.UIView;
 
-public class UIText extends UIButton {
+public class Text extends Button {
 	
-	private static final Map<UIView, List<UIText>> accessor = new HashMap<UIView, List<UIText>>();
+	private static final Map<View, List<Text>> accessor = new HashMap<>();
 	
-	private final Animation animation = new FieldModifierAnimation("cursorOpacity", UIText.class, this);
+	private final Animation animation = new FieldModifierAnimation("cursorOpacity", Text.class, this);
 	
 	protected String placeholder;
 	protected StringBuilder text = new StringBuilder();
@@ -53,19 +54,19 @@ public class UIText extends UIButton {
 	private long counter = 0L;
 	protected boolean highlighted = false;
 	
-	public UIText(UIView parent, float x, float y, float width, float height, String placeholder) {
-		super(parent, x, y, width, height, placeholder);
+	public Text(View parent, String placeholder) {
+		super(parent, placeholder);
 		
 		this.placeholder = placeholder;
 				
-		if(!UIText.accessor.containsKey(parent)) {
-			UIText.accessor.put(parent, new ArrayList<UIText>());
+		if(!Text.accessor.containsKey(parent)) {
+			Text.accessor.put(parent, new ArrayList<Text>());
 		}
 
-		UIText.accessor.get(parent).add(this);
+		Text.accessor.get(parent).add(this);
 	}
 	
-	public UIText setPlaceholder(String placeholder) {
+	public Text setPlaceholder(String placeholder) {
 		this.placeholder = placeholder;
 		
 		this.updateText();
@@ -73,7 +74,7 @@ public class UIText extends UIButton {
 		return this;
 	}
 	
-	public UIText setText(String text) {
+	public Text setText(String text) {
 		this.text = new StringBuilder(text);
 		
 		this.cursorPosition = this.text.length();
@@ -91,8 +92,8 @@ public class UIText extends UIButton {
 		return this.placeholder;
 	}
 
-	public void draw(Graphics2D g2d) {
-		super.draw(g2d);
+	public void drawSurface(Graphics2D g2d) {
+		super.drawSurface(g2d);
 		
 		if(this.hasFocus && this.text.length() > 0) {
 			FontMetrics metrics = g2d.getFontMetrics();
@@ -231,7 +232,7 @@ public class UIText extends UIButton {
 	public static String[] fetchUserData(UIView parent) {
 		List<String> list = new ArrayList<String>();
 		
-		for(UIText uitext : UIText.accessor.get(parent)) {
+		for(Text uitext : Text.accessor.get(parent)) {
 			if(uitext.text.length() > 0) {
 				list.add(uitext.text.toString());
 			}

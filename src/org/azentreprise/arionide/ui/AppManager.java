@@ -31,15 +31,21 @@ import org.azentreprise.arionide.ui.primitives.Resources;
 
 public class AppManager {
 	
-	private View view;
-	private View auxView;
-
+	private final AppDrawingContext drawingContext;
+	
 	private Arionide theInstance;
 	private IWorkspace workspace;
 	private Resources resources;
 	private CoreRenderer renderer;
 	private LayoutManager layoutManager;
 	
+	private View view;
+	private View auxView;
+	
+	public AppManager(AppDrawingContext drawingContext) {
+		this.drawingContext = drawingContext;
+	}
+
 	public void draw(Graphics2D g2d) {
 		g2d.drawImage(this.resources.getBackground(), 0, 0, null);
 		
@@ -89,6 +95,10 @@ public class AppManager {
 				this.view = view;
 			}
 		}
+	}
+	
+	public AppDrawingContext getDrawingContext() {
+		return this.drawingContext;
 	}
 	
 	public void shutdown() {

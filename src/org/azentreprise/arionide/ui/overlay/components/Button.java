@@ -24,37 +24,37 @@ import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.ui.UIEvents;
 import org.azentreprise.ui.UIMain;
 import org.azentreprise.ui.animations.Animation;
 import org.azentreprise.ui.animations.FieldModifierAnimation;
 import org.azentreprise.ui.render.RoundRectRenderer;
-import org.azentreprise.ui.views.UIView;
 
-public class UIButton extends UILabel {
+public class Button extends Label {
 		
-	protected final Animation animation = new FieldModifierAnimation("opacity", UILabel.class, this);
+	protected final Animation animation = new FieldModifierAnimation("opacity", Label.class, this);
 	protected boolean hasFocus;
 	
 	private boolean disabled = false;
 	private int colorKeepRef;
-	private UIButtonClickListener listener;
+	private ClickListener listener;
 	private Object[] signals;
 	
-	public UIButton(UIView parent, float x, float y, float width, float height, String label) {
-		super(parent, x, y, width, height, label);
+	public Button(View parent, String label) {
+		super(parent, label);
 		
 		this.setColor(0x6942CAFE);
 		this.colorKeepRef = this.color;
 	}
 	
-	public UIButton setHandler(UIButtonClickListener listener, Object... signals) {
+	public Button setHandler(ClickListener listener, Object... signals) {
 		this.listener = listener;
 		this.signals = signals;
 		return this;
 	}
 	
-	public UIButton setDisabled(boolean disabled) {
+	public Button setDisabled(boolean disabled) {
 		this.disabled = disabled;
 		
 		if(this.disabled) {
@@ -71,8 +71,8 @@ public class UIButton extends UILabel {
 		return this;
 	}
 	
-	public void draw(Graphics2D g2d) {
-		super.draw(g2d);
+	public void drawSurface(Graphics2D g2d) {
+		super.drawSurface(g2d);
 		Rectangle bounds = g2d.getClipBounds();
 		RoundRectRenderer.draw(g2d, 0, 0, bounds.width - 1, bounds.height - 1);
 	}
@@ -121,9 +121,5 @@ public class UIButton extends UILabel {
 	
 	public boolean isFocusable() {
 		return !this.disabled;
-	}
-	
-	public static interface UIButtonClickListener {
-		public void onClick(Object... signals);
 	}
 }
