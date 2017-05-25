@@ -71,7 +71,7 @@ public class FieldModifierAnimation extends Animation {
 		double t = this.getProgression();
 		if(t <= 1.0d) {
 			try {
-				double real = -2 * t * t * t + 3 * t * t;
+				double real = -2 * Math.pow(t, 3) + 3 * Math.pow(t, 2); // Cubic Hermite spline
 				
 				double doubleValue = (this.target.doubleValue() - this.initial.doubleValue()) * real + this.initial.doubleValue();
 				Object value = null;
