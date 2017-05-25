@@ -69,7 +69,7 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		this.draw((Graphics2D) g);
 	}
 	
-	public void loadUI(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
 		this.theFrame.setVisible(true);
 		this.theManager.loadUI(theInstance, workspace, resources, renderer, manager);
 	}

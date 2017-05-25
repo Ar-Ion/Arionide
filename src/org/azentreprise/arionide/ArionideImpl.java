@@ -32,6 +32,7 @@ import org.azentreprise.arionide.threading.EventDispatchingThread;
 import org.azentreprise.arionide.threading.MiscProcessingThread;
 import org.azentreprise.arionide.threading.UserHelpingThread;
 import org.azentreprise.arionide.threading.WorkingThread;
+import org.azentreprise.arionide.ui.AWTDrawingContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
@@ -61,7 +62,7 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher) {
-		return null;
+		return new AWTDrawingContext(800, 600);
 	}
 
 	public Resources loadResources(IWorkspace workspace, AppDrawingContext context) {
@@ -73,11 +74,11 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public LayoutManager setupLayoutManager(AppDrawingContext context, IEventDispatcher dispatcher) {
-		return null;
+		return new LayoutManager(context, dispatcher);
 	}
 
-	public void loadUI(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
-		
+	public void loadUI(Arionide theInstance, AppDrawingContext context, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+		context.load(theInstance, workspace, resources, renderer, manager);
 	}
 	
 	// note: this list is not mutable

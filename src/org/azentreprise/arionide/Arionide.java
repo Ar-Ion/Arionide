@@ -59,7 +59,7 @@ public interface Arionide {
 	public LayoutManager setupLayoutManager(AppDrawingContext context, IEventDispatcher dispatcher);
 	
 	@IAm("showing up the user interface")
-	public void loadUI(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager);
+	public void loadUI(Arionide theInstance, AppDrawingContext context, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager);
 	
 	@IAm("running the watchdog")
 	public WatchdogState runWatchdog();

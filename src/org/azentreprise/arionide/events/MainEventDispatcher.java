@@ -45,7 +45,7 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 			Event event = this.events.poll();
 			
 			this.handlers.stream()
-				.filter(handler -> handler.getHandlableEvents().contains(event.getClass()))
+				.filter(handler -> handler.getHandleableEvents().contains(event.getClass()))
 				.forEach(handler -> handler.handleEvent(event));
 		}
 	}

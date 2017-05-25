@@ -21,18 +21,33 @@
 package org.azentreprise.arionide.ui.layout;
 
 import java.awt.Rectangle;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class LayoutManager {
+import org.azentreprise.arionide.events.Event;
+import org.azentreprise.arionide.events.EventHandler;
+import org.azentreprise.arionide.events.FrameResizedEvent;
+import org.azentreprise.arionide.events.IEventDispatcher;
+import org.azentreprise.arionide.ui.AppDrawingContext;
+
+public class LayoutManager implements EventHandler {
 	
 	private final Map<Surface, LayoutConfiguration> surfaces = new LinkedHashMap<>();
 	
 	private int frameWidth;
 	private int frameHeight;
+	
+	public LayoutManager(AppDrawingContext drawingContext, IEventDispatcher dispatcher) {
+		this.frameWidth = drawingContext.getSize().width;
+		this.frameHeight = drawingContext.getSize().height;
+		
+		dispatcher.registerHandler(this, IEventDispatcher.MEDIUM_PRIORITY);
+	}
 	
 	public void register(Surface surface, Surface parent, float x, float y, float width, float height) {
 		if(this.surfaces.containsKey(parent)) {
@@ -86,6 +101,19 @@ public class LayoutManager {
 				surface.setLayoutBounds(0, 0, width, height);
 			}
 		});
+	}
+
+	public <T extends Event> void handleEvent(T event) {
+		if(event instanceof FrameResizedEvent) {
+			FrameResizedEvent casted = (FrameResizedEvent) event;
+			
+			this.frameWidth = casted.getWidth();
+			this.frameHeight = casted.getHeight();
+		}
+	}
+
+	public List<Class<? extends Event>> getHandleableEvents() {
+		return Arrays.asList(FrameResizedEvent.class);
 	}
 	
 	private final class LayoutConfiguration {

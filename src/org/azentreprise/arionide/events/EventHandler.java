@@ -24,5 +24,5 @@ import java.util.List;
 
 public interface EventHandler {
 	public <T extends Event> void handleEvent(T event);
-	public List<Class<? extends Event>> getHandlableEvents();
+	public List<Class<? extends Event>> getHandleableEvents();
 }
