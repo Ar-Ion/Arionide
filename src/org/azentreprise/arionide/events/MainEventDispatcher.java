@@ -33,14 +33,14 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	private final Queue<Event> events = new LinkedList<>();
 	
 	public MainEventDispatcher(EventDispatchingThread thread) {
-		
+		thread.setup(this);
 	}
 	
 	public void fire(Event event) {
 		this.events.add(event);
 	}
 	
-	protected void dispatchEvents() {
+	public void dispatchEvents() {
 		while(!this.events.isEmpty()) {
 			Event event = this.events.poll();
 			

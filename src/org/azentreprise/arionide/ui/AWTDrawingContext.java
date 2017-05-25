@@ -36,9 +36,9 @@ import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.IWorkspace;
 import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
+import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.primitives.Resources;
 
 public class AWTDrawingContext extends Panel implements AppDrawingContext, WindowListener, ComponentListener {
 
@@ -46,25 +46,25 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	
 	private final Map<RenderingHints.Key, Object> renderingHints = new HashMap<>();
 	
+	private final IEventDispatcher dispatcher;
 	private final AppManager theManager;
 	private final Frame theFrame;
-	private IEventDispatcher dispatcher;
 	
-	public AWTDrawingContext(int width, int height) {
- 		this.theManager = new AppManager(this);
+	public AWTDrawingContext(IEventDispatcher dispatcher, int width, int height) {
+		this.dispatcher = dispatcher;
+				
+		this.theManager = new AppManager(this);
 		this.theFrame = new Frame("Arionide");
 		
 		this.theFrame.setSize(width, height);
 		this.theFrame.setLocationRelativeTo(null);
 		
+		this.theFrame.add(this);
+		
 		this.theFrame.addWindowListener(this);
 		this.theFrame.addComponentListener(this);
 	}
-	
-	public void setup(IEventDispatcher dispatcher) {
-		this.dispatcher = dispatcher;
-	}
-	
+
 	public void paint(Graphics g) {
 		this.draw((Graphics2D) g);
 	}

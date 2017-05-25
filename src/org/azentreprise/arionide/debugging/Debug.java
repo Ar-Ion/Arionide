@@ -23,9 +23,11 @@ package org.azentreprise.arionide.debugging;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +35,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class Debug {
+	
+	private static final boolean JAVA_STACKTRACE = false;
 	
 	private static PrintStream output = null;
 		
@@ -42,11 +46,14 @@ public class Debug {
 			Debug.output.flush();
 		}
 
-		exception.printStackTrace();
-		
 		String[] stacktrace = Debug.buildNiceStacktrace(exception);
 		
-		System.out.println(String.join("\n", stacktrace));
+		if(Debug.JAVA_STACKTRACE) {
+			exception.printStackTrace();
+		} else {
+			System.err.println(String.join("\n\twhile ", stacktrace));
+			System.err.println();
+		}
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -55,25 +62,46 @@ public class Debug {
 		});
 	}
 	
+	// this code isn't meant to be fast
 	private static String[] buildNiceStacktrace(Exception exception) {
 		List<String> stacktrace = new ArrayList<>();
+		List<StackTraceElement> elements = Arrays.asList(exception.getStackTrace());
+		StringBuffer description = new StringBuffer();
+
+		elements.stream()
+			.filter(element -> element.getClassName().startsWith("org.azentreprise"))
+			.findFirst()
+			.ifPresent(element -> description.append(" on line " + element.getLineNumber() + " of class '" + element.getClassName() + "'"));
 		
-		stacktrace.add("A very sad problem occured to Arionide! It's an " + exception.getClass().getName() + "!");
 		
-		StackTraceElement[] elements = exception.getStackTrace();
-		
+		stacktrace.add("A fatal error of type '" + exception.getClass().getName() + "' occured" + description + ".");
+
 		for(StackTraceElement element : elements) {
 			try {
-				Method[] methods = Class.forName(element.getClassName()).getDeclaredMethods();
+				Class<?> clazz = Class.forName(element.getClassName());
+				Method[] methods = clazz.getDeclaredMethods();
 				
+				Method realMethod = null;
 				
 				for(Method method : methods) {
-					IAm annotation = method.getAnnotation(IAm.class);
+					if(method.getName().equals(element.getMethodName())) {
+						realMethod = method;
+					}
+				}
+				
+				if(realMethod != null) {
+					IAm annotation = realMethod.getAnnotation(IAm.class);
 					
 					if(annotation != null) {
-						stacktrace.add("while " + annotation.value());
-						break;
+						stacktrace.add(annotation.value());
+					} else if(clazz != java.lang.Object.class) { // assume there won't be any collision
+						annotation = Debug.searchAnnotationForInterfaces(clazz.getInterfaces(), realMethod, IAm.class);
+						
+						if(annotation != null) {
+							stacktrace.add(annotation.value());
+						}
 					}
+					
 				}
 			} catch (ClassNotFoundException e) {
 				;
@@ -81,6 +109,26 @@ public class Debug {
 		}
 		
 		return stacktrace.toArray(new String[0]);
+	}
+	
+	private static <T extends Annotation> T searchAnnotationForInterfaces(Class<?>[] interfaces, Method target, Class<T> annotation) {
+		for(Class<?> clazz : interfaces) {
+			try {
+				Method method = clazz.getDeclaredMethod(target.getName(), target.getParameterTypes());
+				
+				T output = method.getAnnotation(annotation);
+				
+				if(output != null) {
+					return output;
+				} else {
+					throw new Exception("R.I.P. Steve Jobs | Apple for ever | Microsoft sucks");
+				}
+			} catch (Exception e) {
+				return Debug.searchAnnotationForInterfaces(clazz.getInterfaces(), target, annotation);
+			}
+		}
+		
+		return null;
 	}
 	
 	public static void setDebugOutput(OutputStream output) throws IOException {

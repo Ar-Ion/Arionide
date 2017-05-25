@@ -28,10 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.animations.Animation;
+import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.layout.Surface;
-import org.azentreprise.ui.animations.Animation;
-import org.azentreprise.ui.animations.FieldModifierAnimation;
 import org.azentreprise.ui.render.RoundRectRenderer;
 
 public abstract class View extends Surface {
@@ -42,11 +42,11 @@ public abstract class View extends Surface {
 	
 	private final List<Component> components = new ArrayList<>();
 	
-	private final Animation alphaAnimation = new FieldModifierAnimation("alpha", this.getClass(), this);
+	private final Animation alphaAnimation = new FieldModifierAnimation("alpha", View.class, this);
 	
 	private Color borderColor = new Color(0, 0, 0, 0);
 	private int focus = 0;
-	private float alpha = 1.0f;
+	public float alpha = 1.0f;
 	
 	public View(View parent, AppManager appManager, LayoutManager layoutManager) {
 		this.parent = parent;
@@ -86,11 +86,11 @@ public abstract class View extends Surface {
 		return this.parent;
 	}
 	
-	protected AppManager getAppManager() {
+	public AppManager getAppManager() {
 		return this.appManager;
 	}
 	
-	protected LayoutManager getLayoutManager() {
+	public LayoutManager getLayoutManager() {
 		return this.layoutManager;
 	}
 	

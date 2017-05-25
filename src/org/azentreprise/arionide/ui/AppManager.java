@@ -24,10 +24,11 @@ import java.awt.Graphics2D;
 
 import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.IWorkspace;
+import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.overlay.View;
-import org.azentreprise.arionide.ui.primitives.Resources;
+import org.azentreprise.arionide.ui.overlay.views.MainView;
 
 public class AppManager {
 	
@@ -47,7 +48,7 @@ public class AppManager {
 	}
 
 	public void draw(Graphics2D g2d) {
-		g2d.drawImage(this.resources.getBackground(), 0, 0, null);
+		// g2d.drawImage(this.resources.getBackground(), 0, 0, null);
 		
 		if(this.view != null) {
 			this.view.draw(g2d);
@@ -64,8 +65,8 @@ public class AppManager {
 		this.resources = resources;
 		this.renderer = renderer;
 		this.layoutManager = manager;
-		
-		// this.showView(new MainView(), true);
+				
+		this.showView(new MainView(null, this, this.layoutManager), true);
 	}
 	
 	public void showView(View view, boolean transition) {
@@ -99,6 +100,10 @@ public class AppManager {
 	
 	public AppDrawingContext getDrawingContext() {
 		return this.drawingContext;
+	}
+	
+	public Resources getResources() {
+		return this.resources;
 	}
 	
 	public void shutdown() {

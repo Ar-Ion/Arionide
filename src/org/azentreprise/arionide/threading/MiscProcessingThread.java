@@ -26,11 +26,11 @@ public class MiscProcessingThread extends WorkingThread {
 	}
 
 	public long getRefreshDelay() {
-		return 0;
+		return 50L;
 	}
 
 	public String getDescriptor() {
-		return null;
+		return "Misc processing thread";
 	}
 
 	public boolean respawn(int attempt) {

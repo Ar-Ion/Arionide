@@ -25,13 +25,11 @@ import java.awt.Graphics2D;
 
 import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.IWorkspace;
-import org.azentreprise.arionide.events.IEventDispatcher;
+import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.primitives.Resources;
 
 public interface AppDrawingContext {
-	public void setup(IEventDispatcher dispatcher);
 	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager);
 	public void draw(Graphics2D g2d);
 	public Dimension getSize();

@@ -21,17 +21,27 @@
 package org.azentreprise.arionide.ui.overlay;
 
 import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.IOException;
 
-import org.azentreprise.Arionide;
+import org.azentreprise.Debug;
+import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.ui.layout.Surface;
 
 public abstract class Component extends Surface {
 	
-	private Font font = Arionide.getSystemFont();
-	private View parent;
+	private final View parent;
+	private Font font;
 	
+	@IAm("initializing a component")
 	public Component(View parent) {
 		this.parent = parent;
+		
+		try {
+			this.font = Font.createFont(Font.TRUETYPE_FONT, this.parent.getAppManager().getResources().getResource("font"));
+		} catch (FontFormatException | IOException exception) {
+			Debug.exception(exception);
+		}
 	}
 	
 	public abstract boolean isFocusable();

@@ -23,20 +23,25 @@ package org.azentreprise.arionide.threading;
 import org.azentreprise.arionide.events.AbstractThreadedEventDispatcher;
 
 public class EventDispatchingThread extends WorkingThread {
+	
+	private AbstractThreadedEventDispatcher dispatcher;
+	
 	public void setup(AbstractThreadedEventDispatcher dispatcher) {
-		
+		this.dispatcher = dispatcher;
 	}
 
 	public void tick() {
-		
+		if(this.dispatcher != null) {
+			this.dispatcher.dispatchEvents();
+		}
 	}
 
 	public long getRefreshDelay() {
-		return 0;
+		return 50L;
 	}
 
 	public String getDescriptor() {
-		return null;
+		return "Event dispatching thread";
 	}
 
 	public boolean respawn(int attempt) {

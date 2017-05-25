@@ -50,7 +50,7 @@ public class LayoutManager implements EventHandler {
 	}
 	
 	public void register(Surface surface, Surface parent, float x, float y, float width, float height) {
-		if(this.surfaces.containsKey(parent)) {
+		if(parent == null || this.surfaces.containsKey(parent)) {
 			this.surfaces.put(surface, new LayoutConfiguration(parent, x, y, width, height));
 		} else {
 			throw new RuntimeException("Parent surface is not registered");

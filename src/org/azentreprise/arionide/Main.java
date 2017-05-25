@@ -21,17 +21,20 @@
 package org.azentreprise.arionide;
 
 import org.azentreprise.arionide.Arionide.WatchdogState;
+import org.azentreprise.arionide.debugging.Debug;
+import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.events.IEventDispatcher;
+import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.primitives.Resources;
 
 public class Main {
 	
 	private static final Class<? extends Arionide> implementation = org.azentreprise.arionide.ArionideImpl.class;
-	private static final long watchdogTimer = 1000L;
+	private static final long watchdogTimer = 2000L;
 	
+	@IAm("initializing Arionide")
 	public static void main(String args[]) {
 		
 		Arionide theInstance = null;
@@ -42,41 +45,45 @@ public class Main {
 			System.err.println("FATAL: This implementation of Arionide is invalid");
 			throw new RuntimeException(exception);
 		}
+		
+		try {
+			theInstance.startThreads();
+			
+			IEventDispatcher dispatcher = theInstance.setupEventDispatcher();
+	
+			IWorkspace workspace = theInstance.setupWorkspace(dispatcher);
+	
+			AppDrawingContext context = theInstance.setupAppDrawingContext(dispatcher);
+			Resources resources = theInstance.loadResources(workspace, context);
+			CoreRenderer renderer = theInstance.loadCoreRenderer(context, dispatcher, resources);
+			LayoutManager manager = theInstance.setupLayoutManager(context, dispatcher);
+			
+			theInstance.loadUI(theInstance, context, workspace, resources, renderer, manager);
+			
+			WatchdogState state = null;
+			
+			while(theInstance.hashCode() != dispatcher.hashCode()) {
 				
-		theInstance.startThreads();
-		
-		IEventDispatcher dispatcher = theInstance.setupEventDispatcher();
-
-		IWorkspace workspace = theInstance.setupWorkspace(dispatcher);
-
-		AppDrawingContext context = theInstance.setupAppDrawingContext(dispatcher);
-		Resources resources = theInstance.loadResources(workspace, context);
-		CoreRenderer renderer = theInstance.loadCoreRenderer(context, dispatcher, resources);
-		LayoutManager manager = theInstance.setupLayoutManager(context, dispatcher);
-		
-		theInstance.loadUI(theInstance, context, workspace, resources, renderer, manager);
-		
-		WatchdogState state = null;
-		
-		while(theInstance.hashCode() != dispatcher.hashCode()) {
-			
-			state = theInstance.runWatchdog();
-			
-			if(state != WatchdogState.NO_PROBLEM) {
-				break;
+				state = theInstance.runWatchdog();
+				
+				if(state != WatchdogState.NO_PROBLEM) {
+					break;
+				}
+				
+				try {
+					Thread.sleep(Main.watchdogTimer);
+				} catch (InterruptedException e) {
+					break;
+				}
 			}
 			
-			try {
-				Thread.sleep(Main.watchdogTimer);
-			} catch (InterruptedException e) {
-				break;
+			if(state == WatchdogState.CRASH) {
+				System.err.println("Arionide crashed");
 			}
+			
+			theInstance.shutdown();
+		} catch(Exception exception) {
+			Debug.exception(exception);
 		}
-		
-		if(state == WatchdogState.CRASH) {
-			System.err.println("Arionide crashed");
-		}
-		
-		theInstance.shutdown();
 	}
 }

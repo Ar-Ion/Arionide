@@ -28,6 +28,7 @@ import java.util.stream.Stream;
 
 import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.events.MainEventDispatcher;
+import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.threading.EventDispatchingThread;
 import org.azentreprise.arionide.threading.MiscProcessingThread;
 import org.azentreprise.arionide.threading.UserHelpingThread;
@@ -36,7 +37,6 @@ import org.azentreprise.arionide.ui.AWTDrawingContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.primitives.Resources;
 
 public class ArionideImpl implements Arionide {
 	
@@ -50,6 +50,8 @@ public class ArionideImpl implements Arionide {
 		this.miscThread = new MiscProcessingThread();
 		
 		this.eventThread.start();
+		this.userThread.start();
+		this.miscThread.start();
 	}
 
 	public IEventDispatcher setupEventDispatcher() {
@@ -62,11 +64,11 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher) {
-		return new AWTDrawingContext(800, 600);
+		return new AWTDrawingContext(dispatcher, 800, 600);
 	}
 
 	public Resources loadResources(IWorkspace workspace, AppDrawingContext context) {
-		return null;
+		return new Resources(workspace, context);
 	}
 
 	public CoreRenderer loadCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher, Resources resources) {
@@ -87,17 +89,18 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public WatchdogState runWatchdog() {
-		Stream<WorkingThread> threads = this.getSystemThreads().stream();
-		Stream<WorkingThread> notRespondingThreads = threads.filter(thread -> thread.getLagRate() > 10.0f);
+		Stream<WorkingThread> notRespondingThreads = this.getSystemThreads().stream().filter(thread -> thread.getLagRate() > 10.0f);
 
-		threads.forEach(thread -> System.out.println("Lag rate for thread '" + thread.getDescriptor() + "' is " + thread.getLagRate() * 100 + "%."));
+		this.getSystemThreads().stream().forEach(thread -> System.out.println("Lag rate for thread '" + thread.getDescriptor() + "' is " + thread.getLagRate() * 100 + "%."));
+		
+		System.out.println();
 		
 		Iterator<WorkingThread> iterator = notRespondingThreads.iterator();
 		
 		while(iterator.hasNext()) {
 			WorkingThread thread = iterator.next();
 			
-			System.err.println("Thread '" + thread.getName() + "' is not responding... trying to respawn...");
+			System.err.println("Thread '" + thread.getDescriptor() + "' is not responding... trying to respawn...");
 			
 			boolean crashed = true;
 			
@@ -117,6 +120,6 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public void shutdown() {
-		
+		System.exit(0);
 	}
 }
