@@ -18,23 +18,10 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.arionide.events;
+package org.azentreprise.arionide.ui.animations;
 
-public class FrameResizedEvent extends Event {
-	
-	private final int width;
-	private final int height;
-	
-	public FrameResizedEvent(int width, int height) {
-		this.width = width;
-		this.height = height;
-	}
-	
-	public int getWidth() {
-		return this.width;
-	}
-	
-	public int getHeight() {
-		return this.height;
+public class NoTransformationAlgorithm implements SimpleTransformationAlgorithm {
+	public double compute(double x) {
+		return x;
 	}
 }

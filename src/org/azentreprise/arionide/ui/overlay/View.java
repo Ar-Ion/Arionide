@@ -42,16 +42,18 @@ public abstract class View extends Surface {
 	
 	private final List<Component> components = new ArrayList<>();
 	
-	private final Animation alphaAnimation = new FieldModifierAnimation("alpha", View.class, this);
+	private final Animation alphaAnimation;
 	
 	private Color borderColor = new Color(0, 0, 0, 0);
 	private int focus = 0;
-	public float alpha = 1.0f;
+	public float alpha = 0.0f;
 	
 	public View(View parent, AppManager appManager, LayoutManager layoutManager) {
 		this.parent = parent;
 		this.appManager = appManager;
 		this.layoutManager = layoutManager;
+		
+		this.alphaAnimation = new FieldModifierAnimation(this.appManager, "alpha", View.class, this);
 		
 		this.layoutManager.register(this, parent, 0.0f, 0.0f, 1.0f, 1.0f);
 	}

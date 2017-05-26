@@ -23,6 +23,7 @@ package org.azentreprise.arionide.resources;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,8 @@ public class Resources {
 			
 			try {
 				Files.copy(stream, this.getFile(name).toPath());
+			} catch(FileAlreadyExistsException e) {
+				;
 			} catch (IOException exception) {
 				Debug.exception(exception);
 			}

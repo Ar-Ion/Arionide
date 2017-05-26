@@ -22,17 +22,21 @@ package org.azentreprise.arionide.ui.animations;
 
 import java.lang.reflect.Field;
 
-import org.azentreprise.Debug;
+import org.azentreprise.arionide.debugging.Debug;
+import org.azentreprise.arionide.ui.AppManager;
 
 public class FieldModifierAnimation extends Animation {
 			
 	private final Object instance;
+	private final SimpleTransformationAlgorithm smoothingAlgorithm = new HermiteSplineAlgorithm();
 	
 	private Field field;	
 	private Number initial;
 	private Number target;
 	
-	public FieldModifierAnimation(String fieldName, Class<?> clazz, Object instance) {
+	public FieldModifierAnimation(AppManager manager, String fieldName, Class<?> clazz, Object instance) {
+		super(manager);
+		
 		this.instance = instance;
 		
 		try {
@@ -69,10 +73,11 @@ public class FieldModifierAnimation extends Animation {
 	
 	public void tick() {
 		double t = this.getProgression();
+				
 		if(t <= 1.0d) {
 			try {
-				double real = -2 * Math.pow(t, 3) + 3 * Math.pow(t, 2); // Cubic Hermite spline
-				
+				double real = this.smoothingAlgorithm.compute(t);
+								
 				double doubleValue = (this.target.doubleValue() - this.initial.doubleValue()) * real + this.initial.doubleValue();
 				Object value = null;
 																
@@ -102,6 +107,12 @@ public class FieldModifierAnimation extends Animation {
 				Debug.exception(exception);
 			}
 		} else {
+			try {
+				this.field.set(this.instance, this.target);
+			} catch (Exception exception) {
+				Debug.exception(exception);
+			}
+			
 			this.stopAnimation();
 		}
 	}

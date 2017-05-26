@@ -47,7 +47,7 @@ public abstract class Surface implements Drawable {
 	
 	public final void draw(Graphics2D g2d) {
 		g2d = (Graphics2D) g2d.create(this.x, this.y, this.width, this.height);
-	
+			
 		g2d.setColor(this.backgroundColor);
 		g2d.fillRect(this.x, this.y, this.width, this.height);
 		

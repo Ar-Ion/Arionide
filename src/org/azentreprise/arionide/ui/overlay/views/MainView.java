@@ -67,7 +67,7 @@ public class MainView extends View implements ClickListener {
 			this.add(new Button(this, "Arionide community").setHandler(this, "browse", "https://azentreprise.org/Arionide"), 0.1f, positions.peek(), 0.9f, positions.poll() + 0.1f);
 			focus = 5;
 		} else {
-			for(int i = 0; i < 4; i++) {
+			/*for(int i = 0; i < 4; i++) {
 				try {
 					String project = Projects.getProjectsList().get((MainView.pageID - 1) * 4 + i);
 					this.add(new Button(this, "Open " + project).setHandler(this, "open", project), 0.1f, positions.peek(), 0.9f, positions.poll() + 0.1f);
@@ -75,16 +75,16 @@ public class MainView extends View implements ClickListener {
 				} catch (IndexOutOfBoundsException e) {
 					break;
 				}
-			}	
+			}*/
 		}
 
 		this.add(new Button(this, "New project").setHandler(this, "new"), 0.1f, 0.83f, 0.33f, 0.92f);
 		this.add(new Button(this, "Collaborate").setHandler(this, "connect"), 0.38f, 0.83f, 0.61f, 0.92f);
 		this.add(new Button(this, "Import").setHandler(this, "import"), 0.66f, 0.83f, 0.90f, 0.92f);
 
-		if(Projects.getProjectsList().size() > MainView.pageID * 4) {
+		/*if(Projects.getProjectsList().size() > MainView.pageID * 4) {
 			this.add(new Button(this, ">").setHandler(this, "next"), 6.5f / 7.0f, 0.43f, 6.8f / 7.0f, 0.58f);
-		}
+		}*/
 		
 		this.setFocus(focus);
 		

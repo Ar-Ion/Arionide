@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.layout;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,14 +29,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
-import org.azentreprise.arionide.events.FrameResizedEvent;
 import org.azentreprise.arionide.events.IEventDispatcher;
+import org.azentreprise.arionide.events.InvalidateLayoutEvent;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 
 public class LayoutManager implements EventHandler {
+	
+	private final AppDrawingContext drawingContext;
 	
 	private final Map<Surface, LayoutConfiguration> surfaces = new LinkedHashMap<>();
 	
@@ -43,6 +47,8 @@ public class LayoutManager implements EventHandler {
 	private int frameHeight;
 	
 	public LayoutManager(AppDrawingContext drawingContext, IEventDispatcher dispatcher) {
+		this.drawingContext = drawingContext;
+		
 		this.frameWidth = drawingContext.getSize().width;
 		this.frameHeight = drawingContext.getSize().height;
 		
@@ -59,15 +65,17 @@ public class LayoutManager implements EventHandler {
 	
 	public void unregister(Surface surface) {
 		this.surfaces.remove(surface);
-		this.unregister0(surface, this.surfaces.entrySet().iterator());
+		this.unregister0(surface, this.surfaces.entrySet());
 	}
 	
-	private void unregister0(Surface surface, Iterator<Entry<Surface, LayoutConfiguration>> children) {
-		while(children.hasNext()) {
-			Entry<Surface, LayoutConfiguration> child = children.next();
+	private void unregister0(Surface surface, Set<Entry<Surface, LayoutConfiguration>> children) {
+		Iterator<Entry<Surface, LayoutConfiguration>> iterator = children.iterator();
+		
+		while(iterator.hasNext()) {
+			Entry<Surface, LayoutConfiguration> child = iterator.next();
 			
-			if(child.getValue().getParent().equals(surface)) {
-				children.remove();
+			if(child.getValue().getParent() == surface) {
+				children.iterator();
 				this.unregister0(child.getKey(), children);
 			}
 		}
@@ -75,7 +83,7 @@ public class LayoutManager implements EventHandler {
 	
 	public void compute() {
 		Map<Surface, Rectangle> layout = new HashMap<>();
-		
+				
 		this.surfaces.forEach((surface, configuration) -> {
 			if(configuration.getParent() != null) {
 				if(layout.containsKey(configuration.getParent())) {
@@ -90,7 +98,7 @@ public class LayoutManager implements EventHandler {
 					
 					surface.setLayoutBounds(x, y, width, height);
 				} else {
-					throw new RuntimeException("Parent surface has not been computed");
+					System.err.println("Parent surface (" + configuration.getParent() + ") has not been computed");
 				}
 			} else {
 				int width = (int) (this.frameWidth * configuration.width);
@@ -104,16 +112,18 @@ public class LayoutManager implements EventHandler {
 	}
 
 	public <T extends Event> void handleEvent(T event) {
-		if(event instanceof FrameResizedEvent) {
-			FrameResizedEvent casted = (FrameResizedEvent) event;
+		if(event instanceof InvalidateLayoutEvent) {
+			Dimension size = this.drawingContext.getSize();
 			
-			this.frameWidth = casted.getWidth();
-			this.frameHeight = casted.getHeight();
+			this.frameWidth = size.width;
+			this.frameHeight = size.height;
+			
+			this.compute();
 		}
 	}
 
 	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(FrameResizedEvent.class);
+		return Arrays.asList(InvalidateLayoutEvent.class);
 	}
 	
 	private final class LayoutConfiguration {

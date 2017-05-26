@@ -92,11 +92,11 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	}
 
 	public void windowClosing(WindowEvent e) {
-		;
+		this.theManager.shutdown();
 	}
 
 	public void windowClosed(WindowEvent e) {
-		this.theManager.shutdown();
+		;
 	}
 
 	public void windowIconified(WindowEvent e) {

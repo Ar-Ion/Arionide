@@ -20,58 +20,22 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.animations;
 
-import java.util.function.Consumer;
+public class ParametricSmoothingAlgorithm implements SimpleTransformationAlgorithm {
 
-import org.azentreprise.arionide.ui.AppManager;
+	private final double smoothingConstant;
+	
+	public ParametricSmoothingAlgorithm(double smoothingLevel) {		
+		assert smoothingLevel > 1.0d; // if less than one it becomes an anti-smoothing algorithm and if equal to one, it is like the NoTransformationAlgorithm.
+		
+		this.smoothingConstant = 1.0d / smoothingLevel;
+	}
 
-public abstract class Animation {
-		
-	private long startTime;
-	private long stopTime;
-	private boolean ignoreTicks = true;
-	
-	private Consumer<Animation> animateAfter;
-	
-	public Animation(AppManager manager) {
-		manager.registerAnimation(this);
+	public double compute(double x) {
+		return (this.pseudoRoot(2*x - 1) + 1) / 2;
 	}
 	
-	public void startAnimation(int duration, Consumer<Animation> animateAfter, Object... params) {
-		this.startAnimation(duration, params);
-		this.animateAfter = animateAfter;
+	private double pseudoRoot(double x) {
+		double root = Math.pow(Math.abs(x), this.smoothingConstant);
+		return x > 0.0d ? root : -root;
 	}
-	
-	public void startAnimation(int duration, Object... params) {
-		this.stopAnimation();
-		
-		long now = System.currentTimeMillis();
-		
-		this.startTime = now;
-		this.stopTime = now + duration;
-		
-		this.ignoreTicks = false;
-	}
-	
-	public void stopAnimation() {
-		if(this.animateAfter != null) {
-			Consumer<Animation> clone = this.animateAfter;
-			this.animateAfter = null;
-			clone.accept(this);
-		}
-		
-		this.ignoreTicks = true;
-	}
-	
-	protected double getProgression() {
-		long now = System.currentTimeMillis();
-		return (double) (now - this.startTime) / (this.stopTime - this.startTime);
-	}
-	
-	public void doTick() {
-		if(!this.ignoreTicks) {
-			this.tick();
-		}
-	}
-	
-	public abstract void tick();
 }
