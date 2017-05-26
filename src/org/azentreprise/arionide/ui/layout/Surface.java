@@ -32,7 +32,7 @@ public abstract class Surface implements Drawable {
 	private int width;
 	private int height;
 	
-	private Color backgroundColor;
+	private Color backgroundColor = new Color(0, true);
 		
 	public void setLayoutBounds(int x, int y, int width, int height) {
 		this.x = x;

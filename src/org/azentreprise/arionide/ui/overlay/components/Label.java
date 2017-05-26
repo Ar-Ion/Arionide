@@ -32,8 +32,8 @@ import org.azentreprise.ui.UIFontAdapter;
 
 public class Label extends Component {
 	
-	protected int color;
-	protected int opacity;
+	protected int color = 0xCAFE;
+	protected int opacity = 255;
 	protected String label;
 	protected Point textRenderPosition;
 

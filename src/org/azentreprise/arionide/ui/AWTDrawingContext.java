@@ -23,10 +23,19 @@ package org.azentreprise.arionide.ui;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.Panel;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.HashMap;
@@ -40,7 +49,7 @@ import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 
-public class AWTDrawingContext extends Panel implements AppDrawingContext, WindowListener, ComponentListener {
+public class AWTDrawingContext extends Panel implements AppDrawingContext, WindowListener, ComponentListener, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
 	private static final long serialVersionUID = 1171699360872561984L;
 	
@@ -83,6 +92,7 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	public void setupRenderingProperties() {
 		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		this.renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		this.renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		this.renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 	}
@@ -91,7 +101,7 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		;
 	}
 
-	public void windowClosing(WindowEvent e) {
+	public void windowClosing(WindowEvent event) {
 		this.theManager.shutdown();
 	}
 
@@ -115,7 +125,7 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		;
 	}
 
-	public void componentResized(ComponentEvent e) {
+	public void componentResized(ComponentEvent event) {
 		this.dispatcher.fire(new InvalidateLayoutEvent());
 	}
 
@@ -129,5 +139,65 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 
 	public void componentHidden(ComponentEvent e) {
 		;
+	}
+	
+	public void mouseClicked(MouseEvent event) {
+		Point point = event.getPoint();
+		this.transform(point);
+	}
+
+	public void mousePressed(MouseEvent event) {
+		Point point = event.getPoint();
+		this.transform(point);		
+	}
+
+	public void mouseReleased(MouseEvent event) {
+		Point point = event.getPoint();
+		this.transform(point);		
+	}
+
+	public void mouseEntered(MouseEvent event) {
+		Point point = event.getPoint();
+		this.transform(point);		
+	}
+
+	public void mouseExited(MouseEvent event) {
+		Point point = event.getPoint();
+		this.transform(point);		
+	}
+
+	public void mouseWheelMoved(MouseWheelEvent event) {
+		Point point = event.getPoint();
+		this.transform(point);		
+	}
+
+	public void mouseDragged(MouseEvent event) {
+		Point point = event.getPoint();
+		this.transform(point);		
+	}
+
+	public void mouseMoved(MouseEvent event) {
+		Point point = event.getPoint();
+		this.transform(point);		
+	}
+	
+	private void transform(Point point) {
+		Insets insets = this.theFrame.getInsets();
+		point.translate(-insets.left, -insets.top);
+	}
+
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

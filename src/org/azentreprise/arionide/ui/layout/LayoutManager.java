@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.IEventDispatcher;
@@ -81,9 +82,10 @@ public class LayoutManager implements EventHandler {
 		}
 	}
 	
+	@IAm("computing the layout")
 	public void compute() {
 		Map<Surface, Rectangle> layout = new HashMap<>();
-				
+		
 		this.surfaces.forEach((surface, configuration) -> {
 			if(configuration.getParent() != null) {
 				if(layout.containsKey(configuration.getParent())) {
@@ -91,8 +93,8 @@ public class LayoutManager implements EventHandler {
 					
 					int x = (int) (parentBounds.x + parentBounds.width * configuration.getX());
 					int y = (int) (parentBounds.y + parentBounds.height * configuration.getY());
-					int width = (int) (parentBounds.width * configuration.getWidth());
-					int height = (int) (parentBounds.height * configuration.getHeight());
+					int width = (int) (parentBounds.width * configuration.getWidth()) - x;
+					int height = (int) (parentBounds.height * configuration.getHeight()) - y;
 					
 					layout.put(surface, new Rectangle(x, y, width, height));
 					

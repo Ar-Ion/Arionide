@@ -52,9 +52,9 @@ public class MainView extends View implements ClickListener {
 		super(parent, appManager, layoutManager);
 		
 		this.setBackgroundColor(new Color(63, 63, 63, 127));
-		this.setBorderColor(new Color(0xCAFE));
+		//this.setBorderColor(new Color(0xCAFE));
 		
-		this.add(new Label(this, "Arionide").alterFont(Font.BOLD), 0.0f, 0.05f, 1.0f, 0.2f);
+		this.add(new Label(this, "Home page").alterFont(Font.BOLD), 0.0f, 0.05f, 1.0f, 0.2f);
 		
 		Queue<Float> positions = new ArrayDeque<Float>(Arrays.asList(0.23f, 0.38f, 0.53f, 0.68f));
 		
