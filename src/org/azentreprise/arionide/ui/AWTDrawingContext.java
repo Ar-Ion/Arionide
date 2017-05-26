@@ -43,8 +43,13 @@ import java.util.Map;
 
 import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.IWorkspace;
+import org.azentreprise.arionide.events.ActionEvent;
+import org.azentreprise.arionide.events.ActionType;
 import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
+import org.azentreprise.arionide.events.MoveEvent;
+import org.azentreprise.arionide.events.MoveType;
+import org.azentreprise.arionide.events.WheelEvent;
 import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
@@ -144,41 +149,49 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	public void mouseClicked(MouseEvent event) {
 		Point point = event.getPoint();
 		this.transform(point);
+		this.dispatcher.fire(new ActionEvent(point, ActionType.CLICK));
 	}
 
 	public void mousePressed(MouseEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);		
+		this.transform(point);
+		this.dispatcher.fire(new ActionEvent(point, ActionType.PRESS));
 	}
 
 	public void mouseReleased(MouseEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);		
+		this.transform(point);
+		this.dispatcher.fire(new ActionEvent(point, ActionType.RELEASE));
 	}
 
 	public void mouseEntered(MouseEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);		
+		this.transform(point);
+		this.dispatcher.fire(new MoveEvent(point, MoveType.ENTER));
 	}
 
 	public void mouseExited(MouseEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);		
-	}
-
-	public void mouseWheelMoved(MouseWheelEvent event) {
-		Point point = event.getPoint();
-		this.transform(point);		
+		this.transform(point);
+		this.dispatcher.fire(new MoveEvent(point, MoveType.EXIT));
 	}
 
 	public void mouseDragged(MouseEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);		
+		this.transform(point);
+		this.dispatcher.fire(new MoveEvent(point, MoveType.DRAG));
 	}
 
 	public void mouseMoved(MouseEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);		
+		this.transform(point);
+		this.dispatcher.fire(new MoveEvent(point, MoveType.MOVE));
+	}
+	
+	public void mouseWheelMoved(MouseWheelEvent event) {
+		Point point = event.getPoint();
+		this.transform(point);
+		this.dispatcher.fire(new WheelEvent(point, event.getWheelRotation()));
 	}
 	
 	private void transform(Point point) {

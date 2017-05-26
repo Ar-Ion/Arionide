@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.azentreprise.arionide.debugging.WatchdogState;
 import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.events.MainEventDispatcher;
 import org.azentreprise.arionide.resources.Resources;
