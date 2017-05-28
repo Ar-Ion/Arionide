@@ -20,12 +20,14 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
 import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.IWorkspace;
 import org.azentreprise.arionide.resources.Resources;
+import org.azentreprise.arionide.threading.WorkingThread;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 
@@ -34,4 +36,5 @@ public interface AppDrawingContext {
 	public void draw(Graphics2D g2d);
 	public Dimension getSize();
 	public void setupRenderingProperties();
+	public void setCursor(Cursor cursor);
 }

@@ -32,7 +32,6 @@ import org.azentreprise.arionide.ui.layout.LayoutManager;
 public class Main {
 	
 	private static final Class<? extends Arionide> implementation = org.azentreprise.arionide.ArionideImpl.class;
-	private static final long watchdogTimer = 2000L;
 	
 	@IAm("initializing Arionide")
 	public static void main(String args[]) {
@@ -71,7 +70,7 @@ public class Main {
 				}
 				
 				try {
-					Thread.sleep(Main.watchdogTimer);
+					Thread.sleep(Arionide.WATCHDOG_TIMER);
 				} catch (InterruptedException e) {
 					break;
 				}

@@ -35,6 +35,7 @@ import org.azentreprise.arionide.threading.MiscProcessingThread;
 import org.azentreprise.arionide.threading.UserHelpingThread;
 import org.azentreprise.arionide.threading.WorkingThread;
 import org.azentreprise.arionide.ui.AWTDrawingContext;
+import org.azentreprise.arionide.ui.AWTWrapperThread;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
@@ -42,17 +43,20 @@ import org.azentreprise.arionide.ui.layout.LayoutManager;
 public class ArionideImpl implements Arionide {
 	
 	private EventDispatchingThread eventThread;
-	private UserHelpingThread userThread;
-	private MiscProcessingThread miscThread;
+	private WorkingThread userThread;
+	private WorkingThread miscThread;
+	private AWTWrapperThread drawingThread;
 	
 	public void startThreads() {
 		this.eventThread = new EventDispatchingThread();
 		this.userThread = new UserHelpingThread();
 		this.miscThread = new MiscProcessingThread();
+		this.drawingThread = new AWTWrapperThread();
 		
 		this.eventThread.start();
 		this.userThread.start();
 		this.miscThread.start();
+		this.drawingThread.start();
 	}
 
 	public IEventDispatcher setupEventDispatcher() {
@@ -65,7 +69,7 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher) {
-		return new AWTDrawingContext(dispatcher, 800, 600);
+		return new AWTDrawingContext(this.drawingThread, dispatcher, 800, 600);
 	}
 
 	public Resources loadResources(IWorkspace workspace, AppDrawingContext context) {
@@ -86,13 +90,15 @@ public class ArionideImpl implements Arionide {
 	
 	// note: this list is not mutable
 	private List<WorkingThread> getSystemThreads() {
-		return Arrays.asList(this.eventThread, this.userThread, this.miscThread);
+		return Arrays.asList(this.eventThread, this.userThread, this.miscThread, this.drawingThread);
 	}
 
 	public WatchdogState runWatchdog() {
 		Stream<WorkingThread> notRespondingThreads = this.getSystemThreads().stream().filter(thread -> thread.getLagRate() > 10.0f);
 
-		this.getSystemThreads().stream().forEach(thread -> System.out.println("Lag rate for thread '" + thread.getDescriptor() + "' is " + thread.getLagRate() * 100 + "%."));
+		this.getSystemThreads().stream()
+			.forEach(thread -> System.out.println("Lag rate for thread '" + thread.getDescriptor() + "' is " + thread.getLagRate() * 100 + "% "
+				+ "and is running at " + (thread.pollTicks() / Arionide.WATCHDOG_TIMER) + " TPS."));
 		
 		System.out.println();
 		

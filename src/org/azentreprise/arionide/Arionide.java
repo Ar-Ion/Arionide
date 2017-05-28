@@ -31,7 +31,8 @@ import org.azentreprise.arionide.ui.layout.LayoutManager;
 public interface Arionide {
 	
 	public static final int RESPAWN_MAX_ATTEMPTS = 5;
-	
+	public static final long WATCHDOG_TIMER = 2000L;
+
 	@IAm("preparing the core threads for processing")
 	public void startThreads();
 	

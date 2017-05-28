@@ -23,7 +23,6 @@ package org.azentreprise.arionide.ui;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
 import java.awt.Panel;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -51,6 +50,7 @@ import org.azentreprise.arionide.events.MoveEvent;
 import org.azentreprise.arionide.events.MoveType;
 import org.azentreprise.arionide.events.WheelEvent;
 import org.azentreprise.arionide.resources.Resources;
+import org.azentreprise.arionide.threading.WorkingThread;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 
@@ -60,14 +60,19 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	
 	private final Map<RenderingHints.Key, Object> renderingHints = new HashMap<>();
 	
+	private final AWTWrapperThread wrapperThread;
 	private final IEventDispatcher dispatcher;
 	private final AppManager theManager;
 	private final Frame theFrame;
 	
-	public AWTDrawingContext(IEventDispatcher dispatcher, int width, int height) {
+	private Thread awtThread = null;
+	
+	public AWTDrawingContext(AWTWrapperThread wrapperThread, IEventDispatcher dispatcher, int width, int height) {
+		this.wrapperThread = wrapperThread;
+		
 		this.dispatcher = dispatcher;
-				
-		this.theManager = new AppManager(this);
+		
+		this.theManager = new AppManager(this, dispatcher);
 		this.theFrame = new Frame("Arionide");
 		
 		this.theFrame.setSize(width, height);
@@ -77,10 +82,23 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		
 		this.theFrame.addWindowListener(this);
 		this.theFrame.addComponentListener(this);
+		
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
+		this.addMouseWheelListener(this);
+		this.addKeyListener(this);
 	}
 
 	public void paint(Graphics g) {
+		if(this.awtThread == null) {
+			this.awtThread = Thread.currentThread();
+		}
+		
+		this.wrapperThread.startDrawing();
+		
 		this.draw((Graphics2D) g);
+		
+		this.wrapperThread.stopDrawing();
 	}
 	
 	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
@@ -91,7 +109,6 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	public void draw(Graphics2D g2d) {
 		g2d.setRenderingHints(this.renderingHints);
 		this.theManager.draw(g2d);
-		this.repaint();
 	}
 
 	public void setupRenderingProperties() {
@@ -100,6 +117,11 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		this.renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		this.renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+	}
+	
+
+	public WorkingThread getWrapperThread() {
+		return null;
 	}
 
 	public void windowOpened(WindowEvent e) {
@@ -195,8 +217,10 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	}
 	
 	private void transform(Point point) {
-		Insets insets = this.theFrame.getInsets();
-		point.translate(-insets.left, -insets.top);
+		// uncomment if bugs using Windows
+		
+		/* Insets insets = this.theFrame.getInsets();
+		   point.translate(-insets.left, -insets.top); */
 	}
 
 	public void keyTyped(KeyEvent e) {

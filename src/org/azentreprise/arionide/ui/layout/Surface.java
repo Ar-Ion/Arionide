@@ -22,6 +22,7 @@ package org.azentreprise.arionide.ui.layout;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 import org.azentreprise.arionide.ui.Drawable;
 
@@ -52,6 +53,10 @@ public abstract class Surface implements Drawable {
 		g2d.fillRect(this.x, this.y, this.width, this.height);
 		
 		this.drawSurface(g2d);
+	}
+	
+	public Rectangle getBounds() {
+		return new Rectangle(this.x, this.y, this.width, this.height);
 	}
 	
 	public abstract void drawSurface(Graphics2D g2d);

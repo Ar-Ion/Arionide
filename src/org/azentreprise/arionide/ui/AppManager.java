@@ -28,6 +28,7 @@ import java.util.List;
 import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.IWorkspace;
 import org.azentreprise.arionide.debugging.IAm;
+import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
 import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.ui.animations.Animation;
@@ -39,6 +40,7 @@ import org.azentreprise.arionide.ui.overlay.views.MainView;
 public class AppManager {
 	
 	private final AppDrawingContext drawingContext;
+	private final IEventDispatcher dispatcher;
 	
 	private final List<Animation> animations = Collections.synchronizedList(new ArrayList<>());
 	
@@ -51,8 +53,9 @@ public class AppManager {
 	private View view;
 	private View auxView;
 	
-	public AppManager(AppDrawingContext drawingContext) {
+	public AppManager(AppDrawingContext drawingContext, IEventDispatcher dispatcher) {
 		this.drawingContext = drawingContext;
+		this.dispatcher = dispatcher;
 	}
 
 	public void draw(Graphics2D g2d) {
@@ -126,6 +129,10 @@ public class AppManager {
 	
 	public AppDrawingContext getDrawingContext() {
 		return this.drawingContext;
+	}
+	
+	public IEventDispatcher getEventDispatcher() {
+		return this.dispatcher;
 	}
 	
 	public Resources getResources() {

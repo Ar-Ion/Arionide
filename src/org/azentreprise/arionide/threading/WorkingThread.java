@@ -22,16 +22,17 @@ package org.azentreprise.arionide.threading;
 
 public abstract class WorkingThread extends Thread {
 
-	private static final long CONTROL_DELAY = 500L;
+	private static final long CONTROL_DELAY = 200L;
 	
-	private boolean running = true;
+	private boolean running = false;
 	private long initTime = System.currentTimeMillis();
+	private int ticks = 0;
 	
 	public void run() {
 		while(true) {
 			try {
 				while(this.running) {
-					this.initTime = System.currentTimeMillis();
+					this.resetTimer();
 					
 					this.tick();
 					
@@ -40,6 +41,8 @@ public abstract class WorkingThread extends Thread {
 					if(delta > 0) {
 						Thread.sleep(delta);
 					}
+					
+					this.ticks++;
 				}
 			
 				Thread.sleep(WorkingThread.CONTROL_DELAY);
@@ -49,8 +52,27 @@ public abstract class WorkingThread extends Thread {
 		}
 	}
 	
+	protected void resetTimer() {
+		this.initTime = System.currentTimeMillis();
+	}
+	
 	public float getLagRate() {
 		return  (float) (System.currentTimeMillis() - this.initTime) / this.getRefreshDelay();
+	}
+	
+	public int pollTicks() {
+		int buffer = this.ticks;
+		this.ticks = 0;
+		return buffer;
+	}
+	
+	public void start() {
+		this.running = true;
+		super.start();
+	}
+	
+	public void pause() {
+		this.running = false;
 	}
 	
 	public abstract void tick();
