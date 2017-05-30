@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
+import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -66,6 +67,7 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	private final Frame theFrame;
 	
 	private Thread awtThread = null;
+	private Cursor theCursor = Cursor.getDefaultCursor();
 	
 	public AWTDrawingContext(AWTWrapperThread wrapperThread, IEventDispatcher dispatcher, int width, int height) {
 		this.wrapperThread = wrapperThread;
@@ -99,6 +101,8 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		this.draw((Graphics2D) g);
 		
 		this.wrapperThread.stopDrawing();
+		
+		this.repaint();
 	}
 	
 	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
@@ -108,6 +112,9 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 
 	public void draw(Graphics2D g2d) {
 		g2d.setRenderingHints(this.renderingHints);
+		
+		super.setCursor(this.theCursor);
+		
 		this.theManager.draw(g2d);
 	}
 
@@ -119,6 +126,9 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 	}
 	
+	public void setCursor(Cursor cursor) {
+		super.setCursor(this.theCursor = cursor);
+	}
 
 	public WorkingThread getWrapperThread() {
 		return null;

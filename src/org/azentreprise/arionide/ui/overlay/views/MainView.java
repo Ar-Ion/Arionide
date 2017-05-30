@@ -131,6 +131,15 @@ public class MainView extends View implements ClickListener {
 	}
 	
 	public void importProject(Object[] signals) {
+		new Thread() {
+			public void run() {
+				importProject0(signals);
+			}
+		}.start();
+	}
+
+	
+	private void importProject0(Object[] signals) {
 		JFileChooser chooser = new JFileChooser();
 		
 		chooser.setAcceptAllFileFilterUsed(false);

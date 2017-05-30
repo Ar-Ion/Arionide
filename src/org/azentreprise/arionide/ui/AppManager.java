@@ -66,7 +66,7 @@ public class AppManager {
 	}
 	
 	@IAm("ticking the animations")
-	public synchronized void tickAnimations() {
+	public synchronized void tickAnimations() {		
 		for(Animation animation : this.animations) {
 			animation.doTick();
 		}

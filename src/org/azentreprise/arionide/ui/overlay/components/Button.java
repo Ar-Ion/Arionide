@@ -148,21 +148,21 @@ public class Button extends Label implements EventHandler {
 				if(!this.mouseOver) {
 					this.mouseOver = true;
 					
+					this.getParentView().getAppManager().getDrawingContext().setCursor(new Cursor(Cursor.HAND_CURSOR));
+
 					if(!this.hasFocus) {
 						this.animation.startAnimation(Button.ANIMATION_TIME, 0xFF);
 					}
-					
-					this.getParentView().getAppManager().getDrawingContext().setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}
 			} else {
 				if(this.mouseOver) {
 					this.mouseOver = false;
 					
+					this.getParentView().getAppManager().getDrawingContext().setCursor(Cursor.getDefaultCursor());
+
 					if(!this.hasFocus) {
 						this.animation.startAnimation(Button.ANIMATION_TIME, this.color >>> 24);
 					}
-					
-					this.getParentView().getAppManager().getDrawingContext().setCursor(Cursor.getDefaultCursor());
 				}
 			}
 		} else if(event instanceof ActionEvent) {
