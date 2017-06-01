@@ -21,13 +21,6 @@
 package org.azentreprise.arionide.events;
 
 public interface IEventDispatcher {
-	
-	public static final float MAX_PRIORITY = 0.0f;
-	public static final float HIGH_PRIORITY = 0.25f;
-	public static final float MEDIUM_PRIORITY = 0.5f;
-	public static final float LOW_PRIORITY = 0.75f;
-	public static final float LOWEST_PRIORITY = 1.0f;
-	
 	public void fire(Event event);
-	public void registerHandler(EventHandler handler, float priority);
+	public void registerHandler(EventHandler handler);
 }

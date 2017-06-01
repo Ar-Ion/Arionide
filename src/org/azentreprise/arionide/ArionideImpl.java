@@ -77,7 +77,7 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public CoreRenderer loadCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher, Resources resources) {
-		return null;
+		return new CoreRenderer();
 	}
 
 	public LayoutManager setupLayoutManager(AppDrawingContext context, IEventDispatcher dispatcher) {

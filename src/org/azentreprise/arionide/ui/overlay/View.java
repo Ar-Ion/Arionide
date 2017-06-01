@@ -27,6 +27,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
@@ -36,7 +37,6 @@ import org.azentreprise.ui.render.RoundRectRenderer;
 
 public abstract class View extends Surface {
 	
-	private final View parent;
 	private final AppManager appManager;
 	private final LayoutManager layoutManager;
 	
@@ -48,14 +48,13 @@ public abstract class View extends Surface {
 	private int focus = 0;
 	public float alpha = 0.0f;
 	
-	public View(View parent, AppManager appManager, LayoutManager layoutManager) {
-		this.parent = parent;
+	public View(AppManager appManager, LayoutManager layoutManager) {
 		this.appManager = appManager;
 		this.layoutManager = layoutManager;
 		
 		this.alphaAnimation = new FieldModifierAnimation(this.appManager, "alpha", View.class, this);
 		
-		this.layoutManager.register(this, parent, 0.0f, 0.0f, 1.0f, 1.0f);
+		this.layoutManager.register(this, null, 0.0f, 0.0f, 1.0f, 1.0f);
 	}
 	
 	public void setBorderColor(Color color) {
@@ -70,7 +69,7 @@ public abstract class View extends Surface {
 		Rectangle bounds = g2d.getClipBounds();
 
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.alpha));
-		
+				
 		g2d.setColor(this.borderColor);
 		RoundRectRenderer.draw(g2d, 0, 0, bounds.width - 1, bounds.height - 1);
 		
@@ -84,8 +83,40 @@ public abstract class View extends Surface {
 		this.layoutManager.register(component, this, x, y, width, height);
 	}
 	
-	protected View getParent() {
-		return this.parent;
+	protected Component get(int componentID) {
+		return this.components.get(componentID);
+	}
+	
+	public void show() {
+		super.show();
+		this.components.forEach(comp -> comp.show());
+	}
+	
+	public void hide() {
+		super.hide();
+		this.components.forEach(comp -> comp.hide());
+	}
+	
+	@IAm("opening a view")
+	public void openView(View target, boolean transition) {
+		this.hide(transition);
+		target.show(transition);
+	}
+	
+	public void show(boolean transition) {
+		this.show();
+		
+		if(transition) {
+			this.getAlphaAnimation().startAnimation(500, 1.0f);
+		}
+	}
+	
+	public void hide(boolean transition) {
+		this.hide();
+		
+		if(transition) {
+			this.getAlphaAnimation().startAnimation(500, 0.0f);
+		}
 	}
 	
 	public AppManager getAppManager() {

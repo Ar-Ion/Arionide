@@ -207,9 +207,7 @@ public class Text extends Button {
 		this.setLabel(this.text.length() > 0 ? this.text.toString() : this.placeholder);
 	}
 	
-	public void handleMouseEvent(byte event) {
-		super.handleMouseEvent(event);
-		
+	public void handleMouseEvent(byte event) {		
 		switch(event) {
 			case UIEvents.EVENT_MOUSE_ENTER:
 				UIMain.setFrameCursor(new Cursor(Cursor.TEXT_CURSOR));

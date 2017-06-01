@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.LinkedTransferQueue;
+import java.util.concurrent.TransferQueue;
 
 import org.azentreprise.arionide.threading.EventDispatchingThread;
 
@@ -31,6 +33,8 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 
 	private final List<EventHandler> handlers = new ArrayList<>();
 	private final Queue<Event> events = new LinkedList<>();
+	
+	private final TransferQueue<EventHandler> newHandlers = new LinkedTransferQueue<>();
 	
 	public MainEventDispatcher(EventDispatchingThread thread) {
 		thread.setup(this);
@@ -41,16 +45,18 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	}
 	
 	public void dispatchEvents() {
+		this.newHandlers.drainTo(this.handlers);
+		
 		while(!this.events.isEmpty()) {
 			Event event = this.events.poll();
-			
+						
 			this.handlers.stream()
 				.filter(handler -> handler.getHandleableEvents().contains(event.getClass()))
 				.forEach(handler -> handler.handleEvent(event));
 		}
 	}
 
-	public void registerHandler(EventHandler handler, float priority) {
-		this.handlers.add((int) ((this.handlers.size() - 1) * priority), handler);
+	public void registerHandler(EventHandler handler) {
+		this.newHandlers.add(handler);
 	}
 }

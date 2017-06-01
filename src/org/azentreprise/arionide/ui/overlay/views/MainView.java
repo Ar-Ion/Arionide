@@ -34,12 +34,13 @@ import java.util.Queue;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-import org.azentreprise.Debug;
 import org.azentreprise.ProjectFormatConverter;
 import org.azentreprise.Projects;
+import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.overlay.View;
+import org.azentreprise.arionide.ui.overlay.Views;
 import org.azentreprise.arionide.ui.overlay.components.Button;
 import org.azentreprise.arionide.ui.overlay.components.ClickListener;
 import org.azentreprise.arionide.ui.overlay.components.Label;
@@ -48,11 +49,11 @@ public class MainView extends View implements ClickListener {
 	
 	public static int pageID = 0;
 	
-	public MainView(View parent, AppManager appManager, LayoutManager layoutManager) {
-		super(parent, appManager, layoutManager);
+	public MainView(AppManager appManager, LayoutManager layoutManager) {
+		super(appManager, layoutManager);
 		
 		this.setBackgroundColor(new Color(63, 63, 63, 127));
-		//this.setBorderColor(new Color(0xCAFE));
+		this.setBorderColor(new Color(0xCAFE));
 		
 		this.add(new Label(this, "Home page").alterFont(Font.BOLD), 0.0f, 0.05f, 1.0f, 0.2f);
 		
@@ -94,7 +95,6 @@ public class MainView extends View implements ClickListener {
 	}
 
 	public void onClick(Object... signals) {
-		Debug.taskBegin("clicking on a button");
 		try {
 			switch((String) signals[0]) {
 				case "open":
@@ -104,7 +104,7 @@ public class MainView extends View implements ClickListener {
 					Desktop.getDesktop().browse(new URL((String) signals[1]).toURI()); 
 					break;
 				case "new":
-					// new project view
+					this.openView(Views.newProject, true);
 					break;
 				case "connect":
 					break;
@@ -123,7 +123,6 @@ public class MainView extends View implements ClickListener {
 		} catch(Exception exception) {
 			Debug.exception(exception);
 		}
-		Debug.taskEnd();
 	}
 	
 	public void open(Object[] signals) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, IOException {

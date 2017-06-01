@@ -53,10 +53,10 @@ public class LayoutManager implements EventHandler {
 		this.frameWidth = drawingContext.getSize().width;
 		this.frameHeight = drawingContext.getSize().height;
 		
-		dispatcher.registerHandler(this, IEventDispatcher.MEDIUM_PRIORITY);
+		dispatcher.registerHandler(this);
 	}
 	
-	public void register(Surface surface, Surface parent, float x, float y, float width, float height) {
+	public synchronized void register(Surface surface, Surface parent, float x, float y, float width, float height) {
 		if(parent == null || this.surfaces.containsKey(parent)) {
 			this.surfaces.put(surface, new LayoutConfiguration(parent, x, y, width, height));
 		} else {
@@ -64,12 +64,12 @@ public class LayoutManager implements EventHandler {
 		}
 	}
 	
-	public void unregister(Surface surface) {
+	public synchronized void unregister(Surface surface) {
 		this.surfaces.remove(surface);
 		this.unregister0(surface, this.surfaces.entrySet());
 	}
 	
-	private void unregister0(Surface surface, Set<Entry<Surface, LayoutConfiguration>> children) {
+	private synchronized void unregister0(Surface surface, Set<Entry<Surface, LayoutConfiguration>> children) {
 		Iterator<Entry<Surface, LayoutConfiguration>> iterator = children.iterator();
 		
 		while(iterator.hasNext()) {
@@ -83,14 +83,14 @@ public class LayoutManager implements EventHandler {
 	}
 	
 	@IAm("computing the layout")
-	public void compute() {
+	public synchronized void compute() {
 		Map<Surface, Rectangle> layout = new HashMap<>();
 		
 		this.surfaces.forEach((surface, configuration) -> {
 			if(configuration.getParent() != null) {
 				if(layout.containsKey(configuration.getParent())) {
 					Rectangle parentBounds = layout.get(configuration.getParent());
-					
+										
 					int x = (int) (parentBounds.x + parentBounds.width * configuration.getX());
 					int y = (int) (parentBounds.y + parentBounds.height * configuration.getY());
 					int width = (int) (parentBounds.width * configuration.getWidth()) - x;

@@ -29,13 +29,10 @@ import java.util.List;
 import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
-import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.events.MoveEvent;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.View;
-import org.azentreprise.ui.UIEvents;
-import org.azentreprise.ui.UIMain;
 import org.azentreprise.ui.render.RoundRectRenderer;
 
 public class Button extends Label implements EventHandler {
@@ -62,7 +59,7 @@ public class Button extends Label implements EventHandler {
 		
 		this.animation = new FieldModifierAnimation(this.getParentView().getAppManager(), "opacity", Label.class, this);
 		
-		this.getParentView().getAppManager().getEventDispatcher().registerHandler(this, IEventDispatcher.MEDIUM_PRIORITY);
+		this.getParentView().getAppManager().getEventDispatcher().registerHandler(this);
 	}
 	
 	public Button setHandler(ClickListener listener, Object... signals) {
@@ -102,34 +99,6 @@ public class Button extends Label implements EventHandler {
 	public void focusLost() {
 		this.hasFocus = false;
 		this.animation.startAnimation(1000, this.color >>> 24);
-	}
-
-	public void handleMouseEvent(byte event) {
-		if(!this.disabled) {
-			switch(event) {
-				case UIEvents.EVENT_MOUSE_ENTER:
-					if(!this.hasFocus) {
-						this.animation.startAnimation(15, 0xFF);
-					}
-					
-					UIMain.setFrameCursor(new Cursor(Cursor.HAND_CURSOR));
-					
-					break;
-				case UIEvents.EVENT_MOUSE_EXIT:
-					if(!this.hasFocus) {
-						this.animation.startAnimation(15, this.color >>> 24);
-					}
-					
-					UIMain.setFrameCursor(Cursor.getDefaultCursor());
-					
-					break;
-				case UIEvents.EVENT_MOUSE_CLICK:
-					
-					if(this.listener != null) {
-						this.listener.onClick(this.signals);
-					}
-			}
-		}
 	}
 	
 	public String toString() {

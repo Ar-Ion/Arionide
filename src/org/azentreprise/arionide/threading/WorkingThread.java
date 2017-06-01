@@ -36,7 +36,7 @@ public abstract class WorkingThread extends Thread {
 					
 					this.tick();
 					
-					long delta = System.currentTimeMillis() - this.initTime - this.getRefreshDelay();
+					long delta = System.currentTimeMillis() - this.initTime + this.getRefreshDelay();
 					
 					if(delta > 0) {
 						Thread.sleep(delta);

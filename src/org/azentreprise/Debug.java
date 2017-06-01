@@ -91,9 +91,6 @@ public class Debug {
 	}
 	
 	private static void print(String text, PrintStream stream) {
-		for(int i = 0; i < Debug.tasks.size(); i++) {
-			stream.print("    ");
-		}
 		
 		stream.println(text);
 	}

@@ -34,6 +34,8 @@ public abstract class Surface implements Drawable {
 	private int height;
 	
 	private Color backgroundColor = new Color(0, true);
+	
+	private boolean hidden = true;
 		
 	public void setLayoutBounds(int x, int y, int width, int height) {
 		this.x = x;
@@ -47,12 +49,26 @@ public abstract class Surface implements Drawable {
 	}
 	
 	public final void draw(Graphics2D g2d) {
-		g2d = (Graphics2D) g2d.create(this.x, this.y, this.width, this.height);
+		if(!this.hidden) {
+			g2d = (Graphics2D) g2d.create(this.x, this.y, this.width, this.height);
+				
+			g2d.setColor(this.backgroundColor);
+			g2d.fillRect(this.x, this.y, this.width, this.height);
 			
-		g2d.setColor(this.backgroundColor);
-		g2d.fillRect(this.x, this.y, this.width, this.height);
-		
-		this.drawSurface(g2d);
+			this.drawSurface(g2d);
+		}
+	}
+	
+	public boolean isHidden() {
+		return this.hidden;
+	}
+	
+	public void show() {
+		this.hidden = false;
+	}
+	
+	public void hide() {
+		this.hidden = true;
 	}
 	
 	public Rectangle getBounds() {

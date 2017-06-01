@@ -34,8 +34,7 @@ import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.overlay.View;
-import org.azentreprise.arionide.ui.overlay.views.MainView;
+import org.azentreprise.arionide.ui.overlay.Views;
 
 public class AppManager {
 	
@@ -48,38 +47,29 @@ public class AppManager {
 	private IWorkspace workspace;
 	private Resources resources;
 	private CoreRenderer renderer;
-	private LayoutManager layoutManager;
-	
-	private View view;
-	private View auxView;
 	
 	public AppManager(AppDrawingContext drawingContext, IEventDispatcher dispatcher) {
 		this.drawingContext = drawingContext;
 		this.dispatcher = dispatcher;
 	}
 
+	@IAm("drawing the frame")
 	public void draw(Graphics2D g2d) {
-		// g2d.drawImage(this.resources.getBackground(), 0, 0, null);
+		this.renderer.render(g2d);
 		
 		this.tickAnimations();
-		this.drawCurrentView(g2d);
+		
+		for(Drawable view : Views.all) {
+			view.draw(g2d);
+		}
 	}
 	
 	@IAm("ticking the animations")
-	public synchronized void tickAnimations() {		
-		for(Animation animation : this.animations) {
-			animation.doTick();
-		}
-	}
-	
-	@IAm("drawing the current view")
-	public void drawCurrentView(Graphics2D g2d) {
-		if(this.view != null) {
-			this.view.draw(g2d);
-		}
-		
-		if(this.auxView != null) {
-			this.auxView.draw(g2d);
+	public void tickAnimations() {
+		synchronized(this.animations) {
+			for(Animation animation : this.animations) {
+				animation.doTick();
+			}
 		}
 	}
 	
@@ -92,39 +82,12 @@ public class AppManager {
 		this.workspace = workspace;
 		this.resources = resources;
 		this.renderer = renderer;
-		this.layoutManager = manager;
-				
-		this.showView(new MainView(null, this, this.layoutManager), true);
 		
-		this.layoutManager.handleEvent(new InvalidateLayoutEvent());
-	}
-	
-	public void showView(View view, boolean transition) {
-		if(this.view != view && view != null) {
-			if(this.view != null) {
-				this.view.getAlphaAnimation().stopAnimation();
-				this.layoutManager.unregister(this.view);
-			}
-			
-			if(this.auxView != null) {
-				this.auxView.getAlphaAnimation().stopAnimation();
-			}
-			
-			if(transition) {
-				if(this.view != null) {
-					this.auxView = this.view;
-					this.view = view;
-					
-					this.view.getAlphaAnimation().startAnimation(1000, 1.0f);
-					this.auxView.getAlphaAnimation().startAnimation(1000, 0.0f);
-				} else {
-					this.view = view;
-					this.view.getAlphaAnimation().startAnimation(1000, 1.0f);
-				}
-			} else {
-				this.view = view;
-			}
-		}
+		Views.init(this, manager);
+		
+		this.getEventDispatcher().fire(new InvalidateLayoutEvent());
+		
+		Views.main.show(true);
 	}
 	
 	public AppDrawingContext getDrawingContext() {
