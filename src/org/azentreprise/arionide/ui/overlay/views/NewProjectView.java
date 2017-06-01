@@ -1,7 +1,6 @@
 package org.azentreprise.arionide.ui.overlay.views;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
@@ -15,7 +14,6 @@ public class NewProjectView extends View implements ClickListener {
 	public NewProjectView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
-		this.setBackgroundColor(new Color(63, 63, 63, 127));
 		this.setBorderColor(new Color(0xCAFE));
 				
 		this.add(new Label(this, "New project"), 0, 0.05f, 1.0f, 0.2f);
@@ -28,9 +26,6 @@ public class NewProjectView extends View implements ClickListener {
 		this.add(new Button(this, "Cancel").setHandler(this, "cancel"), 0.55f, 0.8f, 0.9f, 0.9f);
 		
 		this.setFocus(1);
-	}
-	
-	public void drawSurface(Graphics2D g2d) {
 	}
 
 	public void onClick(Object... signals) {

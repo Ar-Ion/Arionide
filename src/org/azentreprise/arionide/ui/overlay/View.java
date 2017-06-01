@@ -54,7 +54,7 @@ public abstract class View extends Surface {
 		
 		this.alphaAnimation = new FieldModifierAnimation(this.appManager, "alpha", View.class, this);
 		
-		this.layoutManager.register(this, null, 0.0f, 0.0f, 1.0f, 1.0f);
+		this.layoutManager.register(this, null, 0.1f, 0.1f, 0.9f, 0.9f);
 	}
 	
 	public void setBorderColor(Color color) {
@@ -65,16 +65,14 @@ public abstract class View extends Surface {
 		return this.alphaAnimation;
 	}
 
-	public void drawSurface(Graphics2D g2d) {
-		Rectangle bounds = g2d.getClipBounds();
-
+	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.alpha));
-				
+		
 		g2d.setColor(this.borderColor);
-		RoundRectRenderer.draw(g2d, 0, 0, bounds.width - 1, bounds.height - 1);
+		RoundRectRenderer.draw(g2d, bounds.x, bounds.y, bounds.width - 1, bounds.height - 1);
 		
 		for(Component component : this.components) {
-			component.draw(g2d);
+			component.draw(g2d, bounds);
 		}
 	}
 	
@@ -108,14 +106,19 @@ public abstract class View extends Surface {
 		
 		if(transition) {
 			this.getAlphaAnimation().startAnimation(500, 1.0f);
+		} else {
+			this.alpha = 1.0f;
 		}
 	}
 	
-	public void hide(boolean transition) {
-		this.hide();
-		
+	public void hide(boolean transition) {		
 		if(transition) {
-			this.getAlphaAnimation().startAnimation(500, 0.0f);
+			this.getAlphaAnimation().startAnimation(500, after -> {
+				this.hide();
+			}, 0.0f);
+		} else {
+			this.alpha = 0.0f;
+			this.hide();
 		}
 	}
 	

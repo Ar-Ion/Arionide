@@ -48,6 +48,8 @@ public class AppManager {
 	private Resources resources;
 	private CoreRenderer renderer;
 	
+	private boolean initialized = false;
+	
 	public AppManager(AppDrawingContext drawingContext, IEventDispatcher dispatcher) {
 		this.drawingContext = drawingContext;
 		this.dispatcher = dispatcher;
@@ -55,12 +57,14 @@ public class AppManager {
 
 	@IAm("drawing the frame")
 	public void draw(Graphics2D g2d) {
-		this.renderer.render(g2d);
-		
-		this.tickAnimations();
-		
-		for(Drawable view : Views.all) {
-			view.draw(g2d);
+		if(this.initialized) {
+			this.renderer.render(g2d);
+			
+			this.tickAnimations();
+			
+			for(Drawable view : Views.all) {
+				view.draw(g2d, g2d.getClipBounds());
+			}
 		}
 	}
 	
@@ -84,6 +88,7 @@ public class AppManager {
 		this.renderer = renderer;
 		
 		Views.init(this, manager);
+		this.initialized = true;
 		
 		this.getEventDispatcher().fire(new InvalidateLayoutEvent());
 		

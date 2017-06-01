@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -52,7 +53,6 @@ public class MainView extends View implements ClickListener {
 	public MainView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
-		this.setBackgroundColor(new Color(63, 63, 63, 127));
 		this.setBorderColor(new Color(0xCAFE));
 		
 		this.add(new Label(this, "Home page").alterFont(Font.BOLD), 0.0f, 0.05f, 1.0f, 0.2f);

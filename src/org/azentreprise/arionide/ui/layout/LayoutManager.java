@@ -24,12 +24,9 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.events.Event;
@@ -56,29 +53,11 @@ public class LayoutManager implements EventHandler {
 		dispatcher.registerHandler(this);
 	}
 	
-	public synchronized void register(Surface surface, Surface parent, float x, float y, float width, float height) {
+	public synchronized void register(Surface surface, Surface parent, float x1, float y1, float x2, float y2) {
 		if(parent == null || this.surfaces.containsKey(parent)) {
-			this.surfaces.put(surface, new LayoutConfiguration(parent, x, y, width, height));
+			this.surfaces.put(surface, new LayoutConfiguration(parent, x1, y1, x2, y2));
 		} else {
 			throw new RuntimeException("Parent surface is not registered");
-		}
-	}
-	
-	public synchronized void unregister(Surface surface) {
-		this.surfaces.remove(surface);
-		this.unregister0(surface, this.surfaces.entrySet());
-	}
-	
-	private synchronized void unregister0(Surface surface, Set<Entry<Surface, LayoutConfiguration>> children) {
-		Iterator<Entry<Surface, LayoutConfiguration>> iterator = children.iterator();
-		
-		while(iterator.hasNext()) {
-			Entry<Surface, LayoutConfiguration> child = iterator.next();
-			
-			if(child.getValue().getParent() == surface) {
-				children.iterator();
-				this.unregister0(child.getKey(), children);
-			}
 		}
 	}
 	
@@ -91,24 +70,30 @@ public class LayoutManager implements EventHandler {
 				if(layout.containsKey(configuration.getParent())) {
 					Rectangle parentBounds = layout.get(configuration.getParent());
 										
-					int x = (int) (parentBounds.x + parentBounds.width * configuration.getX());
-					int y = (int) (parentBounds.y + parentBounds.height * configuration.getY());
-					int width = (int) (parentBounds.width * configuration.getWidth()) - x;
-					int height = (int) (parentBounds.height * configuration.getHeight()) - y;
+					int x = (int) (parentBounds.x + parentBounds.width * configuration.getX1());
+					int y = (int) (parentBounds.y + parentBounds.height * configuration.getY1());
+					int width = (int) (parentBounds.width * (configuration.getX2() - configuration.getX1()));
+					int height = (int) (parentBounds.height * (configuration.getY2() - configuration.getY1()));
 					
-					layout.put(surface, new Rectangle(x, y, width, height));
+					Rectangle bounds = new Rectangle(x, y, width, height);
+										
+					layout.put(surface, bounds);
 					
-					surface.setLayoutBounds(x, y, width, height);
+					surface.setLayoutBounds(bounds);
 				} else {
 					System.err.println("Parent surface (" + configuration.getParent() + ") has not been computed");
 				}
 			} else {
-				int width = (int) (this.frameWidth * configuration.width);
-				int height = (int) (this.frameHeight * configuration.height);
+				int x = (int) (this.frameWidth * configuration.getX1());
+				int y = (int) (this.frameHeight * configuration.getY1());
+				int width = (int) (this.frameWidth * configuration.getX2()) - x;
+				int height = (int) (this.frameHeight * configuration.getY2()) - y;
 				
-				layout.put(surface, new Rectangle(0, 0, width, height));
+				Rectangle bounds = new Rectangle(x, y, width, height);
 				
-				surface.setLayoutBounds(0, 0, width, height);
+				layout.put(surface, bounds);
+				
+				surface.setLayoutBounds(bounds);
 			}
 		});
 	}
@@ -131,37 +116,37 @@ public class LayoutManager implements EventHandler {
 	private final class LayoutConfiguration {
 		
 		private final Surface parent;
-		private final float x;
-		private final float y;
-		private final float width;
-		private final float height;
+		private final float x1;
+		private final float y1;
+		private final float x2;
+		private final float y2;
 		
-		private LayoutConfiguration(Surface parent, float x, float y, float width, float height) {
+		private LayoutConfiguration(Surface parent, float x1, float y1, float x2, float y2) {
 			this.parent = parent;
-			this.x = x;
-			this.y = y;
-			this.width = width;
-			this.height = height;
+			this.x1 = x1;
+			this.y1 = y1;
+			this.x2 = x2;
+			this.y2 = y2;
 		}
 		
 		private Surface getParent() {
 			return this.parent;
 		}
 		
-		private float getX() {
-			return this.x;
+		private float getX1() {
+			return this.x1;
 		}
 		
-		private float getY() {
-			return this.y;
+		private float getY1() {
+			return this.y1;
 		}
 		
-		private float getWidth() {
-			return this.width;
+		private float getX2() {
+			return this.x2;
 		}
 		
-		private float getHeight() {
-			return this.height;
+		private float getY2() {
+			return this.y2;
 		}
 	}
 }

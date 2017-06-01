@@ -69,7 +69,7 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher) {
-		return new AWTDrawingContext(this.drawingThread, dispatcher, 800, 600);
+		return new AWTDrawingContext(this.drawingThread, dispatcher, 1080, 720);
 	}
 
 	public Resources loadResources(IWorkspace workspace, AppDrawingContext context) {

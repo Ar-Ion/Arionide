@@ -92,12 +92,11 @@ public class Text extends Button {
 		return this.placeholder;
 	}
 
-	public void drawSurface(Graphics2D g2d) {
-		super.drawSurface(g2d);
+	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
+		super.drawSurface(g2d, bounds);
 		
 		if(this.hasFocus && this.text.length() > 0) {
 			FontMetrics metrics = g2d.getFontMetrics();
-			Rectangle bounds = g2d.getClipBounds();
 			
 			int x = this.textRenderPosition.x + metrics.charsWidth(this.text.toString().toCharArray(), 0, this.cursorPosition);
 			int y = bounds.height / 2;

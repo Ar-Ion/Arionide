@@ -85,10 +85,9 @@ public class Button extends Label implements EventHandler {
 		return this;
 	}
 	
-	public void drawSurface(Graphics2D g2d) {
-		super.drawSurface(g2d);
-		Rectangle bounds = g2d.getClipBounds();
-		RoundRectRenderer.draw(g2d, 0, 0, bounds.width - 1, bounds.height - 1);
+	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
+		super.drawSurface(g2d, bounds);
+		RoundRectRenderer.draw(g2d, bounds.x, bounds.y, bounds.width - 1, bounds.height - 1);
 	}
 	
 	public void focusGained() {
@@ -110,6 +109,11 @@ public class Button extends Label implements EventHandler {
 	}
 
 	public <T extends Event> void handleEvent(T event) {
+		
+		if(this.isHidden() || this.getBounds() == null) {
+			return;
+		}
+		
 		if(event instanceof MoveEvent) {
 			MoveEvent casted = (MoveEvent) event;
 			

@@ -53,28 +53,26 @@ public class Label extends Component {
 		return this;
 	}
 
-	public void drawSurface(Graphics2D g2d) {		
+	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
 		if(this.opacity > 0) {
 			g2d.setColor(new Color((this.opacity << 24) | (this.color & 0xFFFFFF), true));
 		}
 		
-		this.drawString(g2d, this.label);
+		this.drawString(g2d, bounds, this.label);
 	}
 	
-	public void drawString(Graphics2D g2d, String str) {
+	public void drawString(Graphics2D g2d, Rectangle bounds, String str) {
 		if(UIFontAdapter.needSetup()) {
 			g2d.setFont(this.getFont());
 			UIFontAdapter.setup(g2d.getFontMetrics());
 		}
-		
-		Rectangle bounds = g2d.getClipBounds();
-		
+				
 		g2d.setFont(UIFontAdapter.adapt(str, bounds.width, bounds.height, 0.8f));
 		
 		FontMetrics metrics = g2d.getFontMetrics();
 		
-		int x = (bounds.width - metrics.stringWidth(str)) / 2;
-		int y = (bounds.height - metrics.getHeight()) / 2 + metrics.getAscent();
+		int x = bounds.x + (bounds.width - metrics.stringWidth(str)) / 2;
+		int y = bounds.y + (bounds.height - metrics.getHeight()) / 2 + metrics.getAscent();
 		
 		g2d.drawString(str, x, y);
 		

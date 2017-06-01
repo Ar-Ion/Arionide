@@ -28,34 +28,26 @@ import org.azentreprise.arionide.ui.Drawable;
 
 public abstract class Surface implements Drawable {
 	
-	private int x;
-	private int y;
-	private int width;
-	private int height;
+	private Rectangle bounds;
 	
 	private Color backgroundColor = new Color(0, true);
 	
 	private boolean hidden = true;
 		
-	public void setLayoutBounds(int x, int y, int width, int height) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+	public void setLayoutBounds(Rectangle bounds) {
+		this.bounds = bounds;
 	}
 	
 	public void setBackgroundColor(Color color) {
 		this.backgroundColor = color;
 	}
 	
-	public final void draw(Graphics2D g2d) {
-		if(!this.hidden) {
-			g2d = (Graphics2D) g2d.create(this.x, this.y, this.width, this.height);
-				
+	public final void draw(Graphics2D g2d, Rectangle bounds) {
+		if(!this.hidden && this.bounds != null) {
 			g2d.setColor(this.backgroundColor);
-			g2d.fillRect(this.x, this.y, this.width, this.height);
+			g2d.fill(this.getBounds());
 			
-			this.drawSurface(g2d);
+			this.drawSurface(g2d, this.getBounds());
 		}
 	}
 	
@@ -72,8 +64,8 @@ public abstract class Surface implements Drawable {
 	}
 	
 	public Rectangle getBounds() {
-		return new Rectangle(this.x, this.y, this.width, this.height);
+		return this.bounds;
 	}
 	
-	public abstract void drawSurface(Graphics2D g2d);
+	public abstract void drawSurface(Graphics2D g2d, Rectangle bounds);
 }
