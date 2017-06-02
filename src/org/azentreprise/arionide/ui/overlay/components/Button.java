@@ -39,6 +39,9 @@ public class Button extends Label implements EventHandler {
 	
 	private static final int ANIMATION_TIME = 300;
 	
+	private static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
+	private static final Cursor HAND_CURSOR = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+	
 	protected final Animation animation;
 	protected boolean hasFocus;
 	
@@ -121,7 +124,7 @@ public class Button extends Label implements EventHandler {
 				if(!this.mouseOver) {
 					this.mouseOver = true;
 					
-					this.getParentView().getAppManager().getDrawingContext().setCursor(new Cursor(Cursor.HAND_CURSOR));
+					this.getParentView().getAppManager().getDrawingContext().setCursor(Button.HAND_CURSOR);
 
 					if(!this.hasFocus) {
 						this.animation.startAnimation(Button.ANIMATION_TIME, 0xFF);
@@ -131,7 +134,7 @@ public class Button extends Label implements EventHandler {
 				if(this.mouseOver) {
 					this.mouseOver = false;
 					
-					this.getParentView().getAppManager().getDrawingContext().setCursor(Cursor.getDefaultCursor());
+					this.getParentView().getAppManager().getDrawingContext().setCursor(Button.DEFAULT_CURSOR);
 
 					if(!this.hasFocus) {
 						this.animation.startAnimation(Button.ANIMATION_TIME, this.color >>> 24);

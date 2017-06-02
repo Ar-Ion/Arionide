@@ -41,7 +41,7 @@ public class AppManager {
 	private final AppDrawingContext drawingContext;
 	private final IEventDispatcher dispatcher;
 	
-	private final List<Animation> animations = Collections.synchronizedList(new ArrayList<>());
+	private final List<Animation> animations = new ArrayList<>();
 	
 	private Arionide theInstance;
 	private IWorkspace workspace;
@@ -70,10 +70,8 @@ public class AppManager {
 	
 	@IAm("ticking the animations")
 	public void tickAnimations() {
-		synchronized(this.animations) {
-			for(Animation animation : this.animations) {
-				animation.doTick();
-			}
+		for(Animation animation : this.animations) {
+			animation.doTick();
 		}
 	}
 	

@@ -35,7 +35,6 @@ import org.azentreprise.arionide.threading.MiscProcessingThread;
 import org.azentreprise.arionide.threading.UserHelpingThread;
 import org.azentreprise.arionide.threading.WorkingThread;
 import org.azentreprise.arionide.ui.AWTDrawingContext;
-import org.azentreprise.arionide.ui.AWTWrapperThread;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
@@ -45,18 +44,15 @@ public class ArionideImpl implements Arionide {
 	private EventDispatchingThread eventThread;
 	private WorkingThread userThread;
 	private WorkingThread miscThread;
-	private AWTWrapperThread drawingThread;
 	
 	public void startThreads() {
 		this.eventThread = new EventDispatchingThread();
 		this.userThread = new UserHelpingThread();
 		this.miscThread = new MiscProcessingThread();
-		this.drawingThread = new AWTWrapperThread();
 		
 		this.eventThread.start();
 		this.userThread.start();
 		this.miscThread.start();
-		this.drawingThread.start();
 	}
 
 	public IEventDispatcher setupEventDispatcher() {
@@ -69,7 +65,7 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher) {
-		return new AWTDrawingContext(this.drawingThread, dispatcher, 1080, 720);
+		return new AWTDrawingContext(dispatcher, 1080, 720);
 	}
 
 	public Resources loadResources(IWorkspace workspace, AppDrawingContext context) {
@@ -90,7 +86,7 @@ public class ArionideImpl implements Arionide {
 	
 	// note: this list is not mutable
 	private List<WorkingThread> getSystemThreads() {
-		return Arrays.asList(this.eventThread, this.userThread, this.miscThread, this.drawingThread);
+		return Arrays.asList(this.eventThread, this.userThread, this.miscThread);
 	}
 
 	public WatchdogState runWatchdog() {
@@ -98,7 +94,7 @@ public class ArionideImpl implements Arionide {
 
 		this.getSystemThreads().stream()
 			.forEach(thread -> System.out.println("Lag rate for thread '" + thread.getDescriptor() + "' is " + thread.getLagRate() * 100 + "% "
-				+ "and is running at " + (thread.pollTicks() / Arionide.WATCHDOG_TIMER) + " TPS."));
+				+ "and is running at " + (1000 * thread.pollTicks() / Arionide.WATCHDOG_TIMER ) + " TPS."));
 		
 		System.out.println();
 		

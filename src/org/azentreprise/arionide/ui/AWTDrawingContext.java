@@ -60,17 +60,17 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	private static final long serialVersionUID = 1171699360872561984L;
 	
 	private final Map<RenderingHints.Key, Object> renderingHints = new HashMap<>();
-	
-	private final AWTWrapperThread wrapperThread;
+		
 	private final IEventDispatcher dispatcher;
 	private final AppManager theManager;
 	private final Frame theFrame;
 	
 	private Thread awtThread = null;
 	
-	public AWTDrawingContext(AWTWrapperThread wrapperThread, IEventDispatcher dispatcher, int width, int height) {
-		this.wrapperThread = wrapperThread;
-		
+	private int ticks = 0;
+	private long time = 0;
+	
+	public AWTDrawingContext(IEventDispatcher dispatcher, int width, int height) {		
 		this.dispatcher = dispatcher;
 		
 		this.theManager = new AppManager(this, dispatcher);
@@ -91,17 +91,23 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	}
 
 	public void paint(Graphics g) {
+		this.ticks++;
+
 		if(this.awtThread == null) {
 			this.awtThread = Thread.currentThread();
 		}
-		
-		this.wrapperThread.startDrawing();
-		
+				
 		this.draw((Graphics2D) g);
-		
-		this.wrapperThread.stopDrawing();
-		
+				
 		this.repaint();
+		
+		long now = System.currentTimeMillis();
+		
+		if(this.time + 1000 <= now) {
+			System.out.println(this.ticks + " FPS");
+			this.time = now;
+			this.ticks = 0;
+		}
 	}
 	
 	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
@@ -120,6 +126,11 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		this.renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		this.renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+	}
+	
+	public void setCursor(Cursor cursor) {
+		super.setCursor(cursor);
+		System.out.println(cursor);
 	}
 	
 	public WorkingThread getWrapperThread() {
@@ -210,6 +221,7 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		Point point = event.getPoint();
 		this.transform(point);
 		this.dispatcher.fire(new MoveEvent(point, MoveType.MOVE));
+		this.repaint();
 	}
 	
 	public void mouseWheelMoved(MouseWheelEvent event) {
