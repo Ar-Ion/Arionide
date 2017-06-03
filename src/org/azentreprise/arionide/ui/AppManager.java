@@ -40,6 +40,7 @@ public class AppManager {
 	
 	private final AppDrawingContext drawingContext;
 	private final IEventDispatcher dispatcher;
+	private final FocusManager focusManager;
 	
 	private final List<Animation> animations = new ArrayList<>();
 	
@@ -53,6 +54,7 @@ public class AppManager {
 	public AppManager(AppDrawingContext drawingContext, IEventDispatcher dispatcher) {
 		this.drawingContext = drawingContext;
 		this.dispatcher = dispatcher;
+		this.focusManager = new FocusManager(dispatcher);
 	}
 
 	@IAm("drawing the frame")
@@ -104,8 +106,16 @@ public class AppManager {
 		return this.dispatcher;
 	}
 	
+	public FocusManager getFocusManager() {
+		return this.focusManager;
+	}
+	
 	public Resources getResources() {
 		return this.resources;
+	}
+	
+	public IWorkspace getWorkspace() {
+		return this.workspace;
 	}
 	
 	public void shutdown() {

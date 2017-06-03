@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * This file is part of Arionide.
+ *
+ * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
+ * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
+ *
+ * Arionide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Arionide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
+ *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay.views;
 
 import java.awt.Color;
@@ -12,6 +32,9 @@ import org.azentreprise.arionide.ui.overlay.components.Label;
 import org.azentreprise.arionide.ui.overlay.components.Text;
 
 public class NewProjectView extends View implements ClickListener {
+	
+	private final Text projectName = new Text(this, "Project name");
+	
 	public NewProjectView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
@@ -19,14 +42,13 @@ public class NewProjectView extends View implements ClickListener {
 				
 		this.add(new Label(this, "New project"), 0, 0.05f, 1.0f, 0.2f);
 		
-		this.add(new Text(this, "Project name"), 0.1f, 0.3f, 0.9f, 0.4f);
-		this.add(new Text(this, "Owner"), 0.1f, 0.45f, 0.9f, 0.55f);
-		this.add(new Text(this, "Description"), 0.1f, 0.60f, 0.9f, 0.70f);
+		this.add(this.projectName, 0.1f, 0.5f, 0.9f, 0.7f);
 		
 		this.add(new Button(this, "Create").setHandler(this, "create"), 0.1f, 0.8f, 0.45f, 0.9f);
 		this.add(new Button(this, "Cancel").setHandler(this, "cancel"), 0.55f, 0.8f, 0.9f, 0.9f);
 		
-		this.setFocus(1);
+		this.getAppManager().getFocusManager().setupCycle(1, 2, 3);
+		this.getAppManager().getFocusManager().request(1);
 	}
 
 	public void onClick(Object... signals) {

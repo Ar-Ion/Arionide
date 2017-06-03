@@ -22,6 +22,7 @@ package org.azentreprise.arionide.ui.overlay;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -45,7 +46,6 @@ public abstract class View extends Surface {
 	private final Animation alphaAnimation;
 	
 	private Color borderColor = new Color(0, 0, 0, 0);
-	private int focus = 0;
 	public float alpha = 0.0f;
 	
 	public View(AppManager appManager, LayoutManager layoutManager) {
@@ -66,6 +66,8 @@ public abstract class View extends Surface {
 	}
 
 	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
+		Composite original = g2d.getComposite();
+		
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.alpha));
 		
 		g2d.setColor(this.borderColor);
@@ -75,11 +77,14 @@ public abstract class View extends Surface {
 		for(Component component : this.components) {
 			component.draw(g2d, bounds);
 		}
+		
+		g2d.setComposite(original);
 	}
 	
 	protected void add(Component component, float x, float y, float width, float height) {
 		this.components.add(component);
-		this.layoutManager.register(component, this, x, y, width, height);
+		this.getLayoutManager().register(component, this, x, y, width, height);
+		this.getAppManager().getFocusManager().registerComponent(component);
 	}
 	
 	protected Component get(int componentID) {
@@ -98,8 +103,8 @@ public abstract class View extends Surface {
 	
 	@IAm("opening a view")
 	public void openView(View target, boolean transition) {
-		this.hide(transition);
 		target.show(transition);
+		this.hide(transition);
 	}
 	
 	public void show(boolean transition) {
@@ -129,70 +134,5 @@ public abstract class View extends Surface {
 	
 	public LayoutManager getLayoutManager() {
 		return this.layoutManager;
-	}
-	
-	private void updateFocus() {
-		if(this.components.size() > this.focus) {
-			
-			if(this.focus < 0) {
-				this.components.forEach(comp -> this.componentFocusLost(comp));
-			} else {
-				Component component = this.components.get(this.focus);
-				
-				component.focusGained();
-				
-				this.components.forEach(other -> this.componentFocusLost(other != component ? other : null));
-			}
-		}
-	}
-	
-	private void componentFocusLost(Component comp) {
-		if(comp != null) {
-			comp.focusLost();
-		}
-	}
-	
-	public void requestFocus(Component component) {
-		this.setFocus(this.components.indexOf(component));
-	}
-	
-	protected void setFocus(int componentID) {
-		if(this.hasFocusableComponent()) {
-			if(componentID > this.focus) {
-				while(componentID < this.components.size() && !this.components.get(componentID).isFocusable()) {
-					componentID++;
-				}
-			} else {
-				while(componentID > 0 && !this.components.get(componentID).isFocusable()) {
-					componentID--;
-				}
-			}
-			
-			if(componentID >= 0 && componentID < this.components.size()) {
-				this.focus = componentID;
-				this.updateFocus();
-			}
-		}
-	}
-	
-	private boolean hasFocusableComponent() {
-		boolean hasFocusableComponent = false;
-		
-		for(Component comp : this.components) {
-			if(comp.isFocusable()) {
-				hasFocusableComponent = true;
-				break;
-			}
-		}
-		
-		return hasFocusableComponent;
-	}
-	
-	public void nextFocus() {		
-		this.setFocus(this.focus + 1);
-	}
-	
-	public void prevFocus() {
-		this.setFocus(this.focus - 1);
 	}
 }

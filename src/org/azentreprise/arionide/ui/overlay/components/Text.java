@@ -26,10 +26,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.azentreprise.Arionide;
 import org.azentreprise.arionide.ui.overlay.View;
@@ -37,12 +33,8 @@ import org.azentreprise.ui.UIEvents;
 import org.azentreprise.ui.UIMain;
 import org.azentreprise.ui.animations.Animation;
 import org.azentreprise.ui.animations.FieldModifierAnimation;
-import org.azentreprise.ui.views.UIView;
 
-public class Text extends Button {
-	
-	private static final Map<View, List<Text>> accessor = new HashMap<>();
-	
+public class Text extends Button {	
 	private final Animation animation = new FieldModifierAnimation("cursorOpacity", Text.class, this);
 	
 	protected String placeholder;
@@ -56,14 +48,7 @@ public class Text extends Button {
 	
 	public Text(View parent, String placeholder) {
 		super(parent, placeholder);
-		
 		this.placeholder = placeholder;
-				
-		if(!Text.accessor.containsKey(parent)) {
-			Text.accessor.put(parent, new ArrayList<Text>());
-		}
-
-		Text.accessor.get(parent).add(this);
 	}
 	
 	public Text setPlaceholder(String placeholder) {
@@ -224,17 +209,5 @@ public class Text extends Button {
 				
 				break;
 		}
-	}
-	
-	public static String[] fetchUserData(UIView parent) {
-		List<String> list = new ArrayList<String>();
-		
-		for(Text uitext : Text.accessor.get(parent)) {
-			if(uitext.text.length() > 0) {
-				list.add(uitext.text.toString());
-			}
-		}
-		
-		return list.toArray(new String[0]);
 	}
 }

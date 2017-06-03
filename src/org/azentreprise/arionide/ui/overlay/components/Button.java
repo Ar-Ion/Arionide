@@ -39,11 +39,11 @@ public class Button extends Label implements EventHandler {
 	
 	private static final int ANIMATION_TIME = 200;
 	
-	private static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
-	private static final Cursor HAND_CURSOR = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-	
 	protected final Animation animation;
 	protected boolean hasFocus;
+	
+	protected Cursor defaultCursor = Cursor.getDefaultCursor();
+	protected Cursor overCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 	
 	private boolean disabled = false;
 	
@@ -79,7 +79,7 @@ public class Button extends Label implements EventHandler {
 			this.setColor(0x63FF0000);
 			
 			if(this.hasFocus) {
-				this.getParentView().nextFocus();
+				this.getParentView().getAppManager().getFocusManager().next();
 			}
 		} else {
 			this.setColor(this.colorKeepRef);
@@ -124,7 +124,7 @@ public class Button extends Label implements EventHandler {
 				if(!this.mouseOver) {
 					this.mouseOver = true;
 					
-					this.getParentView().getAppManager().getDrawingContext().setCursor(Button.HAND_CURSOR);
+					this.getParentView().getAppManager().getDrawingContext().setCursor(this.overCursor);
 
 					if(!this.hasFocus) {
 						this.animation.startAnimation(Button.ANIMATION_TIME, 0xFF);
@@ -134,7 +134,7 @@ public class Button extends Label implements EventHandler {
 				if(this.mouseOver) {
 					this.mouseOver = false;
 					
-					this.getParentView().getAppManager().getDrawingContext().setCursor(Button.DEFAULT_CURSOR);
+					this.getParentView().getAppManager().getDrawingContext().setCursor(this.defaultCursor);
 
 					if(!this.hasFocus) {
 						this.animation.startAnimation(Button.ANIMATION_TIME, this.color >>> 24);
