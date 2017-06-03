@@ -26,15 +26,7 @@ import java.awt.Rectangle;
 public class RoundRectRenderer {
 	
 	public static void draw(Graphics2D g2d, int x, int y, int width, int height) {
-		g2d.drawLine(x + 8, y, x + width - 8, y);
-		g2d.drawLine(x + width, y + 8, x + width, y + height - 8);
-		g2d.drawLine(x + 8, y + height, x + width - 8, y + height);
-		g2d.drawLine(x, y + 8, x, y + height - 8);
-		
-		g2d.drawLine(x + width - 8, y, x + width, y + 8);
-		g2d.drawLine(x + width, y + height - 8, x + width - 8, y + height);
-		g2d.drawLine(x + 8, y + height, x, y + height - 8);
-		g2d.drawLine(x, y + 8, x + 8, y);
+		g2d.drawRoundRect(x, y, width, height, 30, 30);
 	}
 	
 	public static void draw(Graphics2D g2d, Rectangle bounds) {
@@ -42,19 +34,7 @@ public class RoundRectRenderer {
 	}
 	
 	public static void fill(Graphics2D g2d, int x, int y, int width, int height) {
-		g2d.fillRect(x, y + 5, width, height - 9);
-		
-		g2d.drawLine(x + 5, y, x + width - 5, y);
-		g2d.drawLine(x + 3, y + 1, x + width - 3, y + 1);
-		g2d.drawLine(x + 2, y + 2, x + width - 2, y + 2);
-		g2d.drawLine(x + 1, y + 3, x + width - 1, y + 3);
-		g2d.drawLine(x + 1, y + 4, x + width - 1, y + 4);
-		
-		g2d.drawLine(x + 5, y + height, x + width - 5, y + height);
-		g2d.drawLine(x + 3, y + height - 1, x + width - 3, y + height - 1);
-		g2d.drawLine(x + 2, y + height - 2, x + width - 2, y + height - 2);
-		g2d.drawLine(x + 1, y + height - 3, x + width - 1, y + height - 3);
-		g2d.drawLine(x + 1, y + height - 4, x + width - 1, y + height - 4);
+		g2d.fillRoundRect(x, y, width, height, 30, 30);
 	}
 	
 	public static void fill(Graphics2D g2d, Rectangle bounds) {

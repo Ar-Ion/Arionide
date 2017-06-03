@@ -69,6 +69,7 @@ public abstract class View extends Surface {
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.alpha));
 		
 		g2d.setColor(this.borderColor);
+		
 		RoundRectRenderer.draw(g2d, bounds.x, bounds.y, bounds.width - 1, bounds.height - 1);
 		
 		for(Component component : this.components) {

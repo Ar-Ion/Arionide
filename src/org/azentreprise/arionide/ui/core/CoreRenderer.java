@@ -25,9 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class CoreRenderer {	
-	public void render(Graphics2D g2d) {
-		Rectangle bounds = g2d.getClipBounds();
-		
+	public void render(Graphics2D g2d, Rectangle bounds) {		
 		g2d.setColor(Color.black);
 		g2d.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
 	}

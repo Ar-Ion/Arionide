@@ -37,7 +37,7 @@ import org.azentreprise.ui.render.RoundRectRenderer;
 
 public class Button extends Label implements EventHandler {
 	
-	private static final int ANIMATION_TIME = 300;
+	private static final int ANIMATION_TIME = 200;
 	
 	private static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
 	private static final Cursor HAND_CURSOR = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);

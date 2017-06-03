@@ -24,7 +24,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;

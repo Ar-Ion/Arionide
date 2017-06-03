@@ -5,6 +5,7 @@ import java.awt.Color;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.overlay.View;
+import org.azentreprise.arionide.ui.overlay.Views;
 import org.azentreprise.arionide.ui.overlay.components.Button;
 import org.azentreprise.arionide.ui.overlay.components.ClickListener;
 import org.azentreprise.arionide.ui.overlay.components.Label;
@@ -31,6 +32,7 @@ public class NewProjectView extends View implements ClickListener {
 	public void onClick(Object... signals) {
 		switch((String) signals[0]) {
 			case "cancel":
+				this.openView(Views.main, true);
 				break;
 			case "create":
 				/*String[] fields = UIText.fetchUserData(this);

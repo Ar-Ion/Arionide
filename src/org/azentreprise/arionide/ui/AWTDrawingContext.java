@@ -20,10 +20,10 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
-import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Panel;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -38,6 +38,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,7 +66,8 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	private final AppManager theManager;
 	private final Frame theFrame;
 	
-	private Thread awtThread = null;
+	private Image buffer = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+	private Graphics2D bufferGraphics = (Graphics2D) this.buffer.getGraphics();
 	
 	private int ticks = 0;
 	private long time = 0;
@@ -83,7 +85,7 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		
 		this.theFrame.addWindowListener(this);
 		this.theFrame.addComponentListener(this);
-		
+				
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.addMouseWheelListener(this);
@@ -93,14 +95,8 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	public void paint(Graphics g) {
 		this.ticks++;
 
-		if(this.awtThread == null) {
-			this.awtThread = Thread.currentThread();
-		}
-				
 		this.draw((Graphics2D) g);
-				
-		this.repaint();
-		
+					
 		long now = System.currentTimeMillis();
 		
 		if(this.time + 1000 <= now) {
@@ -108,6 +104,8 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 			this.time = now;
 			this.ticks = 0;
 		}
+		
+		this.repaint();
 	}
 	
 	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
@@ -115,9 +113,24 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		this.theManager.loadUI(theInstance, workspace, resources, renderer, manager);
 	}
 
-	public void draw(Graphics2D g2d) {
-		g2d.setRenderingHints(this.renderingHints);
-		this.theManager.draw(g2d);
+	public void draw(Graphics2D g2d) {		
+		this.bufferGraphics.setRenderingHints(this.renderingHints);
+		this.theManager.draw(this.bufferGraphics);
+		
+		g2d.drawImage(this.buffer, 0, 0, null);
+	}
+	
+	private void resetBuffer(int width, int height) {
+		if(this.buffer != null) {
+			this.buffer.flush();
+		}
+		
+		if(this.bufferGraphics != null) {
+			this.bufferGraphics.dispose();
+		}
+		
+		this.buffer = this.createImage(width, height);		
+		this.bufferGraphics = (Graphics2D) this.buffer.getGraphics();
 	}
 
 	public void setupRenderingProperties() {
@@ -126,11 +139,6 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		this.renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		this.renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-	}
-	
-	public void setCursor(Cursor cursor) {
-		super.setCursor(cursor);
-		System.out.println(cursor);
 	}
 	
 	public WorkingThread getWrapperThread() {
@@ -166,6 +174,7 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	}
 
 	public void componentResized(ComponentEvent event) {
+		this.resetBuffer(this.getWidth(), this.getHeight());
 		this.dispatcher.fire(new InvalidateLayoutEvent());
 	}
 
@@ -221,7 +230,6 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		Point point = event.getPoint();
 		this.transform(point);
 		this.dispatcher.fire(new MoveEvent(point, MoveType.MOVE));
-		this.repaint();
 	}
 	
 	public void mouseWheelMoved(MouseWheelEvent event) {
