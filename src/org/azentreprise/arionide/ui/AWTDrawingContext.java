@@ -50,7 +50,9 @@ import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
 import org.azentreprise.arionide.events.MoveEvent;
 import org.azentreprise.arionide.events.MoveType;
+import org.azentreprise.arionide.events.ValidateEvent;
 import org.azentreprise.arionide.events.WheelEvent;
+import org.azentreprise.arionide.events.WriteEvent;
 import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.threading.WorkingThread;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
@@ -246,17 +248,24 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	}
 
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		;
 	}
 
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void keyPressed(KeyEvent event) {
+		if(event.getKeyCode() == KeyEvent.VK_ENTER) {
+			this.dispatcher.fire(new ValidateEvent());
+		} else if(event.getKeyCode() == KeyEvent.VK_TAB) {
+			if(!event.isShiftDown()) {
+				this.theManager.getFocusManager().next();
+			} else {
+				this.theManager.getFocusManager().prev();
+			}
+		} else {
+			this.dispatcher.fire(new WriteEvent(event.getKeyChar(), event.getKeyCode(), event.isShiftDown(), event.isAltDown()));
+		}
 	}
 
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		;
 	}
 }

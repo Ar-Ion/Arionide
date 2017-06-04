@@ -20,17 +20,42 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events;
 
-import org.azentreprise.arionide.ui.overlay.Component;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 
-public abstract class FocusEvent extends Event {
+public class WriteEvent extends Event {
 	
-	private final Component target;
+	private static final Toolkit toolkit = Toolkit.getDefaultToolkit();
 	
-	public FocusEvent(Component target) {
-		this.target = target;
+	private final char ch;
+	private final int keycode;
+	private final boolean shift;
+	private final boolean alt;
+	
+	public WriteEvent(char ch, int keycode, boolean shift, boolean alt) {
+		this.ch = ch;
+		this.keycode = keycode;
+		this.shift = shift;
+		this.alt = alt;
 	}
 	
-	public boolean isTargetting(Component potential) {
-		return this.target == potential;
+	public char getChar() {
+		return this.ch;
+	}
+	
+	public int getKeycode() {
+		return this.keycode;
+	}
+	
+	public boolean isShiftDown() {
+		return this.shift;
+	}
+	
+	public boolean isAltDown() {
+		return this.alt;
+	}
+	
+	public boolean isCapsDown() {
+		return WriteEvent.toolkit.getLockingKeyState(KeyEvent.VK_CAPS_LOCK);
 	}
 }
