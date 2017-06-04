@@ -33,6 +33,7 @@ import org.azentreprise.arionide.events.FocusEvent;
 import org.azentreprise.arionide.events.FocusGainedEvent;
 import org.azentreprise.arionide.events.FocusLostEvent;
 import org.azentreprise.arionide.events.MoveEvent;
+import org.azentreprise.arionide.events.ValidateEvent;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.View;
@@ -108,7 +109,6 @@ public class Button extends Label implements EventHandler {
 	}
 
 	public <T extends Event> void handleEvent(T event) {
-		
 		if(this.isHidden() || this.getBounds() == null) {
 			return;
 		}
@@ -151,6 +151,10 @@ public class Button extends Label implements EventHandler {
 						break;
 				}
 			}
+		} else if(event instanceof ValidateEvent) {
+			if(this.hasFocus) {
+				this.onMouseClick();
+			}
 		} else if(event instanceof FocusEvent) {
 			if(((FocusEvent) event).isTargetting(this)) {
 				if(event instanceof FocusGainedEvent) {
@@ -170,15 +174,15 @@ public class Button extends Label implements EventHandler {
 	
 	protected void onFocusGained() {
 		this.hasFocus = true;
-		this.animation.startAnimation(15, 0xFF);
+		this.animation.startAnimation(200, 0xFF);
 	}
 	
 	protected void onFocusLost() {
 		this.hasFocus = false;
-		this.animation.startAnimation(1000, this.color >>> 24);
+		this.animation.startAnimation(200, this.color >>> 24);
 	}
 
 	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(MoveEvent.class, ActionEvent.class, FocusGainedEvent.class, FocusLostEvent.class);
+		return Arrays.asList(MoveEvent.class, ActionEvent.class, FocusGainedEvent.class, FocusLostEvent.class, ValidateEvent.class);
 	}
 }

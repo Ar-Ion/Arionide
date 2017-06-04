@@ -82,16 +82,17 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		
 		this.theFrame.setSize(width, height);
 		this.theFrame.setLocationRelativeTo(null);
+		this.theFrame.setFocusTraversalKeysEnabled(false);
 		
 		this.theFrame.add(this);
 		
 		this.theFrame.addWindowListener(this);
 		this.theFrame.addComponentListener(this);
-				
+		this.theFrame.addKeyListener(this);
+
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.addMouseWheelListener(this);
-		this.addKeyListener(this);
 	}
 
 	public void paint(Graphics g) {

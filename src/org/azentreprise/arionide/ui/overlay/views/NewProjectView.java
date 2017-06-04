@@ -46,9 +46,11 @@ public class NewProjectView extends View implements ClickListener {
 		
 		this.add(new Button(this, "Create").setHandler(this, "create"), 0.1f, 0.8f, 0.45f, 0.9f);
 		this.add(new Button(this, "Cancel").setHandler(this, "cancel"), 0.55f, 0.8f, 0.9f, 0.9f);
-		
-		this.getAppManager().getFocusManager().setupCycle(1, 2, 3);
-		this.getAppManager().getFocusManager().request(1);
+	}
+	
+	public void show() {
+		super.show();
+		this.getAppManager().getFocusManager().setupCycle(this.makeFocusCycle(1, 2, 3));
 	}
 
 	public void onClick(Object... signals) {

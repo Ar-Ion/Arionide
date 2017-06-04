@@ -30,13 +30,13 @@ import org.azentreprise.arionide.ui.overlay.Component;
 
 public class FocusManager {
 	
-	public static final int[] NATURAL_CYCLE = new int[0];
+	private static final int NOT_INITIALIZED = 0xC0FFEE;
 	
 	private final List<Component> components = new ArrayList<>();
 	private final IEventDispatcher dispatcher;
 	
 	private int[] cycle = null; // this array represents the values of a bijective function in a modular N+/N+ euclidian space.
-	private int focus = 0;
+	private int focus = FocusManager.NOT_INITIALIZED;
 	
 	public FocusManager(IEventDispatcher dispatcher) {
 		this.dispatcher = dispatcher;
@@ -46,23 +46,14 @@ public class FocusManager {
 		this.components.add(component);
 	}
 	
-	public void reset() {
-		this.components.clear();
+	public int requestViewUID() {
+		return this.components.size();
 	}
 	
-	public void setupCycle(int... elements) {
-		if(elements != FocusManager.NATURAL_CYCLE) {
-			assert elements.length == this.components.size();
-			this.cycle = elements;
-		} else {
-			this.cycle = new int[this.components.size()];
-			
-			int fillingIndex = 0;
-			
-			while(fillingIndex < this.cycle.length) {
-				this.cycle[fillingIndex++] = fillingIndex;
-			}
-		}
+	public void setupCycle(int[] elements) {
+		assert elements.length == this.components.size();
+		
+		this.cycle = elements;
 		
 		this.request(0);
 	}
@@ -76,27 +67,40 @@ public class FocusManager {
 			return;
 		}
 		
-		this.dispatcher.fire(new FocusLostEvent(this.accessModular()));
+		this.loseFocus();
+
+		this.focus = id;
 		
 		Component current = this.accessModular();
 		
-		this.focus = id;
-		
 		if(current.isFocusable()) {
-			this.dispatcher.fire(new FocusGainedEvent(this.accessModular()));
+			this.dispatcher.fire(new FocusGainedEvent(current));
 		} else {
-			this.next();
+			this.focus++;
+			this.tryIncrementalFocus(1);
 		}
 	}
 	
 	public void next() {
+		this.loseFocus();
+		
 		this.focus++;
+		
 		this.tryIncrementalFocus(1);
 	}
 	
 	public void prev() {
+		this.loseFocus();
+		
 		this.focus--;
+		
 		this.tryIncrementalFocus(-1);
+	}
+	
+	private void loseFocus() {
+		if(this.focus != FocusManager.NOT_INITIALIZED) {
+			this.dispatcher.fire(new FocusLostEvent(this.accessModular()));
+		}
 	}
 	
 	private void tryIncrementalFocus(int lambda) {
@@ -110,9 +114,11 @@ public class FocusManager {
 				return; // failed (no component is focusable)
 			}
 		}
+		
+		this.dispatcher.fire(new FocusGainedEvent(this.accessModular()));
 	}
 
 	private Component accessModular() {
-		return this.components.get(this.cycle[this.focus % this.cycle.length]);
+		return this.components.get(this.cycle[Math.floorMod(this.focus, this.cycle.length)]);
 	}
 }

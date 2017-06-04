@@ -25,7 +25,6 @@ import java.awt.Frame;
 import java.awt.event.KeyEvent;
 
 import org.azentreprise.Projects;
-import org.azentreprise.configuration.Project;
 import org.azentreprise.lang.AutoCompletionType;
 import org.azentreprise.lang.ISAMapping;
 import org.azentreprise.lang.InstructionInfo;
@@ -94,9 +93,9 @@ public class UIAutoCompletionEditorProjectView extends UIEditorProjectView {
 		String[] data = UIText.fetchUserData(this);
  		
 		if(data.length > 0 && ISAMapping.getNative(data[0]) != null && data.length - 1 == ISAMapping.getNative(data[0]).getParamTypes().length) {
-			Project project = Projects.getCurrentProject();
+			// Project project = Projects.getCurrentProject();
 			
-			String id = project.current + "." + String.join(":", data);
+			//String id = project.current + "." + String.join(":", data);
 			
 			/*org.azentreprise.lang.Object object = new org.azentreprise.lang.Object(id, Projects.getCurrentProject().theCode.getNext(), 0, ObjectType.NATIVE, true);
 			

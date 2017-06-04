@@ -39,7 +39,6 @@ import org.azentreprise.Projects;
 import org.azentreprise.arionide.IProject;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.FocusManager;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.overlay.Views;
@@ -59,22 +58,17 @@ public class MainView extends View implements ClickListener {
 		this.add(new Label(this, "Home page").alterFont(Font.BOLD), 0.0f, 0.05f, 1.0f, 0.2f);
 		
 		Queue<Float> positions = new ArrayDeque<Float>(Arrays.asList(0.23f, 0.38f, 0.53f, 0.68f));
-		
-		int focus = 0;
-		
+				
 		if(MainView.pageID == 0) {
 			this.add(new Button(this, "AZEntreprise.org").setHandler(this, "browse", "https://azentreprise.org"), 0.1f, positions.peek(), 0.9f, positions.poll() + 0.1f);
 			this.add(new Button(this, "Arionide bug report").setHandler(this, "browse", "https://azentreprise.org/Arionide/bugreport.php"), 0.1f, positions.peek(), 0.9f, positions.poll() + 0.1f);
 			this.add(new Button(this, "Arionide tutorials").setHandler(this, "browse", "https://azentreprise.org/Arionide/tutorials.php"), 0.1f, positions.peek(), 0.9f, positions.poll() + 0.1f);
 			this.add(new Button(this, "Arionide community").setHandler(this, "browse", "https://azentreprise.org/Arionide"), 0.1f, positions.peek(), 0.9f, positions.poll() + 0.1f);
-			
-			focus = 5;
 		} else {
 			for(int i = 0; i < 4; i++) {
 				try {
 					IProject project = (IProject) this.getAppManager().getWorkspace().getProjectList().get((MainView.pageID - 1) * 4 + i);
 					this.add(new Button(this, "Open " + project).setHandler(this, "open", project.getName()), 0.1f, positions.peek(), 0.9f, positions.poll() + 0.1f);
-					focus++;
 				} catch (IndexOutOfBoundsException e) {
 					break;
 				}
@@ -85,9 +79,6 @@ public class MainView extends View implements ClickListener {
 		this.add(new Button(this, "Collaborate").setHandler(this, "connect"), 0.38f, 0.83f, 0.61f, 0.92f);
 		this.add(new Button(this, "Import").setHandler(this, "import"), 0.66f, 0.83f, 0.90f, 0.92f);
 		
-		this.getAppManager().getFocusManager().setupCycle(FocusManager.NATURAL_CYCLE);
-		this.getAppManager().getFocusManager().request(focus);
-		
 		/*if(Projects.getProjectsList().size() > MainView.pageID * 4) {
 			this.add(new Button(this, ">").setHandler(this, "next"), 6.5f / 7.0f, 0.43f, 6.8f / 7.0f, 0.58f);
 		}*/
@@ -97,6 +88,11 @@ public class MainView extends View implements ClickListener {
 		if(MainView.pageID != 0) {
 			this.add(new Button(this, "<").setHandler(this, "prev"), 0.2f / 7.0f, 0.43f, 0.5f / 7.0f, 0.58f);
 		}		
+	}
+	
+	public void show() {
+		super.show();
+		this.getAppManager().getFocusManager().setupCycle(this.makeFocusCycle(View.NATURAL_FOCUS_CYCLE));
 	}
 
 	public void onClick(Object... signals) {

@@ -38,12 +38,16 @@ import org.azentreprise.ui.render.RoundRectRenderer;
 
 public abstract class View extends Surface {
 	
+	protected static final int[] NATURAL_FOCUS_CYCLE = new int[0];
+	
 	private final AppManager appManager;
 	private final LayoutManager layoutManager;
-	
+
 	private final List<Component> components = new ArrayList<>();
 	
 	private final Animation alphaAnimation;
+	
+	private final int focusViewUID;
 	
 	private Color borderColor = new Color(0, 0, 0, 0);
 	public float alpha = 0.0f;
@@ -51,8 +55,10 @@ public abstract class View extends Surface {
 	public View(AppManager appManager, LayoutManager layoutManager) {
 		this.appManager = appManager;
 		this.layoutManager = layoutManager;
-		
+
 		this.alphaAnimation = new FieldModifierAnimation(this.appManager, "alpha", View.class, this);
+		
+		this.focusViewUID = this.getAppManager().getFocusManager().requestViewUID();
 		
 		this.layoutManager.register(this, null, 0.1f, 0.1f, 0.9f, 0.9f);
 	}
@@ -89,6 +95,24 @@ public abstract class View extends Surface {
 	
 	protected Component get(int componentID) {
 		return this.components.get(componentID);
+	}
+	
+	protected int[] makeFocusCycle(int... elements) {		
+		if(elements == View.NATURAL_FOCUS_CYCLE) {
+			elements = new int[this.components.size()];
+			
+			int fillingIndex = 0;
+			
+			while(fillingIndex < elements.length) {
+				elements[fillingIndex] = fillingIndex++;
+			}
+		}
+		
+		for(int i = 0; i< elements.length; i++) {
+			elements[i] += this.focusViewUID;
+		}
+		
+		return elements;
 	}
 	
 	public void show() {
