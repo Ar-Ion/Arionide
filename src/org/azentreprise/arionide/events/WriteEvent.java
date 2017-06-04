@@ -31,11 +31,13 @@ public class WriteEvent extends Event {
 	private final int keycode;
 	private final boolean shift;
 	private final boolean alt;
+	private final boolean command;
 	
-	public WriteEvent(char ch, int keycode, boolean shift, boolean alt) {
+	public WriteEvent(char ch, int keycode, boolean shift, boolean command, boolean alt) {
 		this.ch = ch;
 		this.keycode = keycode;
 		this.shift = shift;
+		this.command = command;
 		this.alt = alt;
 	}
 	
@@ -49,6 +51,10 @@ public class WriteEvent extends Event {
 	
 	public boolean isShiftDown() {
 		return this.shift;
+	}
+	
+	public boolean isCommandDown() {
+		return this.command;
 	}
 	
 	public boolean isAltDown() {
