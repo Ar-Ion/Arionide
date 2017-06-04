@@ -22,15 +22,8 @@ package org.azentreprise.arionide.events;
 
 import org.azentreprise.arionide.ui.overlay.Component;
 
-public class FocusLostEvent extends Event {
-	
-	private final Component target;
-	
+public class FocusLostEvent extends FocusEvent {	
 	public FocusLostEvent(Component target) {
-		this.target = target;
-	}
-	
-	public Component getTarget() {
-		return this.target;
+		super(target);
 	}
 }

@@ -40,9 +40,9 @@ public class NewProjectView extends View implements ClickListener {
 		
 		this.setBorderColor(new Color(0xCAFE));
 				
-		this.add(new Label(this, "New project"), 0, 0.05f, 1.0f, 0.2f);
+		this.add(new Label(this, "New project"), 0, 0.05f, 1.0f, 0.3f);
 		
-		this.add(this.projectName, 0.1f, 0.5f, 0.9f, 0.7f);
+		this.add(this.projectName, 0.1f, 0.4f, 0.9f, 0.6f);
 		
 		this.add(new Button(this, "Create").setHandler(this, "create"), 0.1f, 0.8f, 0.45f, 0.9f);
 		this.add(new Button(this, "Cancel").setHandler(this, "cancel"), 0.55f, 0.8f, 0.9f, 0.9f);

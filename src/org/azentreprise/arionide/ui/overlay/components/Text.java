@@ -28,13 +28,12 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 import org.azentreprise.Arionide;
+import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.ui.overlay.View;
-import org.azentreprise.ui.UIEvents;
-import org.azentreprise.ui.UIMain;
 import org.azentreprise.ui.animations.Animation;
 import org.azentreprise.ui.animations.FieldModifierAnimation;
 
-public class Text extends Button {	
+public class Text extends Button implements EventHandler {	
 	private final Animation animation = new FieldModifierAnimation("cursorOpacity", Text.class, this);
 	
 	protected String placeholder;
@@ -49,6 +48,8 @@ public class Text extends Button {
 	public Text(View parent, String placeholder) {
 		super(parent, placeholder);
 		this.placeholder = placeholder;
+		
+		this.setOverCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 	}
 	
 	public Text setPlaceholder(String placeholder) {
@@ -182,32 +183,23 @@ public class Text extends Button {
 		}
 	}
 	
-	public void focusGained() {
-		super.focusGained();
-		this.cursorAnimationOpacityDecrease();
-	}
-	
 	protected void updateText() {
 		this.setLabel(this.text.length() > 0 ? this.text.toString() : this.placeholder);
 	}
 	
-	public void handleMouseEvent(byte event) {		
-		switch(event) {
-			case UIEvents.EVENT_MOUSE_ENTER:
-				UIMain.setFrameCursor(new Cursor(Cursor.TEXT_CURSOR));
-				break;
-			case UIEvents.EVENT_MOUSE_EXIT:
-				UIMain.setFrameCursor(Cursor.getDefaultCursor());
-				break;
-			case UIEvents.EVENT_MOUSE_CLICK:
-				if(System.currentTimeMillis() - this.counter < 400L) {
-					this.highlighted = !this.highlighted;
-				} else {
-					this.counter = System.currentTimeMillis();
-					this.highlighted = false;
-				}
-				
-				break;
+	protected void onFocusGained() {
+		super.onFocusGained();
+		this.cursorAnimationOpacityDecrease();
+	}
+	
+	protected void onMouseClick() {
+		super.onMouseClick();
+		
+		if(System.currentTimeMillis() - this.counter < 400L) {
+			this.highlighted = !this.highlighted;
+		} else {
+			this.counter = System.currentTimeMillis();
+			this.highlighted = false;
 		}
 	}
 }

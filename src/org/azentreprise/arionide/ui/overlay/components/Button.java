@@ -29,6 +29,9 @@ import java.util.List;
 import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
+import org.azentreprise.arionide.events.FocusEvent;
+import org.azentreprise.arionide.events.FocusGainedEvent;
+import org.azentreprise.arionide.events.FocusLostEvent;
 import org.azentreprise.arionide.events.MoveEvent;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
@@ -38,17 +41,16 @@ import org.azentreprise.ui.render.RoundRectRenderer;
 public class Button extends Label implements EventHandler {
 	
 	private static final int ANIMATION_TIME = 200;
+	private static final Cursor defaultCursor = Cursor.getDefaultCursor();
 	
 	protected final Animation animation;
 	protected boolean hasFocus;
 	
-	protected Cursor defaultCursor = Cursor.getDefaultCursor();
-	protected Cursor overCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+	private Cursor overCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 	
 	private boolean disabled = false;
 	
 	private boolean mouseOver = false;
-	private boolean mousePressed = false;
 	
 	private int colorKeepRef;
 	private ClickListener listener;
@@ -88,19 +90,13 @@ public class Button extends Label implements EventHandler {
 		return this;
 	}
 	
+	protected void setOverCursor(Cursor cursor) {
+		this.overCursor = cursor;
+	}
+	
 	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
 		super.drawSurface(g2d, bounds);
 		RoundRectRenderer.draw(g2d, bounds.x, bounds.y, bounds.width - 1, bounds.height - 1);
-	}
-	
-	public void focusGained() {
-		this.hasFocus = true;
-		this.animation.startAnimation(15, 0xFF);
-	}
-	
-	public void focusLost() {
-		this.hasFocus = false;
-		this.animation.startAnimation(1000, this.color >>> 24);
 	}
 	
 	public String toString() {
@@ -134,7 +130,7 @@ public class Button extends Label implements EventHandler {
 				if(this.mouseOver) {
 					this.mouseOver = false;
 					
-					this.getParentView().getAppManager().getDrawingContext().setCursor(this.defaultCursor);
+					this.getParentView().getAppManager().getDrawingContext().setCursor(Button.defaultCursor);
 
 					if(!this.hasFocus) {
 						this.animation.startAnimation(Button.ANIMATION_TIME, this.color >>> 24);
@@ -149,22 +145,40 @@ public class Button extends Label implements EventHandler {
 					case CLICK:
 						break;
 					case PRESS:
-						this.mousePressed = true;
 						break;
 					case RELEASE:
-						this.mousePressed = false;
-						
-						if(this.listener != null) {
-							this.listener.onClick(this.signals);
-						}
-						
+						this.onMouseClick();
 						break;
+				}
+			}
+		} else if(event instanceof FocusEvent) {
+			if(((FocusEvent) event).isTargetting(this)) {
+				if(event instanceof FocusGainedEvent) {
+					this.onFocusGained();
+				} else if(event instanceof FocusLostEvent) {
+					this.onFocusLost();
 				}
 			}
 		}
 	}
+	
+	protected void onMouseClick() {
+		if(this.listener != null) {
+			this.listener.onClick(this.signals);
+		}
+	}
+	
+	protected void onFocusGained() {
+		this.hasFocus = true;
+		this.animation.startAnimation(15, 0xFF);
+	}
+	
+	protected void onFocusLost() {
+		this.hasFocus = false;
+		this.animation.startAnimation(1000, this.color >>> 24);
+	}
 
 	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(MoveEvent.class, ActionEvent.class);
+		return Arrays.asList(MoveEvent.class, ActionEvent.class, FocusGainedEvent.class, FocusLostEvent.class);
 	}
 }
