@@ -52,7 +52,11 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 						
 			this.handlers.stream()
 				.filter(handler -> handler != null && handler.getHandleableEvents().contains(event.getClass()))
-				.forEach(handler -> handler.handleEvent(event));
+				.forEach(handler -> {
+					if(handler != null) {
+						handler.handleEvent(event);
+					}
+				});
 		}
 	}
 

@@ -74,7 +74,7 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	private int ticks = 0;
 	private long time = 0;
 	
-	public AWTDrawingContext(IEventDispatcher dispatcher, int width, int height) {		
+	public AWTDrawingContext(IEventDispatcher dispatcher, int width, int height) {
 		this.dispatcher = dispatcher;
 		
 		this.theManager = new AppManager(this, dispatcher);
@@ -82,17 +82,21 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		
 		this.theFrame.setSize(width, height);
 		this.theFrame.setLocationRelativeTo(null);
-		this.theFrame.setFocusTraversalKeysEnabled(false);
 		
 		this.theFrame.add(this);
 		
 		this.theFrame.addWindowListener(this);
 		this.theFrame.addComponentListener(this);
-		this.theFrame.addKeyListener(this);
 
+		this.theFrame.addKeyListener(this);
+		this.addKeyListener(this);
+		
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.addMouseWheelListener(this);
+		
+		this.setFocusTraversalKeysEnabled(false);
+		this.theFrame.setFocusTraversalKeysEnabled(false);
 	}
 
 	public void paint(Graphics g) {
