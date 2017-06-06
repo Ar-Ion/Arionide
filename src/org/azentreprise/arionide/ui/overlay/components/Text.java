@@ -26,9 +26,12 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.azentreprise.Arionide;
+import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
+import org.azentreprise.arionide.events.WriteEvent;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.ui.animations.Animation;
 import org.azentreprise.ui.animations.FieldModifierAnimation;
@@ -85,7 +88,7 @@ public class Text extends Button implements EventHandler {
 			FontMetrics metrics = g2d.getFontMetrics();
 			
 			int x = this.textRenderPosition.x + metrics.charsWidth(this.text.toString().toCharArray(), 0, this.cursorPosition);
-			int y = bounds.height / 2;
+			int y = bounds.y + bounds.height / 2;
 			
 			g2d.setColor(new Color(255, 255, 255, this.cursorOpacity));
 			g2d.fillRoundRect(x, y - metrics.getAscent() / 2, 2, metrics.getAscent(), 2, 2);
@@ -105,8 +108,14 @@ public class Text extends Button implements EventHandler {
 		this.animation.startAnimation(20, useless -> this.cursorAnimationOpacityIncrease(), 0);
 	}
 	
-	public boolean handleKeyboardEvent(int code, char ch, int modifiers) {
-		if(this.hasFocus) {
+	public <T extends Event> void handleEvent(T event) {
+		
+		super.handleEvent(event);
+		
+		if(this.hasFocus && (event instanceof WriteEvent)) {
+			WriteEvent writeEvent = (WriteEvent) event;
+			
+			int code = writeEvent.getKeycode();
 			
 			boolean noSeek = code != KeyEvent.VK_LEFT && code != KeyEvent.VK_RIGHT;
 			
@@ -116,7 +125,7 @@ public class Text extends Button implements EventHandler {
 				this.highlighted = false;
 			}
 			
-			this.dispatch(code, ch, modifiers, !noSeek);
+			this.dispatch(code, writeEvent.getChar(), writeEvent.getModifiers(), !noSeek);
 			
 			if(this.cursorPosition < 0) {
 				this.cursorPosition = 0;
@@ -127,10 +136,6 @@ public class Text extends Button implements EventHandler {
 			if(noSeek) {
 				this.updateText();
 			}
-			
-			return false;
-		} else {
-			return true;
 		}
 	}
 	
@@ -139,7 +144,7 @@ public class Text extends Button implements EventHandler {
 			this.dispatchDeletion(code, modifiers > 0);
 		} else if(seek) {
 			this.dispatchSeek(code);
-		} else if(Arionide.getSystemFont().canDisplay(ch) && code != KeyEvent.VK_TAB && code != KeyEvent.VK_ENTER && code != KeyEvent.VK_ESCAPE) {
+		} else if(this.getFont().canDisplay(ch) && code != KeyEvent.VK_TAB && code != KeyEvent.VK_ENTER && code != KeyEvent.VK_ESCAPE) {
 			this.text.insert(this.cursorPosition, ch);
 			this.cursorPosition++;
 		} else {
@@ -201,5 +206,14 @@ public class Text extends Button implements EventHandler {
 			this.counter = System.currentTimeMillis();
 			this.highlighted = false;
 		}
+	}
+	
+	public List<Class<? extends Event>> getHandleableEvents() {
+		List<Class<? extends Event>> theList = new ArrayList<>();
+		
+		theList.addAll(super.getHandleableEvents());
+		theList.add(WriteEvent.class);
+		
+		return theList;
 	}
 }

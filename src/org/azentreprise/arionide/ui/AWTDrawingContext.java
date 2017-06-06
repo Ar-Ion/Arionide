@@ -266,7 +266,7 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 				this.theManager.getFocusManager().prev();
 			}
 		} else {
-			this.dispatcher.fire(new WriteEvent(event.getKeyChar(), event.getKeyCode(), event.isShiftDown(), event.isMetaDown() || event.isControlDown(), event.isAltDown()));
+			this.dispatcher.fire(new WriteEvent(event.getKeyChar(), event.getKeyCode(), event.getModifiers()));
 		}
 	}
 

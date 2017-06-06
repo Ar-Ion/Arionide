@@ -29,16 +29,12 @@ public class WriteEvent extends Event {
 	
 	private final char ch;
 	private final int keycode;
-	private final boolean shift;
-	private final boolean alt;
-	private final boolean command;
+	private final int modifiers;
 	
-	public WriteEvent(char ch, int keycode, boolean shift, boolean command, boolean alt) {
+	public WriteEvent(char ch, int keycode, int modifiers) {
 		this.ch = ch;
 		this.keycode = keycode;
-		this.shift = shift;
-		this.command = command;
-		this.alt = alt;
+		this.modifiers = modifiers;
 	}
 	
 	public char getChar() {
@@ -49,16 +45,8 @@ public class WriteEvent extends Event {
 		return this.keycode;
 	}
 	
-	public boolean isShiftDown() {
-		return this.shift;
-	}
-	
-	public boolean isCommandDown() {
-		return this.command;
-	}
-	
-	public boolean isAltDown() {
-		return this.alt;
+	public int getModifiers() {
+		return this.modifiers;
 	}
 	
 	public boolean isCapsDown() {
