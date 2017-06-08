@@ -63,8 +63,14 @@ public class Workspace implements IWorkspace {
 		this.path = path;
 		this.configurationFile = new File(this.path, "workspace.config");
 		this.dispatcher = dispatcher;
+		
+		if(!this.configurationFile.exists()) {
+			this.save();
+		}
+		
+		this.load();
 	}
-	
+		
 	@IAm("loading the workspace")
 	public void load() {
 		try {
@@ -74,7 +80,11 @@ public class Workspace implements IWorkspace {
 			
 			for(File potential : files) {
 				if(potential.isFile() && potential.getName().endsWith(".proj")) {
-					this.projects.add(new Project(potential));
+					Project element = new Project(potential);
+					
+					if(!this.projects.contains(element)) {
+						this.projects.add(new Project(potential));
+					}
 				}
 			}
 		
@@ -134,8 +144,8 @@ public class Workspace implements IWorkspace {
 
 	public void createProject(String name) {
 		IProject project = new Project(new File(this.path, name.toLowerCase().replaceAll(Coder.whitespaceRegex, "_").concat(".proj")));
-		project.load();
 		project.save();
+		project.load();
 	}
 
 	public void deleteProject(IProject project) {

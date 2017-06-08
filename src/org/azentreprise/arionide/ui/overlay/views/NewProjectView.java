@@ -24,6 +24,7 @@ import java.awt.Color;
 
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
+import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.overlay.Views;
 import org.azentreprise.arionide.ui.overlay.components.Button;
@@ -44,8 +45,8 @@ public class NewProjectView extends View implements ClickListener {
 		
 		this.add(this.projectName, 0.1f, 0.4f, 0.9f, 0.6f);
 		
-		this.add(new Button(this, "Create").setHandler(this, "create"), 0.1f, 0.8f, 0.45f, 0.9f);
-		this.add(new Button(this, "Cancel").setHandler(this, "cancel"), 0.55f, 0.8f, 0.9f, 0.9f);
+		this.add(new Button(this, "Create").setSignal("create"), 0.1f, 0.8f, 0.45f, 0.9f);
+		this.add(new Button(this, "Cancel").setSignal("cancel"), 0.55f, 0.8f, 0.9f, 0.9f);
 	}
 	
 	public void show() {
@@ -59,25 +60,15 @@ public class NewProjectView extends View implements ClickListener {
 				this.openView(Views.main, true);
 				break;
 			case "create":
-				/*String[] fields = UIText.fetchUserData(this);
-								
-				if(fields[0].length() > 0 && fields[1].length() > 0 && fields[2].length() > 0) {
-					try {
-						Project project = Projects.createProject(fields[0]);
-						
-						project.name = fields[0];
-						project.owner = fields[1];
-						project.description = fields[2];
-						
-						project.save();
-						
-						UIMainView.updatePageID();
-						
-						//UIMain.show(new UICodeProjectView(this, this.getRootComponent()));
-					} catch (Exception exception) {
-						Debug.exception(exception);
-					}
-				}*/
+				Component text = this.get(1);
+				
+				assert text instanceof Text;
+				
+				String name = ((Text) text).toString();
+				
+				if(!name.isEmpty()) {
+					this.getAppManager().getWorkspace().createProject(((Text) this.get(1)).toString());
+				}
 				
 				break;
 		}

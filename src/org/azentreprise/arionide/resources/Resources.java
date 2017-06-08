@@ -36,13 +36,11 @@ import org.azentreprise.arionide.ui.AppDrawingContext;
 public class Resources {
 	
 	private final IWorkspace workspace;
-//	private final AppDrawingContext context;
 	
 	private final List<String> resources = new ArrayList<>();
 	
 	public Resources(IWorkspace workspace, AppDrawingContext context) {
 		this.workspace = workspace;
-//		this.context = context;
 		
 		this.resources.add("font");
 	

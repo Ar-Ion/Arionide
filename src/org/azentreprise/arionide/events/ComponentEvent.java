@@ -18,54 +18,28 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.overlay;
+package org.azentreprise.arionide.events;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.io.IOException;
+import org.azentreprise.arionide.ui.overlay.Component;
+import org.azentreprise.arionide.ui.overlay.View;
 
-import org.azentreprise.arionide.debugging.Debug;
-import org.azentreprise.arionide.debugging.IAm;
-import org.azentreprise.arionide.ui.layout.Surface;
-
-public abstract class Component extends Surface {
+public abstract class ComponentEvent extends Event {
 	
-	private final View parent;
-	private Font font;
+	private final Component target;
 	
-	@IAm("initializing a component")
-	public Component(View parent) {
-		this.parent = parent;
-		
-		try {
-			this.font = Font.createFont(Font.TRUETYPE_FONT, this.parent.getAppManager().getResources().getResource("font"));
-		} catch (FontFormatException | IOException exception) {
-			Debug.exception(exception);
-		}
-	}
-		
-	public View getParentView() {
-		return this.parent;
+	public ComponentEvent(Component target) {
+		this.target = target;
 	}
 	
-	public Component alterFont(int style, float size) {
-		this.font = this.font.deriveFont(style, size);
-		return this;
+	public Component getTarget() {
+		return this.target;
 	}
 	
-	public Component alterFont(int style) {
-		this.font = this.font.deriveFont(style);
-		return this;
+	public boolean isTargetting(Component potential) {
+		return this.target == potential;
 	}
 	
-	public Component alterFont(float size) {
-		this.font = this.font.deriveFont(size);
-		return this;
+	public boolean isTargetting(View potential) {
+		return this.target.getParentView() == potential;
 	}
-	
-	protected Font getFont() {
-		return this.font;
-	}
-	
-	public abstract boolean isFocusable();
 }

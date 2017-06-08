@@ -18,54 +18,36 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.overlay;
+package org.azentreprise.arionide.events;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.io.IOException;
+import org.azentreprise.arionide.ui.overlay.Component;
+import org.azentreprise.arionide.ui.overlay.View;
 
-import org.azentreprise.arionide.debugging.Debug;
-import org.azentreprise.arionide.debugging.IAm;
-import org.azentreprise.arionide.ui.layout.Surface;
-
-public abstract class Component extends Surface {
+public class ClickEvent extends ComponentEvent {
 	
-	private final View parent;
-	private Font font;
+	private final String signal;
+	private final Object[] data;
 	
-	@IAm("initializing a component")
-	public Component(View parent) {
-		this.parent = parent;
+	public ClickEvent(Component target, String signal, Object[] data) {
+		super(target);
 		
-		try {
-			this.font = Font.createFont(Font.TRUETYPE_FONT, this.parent.getAppManager().getResources().getResource("font"));
-		} catch (FontFormatException | IOException exception) {
-			Debug.exception(exception);
-		}
-	}
-		
-	public View getParentView() {
-		return this.parent;
+		this.signal = signal;
+		this.data = data;
 	}
 	
-	public Component alterFont(int style, float size) {
-		this.font = this.font.deriveFont(style, size);
-		return this;
+	public boolean isTargetting(Component potential, String signal) {
+		return super.isTargetting(potential) && this.isTargettingSignal(signal);
 	}
 	
-	public Component alterFont(int style) {
-		this.font = this.font.deriveFont(style);
-		return this;
+	public boolean isTargetting(View potential, String signal) {
+		return super.isTargetting(potential) && this.isTargettingSignal(signal);
 	}
 	
-	public Component alterFont(float size) {
-		this.font = this.font.deriveFont(size);
-		return this;
+	private boolean isTargettingSignal(String signal) {
+		return this.signal == signal;
 	}
 	
-	protected Font getFont() {
-		return this.font;
+	public Object[] getData() {
+		return this.data;
 	}
-	
-	public abstract boolean isFocusable();
 }

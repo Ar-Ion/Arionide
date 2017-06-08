@@ -61,6 +61,7 @@ public class ArionideImpl implements Arionide {
 	
 	public IWorkspace setupWorkspace(IEventDispatcher dispatcher) {
 		File path = new File(System.getProperty("user.home") + File.separator + "Arionide Workspace");
+		path.mkdirs();
 		return new Workspace(path, dispatcher);
 	}
 

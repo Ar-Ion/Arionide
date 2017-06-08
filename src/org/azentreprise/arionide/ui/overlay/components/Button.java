@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.azentreprise.arionide.events.ActionEvent;
+import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.FocusEvent;
@@ -54,8 +55,7 @@ public class Button extends Label implements EventHandler {
 	private boolean mouseOver = false;
 	
 	private int colorKeepRef;
-	private ClickListener listener;
-	private Object[] signals;
+	private ClickEvent event;
 	
 	public Button(View parent, String label) {
 		super(parent, label);
@@ -68,9 +68,8 @@ public class Button extends Label implements EventHandler {
 		this.getParentView().getAppManager().getEventDispatcher().registerHandler(this);
 	}
 	
-	public Button setHandler(ClickListener listener, Object... signals) {
-		this.listener = listener;
-		this.signals = signals;
+	public Button setSignal(String signal, Object... data) {
+		this.event = new ClickEvent(this, signal, data);
 		return this;
 	}
 	
@@ -145,15 +144,15 @@ public class Button extends Label implements EventHandler {
 					case CLICK:
 						break;
 					case PRESS:
+						this.fireMouseClick();
 						break;
 					case RELEASE:
-						this.onMouseClick();
 						break;
 				}
 			}
 		} else if(event instanceof ValidateEvent) {
 			if(this.hasFocus) {
-				this.onMouseClick();
+				this.fireMouseClick();
 			}
 		} else if(event instanceof FocusEvent) {
 			if(((FocusEvent) event).isTargetting(this)) {
@@ -166,9 +165,9 @@ public class Button extends Label implements EventHandler {
 		}
 	}
 	
-	protected void onMouseClick() {
-		if(this.listener != null) {
-			this.listener.onClick(this.signals);
+	protected void fireMouseClick() {
+		if(this.event != null) {
+			this.getParentView().getAppManager().getEventDispatcher().fire(this.event);
 		}
 	}
 	

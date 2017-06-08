@@ -51,7 +51,7 @@ public class FocusManager {
 	}
 	
 	public void setupCycle(int[] elements) {
-		assert elements.length == this.components.size();
+		assert elements.length <= this.components.size();
 		
 		this.cycle = elements;
 		

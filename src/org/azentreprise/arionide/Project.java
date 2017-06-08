@@ -43,6 +43,7 @@ public class Project implements IProject {
 	
 	static {
 		projectProtocolMapping.put("version", Long.toString(versionUID).getBytes(Coder.charset));
+		projectProtocolMapping.put("name", new String("Undefined").getBytes(Coder.charset));
 	}
 	
 	
@@ -58,18 +59,17 @@ public class Project implements IProject {
 	public void load() {
 		try {
 			this.properties.clear();
-			
 			byte[] data = Files.readAllBytes(this.path.toPath());
 			
 			int startIndex = 0;
 			int endIndex = 0;
-			
+						
 			while((endIndex = Arrays.binarySearch(data, startIndex, data.length, Coder.separator)) > -1) {
 				byte[] keyBuffer = new byte[endIndex - startIndex];
 				System.arraycopy(data, startIndex, keyBuffer, 0, keyBuffer.length);
 				
-				startIndex = Arrays.binarySearch(data, endIndex + 1, data.length, Coder.sectionStart);
-				endIndex = Arrays.binarySearch(data, startIndex, data.length, Coder.sectionEnd);
+				startIndex = this.search(data, endIndex, Coder.sectionStart);
+				endIndex = this.search(data, startIndex, Coder.sectionEnd);
 				byte[] valueBuffer = new byte[endIndex - startIndex];
 				System.arraycopy(data, startIndex, valueBuffer, 0, valueBuffer.length);
 				
@@ -77,15 +77,31 @@ public class Project implements IProject {
 				
 				startIndex = endIndex;
 			}
+			
+			this.verifyProtocol();
 		} catch (Exception exception) {
 			Debug.exception(exception);
 		}
+	}
+	
+	private int search(byte[] data, int start, byte element) {
+		while(start < data.length) {
+			if(data[start] == element) {
+				return start;
+			}
+			
+			start++;
+		}
+		
+		return -1;
 	}
 
 	@IAm("saving a project")
 	public void save() {
 		try {
 			OutputStream stream = new FileOutputStream(this.path);
+			
+			this.verifyProtocol();
 			
 			for(Entry<String, byte[]> property : this.properties.entrySet()) {
 				stream.write(property.getKey().getBytes(Coder.charset));
@@ -114,6 +130,14 @@ public class Project implements IProject {
 			Debug.exception(exception);
 		}
 	}
+	
+	private void verifyProtocol() {
+		for(Entry<String, byte[]> entry : Project.projectProtocolMapping.entrySet()) {
+			if(!this.properties.containsKey(entry.getKey())) {
+				this.properties.put(entry.getKey(), entry.getValue());
+			}
+		}
+	}
 
 	public <T> T getProperty(String key, Decoder<T> decoder) {
 		return decoder.decode(this.properties.get(key));
@@ -138,5 +162,9 @@ public class Project implements IProject {
 
 	public boolean checkVersionCompatibility() {
 		return this.getProperty("version", Coder.integerDecoder) == Project.versionUID;
+	}
+	
+	public boolean equals(Object other) {
+		return other instanceof Project && this.getPath() == ((Project) other).getPath();
 	}
 }

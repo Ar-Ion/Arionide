@@ -21,146 +21,132 @@
 package org.azentreprise.arionide.ui.overlay.views;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Font;
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Queue;
+import java.util.List;
 
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
-
-import org.azentreprise.ProjectFormatConverter;
-import org.azentreprise.Projects;
 import org.azentreprise.arionide.IProject;
-import org.azentreprise.arionide.debugging.Debug;
+import org.azentreprise.arionide.IWorkspace;
+import org.azentreprise.arionide.events.ClickEvent;
+import org.azentreprise.arionide.events.Event;
+import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.overlay.Views;
 import org.azentreprise.arionide.ui.overlay.components.Button;
-import org.azentreprise.arionide.ui.overlay.components.ClickListener;
 import org.azentreprise.arionide.ui.overlay.components.Label;
 
-public class MainView extends View implements ClickListener {
-	
-	public static int pageID = 0;
+public class MainView extends View implements EventHandler {
+
+	private int page = 0;
 	
 	public MainView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
 		this.setBorderColor(new Color(0xCAFE));
 		
-		this.add(new Label(this, "Home page").alterFont(Font.BOLD), 0.0f, 0.05f, 1.0f, 0.2f);
+		this.add(new Label(this, "Home").alterFont(Font.BOLD), 0.0f, 0.05f, 1.0f, 0.2f);
 		
-		Queue<Float> positions = new ArrayDeque<Float>(Arrays.asList(0.23f, 0.38f, 0.53f, 0.68f));
-				
-		if(MainView.pageID == 0) {
-			this.add(new Button(this, "AZEntreprise.org").setHandler(this, "browse", "https://azentreprise.org"), 0.1f, positions.peek(), 0.9f, positions.poll() + 0.1f);
-			this.add(new Button(this, "Arionide bug report").setHandler(this, "browse", "https://azentreprise.org/Arionide/bugreport.php"), 0.1f, positions.peek(), 0.9f, positions.poll() + 0.1f);
-			this.add(new Button(this, "Arionide tutorials").setHandler(this, "browse", "https://azentreprise.org/Arionide/tutorials.php"), 0.1f, positions.peek(), 0.9f, positions.poll() + 0.1f);
-			this.add(new Button(this, "Arionide community").setHandler(this, "browse", "https://azentreprise.org/Arionide"), 0.1f, positions.peek(), 0.9f, positions.poll() + 0.1f);
+		this.add(new Button(this, "Undefined"), 0.1f, 0.23f, 0.9f, 0.33f);
+		this.add(new Button(this, "Undefined"), 0.1f, 0.38f, 0.9f, 0.48f);
+		this.add(new Button(this, "Undefined"), 0.1f, 0.53f, 0.9f, 0.63f);
+		this.add(new Button(this, "Undefined"), 0.1f, 0.68f, 0.9f, 0.78f);
+
+		this.add(new Button(this, "New project").setSignal("new"), 0.1f, 0.83f, 0.33f, 0.92f);
+		this.add(new Button(this, "Collaborate").setSignal("connect"), 0.38f, 0.83f, 0.61f, 0.92f);
+		this.add(new Button(this, "Import").setSignal("import"), 0.66f, 0.83f, 0.90f, 0.92f);
+		
+		this.add(new Button(this, "<").setSignal("prev"), 0.2f / 7.0f, 0.43f, 0.5f / 7.0f, 0.58f);
+		this.add(new Button(this, ">").setSignal("next"), 6.5f / 7.0f, 0.43f, 6.8f / 7.0f, 0.58f);
+		
+		this.getAppManager().getEventDispatcher().registerHandler(this);
+	}
+	
+	private void loadWorkspace() {
+		IWorkspace theWorkspace = this.getAppManager().getWorkspace();
+		
+		theWorkspace.load();
+		
+		List<? super IProject> projects = theWorkspace.getProjectList();
+		
+		if(4 * this.page > projects.size() + 3) {
+			this.page = (projects.size() + 3) / 4;
+		}
+		
+		
+		if(this.page <= 0) {
+			((Button) this.get(8)).hide();
 		} else {
-			for(int i = 0; i < 4; i++) {
-				try {
-					IProject project = (IProject) this.getAppManager().getWorkspace().getProjectList().get((MainView.pageID - 1) * 4 + i);
-					this.add(new Button(this, "Open " + project).setHandler(this, "open", project.getName()), 0.1f, positions.peek(), 0.9f, positions.poll() + 0.1f);
-				} catch (IndexOutOfBoundsException e) {
-					break;
+			((Button) this.get(8)).show();
+		}
+		
+		if(this.page > projects.size() / 4) {
+			((Button) this.get(9)).hide();
+		} else {
+			((Button) this.get(9)).show();
+		}
+		
+		if(this.page > 0) {
+			for(int i = 1; i <= 4; i++) {
+				Button button = ((Button) this.get(i));
+				
+				if(i < projects.size()) {
+					IProject project = (IProject) projects.get(i);
+					button.setSignal("open", project).setLabel("Open " + project.getName()).show();
+				} else {
+					button.hide();
 				}
 			}
+		} else {
+			((Button) this.get(1)).setSignal("browse", "https://azentreprise.org").setLabel("AZEntreprise.org").show();
+			((Button) this.get(2)).setSignal("browse", "https://azentreprise.org/Arionide/bugreport.php").setLabel("Arionide bug report").show();
+			((Button) this.get(3)).setSignal("browse", "https://azentreprise.org/Arionide/tutorials.php").setLabel("Arionide tutorials").show();
+			((Button) this.get(4)).setSignal("browse", "https://azentreprise.org/Arionide").setLabel("Arionide community").show();
+			
+			this.getAppManager().getFocusManager().request(5);
 		}
-
-		this.add(new Button(this, "New project").setHandler(this, "new"), 0.1f, 0.83f, 0.33f, 0.92f);
-		this.add(new Button(this, "Collaborate").setHandler(this, "connect"), 0.38f, 0.83f, 0.61f, 0.92f);
-		this.add(new Button(this, "Import").setHandler(this, "import"), 0.66f, 0.83f, 0.90f, 0.92f);
-		
-		/*if(Projects.getProjectsList().size() > MainView.pageID * 4) {
-			this.add(new Button(this, ">").setHandler(this, "next"), 6.5f / 7.0f, 0.43f, 6.8f / 7.0f, 0.58f);
-		}*/
-		
-		
-		
-		if(MainView.pageID != 0) {
-			this.add(new Button(this, "<").setHandler(this, "prev"), 0.2f / 7.0f, 0.43f, 0.5f / 7.0f, 0.58f);
-		}		
 	}
 	
 	public void show() {
 		super.show();
 		this.getAppManager().getFocusManager().setupCycle(this.makeFocusCycle(View.NATURAL_FOCUS_CYCLE));
+		this.loadWorkspace();
 	}
 
-	public void onClick(Object... signals) {
-		try {
-			switch((String) signals[0]) {
-				case "open":
-					this.open(signals);
-					break;
-				case "browse":
-					Desktop.getDesktop().browse(new URL((String) signals[1]).toURI()); 
-					break;
-				case "new":
-					this.openView(Views.newProject, true);
-					break;
-				case "connect":
-					break;
-				case "import":
-					this.importProject(signals);
-					break;
-				case "next":
-					MainView.pageID++;
-					// page id transition
-					break;
-				case "prev":
-					MainView.pageID--;
-					// page id transition
-					break;
+	public <T extends Event> void handleEvent(T event) {
+		assert event instanceof ClickEvent;
+		
+		ClickEvent click = (ClickEvent) event;
+		
+		if(click.isTargetting(this, "open")) {
+
+		} else if(click.isTargetting(this, "browse")) {
+			try {
+				Desktop.getDesktop().browse(new URL((String) click.getData()[0]).toURI());
+			} catch (Exception e) {
+				System.err.println("Could not open link");
 			}
-		} catch(Exception exception) {
-			Debug.exception(exception);
+		} else if(click.isTargetting(this, "new")) {
+			this.openView(Views.newProject, true);
+		} else if(click.isTargetting(this, "connect")) {
+			// TODO
+		} else if(click.isTargetting(this, "import")) {
+			// TODO
+		} else if(click.isTargetting(this, "prev")) {
+			assert this.page > 0;
+			
+			this.page--;
+			this.loadWorkspace();
+		} else if(click.isTargetting(this, "next")) {			
+			this.page++;
+			this.loadWorkspace();
 		}
 	}
-	
-	public void open(Object[] signals) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, IOException {
-		// TODO
-	}
-	
-	public void importProject(Object[] signals) {
-		new Thread() {
-			public void run() {
-				importProject0(signals);
-			}
-		}.start();
-	}
 
-	
-	private void importProject0(Object[] signals) {
-		JFileChooser chooser = new JFileChooser();
-		
-		chooser.setAcceptAllFileFilterUsed(false);
-		chooser.setFileFilter(new FileFilter() {
-			public boolean accept(File file) {
-				return file.getName().endsWith(".Arionide") && file.isFile();
-			}
-
-			public String getDescription() {
-				return "Arionide archive files (.Arionide)";
-			}
-		});
-		
-		if(chooser.showOpenDialog(this.getAppManager().getDrawingContext() instanceof Component ? (Component) this.getAppManager().getDrawingContext() : null) == JFileChooser.APPROVE_OPTION) {
-			ProjectFormatConverter.importProject(chooser.getSelectedFile());
-			MainView.updatePageID();
-			// show main view
-		}
-	}
-	
-	public static void updatePageID() {
-		MainView.pageID = (int) Math.ceil(Projects.getProjectsList().size() / 4.0d);
+	public List<Class<? extends Event>> getHandleableEvents() {
+		return Arrays.asList(ClickEvent.class);
 	}
 }

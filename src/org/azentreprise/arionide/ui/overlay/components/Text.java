@@ -92,7 +92,7 @@ public class Text extends Button implements EventHandler {
 			
 			g2d.setColor(new Color(255, 255, 255, this.cursorOpacity));
 			g2d.fillRoundRect(x, y - metrics.getAscent() / 2, 2, metrics.getAscent(), 2, 2);
-		
+
 			if(this.highlighted) {
 				g2d.setColor(new Color(0x42C0FFEE, true));
 				g2d.fillRect(this.textRenderPosition.x, y - metrics.getAscent() / 2, metrics.stringWidth(this.text.toString()), metrics.getAscent());
@@ -101,11 +101,11 @@ public class Text extends Button implements EventHandler {
 	}
 	
 	private void cursorAnimationOpacityIncrease() {
-		this.animation.startAnimation(20, useless -> this.cursorAnimationOpacityDecrease(), 255);
+		this.animation.startAnimation(500, useless -> this.cursorAnimationOpacityDecrease(), 255);
 	}
 	
 	private void cursorAnimationOpacityDecrease() {
-		this.animation.startAnimation(20, useless -> this.cursorAnimationOpacityIncrease(), 0);
+		this.animation.startAnimation(500, useless -> this.cursorAnimationOpacityIncrease(), 0);
 	}
 	
 	public <T extends Event> void handleEvent(T event) {
@@ -197,8 +197,8 @@ public class Text extends Button implements EventHandler {
 		this.cursorAnimationOpacityDecrease();
 	}
 	
-	protected void onMouseClick() {
-		super.onMouseClick();
+	protected void fireMouseClick() {
+		super.fireMouseClick();
 		
 		if(System.currentTimeMillis() - this.counter < 400L) {
 			this.highlighted = !this.highlighted;
