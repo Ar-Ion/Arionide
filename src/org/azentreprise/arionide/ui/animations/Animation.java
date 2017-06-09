@@ -53,18 +53,17 @@ public abstract class Animation {
 	}
 	
 	public void stopAnimation() {
+		this.ignoreTicks = true;
+
 		if(this.animateAfter != null) {
 			Consumer<Animation> clone = this.animateAfter;
 			this.animateAfter = null;
 			clone.accept(this);
 		}
-		
-		this.ignoreTicks = true;
 	}
 	
 	protected double getProgression() {
-		long now = System.currentTimeMillis();
-		return (double) (now - this.startTime) / (this.stopTime - this.startTime);
+		return (double) (System.currentTimeMillis() - this.startTime) / (this.stopTime - this.startTime);
 	}
 	
 	public void doTick() {

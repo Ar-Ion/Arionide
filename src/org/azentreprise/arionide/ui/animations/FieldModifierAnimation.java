@@ -28,16 +28,21 @@ import org.azentreprise.arionide.ui.AppManager;
 public class FieldModifierAnimation extends Animation {
 			
 	private final Object instance;
-	private final SimpleTransformationAlgorithm smoothingAlgorithm = new HermiteSplineAlgorithm();
+	private final SimpleTransformationAlgorithm smoothingAlgorithm;
 	
 	private Field field;	
 	private Number initial;
 	private Number target;
 	
 	public FieldModifierAnimation(AppManager manager, String fieldName, Class<?> clazz, Object instance) {
+		this(manager, fieldName, clazz, instance, new HermiteSplineAlgorithm());
+	}
+	
+	public FieldModifierAnimation(AppManager manager, String fieldName, Class<?> clazz, Object instance, SimpleTransformationAlgorithm smoothingAlgorithm) {
 		super(manager);
 		
 		this.instance = instance;
+		this.smoothingAlgorithm = smoothingAlgorithm;
 		
 		try {
 			this.field = clazz.getDeclaredField(fieldName);
@@ -65,10 +70,6 @@ public class FieldModifierAnimation extends Animation {
 		}
 		
 		super.startAnimation(duration, params);
-	}
-	
-	public void stopAnimation() {
-		super.stopAnimation();
 	}
 	
 	public void tick() {

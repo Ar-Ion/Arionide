@@ -18,24 +18,21 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.animations;
+package org.azentreprise.arionide.events;
 
-public class ParametricSmoothingAlgorithm implements SimpleTransformationAlgorithm {
-
-	private final double smoothingConstant;
+public class TimerEvent extends Event {
 	
-	public ParametricSmoothingAlgorithm(double smoothingLevel) {		
-		assert smoothingLevel > 1.0d; // if less than one it becomes an anti-smoothing algorithm and if equal to one, it becomes like the NoTransformationAlgorithm.
-		
-		this.smoothingConstant = 1.0d / smoothingLevel;
-	}
-
-	public double compute(double x) {
-		return (this.pseudoRoot(2*x - 1) + 1) / 2.0d;
+	private final Object target;
+	
+	public TimerEvent(Object target) {
+		this.target = target;
 	}
 	
-	private double pseudoRoot(double x) {
-		double root = Math.pow(Math.abs(x), this.smoothingConstant);
-		return x > 0.0d ? root : -root;
+	public Object getTarget() {
+		return this.target;
+	}
+	
+	public boolean isTargetting(Object potential) {
+		return this.target.equals(potential);
 	}
 }

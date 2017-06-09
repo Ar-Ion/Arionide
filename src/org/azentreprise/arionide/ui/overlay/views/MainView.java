@@ -23,9 +23,12 @@ package org.azentreprise.arionide.ui.overlay.views;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.azentreprise.arionide.IProject;
 import org.azentreprise.arionide.IWorkspace;
@@ -33,6 +36,9 @@ import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.animations.Animation;
+import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
+import org.azentreprise.arionide.ui.animations.ParametricSmoothingAlgorithm;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.overlay.Views;
@@ -41,11 +47,22 @@ import org.azentreprise.arionide.ui.overlay.components.Label;
 
 public class MainView extends View implements EventHandler {
 
+	private static enum SwipeDirection {
+		LEFT,
+		RIGHT
+	}
+	
 	private int page = 0;
+	
+	private Rectangle animationAnchor = null;
+	private final Animation transformWidthAnimation;
+	private float transformWidth = 1.0f; // mod 2
 	
 	public MainView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
+		this.transformWidthAnimation = new FieldModifierAnimation(this.getAppManager(), "transformWidth", MainView.class, this, new ParametricSmoothingAlgorithm(5.0f));
+
 		this.setBorderColor(new Color(0xCAFE));
 		
 		this.add(new Label(this, "Home").alterFont(Font.BOLD), 0.0f, 0.05f, 1.0f, 0.2f);
@@ -76,13 +93,14 @@ public class MainView extends View implements EventHandler {
 			this.page = (projects.size() + 3) / 4;
 		}
 		
-		
+		// prev button
 		if(this.page <= 0) {
 			((Button) this.get(8)).hide();
 		} else {
 			((Button) this.get(8)).show();
 		}
 		
+		// next button
 		if(this.page > projects.size() / 4) {
 			((Button) this.get(9)).hide();
 		} else {
@@ -115,34 +133,75 @@ public class MainView extends View implements EventHandler {
 		this.getAppManager().getFocusManager().setupCycle(this.makeFocusCycle(View.NATURAL_FOCUS_CYCLE));
 		this.loadWorkspace();
 	}
+	
+	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
+		for(int i = 1; i < 5; i++) {
+			Rectangle buttonBounds = this.get(i).getBounds();
+			
+			if(buttonBounds != null && this.animationAnchor != null) {
+				if(this.transformWidth < 0.0f) {
+					int delta = (int) (this.animationAnchor.width * (this.transformWidth + 1.0f));
+					
+					buttonBounds.x = this.animationAnchor.x + delta;
+					buttonBounds.width = this.animationAnchor.width - delta;
+				} else {
+					buttonBounds.x = this.animationAnchor.x;
+					buttonBounds.width = (int) (this.transformWidth * this.animationAnchor.width);
+				}
+			}
+		}
+		
+		super.drawSurface(g2d, bounds);
+	}
+	
+	private void makeHorizontalSwipe(SwipeDirection direction, Consumer<Void> doWhileInvisible) {
+
+		if(this.animationAnchor != null) return;
+		
+		this.animationAnchor = (Rectangle) this.get(1).getBounds().clone(); // any of the buttons since they all have the same x-pos and width
+
+		float sign = direction.equals(SwipeDirection.LEFT) ? 1.0f : -1.0f;
+		
+		this.transformWidth *= sign;
+		
+		this.transformWidthAnimation.startAnimation(1000, after -> {
+			/*after.startAnimation(500, nil -> {
+				this.animationAnchor = null;
+				this.transformWidth = 1.0f;
+			}, -sign);*/
+		}, -sign);
+	}
 
 	public <T extends Event> void handleEvent(T event) {
-		assert event instanceof ClickEvent;
-		
-		ClickEvent click = (ClickEvent) event;
-		
-		if(click.isTargetting(this, "open")) {
-
-		} else if(click.isTargetting(this, "browse")) {
-			try {
-				Desktop.getDesktop().browse(new URL((String) click.getData()[0]).toURI());
-			} catch (Exception e) {
-				System.err.println("Could not open link");
-			}
-		} else if(click.isTargetting(this, "new")) {
-			this.openView(Views.newProject, true);
-		} else if(click.isTargetting(this, "connect")) {
-			// TODO
-		} else if(click.isTargetting(this, "import")) {
-			// TODO
-		} else if(click.isTargetting(this, "prev")) {
-			assert this.page > 0;
+		if(event instanceof ClickEvent) {
 			
-			this.page--;
-			this.loadWorkspace();
-		} else if(click.isTargetting(this, "next")) {			
-			this.page++;
-			this.loadWorkspace();
+			ClickEvent click = (ClickEvent) event;
+			
+			if(click.isTargetting(this, "open")) {
+
+			} else if(click.isTargetting(this, "browse")) {
+				try {
+					Desktop.getDesktop().browse(new URL((String) click.getData()[0]).toURI());
+				} catch (Exception e) {
+					System.err.println("Could not open link");
+				}
+			} else if(click.isTargetting(this, "new")) {
+				this.openView(Views.newProject, true);
+			} else if(click.isTargetting(this, "connect")) {
+				// TODO
+			} else if(click.isTargetting(this, "import")) {
+				// TODO
+			} else if(click.isTargetting(this, "prev")) {							
+				this.makeHorizontalSwipe(SwipeDirection.RIGHT, nil -> {
+					this.page--;
+					this.loadWorkspace();
+				});
+			} else if(click.isTargetting(this, "next")) {
+				this.makeHorizontalSwipe(SwipeDirection.LEFT, nil -> {
+					this.page++;
+					this.loadWorkspace();
+				});
+			}
 		}
 	}
 
