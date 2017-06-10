@@ -31,16 +31,18 @@ import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
 import org.azentreprise.arionide.resources.Resources;
+import org.azentreprise.arionide.threading.timing.Timer;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.overlay.Views;
 
 public class AppManager {
-	
+		
 	private final AppDrawingContext drawingContext;
 	private final IEventDispatcher dispatcher;
 	private final FocusManager focusManager;
+	private final Timer systemTimer;
 	
 	private final List<Animation> animations = new ArrayList<>();
 	
@@ -55,6 +57,7 @@ public class AppManager {
 		this.drawingContext = drawingContext;
 		this.dispatcher = dispatcher;
 		this.focusManager = new FocusManager(dispatcher);
+		this.systemTimer = new Timer(dispatcher);
 	}
 
 	@IAm("drawing the frame")
@@ -108,6 +111,10 @@ public class AppManager {
 	
 	public FocusManager getFocusManager() {
 		return this.focusManager;
+	}
+	
+	public Timer getSystemTimer() {
+		return this.systemTimer;
 	}
 	
 	public Resources getResources() {

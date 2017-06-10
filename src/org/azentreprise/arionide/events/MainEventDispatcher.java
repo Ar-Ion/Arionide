@@ -59,6 +59,8 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	}
 
 	public void registerHandler(EventHandler handler) {
-		this.newHandlers.add(handler);
+		if(handler != null) {
+			this.newHandlers.add(handler);
+		}
 	}
 }

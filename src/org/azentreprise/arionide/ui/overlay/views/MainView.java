@@ -28,13 +28,13 @@ import java.awt.Rectangle;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 import org.azentreprise.arionide.IProject;
 import org.azentreprise.arionide.IWorkspace;
 import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
+import org.azentreprise.arionide.events.TimerEvent;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
@@ -61,7 +61,7 @@ public class MainView extends View implements EventHandler {
 	public MainView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
-		this.transformWidthAnimation = new FieldModifierAnimation(this.getAppManager(), "transformWidth", MainView.class, this, new ParametricSmoothingAlgorithm(5.0f));
+		this.transformWidthAnimation = new FieldModifierAnimation(this.getAppManager(), "transformWidth", MainView.class, this, new ParametricSmoothingAlgorithm(3.0f));
 
 		this.setBorderColor(new Color(0xCAFE));
 		
@@ -154,7 +154,7 @@ public class MainView extends View implements EventHandler {
 		super.drawSurface(g2d, bounds);
 	}
 	
-	private void makeHorizontalSwipe(SwipeDirection direction, Consumer<Void> doWhileInvisible) {
+	private void makeHorizontalSwipe(SwipeDirection direction) {
 
 		if(this.animationAnchor != null) return;
 		
@@ -165,10 +165,8 @@ public class MainView extends View implements EventHandler {
 		this.transformWidth *= sign;
 		
 		this.transformWidthAnimation.startAnimation(1000, after -> {
-			/*after.startAnimation(500, nil -> {
-				this.animationAnchor = null;
-				this.transformWidth = 1.0f;
-			}, -sign);*/
+			this.animationAnchor = null;
+			this.transformWidth = 1.0f;
 		}, -sign);
 	}
 
@@ -191,21 +189,23 @@ public class MainView extends View implements EventHandler {
 				// TODO
 			} else if(click.isTargetting(this, "import")) {
 				// TODO
-			} else if(click.isTargetting(this, "prev")) {							
-				this.makeHorizontalSwipe(SwipeDirection.RIGHT, nil -> {
-					this.page--;
-					this.loadWorkspace();
-				});
+			} else if(click.isTargetting(this, "prev")) {
+				this.makeHorizontalSwipe(SwipeDirection.RIGHT);				
+				this.getAppManager().getSystemTimer().schedule(this, 500L);
+				this.page--;
 			} else if(click.isTargetting(this, "next")) {
-				this.makeHorizontalSwipe(SwipeDirection.LEFT, nil -> {
-					this.page++;
-					this.loadWorkspace();
-				});
+				this.makeHorizontalSwipe(SwipeDirection.LEFT);
+				this.getAppManager().getSystemTimer().schedule(this, 500L);
+				this.page++;
+			}
+		} else if(event instanceof TimerEvent) {
+			if(((TimerEvent) event).isTargetting(this)) {
+				this.loadWorkspace();
 			}
 		}
 	}
 
 	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(ClickEvent.class);
+		return Arrays.asList(ClickEvent.class, TimerEvent.class);
 	}
 }
