@@ -145,7 +145,7 @@ public class Workspace implements IWorkspace {
 	public void createProject(String name) {
 		IProject project = new Project(new File(this.path, name.toLowerCase().replaceAll(Coder.whitespaceRegex, "_").concat(".proj")));
 		project.save();
-		project.load();
+		this.loadProject(project);
 	}
 
 	public void deleteProject(IProject project) {

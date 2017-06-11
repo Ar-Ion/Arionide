@@ -57,17 +57,18 @@ public class NewProjectView extends View implements ClickListener {
 	public void onClick(Object... signals) {
 		switch((String) signals[0]) {
 			case "cancel":
-				this.openView(Views.main, true);
+				this.openView(Views.main);
 				break;
 			case "create":
 				Component text = this.get(1);
 				
 				assert text instanceof Text;
 				
-				String name = ((Text) text).toString();
+				String name = ((Text) text).getText();
 				
 				if(!name.isEmpty()) {
 					this.getAppManager().getWorkspace().createProject(((Text) this.get(1)).toString());
+					this.openView(Views.code);
 				}
 				
 				break;

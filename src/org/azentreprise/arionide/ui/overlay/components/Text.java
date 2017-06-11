@@ -73,11 +73,11 @@ public class Text extends Button implements EventHandler {
 		return this;
 	}
 	
-	protected String getText() {
+	public String getText() {
 		return this.text.toString();
 	}
 	
-	protected String getPlaceholder() {
+	public String getPlaceholder() {
 		return this.placeholder;
 	}
 

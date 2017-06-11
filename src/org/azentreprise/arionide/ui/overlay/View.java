@@ -125,6 +125,10 @@ public abstract class View extends Surface {
 		this.components.forEach(comp -> comp.hide());
 	}
 	
+	public void openView(View target) {
+		this.openView(target, true);
+	}
+	
 	@IAm("opening a view")
 	public void openView(View target, boolean transition) {
 		target.show(transition);
