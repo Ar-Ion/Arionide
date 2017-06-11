@@ -62,7 +62,7 @@ public class Button extends Label implements EventHandler {
 	public Button(View parent, String label) {
 		super(parent, label);
 		
-		this.setColor(0x6942CAFE);
+		this.setColor((defaultAlpha << 24) | 0x42CAFE);
 		this.colorKeepRef = this.color;
 		
 		this.animation = new FieldModifierAnimation(this.getParentView().getAppManager(), "opacity", Label.class, this);
@@ -80,7 +80,7 @@ public class Button extends Label implements EventHandler {
 		
 		if(this.disabled) {
 			this.colorKeepRef = this.color;
-			this.setColor(0x63FF0000);
+			this.setColor((defaultAlpha << 24) | 0xFF0000);
 			
 			if(this.hasFocus) {
 				this.getParentView().getAppManager().getFocusManager().next();
@@ -110,7 +110,7 @@ public class Button extends Label implements EventHandler {
 	}
 
 	public <T extends Event> void handleEvent(T event) {
-		if(this.isHidden() || this.getBounds() == null) {
+		if(this.disabled || this.isHidden() || this.getBounds() == null) {
 			return;
 		}
 		
@@ -124,17 +124,17 @@ public class Button extends Label implements EventHandler {
 					this.getParentView().getAppManager().getDrawingContext().setCursor(this.overCursor);
 
 					if(!this.hasFocus) {
-						this.animation.startAnimation(Button.ANIMATION_TIME, 0xFF);
+						this.animation.startAnimation(ANIMATION_TIME, 0xFF);
 					}
 				}
 			} else {
 				if(this.mouseOver) {
 					this.mouseOver = false;
 					
-					this.getParentView().getAppManager().getDrawingContext().setCursor(Button.defaultCursor);
+					this.getParentView().getAppManager().getDrawingContext().setCursor(defaultCursor);
 
 					if(!this.hasFocus) {
-						this.animation.startAnimation(Button.ANIMATION_TIME, this.color >>> 24);
+						this.animation.startAnimation(ANIMATION_TIME, defaultAlpha);
 					}
 				}
 			}
@@ -175,12 +175,12 @@ public class Button extends Label implements EventHandler {
 	
 	protected void onFocusGained() {
 		this.hasFocus = true;
-		this.animation.startAnimation(200, 0xFF);
+		this.animation.startAnimation(ANIMATION_TIME, 0xFF);
 	}
 	
 	protected void onFocusLost() {
 		this.hasFocus = false;
-		this.animation.startAnimation(200, this.color >>> 24);
+		this.animation.startAnimation(ANIMATION_TIME, defaultAlpha);
 	}
 
 	public List<Class<? extends Event>> getHandleableEvents() {

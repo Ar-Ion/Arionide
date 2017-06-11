@@ -28,12 +28,14 @@ import java.awt.Rectangle;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.azentreprise.arionide.IProject;
 import org.azentreprise.arionide.IWorkspace;
 import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
+import org.azentreprise.arionide.events.InvalidateLayoutEvent;
 import org.azentreprise.arionide.events.TimerEvent;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.animations.Animation;
@@ -84,6 +86,8 @@ public class MainView extends View implements EventHandler {
 		this.add(new Button(this, ">").setSignal("next"), 6.5f / 7.0f, 0.43f, 6.8f / 7.0f, 0.58f);
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
+		
+		this.page = this.getMaxPage();
 	}
 	
 	private void loadWorkspace() {
@@ -93,8 +97,8 @@ public class MainView extends View implements EventHandler {
 		
 		List<? super IProject> projects = theWorkspace.getProjectList();
 		
-		if(4 * this.page > projects.size() + 3) {
-			this.page = (projects.size() + 3) / 4;
+		if(this.page > this.getMaxPage()) {
+			this.page = this.getMaxPage();
 		}
 		
 		// prev button
@@ -112,8 +116,8 @@ public class MainView extends View implements EventHandler {
 		}
 		
 		if(this.page > 0) {
-			for(int i = 1; i <= 4; i++) {
-				Button button = ((Button) this.get(i));
+			for(int i = 0; i < 4; i++) {
+				Button button = ((Button) this.get(i + 1));
 				
 				if(i < projects.size()) {
 					IProject project = (IProject) projects.get(i);
@@ -127,14 +131,33 @@ public class MainView extends View implements EventHandler {
 			((Button) this.get(2)).setSignal("browse", "https://azentreprise.org/Arionide/bugreport.php").setLabel("Arionide bug report").show();
 			((Button) this.get(3)).setSignal("browse", "https://azentreprise.org/Arionide/tutorials.php").setLabel("Arionide tutorials").show();
 			((Button) this.get(4)).setSignal("browse", "https://azentreprise.org/Arionide").setLabel("Arionide community").show();
-			
+		}
+	}
+	
+	private void setupFocus() {
+		if(this.page > 0) {
+			if(this.page == this.getMaxPage()) {
+				this.getAppManager().getFocusManager().request(this.getAppManager().getWorkspace().getProjectList().size() % 4);
+			} else {
+				this.getAppManager().getFocusManager().request(1);
+			}
+		} else {
 			this.getAppManager().getFocusManager().request(5);
 		}
+		
+		this.getAppManager().getEventDispatcher().fire(new InvalidateLayoutEvent());
+	}
+	
+	private int getMaxPage() {
+		return (this.getAppManager().getWorkspace().getProjectList().size() + 3) / 4;
 	}
 	
 	public void show() {
 		super.show();
+		
 		this.getAppManager().getFocusManager().setupCycle(this.makeFocusCycle(View.NATURAL_FOCUS_CYCLE));
+		this.setupFocus();
+		
 		this.loadWorkspace();
 	}
 	
@@ -167,9 +190,11 @@ public class MainView extends View implements EventHandler {
 		super.drawSurface(g2d, bounds);
 	}
 	
-	private void makeHorizontalSwipe(SwipeDirection direction) {
+	private void makeHorizontalSwipe(SwipeDirection direction, Consumer<Void> completionHandler) {
 
 		if(this.animationAnchor != null) return;
+
+		this.getAppManager().getFocusManager().request(-1);
 		
 		this.animationAnchor = (Rectangle) this.get(1).getBounds().clone(); // any of the buttons since they all have the same x-pos and width
 
@@ -184,6 +209,7 @@ public class MainView extends View implements EventHandler {
 		
 		this.componentsAlphaAnimation.startAnimation(500, after -> {
 			this.componentsAlpha = Button.defaultAlpha;
+			completionHandler.accept(null);
 		}, -Button.defaultAlpha);
 	}
 
@@ -193,7 +219,15 @@ public class MainView extends View implements EventHandler {
 			ClickEvent click = (ClickEvent) event;
 			
 			if(click.isTargetting(this, "open")) {
-
+				Object[] data = click.getData();
+				
+				if(data.length > 0) {
+					Object element = data[0];
+					
+					if(element instanceof IProject) {
+						this.getAppManager().getWorkspace().loadProject((IProject) element);
+					}
+				}
 			} else if(click.isTargetting(this, "browse")) {
 				try {
 					Desktop.getDesktop().browse(new URL((String) click.getData()[0]).toURI());
@@ -207,11 +241,11 @@ public class MainView extends View implements EventHandler {
 			} else if(click.isTargetting(this, "import")) {
 				// TODO
 			} else if(click.isTargetting(this, "prev")) {
-				this.makeHorizontalSwipe(SwipeDirection.RIGHT);				
+				this.makeHorizontalSwipe(SwipeDirection.RIGHT, nil -> this.setupFocus());
 				this.getAppManager().getSystemTimer().schedule(this, 250L);
 				this.page--;
 			} else if(click.isTargetting(this, "next")) {
-				this.makeHorizontalSwipe(SwipeDirection.LEFT);
+				this.makeHorizontalSwipe(SwipeDirection.LEFT, nil -> this.setupFocus());
 				this.getAppManager().getSystemTimer().schedule(this, 250L);
 				this.page++;
 			}

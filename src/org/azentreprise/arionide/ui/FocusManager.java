@@ -62,7 +62,7 @@ public class FocusManager {
 		this.request(this.components.indexOf(component));
 	}
 	
-	public void request(int id) {
+	public void request(int id) {		
 		if(this.focus == id) {
 			return;
 		}
