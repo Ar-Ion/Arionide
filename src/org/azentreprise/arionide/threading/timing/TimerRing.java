@@ -2,8 +2,8 @@ package org.azentreprise.arionide.threading.timing;
 
 import java.util.TimerTask;
 
-import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.events.TimerEvent;
+import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 
 public final class TimerRing extends TimerTask {
 	

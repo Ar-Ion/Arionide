@@ -1,6 +1,6 @@
 package org.azentreprise.arionide.threading.timing;
 
-import org.azentreprise.arionide.events.IEventDispatcher;
+import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 
 public class Timer {
 	

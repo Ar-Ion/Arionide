@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.arionide.events;
+package org.azentreprise.arionide.events.dispatching;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -27,6 +27,8 @@ import java.util.Queue;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.TransferQueue;
 
+import org.azentreprise.arionide.events.Event;
+import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.threading.EventDispatchingThread;
 
 public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
@@ -51,16 +53,21 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 			Event event = this.events.poll();
 						
 			this.handlers.stream()
-				.filter(handler -> handler.getHandleableEvents().contains(event.getClass()))
-				.forEach(handler -> {
-					handler.handleEvent(event);
+				.filter(handler -> {
+					if(handler != null) {
+						return handler.getHandleableEvents().contains(event.getClass());
+					}
+					
+					return false;
+				}).forEach(handler -> {
+					if(handler != null) {
+						handler.handleEvent(event);
+					}
 				});
 		}
 	}
 
 	public void registerHandler(EventHandler handler) {
-		if(handler != null) {
-			this.newHandlers.add(handler);
-		}
+		this.newHandlers.add(handler);
 	}
 }

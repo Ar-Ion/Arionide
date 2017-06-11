@@ -31,8 +31,8 @@ import java.util.Map;
 import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
-import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
+import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 
 public class LayoutManager implements EventHandler {

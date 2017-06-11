@@ -20,7 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.threading;
 
-import org.azentreprise.arionide.events.AbstractThreadedEventDispatcher;
+import org.azentreprise.arionide.events.dispatching.AbstractThreadedEventDispatcher;
 
 public class EventDispatchingThread extends WorkingThread {
 	

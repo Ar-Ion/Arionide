@@ -18,7 +18,10 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.arionide.events;
+package org.azentreprise.arionide.events.dispatching;
+
+import org.azentreprise.arionide.events.Event;
+import org.azentreprise.arionide.events.EventHandler;
 
 public interface IEventDispatcher {
 	public void fire(Event event);

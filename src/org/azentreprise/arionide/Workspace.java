@@ -34,9 +34,9 @@ import org.azentreprise.arionide.coders.Decoder;
 import org.azentreprise.arionide.coders.Encoder;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.debugging.IAm;
-import org.azentreprise.arionide.events.IEventDispatcher;
 import org.azentreprise.arionide.events.ProjectCloseEvent;
 import org.azentreprise.arionide.events.ProjectOpenEvent;
+import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 
 public class Workspace implements IWorkspace {
 	

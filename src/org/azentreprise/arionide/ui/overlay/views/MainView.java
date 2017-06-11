@@ -58,11 +58,15 @@ public class MainView extends View implements EventHandler {
 	private final Animation transformWidthAnimation;
 	private float transformWidth = 1.0f; // mod 2
 	
+	private int componentsAlpha = Button.defaultAlpha;
+	private final Animation componentsAlphaAnimation;
+	
 	public MainView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
 		this.transformWidthAnimation = new FieldModifierAnimation(this.getAppManager(), "transformWidth", MainView.class, this, new ParametricSmoothingAlgorithm(3.0f));
-
+		this.componentsAlphaAnimation = new FieldModifierAnimation(this.getAppManager(), "componentsAlpha", MainView.class, this);
+		
 		this.setBorderColor(new Color(0xCAFE));
 		
 		this.add(new Label(this, "Home").alterFont(Font.BOLD), 0.0f, 0.05f, 1.0f, 0.2f);
@@ -135,19 +139,28 @@ public class MainView extends View implements EventHandler {
 	}
 	
 	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
-		for(int i = 1; i < 5; i++) {
-			Rectangle buttonBounds = this.get(i).getBounds();
-			
-			if(buttonBounds != null && this.animationAnchor != null) {
-				if(this.transformWidth < 0.0f) {
-					int delta = (int) (this.animationAnchor.width * (this.transformWidth + 1.0f));
-					
-					buttonBounds.x = this.animationAnchor.x + delta;
-					buttonBounds.width = this.animationAnchor.width - delta;
-				} else {
-					buttonBounds.x = this.animationAnchor.x;
-					buttonBounds.width = (int) (this.transformWidth * this.animationAnchor.width);
+		if(this.animationAnchor != null) {
+			for(int i = 1; i < 5; i++) {
+				Rectangle buttonBounds = this.get(i).getBounds();
+				
+				if(buttonBounds != null) {
+	
+					((Button) this.get(i)).setOpacity(Math.abs(this.componentsAlpha));
+	
+					if(this.transformWidth < 0.0f) {
+						int delta = (int) (this.animationAnchor.width * (this.transformWidth + 1.0f));
+						
+						buttonBounds.x = this.animationAnchor.x + delta;
+						buttonBounds.width = this.animationAnchor.width - delta;
+					} else {
+						buttonBounds.x = this.animationAnchor.x;
+						buttonBounds.width = (int) (this.transformWidth * this.animationAnchor.width);
+					}
 				}
+			}
+			
+			for(int i = 8; i < 10; i++) {
+				((Button) this.get(i)).setOpacity(Math.abs(this.componentsAlpha)); // prev
 			}
 		}
 		
@@ -164,10 +177,14 @@ public class MainView extends View implements EventHandler {
 		
 		this.transformWidth *= sign;
 		
-		this.transformWidthAnimation.startAnimation(1000, after -> {
+		this.transformWidthAnimation.startAnimation(500, after -> {
 			this.animationAnchor = null;
 			this.transformWidth = 1.0f;
 		}, -sign);
+		
+		this.componentsAlphaAnimation.startAnimation(500, after -> {
+			this.componentsAlpha = Button.defaultAlpha;
+		}, -Button.defaultAlpha);
 	}
 
 	public <T extends Event> void handleEvent(T event) {
@@ -191,11 +208,11 @@ public class MainView extends View implements EventHandler {
 				// TODO
 			} else if(click.isTargetting(this, "prev")) {
 				this.makeHorizontalSwipe(SwipeDirection.RIGHT);				
-				this.getAppManager().getSystemTimer().schedule(this, 500L);
+				this.getAppManager().getSystemTimer().schedule(this, 250L);
 				this.page--;
 			} else if(click.isTargetting(this, "next")) {
 				this.makeHorizontalSwipe(SwipeDirection.LEFT);
-				this.getAppManager().getSystemTimer().schedule(this, 500L);
+				this.getAppManager().getSystemTimer().schedule(this, 250L);
 				this.page++;
 			}
 		} else if(event instanceof TimerEvent) {

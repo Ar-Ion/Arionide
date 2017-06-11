@@ -23,7 +23,7 @@ package org.azentreprise.arionide;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.debugging.WatchdogState;
-import org.azentreprise.arionide.events.IEventDispatcher;
+import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;

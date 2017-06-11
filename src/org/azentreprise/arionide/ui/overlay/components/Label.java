@@ -52,6 +52,11 @@ public class Label extends Component {
 		this.opacity = argb >>> 24;
 		return this;
 	}
+	
+	public Label setOpacity(int opacity) {
+		this.opacity = opacity & 0xFF;
+		return this;
+	}
 
 	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
 		if(this.opacity > 0) {

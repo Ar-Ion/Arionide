@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.azentreprise.arionide.events.FocusGainedEvent;
 import org.azentreprise.arionide.events.FocusLostEvent;
-import org.azentreprise.arionide.events.IEventDispatcher;
+import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 import org.azentreprise.arionide.ui.overlay.Component;
 
 public class FocusManager {
