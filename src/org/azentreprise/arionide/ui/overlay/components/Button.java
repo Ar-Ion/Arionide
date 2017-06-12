@@ -38,7 +38,7 @@ import org.azentreprise.arionide.events.ValidateEvent;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.View;
-import org.azentreprise.ui.render.RoundRectRenderer;
+import org.azentreprise.arionide.ui.primitives.RoundRectangle;
 
 public class Button extends Label implements EventHandler {
 	
@@ -98,7 +98,7 @@ public class Button extends Label implements EventHandler {
 	
 	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
 		super.drawSurface(g2d, bounds);
-		RoundRectRenderer.draw(g2d, bounds.x, bounds.y, bounds.width - 1, bounds.height - 1);
+		RoundRectangle.draw(g2d, bounds.x, bounds.y, bounds.width - 1, bounds.height - 1);
 	}
 	
 	public String toString() {
@@ -181,6 +181,12 @@ public class Button extends Label implements EventHandler {
 	protected void onFocusLost() {
 		this.hasFocus = false;
 		this.animation.startAnimation(ANIMATION_TIME, defaultAlpha);
+	}
+	
+	public void hide() {
+		super.hide();
+		this.getParentView().getAppManager().getDrawingContext().setCursor(defaultCursor);
+		this.onFocusLost();
 	}
 
 	public List<Class<? extends Event>> getHandleableEvents() {
