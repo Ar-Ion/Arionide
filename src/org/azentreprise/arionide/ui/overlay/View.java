@@ -59,8 +59,6 @@ public abstract class View extends Surface {
 		this.alphaAnimation = new FieldModifierAnimation(this.appManager, "alpha", View.class, this);
 		
 		this.focusViewUID = this.getAppManager().getFocusManager().requestViewUID();
-		
-		this.layoutManager.register(this, null, 0.1f, 0.1f, 0.9f, 0.9f);
 	}
 	
 	public void setBorderColor(Color color) {

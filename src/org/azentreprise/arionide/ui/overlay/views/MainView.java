@@ -69,6 +69,8 @@ public class MainView extends View implements EventHandler {
 		this.transformWidthAnimation = new FieldModifierAnimation(this.getAppManager(), "transformWidth", MainView.class, this, new ParametricSmoothingAlgorithm(3.0f));
 		this.componentsAlphaAnimation = new FieldModifierAnimation(this.getAppManager(), "componentsAlpha", MainView.class, this);
 		
+		layoutManager.register(this, null, 0.1f, 0.1f, 0.9f, 0.9f);
+		
 		this.setBorderColor(new Color(0xCAFE));
 		
 		this.add(new Label(this, "Home").alterFont(Font.BOLD), 0.0f, 0.05f, 1.0f, 0.2f);

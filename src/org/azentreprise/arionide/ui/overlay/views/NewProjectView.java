@@ -39,6 +39,8 @@ public class NewProjectView extends View implements ClickListener {
 	public NewProjectView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
+		layoutManager.register(this, null, 0.1f, 0.1f, 0.9f, 0.9f);
+		
 		this.setBorderColor(new Color(0xCAFE));
 				
 		this.add(new Label(this, "New project"), 0, 0.05f, 1.0f, 0.3f);

@@ -34,7 +34,7 @@ public class RoundRectangle {
 	}
 	
 	public static void fill(Graphics2D g2d, int x, int y, int width, int height) {
-		g2d.fillRoundRect(x, y, width, height, 10, 10);
+		g2d.fillRoundRect(x, y, width, height, 15, 15);
 	}
 	
 	public static void fill(Graphics2D g2d, Rectangle bounds) {

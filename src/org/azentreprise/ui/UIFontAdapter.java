@@ -25,9 +25,10 @@ import java.awt.FontMetrics;
 
 public class UIFontAdapter {
 	
-	private static final int cacheStep = 4;
+	private static final int cacheStep = 2;
+	private static final int widthCorrection = 4;
 	
-	private static Font[] cache = new Font[8];
+	private static Font[] cache = new Font[32];
 	private static String hash = new String();
 	
 	private static boolean setup = false;
@@ -56,9 +57,9 @@ public class UIFontAdapter {
 		String localHash = "hash@" + width + height + relativeSize;
 		
 		if(localHash != hash) {
-			float fontSizeX = (float) width * relativeSize / metrics.stringWidth(str);
+			float fontSizeX = (float) width * relativeSize / metrics.stringWidth(str) / widthCorrection;
 			float fontSizeY = (float) height * relativeSize / fontHeight;
-			int size = (int) (fontSize * Math.min(fontSizeX, fontSizeY)) / cacheStep;
+			int size = (int) (fontSize * Math.min(fontSizeX, fontSizeY) / cacheStep);
 			
 			if(size < 0) {
 				size = 0;

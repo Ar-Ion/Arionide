@@ -72,7 +72,7 @@ public class Label extends Component {
 			UIFontAdapter.setup(g2d.getFontMetrics());
 		}
 				
-		g2d.setFont(UIFontAdapter.adapt(str, bounds.width, bounds.height, 0.8f));
+		g2d.setFont(UIFontAdapter.adapt(str, bounds.width, bounds.height, 0.9f));
 		
 		FontMetrics metrics = g2d.getFontMetrics();
 		
