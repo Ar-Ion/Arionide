@@ -23,7 +23,6 @@ package org.azentreprise.arionide.ui.overlay.components;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FontMetrics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ import java.util.List;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.WriteEvent;
+import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.ui.animations.Animation;
 import org.azentreprise.ui.animations.FieldModifierAnimation;
@@ -81,21 +81,23 @@ public class Text extends Button implements EventHandler {
 		return this.placeholder;
 	}
 
-	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
-		super.drawSurface(g2d, bounds);
+	public void drawSurface(AppDrawingContext context) {
+		super.drawSurface(context);
 		
 		if(this.hasFocus && this.text.length() > 0) {
-			FontMetrics metrics = g2d.getFontMetrics();
+			FontMetrics metrics = context.getFontAdapter().getMetrics();
 			
 			int x = this.textRenderPosition.x + metrics.charsWidth(this.text.toString().toCharArray(), 0, this.cursorPosition);
-			int y = bounds.y + bounds.height / 2;
+			int y = this.getBounds().y + this.getBounds().height / 2;
 			
-			g2d.setColor(new Color(255, 255, 255, this.cursorOpacity));
-			g2d.fillRoundRect(x, y - metrics.getAscent() / 2, 2, metrics.getAscent(), 2, 2);
+			context.setDrawingColor(new Color(255, 255, 255, this.cursorOpacity));
+			context.getPrimitives().fillRoundRect(context, new Rectangle(x, y - metrics.getAscent() / 2, 2, metrics.getAscent()));
 
 			if(this.highlighted) {
-				g2d.setColor(new Color(0x42C0FFEE, true));
-				g2d.fillRect(this.textRenderPosition.x, y - metrics.getAscent() / 2, metrics.stringWidth(this.text.toString()), metrics.getAscent());
+				Rectangle selection = new Rectangle(this.textRenderPosition.x, y - metrics.getAscent() / 2, metrics.stringWidth(this.text.toString()), metrics.getAscent());
+				
+				context.setDrawingColor(new Color(0x42C0FFEE, true));
+				context.getPrimitives().fillRect(context, selection);
 			}
 		}
 	}
@@ -144,7 +146,7 @@ public class Text extends Button implements EventHandler {
 			this.dispatchDeletion(code, modifiers > 0);
 		} else if(seek) {
 			this.dispatchSeek(code);
-		} else if(this.getFont().canDisplay(ch) && code != KeyEvent.VK_TAB && code != KeyEvent.VK_ENTER && code != KeyEvent.VK_ESCAPE) {
+		} else if(code != KeyEvent.VK_TAB && code != KeyEvent.VK_ENTER && code != KeyEvent.VK_ESCAPE) {
 			this.text.insert(this.cursorPosition, ch);
 			this.cursorPosition++;
 		} else {

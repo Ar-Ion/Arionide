@@ -23,7 +23,6 @@ package org.azentreprise.arionide.ui.overlay.views;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.net.URL;
 import java.util.Arrays;
@@ -37,6 +36,7 @@ import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
 import org.azentreprise.arionide.events.TimerEvent;
+import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
@@ -163,7 +163,7 @@ public class MainView extends View implements EventHandler {
 		this.loadWorkspace();
 	}
 	
-	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
+	public void drawSurface(AppDrawingContext context) {
 		if(this.animationAnchor != null) {
 			for(int i = 1; i < 5; i++) {
 				Rectangle buttonBounds = this.get(i).getBounds();
@@ -189,7 +189,7 @@ public class MainView extends View implements EventHandler {
 			}
 		}
 		
-		super.drawSurface(g2d, bounds);
+		super.drawSurface(context);
 	}
 	
 	private void makeHorizontalSwipe(SwipeDirection direction, Consumer<Void> completionHandler) {

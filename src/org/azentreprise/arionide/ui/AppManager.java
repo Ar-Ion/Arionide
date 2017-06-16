@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,17 +60,17 @@ public class AppManager {
 	}
 
 	@IAm("drawing the frame")
-	public void draw(Graphics2D g2d) {
+	public void draw() {
 		
 		Rectangle bounds = new Rectangle(this.getDrawingContext().getSize());
 		
 		if(this.initialized) {
-			this.renderer.render(g2d, bounds);
+			this.renderer.render(this.getDrawingContext(), bounds);
 			
 			this.tickAnimations();
 			
 			for(Drawable view : Views.all) {
-				view.draw(g2d, bounds);
+				view.draw(this.getDrawingContext());
 			}
 		}
 	}

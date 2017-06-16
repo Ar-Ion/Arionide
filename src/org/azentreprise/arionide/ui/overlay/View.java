@@ -16,25 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive.
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.azentreprise.arionide.debugging.IAm;
+import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.layout.Surface;
-import org.azentreprise.ui.render.RoundRectRenderer;
 
 public abstract class View extends Surface {
 	
@@ -49,7 +45,7 @@ public abstract class View extends Surface {
 	
 	private final int focusViewUID;
 	
-	private Color borderColor = new Color(0, 0, 0, 0);
+	private Color borderColor = null;
 	public float alpha = 0.0f;
 	
 	public View(AppManager appManager, LayoutManager layoutManager) {
@@ -69,20 +65,19 @@ public abstract class View extends Surface {
 		return this.alphaAnimation;
 	}
 
-	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
-		Composite original = g2d.getComposite();
+	public void drawSurface(AppDrawingContext context) {
+		context.pushOpacity(this.alpha);
 		
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.alpha));
-		
-		g2d.setColor(this.borderColor);
-		
-		RoundRectRenderer.draw(g2d, bounds.x, bounds.y, bounds.width - 1, bounds.height - 1);
-		
-		for(Component component : this.components) {
-			component.draw(g2d, bounds);
+		if(this.borderColor != null) {
+			context.setDrawingColor(this.borderColor);
+			context.getPrimitives().drawRoundRect(context, this.getBounds());
 		}
 		
-		g2d.setComposite(original);
+		for(Component component : this.components) {
+			component.draw(context);
+		}
+		
+		context.popOpacity();
 	}
 	
 	protected void add(Component component, float x, float y, float width, float height) {

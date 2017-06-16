@@ -21,14 +21,11 @@
 package org.azentreprise.arionide.ui.overlay.components;
 
 import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
 
+import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
-import org.azentreprise.ui.UIFontAdapter;
 
 public class Label extends Component {
 	
@@ -58,30 +55,12 @@ public class Label extends Component {
 		return this;
 	}
 
-	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
+	public void drawSurface(AppDrawingContext context) {
 		if(this.opacity > 0) {
-			g2d.setColor(new Color((this.opacity << 24) | (this.color & 0xFFFFFF), true));
+			context.setDrawingColor(new Color((this.opacity << 24) | (this.color & 0xFFFFFF), true));
 		}
 		
-		this.drawString(g2d, bounds, this.label);
-	}
-	
-	public void drawString(Graphics2D g2d, Rectangle bounds, String str) {
-		if(UIFontAdapter.needSetup()) {
-			g2d.setFont(this.getFont());
-			UIFontAdapter.setup(g2d.getFontMetrics());
-		}
-				
-		g2d.setFont(UIFontAdapter.adapt(str, bounds.width, bounds.height, 0.9f));
-		
-		FontMetrics metrics = g2d.getFontMetrics();
-		
-		int x = bounds.x + (bounds.width - metrics.stringWidth(str)) / 2;
-		int y = bounds.y + (bounds.height - metrics.getHeight()) / 2 + metrics.getAscent();
-		
-		g2d.drawString(str, x, y);
-		
-		this.textRenderPosition = new Point(x, y);
+		this.textRenderPosition = context.getPrimitives().drawText(context, this.label, this.getBounds());
 	}
 	
 	public boolean isFocusable() {

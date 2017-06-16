@@ -36,6 +36,7 @@ import org.azentreprise.arionide.threading.UserHelpingThread;
 import org.azentreprise.arionide.threading.WorkingThread;
 import org.azentreprise.arionide.ui.AWTDrawingContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.core.AWTCoreRenderer;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 
@@ -74,7 +75,7 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public CoreRenderer loadCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher, Resources resources) {
-		return new CoreRenderer();
+		return new AWTCoreRenderer();
 	}
 
 	public LayoutManager setupLayoutManager(AppDrawingContext context, IEventDispatcher dispatcher) {

@@ -21,8 +21,6 @@
 package org.azentreprise.arionide.ui.overlay.components;
 
 import java.awt.Cursor;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,10 +33,10 @@ import org.azentreprise.arionide.events.FocusGainedEvent;
 import org.azentreprise.arionide.events.FocusLostEvent;
 import org.azentreprise.arionide.events.MoveEvent;
 import org.azentreprise.arionide.events.ValidateEvent;
+import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.View;
-import org.azentreprise.arionide.ui.primitives.RoundRectangle;
 
 public class Button extends Label implements EventHandler {
 	
@@ -96,9 +94,9 @@ public class Button extends Label implements EventHandler {
 		this.overCursor = cursor;
 	}
 	
-	public void drawSurface(Graphics2D g2d, Rectangle bounds) {
-		super.drawSurface(g2d, bounds);
-		RoundRectangle.draw(g2d, bounds.x, bounds.y, bounds.width - 1, bounds.height - 1);
+	public void drawSurface(AppDrawingContext context) {
+		super.drawSurface(context);
+		context.getPrimitives().drawRoundRect(context, this.getBounds());
 	}
 	
 	public String toString() {

@@ -56,9 +56,7 @@ public class Main {
 			Resources resources = theInstance.loadResources(workspace, context);
 			CoreRenderer renderer = theInstance.loadCoreRenderer(context, dispatcher, resources);
 			LayoutManager manager = theInstance.setupLayoutManager(context, dispatcher);
-			
-			context.setupRenderingProperties();
-			
+						
 			theInstance.loadUI(theInstance, context, workspace, resources, renderer, manager);
 			
 			WatchdogState state = null;

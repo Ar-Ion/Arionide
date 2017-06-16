@@ -21,16 +21,16 @@
 package org.azentreprise.arionide.ui.layout;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.Drawable;
 
 public abstract class Surface implements Drawable {
 	
 	private Rectangle bounds;
 	
-	private Color backgroundColor = new Color(0, true);
+	private Color backgroundColor = null;
 	
 	private boolean hidden = true;
 		
@@ -42,12 +42,14 @@ public abstract class Surface implements Drawable {
 		this.backgroundColor = color;
 	}
 	
-	public final void draw(Graphics2D g2d, Rectangle bounds) {
+	public final void draw(AppDrawingContext context) {
 		if(!this.hidden && this.bounds != null) {
-			g2d.setColor(this.backgroundColor);
-			g2d.fill(this.getBounds());
+			if(this.backgroundColor != null) {
+				context.setDrawingColor(this.backgroundColor);
+				context.getPrimitives().fillRect(context, this.bounds);
+			}
 			
-			this.drawSurface(g2d, this.getBounds());
+			this.drawSurface(context);
 		}
 	}
 	
@@ -67,5 +69,5 @@ public abstract class Surface implements Drawable {
 		return this.bounds;
 	}
 	
-	public abstract void drawSurface(Graphics2D g2d, Rectangle bounds);
+	public abstract void drawSurface(AppDrawingContext context);
 }

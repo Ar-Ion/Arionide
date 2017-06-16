@@ -20,6 +20,11 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -39,11 +44,14 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.IWorkspace;
+import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.ActionType;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
@@ -54,9 +62,10 @@ import org.azentreprise.arionide.events.WheelEvent;
 import org.azentreprise.arionide.events.WriteEvent;
 import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 import org.azentreprise.arionide.resources.Resources;
-import org.azentreprise.arionide.threading.WorkingThread;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
+import org.azentreprise.arionide.ui.primitives.AWTPrimitives;
+import org.azentreprise.arionide.ui.primitives.IPrimitives;
 
 public class AWTDrawingContext extends Panel implements AppDrawingContext, WindowListener, ComponentListener, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
@@ -64,6 +73,10 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	
 	private final Map<RenderingHints.Key, Object> renderingHints = new HashMap<>();
 		
+	private final IPrimitives primitives = new AWTPrimitives();
+	
+	private final Stack<Float> opacityStack = new Stack<>();
+	
 	private final IEventDispatcher dispatcher;
 	private final AppManager theManager;
 	private final Frame theFrame;
@@ -71,6 +84,9 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	private Image buffer = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 	private Graphics2D bufferGraphics = (Graphics2D) this.buffer.getGraphics();
 	
+	private Font font;
+	private FontAdapter adapter;
+
 	private int ticks = 0;
 	private long time = 0;
 	
@@ -82,7 +98,6 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		
 		this.theFrame.setSize(width, height);
 		this.theFrame.setLocationRelativeTo(null);
-		
 		this.theFrame.add(this);
 		
 		this.theFrame.addWindowListener(this);
@@ -97,12 +112,18 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		
 		this.setFocusTraversalKeysEnabled(false);
 		this.theFrame.setFocusTraversalKeysEnabled(false);
+		
+		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		this.renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		this.renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		this.renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 	}
 
 	public void paint(Graphics g) {
 		this.ticks++;
 
-		this.draw((Graphics2D) g);
+		this.draw();
 					
 		long now = System.currentTimeMillis();
 		
@@ -117,14 +138,53 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	
 	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
 		this.theFrame.setVisible(true);
+		
+		try {
+			this.font = Font.createFont(Font.TRUETYPE_FONT, resources.getResource("font"));
+			this.adapter = new FontAdapter(this.getFontMetrics(this.font));
+		} catch (FontFormatException | IOException exception) {
+			Debug.exception(exception);
+		}
+				
 		this.theManager.loadUI(theInstance, workspace, resources, renderer, manager);
 	}
 
-	public void draw(Graphics2D g2d) {		
+	public void draw() {
 		this.bufferGraphics.setRenderingHints(this.renderingHints);
-		this.theManager.draw(this.bufferGraphics);
+		this.theManager.draw();
 		
-		g2d.drawImage(this.buffer, 0, 0, null);
+		this.getGraphics().drawImage(this.buffer, 0, 0, null);
+	}
+	
+	public Graphics2D getRenderer() {
+		return this.bufferGraphics;
+	}
+	
+	public IPrimitives getPrimitives() {
+		return this.primitives;
+	}
+	
+	public FontAdapter getFontAdapter() {
+		return this.adapter;
+	}
+	
+	public void setDrawingColor(Color color) {
+		this.getRenderer().setColor(color);
+	}
+	
+	public void pushOpacity(float opacity) {
+		
+		Composite currentComposite = this.getRenderer().getComposite();
+		
+		if(currentComposite instanceof AlphaComposite) {
+			this.opacityStack.push(((AlphaComposite) currentComposite).getAlpha());
+		}
+		
+		this.getRenderer().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+	}
+	
+	public void popOpacity() {
+		this.getRenderer().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.opacityStack.pop()));
 	}
 	
 	private void resetBuffer(int width, int height) {
@@ -138,18 +198,6 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		
 		this.buffer = this.createImage(width, height);		
 		this.bufferGraphics = (Graphics2D) this.buffer.getGraphics();
-	}
-
-	public void setupRenderingProperties() {
-		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		this.renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		this.renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		this.renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-	}
-	
-	public WorkingThread getWrapperThread() {
-		return null;
 	}
 
 	public void windowOpened(WindowEvent e) {

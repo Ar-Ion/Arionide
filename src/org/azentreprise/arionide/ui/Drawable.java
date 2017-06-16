@@ -20,9 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-
 public interface Drawable {
-	public void draw(Graphics2D g2d, Rectangle bounds);
+	public void draw(AppDrawingContext context);
 }
