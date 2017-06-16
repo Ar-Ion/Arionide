@@ -20,15 +20,12 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay;
 
-import java.awt.Font;
-
 import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.ui.layout.Surface;
 
 public abstract class Component extends Surface {
 	
 	private final View parent;
-	private Font font;
 	
 	@IAm("initializing a component")
 	public Component(View parent) {
@@ -37,21 +34,6 @@ public abstract class Component extends Surface {
 		
 	public View getParentView() {
 		return this.parent;
-	}
-	
-	public Component alterFont(int style, float size) {
-		this.font = this.font.deriveFont(style, size);
-		return this;
-	}
-	
-	public Component alterFont(int style) {
-		this.font = this.font.deriveFont(style);
-		return this;
-	}
-	
-	public Component alterFont(float size) {
-		this.font = this.font.deriveFont(size);
-		return this;
 	}
 	
 	public abstract boolean isFocusable();

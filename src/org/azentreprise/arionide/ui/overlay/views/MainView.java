@@ -22,7 +22,6 @@ package org.azentreprise.arionide.ui.overlay.views;
 
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Font;
 import java.awt.Rectangle;
 import java.net.URL;
 import java.util.Arrays;
@@ -73,7 +72,7 @@ public class MainView extends View implements EventHandler {
 		
 		this.setBorderColor(new Color(0xCAFE));
 		
-		this.add(new Label(this, "Home").alterFont(Font.BOLD), 0.0f, 0.05f, 1.0f, 0.2f);
+		this.add(new Label(this, "Home"), 0.0f, 0.05f, 1.0f, 0.2f);
 		
 		this.add(new Button(this, "Undefined"), 0.1f, 0.23f, 0.9f, 0.33f);
 		this.add(new Button(this, "Undefined"), 0.1f, 0.38f, 0.9f, 0.48f);

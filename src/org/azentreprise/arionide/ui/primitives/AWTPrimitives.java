@@ -12,22 +12,22 @@ public class AWTPrimitives implements IPrimitives {
 	
 	public void drawRect(AppDrawingContext context, Rectangle bounds) {
 		assert context instanceof AWTDrawingContext;
-		((AWTDrawingContext) context).getRenderer().drawRect(bounds.x, bounds.y, bounds.width - 1, bounds.height - 1);
+		((AWTDrawingContext) context).getRenderer().drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
 	}
 	
 	public void fillRect(AppDrawingContext context, Rectangle bounds) {
 		assert context instanceof AWTDrawingContext;
-		((AWTDrawingContext) context).getRenderer().fillRect(bounds.x, bounds.y, bounds.width - 1, bounds.height - 1);
+		((AWTDrawingContext) context).getRenderer().fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
 	}
 	
 	public void drawRoundRect(AppDrawingContext context, Rectangle bounds) {
 		assert context instanceof AWTDrawingContext;
-		((AWTDrawingContext) context).getRenderer().drawRoundRect(bounds.x, bounds.y, bounds.width - 1, bounds.height - 1, 15, 15);
+		((AWTDrawingContext) context).getRenderer().drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
 	}
 
 	public void fillRoundRect(AppDrawingContext context, Rectangle bounds) {
 		assert context instanceof AWTDrawingContext;
-		((AWTDrawingContext) context).getRenderer().fillRoundRect(bounds.x, bounds.y, bounds.width - 1, bounds.height - 1, 15, 15);
+		((AWTDrawingContext) context).getRenderer().fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
 	}
 
 	public void drawLine(AppDrawingContext context, int x1, int y1, int x2, int y2) {

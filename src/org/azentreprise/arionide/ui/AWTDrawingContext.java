@@ -21,15 +21,13 @@
 package org.azentreprise.arionide.ui;
 
 import java.awt.AlphaComposite;
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Frame;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Panel;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentEvent;
@@ -43,7 +41,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
+import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,7 +65,7 @@ import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.primitives.AWTPrimitives;
 import org.azentreprise.arionide.ui.primitives.IPrimitives;
 
-public class AWTDrawingContext extends Panel implements AppDrawingContext, WindowListener, ComponentListener, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
+public class AWTDrawingContext extends Canvas implements AppDrawingContext, WindowListener, ComponentListener, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
 	private static final long serialVersionUID = 1171699360872561984L;
 	
@@ -81,8 +79,7 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	private final AppManager theManager;
 	private final Frame theFrame;
 	
-	private Image buffer = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-	private Graphics2D bufferGraphics = (Graphics2D) this.buffer.getGraphics();
+	private Graphics2D theGraphics;
 	
 	private Font font;
 	private FontAdapter adapter;
@@ -95,7 +92,6 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		
 		this.theManager = new AppManager(this, dispatcher);
 		this.theFrame = new Frame("Arionide");
-		
 		this.theFrame.setSize(width, height);
 		this.theFrame.setLocationRelativeTo(null);
 		this.theFrame.add(this);
@@ -112,19 +108,54 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 		
 		this.setFocusTraversalKeysEnabled(false);
 		this.theFrame.setFocusTraversalKeysEnabled(false);
-		
+				
 		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		this.renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		this.renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		this.renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 	}
+	
+	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+		this.theFrame.setVisible(true);
 
-	public void paint(Graphics g) {
+		try {
+			this.font = Font.createFont(Font.TRUETYPE_FONT, resources.getResource("font"));
+			this.adapter = new FontAdapter(this.getFontMetrics(this.font));
+		} catch (FontFormatException | IOException exception) {
+			Debug.exception(exception);
+		}
+		
+		new Thread() {
+			public void run() {
+				while(true) {
+					draw();
+				}
+			}
+		}.start();
+		
+		this.theManager.loadUI(theInstance, workspace, resources, renderer, manager);
+	}
+
+	public void draw() {
 		this.ticks++;
-
-		this.draw();
-					
+		
+		BufferStrategy strategy = this.getBufferStrategy();
+		
+		if(strategy == null) {
+			this.createBufferStrategy(2);
+			return;
+		}
+		
+		this.theGraphics = (Graphics2D) strategy.getDrawGraphics();
+		this.theGraphics.setRenderingHints(this.renderingHints);
+		
+		this.theManager.draw();
+	
+		this.theGraphics.dispose();
+			
+		strategy.show();
+		
 		long now = System.currentTimeMillis();
 		
 		if(this.time + 1000 <= now) {
@@ -132,32 +163,10 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 			this.time = now;
 			this.ticks = 0;
 		}
-		
-		this.repaint();
-	}
-	
-	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
-		this.theFrame.setVisible(true);
-		
-		try {
-			this.font = Font.createFont(Font.TRUETYPE_FONT, resources.getResource("font"));
-			this.adapter = new FontAdapter(this.getFontMetrics(this.font));
-		} catch (FontFormatException | IOException exception) {
-			Debug.exception(exception);
-		}
-				
-		this.theManager.loadUI(theInstance, workspace, resources, renderer, manager);
-	}
-
-	public void draw() {
-		this.bufferGraphics.setRenderingHints(this.renderingHints);
-		this.theManager.draw();
-		
-		this.getGraphics().drawImage(this.buffer, 0, 0, null);
 	}
 	
 	public Graphics2D getRenderer() {
-		return this.bufferGraphics;
+		return this.theGraphics;
 	}
 	
 	public IPrimitives getPrimitives() {
@@ -185,19 +194,6 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	
 	public void popOpacity() {
 		this.getRenderer().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.opacityStack.pop()));
-	}
-	
-	private void resetBuffer(int width, int height) {
-		if(this.buffer != null) {
-			this.buffer.flush();
-		}
-		
-		if(this.bufferGraphics != null) {
-			this.bufferGraphics.dispose();
-		}
-		
-		this.buffer = this.createImage(width, height);		
-		this.bufferGraphics = (Graphics2D) this.buffer.getGraphics();
 	}
 
 	public void windowOpened(WindowEvent e) {
@@ -229,7 +225,6 @@ public class AWTDrawingContext extends Panel implements AppDrawingContext, Windo
 	}
 
 	public void componentResized(ComponentEvent event) {
-		this.resetBuffer(this.getWidth(), this.getHeight());
 		this.dispatcher.fire(new InvalidateLayoutEvent());
 	}
 
