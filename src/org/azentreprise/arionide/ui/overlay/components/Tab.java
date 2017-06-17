@@ -8,17 +8,23 @@ import java.util.List;
 
 import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.ActionType;
+import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.ui.AWTDrawingContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.OpenGLDrawingContext;
+import org.azentreprise.arionide.ui.animations.Animation;
+import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
 
 public class Tab extends Component implements EventHandler {
 	
+	private static final int ANIMATION_TIME = 500;
+	
 	private final TabDesign design;
+	private final Animation animation;
 	
 	private final Label[] labels;
 	private float active = 0;
@@ -37,6 +43,8 @@ public class Tab extends Component implements EventHandler {
 		} else {
 			this.design = null;
 		}
+		
+		this.animation = new FieldModifierAnimation(parent.getAppManager(), "active", Tab.class, this);
 		
 		this.labels = new Label[tabs.length];
 		
@@ -57,7 +65,7 @@ public class Tab extends Component implements EventHandler {
 	    context.setDrawingColor(new Color(0x6000CAFE, true)); // there's a lot of coffee right there =P
 	    
 	    double center = bounds.getX() + (this.active + 0.5f) * bounds.getWidth() / this.labels.length;
-	    this.design.createDesign(context, new Point2D.Double(center, bounds.getCenterY()), bounds.width / this.labels.length);
+	    this.design.createDesign(context, new Point2D.Double(center, bounds.getCenterY()), bounds.width / this.labels.length / 2);
 		
 		context.getPrimitives().drawRoundRect(context, bounds);
 		
@@ -84,7 +92,12 @@ public class Tab extends Component implements EventHandler {
 			ActionEvent action = (ActionEvent) event;
 			
 			if(this.getBounds().contains(action.getPoint()) && action.getType().equals(ActionType.PRESS)) {
-				double delta = this.getBounds().getWidth() / this.labels.length - (action.getPoint().getX() - this.getBounds().getX());
+				int target = this.labels.length * (action.getPoint().x - this.getBounds().x) / this.getBounds().width;
+				
+				if((int) this.active != target) {
+					this.animation.startAnimation(ANIMATION_TIME, target);
+					this.getParentView().getAppManager().getEventDispatcher().fire(new ClickEvent(this, "tabchange", (int) this.active));
+				}
 			}
 		}
 	}

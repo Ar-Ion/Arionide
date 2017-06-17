@@ -28,7 +28,7 @@ public class ClickEvent extends ComponentEvent {
 	private final String signal;
 	private final Object[] data;
 	
-	public ClickEvent(Component target, String signal, Object[] data) {
+	public ClickEvent(Component target, String signal, Object... data) {
 		super(target);
 		
 		this.signal = signal;
