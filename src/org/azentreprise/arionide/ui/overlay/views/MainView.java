@@ -156,7 +156,7 @@ public class MainView extends View implements EventHandler {
 	public void show() {
 		super.show();
 		
-		this.setupFocusCycle(View.NATURAL_FOCUS_CYCLE);
+		this.setupFocusCycle();
 		this.setupFocus();
 		
 		this.loadWorkspace();

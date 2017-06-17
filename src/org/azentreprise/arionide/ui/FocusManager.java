@@ -61,13 +61,13 @@ public class FocusManager {
 	
 	public void request(Component component) {
 		int index = this.cycle.indexOf(this.components.indexOf(component));
-		
+		System.out.println(index);
 		if(index > -1) {
 			this.request(index);
 		} // Else ignore because the component is hidden
 	}
 	
-	public void request(int id) {		
+	public void request(int id) {
 		if(this.focus == id) {
 			return;
 		}
@@ -90,7 +90,7 @@ public class FocusManager {
 		this.loseFocus();
 		
 		this.focus++;
-		
+				
 		this.tryIncrementalFocus(1);
 	}
 	

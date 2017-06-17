@@ -21,18 +21,22 @@
 package org.azentreprise.arionide.ui.overlay.views;
 
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.List;
 
+import org.azentreprise.arionide.events.ClickEvent;
+import org.azentreprise.arionide.events.Event;
+import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.overlay.Views;
 import org.azentreprise.arionide.ui.overlay.components.Button;
-import org.azentreprise.arionide.ui.overlay.components.ClickListener;
 import org.azentreprise.arionide.ui.overlay.components.Label;
 import org.azentreprise.arionide.ui.overlay.components.Text;
 
-public class NewProjectView extends View implements ClickListener {
+public class NewProjectView extends View implements EventHandler {
 	
 	private final Text projectName = new Text(this, "Project name");
 	
@@ -49,19 +53,21 @@ public class NewProjectView extends View implements ClickListener {
 		
 		this.add(new Button(this, "Create").setSignal("create"), 0.1f, 0.8f, 0.45f, 0.9f);
 		this.add(new Button(this, "Cancel").setSignal("cancel"), 0.55f, 0.8f, 0.9f, 0.9f);
+		
+		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
 	
 	public void show() {
 		super.show();
-		this.setupFocusCycle(1, 2, 3);
+		this.setupFocusCycle();
 	}
 
-	public void onClick(Object... signals) {
-		switch((String) signals[0]) {
-			case "cancel":
-				this.openView(Views.main);
-				break;
-			case "create":
+	public <T extends Event> void handleEvent(T event) {
+		if(event instanceof ClickEvent) {
+			
+			ClickEvent click = (ClickEvent) event;
+			
+			if(click.isTargetting(this, "create")) {
 				Component text = this.get(1);
 				
 				assert text instanceof Text;
@@ -72,8 +78,13 @@ public class NewProjectView extends View implements ClickListener {
 					this.getAppManager().getWorkspace().createProject(((Text) this.get(1)).toString());
 					this.openView(Views.code);
 				}
-				
-				break;
+			} else if(click.isTargetting(this, "cancel")) {
+				this.openView(Views.main);
+			}
 		}
+	}
+
+	public List<Class<? extends Event>> getHandleableEvents() {
+		return Arrays.asList(ClickEvent.class);
 	}
 }

@@ -33,9 +33,7 @@ import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.layout.Surface;
 
 public abstract class View extends Surface {
-	
-	protected static final int[] NATURAL_FOCUS_CYCLE = new int[0];
-	
+		
 	private final AppManager appManager;
 	private final LayoutManager layoutManager;
 
@@ -93,20 +91,20 @@ public abstract class View extends Surface {
 	protected void setupFocusCycle(int... elements) {
 		List<Integer> cycle = new ArrayList<>();
 		
-		if(elements == View.NATURAL_FOCUS_CYCLE) {
+		if(elements.length == 0) {
 			int fillingIndex = 0;
 			
+			elements = new int[this.components.size()];
+			
 			while(fillingIndex < this.components.size()) {
-				cycle.add(fillingIndex++);
+				elements[fillingIndex] = fillingIndex++;
 			}
 		}
-		
+				
 		for(int element : elements) {
 			cycle.add(this.focusViewUID + element);
 		}
-		
-		System.out.println(cycle);
-		
+				
 		this.getAppManager().getFocusManager().setupCycle(cycle);
 	}
 	
