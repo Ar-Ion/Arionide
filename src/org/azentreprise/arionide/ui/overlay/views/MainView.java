@@ -59,7 +59,7 @@ public class MainView extends View implements EventHandler {
 	private final Animation transformWidthAnimation;
 	private float transformWidth = 1.0f; // mod 2
 	
-	private int componentsAlpha = Button.defaultAlpha;
+	private int componentsAlpha = Button.DEFAULT_ALPHA;
 	private final Animation componentsAlphaAnimation;
 	
 	public MainView(AppManager appManager, LayoutManager layoutManager) {
@@ -87,7 +87,7 @@ public class MainView extends View implements EventHandler {
 		this.add(new Button(this, ">").setSignal("next"), 6.5f / 7.0f, 0.43f, 6.8f / 7.0f, 0.58f);
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
-		
+
 		this.page = this.getMaxPage();
 	}
 	
@@ -110,7 +110,7 @@ public class MainView extends View implements EventHandler {
 		}
 		
 		// next button
-		if(this.page > projects.size() / 4) {
+		if(this.page >= projects.size() / 4) {
 			((Button) this.get(9)).hide();
 		} else {
 			((Button) this.get(9)).show();
@@ -156,7 +156,7 @@ public class MainView extends View implements EventHandler {
 	public void show() {
 		super.show();
 		
-		this.getAppManager().getFocusManager().setupCycle(this.makeFocusCycle(View.NATURAL_FOCUS_CYCLE));
+		this.setupFocusCycle(View.NATURAL_FOCUS_CYCLE);
 		this.setupFocus();
 		
 		this.loadWorkspace();
@@ -209,9 +209,9 @@ public class MainView extends View implements EventHandler {
 		}, -sign);
 		
 		this.componentsAlphaAnimation.startAnimation(500, after -> {
-			this.componentsAlpha = Button.defaultAlpha;
+			this.componentsAlpha = Button.DEFAULT_ALPHA;
 			completionHandler.accept(null);
-		}, -Button.defaultAlpha);
+		}, -Button.DEFAULT_ALPHA);
 	}
 
 	public <T extends Event> void handleEvent(T event) {

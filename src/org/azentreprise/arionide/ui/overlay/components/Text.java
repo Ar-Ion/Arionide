@@ -28,16 +28,21 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.azentreprise.arionide.events.ActionEvent;
+import org.azentreprise.arionide.events.ActionType;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.WriteEvent;
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.animations.Animation;
+import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.View;
-import org.azentreprise.ui.animations.Animation;
-import org.azentreprise.ui.animations.FieldModifierAnimation;
 
 public class Text extends Button implements EventHandler {	
-	private final Animation animation = new FieldModifierAnimation("cursorOpacity", Text.class, this);
+	
+	private static final int CURSOR_BLINKING_PERIOD = 500;
+	
+	private final Animation animation;
 	
 	protected String placeholder;
 	protected StringBuilder text = new StringBuilder();
@@ -50,7 +55,9 @@ public class Text extends Button implements EventHandler {
 	
 	public Text(View parent, String placeholder) {
 		super(parent, placeholder);
+		
 		this.placeholder = placeholder;
+		this.animation = new FieldModifierAnimation(parent.getAppManager(), "cursorOpacity", Text.class, this);
 		
 		this.setOverCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 	}
@@ -85,7 +92,7 @@ public class Text extends Button implements EventHandler {
 		super.drawSurface(context);
 		
 		if(this.hasFocus && this.text.length() > 0) {
-			FontMetrics metrics = context.getFontAdapter().getMetrics();
+			FontMetrics metrics = context.getFontAdapter().getLastMetrics();
 			
 			int x = this.textRenderPosition.x + metrics.charsWidth(this.text.toString().toCharArray(), 0, this.cursorPosition);
 			int y = this.getBounds().y + this.getBounds().height / 2;
@@ -103,14 +110,18 @@ public class Text extends Button implements EventHandler {
 	}
 	
 	private void cursorAnimationOpacityIncrease() {
-		this.animation.startAnimation(500, useless -> this.cursorAnimationOpacityDecrease(), 255);
+		this.animation.startAnimation(CURSOR_BLINKING_PERIOD, useless -> this.cursorAnimationOpacityDecrease(), 255);
 	}
 	
 	private void cursorAnimationOpacityDecrease() {
-		this.animation.startAnimation(500, useless -> this.cursorAnimationOpacityIncrease(), 0);
+		this.animation.startAnimation(CURSOR_BLINKING_PERIOD, useless -> this.cursorAnimationOpacityIncrease(), 0);
 	}
 	
 	public <T extends Event> void handleEvent(T event) {
+		
+		if(this.isHidden() || this.getBounds() == null) {
+			return;
+		}
 		
 		super.handleEvent(event);
 		
@@ -138,6 +149,21 @@ public class Text extends Button implements EventHandler {
 			if(noSeek) {
 				this.updateText();
 			}
+		} else if(event instanceof ActionEvent) {
+			ActionEvent casted = (ActionEvent) event;
+			
+			if(this.getBounds().contains(casted.getPoint())) {
+				if(casted.getType().equals(ActionType.PRESS)) {
+					this.getParentView().getAppManager().getFocusManager().request(this);
+					
+					if(System.currentTimeMillis() - this.counter < 400L) {
+						this.highlighted = !this.highlighted;
+					} else {
+						this.counter = System.currentTimeMillis();
+						this.highlighted = false;
+					}
+				}
+			}
 		}
 	}
 	
@@ -146,7 +172,7 @@ public class Text extends Button implements EventHandler {
 			this.dispatchDeletion(code, modifiers > 0);
 		} else if(seek) {
 			this.dispatchSeek(code);
-		} else if(code != KeyEvent.VK_TAB && code != KeyEvent.VK_ENTER && code != KeyEvent.VK_ESCAPE) {
+		} else if(this.getParentView().getAppManager().getDrawingContext().getFontAdapter().getLastMetrics().getFont().canDisplay(ch)) {
 			this.text.insert(this.cursorPosition, ch);
 			this.cursorPosition++;
 		} else {

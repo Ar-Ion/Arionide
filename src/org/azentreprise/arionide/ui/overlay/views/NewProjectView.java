@@ -53,7 +53,7 @@ public class NewProjectView extends View implements ClickListener {
 	
 	public void show() {
 		super.show();
-		this.getAppManager().getFocusManager().setupCycle(this.makeFocusCycle(1, 2, 3));
+		this.setupFocusCycle(1, 2, 3);
 	}
 
 	public void onClick(Object... signals) {

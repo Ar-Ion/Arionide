@@ -30,8 +30,9 @@ import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -39,8 +40,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.util.HashMap;
@@ -65,7 +66,7 @@ import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.primitives.AWTPrimitives;
 import org.azentreprise.arionide.ui.primitives.IPrimitives;
 
-public class AWTDrawingContext extends Canvas implements AppDrawingContext, WindowListener, ComponentListener, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
+public class AWTDrawingContext extends Canvas implements AppDrawingContext, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
 	private static final long serialVersionUID = 1171699360872561984L;
 	
@@ -83,22 +84,30 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Wind
 	
 	private Font font;
 	private FontAdapter adapter;
-
+	
 	private int ticks = 0;
 	private long time = 0;
 	
 	public AWTDrawingContext(IEventDispatcher dispatcher, int width, int height) {
 		this.dispatcher = dispatcher;
-		
 		this.theManager = new AppManager(this, dispatcher);
 		this.theFrame = new Frame("Arionide");
 		this.theFrame.setSize(width, height);
 		this.theFrame.setLocationRelativeTo(null);
 		this.theFrame.add(this);
+				
+		this.theFrame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent event) {
+				theManager.shutdown();	
+			}
+		});
 		
-		this.theFrame.addWindowListener(this);
-		this.theFrame.addComponentListener(this);
-
+		this.theFrame.addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent event) {
+				dispatcher.fire(new InvalidateLayoutEvent());
+			}
+		});
+		
 		this.theFrame.addKeyListener(this);
 		this.addKeyListener(this);
 		
@@ -114,6 +123,8 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Wind
 		this.renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		this.renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+	
+		Toolkit.getDefaultToolkit().setDynamicLayout(false);
 	}
 	
 	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
@@ -121,12 +132,12 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Wind
 
 		try {
 			this.font = Font.createFont(Font.TRUETYPE_FONT, resources.getResource("font"));
-			this.adapter = new FontAdapter(this.getFontMetrics(this.font));
+			this.adapter = new FontAdapter(this.font);
 		} catch (FontFormatException | IOException exception) {
 			Debug.exception(exception);
 		}
 		
-		new Thread() {
+		new Thread("Drawing thread") {
 			public void run() {
 				while(true) {
 					draw();
@@ -147,15 +158,20 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Wind
 			return;
 		}
 		
-		this.theGraphics = (Graphics2D) strategy.getDrawGraphics();
-		this.theGraphics.setRenderingHints(this.renderingHints);
-		
-		this.theManager.draw();
-	
-		this.theGraphics.dispose();
+		do {
+			do {				
+				try {
+					this.theGraphics = (Graphics2D) strategy.getDrawGraphics();
+					this.theGraphics.setRenderingHints(this.renderingHints);
+					this.theManager.draw();
+				} finally {
+					this.theGraphics.dispose();
+				}
+			} while(strategy.contentsRestored());
 			
-		strategy.show();
-		
+			strategy.show();
+		} while(strategy.contentsLost());
+				
 		long now = System.currentTimeMillis();
 		
 		if(this.time + 1000 <= now) {
@@ -164,7 +180,7 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Wind
 			this.ticks = 0;
 		}
 	}
-	
+
 	public Graphics2D getRenderer() {
 		return this.theGraphics;
 	}
@@ -195,104 +211,45 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Wind
 	public void popOpacity() {
 		this.getRenderer().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.opacityStack.pop()));
 	}
-
-	public void windowOpened(WindowEvent e) {
-		;
-	}
-
-	public void windowClosing(WindowEvent event) {
-		this.theManager.shutdown();
-	}
-
-	public void windowClosed(WindowEvent e) {
-		;
-	}
-
-	public void windowIconified(WindowEvent e) {
-		;
-	}
-
-	public void windowDeiconified(WindowEvent e) {
-		;
-	}
-
-	public void windowActivated(WindowEvent e) {
-		;
-	}
-
-	public void windowDeactivated(WindowEvent e) {
-		;
-	}
-
-	public void componentResized(ComponentEvent event) {
-		this.dispatcher.fire(new InvalidateLayoutEvent());
-	}
-
-	public void componentMoved(ComponentEvent e) {
-		;
-	}
-
-	public void componentShown(ComponentEvent e) {
-		;
-	}
-
-	public void componentHidden(ComponentEvent e) {
-		;
-	}
 	
 	public void mouseClicked(MouseEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);
 		this.dispatcher.fire(new ActionEvent(point, ActionType.CLICK));
 	}
 
 	public void mousePressed(MouseEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);
 		this.dispatcher.fire(new ActionEvent(point, ActionType.PRESS));
 	}
 
 	public void mouseReleased(MouseEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);
 		this.dispatcher.fire(new ActionEvent(point, ActionType.RELEASE));
 	}
 
 	public void mouseEntered(MouseEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);
 		this.dispatcher.fire(new MoveEvent(point, MoveType.ENTER));
 	}
 
 	public void mouseExited(MouseEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);
 		this.dispatcher.fire(new MoveEvent(point, MoveType.EXIT));
 	}
 
 	public void mouseDragged(MouseEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);
 		this.dispatcher.fire(new MoveEvent(point, MoveType.DRAG));
 	}
 
 	public void mouseMoved(MouseEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);
 		this.dispatcher.fire(new MoveEvent(point, MoveType.MOVE));
 	}
 	
 	public void mouseWheelMoved(MouseWheelEvent event) {
 		Point point = event.getPoint();
-		this.transform(point);
 		this.dispatcher.fire(new WheelEvent(point, event.getWheelRotation()));
-	}
-	
-	private void transform(Point point) {
-		// uncomment if bugs using Windows
-		
-		/* Insets insets = this.theFrame.getInsets();
-		   point.translate(-insets.left, -insets.top); */
 	}
 
 	public void keyTyped(KeyEvent e) {

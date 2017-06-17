@@ -28,19 +28,21 @@ import java.util.List;
 
 public class FontAdapter {
 	
-	// please consider using powers of two for these variables
+	// Please consider using powers of two for these variables
 	private static final int MAX_FONT_SIZE = 64;
-	private static final int STEP = 2;
+	private static final float STEP = 0.25f;
 	
-	// faster than (int) (Math.log(MAX_FONT_SIZE / STEP) / Math.log(2));
-	private static final int COMPLEXITY = 31 - Integer.numberOfLeadingZeros(MAX_FONT_SIZE / STEP);
+	// Faster than (int) (Math.log(MAX_FONT_SIZE / STEP) / Math.log(2));
+	private static final int COMPLEXITY = 31 - Integer.numberOfLeadingZeros((int) (MAX_FONT_SIZE / STEP));
 
-	// approximation of the width ratio
+	// Approximation of the width ratio
 	private static final String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	
+	private static final float CORRECTION_WIDTH = 0.9f;
+	private static final float CORRECTION_HEIGHT = 0.7f;
 	
 	/* 
 	 * The cache info holds information about width per char and height per char.
-	 * By the way I know that height per char isn't relevant but it is for the symmetry of the code. (make it beautiful)
 	 * The point is that these two ratios are strictly monotonically increasing.
 	 * The distribution should be approximately linear.
 	 */
@@ -51,22 +53,22 @@ public class FontAdapter {
 	public FontAdapter(Font font) {
 		Canvas fakeCanvas = new Canvas(); 
 
-		for(int i = 1; i < MAX_FONT_SIZE; i += STEP) {
-			font = font.deriveFont((float) i);
+		for(float i = 0; i < MAX_FONT_SIZE; i += STEP) {
+			font = font.deriveFont(i);
 			
 			FontMetrics metrics = fakeCanvas.getFontMetrics(font);
 			
 			float width = metrics.stringWidth(CHARS);
-			float height = metrics.getLeading() + metrics.getAscent() + metrics.getDescent();
+			float height = metrics.getHeight();
 					
-			this.cache.add(new CacheInfo(font, metrics, width / CHARS.length(), height / CHARS.length()));
+			this.cache.add(new CacheInfo(font, metrics, width / CHARS.length(), height));
 		}
 	}
 	
 	// linear interpolation
-	public Font adapt(String str, int width, int height, float relativeSize) {
-		float iw = width * relativeSize / str.length();
-		float ih = height * relativeSize / str.length();
+	public Font adapt(String str, int width, int height) {
+		float iw = width * CORRECTION_WIDTH / str.length();
+		float ih = height * CORRECTION_HEIGHT;
 		
 		CacheInfo info = this.makeInterpolation(iw, ih);
 		
@@ -78,16 +80,16 @@ public class FontAdapter {
 	// dichotomy algorithm
 	private CacheInfo makeInterpolation(float iw, float ih) {
 		
-		int current = MAX_FONT_SIZE / STEP / 2;
+		int current = (int) (MAX_FONT_SIZE / STEP / 2);
 		CacheInfo sample = null;
-		
-		for(int i = 0; i < COMPLEXITY; i++) {
+
+		for(int i = 2; i < COMPLEXITY; i++) {
 			sample = this.cache.get(current);
 			
 			if(sample.getWidthRatio() >= iw || sample.getHeightRatio() >= ih) {
-				current -= Integer.highestOneBit(i);
+				current -= 0x1 << (COMPLEXITY - i);
 			} else {
-				current += Integer.highestOneBit(i);
+				current += 0x1 << (COMPLEXITY - i);
 			}
 		}
 		

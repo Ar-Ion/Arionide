@@ -35,7 +35,8 @@ public class FocusManager {
 	private final List<Component> components = new ArrayList<>();
 	private final IEventDispatcher dispatcher;
 	
-	private int[] cycle = null; // this array represents the values of a bijective function in a modular N+/N+ euclidian space.
+	private List<Integer> cycle = null; // This array represents the values of a bijective function in a modular N+/N+ euclidian space.
+	
 	private int focus = FocusManager.NOT_INITIALIZED;
 	
 	public FocusManager(IEventDispatcher dispatcher) {
@@ -50,8 +51,8 @@ public class FocusManager {
 		return this.components.size();
 	}
 	
-	public void setupCycle(int[] elements) {
-		assert elements.length <= this.components.size();
+	public void setupCycle(List<Integer> elements) {
+		assert elements.size() > 0 && elements.size() <= this.components.size();
 		
 		this.cycle = elements;
 		
@@ -59,7 +60,11 @@ public class FocusManager {
 	}
 	
 	public void request(Component component) {
-		this.request(this.components.indexOf(component));
+		int index = this.cycle.indexOf(this.components.indexOf(component));
+		
+		if(index > -1) {
+			this.request(index);
+		} // Else ignore because the component is hidden
 	}
 	
 	public void request(int id) {		
@@ -110,7 +115,7 @@ public class FocusManager {
 		while(!this.accessModular().isFocusable()) {
 			this.focus += lambda;
 			
-			if(Math.abs(this.focus - index) >= this.cycle.length) {
+			if(Math.abs(this.focus - index) >= this.cycle.size()) {
 				return; // failed (no component is focusable)
 			}
 		}
@@ -119,6 +124,6 @@ public class FocusManager {
 	}
 
 	private Component accessModular() {
-		return this.components.get(this.cycle[Math.floorMod(this.focus, this.cycle.length)]);
+		return this.components.get(this.cycle.get(Math.floorMod(this.focus, this.cycle.size())));
 	}
 }

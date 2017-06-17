@@ -90,22 +90,24 @@ public abstract class View extends Surface {
 		return this.components.get(componentID);
 	}
 	
-	protected int[] makeFocusCycle(int... elements) {		
+	protected void setupFocusCycle(int... elements) {
+		List<Integer> cycle = new ArrayList<>();
+		
 		if(elements == View.NATURAL_FOCUS_CYCLE) {
-			elements = new int[this.components.size()];
-			
 			int fillingIndex = 0;
 			
-			while(fillingIndex < elements.length) {
-				elements[fillingIndex] = fillingIndex++;
+			while(fillingIndex < this.components.size()) {
+				cycle.add(fillingIndex++);
 			}
 		}
 		
-		for(int i = 0; i< elements.length; i++) {
-			elements[i] += this.focusViewUID;
+		for(int element : elements) {
+			cycle.add(this.focusViewUID + element);
 		}
 		
-		return elements;
+		System.out.println(cycle);
+		
+		this.getAppManager().getFocusManager().setupCycle(cycle);
 	}
 	
 	public void show() {

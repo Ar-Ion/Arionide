@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.azentreprise.arionide.events.ActionEvent;
+import org.azentreprise.arionide.events.ActionType;
 import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
@@ -40,10 +41,10 @@ import org.azentreprise.arionide.ui.overlay.View;
 
 public class Button extends Label implements EventHandler {
 	
-	public static final int defaultAlpha = 0x60;
+	public static final int DEFAULT_ALPHA = 0x60;
 	
 	private static final int ANIMATION_TIME = 200;
-	private static final Cursor defaultCursor = Cursor.getDefaultCursor();
+	private static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
 	
 	protected final Animation animation;
 	protected boolean hasFocus;
@@ -60,7 +61,7 @@ public class Button extends Label implements EventHandler {
 	public Button(View parent, String label) {
 		super(parent, label);
 		
-		this.setColor((defaultAlpha << 24) | 0x42CAFE);
+		this.setColor((DEFAULT_ALPHA << 24) | 0x42CAFE);
 		this.colorKeepRef = this.color;
 		
 		this.animation = new FieldModifierAnimation(this.getParentView().getAppManager(), "opacity", Label.class, this);
@@ -78,7 +79,7 @@ public class Button extends Label implements EventHandler {
 		
 		if(this.disabled) {
 			this.colorKeepRef = this.color;
-			this.setColor((defaultAlpha << 24) | 0xFF0000);
+			this.setColor((DEFAULT_ALPHA << 24) | 0xFF0000);
 			
 			if(this.hasFocus) {
 				this.getParentView().getAppManager().getFocusManager().next();
@@ -104,7 +105,7 @@ public class Button extends Label implements EventHandler {
 	}
 	
 	public boolean isFocusable() {
-		return !this.disabled;
+		return !this.disabled && !this.isHidden();
 	}
 
 	public <T extends Event> void handleEvent(T event) {
@@ -129,10 +130,10 @@ public class Button extends Label implements EventHandler {
 				if(this.mouseOver) {
 					this.mouseOver = false;
 					
-					this.getParentView().getAppManager().getDrawingContext().setCursor(defaultCursor);
+					this.getParentView().getAppManager().getDrawingContext().setCursor(DEFAULT_CURSOR);
 
 					if(!this.hasFocus) {
-						this.animation.startAnimation(ANIMATION_TIME, defaultAlpha);
+						this.animation.startAnimation(ANIMATION_TIME, DEFAULT_ALPHA);
 					}
 				}
 			}
@@ -140,14 +141,8 @@ public class Button extends Label implements EventHandler {
 			ActionEvent casted = (ActionEvent) event;
 			
 			if(this.getBounds().contains(casted.getPoint())) {
-				switch(casted.getType()) {
-					case CLICK:
-						break;
-					case PRESS:
-						this.fireMouseClick();
-						break;
-					case RELEASE:
-						break;
+				if(casted.getType().equals(ActionType.PRESS)) {
+					this.fireMouseClick();
 				}
 			}
 		} else if(event instanceof ValidateEvent) {
@@ -178,12 +173,12 @@ public class Button extends Label implements EventHandler {
 	
 	protected void onFocusLost() {
 		this.hasFocus = false;
-		this.animation.startAnimation(ANIMATION_TIME, defaultAlpha);
+		this.animation.startAnimation(ANIMATION_TIME, DEFAULT_ALPHA);
 	}
 	
 	public void hide() {
 		super.hide();
-		this.getParentView().getAppManager().getDrawingContext().setCursor(defaultCursor);
+		this.getParentView().getAppManager().getDrawingContext().setCursor(DEFAULT_CURSOR);
 		this.onFocusLost();
 	}
 

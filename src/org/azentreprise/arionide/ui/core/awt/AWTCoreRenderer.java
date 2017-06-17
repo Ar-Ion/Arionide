@@ -1,18 +1,19 @@
-package org.azentreprise.arionide.ui.core;
+package org.azentreprise.arionide.ui.core.awt;
 
 import java.awt.Color;
 import java.awt.Rectangle;
 
 import org.azentreprise.arionide.ui.AWTDrawingContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.core.CoreRenderer;
 
 public class AWTCoreRenderer implements CoreRenderer {
 	public void render(AppDrawingContext context, Rectangle bounds) {
 		assert context instanceof AWTDrawingContext;
 		
-		AWTDrawingContext awt = (AWTDrawingContext) context;
+		AWTDrawingContext awtContext = (AWTDrawingContext) context;
 		
-		awt.setDrawingColor(Color.black);
-		awt.getPrimitives().fillRect(context, bounds);
+		awtContext.setDrawingColor(Color.black);
+		awtContext.getPrimitives().fillRect(context, bounds);
 	}
 }
