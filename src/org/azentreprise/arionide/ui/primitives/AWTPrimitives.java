@@ -37,8 +37,10 @@ public class AWTPrimitives implements IPrimitives {
 		
 		FontMetrics metrics = g2d.getFontMetrics();
 		
+		int delta = text.length() > 1 ? 1 : (metrics.getMaxDescent() - 1); // some height corrections for symbols like <
+		
 		int x = bounds.x + (bounds.width - metrics.stringWidth(text)) / 2;
-		int y = bounds.y + (bounds.height - metrics.getHeight()) / 2 + metrics.getAscent();
+		int y = bounds.y + (bounds.height - metrics.getMaxDescent() + metrics.getMaxAscent() + delta) / 2;
 		
 		g2d.drawString(text, x, y);
 		

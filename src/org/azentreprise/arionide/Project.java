@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -52,23 +51,23 @@ public class Project implements IProject {
 	
 	protected Project(File path) {
 		this.path = path;
-		this.load();
 	}
 	
 	@IAm("loading a project")
 	public void load() {
 		try {
 			this.properties.clear();
+			
 			byte[] data = Files.readAllBytes(this.path.toPath());
 			
 			int startIndex = 0;
 			int endIndex = 0;
 						
-			while((endIndex = Arrays.binarySearch(data, startIndex, data.length, Coder.separator)) > -1) {
+			while((endIndex = this.search(data, startIndex, Coder.separator)) > -1) {
 				byte[] keyBuffer = new byte[endIndex - startIndex];
 				System.arraycopy(data, startIndex, keyBuffer, 0, keyBuffer.length);
-				
-				startIndex = this.search(data, endIndex, Coder.sectionStart);
+								
+				startIndex = this.search(data, endIndex, Coder.sectionStart) + 1;
 				endIndex = this.search(data, startIndex, Coder.sectionEnd);
 				byte[] valueBuffer = new byte[endIndex - startIndex];
 				System.arraycopy(data, startIndex, valueBuffer, 0, valueBuffer.length);
@@ -77,6 +76,7 @@ public class Project implements IProject {
 				
 				startIndex = endIndex;
 			}
+			
 			
 			this.verifyProtocol();
 		} catch (Exception exception) {
@@ -110,18 +110,19 @@ public class Project implements IProject {
 				stream.write(Coder.sectionStart);
 				
 				if(property.getValue().length > 64) {
+					stream.write(Coder.windowsNewline);
 					stream.write(Coder.newline);
 					stream.write(Coder.tab);
 					stream.write(property.getValue());
+					stream.write(Coder.windowsNewline);
 					stream.write(Coder.newline);
 					stream.write(Coder.sectionEnd);
-					stream.write(Coder.newline);
 				} else {
 					stream.write(property.getValue());
 					stream.write(Coder.sectionEnd);
-					stream.write(Coder.newline);
 				}
 				
+				stream.write(Coder.windowsNewline);
 				stream.write(Coder.newline);
 			}
 			

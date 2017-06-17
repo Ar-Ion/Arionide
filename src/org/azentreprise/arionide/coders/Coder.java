@@ -43,6 +43,7 @@ public interface Coder<T> {
 	public static final String empty = new String();
 	public static final byte space = new String(" ").getBytes(Coder.charset)[0];
 	public static final byte tab = new String("\t").getBytes(Coder.charset)[0];
+	public static final byte windowsNewline = new String("\r").getBytes(Coder.charset)[0];
 	public static final byte newline = new String("\n").getBytes(Coder.charset)[0];
 
 	

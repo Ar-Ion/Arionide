@@ -36,7 +36,7 @@ import javax.swing.SwingUtilities;
 
 public class Debug {
 	
-	private static final boolean JAVA_STACKTRACE = false;
+	private static final boolean JAVA_STACKTRACE = true;
 	
 	private static PrintStream output = null;
 		

@@ -110,7 +110,7 @@ public class MainView extends View implements EventHandler {
 		}
 		
 		// next button
-		if(this.page >= projects.size() / 4) {
+		if(this.page >= this.getMaxPage()) {
 			((Button) this.get(9)).hide();
 		} else {
 			((Button) this.get(9)).show();

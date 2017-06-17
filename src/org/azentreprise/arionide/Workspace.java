@@ -83,7 +83,8 @@ public class Workspace implements IWorkspace {
 					Project element = new Project(potential);
 					
 					if(!this.projects.contains(element)) {
-						this.projects.add(new Project(potential));
+						element.load();
+						this.projects.add(element);
 					}
 				}
 			}
@@ -144,8 +145,11 @@ public class Workspace implements IWorkspace {
 
 	public void createProject(String name) {
 		IProject project = new Project(new File(this.path, name.toLowerCase().replaceAll(Coder.whitespaceRegex, "_").concat(".proj")));
+		project.setProperty("name", name, Coder.stringEncoder);
 		project.save();
-		this.loadProject(project);
+		
+		this.current = project;
+		this.dispatcher.fire(new ProjectOpenEvent(project));
 	}
 
 	public void deleteProject(IProject project) {

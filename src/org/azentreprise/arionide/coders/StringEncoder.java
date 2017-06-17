@@ -32,5 +32,4 @@ public class StringEncoder implements Encoder<String> {
 	public byte[] encode(String decoded) {
 		return decoded.getBytes(Coder.charset);
 	}
-
 }

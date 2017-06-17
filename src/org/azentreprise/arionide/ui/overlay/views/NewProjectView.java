@@ -75,7 +75,7 @@ public class NewProjectView extends View implements EventHandler {
 				String name = ((Text) text).getText();
 				
 				if(!name.isEmpty()) {
-					this.getAppManager().getWorkspace().createProject(((Text) this.get(1)).toString());
+					this.getAppManager().getWorkspace().createProject(((Text) text).getText());
 					this.openView(Views.code);
 				}
 			} else if(click.isTargetting(this, "cancel")) {
