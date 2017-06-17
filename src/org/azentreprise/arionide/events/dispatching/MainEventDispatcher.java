@@ -47,8 +47,10 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	}
 	
 	public void dispatchEvents() {
-		this.newHandlers.drainTo(this.handlers);
-				
+		synchronized(this.newHandlers) {
+			this.newHandlers.drainTo(this.handlers);
+		}
+		
 		while(!this.events.isEmpty()) {
 			Event event = this.events.poll();
 						
@@ -68,6 +70,8 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	}
 
 	public void registerHandler(EventHandler handler) {
-		this.newHandlers.add(handler);
+		synchronized(this.newHandlers) {
+			this.newHandlers.add(handler);
+		}
 	}
 }

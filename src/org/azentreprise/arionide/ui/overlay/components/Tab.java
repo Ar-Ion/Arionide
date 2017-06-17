@@ -21,6 +21,8 @@ import org.azentreprise.arionide.ui.overlay.View;
 
 public class Tab extends Component implements EventHandler {
 	
+	public static final String VALUE_CHANGED_EVENT_IDENTIFIER = "tabValueChanged";
+	
 	private static final int ANIMATION_TIME = 500;
 	
 	private final TabDesign design;
@@ -96,7 +98,7 @@ public class Tab extends Component implements EventHandler {
 				
 				if((int) this.active != target) {
 					this.animation.startAnimation(ANIMATION_TIME, target);
-					this.getParentView().getAppManager().getEventDispatcher().fire(new ClickEvent(this, "tabchange", (int) this.active));
+					this.getParentView().getAppManager().getEventDispatcher().fire(new ClickEvent(this, VALUE_CHANGED_EVENT_IDENTIFIER, (int) this.active));
 				}
 			}
 		}

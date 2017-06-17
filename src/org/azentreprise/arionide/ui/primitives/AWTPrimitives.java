@@ -19,11 +19,11 @@ public class AWTPrimitives implements IPrimitives {
 	}
 	
 	public void drawRoundRect(AppDrawingContext context, Rectangle bounds) {
-		this.loadContext(context).getRenderer().drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+		this.loadContext(context).getRenderer().drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 25, 25);
 	}
 
 	public void fillRoundRect(AppDrawingContext context, Rectangle bounds) {
-		this.loadContext(context).getRenderer().fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+		this.loadContext(context).getRenderer().fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 25, 25);
 	}
 
 	public void drawLine(AppDrawingContext context, int x1, int y1, int x2, int y2) {
@@ -37,7 +37,7 @@ public class AWTPrimitives implements IPrimitives {
 		
 		FontMetrics metrics = g2d.getFontMetrics();
 		
-		int delta = text.length() > 1 ? 1 : (metrics.getMaxDescent() - 1); // some height corrections for symbols like <
+		int delta = text.length() > 1 ? 1 : (metrics.getMaxDescent()); // some height corrections for symbols like <
 		
 		int x = bounds.x + (bounds.width - metrics.stringWidth(text)) / 2;
 		int y = bounds.y + (bounds.height - metrics.getMaxDescent() + metrics.getMaxAscent() + delta) / 2;
