@@ -1,6 +1,7 @@
 package org.azentreprise.arionide.ui.overlay.components;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.azentreprise.arionide.events.Event;
@@ -34,8 +35,6 @@ public class Scroll extends Tab {
 			return;
 		}
 		
-		super.handleEvent(event);
-		
 		if(event instanceof WheelEvent) {
 			WheelEvent wheel = (WheelEvent) event;
 			
@@ -46,11 +45,6 @@ public class Scroll extends Tab {
 	}
 	
 	public List<Class<? extends Event>> getHandleableEvents() {
-		List<Class<? extends Event>> theList = new ArrayList<>();
-		
-		theList.addAll(super.getHandleableEvents());
-		theList.add(WheelEvent.class);
-		
-		return theList;
+		return Arrays.asList(WheelEvent.class);
 	}
 }

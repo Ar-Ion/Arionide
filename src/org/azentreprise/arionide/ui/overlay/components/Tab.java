@@ -78,25 +78,19 @@ public class Tab extends MultiComponent implements EventHandler {
 		int i = 0;
 		
 		for(Component component : components) {
-			
-			bounds.x = this.getX(i);
 			bounds.width = this.getWidth(i++);
 			
 			if(bounds.width > 0) {
 				component.setLayoutBounds(bounds);
 				component.drawSurface(context);
 				
+				bounds.x += this.getWidth(i);
 				
 				if(component != components.get(components.size() - 1) && this.getWidth(i) > 0) {
-					bounds.x += bounds.width;
 					context.getPrimitives().drawLine(context, bounds.x, bounds.y + 1, bounds.x, bounds.y + bounds.height - 2);
 				}
 			}
 		}
-	}
-	
-	protected int getX(int id) {
-		return id * this.getBounds().width / this.getComponents().size();
 	}
 	
 	protected int getWidth(int id) {
@@ -112,7 +106,7 @@ public class Tab extends MultiComponent implements EventHandler {
 			ActionEvent action = (ActionEvent) event;
 			
 			if(this.getBounds().contains(action.getPoint()) && action.getType().equals(ActionType.PRESS)) {
-				int target = this.getComponents().size() * (action.getPoint().x - this.getBounds().x) / this.getBounds().width;
+				int target = this.getNearest(action.getPoint().x);
 				
 				if((int) this.activeComponent != target) {
 					this.animation.startAnimation(ANIMATION_TIME, target);
@@ -123,6 +117,10 @@ public class Tab extends MultiComponent implements EventHandler {
 				}
 			}
 		}
+	}
+	
+	private int getNearest(int point) {
+		return this.getComponents().size() * (point - this.getBounds().x) / this.getBounds().width;
 	}
 
 	public List<Class<? extends Event>> getHandleableEvents() {
