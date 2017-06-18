@@ -124,6 +124,10 @@ public class AppManager {
 		return this.workspace;
 	}
 	
+	public CoreRenderer getCoreRenderer() {
+		return this.renderer;
+	}
+	
 	public void shutdown() {
 		this.theInstance.shutdown();
 	}

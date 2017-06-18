@@ -22,6 +22,7 @@ package org.azentreprise.arionide.ui.core;
 
 import java.awt.Rectangle;
 
+import org.azentreprise.arionide.IProject;
 import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 
@@ -29,4 +30,10 @@ public interface CoreRenderer {
 	
 	@IAm("rendering the core scene")
 	public void render(AppDrawingContext context, Rectangle bounds);
+	
+	@IAm("changing the core scene")
+	public void setScene(RenderingScene scene);
+	
+	@IAm("setting up the current project")
+	public void loadProject(IProject project);
 }

@@ -49,23 +49,23 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	public void dispatchEvents() {
 		synchronized(this.newHandlers) {
 			this.newHandlers.drainTo(this.handlers);
-		}
 		
-		while(!this.events.isEmpty()) {
-			Event event = this.events.poll();
+			while(!this.events.isEmpty()) {
+				Event event = this.events.poll();
+							
+				this.handlers.stream()
+					.filter(handler -> {
+						if(handler != null) {
+							return handler.getHandleableEvents().contains(event.getClass());
+						}
 						
-			this.handlers.stream()
-				.filter(handler -> {
-					if(handler != null) {
-						return handler.getHandleableEvents().contains(event.getClass());
-					}
-					
-					return false;
-				}).forEach(handler -> {
-					if(handler != null) {
-						handler.handleEvent(event);
-					}
-				});
+						return false;
+					}).forEach(handler -> {
+						if(handler != null) {
+							handler.handleEvent(event);
+						}
+					});
+			}
 		}
 	}
 
