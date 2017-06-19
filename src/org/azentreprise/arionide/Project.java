@@ -66,12 +66,12 @@ public class Project implements IProject {
 			int startIndex = 0;
 			int endIndex = 0;
 						
-			while((endIndex = this.search(data, startIndex, Coder.separator)) > -1) {
+			while((endIndex = Coder.search(data, startIndex, data.length, Coder.separator)) > -1) {
 				byte[] keyBuffer = new byte[endIndex - startIndex];
 				System.arraycopy(data, startIndex, keyBuffer, 0, keyBuffer.length);
 								
-				startIndex = this.search(data, endIndex, Coder.sectionStart) + 1;
-				endIndex = this.search(data, startIndex, Coder.sectionEnd);
+				startIndex = Coder.search(data, endIndex, data.length, Coder.sectionStart) + 1;
+				endIndex = Coder.search(data, startIndex, data.length, Coder.sectionEnd);
 				byte[] valueBuffer = new byte[endIndex - startIndex];
 				System.arraycopy(data, startIndex, valueBuffer, 0, valueBuffer.length);
 				
@@ -87,17 +87,7 @@ public class Project implements IProject {
 		}
 	}
 	
-	private int search(byte[] data, int start, byte element) {
-		while(start < data.length) {
-			if(data[start] == element) {
-				return start;
-			}
-			
-			start++;
-		}
-		
-		return -1;
-	}
+
 
 	@IAm("saving a project")
 	public void save() {

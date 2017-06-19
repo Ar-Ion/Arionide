@@ -37,6 +37,7 @@ public interface Coder<T> {
 	public static final byte sectionStart = new String("{").getBytes(Coder.charset)[0];
 	public static final byte sectionEnd = new String("}").getBytes(Coder.charset)[0];
 	public static final byte separator = new String(":").getBytes(Coder.charset)[0];
+	public static final byte internalSeparator = new String(";").getBytes(Coder.charset)[0];
 	
 	public static final String whitespaceRegex = "\\s";
 	
@@ -49,4 +50,16 @@ public interface Coder<T> {
 	
 	public int getVersionUID();
 	public int getBackwardCompatibileVersionUID();
+	
+	public static int search(byte[] data, int start, int length, byte element) {
+		while(start < length) {
+			if(data[start] == element) {
+				return start;
+			}
+			
+			start++;
+		}
+		
+		return -1;
+	}
 }

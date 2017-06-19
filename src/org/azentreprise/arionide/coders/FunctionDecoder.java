@@ -20,6 +20,53 @@
  *******************************************************************************/
 package org.azentreprise.arionide.coders;
 
-public class FunctionDecoder {
+import org.azentreprise.arionide.lang.Function;
 
+public class FunctionDecoder implements Decoder<Function> {
+		
+	public int getVersionUID() {
+		return 0;
+	}
+
+	public int getBackwardCompatibileVersionUID() {
+		return 0;
+	}
+
+	public Function decode(byte[] encoded) {
+		IntRef index = new IntRef();
+		
+		int functionUID = (int) this.decodeIntegerWithSeparator(encoded, index);
+		int superiorUID = (int) this.decodeIntegerWithSeparator(encoded, index);
+		short properties = (short) this.decodeIntegerWithSeparator(encoded, index);
+		int count = (int) this.decodeIntegerWithSeparator(encoded, index);
+		int[] inheritance = new int[count];
+		
+		for(int i = 0; i < count; i++) {
+			inheritance[i] = (int) this.decodeIntegerWithSeparator(encoded, index);
+		}
+		
+		return new Function(functionUID, superiorUID, properties, inheritance);
+	}
+	
+	private long decodeIntegerWithSeparator(byte[] encoded, IntRef index1) {
+		int index2 = Coder.search(encoded, index1.value, encoded.length, Coder.internalSeparator);
+		byte[] alloc = null;
+		index1.value += index2;
+		
+		if(index2 > 0) {
+			alloc = new byte[index2 - index1.value];
+			System.arraycopy(encoded, index1.value, alloc, 0, alloc.length);
+		} else if(index2 < 0) {
+			alloc = new byte[index2 - index1.value];
+			System.arraycopy(encoded, index1.value, alloc, 0, alloc.length);
+		} else {
+			return -666L;
+		}
+		
+		return Coder.integerDecoder.decode(alloc);
+	}
+	
+	private static class IntRef {
+		private int value = 0;
+	}
 }

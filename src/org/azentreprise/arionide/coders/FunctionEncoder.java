@@ -20,6 +20,21 @@
  *******************************************************************************/
 package org.azentreprise.arionide.coders;
 
-public class FunctionEncoder {
+import org.azentreprise.arionide.lang.Function;
+
+public class FunctionEncoder implements Encoder<Function> {
+
+	public int getVersionUID() {
+		return 0;
+	}
+
+	public int getBackwardCompatibileVersionUID() {
+		return 0;
+	}
+
+	@Override
+	public byte[] encode(Function decoded) {
+		return null;
+	}
 
 }
