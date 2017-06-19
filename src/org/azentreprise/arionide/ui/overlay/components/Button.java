@@ -52,7 +52,7 @@ public class Button extends Label implements EventHandler {
 	private Cursor overCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 	
 	private boolean disabled = false;
-	
+
 	private boolean mouseOver = false;
 	
 	private int colorKeepRef;
@@ -90,11 +90,11 @@ public class Button extends Label implements EventHandler {
 				
 		return this;
 	}
-	
+
 	protected void setOverCursor(Cursor cursor) {
 		this.overCursor = cursor;
 	}
-	
+		
 	public void drawSurface(AppDrawingContext context) {
 		super.drawSurface(context);
 		context.getPrimitives().drawRoundRect(context, this.getBounds());

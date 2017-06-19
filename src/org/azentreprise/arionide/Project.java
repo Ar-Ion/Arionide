@@ -43,6 +43,9 @@ public class Project implements IProject {
 	static {
 		projectProtocolMapping.put("version", Long.toString(versionUID).getBytes(Coder.charset));
 		projectProtocolMapping.put("name", new String("Undefined").getBytes(Coder.charset));
+		projectProtocolMapping.put("definitions", new String("org.azentreprise.arionide.native.NativeDefinitions()").getBytes(Coder.charset));
+		projectProtocolMapping.put("runtime", new String("org.azentreprise.arionide.native.NativeRuntime()").getBytes(Coder.charset));
+		projectProtocolMapping.put("code", new byte[0]);
 	}
 	
 	

@@ -83,8 +83,8 @@ public class MainView extends View implements EventHandler {
 		this.add(new Button(this, "Collaborate").setSignal("connect"), 0.38f, 0.83f, 0.61f, 0.92f);
 		this.add(new Button(this, "Import").setSignal("import"), 0.66f, 0.83f, 0.90f, 0.92f);
 		
-		this.add(new Button(this, "<").setSignal("prev"), 0.2f / 7.0f, 0.43f, 0.5f / 7.0f, 0.58f);
-		this.add(new Button(this, ">").setSignal("next"), 6.5f / 7.0f, 0.43f, 6.8f / 7.0f, 0.58f);
+		this.add(new Button(this, "<").setSignal("prev").setYCorrection(8), 0.2f / 7.0f, 0.43f, 0.5f / 7.0f, 0.58f);
+		this.add(new Button(this, ">").setSignal("next").setYCorrection(8), 6.5f / 7.0f, 0.43f, 6.8f / 7.0f, 0.58f);
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 

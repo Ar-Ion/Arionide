@@ -18,46 +18,8 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
  *******************************************************************************/
-package org.azentreprise.arionide.lang.natives;
+package org.azentreprise.arionide.coders;
 
-import java.io.IOException;
+public class FunctionEncoder {
 
-import org.azentreprise.arionide.lang.Executable.FunctionDescriptor;
-import org.azentreprise.arionide.lang.Runtime;
-import org.azentreprise.configuration.Definitions;
-
-public class NativeRuntime extends Runtime {
-
-	public NativeRuntime(String executableName) throws SecurityException, IllegalArgumentException, IllegalAccessException, IOException {
-		super(executableName, new NativeDefinitions());
-	}
-
-	public int checkInternalCoherance(FunctionDescriptor descriptor) {
-		return 0;
-	}
-
-	public int dispatchInstruction(byte id, byte[] arguments, String[] constantPool) {
-		System.out.println(id);
-		return 0;
-	}
-
-	public long getMaximalMemorySize() {
-		return 65536;
-	}
-
-	public long getMaximalStackSize() {
-		return 1024;
-	}
-
-	public int getUndefinedSymbolErrorCode() {
-		return 0x1;
-	}
-
-	public int getMemoryOverflowErrorCode() {
-		return 0x2;
-	}
-
-	public int getStackOverflowErrorCode() {
-		return 0x3;
-	}
 }

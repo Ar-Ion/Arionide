@@ -29,9 +29,11 @@ import org.azentreprise.arionide.ui.overlay.View;
 
 public class Label extends Component {
 	
+	protected String label;
 	protected int color = 0xCAFE;
 	protected int opacity = 255;
-	protected String label;
+	private int yCorrection = 0;
+	
 	protected Point textRenderPosition;
 
 	public Label(View parent, String label) {
@@ -54,13 +56,18 @@ public class Label extends Component {
 		this.opacity = opacity & 0xFF;
 		return this;
 	}
+	
+	public Label setYCorrection(int correction) {
+		this.yCorrection = correction;
+		return this;
+	}
 
 	public void drawSurface(AppDrawingContext context) {
 		if(this.opacity > 0) {
 			context.setDrawingColor(new Color((this.opacity << 24) | (this.color & 0xFFFFFF), true));
 		}
 		
-		this.textRenderPosition = context.getPrimitives().drawText(context, this.label, this.getBounds());
+		this.textRenderPosition = context.getPrimitives().drawText(context, this.label, this.getBounds(), this.yCorrection);
 	}
 	
 	public boolean isFocusable() {
