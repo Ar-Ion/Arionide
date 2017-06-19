@@ -52,7 +52,7 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 		
 			while(!this.events.isEmpty()) {
 				Event event = this.events.poll();
-							
+				
 				this.handlers.stream()
 					.filter(handler -> {
 						if(handler != null) {

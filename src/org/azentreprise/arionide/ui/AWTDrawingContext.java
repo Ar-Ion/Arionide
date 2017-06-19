@@ -30,7 +30,6 @@ import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -89,6 +88,10 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 	private long time = 0;
 	
 	public AWTDrawingContext(IEventDispatcher dispatcher, int width, int height) {
+		
+		System.setProperty("sun.awt.noerasebackground", "true");
+		System.setProperty("sun.awt.erasebackgroundonresize", "false");
+
 		this.dispatcher = dispatcher;
 		this.theManager = new AppManager(this, dispatcher);
 		this.theFrame = new Frame("Arionide");
@@ -123,8 +126,6 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 		this.renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		this.renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-	
-		Toolkit.getDefaultToolkit().setDynamicLayout(false);
 	}
 	
 	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
@@ -158,19 +159,15 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 			return;
 		}
 		
-		do {
-			do {				
-				try {
-					this.theGraphics = (Graphics2D) strategy.getDrawGraphics();
-					this.theGraphics.setRenderingHints(this.renderingHints);
-					this.theManager.draw();
-				} finally {
-					this.theGraphics.dispose();
-				}
-			} while(strategy.contentsRestored());
-			
-			strategy.show();
-		} while(strategy.contentsLost());
+		try {
+			this.theGraphics = (Graphics2D) strategy.getDrawGraphics();
+			this.theGraphics.setRenderingHints(this.renderingHints);
+			this.theManager.draw();
+		} finally {
+			this.theGraphics.dispose();
+		}
+		
+		strategy.show();
 				
 		long now = System.currentTimeMillis();
 		

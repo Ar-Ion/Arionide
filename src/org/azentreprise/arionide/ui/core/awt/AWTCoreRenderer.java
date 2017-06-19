@@ -22,6 +22,7 @@ public class AWTCoreRenderer implements CoreRenderer {
 	@Override
 	public void setScene(RenderingScene scene) {
 		// TODO Auto-generated method stub
+		System.out.println(scene);
 		
 	}
 
