@@ -13,6 +13,7 @@ import org.azentreprise.arionide.ui.overlay.View;
 public class Scroll extends Tab {
 	
 	private boolean doubleFocusSystem = false;
+	private boolean globalWheelListening = true;
 	private int deltaX = 0;
 	
 	public Scroll(View parent, String... labels) {
@@ -29,14 +30,19 @@ public class Scroll extends Tab {
 		return this;
 	}
 	
-	public void drawSurface(AppDrawingContext context) {
-		super.drawSurface(context);
+	public Scroll toggleGlobalWheelListening() {
+		this.globalWheelListening = !this.globalWheelListening;
+		return this;
 	}
 	
 	public final Tab setSeparatorsRenderable(boolean yes) {
 		return this; // Ignore
 	}
 	
+	public void drawSurface(AppDrawingContext context) {
+		super.drawSurface(context);
+	}
+
 	public List<Rectangle> computeBounds() {
 		List<Rectangle> rectangles = new ArrayList<>();
 		Rectangle bounds = this.getBounds();
@@ -74,8 +80,12 @@ public class Scroll extends Tab {
 		if(event instanceof WheelEvent) {
 			WheelEvent wheel = (WheelEvent) event;
 			
-			if(this.getBounds().contains(wheel.getPoint())) {
-				if(this.deltaX + wheel.getDelta() >= 0 && this.deltaX + wheel.getDelta() < this.getComponents().size()) {
+			if(this.globalWheelListening || this.getBounds().contains(wheel.getPoint())) {
+				if(this.deltaX + wheel.getDelta() < 0) {
+					this.deltaX = 0;
+				} else if(this.deltaX + wheel.getDelta() >= this.getComponents().size()) {
+					this.deltaX = this.getComponents().size() - 1;
+				} else {
 					this.deltaX += wheel.getDelta();
 				}
 			}

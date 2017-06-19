@@ -53,18 +53,13 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 			while(!this.events.isEmpty()) {
 				Event event = this.events.poll();
 				
-				this.handlers.stream()
-					.filter(handler -> {
-						if(handler != null) {
-							return handler.getHandleableEvents().contains(event.getClass());
-						}
-						
-						return false;
-					}).forEach(handler -> {
-						if(handler != null) {
+				for(EventHandler handler : handlers) {
+					if(handler != null && handler.getHandleableEvents() != null && event != null) {
+						if(handler.getHandleableEvents().contains(event.getClass())) {
 							handler.handleEvent(event);
 						}
-					});
+					}
+				}
 			}
 		}
 	}

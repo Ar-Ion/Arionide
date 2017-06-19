@@ -78,9 +78,9 @@ public abstract class View extends Surface {
 		context.popOpacity();
 	}
 	
-	protected void add(Component component, float x, float y, float width, float height) {
+	protected void add(Component component, float x1, float y1, float x2, float y2) {
 		this.components.add(component);
-		this.getLayoutManager().register(component, this, x, y, width, height);
+		this.getLayoutManager().register(component, this, x1, y1, x2, y2);
 		this.getAppManager().getFocusManager().registerComponent(component);
 	}
 	

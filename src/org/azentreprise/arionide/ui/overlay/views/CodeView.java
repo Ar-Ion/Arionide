@@ -14,6 +14,7 @@ import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.overlay.Views;
 import org.azentreprise.arionide.ui.overlay.components.Button;
 import org.azentreprise.arionide.ui.overlay.components.Scroll;
+import org.azentreprise.arionide.ui.overlay.components.Tab;
 
 public class CodeView extends View implements EventHandler {
 	
@@ -25,9 +26,13 @@ public class CodeView extends View implements EventHandler {
 		layoutManager.register(this, null, 0.0f, 0.0f, 1.0f, 1.0f);
 		
 		this.add(new Button(this, "<").setSignal("back"), 0.05f, 0.05f, 0.15f, 0.1f);
-		this.add(new Scroll(this, "Inheritance", "Hierarchy", "Call graph").setSignal("sceneChanged"), 0.3f, 0.05f, 0.7f, 0.1f);
+		this.add(new Tab(this, "Inheritance", "Hierarchy", "Call graph").setSignal("sceneChanged"), 0.3f, 0.05f, 0.7f, 0.1f);
 		this.add(new Button(this, "Run").setSignal("run"), 0.85f, 0.05f, 0.95f, 0.1f);
 		
+		this.add(new Button(this, "+").setSignal("add"), 0.05f, 0.85f, 0.15f, 0.95f);
+		this.add(new Scroll(this, "salut", "sd", "sigma","salut", "sd", "sigma","salut", "sd", "sigma"), 0.05f, 0.85f, 0.95f, 0.95f);
+		this.add(new Button(this, "...").setSignal("more"), 0.05f, 0.85f, 0.15f, 0.95f);
+
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
 	

@@ -25,13 +25,16 @@ public class Tab extends MultiComponent implements EventHandler {
 		
 	private static final int ANIMATION_TIME = 500;
 	
-	protected final TabDesign design;	
+	protected final TabDesign design;
+	
 	protected double activeComponent = 0;
 
 	private final Animation animation;
 	
+	private Color color = new Color(0x6000CAFE, true); // that's a lot of coffee =P
 	private boolean renderSeparators;
 	private String signal;
+	private int shadingRadius;
 	
 	public Tab(View parent, String... tabs) {
 		this(parent, makeLabels(parent, tabs));
@@ -55,13 +58,23 @@ public class Tab extends MultiComponent implements EventHandler {
 		this.getParentView().getAppManager().getEventDispatcher().registerHandler(this);
 	}
 	
-	public Tab setSignal(String signal) {
-		this.signal = signal;
+	public Tab setColor(int color) {
+		this.color = new Color(color, true);
 		return this;
 	}
 
 	public Tab setSeparatorsRenderable(boolean yes) {
 		this.renderSeparators = yes;
+		return this;
+	}
+	
+	public Tab setSignal(String signal) {
+		this.signal = signal;
+		return this;
+	}
+	
+	public Tab setShadowRadius(int radius) {
+		this.shadingRadius = radius;
 		return this;
 	}
 	
@@ -71,7 +84,9 @@ public class Tab extends MultiComponent implements EventHandler {
 		List<Rectangle> rectangles = this.computeBounds();
 		
 		if(rectangles.size() > 0) {
-			this.activeComponent = rectangles.get(0).getCenterX();
+			Rectangle first = rectangles.get(0);
+			this.activeComponent = first.getCenterX();
+			this.shadingRadius = first.width;
 		}
 	}
 	
@@ -84,9 +99,9 @@ public class Tab extends MultiComponent implements EventHandler {
 		List<Rectangle> rectangles = this.computeBounds();
 		Rectangle bounds = this.getBounds();
 		
-		context.setDrawingColor(new Color(0x6000CAFE, true)); // there's a lot of coffee right there =P
+		context.setDrawingColor(this.color);
 	    
-	    this.design.createDesign(context, new Point2D.Double(this.activeComponent, bounds.getCenterY()), bounds.width / components.size() / 2);
+	    this.design.createDesign(context, new Point2D.Double(this.activeComponent, bounds.getCenterY()), this.shadingRadius);
 		
 		context.getPrimitives().drawRoundRect(context, bounds);
 
