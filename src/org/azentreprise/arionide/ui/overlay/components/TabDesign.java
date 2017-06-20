@@ -25,7 +25,6 @@ import java.awt.geom.Point2D;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 
 public interface TabDesign {
-	
-	// Shadowing
-	public void createDesign(AppDrawingContext context, Point2D center, int radius);
+	public void enterDesignContext(AppDrawingContext context, Point2D center, int radius);
+	public void exitDesignContext(AppDrawingContext context);
 }

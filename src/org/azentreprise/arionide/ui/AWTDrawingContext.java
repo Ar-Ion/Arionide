@@ -98,7 +98,7 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 		this.theFrame.setSize(width, height);
 		this.theFrame.setLocationRelativeTo(null);
 		this.theFrame.add(this);
-				
+						
 		this.theFrame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent event) {
 				theManager.shutdown();	
@@ -121,11 +121,8 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 		this.setFocusTraversalKeysEnabled(false);
 		this.theFrame.setFocusTraversalKeysEnabled(false);
 				
-		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		this.renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		this.renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		this.renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		this.renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 	}
 	
 	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {

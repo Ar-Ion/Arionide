@@ -115,7 +115,7 @@ public class Tab extends MultiComponent implements EventHandler {
 		
 		context.setDrawingColor(this.color);
 	    
-	    this.design.createDesign(context, new Point2D.Double(this.activeComponent, bounds.getCenterY()), this.shadingRadius);
+	    this.design.enterDesignContext(context, new Point2D.Double(this.activeComponent, bounds.getCenterY()), this.shadingRadius);
 		
 		context.getPrimitives().drawRoundRect(context, bounds);
 
@@ -139,6 +139,8 @@ public class Tab extends MultiComponent implements EventHandler {
 				}
 			}
 		}
+		
+		this.design.exitDesignContext(context);
 	}
 	
 	protected List<Rectangle> computeBounds() {
