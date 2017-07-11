@@ -1,29 +1,30 @@
 /*******************************************************************************
- * This file is part of Arionide.
+ * This file is part of ArionIDE.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
+ * ArionIDE is an IDE whose purpose is to build a language from assembly. It is the work of Arion Zimmermann in context of his TM.
  * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
  *
- * Arionide is free software: you can redistribute it and/or modify
+ * ArionIDE is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Arionide is distributed in the hope that it will be useful,
+ * ArionIDE is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ * along with ArionIDE.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive.
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay.views;
 
-import java.awt.Color;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
@@ -45,7 +46,7 @@ public class NewProjectView extends View implements EventHandler {
 		
 		layoutManager.register(this, null, 0.1f, 0.1f, 0.9f, 0.9f);
 		
-		this.setBorderColor(new Color(0xCAFE));
+		this.setBorderColor(0xCAFE);
 				
 		this.add(new Label(this, "New project"), 0, 0.05f, 1.0f, 0.3f);
 		
@@ -75,8 +76,12 @@ public class NewProjectView extends View implements EventHandler {
 				String name = ((Text) text).getText();
 				
 				if(!name.isEmpty()) {
-					this.getAppManager().getWorkspace().createProject(((Text) text).getText());
-					this.openView(Views.code);
+					try {
+						this.getAppManager().getWorkspace().createProject(((Text) text).getText());
+						this.openView(Views.code);
+					} catch(IOException exception) {
+						Debug.exception(exception);
+					}
 				}
 			} else if(click.isTargetting(this, "cancel")) {
 				this.openView(Views.main);

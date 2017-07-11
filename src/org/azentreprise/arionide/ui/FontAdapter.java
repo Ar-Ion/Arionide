@@ -1,22 +1,22 @@
 /*******************************************************************************
- * This file is part of Arionide.
+ * This file is part of ArionIDE.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
+ * ArionIDE is an IDE whose purpose is to build a language from assembly. It is the work of Arion Zimmermann in context of his TM.
  * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
  *
- * Arionide is free software: you can redistribute it and/or modify
+ * ArionIDE is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Arionide is distributed in the hope that it will be useful,
+ * ArionIDE is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ * along with ArionIDE.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive.
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
@@ -38,8 +38,8 @@ public class FontAdapter {
 	// Approximation of the width ratio
 	private static final String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	
-	private static final float CORRECTION_WIDTH = 0.9f;
-	private static final float CORRECTION_HEIGHT = 0.7f;
+	private static final double CORRECTION_WIDTH = 0.9d;
+	private static final double CORRECTION_HEIGHT = 0.7d;
 	
 	/* 
 	 * The cache info holds information about width per char and height per char.
@@ -58,17 +58,17 @@ public class FontAdapter {
 			
 			FontMetrics metrics = fakeCanvas.getFontMetrics(font);
 			
-			float width = metrics.stringWidth(CHARS);
-			float height = metrics.getHeight();
+			double width = metrics.stringWidth(CHARS);
+			double height = metrics.getHeight();
 					
 			this.cache.add(new CacheInfo(font, metrics, width / CHARS.length(), height));
 		}
 	}
 	
 	// linear interpolation
-	public Font adapt(String str, int width, int height) {
-		float iw = width * CORRECTION_WIDTH / str.length();
-		float ih = height * CORRECTION_HEIGHT;
+	public Font adapt(String str, double width, double height) {
+		double iw = width * CORRECTION_WIDTH / str.length();
+		double ih = height * CORRECTION_HEIGHT;
 		
 		CacheInfo info = this.makeInterpolation(iw, ih);
 		
@@ -78,7 +78,7 @@ public class FontAdapter {
 	}
 	
 	// dichotomy algorithm
-	private CacheInfo makeInterpolation(float iw, float ih) {
+	private CacheInfo makeInterpolation(double iw, double ih) {
 		
 		int current = (int) (MAX_FONT_SIZE / STEP / 2);
 		CacheInfo sample = null;
@@ -103,10 +103,10 @@ public class FontAdapter {
 	private static final class CacheInfo {
 		private final Font font;
 		private final FontMetrics metrics;
-		private final float widthRatio;
-		private final float heightRatio;
+		private final double widthRatio;
+		private final double heightRatio;
 		
-		private CacheInfo(Font font, FontMetrics metrics, float widthRatio, float heightRatio) {
+		private CacheInfo(Font font, FontMetrics metrics, double widthRatio, double heightRatio) {
 			this.font = font;
 			this.metrics = metrics;
 			this.widthRatio = widthRatio;
@@ -121,11 +121,11 @@ public class FontAdapter {
 			return this.metrics;
 		}
 		
-		private float getWidthRatio() {
+		private double getWidthRatio() {
 			return this.widthRatio;
 		}
 		
-		private float getHeightRatio() {
+		private double getHeightRatio() {
 			return this.heightRatio;
 		}
 	}

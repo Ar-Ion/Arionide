@@ -1,47 +1,54 @@
 /*******************************************************************************
- * This file is part of Arionide.
+ * This file is part of ArionIDE.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
+ * ArionIDE is an IDE whose purpose is to build a language from assembly. It is the work of Arion Zimmermann in context of his TM.
  * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
  *
- * Arionide is free software: you can redistribute it and/or modify
+ * ArionIDE is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Arionide is distributed in the hope that it will be useful,
+ * ArionIDE is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ * along with ArionIDE.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive.
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay.components;
 
-import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.azentreprise.arionide.Utils;
+import org.azentreprise.arionide.events.ActionEvent;
+import org.azentreprise.arionide.events.ActionType;
+import org.azentreprise.arionide.events.DragEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
 import org.azentreprise.arionide.events.WheelEvent;
-import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
 
 public class Scroll extends Tab {
 	
+	private static final int MOUSE_DRAG_SENSIBILITY = 1;
+	private static final double MOUSE_DRAG_ACCELERATION = 1.2d;
+
 	private boolean doubleFocusSystem = false;
 	private boolean globalWheelListening = true;
-	private int deltaX = 0;
+	
+	private int anchor = 0;
 	
 	public Scroll(View parent, String... labels) {
 		this(parent, Tab.makeLabels(parent, labels));
 		
-		super.setColor(0x0000CAFE);
-		super.setSeparatorsRenderable(false);
+		this.setAlpha(0);
+		this.setSeparatorsRenderable(false);
 	}
 	
 	public Scroll(View parent, List<Component> components) {
@@ -61,38 +68,42 @@ public class Scroll extends Tab {
 	public final Tab setSeparatorsRenderable(boolean yes) {
 		return this; // Ignore
 	}
+
+	protected void compute() {
+		synchronized(this.rectangles) {
+			this.rectangles.clear();
+			
+			Rectangle2D bounds = this.getBounds();
+			int count = this.getComponents().size();
+			double initial = bounds.getWidth() / 3;
+
+			for(int i = -this.activeComponent; i < 0; i++) {
+				double power = Math.pow(2, i);
+				double x = initial * (1 - power);
+				double width = initial * power;
 	
-	protected void update() {
-		super.update();
-		
-		if(this.getBounds().width > 0) {
-			this.setShadowRadius(this.getBounds().width / 2);
+				this.rectangles.add(new Rectangle2D.Double(bounds.getX() + initial - x, bounds.getY(), width, bounds.getHeight()));
+			}
+			
+			this.rectangles.add(new Rectangle2D.Double(bounds.getX() + initial, bounds.getY(), initial, bounds.getHeight()));
+			
+			for(int i = 1; i < count; i++) {
+				double power = Math.pow(2, -i);
+				double x = initial * (1 - power) * 2;
+				double width = initial * power;
+	
+				this.rectangles.add(new Rectangle2D.Double(bounds.getX() + initial + x, bounds.getY(), width, bounds.getHeight()));
+			}
 		}
 	}
-
-	public List<Rectangle> computeBounds() {
-		List<Rectangle> rectangles = new ArrayList<>();
-		Rectangle bounds = this.getBounds();
-		int count = this.getComponents().size();
-		int initial = bounds.width / 3;
-
-		for(int i = -this.deltaX; i < 0; i++) {			
-			double x = initial * (1 - Math.pow(2, i));
-			double width = initial * Math.pow(2, i);
-
-			rectangles.add(new Rectangle(bounds.x + initial - (int) x, bounds.y, (int) width, bounds.height));
+	
+	protected void updateAll() {
+		super.updateAll();
+		
+		if(this.getBounds().getWidth() > 0) {
+			this.shadow = this.getBounds().getCenterX();
+			this.setShadowRadius(this.getBounds().getWidth() / 2);
 		}
-		
-		rectangles.add(new Rectangle(bounds.x + initial, bounds.y, bounds.width / 3, bounds.height));
-		
-		for(int i = 1; i < count; i++) {			
-			double x = initial * (1 - Math.pow(2, -i)) * 2;
-			double width = initial * Math.pow(2, -i);
-
-			rectangles.add(new Rectangle(bounds.x + initial + (int) x, bounds.y, (int) width, bounds.height));
-		}
-		
-		return rectangles;
 	}
 	
 	public <T extends Event> void handleEvent(T event) {
@@ -108,14 +119,36 @@ public class Scroll extends Tab {
 			WheelEvent wheel = (WheelEvent) event;
 			
 			if(this.globalWheelListening || this.getBounds().contains(wheel.getPoint())) {
-				if(this.deltaX + wheel.getDelta() < 0) {
-					this.deltaX = 0;
-				} else if(this.deltaX + wheel.getDelta() >= this.getComponents().size()) {
-					this.deltaX = this.getComponents().size() - 1;
-				} else {
-					this.deltaX += wheel.getDelta();
-				}
+				this.commitDelta(this.activeComponent + wheel.getDelta());
 			}
+		} else if(event instanceof ActionEvent) {
+			ActionEvent action = (ActionEvent) event;
+			
+			if(action.getType().equals(ActionType.PRESS) && this.getBounds().contains(action.getPoint())) {
+				this.anchor = this.activeComponent;
+			}
+		} else if(event instanceof DragEvent) {
+			DragEvent drag = (DragEvent) event;
+			
+			if(this.getBounds().contains(drag.getAnchor())) {				
+				this.commitDelta((int) (this.anchor - 2 * MOUSE_DRAG_SENSIBILITY * this.getComponents().size() / this.getBounds().getWidth() * (int) Utils.fakeComplexPower(drag.getDeltaX(), MOUSE_DRAG_ACCELERATION)));
+			}
+		} else if(event instanceof InvalidateLayoutEvent) {
+			super.handleEvent(event);
+		}
+	}
+	
+	private void commitDelta(int delta) {
+		if(delta < 0) {
+			delta = 0;
+		} else if(delta >= this.getComponents().size()) {
+			delta = this.getComponents().size() - 1;
+		}
+		
+		if(this.activeComponent != delta) {
+			this.activeComponent = delta;
+			
+			this.updateAll();
 		}
 	}
 	
@@ -124,6 +157,8 @@ public class Scroll extends Tab {
 		
 		theList.addAll(super.getHandleableEvents());
 		theList.add(WheelEvent.class);
+		theList.add(ActionEvent.class);
+		theList.add(DragEvent.class);
 		
 		return theList;
 	}

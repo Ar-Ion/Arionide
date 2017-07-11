@@ -1,29 +1,27 @@
 /*******************************************************************************
- * This file is part of Arionide.
+ * This file is part of ArionIDE.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
+ * ArionIDE is an IDE whose purpose is to build a language from assembly. It is the work of Arion Zimmermann in context of his TM.
  * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
  *
- * Arionide is free software: you can redistribute it and/or modify
+ * ArionIDE is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Arionide is distributed in the hope that it will be useful,
+ * ArionIDE is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ * along with ArionIDE.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive.
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
-import java.awt.AlphaComposite;
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Composite;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Frame;
@@ -45,10 +43,10 @@ import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 
 import org.azentreprise.arionide.Arionide;
-import org.azentreprise.arionide.IWorkspace;
+import org.azentreprise.arionide.Utils;
+import org.azentreprise.arionide.Workspace;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.ActionType;
@@ -72,9 +70,7 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 	private final Map<RenderingHints.Key, Object> renderingHints = new HashMap<>();
 		
 	private final IPrimitives primitives = new AWTPrimitives();
-	
-	private final Stack<Float> opacityStack = new Stack<>();
-	
+		
 	private final IEventDispatcher dispatcher;
 	private final AppManager theManager;
 	private final Frame theFrame;
@@ -84,16 +80,17 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 	private Font font;
 	private FontAdapter adapter;
 	
-	private int ticks = 0;
-	private long time = 0;
-	
-	public AWTDrawingContext(IEventDispatcher dispatcher, int width, int height) {
+	private int lastRGB = 0;
+	private int lastAlpha = 0;
+		
+	public AWTDrawingContext(Arionide theInstance, IEventDispatcher dispatcher, int width, int height) {
 		
 		System.setProperty("sun.awt.noerasebackground", "true");
 		System.setProperty("sun.awt.erasebackgroundonresize", "false");
 
 		this.dispatcher = dispatcher;
-		this.theManager = new AppManager(this, dispatcher);
+		this.theManager = new AppManager(theInstance, this, dispatcher);
+		
 		this.theFrame = new Frame("Arionide");
 		this.theFrame.setSize(width, height);
 		this.theFrame.setLocationRelativeTo(null);
@@ -125,7 +122,7 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 		this.renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 	}
 	
-	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
 		this.theFrame.setVisible(true);
 
 		try {
@@ -135,20 +132,10 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 			Debug.exception(exception);
 		}
 		
-		new Thread("Drawing thread") {
-			public void run() {
-				while(true) {
-					draw();
-				}
-			}
-		}.start();
-		
-		this.theManager.loadUI(theInstance, workspace, resources, renderer, manager);
+		this.theManager.loadUI(workspace, resources, renderer, manager);
 	}
 
-	public void draw() {
-		this.ticks++;
-		
+	public void draw() {		
 		BufferStrategy strategy = this.getBufferStrategy();
 		
 		if(strategy == null) {
@@ -165,14 +152,10 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 		}
 		
 		strategy.show();
-				
-		long now = System.currentTimeMillis();
-		
-		if(this.time + 1000 <= now) {
-			System.out.println(this.ticks + " FPS");
-			this.time = now;
-			this.ticks = 0;
-		}
+	}
+	
+	public void update() {
+		this.theManager.update();
 	}
 
 	public Graphics2D getRenderer() {
@@ -187,23 +170,32 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 		return this.adapter;
 	}
 	
-	public void setDrawingColor(Color color) {
-		this.getRenderer().setColor(color);
-	}
-	
-	public void pushOpacity(float opacity) {
-		
-		Composite currentComposite = this.getRenderer().getComposite();
-		
-		if(currentComposite instanceof AlphaComposite) {
-			this.opacityStack.push(((AlphaComposite) currentComposite).getAlpha());
+	public void setColor(int rgb) {
+		if(rgb > 0xFFFFFF) {
+			throw new IllegalArgumentException("Alpha values are not allowed");
 		}
-		
-		this.getRenderer().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+				
+		if(rgb != this.lastRGB) {
+			this.lastRGB = rgb;
+			this.commitColor();
+		}
 	}
 	
-	public void popOpacity() {
-		this.getRenderer().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.opacityStack.pop()));
+	public void setAlpha(int alpha) {
+		Utils.checkColorRange("Alpha", alpha);
+		
+		if(alpha != this.lastAlpha) {
+			this.lastAlpha = alpha;
+			this.commitColor();
+		}
+	}
+	
+	private void commitColor() {
+		this.getRenderer().setColor(new Color(Utils.packARGB(this.lastRGB, this.lastAlpha), true));
+	}
+	
+	public void purge() {
+		this.theManager.purge();
 	}
 	
 	public void mouseClicked(MouseEvent event) {

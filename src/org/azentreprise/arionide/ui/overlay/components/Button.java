@@ -1,22 +1,22 @@
 /*******************************************************************************
- * This file is part of Arionide.
+ * This file is part of ArionIDE.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
+ * ArionIDE is an IDE whose purpose is to build a language from assembly. It is the work of Arion Zimmermann in context of his TM.
  * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
  *
- * Arionide is free software: you can redistribute it and/or modify
+ * ArionIDE is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Arionide is distributed in the hope that it will be useful,
+ * ArionIDE is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ * along with ArionIDE.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive.
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay.components;
 
@@ -48,25 +48,24 @@ public class Button extends Label implements EventHandler {
 	
 	protected final Animation animation;
 	protected boolean hasFocus;
+	private boolean disabled = false;
 	
+	private boolean mouseOver = false;
 	private Cursor overCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 	
-	private boolean disabled = false;
-
-	private boolean mouseOver = false;
+	private int colorKeepRef = 0x42CAFE;
 	
-	private int colorKeepRef;
 	private ClickEvent event;
 	
 	public Button(View parent, String label) {
 		super(parent, label);
 		
-		this.setColor((DEFAULT_ALPHA << 24) | 0x42CAFE);
-		this.colorKeepRef = this.color;
+		this.setColor(this.colorKeepRef);
+		this.setAlpha(DEFAULT_ALPHA);
 		
-		this.animation = new FieldModifierAnimation(this.getParentView().getAppManager(), "opacity", Label.class, this);
+		this.animation = new FieldModifierAnimation(this.getAppManager(), "alpha", Label.class, this);
 		
-		this.getParentView().getAppManager().getEventDispatcher().registerHandler(this);
+		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
 	
 	public Button setSignal(String signal, Object... data) {
@@ -78,11 +77,11 @@ public class Button extends Label implements EventHandler {
 		this.disabled = disabled;
 		
 		if(this.disabled) {
-			this.colorKeepRef = this.color;
-			this.setColor((DEFAULT_ALPHA << 24) | 0xFF0000);
+			this.setColor(0xFF0000);
+			this.setAlpha(DEFAULT_ALPHA);
 			
 			if(this.hasFocus) {
-				this.getParentView().getAppManager().getFocusManager().next();
+				this.getAppManager().getFocusManager().next();
 			}
 		} else {
 			this.setColor(this.colorKeepRef);
@@ -95,13 +94,9 @@ public class Button extends Label implements EventHandler {
 		this.overCursor = cursor;
 	}
 		
-	public void drawSurface(AppDrawingContext context) {
-		super.drawSurface(context);
+	public void drawComponent(AppDrawingContext context) {
+		super.drawComponent(context);
 		context.getPrimitives().drawRoundRect(context, this.getBounds());
-	}
-	
-	public String toString() {
-		return this.label;
 	}
 	
 	public boolean isFocusable() {
@@ -120,7 +115,7 @@ public class Button extends Label implements EventHandler {
 				if(!this.mouseOver) {
 					this.mouseOver = true;
 					
-					this.getParentView().getAppManager().getDrawingContext().setCursor(this.overCursor);
+					this.getAppManager().getDrawingContext().setCursor(this.overCursor);
 
 					if(!this.hasFocus) {
 						this.animation.startAnimation(ANIMATION_TIME, 0xFF);
@@ -130,7 +125,7 @@ public class Button extends Label implements EventHandler {
 				if(this.mouseOver) {
 					this.mouseOver = false;
 					
-					this.getParentView().getAppManager().getDrawingContext().setCursor(DEFAULT_CURSOR);
+					this.getAppManager().getDrawingContext().setCursor(DEFAULT_CURSOR);
 
 					if(!this.hasFocus) {
 						this.animation.startAnimation(ANIMATION_TIME, DEFAULT_ALPHA);
@@ -162,7 +157,7 @@ public class Button extends Label implements EventHandler {
 	
 	protected void fireMouseClick() {
 		if(this.event != null) {
-			this.getParentView().getAppManager().getEventDispatcher().fire(this.event);
+			this.getAppManager().getEventDispatcher().fire(this.event);
 		}
 	}
 	
@@ -178,7 +173,7 @@ public class Button extends Label implements EventHandler {
 	
 	public void hide() {
 		super.hide();
-		this.getParentView().getAppManager().getDrawingContext().setCursor(DEFAULT_CURSOR);
+		this.getAppManager().getDrawingContext().setCursor(DEFAULT_CURSOR);
 		this.onFocusLost();
 	}
 

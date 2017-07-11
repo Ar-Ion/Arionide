@@ -1,30 +1,30 @@
 /*******************************************************************************
- * This file is part of Arionide.
+ * This file is part of ArionIDE.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
+ * ArionIDE is an IDE whose purpose is to build a language from assembly. It is the work of Arion Zimmermann in context of his TM.
  * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
  *
- * Arionide is free software: you can redistribute it and/or modify
+ * ArionIDE is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Arionide is distributed in the hope that it will be useful,
+ * ArionIDE is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ * along with ArionIDE.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive.
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.azentreprise.arionide.debugging.IAm;
+import org.azentreprise.arionide.ui.AlphaLayer;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.animations.Animation;
@@ -33,7 +33,7 @@ import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.layout.Surface;
 
 public abstract class View extends Surface {
-		
+	
 	private final AppManager appManager;
 	private final LayoutManager layoutManager;
 
@@ -43,8 +43,9 @@ public abstract class View extends Surface {
 	
 	private final int focusViewUID;
 	
-	private Color borderColor = null;
-	public float alpha = 0.0f;
+	private int borderColor = -1;
+	
+	private int alpha = 0;
 	
 	public View(AppManager appManager, LayoutManager layoutManager) {
 		this.appManager = appManager;
@@ -55,8 +56,8 @@ public abstract class View extends Surface {
 		this.focusViewUID = this.getAppManager().getFocusManager().requestViewUID();
 	}
 	
-	public void setBorderColor(Color color) {
-		this.borderColor = color;
+	public void setBorderColor(int rgb) {
+		this.borderColor = rgb;
 	}
 	
 	public Animation getAlphaAnimation() {
@@ -64,10 +65,10 @@ public abstract class View extends Surface {
 	}
 
 	public void drawSurface(AppDrawingContext context) {
-		context.pushOpacity(this.alpha);
+		this.appManager.getAlphaLayering().push(AlphaLayer.VIEW, this.alpha);
 		
-		if(this.borderColor != null) {
-			context.setDrawingColor(this.borderColor);
+		if(this.borderColor > 0) {
+			context.setColor(this.borderColor);
 			context.getPrimitives().drawRoundRect(context, this.getBounds());
 		}
 		
@@ -75,10 +76,16 @@ public abstract class View extends Surface {
 			component.draw(context);
 		}
 		
-		context.popOpacity();
+		this.appManager.getAlphaLayering().pop(AlphaLayer.VIEW);
 	}
 	
-	protected void add(Component component, float x1, float y1, float x2, float y2) {
+	public void update() {
+		for(Component component : this.components) {
+			component.update();
+		}
+	}
+	
+	protected void add(Component component, double x1, double y1, double x2, double y2) {
 		this.components.add(component);
 		this.getLayoutManager().register(component, this, x1, y1, x2, y2);
 		this.getAppManager().getFocusManager().registerComponent(component);
@@ -132,9 +139,9 @@ public abstract class View extends Surface {
 		this.show();
 		
 		if(transition) {
-			this.getAlphaAnimation().startAnimation(500, 1.0f);
+			this.getAlphaAnimation().startAnimation(500, 255);
 		} else {
-			this.alpha = 1.0f;
+			this.alpha = 255;
 		}
 	}
 	
@@ -142,9 +149,9 @@ public abstract class View extends Surface {
 		if(transition) {
 			this.getAlphaAnimation().startAnimation(500, after -> {
 				this.hide();
-			}, 0.0f);
+			}, 0);
 		} else {
-			this.alpha = 0.0f;
+			this.alpha = 0;
 			this.hide();
 		}
 	}

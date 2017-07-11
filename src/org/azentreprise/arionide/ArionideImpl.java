@@ -1,125 +1,128 @@
 /*******************************************************************************
- * This file is part of Arionide.
+ * This file is part of ArionIDE.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
+ * ArionIDE is an IDE whose purpose is to build a language from assembly. It is the work of Arion Zimmermann in context of his TM.
  * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
  *
- * Arionide is free software: you can redistribute it and/or modify
+ * ArionIDE is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Arionide is distributed in the hope that it will be useful,
+ * ArionIDE is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ * along with ArionIDE.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive.
  *******************************************************************************/
 package org.azentreprise.arionide;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.azentreprise.arionide.debugging.WatchdogState;
+import org.azentreprise.arionide.events.dispatching.DragSystem;
 import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 import org.azentreprise.arionide.events.dispatching.MainEventDispatcher;
 import org.azentreprise.arionide.resources.Resources;
+import org.azentreprise.arionide.threading.DrawingThread;
 import org.azentreprise.arionide.threading.EventDispatchingThread;
-import org.azentreprise.arionide.threading.MiscProcessingThread;
+import org.azentreprise.arionide.threading.UIThread;
+import org.azentreprise.arionide.threading.UpdatingThread;
 import org.azentreprise.arionide.threading.UserHelpingThread;
 import org.azentreprise.arionide.threading.WorkingThread;
-import org.azentreprise.arionide.ui.AWTDrawingContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
-import org.azentreprise.arionide.ui.core.awt.AWTCoreRenderer;
+import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 
 public class ArionideImpl implements Arionide {
 	
 	private EventDispatchingThread eventThread;
 	private WorkingThread userThread;
-	private WorkingThread miscThread;
+	private UIThread drawingThread;
+	private UIThread updatingThread;
 	
 	public void startThreads() {
 		this.eventThread = new EventDispatchingThread();
 		this.userThread = new UserHelpingThread();
-		this.miscThread = new MiscProcessingThread();
+		this.drawingThread = new DrawingThread();
+		this.updatingThread = new UpdatingThread();
 		
 		this.eventThread.start();
 		this.userThread.start();
-		this.miscThread.start();
+		this.drawingThread.start();
+		this.updatingThread.start();
 	}
 
 	public IEventDispatcher setupEventDispatcher() {
 		return new MainEventDispatcher(this.eventThread);
 	}
 	
-	public IWorkspace setupWorkspace(IEventDispatcher dispatcher) {
+	public Workspace setupWorkspace(IEventDispatcher dispatcher) {
 		File path = new File(System.getProperty("user.home") + File.separator + "Arionide Workspace");
 		path.mkdirs();
-		return new Workspace(path, dispatcher);
+		return new LocalWorkspace(path, dispatcher);
 	}
 
 	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher) {
-		return new AWTDrawingContext(dispatcher, 1080, 720);
+		DragSystem.init(dispatcher);
+		return new OpenGLDrawingContext(this, dispatcher, 1080, 720);
 	}
 
-	public Resources loadResources(IWorkspace workspace, AppDrawingContext context) {
+	public Resources loadResources(Workspace workspace, AppDrawingContext context) {
 		return new Resources(workspace, context);
 	}
 
 	public CoreRenderer loadCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher, Resources resources) {
-		return new AWTCoreRenderer();
+		return new OpenGLCoreRenderer();
 	}
 
 	public LayoutManager setupLayoutManager(AppDrawingContext context, IEventDispatcher dispatcher) {
 		return new LayoutManager(context, dispatcher);
 	}
 
-	public void loadUI(Arionide theInstance, AppDrawingContext context, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
-		context.load(theInstance, workspace, resources, renderer, manager);
+	public void loadUI(AppDrawingContext context, Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+		context.load(workspace, resources, renderer, manager);
+				
+		this.drawingThread.setupManager(context);
+		this.updatingThread.setupManager(context);
 	}
 	
 	// note: this list is not mutable
 	private List<WorkingThread> getSystemThreads() {
-		return Arrays.asList(this.eventThread, this.userThread, this.miscThread);
+		return Arrays.asList(this.eventThread, this.userThread, this.drawingThread, this.updatingThread);
 	}
 
 	public WatchdogState runWatchdog() {
-		Stream<WorkingThread> notRespondingThreads = this.getSystemThreads().stream().filter(thread -> thread.getLagRate() > 10.0f);
-
-		this.getSystemThreads().stream()
-			.forEach(thread -> System.out.println("Lag rate for thread '" + thread.getDescriptor() + "' is " + thread.getLagRate() * 100 + "% "
-				+ "and is running at " + (1000 * thread.pollTicks() / Arionide.WATCHDOG_TIMER ) + " TPS."));
-		
-		System.out.println();
-		
-		Iterator<WorkingThread> iterator = notRespondingThreads.iterator();
-		
-		while(iterator.hasNext()) {
-			WorkingThread thread = iterator.next();
+		for(WorkingThread thread : this.getSystemThreads()) {
+			int ticks = thread.pollTicks();
+			System.out.println("Thread '" + thread.getDescriptor() + "' is running at " + (1000 * ticks / Arionide.WATCHDOG_TIMER) + " TPS.");
 			
-			System.err.println("Thread '" + thread.getDescriptor() + "' is not responding... trying to respawn...");
-			
-			boolean crashed = true;
-			
-			for(int i = 0; i < Arionide.RESPAWN_MAX_ATTEMPTS; i++) {
-				if(thread.respawn(i)) {
-					crashed = false;
-					break;
+			if(ticks == 0) {
+				System.err.println("Thread '" + thread.getDescriptor() + "' is not responding...");
+				
+				boolean crashed = true;
+				
+				for(int i = 0; i < Arionide.RESPAWN_MAX_ATTEMPTS; i++) {
+					if(thread.respawn(i)) {
+						crashed = false;
+						break;
+					}
+				}
+				
+				if(crashed) {
+					return WatchdogState.CRASH;
 				}
 			}
-			
-			if(crashed) {
-				return WatchdogState.CRASH;
-			}
 		}
+		
+		System.out.println();
 		
 		return WatchdogState.NO_PROBLEM;
 	}

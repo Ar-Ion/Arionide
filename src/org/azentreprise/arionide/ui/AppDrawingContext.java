@@ -1,44 +1,43 @@
 /*******************************************************************************
- * This file is part of Arionide.
+ * This file is part of ArionIDE.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
+ * ArionIDE is an IDE whose purpose is to build a language from assembly. It is the work of Arion Zimmermann in context of his TM.
  * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
  *
- * Arionide is free software: you can redistribute it and/or modify
+ * ArionIDE is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Arionide is distributed in the hope that it will be useful,
+ * ArionIDE is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ * along with ArionIDE.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive.
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 
-import org.azentreprise.arionide.Arionide;
-import org.azentreprise.arionide.IWorkspace;
+import org.azentreprise.arionide.Workspace;
 import org.azentreprise.arionide.resources.Resources;
+import org.azentreprise.arionide.threading.Purgeable;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.primitives.IPrimitives;
 
-public interface AppDrawingContext {
-	public void load(Arionide theInstance, IWorkspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager);
+public interface AppDrawingContext extends Purgeable {
+	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager);
 	public void draw();
+	public void update();
 	public Dimension getSize();
 	public IPrimitives getPrimitives();
 	public FontAdapter getFontAdapter();
 	public void setCursor(Cursor cursor);
-	public void setDrawingColor(Color color);
-	public void pushOpacity(float newOpacity);
-	public void popOpacity();
+	public void setColor(int rgb);
+	public void setAlpha(int alpha);
 }
