@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
    
-    The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the JAR archive or in your personal directory as 'Arionide/LICENSE.txt'.
+    The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  -->
 <project name="Arionide" basedir="." default="main">
     <target name="clean">
@@ -39,8 +39,6 @@
     <target name="run" depends="jar">
         <java jar="Arionide.jar" maxmemory="2G" fork="true"/>
     </target>
-    
-    <target name="clean-build" depends="clean,jar"/>
-    
-    <target name="main" depends="clean,run"/>
+        
+    <target name="main" depends="clean,compile,jar,run"/>
 </project>
