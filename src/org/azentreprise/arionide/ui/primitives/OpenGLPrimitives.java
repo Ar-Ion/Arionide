@@ -25,8 +25,6 @@ import java.awt.geom.Rectangle2D;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.IntBuffer;
 import java.nio.charset.Charset;
 
@@ -34,7 +32,10 @@ import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 
 import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.glsl.ShaderUtil;
+import com.jogamp.opengl.util.texture.TextureData;
+import com.jogamp.opengl.util.texture.TextureIO;
 
 public class OpenGLPrimitives implements IPrimitives {
 	
@@ -68,6 +69,26 @@ public class OpenGLPrimitives implements IPrimitives {
 			this.rgb = gl.glGetUniformLocation(this.uiShader, "rgb");
 			this.alpha = gl.glGetUniformLocation(this.uiShader, "alpha");
 			this.pixelSize = gl.glGetUniformLocation(this.uiShader, "pixelSize");
+			
+			IntBuffer buffer = IntBuffer.allocate(1);
+			gl.glGenTextures(1, buffer);
+			int texture = buffer.get(0);
+			
+			gl.glActiveTexture(GL4.GL_TEXTURE0);
+			gl.glBindTexture(GL4.GL_TEXTURE_2D, texture);
+			
+			TextureData data = TextureIO.newTextureData(GLProfile.get(GLProfile.GL4), this.getClass().getResourceAsStream("texture.png"), false, TextureIO.PNG);
+			gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, 32, 32, 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, data.getBuffer());
+			
+			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
+			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
+			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_NEAREST);
+			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_NEAREST);
+			
+			float color[] = {1.0f, 1.0f, 1.0f, 1.0f};
+			gl.glTexParameterfv(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_BORDER_COLOR, color, 0);
+			
+			gl.glUniform1i(gl.glGetUniformLocation(this.uiShader, "sampler"), 0);
 			
 			this.manager = new VAOManager(gl, this.uiShader);
 		} catch (IOException e) {
