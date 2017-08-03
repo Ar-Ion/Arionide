@@ -21,7 +21,7 @@ void triangulate(in int id, inout vec4 thirdVertex) {
     vec4 firstVertex = vertex + firstTransform * radius;
         
     if(id != 0) {
-        gl_Position = firstVertex + secondTransform;
+        gl_Position = firstVertex - firstTransform + secondTransform;
         EmitVertex(); // transition vertex
         
         state = 0;
@@ -46,7 +46,7 @@ void triangulate(in int id, inout vec4 thirdVertex) {
     EmitVertex();
     
     state = 0;
-    gl_Position = thirdVertex + firstTransform;
+    gl_Position = thirdVertex - secondTransform + firstTransform;
     EmitVertex(); // transition vertex
     state = 1;
 }
