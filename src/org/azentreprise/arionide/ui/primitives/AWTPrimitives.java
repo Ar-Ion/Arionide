@@ -41,12 +41,12 @@ public class AWTPrimitives implements IPrimitives {
 	
 	public void drawRoundRect(AppDrawingContext context, Rectangle2D bounds) {
 		Rectangle integerRect = bounds.getBounds();
-		this.loadContext(context).getRenderer().drawRoundRect(integerRect.x, integerRect.y, integerRect.width, integerRect.height, 25, 25);
+		this.loadContext(context).getRenderer().drawRoundRect(integerRect.x, integerRect.y, integerRect.width, integerRect.height, 32, 32);
 	}
 
 	public void fillRoundRect(AppDrawingContext context, Rectangle2D bounds) {
 		Rectangle integerRect = bounds.getBounds();
-		this.loadContext(context).getRenderer().fillRoundRect(integerRect.x, integerRect.y, integerRect.width, integerRect.height, 25, 25);
+		this.loadContext(context).getRenderer().fillRoundRect(integerRect.x, integerRect.y, integerRect.width, integerRect.height, 32, 32);
 	}
 
 	public void drawLine(AppDrawingContext context, double x1, double y1, double x2, double y2) {

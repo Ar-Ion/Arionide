@@ -25,92 +25,68 @@ import java.awt.geom.Rectangle2D;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.DoubleBuffer;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.IntBuffer;
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 
-import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.util.glsl.ShaderUtil;
 
 public class OpenGLPrimitives implements IPrimitives {
 	
-	/* These constants are used for round rectangle rendering. */
-	private final int radius = 25;
-	private final int radiusSq = this.radius * this.radius;
-	private final int quality = 2;
-	private final int alloc = this.quality * 8;
-	private final int halfAlloc = this.quality * 4;
-	private final double[] vertices = new double[this.alloc];
+	private VAOManager manager;
 	
-	/* Relative radius dimensions */
-	private double relWidth = 0.0d;
-	private double relHeight = 0.0d;
-
-	private Map<Rectangle2D, CacheElement> cache = new HashMap<>();
+	private int uiShader;
 	
-	private int uiShader = -1;
-	private int shaderRGB = -1;
-	private int shaderAlpha = -1;
+	private int rgb;
+	private int alpha;
+	private int pixelSize;
+	
+	private double pixelWidth;
+	private double pixelHeight;
 	
 	public void init(GL4 gl) {
 		try {
-			int vert = this.loadShader(gl, "gui_shader.vert", GL4.GL_VERTEX_SHADER);
-			int frag = this.loadShader(gl, "gui_shader.frag", GL4.GL_FRAGMENT_SHADER);
+			int vert = this.loadShader(gl, "gui.vert", GL4.GL_VERTEX_SHADER);
+			int frag = this.loadShader(gl, "gui.frag", GL4.GL_FRAGMENT_SHADER);
+			int geom = this.loadShader(gl, "gui.geom", GL4.GL_GEOMETRY_SHADER);
 			
 			this.uiShader = gl.glCreateProgram();
 			
 			gl.glAttachShader(this.uiShader, vert);
 			gl.glAttachShader(this.uiShader, frag);
+			gl.glAttachShader(this.uiShader, geom);
 			
 			gl.glBindFragDataLocation(this.uiShader, 0, "color");
 			
 			gl.glLinkProgram(this.uiShader);
 			
-			this.shaderRGB = gl.glGetUniformLocation(this.uiShader, "rgb");
-			this.shaderAlpha = gl.glGetUniformLocation(this.uiShader, "alpha");
+			this.rgb = gl.glGetUniformLocation(this.uiShader, "rgb");
+			this.alpha = gl.glGetUniformLocation(this.uiShader, "alpha");
+			this.pixelSize = gl.glGetUniformLocation(this.uiShader, "pixelSize");
+			
+			this.manager = new VAOManager(gl, this.uiShader);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
 	public void viewportChanged(int width, int height) {
-		for(int i = 0; i < this.quality; i++) {
-			double x = (double) i * this.radius / (this.quality - 1);
-			double y = Math.sqrt(this.radiusSq - x*x);
-			
-			x /= width;
-			y /= height;
-			
-			int di = 2*i;
-			int diinc = di + 1;
-			
-			this.vertices[di] = x;
-			this.vertices[diinc] = y;
-			
-			this.vertices[this.halfAlloc - di - 2] = x;
-			this.vertices[this.halfAlloc - di - 1] = -y;
-			
-			this.vertices[this.halfAlloc + di] = -x;
-			this.vertices[this.halfAlloc + diinc] = -y;
-			
-			this.vertices[this.alloc - di - 2] = -x;
-			this.vertices[this.alloc - di - 1] = y;
-		}
-		
-		this.relWidth = (double) this.radius / width;
-		this.relHeight = (double) this.radius / height;
+		this.pixelWidth = 2.0d / width;
+		this.pixelHeight = 2.0d / height;
 	}
 	
 	public void beginUI(GL4 gl) {
 		gl.glUseProgram(this.uiShader);
+		
 		gl.glEnable(GL4.GL_BLEND);
 		gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
+		
+		gl.glUniform2d(this.pixelSize, this.pixelWidth, this.pixelHeight);
 	}
 	
 	public void endUI(GL4 gl) {
@@ -121,37 +97,14 @@ public class OpenGLPrimitives implements IPrimitives {
 	/* WARNING: Using the OpenGL implementation, the Rectangle2D bounds is actually a data structure representing the data (x1, y1, x2, y2). */
 	
 	public void drawRect(AppDrawingContext context, Rectangle2D bounds) {
-		GL4 gl = this.getGL(context);
-		CacheElement element = this.getCacheElement(bounds);
+		// Disable the geometry shader in order to use regular rectangles
 		
-		if(element.vbo.get(0) == 0) {	
-			DoubleBuffer buffer = DoubleBuffer.allocate(8);
-
-			buffer.put(0, bounds.getX() - 1.0d);
-			buffer.put(1, -bounds.getY() + 1.0d);
-			
-			buffer.put(2, bounds.getX() - 1.0d);
-			buffer.put(3, -bounds.getHeight() - bounds.getY() + 1.0d);
-			
-			buffer.put(4, bounds.getWidth() + bounds.getX() - 1.0d);
-			buffer.put(5, -bounds.getHeight() - bounds.getY() + 1.0d);
-			
-			buffer.put(6, bounds.getWidth() + bounds.getX() - 1.0d);
-			buffer.put(7, -bounds.getY() + 1.0d);
-			
-			gl.glGenVertexArrays(1, element.vao);
-			gl.glBindVertexArray(element.vao.get(0));
-			
-			gl.glGenBuffers(1, element.vbo);
-			gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, element.vbo.get(0));
-			gl.glBufferData(GL4.GL_ARRAY_BUFFER, buffer.capacity() * Double.BYTES, buffer, GL4.GL_STATIC_DRAW);
-			
-			int attribute = gl.glGetAttribLocation(this.uiShader, "position");
-			gl.glEnableVertexAttribArray(attribute);
-			gl.glVertexAttribPointer(attribute, 2, GL4.GL_DOUBLE, false, 0, 0);
-		} else {
-			gl.glBindVertexArray(element.vao.get(0));
-		}
+		GL4 gl = this.getGL(context);
+		GLCoordinates coords = new GLCoordinates(bounds);
+		
+		this.manager.loadVAO(coords.getUUID(), () -> coords.allocDataBuffer(8).putBoundingPoints().getDataBuffer(), (nil, id) -> {
+			gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
+		}, "position");
 
 		gl.glDrawArrays(GL4.GL_LINE_LOOP, 0, 4);
 	}
@@ -165,44 +118,13 @@ public class OpenGLPrimitives implements IPrimitives {
 	@Override
 	public void drawRoundRect(AppDrawingContext context, Rectangle2D bounds) {		
 		GL4 gl = this.getGL(context);
-		CacheElement element = this.getCacheElement(bounds);
-
-		if(element.vbo.get(0) == 0) {	
-			DoubleBuffer buffer = DoubleBuffer.allocate(this.vertices.length);
-			
-			double translateX = bounds.getX() + bounds.getWidth() - 1.0d;
-			double translateY = 1.0d - bounds.getY() - this.relHeight;
-			double width = bounds.getWidth() - 2 * this.relWidth;
-			double height = bounds.getHeight() - 2 * this.relHeight;
-			
-			for(int i = 0; i < this.halfAlloc; i++) {
-				if(i == this.quality) {
-					translateY -= height;
-				} else if(i == 2 * this.quality) {
-					translateX -= width;
-				} else if(i == 3 * this.quality) {
-					translateY += height;
-				}
-				
-				buffer.put(2*i, this.vertices[2*i] + translateX);
-				buffer.put(2*i + 1, this.vertices[2*i + 1] + translateY);
-			}
-			
-			gl.glGenVertexArrays(1, element.vao);
-			gl.glBindVertexArray(element.vao.get(0));
-			
-			gl.glGenBuffers(1, element.vbo);
-			gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, element.vbo.get(0));
-			gl.glBufferData(GL4.GL_ARRAY_BUFFER, buffer.capacity() * Double.BYTES, buffer, GL4.GL_STATIC_DRAW);
-			
-			int attribute = gl.glGetAttribLocation(this.uiShader, "position");
-			gl.glEnableVertexAttribArray(attribute);
-			gl.glVertexAttribPointer(attribute, 2, GL4.GL_DOUBLE, false, 0, 0);
-		} else {
-			gl.glBindVertexArray(element.vao.get(0));
-		}		
+		GLCoordinates coords = new GLCoordinates(bounds);
 		
-		gl.glDrawArrays(GL4.GL_LINE_LOOP, 0, this.halfAlloc);
+		this.manager.loadVAO(coords.getUUID(), () -> coords.allocDataBuffer(8).putBoundingPoints().getDataBuffer(), (nil, id) -> {
+			gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
+		}, "position");
+
+		gl.glDrawArrays(GL4.GL_LINES_ADJACENCY, 0, 4);
 	}
 
 	@Override
@@ -230,29 +152,16 @@ public class OpenGLPrimitives implements IPrimitives {
 	}
 	
 	public void setColor(GL4 gl, float r, float g, float b) {
-		gl.glUniform3f(this.shaderRGB, r, g, b);
+		gl.glUniform3f(this.rgb, r, g, b);
 	}
 	
 	public void setAlpha(GL4 gl, float alpha) {
-		gl.glUniform1f(this.shaderAlpha, alpha);
+		gl.glUniform1f(this.alpha, alpha);
 	}
 	
 	private GL4 getGL(AppDrawingContext context) {
 		assert context instanceof OpenGLDrawingContext;
 		return ((OpenGLDrawingContext) context).getRenderer();
-	}
-	
-	private CacheElement getCacheElement(Rectangle2D bounds) {
-		CacheElement element = this.cache.get(bounds);
-		
-		if(element != null) {
-			element.lastUpdate = System.currentTimeMillis();
-		} else {
-			element = new CacheElement(IntBuffer.allocate(1), IntBuffer.allocate(1), System.currentTimeMillis());
-			this.cache.put(bounds, element);
-		}
-		
-		return element;
 	}
 	
 	private int loadShader(GL4 gl, String name, int type) throws IOException {
@@ -272,19 +181,5 @@ public class OpenGLPrimitives implements IPrimitives {
 		ShaderUtil.createAndCompileShader(gl, shaderID, type, new String[][] {{ code }}, System.err);
 		
 		return shaderID.get(0);
-	}
-	
-	/* Needs a GC System */
-	private static class CacheElement  {
-		
-		private IntBuffer vbo;
-		private IntBuffer vao;
-		private long lastUpdate;
-		
-		private CacheElement(IntBuffer vbo, IntBuffer vao, long lastUpdate) {
-			this.vbo = vbo;
-			this.vao = vao;
-			this.lastUpdate = lastUpdate;
-		}
 	}
 }
