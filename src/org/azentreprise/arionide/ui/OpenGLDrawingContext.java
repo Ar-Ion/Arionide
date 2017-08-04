@@ -22,12 +22,17 @@ package org.azentreprise.arionide.ui;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.geom.Point2D;
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.FloatBuffer;
 
 import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.Workspace;
+import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.ActionType;
 import org.azentreprise.arionide.events.MoveEvent;
@@ -54,6 +59,7 @@ import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
+import com.jogamp.opengl.GLContext;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.FPSAnimator;
@@ -63,7 +69,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	private final IEventDispatcher dispatcher;
 	private final AppManager theManager;
 	
-	private final GLProfile profile = GLProfile.get(GLProfile.GL4);
+	private final GLProfile profile = GLProfile.get("GL4");
 	private final GLCapabilities caps = new GLCapabilities(this.profile);
 	private final GLWindow window;
 	
@@ -78,6 +84,8 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	
 	private GL4 gl;
 
+	private FontAdapter adapter;
+	
 	private int rgb = 0;
 	private int alpha = 0;
 		
@@ -91,6 +99,19 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 
 		this.window = GLWindow.create(this.caps);
 		this.animator = new FPSAnimator(this.window, 60, true);
+		
+		/* Hack */
+		try {
+			GLContext context = this.window.getContext();
+			
+			Field clazz = GLContext.class.getDeclaredField("ctxOptions");
+			clazz.setAccessible(true);
+			clazz.setInt(context, clazz.getInt(context) | 0x2);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		
 		
 		this.window.addGLEventListener(this);
 		this.window.addKeyListener(this);
@@ -107,6 +128,13 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	}
 
 	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+		try {
+			Font font = Font.createFont(Font.TRUETYPE_FONT, resources.getResource("font"));
+			this.adapter = new FontAdapter(font);
+		} catch (FontFormatException | IOException exception) {
+			Debug.exception(exception);
+		}
+		
 		this.window.setVisible(true);
 		this.animator.start();
 		
@@ -181,7 +209,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	}
 
 	public FontAdapter getFontAdapter() {
-		return null;
+		return this.adapter;
 	}
 
 	public void setColor(int rgb) {

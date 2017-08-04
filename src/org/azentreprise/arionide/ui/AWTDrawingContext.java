@@ -77,7 +77,6 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 	
 	private Graphics2D theGraphics;
 	
-	private Font font;
 	private FontAdapter adapter;
 	
 	private int lastRGB = 0;
@@ -126,8 +125,8 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 		this.theFrame.setVisible(true);
 
 		try {
-			this.font = Font.createFont(Font.TRUETYPE_FONT, resources.getResource("font"));
-			this.adapter = new FontAdapter(this.font);
+			Font font = Font.createFont(Font.TRUETYPE_FONT, resources.getResource("font"));
+			this.adapter = new FontAdapter(font);
 		} catch (FontFormatException | IOException exception) {
 			Debug.exception(exception);
 		}

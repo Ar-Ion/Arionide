@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.primitives;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.ByteArrayOutputStream;
@@ -31,8 +33,14 @@ import java.nio.charset.Charset;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 
+import com.jogamp.graph.curve.Region;
+import com.jogamp.graph.curve.opengl.RegionRenderer;
+import com.jogamp.graph.curve.opengl.RenderState;
+import com.jogamp.graph.curve.opengl.TextRegionUtil;
+import com.jogamp.graph.geom.SVertex;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.glsl.ShaderUtil;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
@@ -80,13 +88,10 @@ public class OpenGLPrimitives implements IPrimitives {
 			TextureData data = TextureIO.newTextureData(GLProfile.get(GLProfile.GL4), this.getClass().getResourceAsStream("texture.png"), false, TextureIO.PNG);
 			gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, 32, 32, 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, data.getBuffer());
 			
-			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
-			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
+			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_EDGE);
+			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_EDGE);
 			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_NEAREST);
 			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_NEAREST);
-			
-			float color[] = {1.0f, 1.0f, 1.0f, 1.0f};
-			gl.glTexParameterfv(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_BORDER_COLOR, color, 0);
 			
 			gl.glUniform1i(gl.glGetUniformLocation(this.uiShader, "sampler"), 0);
 			
@@ -160,16 +165,31 @@ public class OpenGLPrimitives implements IPrimitives {
 		
 	}
 
-	@Override
 	public Point2D drawText(AppDrawingContext context, String text, Rectangle2D bounds) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.drawText(context, text, bounds, 0);
 	}
 
-	@Override
 	public Point2D drawText(AppDrawingContext context, String text, Rectangle2D bounds, int yCorrection) {
-		// TODO Auto-generated method stub
-		return null;
+		GL4 gl = this.getGL(context);
+		
+		TextRenderer textRenderer = new TextRenderer(context.getFontAdapter().adapt(text, bounds.getWidth(), bounds.getHeight()));
+		Rectangle2D textBounds = textRenderer.getBounds(text);
+		
+		
+		
+		double x = bounds.getX() + (bounds.getWidth() - textBounds.getWidth()) / 2;
+		double y = bounds.getY() + (bounds.getHeight() - textBounds.getHeight() + 1 + yCorrection) / 2;
+		
+		Dimension renderingArea = context.getSize();
+		
+		textRenderer.beginRendering(renderingArea.width, renderingArea.height);
+		textRenderer.setColor(Color.YELLOW);
+		textRenderer.setSmoothing(true);
+
+		textRenderer.draw(text, (int) x, (int) y);
+		textRenderer.endRendering();
+		
+		return new Point2D.Double(x, y);
 	}
 	
 	public void setColor(GL4 gl, float r, float g, float b) {
