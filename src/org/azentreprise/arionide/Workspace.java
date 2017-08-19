@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.azentreprise.arionide.debugging.IAm;
+import org.azentreprise.arionide.project.Project;
 
 public interface Workspace extends Resource, MappedStructure, Saveable, Loadable {
 	

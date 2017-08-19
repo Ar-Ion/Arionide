@@ -1,0 +1,10 @@
+#version 400
+
+in vec2 position;
+out vec2 uv;
+
+void main() {
+    gl_Position = vec4(position, 0.0, 1.0);
+    uv = position / 2.0 + 0.5;
+    uv.y = abs(uv.y - 1.0);
+}

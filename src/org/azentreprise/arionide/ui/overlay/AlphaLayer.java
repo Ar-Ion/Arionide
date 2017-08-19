@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui;
+package org.azentreprise.arionide.ui.overlay;
 
 public enum AlphaLayer {
 	VIEW, COMPONENT

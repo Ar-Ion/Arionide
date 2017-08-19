@@ -36,6 +36,7 @@ import org.azentreprise.arionide.threading.timing.Timer;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
+import org.azentreprise.arionide.ui.overlay.AlphaLayeringSystem;
 import org.azentreprise.arionide.ui.overlay.Views;
 
 public class AppManager implements Purgeable {

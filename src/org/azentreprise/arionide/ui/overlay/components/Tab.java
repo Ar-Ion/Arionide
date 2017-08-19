@@ -35,11 +35,11 @@ import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
 import org.azentreprise.arionide.ui.AWTDrawingContext;
-import org.azentreprise.arionide.ui.AlphaLayer;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
+import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
 
@@ -123,7 +123,8 @@ public class Tab extends MultiComponent implements EventHandler {
 		
 		this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.alpha);
 		context.setColor(this.rgb);
-	    this.design.enterDesignContext(this.getAppManager(), new Point2D.Double(this.shadow, bounds.getCenterY()), this.shadingRadius);
+
+		this.design.enterDesignContext(this.getAppManager(), new Point2D.Double(this.shadow, bounds.getCenterY()), this.shadingRadius);
 		
 		context.getPrimitives().drawRoundRect(context, bounds);
 
@@ -198,9 +199,9 @@ public class Tab extends MultiComponent implements EventHandler {
 					
 					double center = this.rectangles.get(this.activeComponent).getCenterX();
 					
-					if(this.activeComponent != center) {
+					if(this.shadow != center) {
 						this.animation.startAnimation(ANIMATION_TIME, center);
-	
+							
 						if(this.signal != null) {
 							this.getAppManager().getEventDispatcher().fire(new ClickEvent(this, this.signal, target));
 						}

@@ -22,8 +22,8 @@ package org.azentreprise.arionide.ui.core;
 
 import java.awt.Rectangle;
 
-import org.azentreprise.arionide.Project;
 import org.azentreprise.arionide.debugging.IAm;
+import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 
 public interface CoreRenderer {

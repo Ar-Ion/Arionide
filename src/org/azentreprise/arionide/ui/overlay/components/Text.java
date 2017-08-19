@@ -30,10 +30,11 @@ import java.util.List;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.WriteEvent;
-import org.azentreprise.arionide.ui.AlphaLayer;
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
+import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 import org.azentreprise.arionide.ui.overlay.View;
 
 public class Text extends Button implements EventHandler {	
@@ -92,18 +93,23 @@ public class Text extends Button implements EventHandler {
 		if(this.hasFocus && this.text.length() > 0) {
 			FontMetrics metrics = context.getFontAdapter().getLastMetrics();
 			
-			double x = this.textRenderPosition.getX() + metrics.charsWidth(this.text.toString().toCharArray(), 0, this.cursorPosition);
-			double y = this.getBounds().getY() + this.getBounds().getHeight() / 2;
-			
+			double[] scdsp = new double[] {1.0d, 1.0d, 0.0d, 0.0d};
+ 			
+			if(context instanceof OpenGLDrawingContext) {
+				scdsp = OpenGLTextMetricsTransform.getScalarsAndDisplacements((OpenGLDrawingContext) context);
+			}
+
+			double x = this.textRenderPosition.getX() + scdsp[0] * metrics.charsWidth(this.text.toString().toCharArray(), 0, this.cursorPosition) + scdsp[2];
+			double y = this.getBounds().getY() + this.getBounds().getHeight() / 2 + scdsp[3];
 			this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.cursorAlpha);
 			context.setColor(0xFFFFFF);
-			context.getPrimitives().fillRoundRect(context, new Rectangle2D.Double(x, y - metrics.getAscent() / 2, 2, metrics.getAscent()));
+			context.getPrimitives().fillRoundRect(context, new Rectangle2D.Double(x, y - scdsp[1] * metrics.getAscent() / 2, scdsp[0] * 2, scdsp[1] * metrics.getAscent()));
 			this.getAppManager().getAlphaLayering().pop(AlphaLayer.COMPONENT);
 
 			if(this.highlighted) {
 				this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, 0x42);
 				
-				Rectangle2D selection = new Rectangle2D.Double(this.textRenderPosition.getX(), y - metrics.getAscent() / 2, metrics.stringWidth(this.text.toString()), metrics.getAscent());
+				Rectangle2D selection = new Rectangle2D.Double(this.textRenderPosition.getX() + scdsp[2], y - scdsp[1] * metrics.getAscent() / 2, scdsp[0] * metrics.stringWidth(this.text.toString()), scdsp[1] * metrics.getAscent());
 				context.setColor(0xC0FFEE);
 				context.getPrimitives().fillRect(context, selection);
 				

@@ -27,13 +27,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.azentreprise.arionide.Project;
 import org.azentreprise.arionide.Workspace;
 import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
 import org.azentreprise.arionide.events.TimerEvent;
+import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.animations.Animation;

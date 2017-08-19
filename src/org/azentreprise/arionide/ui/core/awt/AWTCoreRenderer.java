@@ -22,7 +22,7 @@ package org.azentreprise.arionide.ui.core.awt;
 
 import java.awt.Rectangle;
 
-import org.azentreprise.arionide.Project;
+import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AWTDrawingContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;

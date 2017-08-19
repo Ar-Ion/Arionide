@@ -23,7 +23,7 @@ package org.azentreprise.arionide.ui.core.opengl;
 import java.awt.Rectangle;
 import java.nio.FloatBuffer;
 
-import org.azentreprise.arionide.Project;
+import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;

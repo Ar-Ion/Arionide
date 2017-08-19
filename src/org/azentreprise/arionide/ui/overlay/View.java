@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.azentreprise.arionide.debugging.IAm;
-import org.azentreprise.arionide.ui.AlphaLayer;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.animations.Animation;

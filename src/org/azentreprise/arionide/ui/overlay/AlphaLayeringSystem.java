@@ -18,16 +18,18 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui;
+package org.azentreprise.arionide.ui.overlay;
 
 import java.util.Stack;
+
+import org.azentreprise.arionide.ui.AppDrawingContext;
 
 public class AlphaLayeringSystem {
 	
 	private final AppDrawingContext context;
 	private final Object[] layers = new Object[AlphaLayer.values().length];
 
-	protected AlphaLayeringSystem(AppDrawingContext context) {
+	public AlphaLayeringSystem(AppDrawingContext context) {
 		this.context = context;
 		
 		for(int i = 0; i < this.layers.length; i++) {

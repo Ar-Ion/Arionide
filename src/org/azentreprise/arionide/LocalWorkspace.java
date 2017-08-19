@@ -37,6 +37,8 @@ import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.events.ProjectCloseEvent;
 import org.azentreprise.arionide.events.ProjectOpenEvent;
 import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
+import org.azentreprise.arionide.project.LocalProject;
+import org.azentreprise.arionide.project.Project;
 
 public class LocalWorkspace implements Workspace {
 	

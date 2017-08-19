@@ -31,6 +31,9 @@ import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.primitives.IPrimitives;
 
 public interface AppDrawingContext extends Purgeable {
+	
+	public static final double MOUSE_WHEEL_SENSIBILITY = 1.0d;
+	
 	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager);
 	public void draw();
 	public void update();

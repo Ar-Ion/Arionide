@@ -18,8 +18,12 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide;
+package org.azentreprise.arionide.project;
 
+import org.azentreprise.arionide.Loadable;
+import org.azentreprise.arionide.MappedStructure;
+import org.azentreprise.arionide.Resource;
+import org.azentreprise.arionide.Saveable;
 import org.azentreprise.arionide.debugging.IAm;
 
 public interface Project extends Resource, MappedStructure, Loadable, Saveable {

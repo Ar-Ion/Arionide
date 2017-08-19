@@ -23,10 +23,10 @@ package org.azentreprise.arionide.ui.overlay.views;
 import java.util.Arrays;
 import java.util.List;
 
-import org.azentreprise.arionide.Project;
 import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
+import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.RenderingScene;
 import org.azentreprise.arionide.ui.layout.LayoutManager;

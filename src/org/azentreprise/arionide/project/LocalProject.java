@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide;
+package org.azentreprise.arionide.project;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,6 +28,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.azentreprise.arionide.SystemCache;
+import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.coders.Decoder;
 import org.azentreprise.arionide.coders.Encoder;
@@ -52,7 +54,7 @@ public class LocalProject implements Project {
 	private final File path;
 	private final Map<String, byte[]> properties = new LinkedHashMap<>();
 	
-	protected LocalProject(File path) {
+	public LocalProject(File path) {
 		this.path = path;
 	}
 	

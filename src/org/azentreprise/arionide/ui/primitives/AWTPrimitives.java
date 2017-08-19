@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.primitives;
 
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -30,7 +31,7 @@ import org.azentreprise.arionide.ui.AWTDrawingContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 
 public class AWTPrimitives implements IPrimitives {
-	
+		
 	public void drawRect(AppDrawingContext context, Rectangle2D bounds) {
 		this.loadContext(context).getRenderer().draw(bounds);
 	}
@@ -60,7 +61,11 @@ public class AWTPrimitives implements IPrimitives {
 	public Point2D drawText(AppDrawingContext context, String text, Rectangle2D bounds, int yCorrection) {			
 		Graphics2D g2d = this.loadContext(context).getRenderer();
 		
-		g2d.setFont(context.getFontAdapter().adapt(text, bounds.getWidth(), bounds.getHeight()));
+		Font font = context.getFontAdapter().adapt(text, bounds.getWidth(), bounds.getHeight());
+		
+		if(g2d.getFont() != font) {
+			g2d.setFont(font);
+		}
 		
 		FontMetrics metrics = g2d.getFontMetrics();
 				

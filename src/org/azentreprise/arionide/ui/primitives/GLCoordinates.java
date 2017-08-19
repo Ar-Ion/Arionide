@@ -1,5 +1,7 @@
 package org.azentreprise.arionide.ui.primitives;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.nio.DoubleBuffer;
 
@@ -15,13 +17,46 @@ public class GLCoordinates {
 	
 	private final long uuid;
 	
-	public GLCoordinates(Rectangle2D bounds) {		
-		this.x1 = bounds.getX() - 1.0d;
-		this.y1 = -bounds.getY() + 1.0d;
-		this.x2 = bounds.getWidth() + bounds.getX() - 1.0d;
-		this.y2 = -bounds.getHeight() - bounds.getY() + 1.0d;
+	public GLCoordinates(Rectangle2D bounds) {
+		this(bounds, true);
+	}
+	
+	public GLCoordinates(Rectangle2D bounds, boolean normalize) {
 		
+		bounds = (Rectangle2D) bounds.clone(); // We don't want to mutate the original
+		
+		if(normalize) {
+			this.normalizeGL(bounds);
+		}
+		
+		this.x1 = bounds.getX();
+		this.y1 = bounds.getY();
+		this.x2 = bounds.getWidth() + this.x1;
+		this.y2 = bounds.getHeight() + this.y1;
+
 		this.uuid = (this.getUUID(this.x1) << 48) | (this.getUUID(this.y1) << 32) | (this.getUUID(this.x2) << 16) | this.getUUID(this.y2);
+	}
+	
+	private void normalizeGL(Rectangle2D in) {
+		in.setRect(in.getX() - 1.0d, 1.0d - in.getY(), in.getWidth(), -in.getHeight());
+	}
+	
+	private void normalizeAWT(Rectangle2D in) {
+		in.setRect(in.getX() / 2.0d + 0.5d, 0.5d - in.getY() / 2.0d, in.getWidth() / 2.0d, -in.getHeight() / 2.0d);
+	}
+	
+	private void applyOrtho(Rectangle2D bounds, Dimension viewport) {
+		bounds.setRect(bounds.getX() * viewport.getWidth(), bounds.getY() * viewport.getHeight(), bounds.getWidth() * viewport.getWidth(), bounds.getHeight() * viewport.getHeight());
+	}
+		
+	public Rectangle getAWTBoundings(Dimension viewport) {
+		Rectangle2D bounds = new Rectangle2D.Double(this.x1, this.y1, this.x2 - this.x1, this.y2 - this.y1);
+		
+		this.normalizeAWT(bounds);
+
+		this.applyOrtho(bounds, viewport);
+
+		return bounds.getBounds();
 	}
 	
 	private long getUUID(double component) {
@@ -46,7 +81,7 @@ public class GLCoordinates {
 	public int getDataBufferCount() {
 		return this.counter;
 	}
-	
+		
 	public GLCoordinates putX1() {
 		this.buffer.put(this.counter++, this.x1);
 		return this;

@@ -50,7 +50,5 @@ public class VAOManager {
 			this.gl.glEnableVertexAttribArray(id);
 			attributeLoader.accept(attribute, id);
 		}
-		
-		this.gl.glBindVertexArray(vaoID);
 	}
 }

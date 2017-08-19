@@ -20,7 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events;
 
-import org.azentreprise.arionide.Project;
+import org.azentreprise.arionide.project.Project;
 
 public class ProjectOpenEvent extends Event {
 	

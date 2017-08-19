@@ -10,7 +10,8 @@ layout(lines_adjacency) in; // 4 vertices
 layout(triangle_strip, max_vertices = 25) out;
 
 flat out int state; // 0: no render / 1: color rendering / 2: uv rendering
-smooth out vec2 uv;
+out vec2 uv;
+out vec2 coords;
 
 void triangulate(in int id, inout vec4 thirdVertex) {
     vec4 vertex = gl_in[id].gl_Position;
@@ -22,10 +23,12 @@ void triangulate(in int id, inout vec4 thirdVertex) {
         
     if(id != 0) {
         gl_Position = firstVertex - firstTransform + secondTransform;
+        coords = gl_Position.xy;
         EmitVertex(); // transition vertex
         
         state = 0;
         gl_Position = thirdVertex;
+        coords = gl_Position.xy;
         EmitVertex();
     }
     
@@ -34,19 +37,23 @@ void triangulate(in int id, inout vec4 thirdVertex) {
     state = 1;
     uv = vec2(0.0, 0.0);
     gl_Position = firstVertex;
+    coords = gl_Position.xy;
     EmitVertex();
             
     state = 2;
     uv = vec2(0.0, 1.0);
     gl_Position = vertex;
+    coords = gl_Position.xy;
     EmitVertex();
 
     uv = vec2(1.0, 1.0);
     gl_Position = thirdVertex;
+    coords = gl_Position.xy;
     EmitVertex();
     
     state = 0;
     gl_Position = thirdVertex - secondTransform + firstTransform;
+    coords = gl_Position.xy;
     EmitVertex(); // transition vertex
     state = 1;
 }
@@ -64,8 +71,10 @@ void main() {
     vec4 veryFirstVertex = gl_in[0].gl_Position + vec4(transform[0] * pixelSize * radius, 0.0, 0.0);
     
     gl_Position = veryFirstVertex;
+    coords = gl_Position.xy;
     EmitVertex();
     
     gl_Position = veryFirstVertex + vec4(transform[3] * pixelSize, 0.0, 0.0);
+    coords = gl_Position.xy;
     EmitVertex();
 }

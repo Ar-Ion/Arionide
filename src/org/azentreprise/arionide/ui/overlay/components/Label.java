@@ -22,8 +22,8 @@ package org.azentreprise.arionide.ui.overlay.components;
 
 import java.awt.geom.Point2D;
 
-import org.azentreprise.arionide.ui.AlphaLayer;
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
 

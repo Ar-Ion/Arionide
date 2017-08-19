@@ -28,8 +28,8 @@ import java.awt.geom.Point2D;
 
 import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.ui.AWTDrawingContext;
-import org.azentreprise.arionide.ui.AlphaLayer;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 
 public class AWTTabDesign implements TabDesign {
 		
