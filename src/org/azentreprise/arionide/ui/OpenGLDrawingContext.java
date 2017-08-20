@@ -258,7 +258,8 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	}
 	
 	public void mouseWheelMoved(MouseEvent event) {
-		this.dispatcher.fire(new WheelEvent(this.getPoint(event), (int) ((event.getRotation()[0] + event.getRotation()[1]) / 2.0d * AppDrawingContext.MOUSE_WHEEL_SENSIBILITY)));
+		double rotation = Math.ceil((event.getRotation()[0] + event.getRotation()[1]) / 2.0d);
+		this.dispatcher.fire(new WheelEvent(this.getPoint(event), (int) (rotation * AppDrawingContext.MOUSE_WHEEL_SENSIBILITY)));
 	}
 	
 	private Point2D getPoint(MouseEvent event) {

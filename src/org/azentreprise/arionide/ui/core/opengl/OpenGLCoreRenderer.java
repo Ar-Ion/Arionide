@@ -21,7 +21,6 @@
 package org.azentreprise.arionide.ui.core.opengl;
 
 import java.awt.Rectangle;
-import java.nio.FloatBuffer;
 
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppDrawingContext;
@@ -30,14 +29,21 @@ import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
 
 import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.glu.GLU;
 
 public class OpenGLCoreRenderer implements CoreRenderer {
-		
+	
+	private final GLU glu = new GLU();
+	
+	private Project project;
+	private Rectangle bounds;
+	
 	public void render(AppDrawingContext context, Rectangle bounds) {
 		assert context instanceof OpenGLDrawingContext;
 		
-		/*OpenGLDrawingContext glContext = (OpenGLDrawingContext) context;
-		GL4 gl = glContext.getRenderer();*/
+		OpenGLDrawingContext glContext = (OpenGLDrawingContext) context;
+		GL4 gl = glContext.getRenderer();
+		
 	}
 
 	@Override
@@ -48,13 +54,11 @@ public class OpenGLCoreRenderer implements CoreRenderer {
 
 	@Override
 	public void loadProject(Project project) {
-		// TODO Auto-generated method stub
+		this.project = project;
 		
 	}
 
-	@Override
 	public void update(Rectangle bounds) {
-		// TODO Auto-generated method stub
-		
+		this.bounds = bounds;
 	}
 }

@@ -30,4 +30,7 @@ public interface Project extends Resource, MappedStructure, Loadable, Saveable {
 	
 	@IAm("checking the version compatibility")
 	public boolean checkVersionCompatibility();
+	
+	@IAm("initializing the project file system")
+	public void initFS();
 }

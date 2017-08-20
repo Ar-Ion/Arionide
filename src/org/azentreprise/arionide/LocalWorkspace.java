@@ -75,16 +75,15 @@ public class LocalWorkspace implements Workspace {
 		
 	@IAm("loading the workspace")
 	public void load() {
-		try {
-			this.projects.clear();
-		
+		try {		
 			File[] files = this.path.listFiles();
 			
 			for(File potential : files) {
+				LocalProject element = new LocalProject(potential);
+
 				if(potential.isFile() && potential.getName().endsWith(".proj")) {
-					LocalProject element = new LocalProject(potential);
-					
 					if(!this.projects.contains(element)) {
+						element.initFS();
 						this.projects.add(element);
 					}
 				}
@@ -149,6 +148,9 @@ public class LocalWorkspace implements Workspace {
 		
 		if(!file.exists()) {
 			Project project = new LocalProject(file);
+			
+			project.initFS();
+			
 			project.setProperty("name", name, Coder.stringEncoder);
 			project.save();
 			

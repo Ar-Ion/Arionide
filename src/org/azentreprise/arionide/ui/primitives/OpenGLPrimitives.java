@@ -249,6 +249,18 @@ public class OpenGLPrimitives implements IPrimitives {
 		}
 	}
 	
+	public float getRed() {
+		return this.r;
+	}
+	
+	public float getGreen() {
+		return this.g;
+	}
+	
+	public float getBlue() {
+		return this.b;
+	}
+	
 	public float getAlpha() {
 		return this.a;
 	}

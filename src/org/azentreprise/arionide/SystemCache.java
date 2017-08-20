@@ -40,7 +40,7 @@ public class SystemCache {
 	
 	@SuppressWarnings("unchecked")
 	public static <T> T get(String key) {
-		return (T) elements.get(key);
+		return (T) elements.get(key).getKey();
 	}
 	
 	public static boolean has(String key) {

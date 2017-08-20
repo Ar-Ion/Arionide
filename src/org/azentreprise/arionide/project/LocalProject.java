@@ -21,9 +21,9 @@
 package org.azentreprise.arionide.project;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -47,15 +47,17 @@ public class LocalProject implements Project {
 		projectProtocolMapping.put("name", new String("Undefined").getBytes(Coder.charset));
 		projectProtocolMapping.put("definitions", new String("org.azentreprise.arionide.native.NativeDefinitions()").getBytes(Coder.charset));
 		projectProtocolMapping.put("runtime", new String("org.azentreprise.arionide.native.NativeRuntime()").getBytes(Coder.charset));
-		projectProtocolMapping.put("code", new byte[0]);
 	}
 	
-	
-	private final File path;
+	private final Storage storage;
 	private final Map<String, byte[]> properties = new LinkedHashMap<>();
 	
 	public LocalProject(File path) {
-		this.path = path;
+		this.storage = new Storage(path);
+	}
+	
+	public void initFS() {
+		this.storage.initFS();
 	}
 	
 	@IAm("loading a project")
@@ -71,8 +73,8 @@ public class LocalProject implements Project {
 			
 			this.properties.clear();
 			
-			byte[] data = Files.readAllBytes(this.path.toPath());
-			
+			byte[] data = Files.readAllBytes(this.storage.getMetaPath());
+
 			int startIndex = 0;
 			int endIndex = 0;
 			
@@ -90,8 +92,9 @@ public class LocalProject implements Project {
 				startIndex = endIndex + 1;
 			}
 			
+			System.out.println(new String(data));
 			System.out.println(this.properties);
-						
+			
 			this.verifyProtocol();
 		} catch (Exception exception) {
 			Debug.exception(exception);
@@ -101,10 +104,10 @@ public class LocalProject implements Project {
 	@IAm("saving a project")
 	public void save() {
 		try {
-			OutputStream stream = new FileOutputStream(this.path);
+			OutputStream stream = Files.newOutputStream(this.storage.getMetaPath(), StandardOpenOption.WRITE);
 			
 			this.verifyProtocol();
-			
+						
 			for(Entry<String, byte[]> property : this.properties.entrySet()) {
 				stream.write(property.getKey().getBytes(Coder.charset));
 				stream.write(Coder.separator);
@@ -128,7 +131,7 @@ public class LocalProject implements Project {
 				stream.write(Coder.newline);
 			}
 			
-			stream.close();
+			this.storage.flushFS();
 		} catch(Exception exception) {
 			Debug.exception(exception);
 		}
@@ -143,16 +146,15 @@ public class LocalProject implements Project {
 	}
 
 	public <T> T getProperty(String key, Decoder<T> decoder) {
-		
-		int hash = this.hashCode();
-		
-		if(SystemCache.has(key)) {
-			return SystemCache.get(hash + key);
+		String hash = this.hashCode() + key;
+				
+		if(SystemCache.has(hash)) {
+			return SystemCache.get(hash);
 		}
 		
 		T decoded = decoder.decode(this.properties.get(key));
 		
-		SystemCache.set(hash + key, decoded, SystemCache.NEVER);
+		SystemCache.set(hash, decoded, SystemCache.NEVER);
 		
 		return decoded;
 	}
@@ -172,7 +174,7 @@ public class LocalProject implements Project {
 	}
 
 	public File getPath() {
-		return this.path;
+		return this.storage.getLocation();
 	}
 
 	public boolean checkVersionCompatibility() {
@@ -180,7 +182,18 @@ public class LocalProject implements Project {
 		return this.getProperty("version", Coder.integerDecoder) == LocalProject.versionUID;
 	}
 	
+	
 	public boolean equals(Object other) {
-		return other instanceof LocalProject && this.getPath() == ((LocalProject) other).getPath();
+		if(other instanceof LocalProject) {
+			if(this.getPath().equals(((LocalProject) other).getPath())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
+	public int hashCode() {
+		return this.getPath().hashCode();
 	}
 }

@@ -54,11 +54,13 @@ public class OpenGLTabDesign implements TabDesign {
 			
 			GLTextRenderer renderer = glPrimitives.getTextRenderer();
 			Dimension viewport = renderer.getViewport();
-			Color color = renderer.getCurrentColor();
 			
 			center.setLocation(center.getX() * viewport.getWidth() / 2.0d, center.getY() * viewport.getHeight() / 2.0d);
 			
-			this.restore = renderer.setPaint(new RadialGradientPaint(center, (int) (radius * renderer.getViewport().getWidth() / 2.0d), new float[] {0.0f, 1.0f}, new Color[] {new Color((preAlpha << 24) | color.getRGB(), true), color}));
+			Color normalColor = new Color(glPrimitives.getRed(), glPrimitives.getGreen(), glPrimitives.getBlue(), glPrimitives.getAlpha());
+			Color lightColor = new Color((preAlpha << 24) | normalColor.getRGB(), true);
+			
+			this.restore = renderer.setPaint(new RadialGradientPaint(center, (int) (radius * renderer.getViewport().getWidth() / 2.0d), new float[] {0.0f, 1.0f}, new Color[] {lightColor, normalColor}));
 		}
 	}
 

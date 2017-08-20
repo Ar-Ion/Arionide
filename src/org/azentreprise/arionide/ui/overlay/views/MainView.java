@@ -115,11 +115,13 @@ public class MainView extends View implements EventHandler {
 		}
 		
 		if(this.page > 0) {
+			int selector = 4 * (this.page - 1);
+			
 			for(int i = 0; i < 4; i++) {
 				Button button = ((Button) this.get(i + 1));
 				
-				if(i < projects.size()) {
-					Project project = (Project) projects.get(i);
+				if(selector + i < projects.size()) {
+					Project project = (Project) projects.get(selector + i);
 					button.setSignal("open", project).setLabel("Open " + project.getName()).show();
 				} else {
 					button.hide();
@@ -170,7 +172,7 @@ public class MainView extends View implements EventHandler {
 					((Button) this.get(i)).setAlpha(Math.abs(this.componentsAlpha));
 	
 					if(this.transformWidth < 0.0f) {
-						int delta = (int) (this.animationAnchor.getWidth() * (this.transformWidth + 1.0f));
+						double delta = this.animationAnchor.getWidth() * (this.transformWidth + 1.0d);
 						buttonBounds.setRect(this.animationAnchor.getX() + delta, buttonBounds.getY(), this.animationAnchor.getWidth() - delta, buttonBounds.getHeight());
 					} else {
 						buttonBounds.setRect(this.animationAnchor.getX(), buttonBounds.getY(), this.transformWidth * this.animationAnchor.getWidth(), buttonBounds.getHeight());
