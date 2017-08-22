@@ -24,6 +24,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -43,6 +44,7 @@ import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.threading.DrawingThread;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
+import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.primitives.IPrimitives;
 import org.azentreprise.arionide.ui.primitives.OpenGLPrimitives;
@@ -79,6 +81,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	private final FloatBuffer clearDepth = FloatBuffer.allocate(1);
 	
 	private DrawingThread thread;
+	private OpenGLCoreRenderer core;
 	
 	private GL4 gl;
 
@@ -120,6 +123,10 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 			Debug.exception(exception);
 		}
 		
+		assert renderer instanceof OpenGLCoreRenderer;
+		
+		this.core = (OpenGLCoreRenderer) renderer;
+		
 		this.window.setVisible(true);
 		this.animator.start();
 		
@@ -140,9 +147,13 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 
 	public void init(GLAutoDrawable arg0) {
 		this.gl = this.window.getGL().getGL4();
+		
 		this.primitives.init(this.gl);
+		
 		this.clearColor.put(0, 0.0f).put(1, 0.0f).put(2, 0.0f).put(3, 1.0f);
 		this.clearDepth.put(0, 1.0f);
+		
+		this.core.init(this.gl, this.dispatcher);
 	}
 	
 	public void display(GLAutoDrawable arg0) {
@@ -151,6 +162,8 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 			
 			this.gl.glClearBufferfv(GL4.GL_COLOR, 0, this.clearColor);
 	        this.gl.glClearBufferfv(GL4.GL_DEPTH, 0, this.clearDepth);
+	        
+	        this.core.render(this);
 	        
 	        this.primitives.beginUI(this.gl);
 	        	        
@@ -167,6 +180,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	public void reshape(GLAutoDrawable drawble, int x, int y, int width, int height) {
 		this.gl.glViewport(x, y, width, height);
 		this.primitives.viewportChanged(width, height);
+		this.core.update(this.window.getBounds());
 	}
 	
 	public GL4 getRenderer() {
@@ -175,7 +189,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 
 	public void draw() {
 		this.thread = (DrawingThread) Thread.currentThread();
-	
+		this.window.setPointerVisible(false);
 		while(true) {
 			try {
 				Thread.sleep(100000);

@@ -69,14 +69,14 @@ public class OpenGLPrimitives implements IPrimitives {
 	
 	public void init(GL4 gl) {
 		try {
-			int basicVert = this.loadShader(gl, "basic.vert", GL4.GL_VERTEX_SHADER);
-			int basicFrag = this.loadShader(gl, "basic.frag", GL4.GL_FRAGMENT_SHADER);
+			int basicVert = loadShader(gl, "basic.vert", GL4.GL_VERTEX_SHADER);
+			int basicFrag = loadShader(gl, "basic.frag", GL4.GL_FRAGMENT_SHADER);
 			
-			int guiFrag = this.loadShader(gl, "gui.frag", GL4.GL_FRAGMENT_SHADER);
-			int guiGeom = this.loadShader(gl, "gui.geom", GL4.GL_GEOMETRY_SHADER);
+			int guiFrag = loadShader(gl, "gui.frag", GL4.GL_FRAGMENT_SHADER);
+			int guiGeom = loadShader(gl, "gui.geom", GL4.GL_GEOMETRY_SHADER);
 			
-			int textVert = this.loadShader(gl, "text.vert", GL4.GL_VERTEX_SHADER);
-			int textFrag = this.loadShader(gl, "text.frag", GL4.GL_FRAGMENT_SHADER);
+			int textVert = loadShader(gl, "text.vert", GL4.GL_VERTEX_SHADER);
+			int textFrag = loadShader(gl, "text.frag", GL4.GL_FRAGMENT_SHADER);
 			
 			this.basicShader = gl.glCreateProgram();
 			
@@ -315,8 +315,8 @@ public class OpenGLPrimitives implements IPrimitives {
 		return ((OpenGLDrawingContext) context).getRenderer();
 	}
 	
-	private int loadShader(GL4 gl, String name, int type) throws IOException {
-		InputStream input = this.getClass().getResourceAsStream(name);
+	public static int loadShader(GL4 gl, String name, int type) throws IOException {
+		InputStream input = OpenGLPrimitives.class.getResourceAsStream(name);
 		
 		byte[] buffer = new byte[128];
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

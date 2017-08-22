@@ -29,13 +29,10 @@ import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
 
 public class AWTCoreRenderer implements CoreRenderer {
-	public void render(AppDrawingContext context, Rectangle bounds) {
+	public void render(AppDrawingContext context) {
 		assert context instanceof AWTDrawingContext;
 		
 		AWTDrawingContext awtContext = (AWTDrawingContext) context;
-		
-		awtContext.setColor(0);
-		awtContext.getPrimitives().fillRect(context, bounds);
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public interface CoreRenderer {
 	public void update(Rectangle bounds);
 	
 	@IAm("rendering the core scene")
-	public void render(AppDrawingContext context, Rectangle bounds);
+	public void render(AppDrawingContext context);
 	
 	@IAm("changing the core scene")
 	public void setScene(RenderingScene scene);

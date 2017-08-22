@@ -37,7 +37,7 @@ public class EventDispatchingThread extends WorkingThread {
 	}
 
 	public long getRefreshDelay() {
-		return 50L;
+		return 20L;
 	}
 
 	public String getDescriptor() {

@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -66,19 +65,14 @@ public class AppManager implements Purgeable {
 	}
 
 	@IAm("drawing the frame")
-	public void draw() {
-		
-		Rectangle bounds = new Rectangle(this.getDrawingContext().getSize());
-		
-		if(this.initialized) {
-			this.renderer.render(this.getDrawingContext(), bounds);
-						
+	public void draw() {		
+		if(this.initialized) {						
 			for(Drawable view : Views.all) {
 				view.draw(this.getDrawingContext());
 			}
 		}
 	}
-	
+
 	@IAm("updating the frame")
 	public void update(){
 		synchronized(this.animations) {
