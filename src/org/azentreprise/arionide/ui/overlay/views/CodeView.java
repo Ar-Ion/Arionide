@@ -26,23 +26,34 @@ import java.util.List;
 import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
+import org.azentreprise.arionide.events.MessageEvent;
+import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.project.Project;
+import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.animations.Animation;
+import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.core.RenderingScene;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.overlay.Views;
 import org.azentreprise.arionide.ui.overlay.components.Button;
+import org.azentreprise.arionide.ui.overlay.components.Label;
 import org.azentreprise.arionide.ui.overlay.components.Scroll;
 import org.azentreprise.arionide.ui.overlay.components.Tab;
 
 public class CodeView extends View implements EventHandler {
+
+	private final Animation currentMessageAlphaAnimation;
+	private final Label currentMessage = new Label(this, "");
 	
 	private Project currentProject;
 	
 	public CodeView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
+		this.currentMessageAlphaAnimation = new FieldModifierAnimation(appManager, "alpha", Label.class, this.currentMessage);
+
 		layoutManager.register(this, null, 0.0f, 0.0f, 1.0f, 1.0f);
 		
 		this.add(new Button(this, "<").setSignal("back").setYCorrection(4), 0.05f, 0.05f, 0.15f, 0.1f);
@@ -54,6 +65,8 @@ public class CodeView extends View implements EventHandler {
 		this.add(new Scroll(this, "Instr0", "Instr1", "Instr2", "Instr3", "Instr4", "Instr5", "Instr6", "Instr7", "Instr8", "Instr9"), 0.2f, 0.85f, 0.8f, 0.95f);
 		this.add(new Button(this, "...").setSignal("more"), 0.85f, 0.86f, 0.95f, 0.94f);
 
+		this.add(this.currentMessage, 0.2f, 0.75f, 0.8f, 0.85f);
+		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
 	
@@ -61,6 +74,11 @@ public class CodeView extends View implements EventHandler {
 		super.show();
 		this.setupFocusCycle(2, 3, 5, 0);
 		this.currentProject = this.getAppManager().getWorkspace().getCurrentProject();
+		this.getAppManager().getEventDispatcher().fire(new MessageEvent("Project loaded: " + this.currentProject.getName(), MessageType.INFO));
+	}
+	
+	public void drawSurface(AppDrawingContext context) {
+		super.drawSurface(context);
 	}
 
 	public <T extends Event> void handleEvent(T event) {
@@ -89,10 +107,17 @@ public class CodeView extends View implements EventHandler {
 			} else if(click.isTargetting(this, "run")) {
 				this.currentProject.save();
 			}
+		} else if(event instanceof MessageEvent) {
+			MessageEvent message = (MessageEvent) event;
+			
+			this.currentMessage.setLabel(message.getMessage());
+			this.currentMessage.setColor(message.getMessageType().getColor());
+			
+			this.currentMessageAlphaAnimation.startAnimation(1000, (animation) -> animation.startAnimation(5000, 1), 0xFF);
 		}
 	}
 
 	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(ClickEvent.class);
+		return Arrays.asList(ClickEvent.class, MessageEvent.class);
 	}
 }

@@ -24,7 +24,7 @@ public abstract class Event {
 	
 	private boolean aborted = false;
 	
-	protected boolean hasBeenAborted() {
+	public boolean hasBeenAborted() {
 		return this.aborted;
 	}
 	

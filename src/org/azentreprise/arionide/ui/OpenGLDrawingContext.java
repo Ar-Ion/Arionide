@@ -97,10 +97,9 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 		
 		this.caps.setDoubleBuffered(true);
 		this.caps.setHardwareAccelerated(true);
-
 		this.window = GLWindow.create(this.caps);
 		this.animator = new FPSAnimator(this.window, 60, true);
-		
+
 		this.window.addGLEventListener(this);
 		this.window.addKeyListener(this);
 		this.window.addMouseListener(this);
@@ -142,18 +141,20 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	}
 
 	public void setCursor(Cursor cursor) {
-		; // NEWT doesn't implement this feature
+		this.window.setPointerVisible(cursor != null);
 	}
 
 	public void init(GLAutoDrawable arg0) {
 		this.gl = this.window.getGL().getGL4();
+		
+		this.gl.setSwapInterval(0);
 		
 		this.primitives.init(this.gl);
 		
 		this.clearColor.put(0, 0.0f).put(1, 0.0f).put(2, 0.0f).put(3, 1.0f);
 		this.clearDepth.put(0, 1.0f);
 		
-		this.core.init(this.gl, this.dispatcher);
+		this.core.init(this.gl);
 	}
 	
 	public void display(GLAutoDrawable arg0) {
@@ -180,7 +181,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	public void reshape(GLAutoDrawable drawble, int x, int y, int width, int height) {
 		this.gl.glViewport(x, y, width, height);
 		this.primitives.viewportChanged(width, height);
-		this.core.update(this.window.getBounds());
+		this.core.update(new Rectangle(this.window.getX(), this.window.getY(), width, height));
 	}
 	
 	public GL4 getRenderer() {
@@ -189,7 +190,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 
 	public void draw() {
 		this.thread = (DrawingThread) Thread.currentThread();
-		this.window.setPointerVisible(false);
+
 		while(true) {
 			try {
 				Thread.sleep(100000);

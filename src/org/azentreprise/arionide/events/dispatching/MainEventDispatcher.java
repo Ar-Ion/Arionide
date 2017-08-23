@@ -55,7 +55,9 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 			for(EventHandler handler : this.handlers) {
 				if(handler != null && handler.getHandleableEvents() != null && event != null) {
 					if(handler.getHandleableEvents().contains(event.getClass())) {
-						handler.handleEvent(event);
+						if(!event.hasBeenAborted()) {
+							handler.handleEvent(event);
+						}
 					}
 				}
 			}

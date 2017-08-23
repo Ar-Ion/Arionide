@@ -18,11 +18,21 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.project;
+package org.azentreprise.arionide.events;
 
-import java.io.Serializable;
-
-public class DataElement implements Serializable {
-	private static final long serialVersionUID = -1912296639527852370L;
-
+public enum MessageType {
+	SUCCESS(0x00FF00),
+	INFO(0xFFFFFF),
+	WARN(0xFFFF00),
+	ERROR(0xFF0000);
+	
+	private final int color;
+	
+	MessageType(int color) {
+		this.color = color;
+	}
+	
+	public int getColor() {
+		return this.color;
+	}
 }

@@ -80,7 +80,7 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public CoreRenderer loadCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher, Resources resources) {
-		return new OpenGLCoreRenderer();
+		return new OpenGLCoreRenderer(context, dispatcher);
 	}
 
 	public LayoutManager setupLayoutManager(AppDrawingContext context, IEventDispatcher dispatcher) {
