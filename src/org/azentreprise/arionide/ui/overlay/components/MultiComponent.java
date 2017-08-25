@@ -21,23 +21,34 @@
 package org.azentreprise.arionide.ui.overlay.components;
 
 import java.util.List;
+import java.util.function.Function;
 
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
 
 public abstract class MultiComponent extends Component {
 	
-	private final List<Component> components;
+	private final Function<String, Component> componentSupplier;
+	private List<Component> components;
 	
 	public MultiComponent(View parent, List<Component> components) {
 		super(parent);
 		
 		assert components.size() > 0;
 		
+		this.componentSupplier = (str) -> new Label(parent, str);
 		this.components = components;
 	}
 	
 	public List<Component> getComponents() {
 		return this.components;
+	}
+	
+	public void setComponents(List<Component> components) {
+		this.components = components;
+	}
+	
+	public Function<String, Component> getMapper() {
+		return this.componentSupplier;
 	}
 }

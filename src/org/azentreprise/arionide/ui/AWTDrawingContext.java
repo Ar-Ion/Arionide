@@ -53,6 +53,7 @@ import org.azentreprise.arionide.events.ActionType;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
 import org.azentreprise.arionide.events.MoveEvent;
 import org.azentreprise.arionide.events.MoveType;
+import org.azentreprise.arionide.events.PressureEvent;
 import org.azentreprise.arionide.events.ValidateEvent;
 import org.azentreprise.arionide.events.WheelEvent;
 import org.azentreprise.arionide.events.WriteEvent;
@@ -199,17 +200,17 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 	
 	public void mouseClicked(MouseEvent event) {
 		Point point = event.getPoint();
-		this.dispatcher.fire(new ActionEvent(point, ActionType.CLICK));
+		this.dispatcher.fire(new ActionEvent(point, event.getButton(), ActionType.CLICK));
 	}
 
 	public void mousePressed(MouseEvent event) {
 		Point point = event.getPoint();
-		this.dispatcher.fire(new ActionEvent(point, ActionType.PRESS));
+		this.dispatcher.fire(new ActionEvent(point, event.getButton(), ActionType.PRESS));
 	}
 
 	public void mouseReleased(MouseEvent event) {
 		Point point = event.getPoint();
-		this.dispatcher.fire(new ActionEvent(point, ActionType.RELEASE));
+		this.dispatcher.fire(new ActionEvent(point, event.getButton(), ActionType.RELEASE));
 	}
 
 	public void mouseEntered(MouseEvent event) {
@@ -242,6 +243,8 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 	}
 
 	public void keyPressed(KeyEvent event) {
+		this.dispatcher.fire(new PressureEvent(event.getKeyChar(), event.getKeyCode(), event.getModifiers(), true));
+
 		if(event.getKeyCode() == KeyEvent.VK_ENTER) {
 			this.dispatcher.fire(new ValidateEvent());
 		} else if(event.getKeyCode() == KeyEvent.VK_TAB) {
@@ -255,7 +258,7 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 		}
 	}
 
-	public void keyReleased(KeyEvent e) {
-		;
+	public void keyReleased(KeyEvent event) {
+		this.dispatcher.fire(new PressureEvent(event.getKeyChar(), event.getKeyCode(), event.getModifiers(), false));
 	}
 }

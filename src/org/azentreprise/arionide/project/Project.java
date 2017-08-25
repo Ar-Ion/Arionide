@@ -33,4 +33,6 @@ public interface Project extends Resource, MappedStructure, Loadable, Saveable {
 	
 	@IAm("initializing the project file system")
 	public void initFS();
+	
+	public Storage getStorage();
 }

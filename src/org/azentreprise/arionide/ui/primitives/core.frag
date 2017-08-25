@@ -1,8 +1,9 @@
 #version 400
 
 const vec3 specularColor = vec3(1.0, 1.0, 1.0);
-const float shininess = 3.0;
-const float attenuation = 0.01;
+const float shininess = 16.0;
+const float attenuationFactor = 0.0001;
+const float sunEmissionConcentration = 32.0;
 
 flat in vec3 seed;
 in vec3 fragVertex;
@@ -10,36 +11,48 @@ in vec3 fragVertex;
 out vec4 outColor;
 
 uniform mat4 model;
-uniform vec3 color;
+uniform vec4 color;
 uniform vec3 camera;
 uniform vec3 lightColor;
 uniform vec3 lightPosition;
-uniform float ambient;
+uniform float ambientFactor;
 
-float rand(float seed) {
-    return fract(sin(dot(fragVertex.xy * seed, vec2(12.9898989898, 78.233333))) * 43758.54535353);
+float rand(float id) {
+    return fract(sin(dot(seed.xz * id, vec2(12.9898989898, 78.233333))) * 43758.54535353);
+}
+
+float sunBrightness() {
+    return pow(max(dot(normalize(fragVertex), vec3(0.0, 1.0, 0.0)), 0.0), sunEmissionConcentration);
 }
 
 void main() {
     if(color.x > 1.0) {
-        float brightness = rand(1);
+        float brightness = min(1.0, rand(1) + sunBrightness());
         float red = (1 - brightness) * rand(2) * brightness;
         outColor = vec4(red + brightness, brightness, brightness, 1.0);
+    } else if(color.y > 1.0) {
+        float brightness = sunBrightness();
+        outColor = vec4(brightness, brightness, brightness, 1.0);
     } else {
-        mat3 matrix = transpose(inverse(mat3(model)));
-        vec3 normal = normalize(matrix * fragVertex);
-        vec3 surfaceLightVector = normalize(lightPosition - fragVertex);
-        vec3 surfaceCameraVector = normalize(camera - fragVertex);
+        vec3 normal = normalize(fragVertex);
+        vec3 lightDirection = normalize(lightPosition - fragVertex);
+        vec3 cameraDirection = normalize(camera - fragVertex);
+        vec3 reflectionDirection = reflect(-lightDirection, normal);
         
-        float diffuse = max(0.0, dot(normal, surfaceLightVector));
-        float specular = 0.0;
+        float diffuseFactor = max(0.0, dot(normal, lightDirection));
+        float specularFactor = 0.0;
+        float attenuation = 1.0 / (1.0 + attenuationFactor * pow(length(lightPosition - fragVertex), 2));
         
-        if(diffuse > 0.0) {
-            specular = max(0.0, pow(-dot(surfaceCameraVector, reflect(surfaceLightVector, normal)), shininess));
+        if(diffuseFactor > 0.0) {
+            specularFactor = pow(max(0.0, dot(cameraDirection, reflectionDirection)), shininess);
         }
         
-        float att = 1.0 / (1.0 + attenuation * pow(length(lightPosition - fragVertex), 2));
+        vec3 ambient = ambientFactor * color.xyz;
+        vec3 diffuse = diffuseFactor * color.xyz * attenuation;
+        vec3 specular = specularFactor * specularColor.xyz * attenuation;
         
-        outColor = vec4(((ambient + att * diffuse) * color + att * specular * specularColor) * lightColor, 1.0);
+        vec3 linearColor = (ambient + diffuse + specular) * lightColor;
+        
+        outColor = vec4(pow(linearColor, vec3(0.5)), color.w);
     }
 }

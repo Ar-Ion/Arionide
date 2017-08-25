@@ -49,15 +49,20 @@ public class LocalProject implements Project {
 		projectProtocolMapping.put("runtime", new String("org.azentreprise.arionide.native.NativeRuntime()").getBytes(Coder.charset));
 	}
 	
-	private final Storage storage;
+	private final ZipStorage storage;
 	private final Map<String, byte[]> properties = new LinkedHashMap<>();
 	
 	public LocalProject(File path) {
-		this.storage = new Storage(path);
+		this.storage = new ZipStorage(path);
 	}
 	
 	public void initFS() {
 		this.storage.initFS();
+	}
+	
+	/* WARNING: Do not mutate the data in the lists !!! */
+	public Storage getStorage() {
+		return this.storage;
 	}
 	
 	@IAm("loading a project")

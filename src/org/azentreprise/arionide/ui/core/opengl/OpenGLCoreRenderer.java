@@ -29,60 +29,70 @@ import java.io.IOException;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.azentreprise.arionide.debugging.Debug;
+import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
+import org.azentreprise.arionide.events.MenuEvent;
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.events.MoveEvent;
-import org.azentreprise.arionide.events.WriteEvent;
+import org.azentreprise.arionide.events.PressureEvent;
+import org.azentreprise.arionide.events.WheelEvent;
 import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
+import org.azentreprise.arionide.ui.menu.Commons;
 import org.azentreprise.arionide.ui.primitives.OpenGLPrimitives;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.joml.sampling.UniformSampling;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.opengl.GL4;
 
-public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
+public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {	
+	private static final int stars = 4096;
 	
-	private static final float PI = 3.141593f;
-	private static final float halfPI = PI / 2.0f;
-	
-	private static final int stars = 512;
-	
-	private static final int sphereLongitudes = 64;
-	private static final int sphereLatitudes = 64;
+	private static final int sphereLongitudes = 32;
+	private static final int sphereLatitudes = 32;
 
 	private static final int forward = KeyEvent.VK_W;
 	private static final int backward = KeyEvent.VK_S;
 	private static final int left = KeyEvent.VK_A;
 	private static final int right = KeyEvent.VK_D;
 	private static final int up = KeyEvent.VK_SPACE;
-	private static final int down = KeyEvent.VK_BACK_QUOTE;
-	
-	private static final float acceleration = 0.05f;
+	private static final int down = KeyEvent.VK_SHIFT;
+	private static final int worldToggle = KeyEvent.VK_R;
+	private static final int spawnKey = KeyEvent.VK_C;
+	private static final int fullscreen = KeyEvent.VK_F;
+
 	private static final float ambientEnergyConservation = 0.9f;
 
-	private static final float fov = (float) Math.toRadians(45.0f);
-	private static final float zNear = 0.1f;
-	private static final float zFar = 256.0f;
+	private static final float fov = (float) Math.toRadians(90.0f);
+	
+	private static final float skyDistance = 16.0f;
 	
 	private static final Vector3f upVector = new Vector3f(0.0f, 1.0f, 0.0f);
-
-	private final AppDrawingContext context;
+		
+	private final OpenGLDrawingContext context;
 	private final IEventDispatcher dispatcher;
+	private final WorldGeometry geometry;
 	private final Robot robot;
+	
+	private float zNear = 0.1f;
+	private float zFar = 32.0f;
 	
 	private int shader;
 	
@@ -98,33 +108,39 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private int camera;
 	private int lightColor;
 	private int lightPosition;
-	private int ambient;
+	private int ambientFactor;
 			
 	private Project project;
 	private Matrix4f matrix = new Matrix4f();
 	
 	private Rectangle bounds;
 	private boolean isInWorld = false;
-	private long firstCtrl = 0L;
+	private boolean isControlDown = false;
 	
+	private List<WorldElement> inside = new ArrayList<>();
+	private List<WorldElement> buffer = new ArrayList<>();
+	private WorldElement current;
+	private WorldElement lookingAt;
+	private WorldElement selected;
+
 	private float yaw = 0.0f;
 	private float pitch = 0.0f;
 	private Vector3f player = new Vector3f();
 	
-	private final Vector3f spawn = new Vector3f(0.0f, 0.0f, -5.0f);
-	private final Vector3f sun = new Vector3f(0.0f, 16.0f, 0.0f);
+	private final Vector3f spawn = new Vector3f(0.0f, 0.0f, 0.0f);
 		
-	private float straightVelocity = 0.0f;
-	private float lateralVelocity = 0.0f;
-	private float verticalVelocity = 0.0f;
+	private Vector3f velocity = new Vector3f();
+	private Vector3f acceleration = new Vector3f();
+	private float generalAcceleration = 0.01f;
 	
 	private FloatBuffer modelData = FloatBuffer.allocate(16);
 	private FloatBuffer viewData = FloatBuffer.allocate(16);
 	private FloatBuffer projectionData = FloatBuffer.allocate(16);
 
 	public OpenGLCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher) {
-		this.context = context;
+		this.context = (OpenGLDrawingContext) context;
 		this.dispatcher = dispatcher;
+		this.geometry = new WorldGeometry(dispatcher);
 		
 		dispatcher.registerHandler(this);
 		
@@ -161,7 +177,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			this.camera = gl.glGetUniformLocation(this.shader, "camera");
 			this.lightColor = gl.glGetUniformLocation(this.shader, "lightColor");
 			this.lightPosition = gl.glGetUniformLocation(this.shader, "lightPosition");
-			this.ambient = gl.glGetUniformLocation(this.shader, "ambient");
+			this.ambientFactor = gl.glGetUniformLocation(this.shader, "ambientFactor");
 
 			/* Allocate buffers */
 			IntBuffer vaos = IntBuffer.allocate(2);
@@ -181,7 +197,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			Random rand = new Random();
 			
 			new UniformSampling.Sphere(rand.nextLong(), stars, (x, y, z) -> sky.put(x).put(y).put(z).put(1.0).put(1.0).put(1.0));
-			
+						
 			gl.glBindVertexArray(this.skyVAO);
 			
 			gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, skyVBO);
@@ -189,17 +205,17 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			this.enablePosition(gl);
 			
 			/* Create the default sphere. */
-			DoubleBuffer sphere = DoubleBuffer.allocate(sphereLongitudes * (sphereLatitudes + 1) * 3);
+			DoubleBuffer sphere = DoubleBuffer.allocate(sphereLongitudes * (sphereLatitudes  + 1) * 3);
 			IntBuffer indices = IntBuffer.allocate(sphereLongitudes * sphereLatitudes * 4);
 
 			for(int latitudeID = 0; latitudeID <= sphereLatitudes; latitudeID++) {
-				float alpha = latitudeID * PI / sphereLatitudes;
+				float alpha = latitudeID * (float) Math.PI / sphereLatitudes;
 				
 				float sinAlpha = (float) Math.sin(alpha);
 				float cosAlpha = (float) Math.cos(alpha);
 				
 				for(int longitudeID = 0; longitudeID < sphereLongitudes; longitudeID++) {
-					float beta = longitudeID * 2 * PI / sphereLongitudes;
+					float beta = longitudeID * 2 * (float) Math.PI / sphereLongitudes;
 
 					sphere.put(sinAlpha * Math.cos(beta));
 					sphere.put(cosAlpha);
@@ -246,80 +262,183 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		GL4 gl = glContext.getRenderer();
 		
 		gl.glUseProgram(this.shader);
-		
-		gl.glEnable(GL4.GL_DEPTH_TEST);
-		
+				
 		/* Setup vertex data */
+		Vector3f sunPosition = new Vector3f(this.player).add(0.0f, skyDistance, 0.0f);
 		
 		gl.glUniformMatrix4fv(this.view, 1, false, this.viewData);
 		gl.glUniformMatrix4fv(this.projection, 1, false, this.projectionData);
 		gl.glUniform3f(this.camera, this.player.x, this.player.y, this.player.z);
-		
-		/* Setup sky lighting */
-		
-		gl.glUniform1f(this.ambient, 1.0f);
+				
+		gl.glUniform1f(this.ambientFactor, 1.0f);
 		gl.glUniform3f(this.lightColor, 1.0f, 1.0f, 1.0f);
-		gl.glUniform3f(this.color, 666.0f, 1.0f, 1.0f);
+		gl.glUniform3f(this.lightPosition, sunPosition.x, sunPosition.y, sunPosition.z);
 		
-		/* Drawing the sky */
-		
-		gl.glBindVertexArray(this.skyVAO);
-		
-		this.loadMatrixData(this.matrix.identity().scale(zFar * 2.0f / 3.0f), this.modelData);
-		gl.glUniformMatrix4fv(this.model, 1, false, this.modelData);
-		gl.glDrawArrays(GL4.GL_POINTS, 0, stars);
-		
+		this.drawStars(gl);
+
 		/* Setup sphere tesselation */
 
 		gl.glBindVertexArray(this.sphereVAO);
 		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, this.sphereEBO);
 		
-		/* Drawing the sun */
 		
-		gl.glUniform3f(this.lightPosition, this.sun.x, this.sun.y, this.sun.z);
-		gl.glUniform3f(this.color, 1.0f, 1.0f, 1.0f);
-		this.loadMatrixData(this.matrix.identity().translate(this.sun).scale(0.2f), this.modelData);
-		gl.glUniformMatrix4fv(this.model, 1, false, this.modelData);
-		gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, sphereLongitudes * sphereLatitudes * 4, GL4.GL_UNSIGNED_INT, 0);
-
-		/* Setup elements lighting */
-		gl.glUniform1f(this.ambient, 0.5f);
-		gl.glUniform3f(this.color, 0.0f, 0.5f, 0.5f);
+		if(this.project != null) {
+			this.drawSun(gl, sunPosition);
+			this.drawElements(gl);
+		}
 		
-		/* Drawing the elements */
-		this.loadMatrixData(this.matrix.identity(), this.modelData);
-		gl.glUniformMatrix4fv(this.model, 1, false, this.modelData);
+		/* Update */
 		
-		gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, sphereLongitudes * sphereLatitudes * 4, GL4.GL_UNSIGNED_INT, 0);
-
-		gl.glUniform3f(this.color, 1.0f, 1.0f, 1.0f);
+		this.velocity.add(this.acceleration);
 		
-		gl.glDisable(GL4.GL_BLEND);
-		gl.glDisable(GL4.GL_DEPTH_TEST);
+		this.updatePosition();
 		
-		/* Updating the camera */
+		Stream<WorldElement> elements = this.geometry.getCollisions(this.player);
+				
+		elements.forEach((element) -> {
+			if(!this.inside.remove(element)) {
+				if(this.enterElement(element)) {
+					this.buffer.add(element);
+				}
+			} else {
+				this.buffer.add(element);
+			}
+		});
 		
-		this.player.x += Math.cos(halfPI + this.yaw) * this.straightVelocity + Math.cos(this.yaw) * this.lateralVelocity;
-		this.player.y += this.verticalVelocity;
-		this.player.z += Math.sin(halfPI + this.yaw) * this.straightVelocity + Math.sin(this.yaw) * this.lateralVelocity;
+		this.inside.stream().filter(((Predicate<WorldElement>) this::exitElement).negate()).forEach(this.buffer::add);
 		
-		this.checkPosition();
-		
+		this.inside.clear();
+		this.inside.addAll(this.buffer); // Swap buffers
+		this.buffer.clear();
+				
 		this.updateCamera();
+		this.checkForTarget();
 		
-		this.straightVelocity *= ambientEnergyConservation;
-		this.lateralVelocity *= ambientEnergyConservation;
-		this.verticalVelocity *= ambientEnergyConservation;
+		this.dispatcher.fire(new MessageEvent(this.player + " | Looking at " + this.getElementName(this.lookingAt), MessageType.DEBUG));
+		
+		this.velocity.mul(ambientEnergyConservation, this.velocity);
 	}
 	
-	private void checkPosition() {
-		if(this.player.length() >= zFar / 3.0d) {
-			this.teleport(this.spawn);
-			this.dispatcher.fire(new MessageEvent("Careful! Getting lost in the universe is a bad idea...", MessageType.WARN));
+	private void updatePosition() {
+		this.player.x -= Math.cos(Math.PI / 2 + this.yaw) * this.velocity.x + Math.cos(this.yaw) * this.velocity.z;
+		this.player.y += this.velocity.y;
+		this.player.z -= Math.sin(Math.PI / 2 + this.yaw) * this.velocity.x + Math.sin(this.yaw) * this.velocity.z;	
+	}
+	
+	private String getElementName(WorldElement element) {
+		if(element != null) {
+			if(element.getID().isEmpty()) {
+				return "a lambda structure";
+			} else {
+				return "'" + element.getID() + "'";
+			}
+		} else {
+			return "the space";
 		}
+	}
+
+	private boolean enterElement(WorldElement element) {
+		this.current = element;
+		this.updateInfo();
+		return true;
+	}
+	
+	private boolean exitElement(WorldElement element) {
+		this.current = this.buffer.stream().reduce((a, b) -> a.getSize() < b.getSize() ? a : b).orElse(null);
+		
+		this.updateInfo();
+		
+		return true;
+	}
+	
+	private void updateInfo() {
+		this.selected = null;
+		this.dispatcher.fire(new MessageEvent("You are in " + this.getElementName(this.current), MessageType.INFO));
+	}
+	
+	private void repulseFrom(Vector3f center) {
+		Vector3f normal = new Vector3f(this.player).sub(center).normalize();
+		this.velocity.reflect(normal);
+		this.updatePosition();
+	}
+	
+	private void checkForTarget() {
+		Vector3f cameraDirection = new Vector3f(-this.viewData.get(2), -this.viewData.get(6), -this.viewData.get(10)); // DOF
+		float size = this.geometry.getSizeForGeneration(this.inside.size());
+		
+		WorldElement found = null;
+		float distance = 10000.0f;
+		
+		for(WorldElement element : this.geometry.getElements()) {
+			if(element.getSize() == size) {
+				float currentDistance = this.player.distance(element.getCenter());
+
+				if(currentDistance < distance) {
+					if(element.collidesWith(new Vector3f(cameraDirection).normalize(currentDistance).add(this.player))) {
+						found = element;
+						distance = currentDistance;
+					}
+				}
+			}
+		}
+				
+		this.lookingAt = found;
+	}
+	
+	private void drawStars(GL4 gl) {
+		gl.glBindVertexArray(this.skyVAO);
+		this.loadMatrixData(this.matrix.identity().translate(this.player).scale(skyDistance), this.modelData);
+		gl.glUniformMatrix4fv(this.model, 1, false, this.modelData);
+		
+		gl.glUniform4f(this.color, 1.0f, 666.0f, 1.0f, 1.0f);
+		gl.glDrawArrays(GL4.GL_TRIANGLE_STRIP, 0, stars);
+		
+		gl.glUniform4f(this.color, 666.0f, 1.0f, 1.0f, 1.0f);
+		gl.glDrawArrays(GL4.GL_POINTS, 0, stars);
+	}
+	
+	private void drawSun(GL4 gl, Vector3f sunPosition) {
+		gl.glUniform4f(this.color, 1.0f, 1.0f, 1.0f, 1.0f);
+		
+		this.loadMatrixData(this.matrix.identity().translate(sunPosition).scale(0.1f), this.modelData);
+		gl.glUniformMatrix4fv(this.model, 1, false, this.modelData);
+		gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, sphereLongitudes * sphereLatitudes * 4, GL4.GL_UNSIGNED_INT, 0);
+	}
+	
+	private void drawElements(GL4 gl) {
+		gl.glUniform1f(this.ambientFactor, 0.3f);
+
+		for(WorldElement element : this.geometry.getElements()) {
+			this.loadMatrixData(this.matrix.identity().translate(element.getCenter()).scale(element.getSize()), this.modelData);
+			gl.glUniformMatrix4fv(this.model, 1, false, this.modelData);
+
+			if(this.inside.contains(element)) {
+				gl.glEnable(GL4.GL_BLEND);
+				gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
+			} else {
+				gl.glDisable(GL4.GL_BLEND);
+			}
+			
+			if(element != this.selected) {
+				gl.glUniform3f(this.lightColor, 1.0f, 1.0f, 1.0f);
+			} else {
+				gl.glUniform3f(this.lightColor, 0.5f, 0.2f, 0.0f);
+			}
+			
+			gl.glEnable(GL4.GL_DEPTH_TEST);
+			
+			Vector4f color = element.getColor();
+			gl.glUniform4f(this.color, color.x, color.y, color.z, color.w);
+			gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, sphereLongitudes * sphereLatitudes * 4, GL4.GL_UNSIGNED_INT, 0);
+			
+			gl.glDisable(GL4.GL_DEPTH_TEST);
+		}
+		
+		gl.glDisable(GL4.GL_BLEND); // Ensure it is disabled.
 	}
 	
 	private void teleport(Vector3f dest) {
+		this.generalAcceleration = 0.01f;
 		this.player.set(dest);
 	}
 
@@ -331,12 +450,16 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 
 	public void loadProject(Project project) {
 		this.project = project;
+		this.geometry.buildGeometry(project);
 	}
 
 	public void update(Rectangle bounds) {
 		this.bounds = bounds;
-		this.loadMatrixData(this.matrix.identity().perspective(fov, (float) (bounds.getWidth() / bounds.getHeight()), zNear, zFar), this.projectionData);
-		this.loadMatrixData(this.matrix.identity(), this.modelData);
+		this.updatePerspective();
+	}
+	
+	private void updatePerspective() {
+		this.loadMatrixData(this.matrix.identity().perspective(fov, (float) (this.bounds.getWidth() / this.bounds.getHeight()), this.zNear, this.zFar), this.projectionData);
 	}
 	
 	public void updateCamera() {
@@ -344,7 +467,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				.identity()
 				.rotate(-this.pitch, 1.0f, 0.0f, 0.0f)
 				.rotate(this.yaw, 0.0f, 1.0f, 0.0f)
-				.translate(this.player.x, -this.player.y, this.player.z)
+				.translate(-this.player.x, -this.player.y, -this.player.z)
 		, this.viewData);
 	}
 	
@@ -382,6 +505,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				this.yaw += (position.getX() - 1.0d) / 10.0f;
 				this.pitch -= (position.getY() - 1.0d) / 10.0f;
 				
+				float halfPI = (float) Math.PI / 2.0f;
+				
 				if(this.pitch > halfPI) {
 					this.pitch = halfPI;
 				} else if(this.pitch < -halfPI) {
@@ -396,49 +521,86 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				
 				event.abortDispatching();
 			}
-		} else if(event instanceof WriteEvent) {
-			WriteEvent write = (WriteEvent) event;
+		} else if(event instanceof PressureEvent) {
+			PressureEvent pressure = (PressureEvent) event;
 
-			switch(write.getKeycode()) {
+			switch(pressure.getKeycode()) {
 				case forward:
-					this.straightVelocity += acceleration;
+					this.acceleration.x = (pressure.isDown() ? this.generalAcceleration : 0.0f);
 					break;
 				case backward:
-					this.straightVelocity -= acceleration;
+					this.acceleration.x = (pressure.isDown() ? -this.generalAcceleration : 0.0f);
 					break;
 				case left:
-					this.lateralVelocity += acceleration;
+					this.acceleration.z = (pressure.isDown() ? this.generalAcceleration : 0.0f);
 					break;
 				case right:
-					this.lateralVelocity -= acceleration;
+					this.acceleration.z = (pressure.isDown() ? -this.generalAcceleration : 0.0f);
 					break;
 				case up:
-					this.verticalVelocity += acceleration;
+					this.acceleration.y = (pressure.isDown() ? this.generalAcceleration : 0.0f);
 					break;
 				case down:
-					this.verticalVelocity -= acceleration;
+					this.acceleration.y = (pressure.isDown() ? -this.generalAcceleration : 0.0f);
+					break;
+				case worldToggle:
+					if(pressure.isDown()) {
+						this.isInWorld = !this.isInWorld;
+						
+						if(this.isInWorld) {
+							this.context.setCursor(null);
+						} else {
+							this.context.setCursor(Cursor.getDefaultCursor());
+						}
+					}
+
+					break;
+				case spawnKey:
+					if(this.isControlDown) {
+						this.teleport(this.spawn);
+					}
+					
+					break;
+				case fullscreen:
+					if(this.isControlDown) {
+						this.context.toggleFullscreen();
+					}
+					
+					break;
+				case KeyEvent.VK_CONTROL:
+					this.isControlDown = pressure.isDown();
 					break;
 			}
+		} else if(event instanceof WheelEvent) {
+			if(this.isControlDown) {
+				WheelEvent wheel = (WheelEvent) event;
+				
+				this.generalAcceleration *= Math.pow(1.1f, 2 * wheel.getDelta());
+				this.generalAcceleration = Math.min(this.generalAcceleration, 1.0f);
+
+				this.zNear = this.generalAcceleration * 10.0f;
+				
+				this.updatePerspective();
+				
+				wheel.abortDispatching();
+			}
+		} else if(event instanceof ActionEvent) {
+			ActionEvent action = (ActionEvent) event;
 			
-			if(write.getKeycode() == KeyEvent.VK_CONTROL) {
-				long time = System.currentTimeMillis();
+			if(action.isButton(ActionEvent.BUTTON_RIGHT)) {
+				this.selected = this.lookingAt;
 				
-				if(time - this.firstCtrl < 500L) {
-					this.isInWorld = !this.isInWorld;
-					
-					if(this.isInWorld) {
-						this.context.setCursor(null);
-					} else {
-						this.context.setCursor(Cursor.getDefaultCursor());
-					}
+				if(this.selected != null) {
+					this.dispatcher.fire(new MessageEvent(this.getElementName(this.selected) + " is selected", MessageType.INFO));
+					this.dispatcher.fire(new MenuEvent(Commons.STRUCT_EDIT));
+				} else {
+					this.updateInfo();
 				}
-				
-				this.firstCtrl = time;
 			}
 		}
 	}
 
 	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(MoveEvent.class, WriteEvent.class);
+		return Arrays.asList(MoveEvent.class, PressureEvent.class, WheelEvent.class, ActionEvent.class);
 	}
 }

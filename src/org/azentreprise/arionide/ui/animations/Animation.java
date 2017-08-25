@@ -52,14 +52,18 @@ public abstract class Animation {
 		this.ignoreTicks = false;
 	}
 	
-	public void stopAnimation() {
+	public void endAnimation() {
 		this.ignoreTicks = true;
-
+		
 		if(this.animateAfter != null) {
 			Consumer<Animation> clone = this.animateAfter;
 			this.animateAfter = null;
 			clone.accept(this);
 		}
+	}
+	
+	public void stopAnimation() {
+		this.ignoreTicks = true;
 	}
 	
 	public boolean isAnimating() {

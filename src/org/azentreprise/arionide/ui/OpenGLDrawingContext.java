@@ -37,6 +37,7 @@ import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.ActionType;
 import org.azentreprise.arionide.events.MoveEvent;
 import org.azentreprise.arionide.events.MoveType;
+import org.azentreprise.arionide.events.PressureEvent;
 import org.azentreprise.arionide.events.ValidateEvent;
 import org.azentreprise.arionide.events.WheelEvent;
 import org.azentreprise.arionide.events.WriteEvent;
@@ -239,21 +240,25 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 			this.primitives.setAlpha(this.gl, a);
 		}
 	}
+	
+	public void toggleFullscreen() {
+		this.window.setFullscreen(!this.window.isFullscreen());
+	}
 
 	public void purge() {
 		this.theManager.purge();
 	}
 	
 	public void mouseClicked(MouseEvent event) {
-		this.dispatcher.fire(new ActionEvent(this.getPoint(event), ActionType.CLICK));
+		this.dispatcher.fire(new ActionEvent(this.getPoint(event), event.getButton(), ActionType.CLICK));
 	}
 
 	public void mousePressed(MouseEvent event) {
-		this.dispatcher.fire(new ActionEvent(this.getPoint(event), ActionType.PRESS));
+		this.dispatcher.fire(new ActionEvent(this.getPoint(event), event.getButton(), ActionType.PRESS));
 	}
 
 	public void mouseReleased(MouseEvent event) {
-		this.dispatcher.fire(new ActionEvent(this.getPoint(event), ActionType.RELEASE));
+		this.dispatcher.fire(new ActionEvent(this.getPoint(event), event.getButton(), ActionType.RELEASE));
 	}
 
 	public void mouseEntered(MouseEvent event) {
@@ -273,8 +278,11 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	}
 	
 	public void mouseWheelMoved(MouseEvent event) {
-		double rotation = Math.ceil((event.getRotation()[0] + event.getRotation()[1]) / 2.0d);
-		this.dispatcher.fire(new WheelEvent(this.getPoint(event), (int) (rotation * AppDrawingContext.MOUSE_WHEEL_SENSIBILITY)));
+		double rotation = (event.getRotation()[0] + event.getRotation()[1]) / 2.0d;
+		
+		rotation += Math.signum(rotation) * 0.5d;
+		
+		this.dispatcher.fire(new WheelEvent(this.getPoint(event), rotation * AppDrawingContext.MOUSE_WHEEL_SENSIBILITY));
 	}
 	
 	private Point2D getPoint(MouseEvent event) {
@@ -286,6 +294,8 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	}
 
 	public void keyPressed(KeyEvent event) {
+		this.dispatcher.fire(new PressureEvent(event.getKeyChar(), event.getKeyCode(), event.getModifiers(), true));
+
 		if(event.getKeyCode() == KeyEvent.VK_ENTER) {
 			this.dispatcher.fire(new ValidateEvent());
 		} else if(event.getKeyCode() == KeyEvent.VK_TAB) {
@@ -299,7 +309,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 		}
 	}
 
-	public void keyReleased(KeyEvent e) {
-		;
+	public void keyReleased(KeyEvent event) {
+		this.dispatcher.fire(new PressureEvent(event.getKeyChar(), event.getKeyCode(), event.getModifiers(), false));
 	}
 }

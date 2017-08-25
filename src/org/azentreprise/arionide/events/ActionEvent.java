@@ -24,16 +24,25 @@ import java.awt.geom.Point2D;
 
 public class ActionEvent extends Event {
 	
+	public static final int BUTTON_LEFT = 1;
+	public static final int BUTTON_RIGHT = 3;
+	
 	private final Point2D point;
+	private final int button;
 	private final ActionType type;
 	
-	public ActionEvent(Point2D point2d, ActionType type) {
+	public ActionEvent(Point2D point2d, int button, ActionType type) {
 		this.point = point2d;
+		this.button = button;
 		this.type = type;
 	}
 	
 	public Point2D getPoint() {
 		return this.point;
+	}
+	
+	public boolean isButton(int buttonID) {
+		return button == buttonID;
 	}
 	
 	public ActionType getType() {

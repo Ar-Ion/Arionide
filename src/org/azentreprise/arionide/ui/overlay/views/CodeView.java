@@ -22,10 +22,12 @@ package org.azentreprise.arionide.ui.overlay.views;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
+import org.azentreprise.arionide.events.MenuEvent;
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.project.Project;
@@ -45,7 +47,13 @@ import org.azentreprise.arionide.ui.overlay.components.Tab;
 public class CodeView extends View implements EventHandler {
 
 	private final Animation currentMessageAlphaAnimation;
+	
+	private final Scroll menu = new Scroll(this);
+
+	
+	private final Label currentInfo = new Label(this, "");
 	private final Label currentMessage = new Label(this, "");
+	private final Label currentDebug = new Label(this, "");
 	
 	private Project currentProject;
 	
@@ -61,11 +69,13 @@ public class CodeView extends View implements EventHandler {
 		this.add(new Button(this, "Run").setSignal("run"), 0.85f, 0.05f, 0.95f, 0.1f);
 		
 		this.add(new Button(this, "+").setSignal("add"), 0.05f, 0.86f, 0.15f, 0.94f);
-				
-		this.add(new Scroll(this, "Instr0", "Instr1", "Instr2", "Instr3", "Instr4", "Instr5", "Instr6", "Instr7", "Instr8", "Instr9"), 0.2f, 0.85f, 0.8f, 0.95f);
+		this.add(this.menu, 0.2f, 0.85f, 0.8f, 0.95f);
+
 		this.add(new Button(this, "...").setSignal("more"), 0.85f, 0.86f, 0.95f, 0.94f);
 
+		this.add(this.currentInfo, 0.2f, 0.1f, 0.8f, 0.15f);
 		this.add(this.currentMessage, 0.2f, 0.75f, 0.8f, 0.85f);
+		this.add(this.currentDebug, 0.0f, 0.95f, 1.0f, 1.0f);
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
@@ -74,7 +84,8 @@ public class CodeView extends View implements EventHandler {
 		super.show();
 		this.setupFocusCycle(2, 3, 5, 0);
 		this.currentProject = this.getAppManager().getWorkspace().getCurrentProject();
-		this.getAppManager().getEventDispatcher().fire(new MessageEvent("Project loaded: " + this.currentProject.getName(), MessageType.INFO));
+		this.getAppManager().getEventDispatcher().fire(new MessageEvent("Project " + this.currentProject.getName() + " has been successfully loaded", MessageType.SUCCESS));
+		this.getAppManager().getCoreRenderer().loadProject(this.currentProject);
 	}
 	
 	public void drawSurface(AppDrawingContext context) {
@@ -110,14 +121,20 @@ public class CodeView extends View implements EventHandler {
 		} else if(event instanceof MessageEvent) {
 			MessageEvent message = (MessageEvent) event;
 			
-			this.currentMessage.setLabel(message.getMessage());
-			this.currentMessage.setColor(message.getMessageType().getColor());
+			Label ref = message.getMessageType().equals(MessageType.INFO) ? this.currentInfo : message.getMessageType().equals(MessageType.DEBUG) ? this.currentDebug : this.currentMessage;
 			
-			this.currentMessageAlphaAnimation.startAnimation(1000, (animation) -> animation.startAnimation(5000, 1), 0xFF);
+			ref.setLabel(message.getMessage());
+			ref.setColor(message.getMessageType().getColor());
+			
+			if(ref == this.currentMessage) {
+				this.currentMessageAlphaAnimation.startAnimation(1000, (animation) -> animation.startAnimation(5000, 1), 0xFF);
+			}
+		} else if(event instanceof MenuEvent) {
+			this.menu.setComponents(((MenuEvent) event).getMenu().getElements().stream().map(this.menu.getMapper()).collect(Collectors.toList()));
 		}
 	}
 
 	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(ClickEvent.class, MessageEvent.class);
+		return Arrays.asList(ClickEvent.class, MessageEvent.class, MenuEvent.class);
 	}
 }

@@ -119,7 +119,7 @@ public class Scroll extends Tab {
 			WheelEvent wheel = (WheelEvent) event;
 			
 			if(this.globalWheelListening || this.getBounds().contains(wheel.getPoint())) {
-				this.commitDelta(this.activeComponent + wheel.getDelta());
+				this.commitDelta(this.activeComponent + (int) wheel.getDelta());
 			}
 		} else if(event instanceof ActionEvent) {
 			ActionEvent action = (ActionEvent) event;

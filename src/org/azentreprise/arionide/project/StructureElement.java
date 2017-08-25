@@ -32,6 +32,7 @@ public class StructureElement implements Serializable {
 	public StructureElement(String name, List<StructureElement> children) {
 		this.name = name;
 		this.children = children;
+		
 	}
 	
 	public List<StructureElement> getChildren() {

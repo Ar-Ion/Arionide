@@ -52,7 +52,7 @@ public class FieldModifierAnimation extends Animation {
 		}
 	}
 	
-	public void startAnimation(int duration, Object... params) {
+	public void startAnimation(int duration, Object... params) {		
 		if(params.length > 0) {
 			Object target = params[0];
 			if(target instanceof Number) {
@@ -118,7 +118,7 @@ public class FieldModifierAnimation extends Animation {
 				Debug.exception(exception);
 			}
 			
-			this.stopAnimation();
+			this.endAnimation();
 		}
 	}
 }

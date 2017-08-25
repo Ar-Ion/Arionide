@@ -145,8 +145,11 @@ public class OpenGLPrimitives implements IPrimitives {
 		this.textRenderer.stateChanged(new Dimension(width, height));
 	}
 	
-	public void beginUI(GL4 gl) {		
+	public void beginUI(GL4 gl) {
 		gl.glEnable(GL4.GL_BLEND);
+				
+		this.drawCursor(gl);
+		
 		gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 		
 		this.use(gl, this.uiShader);
@@ -218,6 +221,25 @@ public class OpenGLPrimitives implements IPrimitives {
 
 		gl.glDrawArrays(GL4.GL_LINE, 0, 2);
 	}
+	
+	public void drawCursor(GL4 gl) {		
+		GLCoordinates coords = new GLCoordinates(new Rectangle2D.Double(1.0d, 1.0d, 1.0d, 1.0d));
+				
+		this.manager.loadVAO(coords.getUUID(), () -> coords.allocDataBuffer(2).putX1().getDataBuffer(), (nil, id) -> {
+			gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
+		}, "position");
+
+		this.use(gl, this.basicShader);
+		
+		this.setColor(gl, 1.0f, 1.0f, 1.0f);
+		
+		gl.glBlendFunc(GL4.GL_ONE_MINUS_DST_COLOR, GL4.GL_ONE_MINUS_SRC_COLOR);
+
+		gl.glPointSize(3.0f);
+		gl.glDrawArrays(GL4.GL_POINTS, 0, 1);
+		gl.glPointSize(1.0f);
+	}
+
 
 	public Point2D drawText(AppDrawingContext context, String text, Rectangle2D bounds) {
 		return this.drawText(context, text, bounds, 0);

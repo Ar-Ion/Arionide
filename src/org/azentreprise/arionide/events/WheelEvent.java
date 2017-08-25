@@ -25,9 +25,9 @@ import java.awt.geom.Point2D;
 public class WheelEvent extends Event {
 	
 	private final Point2D point;
-	private final int delta;
+	private final double delta;
 	
-	public WheelEvent(Point2D point2d, int delta) {
+	public WheelEvent(Point2D point2d, double delta) {
 		this.point = point2d;
 		this.delta = delta;
 	}
@@ -36,7 +36,7 @@ public class WheelEvent extends Event {
 		return this.point;
 	}
 	
-	public int getDelta() {
+	public double getDelta() {
 		return this.delta;
 	}
 }
