@@ -38,6 +38,7 @@ import java.util.stream.Stream;
 
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.events.ActionEvent;
+import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.MenuEvent;
@@ -52,7 +53,7 @@ import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
-import org.azentreprise.arionide.ui.menu.Commons;
+import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.primitives.OpenGLPrimitives;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -420,9 +421,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			}
 			
 			if(element != this.selected) {
-				gl.glUniform3f(this.lightColor, 1.0f, 1.0f, 1.0f);
+				gl.glUniform1f(this.ambientFactor, 0.2f);
 			} else {
-				gl.glUniform3f(this.lightColor, 0.5f, 0.2f, 0.0f);
+				gl.glUniform1f(this.ambientFactor, 0.5f);
 			}
 			
 			gl.glEnable(GL4.GL_DEPTH_TEST);
@@ -556,13 +557,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 
 					break;
 				case spawnKey:
-					if(this.isControlDown) {
+					if(this.isControlDown && pressure.isDown()) {
 						this.teleport(this.spawn);
 					}
 					
 					break;
 				case fullscreen:
-					if(this.isControlDown) {
+					if(this.isControlDown && pressure.isDown()) {
 						this.context.toggleFullscreen();
 					}
 					
@@ -587,15 +588,29 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		} else if(event instanceof ActionEvent) {
 			ActionEvent action = (ActionEvent) event;
 			
-			if(action.isButton(ActionEvent.BUTTON_RIGHT)) {
-				this.selected = this.lookingAt;
-				
-				if(this.selected != null) {
-					this.dispatcher.fire(new MessageEvent(this.getElementName(this.selected) + " is selected", MessageType.INFO));
-					this.dispatcher.fire(new MenuEvent(Commons.STRUCT_EDIT));
-				} else {
-					this.updateInfo();
+			if(this.isInWorld) {
+				if(action.isButton(ActionEvent.BUTTON_RIGHT)) {
+					if(this.selected != this.lookingAt) {
+						this.selected = this.lookingAt;
+					} else {
+						this.selected = null;
+					}
+					
+					if(this.selected != null) {
+						this.dispatcher.fire(new MessageEvent(this.getElementName(this.selected) + " is selected", MessageType.INFO));
+						
+						MainMenus.STRUCT_EDIT.setCurrent(this.selected);
+						
+						this.dispatcher.fire(new MenuEvent(MainMenus.STRUCT_EDIT));
+					} else {
+						this.updateInfo();
+						this.dispatcher.fire(new MenuEvent(MainMenus.STRUCT_LIST));
+					}
+				} else if(action.isButton(ActionEvent.BUTTON_LEFT)) {
+					this.dispatcher.fire(new ClickEvent(null, "SCROLL"));
 				}
+				
+				action.abortDispatching();
 			}
 		}
 	}

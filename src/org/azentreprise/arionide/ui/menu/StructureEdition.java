@@ -18,19 +18,56 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.events;
+package org.azentreprise.arionide.ui.menu;
 
-import org.azentreprise.arionide.ui.menu.Menu;
+import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
+import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 
-public class MenuEvent extends Event {
+public class StructureEdition extends Menu {
+		
+	private static final String go = "Go";
+	private static final String name = "Name";
+	private static final String color = "Color";
+
+	private final Coloring coloring;
 	
-	private final Menu menu;
+	private WorldElement current;
 	
-	public MenuEvent(Menu menu) {
-		this.menu = menu;
+	public StructureEdition(IEventDispatcher dispatcher) {
+		super(dispatcher, go, name, color);
+		this.coloring = new Coloring(dispatcher);
 	}
 	
-	public Menu getMenu() {
-		return this.menu;
+	public void setCurrent(WorldElement current) {
+		this.current = current;
+		this.coloring.setCurrent(current);
 	}
+	
+	protected void onSelect(String element) {
+		assert this.current != null;
+		
+		switch(element) {
+			case go:
+				break;
+			case name:
+				break;
+			case color:
+				break;
+		}
+	}
+	
+	protected void onClick(String element) {
+		assert this.current != null;
+		
+		switch(element) {
+			case go:
+				break;
+			case name:
+				break;
+			case color:
+				this.show(this.coloring);
+				break;
+		}
+	}
+	
 }

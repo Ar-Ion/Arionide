@@ -1,16 +1,41 @@
+/*******************************************************************************
+ * This file is part of Arionide.
+ *
+ * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
+ * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
+ *
+ * Arionide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Arionide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
+ *******************************************************************************/
 package org.azentreprise.arionide.ui.menu;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.azentreprise.arionide.Utils;
+import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
+import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
-public class ColorMenu extends Menu {
+public class Coloring extends Menu {
 	
-	private HashMap<String, Vector3f> colors = new HashMap<>();
+	private final HashMap<String, Vector3f> colors = new LinkedHashMap<>();
+	private WorldElement current;
 	
-	public ColorMenu() {
-		super();
+	public Coloring(IEventDispatcher dispatcher) {
+		super(dispatcher);
 
 		this.addColor("Red", 0xED0A3F);
 		this.addColor("Maroon", 0xC32148);
@@ -185,5 +210,19 @@ public class ColorMenu extends Menu {
 	
 	private void addColor(String name, int color) {
 		this.colors.put(name, new Vector3f(Utils.getRed(color) / 255.0f, Utils.getGreen(color) / 255.0f, Utils.getBlue(color) / 255.0f));
+	}
+	
+	public void setCurrent(WorldElement current) {
+		this.current = current;
+	}
+
+	protected void onSelect(String element) {
+		assert this.current != null;
+		
+		this.current.setColor(new Vector4f(this.colors.get(element), 0.3f));
+	}
+	
+	protected void onClick(String element) {
+		assert this.current != null;
 	}
 }

@@ -30,6 +30,7 @@ import org.azentreprise.arionide.events.ActionType;
 import org.azentreprise.arionide.events.DragEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
+import org.azentreprise.arionide.events.ScrollEvent;
 import org.azentreprise.arionide.events.WheelEvent;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
@@ -147,6 +148,8 @@ public class Scroll extends Tab {
 		
 		if(this.activeComponent != delta) {
 			this.activeComponent = delta;
+			
+			this.getAppManager().getEventDispatcher().fire(new ScrollEvent(this, this.activeComponent));
 			
 			this.updateAll();
 		}

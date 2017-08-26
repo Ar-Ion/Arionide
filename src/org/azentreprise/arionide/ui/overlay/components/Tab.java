@@ -181,6 +181,13 @@ public class Tab extends MultiComponent implements EventHandler {
 		}
 	}
 	
+	public void setComponents(List<Component> components) {
+		super.setComponents(components);
+		
+		this.activeComponent = 0;
+		this.updateAll();
+	}
+	
 	public <T extends Event> void handleEvent(T event) {
 		if(this.isHidden() || this.getBounds() == null) {
 			return;

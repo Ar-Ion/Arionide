@@ -18,19 +18,21 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.events;
+package org.azentreprise.arionide.ui.menu;
 
-import org.azentreprise.arionide.ui.menu.Menu;
+import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 
-public class MenuEvent extends Event {
+public class MainMenus {
 	
-	private final Menu menu;
+	public static StructureList STRUCT_LIST;
+	public static StructureEdition STRUCT_EDIT;
 	
-	public MenuEvent(Menu menu) {
-		this.menu = menu;
-	}
+	private static boolean initialized = false;
 	
-	public Menu getMenu() {
-		return this.menu;
+	public static void init(IEventDispatcher dispatcher) {
+		assert !initialized : "Already initialized";
+	
+		STRUCT_LIST = new StructureList(dispatcher);
+		STRUCT_EDIT = new StructureEdition(dispatcher);
 	}
 }

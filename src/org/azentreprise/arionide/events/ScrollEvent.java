@@ -20,17 +20,19 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events;
 
-import org.azentreprise.arionide.ui.menu.Menu;
+import org.azentreprise.arionide.ui.overlay.Component;
 
-public class MenuEvent extends Event {
+public class ScrollEvent extends ComponentEvent {
+
+	private final int subCompID;
 	
-	private final Menu menu;
-	
-	public MenuEvent(Menu menu) {
-		this.menu = menu;
+	public ScrollEvent(Component component, int subCompID) {
+		super(component);
+		
+		this.subCompID = subCompID;
 	}
 	
-	public Menu getMenu() {
-		return this.menu;
+	public int getSubComponentID() {
+		return this.subCompID;
 	}
 }

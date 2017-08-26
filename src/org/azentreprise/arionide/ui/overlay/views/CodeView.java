@@ -30,6 +30,7 @@ import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.MenuEvent;
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
+import org.azentreprise.arionide.events.ScrollEvent;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.AppManager;
@@ -37,6 +38,8 @@ import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.core.RenderingScene;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
+import org.azentreprise.arionide.ui.menu.Menu;
+import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.overlay.Views;
 import org.azentreprise.arionide.ui.overlay.components.Button;
@@ -48,14 +51,14 @@ public class CodeView extends View implements EventHandler {
 
 	private final Animation currentMessageAlphaAnimation;
 	
-	private final Scroll menu = new Scroll(this);
-
+	private final Scroll menu = new Scroll(this, "<No menu loaded>");
 	
 	private final Label currentInfo = new Label(this, "");
 	private final Label currentMessage = new Label(this, "");
 	private final Label currentDebug = new Label(this, "");
 	
 	private Project currentProject;
+	private Menu currentMenu;
 	
 	public CodeView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
@@ -117,6 +120,9 @@ public class CodeView extends View implements EventHandler {
 				}
 			} else if(click.isTargetting(this, "run")) {
 				this.currentProject.save();
+			} else if(click.isTargetting((Component) null, "SCROLL")) {
+				assert this.currentMenu != null;
+				this.currentMenu.click();
 			}
 		} else if(event instanceof MessageEvent) {
 			MessageEvent message = (MessageEvent) event;
@@ -130,11 +136,19 @@ public class CodeView extends View implements EventHandler {
 				this.currentMessageAlphaAnimation.startAnimation(1000, (animation) -> animation.startAnimation(5000, 1), 0xFF);
 			}
 		} else if(event instanceof MenuEvent) {
-			this.menu.setComponents(((MenuEvent) event).getMenu().getElements().stream().map(this.menu.getMapper()).collect(Collectors.toList()));
+			this.currentMenu = ((MenuEvent) event).getMenu();
+			this.menu.setComponents(this.currentMenu.getElements().stream().map(this.menu.getMapper()).collect(Collectors.toList()));
+		} else if(event instanceof ScrollEvent) {
+			ScrollEvent scroll = (ScrollEvent) event;
+			
+			if(scroll.isTargetting(this)) {
+				assert this.currentMenu != null;
+				this.currentMenu.select(scroll.getSubComponentID());
+			}
 		}
 	}
 
 	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(ClickEvent.class, MessageEvent.class, MenuEvent.class);
+		return Arrays.asList(ClickEvent.class, MessageEvent.class, MenuEvent.class, ScrollEvent.class);
 	}
 }

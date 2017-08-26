@@ -40,6 +40,7 @@ import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
+import org.azentreprise.arionide.ui.menu.MainMenus;
 
 public class ArionideImpl implements Arionide {
 	
@@ -72,6 +73,8 @@ public class ArionideImpl implements Arionide {
 
 	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher) {
 		DragSystem.init(dispatcher);
+		MainMenus.init(dispatcher);
+		
 		return new OpenGLDrawingContext(this, dispatcher, 1080, 720);
 	}
 
