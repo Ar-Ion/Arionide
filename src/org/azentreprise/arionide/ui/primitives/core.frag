@@ -51,8 +51,6 @@ void main() {
         vec3 diffuse = diffuseFactor * color.xyz * attenuation;
         vec3 specular = specularFactor * specularColor.xyz * attenuation;
         
-        vec3 linearColor = (ambient + diffuse + specular) * lightColor;
-        
-        outColor = vec4(pow(linearColor, vec3(0.5)), color.w);
+        outColor = vec4((ambient + diffuse + specular) * lightColor, color.w);
     }
 }

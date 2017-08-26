@@ -20,7 +20,11 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu;
 
-import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
+import org.azentreprise.arionide.events.MessageEvent;
+import org.azentreprise.arionide.events.MessageType;
+import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.core.CoreRenderer;
+import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
 import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 
 public class StructureEdition extends Menu {
@@ -33,34 +37,22 @@ public class StructureEdition extends Menu {
 	
 	private WorldElement current;
 	
-	public StructureEdition(IEventDispatcher dispatcher) {
-		super(dispatcher, go, name, color);
-		this.coloring = new Coloring(dispatcher);
+	public StructureEdition(AppManager manager) {
+		super(manager, go, name, color);
+		this.coloring = new Coloring(manager);
 	}
 	
 	public void setCurrent(WorldElement current) {
 		this.current = current;
 		this.coloring.setCurrent(current);
 	}
-	
-	protected void onSelect(String element) {
-		assert this.current != null;
-		
-		switch(element) {
-			case go:
-				break;
-			case name:
-				break;
-			case color:
-				break;
-		}
-	}
-	
+
 	protected void onClick(String element) {
 		assert this.current != null;
 		
 		switch(element) {
 			case go:
+				this.go();
 				break;
 			case name:
 				break;
@@ -70,4 +62,13 @@ public class StructureEdition extends Menu {
 		}
 	}
 	
+	private void go() {
+		CoreRenderer renderer = this.getManager().getCoreRenderer();
+		
+		if(renderer instanceof OpenGLCoreRenderer) {
+			((OpenGLCoreRenderer) renderer).teleport(this.current.getCenter());
+		} else {
+			this.getManager().getEventDispatcher().fire(new MessageEvent("This GUI implementation doesn't support teleporting.", MessageType.ERROR));
+		}
+	}
 }

@@ -53,7 +53,7 @@ public class WorldGeometry {
 	protected void buildGeometry(Project project) {
 		Storage storage = project.getStorage();
 		
-		WorldElement main = new WorldElement("", new Vector3f(0.0f, 0.0f, 0.0f), new Vector4f(0.0f, 0.5f, 0.5f, 0.3f), 1.0f);
+		WorldElement main = new WorldElement("Lambda", new Vector3f(0.0f, 0.0f, 0.0f), new Vector4f(0.929f, 0.0392f, 0.247f, 0.3f), 1.0f);
 		
 		this.hierarchy.add(main);
 		

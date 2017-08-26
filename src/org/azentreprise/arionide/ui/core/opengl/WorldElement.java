@@ -56,7 +56,7 @@ public class WorldElement {
 		return object.distance(this.center) <= this.size;
 	}
 	
-	protected Vector3f getCenter() {
+	public Vector3f getCenter() {
 		return this.center;
 	}
 	
@@ -72,7 +72,7 @@ public class WorldElement {
 		return this.size;
 	}
 	
-	protected Vector4f getColor() {
+	public Vector4f getColor() {
 		return this.color;
 	}
 	

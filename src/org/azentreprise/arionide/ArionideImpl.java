@@ -73,7 +73,6 @@ public class ArionideImpl implements Arionide {
 
 	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher) {
 		DragSystem.init(dispatcher);
-		MainMenus.init(dispatcher);
 		
 		return new OpenGLDrawingContext(this, dispatcher, 1080, 720);
 	}
@@ -90,9 +89,9 @@ public class ArionideImpl implements Arionide {
 		return new LayoutManager(context, dispatcher);
 	}
 
-	public void loadUI(AppDrawingContext context, Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+	public void loadUI(AppDrawingContext context, Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {		
 		context.load(workspace, resources, renderer, manager);
-				
+		
 		this.drawingThread.setupManager(context);
 		this.updatingThread.setupManager(context);
 	}

@@ -38,6 +38,7 @@ import java.util.stream.Stream;
 
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.events.ActionEvent;
+import org.azentreprise.arionide.events.ActionType;
 import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
@@ -66,8 +67,8 @@ import com.jogamp.opengl.GL4;
 public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {	
 	private static final int stars = 4096;
 	
-	private static final int sphereLongitudes = 32;
-	private static final int sphereLatitudes = 32;
+	private static final int sphereLongitudes = 64;
+	private static final int sphereLatitudes = 64;
 
 	private static final int forward = KeyEvent.VK_W;
 	private static final int backward = KeyEvent.VK_S;
@@ -123,6 +124,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private WorldElement current;
 	private WorldElement lookingAt;
 	private WorldElement selected;
+	
+	private boolean needUpdate = false;
 
 	private float yaw = 0.0f;
 	private float pitch = 0.0f;
@@ -132,7 +135,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 	private Vector3f velocity = new Vector3f();
 	private Vector3f acceleration = new Vector3f();
-	private float generalAcceleration = 0.01f;
+	private double generalAcceleration = 0.0001d;
 	
 	private FloatBuffer modelData = FloatBuffer.allocate(16);
 	private FloatBuffer viewData = FloatBuffer.allocate(16);
@@ -284,7 +287,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 		
 		if(this.project != null) {
-			this.drawSun(gl, sunPosition);
 			this.drawElements(gl);
 		}
 		
@@ -313,7 +315,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.buffer.clear();
 				
 		this.updateCamera();
-		this.checkForTarget();
+		this.checkForTargetAndUpdateMenu();
 		
 		this.dispatcher.fire(new MessageEvent(this.player + " | Looking at " + this.getElementName(this.lookingAt), MessageType.DEBUG));
 		
@@ -340,15 +342,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 
 	private boolean enterElement(WorldElement element) {
 		this.current = element;
-		this.updateInfo();
+		this.needUpdate = true;
 		return true;
 	}
 	
 	private boolean exitElement(WorldElement element) {
 		this.current = this.buffer.stream().reduce((a, b) -> a.getSize() < b.getSize() ? a : b).orElse(null);
-		
-		this.updateInfo();
-		
+		this.needUpdate = true;
 		return true;
 	}
 	
@@ -363,17 +363,21 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.updatePosition();
 	}
 	
-	private void checkForTarget() {
+	private void checkForTargetAndUpdateMenu() {
 		Vector3f cameraDirection = new Vector3f(-this.viewData.get(2), -this.viewData.get(6), -this.viewData.get(10)); // DOF
 		float size = this.geometry.getSizeForGeneration(this.inside.size());
 		
 		WorldElement found = null;
 		float distance = 10000.0f;
+
+		List<WorldElement> menuData = new ArrayList<>();
 		
 		for(WorldElement element : this.geometry.getElements()) {
 			if(element.getSize() == size) {
 				float currentDistance = this.player.distance(element.getCenter());
 
+				menuData.add(element);
+				
 				if(currentDistance < distance) {
 					if(element.collidesWith(new Vector3f(cameraDirection).normalize(currentDistance).add(this.player))) {
 						found = element;
@@ -381,6 +385,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 					}
 				}
 			}
+		}
+		
+		if(this.needUpdate) {
+			MainMenus.STRUCT_LIST.set(menuData);
+			this.dispatcher.fire(new MenuEvent(MainMenus.STRUCT_LIST));
+			this.updateInfo();
+			this.needUpdate = false;
 		}
 				
 		this.lookingAt = found;
@@ -398,14 +409,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glDrawArrays(GL4.GL_POINTS, 0, stars);
 	}
 	
-	private void drawSun(GL4 gl, Vector3f sunPosition) {
-		gl.glUniform4f(this.color, 1.0f, 1.0f, 1.0f, 1.0f);
-		
-		this.loadMatrixData(this.matrix.identity().translate(sunPosition).scale(0.1f), this.modelData);
-		gl.glUniformMatrix4fv(this.model, 1, false, this.modelData);
-		gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, sphereLongitudes * sphereLatitudes * 4, GL4.GL_UNSIGNED_INT, 0);
-	}
-	
 	private void drawElements(GL4 gl) {
 		gl.glUniform1f(this.ambientFactor, 0.3f);
 
@@ -421,9 +424,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			}
 			
 			if(element != this.selected) {
-				gl.glUniform1f(this.ambientFactor, 0.2f);
+				gl.glUniform1f(this.ambientFactor, 0.3f);
 			} else {
-				gl.glUniform1f(this.ambientFactor, 0.5f);
+				gl.glUniform1f(this.ambientFactor, 0.6f);
 			}
 			
 			gl.glEnable(GL4.GL_DEPTH_TEST);
@@ -438,12 +441,16 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glDisable(GL4.GL_BLEND); // Ensure it is disabled.
 	}
 	
-	private void teleport(Vector3f dest) {
-		this.generalAcceleration = 0.01f;
+	public void teleport(Vector3f dest) {
+		this.generalAcceleration = 0.0001f;
+		
+		this.zNear = (float) this.generalAcceleration * 10.0f;
+		
+		this.updatePerspective();
+		
 		this.player.set(dest);
 	}
 
-	@Override
 	public void setScene(RenderingScene scene) {
 		// TODO Auto-generated method stub
 		
@@ -460,7 +467,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private void updatePerspective() {
-		this.loadMatrixData(this.matrix.identity().perspective(fov, (float) (this.bounds.getWidth() / this.bounds.getHeight()), this.zNear, this.zFar), this.projectionData);
+		if(this.bounds != null) {
+			this.loadMatrixData(this.matrix.identity().perspective(fov, (float) (this.bounds.getWidth() / this.bounds.getHeight()), this.zNear, this.zFar), this.projectionData);
+		}
 	}
 	
 	public void updateCamera() {
@@ -527,22 +536,22 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 
 			switch(pressure.getKeycode()) {
 				case forward:
-					this.acceleration.x = (pressure.isDown() ? this.generalAcceleration : 0.0f);
+					this.acceleration.x = (pressure.isDown() ? (float) this.generalAcceleration : 0.0f);
 					break;
 				case backward:
-					this.acceleration.x = (pressure.isDown() ? -this.generalAcceleration : 0.0f);
+					this.acceleration.x = (pressure.isDown() ? (float) -this.generalAcceleration : 0.0f);
 					break;
 				case left:
-					this.acceleration.z = (pressure.isDown() ? this.generalAcceleration : 0.0f);
+					this.acceleration.z = (pressure.isDown() ? (float) this.generalAcceleration : 0.0f);
 					break;
 				case right:
-					this.acceleration.z = (pressure.isDown() ? -this.generalAcceleration : 0.0f);
+					this.acceleration.z = (pressure.isDown() ? (float) -this.generalAcceleration : 0.0f);
 					break;
 				case up:
-					this.acceleration.y = (pressure.isDown() ? this.generalAcceleration : 0.0f);
+					this.acceleration.y = (pressure.isDown() ? (float) this.generalAcceleration : 0.0f);
 					break;
 				case down:
-					this.acceleration.y = (pressure.isDown() ? -this.generalAcceleration : 0.0f);
+					this.acceleration.y = (pressure.isDown() ? (float) -this.generalAcceleration : 0.0f);
 					break;
 				case worldToggle:
 					if(pressure.isDown()) {
@@ -563,7 +572,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 					
 					break;
 				case fullscreen:
-					if(this.isControlDown && pressure.isDown()) {
+					if(pressure.isDown()) {
 						this.context.toggleFullscreen();
 					}
 					
@@ -576,10 +585,10 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			if(this.isControlDown) {
 				WheelEvent wheel = (WheelEvent) event;
 				
-				this.generalAcceleration *= Math.pow(1.1f, 2 * wheel.getDelta());
+				this.generalAcceleration *= Math.pow(1.1d, 2 * wheel.getDelta());
 				this.generalAcceleration = Math.min(this.generalAcceleration, 1.0f);
 
-				this.zNear = this.generalAcceleration * 10.0f;
+				this.zNear = (float) this.generalAcceleration * 10.0f;
 				
 				this.updatePerspective();
 				
@@ -588,7 +597,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		} else if(event instanceof ActionEvent) {
 			ActionEvent action = (ActionEvent) event;
 			
-			if(this.isInWorld) {
+			if(this.isInWorld && action.getType() == ActionType.CLICK) {
 				if(action.isButton(ActionEvent.BUTTON_RIGHT)) {
 					if(this.selected != this.lookingAt) {
 						this.selected = this.lookingAt;

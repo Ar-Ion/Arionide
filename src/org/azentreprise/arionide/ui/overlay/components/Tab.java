@@ -181,10 +181,12 @@ public class Tab extends MultiComponent implements EventHandler {
 		}
 	}
 	
+	public void setActiveComponent(int id) {
+		this.activeComponent = id;
+	}
+	
 	public void setComponents(List<Component> components) {
 		super.setComponents(components);
-		
-		this.activeComponent = 0;
 		this.updateAll();
 	}
 	

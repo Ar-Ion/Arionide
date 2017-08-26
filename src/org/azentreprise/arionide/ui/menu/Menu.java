@@ -26,17 +26,21 @@ import java.util.List;
 
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.MenuEvent;
-import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
+import org.azentreprise.arionide.ui.AppManager;
 
 public abstract class Menu {
 	
-	private final IEventDispatcher dispatcher;
+	private final AppManager manager;
 	private List<String> elements = new ArrayList<>();
-	private String current;
+	private int current;
 	
-	protected Menu(IEventDispatcher dispatcher, String... elements) {
-		this.dispatcher = dispatcher;
+	protected Menu(AppManager manager, String... elements) {
+		this.manager = manager;
 		this.elements.addAll(Arrays.asList(elements));
+	}
+	
+	public AppManager getManager() {
+		return this.manager;
 	}
 	
 	public List<String> getElements() {
@@ -48,24 +52,45 @@ public abstract class Menu {
 	}
 	
 	protected void fire(Event event) {
-		this.dispatcher.fire(event);
+		this.manager.getEventDispatcher().fire(event);
 	}
 	
 	protected void show(Menu menu) {
-		this.dispatcher.fire(new MenuEvent(menu));
+		this.manager.getEventDispatcher().fire(new MenuEvent(menu));
+	}
+	
+	public int getCurrentID() {
+		return this.current;
+	}
+	
+	public void setCurrentID(int id) {
+		this.current = id;
 	}
 	
 	public void select(int id) {
-		this.current = this.elements.get(id);
-		this.onSelect(this.current);
+		this.setCurrentID(id);
+		this.onSelect(id);
+		this.onSelect(this.elements.get(id));
 	}
 	
 	public void click() {
-		if(this.current != null) {
-			this.onClick(this.current);
-		}
+		this.onClick(this.current);
+		this.onClick(this.elements.get(this.current));
+	}
+		
+	protected void onClick(String element) {
+		;
 	}
 	
-	protected abstract void onClick(String element);
-	protected abstract void onSelect(String element);
+	protected void onClick(int id) {
+		;
+	}
+	
+	protected void onSelect(String element) {
+		;
+	}
+	
+	protected void onSelect(int id) {
+		;
+	}
 }

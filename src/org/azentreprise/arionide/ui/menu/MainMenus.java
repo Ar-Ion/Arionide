@@ -20,7 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu;
 
-import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
+import org.azentreprise.arionide.ui.AppManager;
 
 public class MainMenus {
 	
@@ -29,10 +29,10 @@ public class MainMenus {
 	
 	private static boolean initialized = false;
 	
-	public static void init(IEventDispatcher dispatcher) {
+	public static void init(AppManager manager) {
 		assert !initialized : "Already initialized";
 	
-		STRUCT_LIST = new StructureList(dispatcher);
-		STRUCT_EDIT = new StructureEdition(dispatcher);
+		STRUCT_LIST = new StructureList(manager);
+		STRUCT_EDIT = new StructureEdition(manager);
 	}
 }

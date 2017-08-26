@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import org.azentreprise.arionide.Utils;
-import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
+import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -34,8 +34,8 @@ public class Coloring extends Menu {
 	private final HashMap<String, Vector3f> colors = new LinkedHashMap<>();
 	private WorldElement current;
 	
-	public Coloring(IEventDispatcher dispatcher) {
-		super(dispatcher);
+	public Coloring(AppManager manager) {
+		super(manager);
 
 		this.addColor("Red", 0xED0A3F);
 		this.addColor("Maroon", 0xC32148);
@@ -224,5 +224,9 @@ public class Coloring extends Menu {
 	
 	protected void onClick(String element) {
 		assert this.current != null;
+		
+		// TODO Save
+		
+		this.show(MainMenus.STRUCT_LIST);
 	}
 }
