@@ -23,18 +23,15 @@ package org.azentreprise.arionide.ui.primitives;
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.IntBuffer;
-import java.nio.charset.Charset;
 
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.OpenGLDrawingContext;
+import org.azentreprise.arionide.ui.shaders.Shaders;
 
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.util.glsl.ShaderUtil;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
 
@@ -69,14 +66,14 @@ public class OpenGLPrimitives implements IPrimitives {
 	
 	public void init(GL4 gl) {
 		try {
-			int basicVert = loadShader(gl, "basic.vert", GL4.GL_VERTEX_SHADER);
-			int basicFrag = loadShader(gl, "basic.frag", GL4.GL_FRAGMENT_SHADER);
+			int basicVert = Shaders.loadShader(gl, "basic.vert", GL4.GL_VERTEX_SHADER);
+			int basicFrag = Shaders.loadShader(gl, "basic.frag", GL4.GL_FRAGMENT_SHADER);
 			
-			int guiFrag = loadShader(gl, "gui.frag", GL4.GL_FRAGMENT_SHADER);
-			int guiGeom = loadShader(gl, "gui.geom", GL4.GL_GEOMETRY_SHADER);
+			int guiFrag = Shaders.loadShader(gl, "gui.frag", GL4.GL_FRAGMENT_SHADER);
+			int guiGeom = Shaders.loadShader(gl, "gui.geom", GL4.GL_GEOMETRY_SHADER);
 			
-			int textVert = loadShader(gl, "text.vert", GL4.GL_VERTEX_SHADER);
-			int textFrag = loadShader(gl, "text.frag", GL4.GL_FRAGMENT_SHADER);
+			int textVert = Shaders.loadShader(gl, "text.vert", GL4.GL_VERTEX_SHADER);
+			int textFrag = Shaders.loadShader(gl, "text.frag", GL4.GL_FRAGMENT_SHADER);
 			
 			this.basicShader = gl.glCreateProgram();
 			
@@ -335,24 +332,5 @@ public class OpenGLPrimitives implements IPrimitives {
 	private GL4 getGL(AppDrawingContext context) {
 		assert context instanceof OpenGLDrawingContext;
 		return ((OpenGLDrawingContext) context).getRenderer();
-	}
-	
-	public static int loadShader(GL4 gl, String name, int type) throws IOException {
-		InputStream input = OpenGLPrimitives.class.getResourceAsStream(name);
-		
-		byte[] buffer = new byte[128];
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		int count = 0;
-		
-		while((count = input.read(buffer)) != -1) {
-			baos.write(buffer, 0, count);
-		}
-		
-		String code = new String(baos.toByteArray(), Charset.forName("utf8"));
-
-		IntBuffer shaderID = IntBuffer.allocate(1);
-		ShaderUtil.createAndCompileShader(gl, shaderID, type, new String[][] {{ code }}, System.err);
-		
-		return shaderID.get(0);
 	}
 }

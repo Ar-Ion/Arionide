@@ -35,4 +35,6 @@ public interface Project extends Resource, MappedStructure, Loadable, Saveable {
 	public void initFS();
 	
 	public Storage getStorage();
+	
+	public DataManager getDataManager();
 }

@@ -31,16 +31,18 @@ public class WorldElement {
 	
 	/* Data needed for tesselation, rendering and collision detection. */
 	
+	private final int id;
 	private final Vector3f center;
 	private final Vector3f randVector;
 	private final Vector3f randAxis;
 	private final float size;
 	
-	private String identifier;
+	private String name;
 	private Vector4f color;
 	
-	protected WorldElement(String id, Vector3f center, Vector4f color, float size) {
-		this.identifier = id;
+	protected WorldElement(int id, String name, Vector3f center, Vector4f color, float size) {
+		this.id = id;
+		this.name = name;
 		this.center = new Vector3f(center);
 		this.randVector = this.generateRandomVector().normalize();
 		this.randAxis = new Vector3f(this.randVector).cross(this.generateRandomVector()).normalize();
@@ -56,19 +58,23 @@ public class WorldElement {
 		return object.distance(this.center) <= this.size;
 	}
 	
+	public int getID() {
+		return this.id;
+	}
+	
 	public Vector3f getCenter() {
 		return this.center;
 	}
 	
-	protected Vector3f getBaseVector() {
+	public Vector3f getBaseVector() {
 		return new Vector3f(this.randVector);
 	}
 	
-	protected Vector3f getAxis() {
+	public Vector3f getAxis() {
 		return new Vector3f(this.randAxis);
 	}
 	
-	protected float getSize() {
+	public float getSize() {
 		return this.size;
 	}
 	
@@ -76,19 +82,19 @@ public class WorldElement {
 		return this.color;
 	}
 	
-	protected String getID() {
-		return this.identifier;
-	}
-	
 	public void setColor(Vector4f color) {
 		this.color = color;
 	}
-	
-	public void setID(String id) {
-		this.identifier = id;
+		
+	protected String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public String toString() {
-		return this.identifier;
+		return this.name;
 	}
 }

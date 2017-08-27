@@ -23,6 +23,7 @@ package org.azentreprise.arionide.ui.core.opengl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import org.azentreprise.arionide.debugging.IAm;
@@ -30,6 +31,9 @@ import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.project.StructureElement;
+import org.azentreprise.arionide.project.StructureMeta;
+import org.azentreprise.arionide.ui.menu.Coloring;
+import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -39,7 +43,7 @@ public class WorldGeometry {
 	
 	private final List<WorldElement> hierarchy = new ArrayList<>();
 	private final List<WorldElement> inheritance = new ArrayList<>();
-	private final List<WorldElement> callgraph = new ArrayList<>();
+	private final List<WorldElement> callGraph = new ArrayList<>();
 
 	private List<WorldElement> current = new ArrayList<>();
 	
@@ -53,16 +57,20 @@ public class WorldGeometry {
 	protected void buildGeometry(Project project) {
 		Storage storage = project.getStorage();
 		
-		WorldElement main = new WorldElement("Lambda", new Vector3f(0.0f, 0.0f, 0.0f), new Vector4f(0.929f, 0.0392f, 0.247f, 0.3f), 1.0f);
+		WorldElement main = new WorldElement(0, "Lambda", new Vector3f(0.0f, 0.0f, 0.0f), new Vector4f(0.929f, 0.0392f, 0.247f, 0.3f), 1.0f);
 		
 		this.hierarchy.add(main);
 		
-		this.build(main, this.hierarchy, Arrays.asList(new StructureElement("caca", null), new StructureElement("prout", null)), 1.0f);
+		Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
 		
-		this.current = hierarchy;
+		this.build(main, this.hierarchy, storage.getHierarchy(), metaData, 20.0f);
+		this.build(main, this.inheritance, storage.getInheritance(), metaData, 20.0f);
+		this.build(main, this.callGraph, storage.getCallGraph(), metaData, 20.0f);
+
+		this.current = this.hierarchy;
 	}
 	
-	private void build(WorldElement parent, List<WorldElement> list, List<StructureElement> elements, float size) {
+	private void build(WorldElement parent, List<WorldElement> list, List<StructureElement> elements, Map<Integer, StructureMeta> metaData, float size) {
 		if(elements != null && elements.size() > 0) {
 			Quaternionf quaternion = new Quaternionf(new AxisAngle4f((float) Math.PI * 2.0f / elements.size(), parent.getAxis()));
 			Vector3f base = parent.getBaseVector();
@@ -72,10 +80,13 @@ public class WorldGeometry {
 			for(StructureElement element : elements) {
 				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(0.8f);
 				
-				WorldElement object = new WorldElement(element.getName(), position, new Vector4f(1.0f, 1.0f, 1.0f, 0.3f), size);
+				StructureMeta structMeta = metaData.get(element.getID());
+				Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.3f);
+				
+				WorldElement object = new WorldElement(element.getID(), structMeta.getName(), position, color, size);
 				list.add(object);
 				
-				this.build(object, list, element.getChildren(), size);
+				this.build(object, list, element.getChildren(), metaData, size);
 			}
 		}
 	}

@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.debugging.IAm;
@@ -60,6 +61,7 @@ public class ZipStorage extends Storage {
 	private Path inheritancePath;
 	private Path callGraphPath;
 	private Path historyPath;
+	private Path structureMetaPath;
 	private Path currentDataPath;
 
 	@IAm("initializing the project storage")
@@ -71,11 +73,15 @@ public class ZipStorage extends Storage {
 		try {
 			this.initFS0();
 						
-			this.metaPath = this.init(null, "meta", "project");
-			this.hierarchyPath = this.<StructureElement>init((alloc) -> this.hierarchy = alloc, "struct", "hierarchy");
-			this.inheritancePath = this.<StructureElement>init((alloc) -> this.inheritance = alloc, "struct", "inheritance");
-			this.callGraphPath = this.<StructureElement>init((alloc) -> this.callGraph = alloc, "struct", "callgraph");
-			this.historyPath = this.<HistoryElement>init((alloc) -> this.history = alloc, "history");
+			this.metaPath = this.init(null, null, "meta", "project");
+			
+			Supplier<List<StructureElement>> supplier = ArrayList<StructureElement>::new;
+			
+			this.hierarchyPath = this.init(supplier, e -> this.hierarchy = e,"struct", "hierarchy");
+			this.inheritancePath = this.init(supplier, e -> this.inheritance = e, "struct", "inheritance");
+			this.callGraphPath = this.init(supplier, e -> this.callGraph = e, "struct", "callgraph");
+			this.structureMetaPath = this.init(HashMap<Integer, StructureMeta>::new, e -> this.structMeta = e, "struct_meta");
+			this.historyPath = this.init(ArrayList<HistoryElement>::new, e -> this.history = e, "history");
 		} catch (IOException exception) {
 			Debug.exception(exception);
 		}
@@ -103,7 +109,7 @@ public class ZipStorage extends Storage {
 		}
 	}
 	
-	private <T extends Serializable> Path init(Consumer<List<T>> initializer, String first, String... more) throws IOException {
+	private <T> Path init(Supplier<T> allocator, Consumer<T> initializer, String first, String... more) throws IOException {
 		Path path = this.fs.getPath(first, more);
 		
 		if(!Files.exists(path)) {
@@ -117,10 +123,14 @@ public class ZipStorage extends Storage {
 			
 			Files.createFile(path);
 						
-			if(initializer != null) {
-				List<T> alloc = new ArrayList<T>();
-				initializer.accept(alloc);
-				this.save(path, alloc);
+			if(allocator != null) {
+				T object = allocator.get();
+				
+				if(initializer != null) {
+					initializer.accept(object);
+				}
+				
+				this.save(path, object);
 			}
 		}
 			
@@ -159,6 +169,14 @@ public class ZipStorage extends Storage {
 		this.save(this.callGraphPath, this.callGraph);
 	}
 	
+	public void loadStructureMeta() {	
+		this.structMeta = this.load(this.structureMetaPath);
+	}
+	
+	public void saveStructureMeta() {
+		this.save(this.structureMetaPath, this.structMeta);
+	}
+	
 	public void loadHistory() {	
 		this.history = this.load(this.historyPath);
 	}
@@ -169,7 +187,7 @@ public class ZipStorage extends Storage {
 	
 	public void loadData(int id) {
 		try {
-			this.currentDataPath = this.<DataElement>init((alloc) -> this.currentData = alloc, "data", String.valueOf(id));
+			this.currentDataPath = this.init(ArrayList<DataElement>::new, e -> this.currentData = e, "data", String.valueOf(id));
 		} catch (IOException exception) {
 			Debug.exception(exception);
 		}
@@ -186,9 +204,9 @@ public class ZipStorage extends Storage {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T extends Serializable> List<T> load(Path path) {
+	private <T extends Serializable> T load(Path path) {
 		try(ObjectInputStream input = new ObjectInputStream(Files.newInputStream(path))) {
-			return (List<T>) input.readObject();
+			return (T) input.readObject();
 		} catch (IOException | ClassNotFoundException exception) {
 			Debug.exception(exception);
 			return null;

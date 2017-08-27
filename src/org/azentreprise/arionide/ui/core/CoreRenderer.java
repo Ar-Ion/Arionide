@@ -21,6 +21,7 @@
 package org.azentreprise.arionide.ui.core;
 
 import java.awt.Rectangle;
+import java.util.List;
 
 import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.project.Project;
@@ -39,4 +40,7 @@ public interface CoreRenderer {
 	
 	@IAm("setting up the current project")
 	public void loadProject(Project project);
+	
+	/* The IDs in which the user is. */
+	public List<Integer> getInside();
 }

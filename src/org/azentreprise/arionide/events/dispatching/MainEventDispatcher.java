@@ -39,24 +39,28 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 		thread.setup(this);
 	}
 	
-	public synchronized void fire(Event event) {
+	public void fire(Event event) {
 		this.events.add(event);
 	}
 	
 	public void purge() {
-		this.handlers.clear();
-		this.events.clear(); // this should cause a crash
+		synchronized(this.handlers) {
+			this.handlers.clear();
+			this.events.clear(); // this might cause a crash (purging)
+		}
 	}
 	
-	public synchronized void dispatchEvents() {	
-		while(!this.events.isEmpty()) {
-			Event event = this.events.poll();
-							
-			for(EventHandler handler : this.handlers) {
-				if(handler != null && handler.getHandleableEvents() != null && event != null) {
-					if(handler.getHandleableEvents().contains(event.getClass())) {
-						if(!event.hasBeenAborted()) {
-							handler.handleEvent(event);
+	public void dispatchEvents() {
+		synchronized(this.handlers) {
+			while(!this.events.isEmpty()) {
+				Event event = this.events.poll();
+								
+				for(EventHandler handler : this.handlers) {
+					if(handler != null && handler.getHandleableEvents() != null && event != null) {
+						if(handler.getHandleableEvents().contains(event.getClass())) {
+							if(!event.hasBeenAborted()) {
+								handler.handleEvent(event);
+							}
 						}
 					}
 				}

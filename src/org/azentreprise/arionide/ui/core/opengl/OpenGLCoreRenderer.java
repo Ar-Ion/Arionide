@@ -31,9 +31,11 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.azentreprise.arionide.debugging.Debug;
@@ -55,7 +57,7 @@ import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
 import org.azentreprise.arionide.ui.menu.MainMenus;
-import org.azentreprise.arionide.ui.primitives.OpenGLPrimitives;
+import org.azentreprise.arionide.ui.shaders.Shaders;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -119,7 +121,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private boolean isInWorld = false;
 	private boolean isControlDown = false;
 	
-	private List<WorldElement> inside = new ArrayList<>();
+	private List<WorldElement> inside = Collections.synchronizedList(new ArrayList<>());
 	private List<WorldElement> buffer = new ArrayList<>();
 	private WorldElement current;
 	private WorldElement lookingAt;
@@ -162,8 +164,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	public void init(GL4 gl) {
 		try {
 			/* Shader initialization */
-			int vert = OpenGLPrimitives.loadShader(gl, "core.vert", GL4.GL_VERTEX_SHADER);
-			int frag = OpenGLPrimitives.loadShader(gl, "core.frag", GL4.GL_FRAGMENT_SHADER);
+			int vert = Shaders.loadShader(gl, "core.vert", GL4.GL_VERTEX_SHADER);
+			int frag = Shaders.loadShader(gl, "core.frag", GL4.GL_FRAGMENT_SHADER);
 			
 			this.shader = gl.glCreateProgram();
 			
@@ -208,7 +210,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			gl.glBufferData(GL4.GL_ARRAY_BUFFER, sky.capacity() * Double.BYTES, sky.flip(), GL4.GL_STATIC_DRAW);
 			this.enablePosition(gl);
 			
-			/* Create the default sphere. */
+			/* Create the default sphere */
 			DoubleBuffer sphere = DoubleBuffer.allocate(sphereLongitudes * (sphereLatitudes  + 1) * 3);
 			IntBuffer indices = IntBuffer.allocate(sphereLongitudes * sphereLatitudes * 4);
 
@@ -297,22 +299,24 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.updatePosition();
 		
 		Stream<WorldElement> elements = this.geometry.getCollisions(this.player);
-				
-		elements.forEach((element) -> {
-			if(!this.inside.remove(element)) {
-				if(this.enterElement(element)) {
+		
+		synchronized(this.inside) {
+			elements.forEach((element) -> {
+				if(!this.inside.remove(element)) {
+					if(this.enterElement(element)) {
+						this.buffer.add(element);
+					}
+				} else {
 					this.buffer.add(element);
 				}
-			} else {
-				this.buffer.add(element);
-			}
-		});
-		
-		this.inside.stream().filter(((Predicate<WorldElement>) this::exitElement).negate()).forEach(this.buffer::add);
-		
-		this.inside.clear();
-		this.inside.addAll(this.buffer); // Swap buffers
-		this.buffer.clear();
+			});
+			
+			this.inside.stream().filter(((Predicate<WorldElement>) this::exitElement).negate()).forEach(this.buffer::add);
+			
+			this.inside.clear();
+			this.inside.addAll(this.buffer); // Swap buffers
+			this.buffer.clear();
+		}
 				
 		this.updateCamera();
 		this.checkForTargetAndUpdateMenu();
@@ -330,7 +334,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
 	private String getElementName(WorldElement element) {
 		if(element != null) {
-			if(element.getID().isEmpty()) {
+			if(element.getName().isEmpty()) {
 				return "a lambda structure";
 			} else {
 				return "'" + element.getID() + "'";
@@ -340,7 +344,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		}
 	}
 
-	private boolean enterElement(WorldElement element) {
+	private boolean enterElement(WorldElement element) {		
 		this.current = element;
 		this.needUpdate = true;
 		return true;
@@ -466,13 +470,19 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.updatePerspective();
 	}
 	
+	public List<Integer> getInside() {
+		synchronized(this.inside) {
+			return this.inside.stream().map(WorldElement::getID).collect(Collectors.toList());
+		}
+	}
+	
 	private void updatePerspective() {
 		if(this.bounds != null) {
 			this.loadMatrixData(this.matrix.identity().perspective(fov, (float) (this.bounds.getWidth() / this.bounds.getHeight()), this.zNear, this.zFar), this.projectionData);
 		}
 	}
 	
-	public void updateCamera() {
+	private void updateCamera() {
 		this.loadMatrixData(this.matrix
 				.identity()
 				.rotate(-this.pitch, 1.0f, 0.0f, 0.0f)
@@ -481,7 +491,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		, this.viewData);
 	}
 	
-	public void lookAt(Vector3f object) {
+	private void lookAt(Vector3f object) {
 		this.loadMatrixData(this.matrix
 				.identity()
 				.lookAt(this.player, object, upVector)

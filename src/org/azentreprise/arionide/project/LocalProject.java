@@ -50,19 +50,30 @@ public class LocalProject implements Project {
 	}
 	
 	private final ZipStorage storage;
+	private final DataManager manager;
 	private final Map<String, byte[]> properties = new LinkedHashMap<>();
 	
 	public LocalProject(File path) {
 		this.storage = new ZipStorage(path);
+		this.manager = new DataManager(this);
 	}
 	
 	public void initFS() {
 		this.storage.initFS();
+		
+		this.storage.loadHierarchy();
+		this.storage.loadInheritance();
+		this.storage.loadCallGraph();
+		this.storage.loadStructureMeta();
+		this.storage.loadHistory();
 	}
 	
-	/* WARNING: Do not mutate the data in the lists !!! */
 	public Storage getStorage() {
 		return this.storage;
+	}
+
+	public DataManager getDataManager() {
+		return this.manager;
 	}
 	
 	@IAm("loading a project")

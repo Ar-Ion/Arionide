@@ -20,7 +20,9 @@
  *******************************************************************************/
 package org.azentreprise.arionide.project;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.azentreprise.arionide.debugging.IAm;
 
@@ -29,26 +31,55 @@ public abstract class Storage {
 	protected List<StructureElement> hierarchy;
 	protected List<StructureElement> inheritance;
 	protected List<StructureElement> callGraph;
+	protected Map<Integer, StructureMeta> structMeta;
 	protected List<HistoryElement> history;
 	protected List<DataElement> currentData;
 	
 	public List<StructureElement> getHierarchy() {
-		return this.hierarchy;
+		return Collections.unmodifiableList(this.hierarchy);
 	}
 	
 	public List<StructureElement> getInheritance() {
-		return this.inheritance;
+		return Collections.unmodifiableList(this.inheritance);
 	}
 	
 	public List<StructureElement> getCallGraph() {
-		return this.callGraph;
+		return Collections.unmodifiableList(this.callGraph);
+	}
+	
+	public Map<Integer, StructureMeta> getStructureMeta() {
+		return Collections.unmodifiableMap(this.structMeta);
 	}
 	
 	public List<HistoryElement> getHistory() {
-		return this.history;
+		return Collections.unmodifiableList(this.history);
 	}
 	
 	public List<DataElement> getCurrentData() {
+		return Collections.unmodifiableList(this.currentData);
+	}
+	
+	protected List<StructureElement> getHierarchy0() {
+		return this.hierarchy;
+	}
+	
+	protected List<StructureElement> getInheritance0() {
+		return this.inheritance;
+	}
+	
+	protected List<StructureElement> getCallGraph0() {
+		return this.callGraph;
+	}
+	
+	protected Map<Integer, StructureMeta> getStructureMeta0() {
+		return this.structMeta;
+	}
+	
+	protected List<HistoryElement> getHistory0() {
+		return this.history;
+	}
+	
+	protected List<DataElement> getCurrentData0() {
 		return this.currentData;
 	}
 	
@@ -71,6 +102,11 @@ public abstract class Storage {
 	public abstract void loadHistory();
 	@IAm("saving the history")
 	public abstract void saveHistory();
+	
+	@IAm("loading the structures meta data")
+	public abstract void loadStructureMeta();
+	@IAm("saving the structures meta data")
+	public abstract void saveStructureMeta();
 	
 	@IAm("loading data")
 	public abstract void loadData(int id);

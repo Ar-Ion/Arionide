@@ -21,6 +21,7 @@
 package org.azentreprise.arionide.ui.core.awt;
 
 import java.awt.Rectangle;
+import java.util.List;
 
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AWTDrawingContext;
@@ -52,5 +53,11 @@ public class AWTCoreRenderer implements CoreRenderer {
 	public void update(Rectangle bounds) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<Integer> getInside() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

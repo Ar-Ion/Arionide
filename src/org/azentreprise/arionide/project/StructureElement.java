@@ -21,25 +21,30 @@
 package org.azentreprise.arionide.project;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 public class StructureElement implements Serializable {
 	private static final long serialVersionUID = -5901117492235888923L;
 
-	private final String name;
+	private final int id;
 	private final List<StructureElement> children;
 	
-	public StructureElement(String name, List<StructureElement> children) {
-		this.name = name;
+	public StructureElement(int id, List<StructureElement> children) {
+		this.id = id;
 		this.children = children;
 		
 	}
 	
 	public List<StructureElement> getChildren() {
+		return Collections.unmodifiableList(this.children);
+	}
+	
+	protected List<StructureElement> getChildren0() {
 		return this.children;
 	}
 	
-	public String getName() {
-		return this.name;
+	public int getID() {
+		return this.id;
 	}
 }

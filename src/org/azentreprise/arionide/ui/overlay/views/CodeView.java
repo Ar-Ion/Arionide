@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.swing.JOptionPane;
+
 import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
@@ -76,8 +78,8 @@ public class CodeView extends View implements EventHandler {
 
 		this.add(new Button(this, "...").setSignal("more"), 0.85f, 0.86f, 0.95f, 0.94f);
 
-		this.add(this.currentInfo, 0.2f, 0.1f, 0.8f, 0.15f);
-		this.add(this.currentMessage, 0.2f, 0.75f, 0.8f, 0.85f);
+		this.add(this.currentMessage, 0.2f, 0.1f, 0.8f, 0.2f);
+		this.add(this.currentInfo, 0.2f, 0.78f, 0.8f, 0.85f);
 		this.add(this.currentDebug, 0.0f, 0.95f, 1.0f, 1.0f);
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
@@ -87,7 +89,7 @@ public class CodeView extends View implements EventHandler {
 		super.show();
 		this.setupFocusCycle(2, 3, 5, 0);
 		this.currentProject = this.getAppManager().getWorkspace().getCurrentProject();
-		this.getAppManager().getEventDispatcher().fire(new MessageEvent("Project " + this.currentProject.getName() + " has been successfully loaded", MessageType.SUCCESS));
+		this.getAppManager().getEventDispatcher().fire(new MessageEvent("'" + this.currentProject.getName() + "' has been successfully loaded", MessageType.SUCCESS));
 		this.getAppManager().getCoreRenderer().loadProject(this.currentProject);
 	}
 	
@@ -120,6 +122,11 @@ public class CodeView extends View implements EventHandler {
 				}
 			} else if(click.isTargetting(this, "run")) {
 				this.currentProject.save();
+			} else if(click.isTargetting(this, "add")) {
+				new Thread(() -> {
+					String name = JOptionPane.showInputDialog(null, "Please enter the name of the new structure", "New structure", JOptionPane.PLAIN_MESSAGE);
+					this.getAppManager().getWorkspace().getCurrentProject().getDataManager().newStructure(name);
+				}).start();
 			} else if(click.isTargetting((Component) null, "SCROLL")) {
 				assert this.currentMenu != null;
 				this.currentMenu.click();
