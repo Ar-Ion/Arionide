@@ -278,7 +278,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				
 		gl.glUniform1f(this.ambientFactor, 1.0f);
 		gl.glUniform3f(this.lightColor, 1.0f, 1.0f, 1.0f);
-		gl.glUniform3f(this.lightPosition, sunPosition.x, sunPosition.y, sunPosition.z);
+		gl.glUniform3f(this.lightPosition, 0.0f, sunPosition.y, 0.0f);
 		
 		this.drawStars(gl);
 
@@ -321,7 +321,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.updateCamera();
 		this.checkForTargetAndUpdateMenu();
 		
-		this.dispatcher.fire(new MessageEvent(this.player + " | Looking at " + this.getElementName(this.lookingAt), MessageType.DEBUG));
+		this.dispatcher.fire(new MessageEvent(this.player + " | Looking at " + this.getElementName(this.lookingAt) + " (" + (this.lookingAt != null ? this.lookingAt.getID() : -1) + ")", MessageType.DEBUG));
 		
 		this.velocity.mul(ambientEnergyConservation, this.velocity);
 	}
@@ -335,9 +335,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private String getElementName(WorldElement element) {
 		if(element != null) {
 			if(element.getName().isEmpty()) {
-				return "a lambda structure";
+				return "a mysterious structure";
 			} else {
-				return "'" + element.getID() + "'";
+				return "'" + element.getName() + "'";
 			}
 		} else {
 			return "the space";
@@ -376,16 +376,18 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 
 		List<WorldElement> menuData = new ArrayList<>();
 		
-		for(WorldElement element : this.geometry.getElements()) {
-			if(element.getSize() == size) {
-				float currentDistance = this.player.distance(element.getCenter());
-
-				menuData.add(element);
-				
-				if(currentDistance < distance) {
-					if(element.collidesWith(new Vector3f(cameraDirection).normalize(currentDistance).add(this.player))) {
-						found = element;
-						distance = currentDistance;
+		synchronized(this.geometry) {
+			for(WorldElement element : this.geometry.getElements()) {
+				if(element.getSize() == size) {
+					float currentDistance = this.player.distance(element.getCenter());
+	
+					menuData.add(element);
+					
+					if(currentDistance < distance) {
+						if(element.collidesWith(new Vector3f(cameraDirection).normalize(currentDistance).add(this.player))) {
+							found = element;
+							distance = currentDistance;
+						}
 					}
 				}
 			}
@@ -415,31 +417,33 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
 	private void drawElements(GL4 gl) {
 		gl.glUniform1f(this.ambientFactor, 0.3f);
-
-		for(WorldElement element : this.geometry.getElements()) {
-			this.loadMatrixData(this.matrix.identity().translate(element.getCenter()).scale(element.getSize()), this.modelData);
-			gl.glUniformMatrix4fv(this.model, 1, false, this.modelData);
-
-			if(this.inside.contains(element)) {
-				gl.glEnable(GL4.GL_BLEND);
-				gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
-			} else {
-				gl.glDisable(GL4.GL_BLEND);
+		
+		synchronized(this.geometry) {
+			for(WorldElement element : this.geometry.getElements()) {
+				this.loadMatrixData(this.matrix.identity().translate(element.getCenter()).scale(element.getSize()), this.modelData);
+				gl.glUniformMatrix4fv(this.model, 1, false, this.modelData);
+	
+				if(this.inside.contains(element)) {
+					gl.glEnable(GL4.GL_BLEND);
+					gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
+				} else {
+					gl.glDisable(GL4.GL_BLEND);
+				}
+				
+				if(element != this.selected) {
+					gl.glUniform1f(this.ambientFactor, 0.3f);
+				} else {
+					gl.glUniform1f(this.ambientFactor, 0.6f);
+				}
+				
+				gl.glEnable(GL4.GL_DEPTH_TEST);
+				
+				Vector4f color = element.getColor();
+				gl.glUniform4f(this.color, color.x, color.y, color.z, color.w);
+				gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, sphereLongitudes * sphereLatitudes * 4, GL4.GL_UNSIGNED_INT, 0);
+				
+				gl.glDisable(GL4.GL_DEPTH_TEST);
 			}
-			
-			if(element != this.selected) {
-				gl.glUniform1f(this.ambientFactor, 0.3f);
-			} else {
-				gl.glUniform1f(this.ambientFactor, 0.6f);
-			}
-			
-			gl.glEnable(GL4.GL_DEPTH_TEST);
-			
-			Vector4f color = element.getColor();
-			gl.glUniform4f(this.color, color.x, color.y, color.z, color.w);
-			gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, sphereLongitudes * sphereLatitudes * 4, GL4.GL_UNSIGNED_INT, 0);
-			
-			gl.glDisable(GL4.GL_DEPTH_TEST);
 		}
 		
 		gl.glDisable(GL4.GL_BLEND); // Ensure it is disabled.
@@ -461,8 +465,17 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 
 	public void loadProject(Project project) {
+		if(project == null) {
+			this.isInWorld = false;
+			this.context.setCursor(Cursor.getDefaultCursor());
+		}
+		
 		this.project = project;
-		this.geometry.buildGeometry(project);
+		this.needUpdate = true;
+				
+		synchronized(this.geometry) {
+			this.geometry.buildGeometry(project);
+		}
 	}
 
 	public void update(Rectangle bounds) {
@@ -491,13 +504,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		, this.viewData);
 	}
 	
-	private void lookAt(Vector3f object) {
-		this.loadMatrixData(this.matrix
-				.identity()
-				.lookAt(this.player, object, upVector)
-		, this.viewData);
-	}
-	
 	private void loadMatrixData(Matrix4f matrix, FloatBuffer target) {
 		target.put(0, matrix.m00());
 		target.put(1, matrix.m01());
@@ -518,6 +524,10 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 
 	public <T extends Event> void handleEvent(T event) {
+		if(this.project == null) {
+			return;
+		}
+		
 		if(event instanceof MoveEvent) {
 			if(this.isInWorld) {
 				Point2D position = ((MoveEvent) event).getPoint();

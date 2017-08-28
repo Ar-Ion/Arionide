@@ -33,7 +33,6 @@ public class StructureElement implements Serializable {
 	public StructureElement(int id, List<StructureElement> children) {
 		this.id = id;
 		this.children = children;
-		
 	}
 	
 	public List<StructureElement> getChildren() {

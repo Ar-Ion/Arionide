@@ -45,6 +45,7 @@ public class LocalProject implements Project {
 	static {
 		projectProtocolMapping.put("version", Long.toString(versionUID).getBytes(Coder.charset));
 		projectProtocolMapping.put("name", new String("Undefined").getBytes(Coder.charset));
+		projectProtocolMapping.put("structureGen", new String("0").getBytes(Coder.charset));
 		projectProtocolMapping.put("definitions", new String("org.azentreprise.arionide.native.NativeDefinitions()").getBytes(Coder.charset));
 		projectProtocolMapping.put("runtime", new String("org.azentreprise.arionide.native.NativeRuntime()").getBytes(Coder.charset));
 	}
@@ -107,10 +108,7 @@ public class LocalProject implements Project {
 				
 				startIndex = endIndex + 1;
 			}
-			
-			System.out.println(new String(data));
-			System.out.println(this.properties);
-			
+									
 			this.verifyProtocol();
 		} catch (Exception exception) {
 			Debug.exception(exception);
@@ -119,9 +117,9 @@ public class LocalProject implements Project {
 
 	@IAm("saving a project")
 	public void save() {
-		try {
-			OutputStream stream = Files.newOutputStream(this.storage.getMetaPath(), StandardOpenOption.WRITE);
-			
+		try {			
+			OutputStream stream = Files.newOutputStream(this.storage.getMetaPath(), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+						
 			this.verifyProtocol();
 						
 			for(Entry<String, byte[]> property : this.properties.entrySet()) {
@@ -147,7 +145,8 @@ public class LocalProject implements Project {
 				stream.write(Coder.newline);
 			}
 			
-			this.storage.flushFS();
+			stream.flush();
+			stream.close();
 		} catch(Exception exception) {
 			Debug.exception(exception);
 		}

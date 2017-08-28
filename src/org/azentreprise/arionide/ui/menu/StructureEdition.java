@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu;
 
+import javax.swing.JOptionPane;
+
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.ui.AppManager;
@@ -55,6 +57,14 @@ public class StructureEdition extends Menu {
 				this.go();
 				break;
 			case name:
+				new Thread(() -> {
+					String name = JOptionPane.showInputDialog(null, "Please enter the new name of the structure", "New name", JOptionPane.PLAIN_MESSAGE);
+					
+					if(name != null) {
+						MessageEvent message = this.getManager().getWorkspace().getCurrentProject().getDataManager().setName(this.current.getID(), name);
+						this.getManager().getEventDispatcher().fire(message);
+					}
+				}).start();
 				break;
 			case color:
 				this.show(this.coloring);

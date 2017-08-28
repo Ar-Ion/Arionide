@@ -20,10 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events.dispatching;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 import org.azentreprise.arionide.events.Event;
@@ -31,36 +28,35 @@ import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.threading.EventDispatchingThread;
 
 public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
-
-	private final List<EventHandler> handlers = Collections.synchronizedList(new ArrayList<>());
+	
+	private final EventHandler[] handlers = new EventHandler[64];
 	private final Queue<Event> events = new LinkedList<>();
+	
+	private int insertionIndex = 0;
 		
 	public MainEventDispatcher(EventDispatchingThread thread) {
 		thread.setup(this);
 	}
 	
-	public void fire(Event event) {
+	public synchronized void fire(Event event) {
 		this.events.add(event);
 	}
 	
 	public void purge() {
-		synchronized(this.handlers) {
-			this.handlers.clear();
-			this.events.clear(); // this might cause a crash (purging)
-		}
+		this.events.clear(); // this might cause a crash (purging)
 	}
 	
-	public void dispatchEvents() {
-		synchronized(this.handlers) {
-			while(!this.events.isEmpty()) {
-				Event event = this.events.poll();
-								
-				for(EventHandler handler : this.handlers) {
-					if(handler != null && handler.getHandleableEvents() != null && event != null) {
-						if(handler.getHandleableEvents().contains(event.getClass())) {
-							if(!event.hasBeenAborted()) {
-								handler.handleEvent(event);
-							}
+	public synchronized void dispatchEvents() {
+		while(true) {
+			Event event = this.events.poll();
+			
+			if(event == null) break;
+			
+			for(EventHandler handler : this.handlers) {
+				if(handler != null && handler.getHandleableEvents() != null && event != null) {
+					if(handler.getHandleableEvents().contains(event.getClass())) {
+						if(!event.hasBeenAborted()) {
+							handler.handleEvent(event);
 						}
 					}
 				}
@@ -69,6 +65,7 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	}
 
 	public synchronized void registerHandler(EventHandler handler) {
-		this.handlers.add(handler);
+		assert this.insertionIndex < this.handlers.length : "Overflow: too many handlers trying to register";
+		this.handlers[this.insertionIndex++] = handler;
 	}
 }

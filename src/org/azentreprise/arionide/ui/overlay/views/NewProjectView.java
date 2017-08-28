@@ -77,8 +77,10 @@ public class NewProjectView extends View implements EventHandler {
 				
 				if(!name.isEmpty()) {
 					try {
-						this.getAppManager().getWorkspace().createProject(((Text) text).getText());
+						this.getAppManager().getWorkspace().createProject(name);
 						this.openView(Views.code);
+						
+						((Text) text).setText(""); // Reset field
 					} catch(IOException exception) {
 						Debug.exception(exception);
 					}

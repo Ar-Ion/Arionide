@@ -79,9 +79,9 @@ public class LocalWorkspace implements Workspace {
 			File[] files = this.path.listFiles();
 			
 			for(File potential : files) {
-				LocalProject element = new LocalProject(potential);
-
 				if(potential.isFile() && potential.getName().endsWith(".proj")) {
+					LocalProject element = new LocalProject(potential);
+					
 					if(!this.projects.contains(element)) {
 						element.initFS();
 						this.projects.add(element);

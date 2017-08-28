@@ -25,12 +25,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,8 +42,6 @@ import java.util.function.Supplier;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.debugging.IAm;
 
-import com.sun.nio.zipfs.ZipFileSystem;
-
 public class ZipStorage extends Storage {
 
 	private static final Map<String, String> fileSystemEnvironment = new HashMap<>();
@@ -54,6 +52,7 @@ public class ZipStorage extends Storage {
 	
 	private final File location;
 	
+	private URI uri;
 	private FileSystem fs;
 	
 	private Path metaPath;
@@ -67,6 +66,29 @@ public class ZipStorage extends Storage {
 	@IAm("initializing the project storage")
 	public ZipStorage(File path) {
 		this.location = path;
+		
+		try {
+			Path backup = new File(path.getParentFile(), path.getName() + ".bak").toPath();
+			
+			if(path.exists()) {
+				Files.copy(path.toPath(), backup, StandardCopyOption.REPLACE_EXISTING);
+			}
+			
+			this.uri = URI.create("jar:" + path.toURI());
+			
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+				try {
+					if(this.fs != null && this.fs.isOpen()) {
+						this.fs.close();
+					}
+				} catch (IOException e) {
+					// Do not use an AWT popup in a shutdown hook
+					e.printStackTrace();
+				}
+			}));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void initFS() {
@@ -77,10 +99,10 @@ public class ZipStorage extends Storage {
 			
 			Supplier<List<StructureElement>> supplier = ArrayList<StructureElement>::new;
 			
-			this.hierarchyPath = this.init(supplier, e -> this.hierarchy = e,"struct", "hierarchy");
+			this.hierarchyPath = this.init(supplier, e -> this.hierarchy = e, "struct", "hierarchy");
 			this.inheritancePath = this.init(supplier, e -> this.inheritance = e, "struct", "inheritance");
 			this.callGraphPath = this.init(supplier, e -> this.callGraph = e, "struct", "callgraph");
-			this.structureMetaPath = this.init(HashMap<Integer, StructureMeta>::new, e -> this.structMeta = e, "struct_meta");
+			this.structureMetaPath = this.init(HashMap<Integer, StructureMeta>::new, e -> this.structMeta = e, "meta", "structures");
 			this.historyPath = this.init(ArrayList<HistoryElement>::new, e -> this.history = e, "history");
 		} catch (IOException exception) {
 			Debug.exception(exception);
@@ -88,24 +110,10 @@ public class ZipStorage extends Storage {
 	}
 	
 	private void initFS0() throws IOException {
-		URI uri = URI.create("jar:".concat(this.location.toURI().toString()));
-		
 		try {
-			this.fs = FileSystems.getFileSystem(uri);
+			this.fs = FileSystems.getFileSystem(this.uri);
 		} catch(Exception e) {
-			this.fs = FileSystems.newFileSystem(uri, fileSystemEnvironment);
-		}
-	}
-	
-	public void flushFS() {
-		try {
-			if(this.fs.isOpen()) {
-				Method method = ZipFileSystem.class.getDeclaredMethod("sync");
-				method.setAccessible(true);
-				method.invoke(this.fs);
-			}
-		} catch (Exception exception) {
-			Debug.exception(exception);
+			this.fs = FileSystems.newFileSystem(this.uri, fileSystemEnvironment);
 		}
 	}
 	
@@ -204,7 +212,7 @@ public class ZipStorage extends Storage {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T extends Serializable> T load(Path path) {
+	private synchronized <T extends Serializable> T load(Path path) {
 		try(ObjectInputStream input = new ObjectInputStream(Files.newInputStream(path))) {
 			return (T) input.readObject();
 		} catch (IOException | ClassNotFoundException exception) {
@@ -213,15 +221,13 @@ public class ZipStorage extends Storage {
 		}
 	}
 	
-	private void save(Path path, Object object) {
-		
+	private synchronized void save(Path path, Object object) {
 		assert object instanceof Serializable;
-		
-		try(ObjectOutputStream output = new ObjectOutputStream(Files.newOutputStream(path, StandardOpenOption.WRITE))) {
+
+		try(ObjectOutputStream output = new ObjectOutputStream(Files.newOutputStream(path, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING))) {
 			output.writeObject(object);
 		} catch (IOException exception) {
 			Debug.exception(exception);
 		}
 	}
-
 }

@@ -95,7 +95,6 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 		
 		this.dispatcher = dispatcher;
 		this.theManager = new AppManager(theInstance, this, dispatcher);
-		
 		this.caps.setDoubleBuffered(true);
 		this.caps.setHardwareAccelerated(true);
 		this.window = GLWindow.create(this.caps);

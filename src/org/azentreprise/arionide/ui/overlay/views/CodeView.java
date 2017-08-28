@@ -103,6 +103,7 @@ public class CodeView extends View implements EventHandler {
 			
 			if(click.isTargetting(this, "back")) {
 				this.getAppManager().getWorkspace().closeProject(this.currentProject);
+				this.getAppManager().getCoreRenderer().loadProject(null);
 				this.openView(Views.main);
 			} else if(click.isTargetting(this, "sceneChanged")) {
 				int tabID = (int) click.getData()[0];
@@ -125,7 +126,11 @@ public class CodeView extends View implements EventHandler {
 			} else if(click.isTargetting(this, "add")) {
 				new Thread(() -> {
 					String name = JOptionPane.showInputDialog(null, "Please enter the name of the new structure", "New structure", JOptionPane.PLAIN_MESSAGE);
-					this.getAppManager().getWorkspace().getCurrentProject().getDataManager().newStructure(name);
+					
+					if(name != null) {
+						MessageEvent message = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().newStructure(name, this.getAppManager().getCoreRenderer().getInside());
+						this.getAppManager().getEventDispatcher().fire(message);
+					}
 				}).start();
 			} else if(click.isTargetting((Component) null, "SCROLL")) {
 				assert this.currentMenu != null;
