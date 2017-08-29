@@ -46,7 +46,9 @@ public class DataManager {
 
 		this.storage.saveHierarchy();
 		
-		return this.setName((int) structureID, name);
+		MessageEvent message = this.setName((int) structureID, name);
+				
+		return message.getMessageType() != MessageType.SUCCESS ? message : new MessageEvent("Structure successfully created", MessageType.SUCCESS);
 	}
 	
 	public MessageEvent setName(int id, String name) {
@@ -58,7 +60,7 @@ public class DataManager {
 			if(name.isEmpty()) {
 				return new MessageEvent("Empty names are discouraged", MessageType.WARN);
 			} else {
-				return new MessageEvent("Structure successfully created", MessageType.SUCCESS);
+				return new MessageEvent("Name successfully updated", MessageType.SUCCESS);
 			}
 		} else {
 			return new MessageEvent("Invalid structure id", MessageType.ERROR);

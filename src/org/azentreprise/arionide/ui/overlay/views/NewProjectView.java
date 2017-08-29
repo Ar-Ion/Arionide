@@ -87,6 +87,12 @@ public class NewProjectView extends View implements EventHandler {
 				}
 			} else if(click.isTargetting(this, "cancel")) {
 				this.openView(Views.main);
+				
+				Component text = this.get(1);
+				
+				assert text instanceof Text;
+				
+				((Text) text).setText(""); // Reset field
 			}
 		}
 	}

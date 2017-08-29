@@ -82,21 +82,20 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private static final int spawnKey = KeyEvent.VK_C;
 	private static final int fullscreen = KeyEvent.VK_F;
 
+	private static final float initialAcceleration = 0.01f;
 	private static final float ambientEnergyConservation = 0.9f;
 
 	private static final float fov = (float) Math.toRadians(90.0f);
 	
-	private static final float skyDistance = 16.0f;
-	
-	private static final Vector3f upVector = new Vector3f(0.0f, 1.0f, 0.0f);
-		
+	private static final float skyDistance = 32.0f;
+			
 	private final OpenGLDrawingContext context;
 	private final IEventDispatcher dispatcher;
 	private final WorldGeometry geometry;
 	private final Robot robot;
 	
-	private float zNear = 0.1f;
-	private float zFar = 32.0f;
+	private float zNear = 1.0f;
+	private float zFar = 64.0f;
 	
 	private int shader;
 	
@@ -137,7 +136,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 	private Vector3f velocity = new Vector3f();
 	private Vector3f acceleration = new Vector3f();
-	private double generalAcceleration = 0.0001d;
+	private double generalAcceleration = initialAcceleration;
 	
 	private FloatBuffer modelData = FloatBuffer.allocate(16);
 	private FloatBuffer viewData = FloatBuffer.allocate(16);
@@ -146,7 +145,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	public OpenGLCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher) {
 		this.context = (OpenGLDrawingContext) context;
 		this.dispatcher = dispatcher;
-		this.geometry = new WorldGeometry(dispatcher);
+		this.geometry = new WorldGeometry();
 		
 		dispatcher.registerHandler(this);
 		
@@ -278,7 +277,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				
 		gl.glUniform1f(this.ambientFactor, 1.0f);
 		gl.glUniform3f(this.lightColor, 1.0f, 1.0f, 1.0f);
-		gl.glUniform3f(this.lightPosition, 0.0f, sunPosition.y, 0.0f);
+		gl.glUniform3f(this.lightPosition, sunPosition.x, sunPosition.y, sunPosition.z);
 		
 		this.drawStars(gl);
 
@@ -361,11 +360,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.dispatcher.fire(new MessageEvent("You are in " + this.getElementName(this.current), MessageType.INFO));
 	}
 	
-	private void repulseFrom(Vector3f center) {
-		Vector3f normal = new Vector3f(this.player).sub(center).normalize();
-		this.velocity.reflect(normal);
-		this.updatePosition();
-	}
+	/*  
+	 	private void repulseFrom(Vector3f center) {
+			Vector3f normal = new Vector3f(this.player).sub(center).normalize();
+			this.velocity.reflect(normal);
+			this.updatePosition();
+		}	
+	*/
 	
 	private void checkForTargetAndUpdateMenu() {
 		Vector3f cameraDirection = new Vector3f(-this.viewData.get(2), -this.viewData.get(6), -this.viewData.get(10)); // DOF
@@ -378,7 +379,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 		synchronized(this.geometry) {
 			for(WorldElement element : this.geometry.getElements()) {
-				if(element.getSize() == size) {
+				if(element.getSize() == size && (this.current == null || element.getCenter().distance(this.current.getCenter()) < size * 20.0f)) {
 					float currentDistance = this.player.distance(element.getCenter());
 	
 					menuData.add(element);
@@ -397,6 +398,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			MainMenus.STRUCT_LIST.set(menuData);
 			this.dispatcher.fire(new MenuEvent(MainMenus.STRUCT_LIST));
 			this.updateInfo();
+			this.ajustAcceleration();
 			this.needUpdate = false;
 		}
 				
@@ -450,12 +452,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	public void teleport(Vector3f dest) {
-		this.generalAcceleration = 0.0001f;
-		
-		this.zNear = (float) this.generalAcceleration * 10.0f;
-		
 		this.updatePerspective();
-		
 		this.player.set(dest);
 	}
 
@@ -489,6 +486,11 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		}
 	}
 	
+	private void ajustAcceleration() {
+		this.generalAcceleration = initialAcceleration * this.geometry.getSizeForGeneration(this.inside.size());;
+		this.zNear = (float) this.generalAcceleration * 10.0f;
+	}
+	
 	private void updatePerspective() {
 		if(this.bounds != null) {
 			this.loadMatrixData(this.matrix.identity().perspective(fov, (float) (this.bounds.getWidth() / this.bounds.getHeight()), this.zNear, this.zFar), this.projectionData);
@@ -504,6 +506,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		, this.viewData);
 	}
 	
+	/* Hack */
 	private void loadMatrixData(Matrix4f matrix, FloatBuffer target) {
 		target.put(0, matrix.m00());
 		target.put(1, matrix.m01());

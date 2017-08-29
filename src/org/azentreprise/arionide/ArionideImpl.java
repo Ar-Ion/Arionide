@@ -40,7 +40,6 @@ import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.menu.MainMenus;
 
 public class ArionideImpl implements Arionide {
 	

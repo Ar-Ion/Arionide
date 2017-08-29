@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import org.azentreprise.arionide.debugging.IAm;
-import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.project.StructureElement;
@@ -39,37 +38,36 @@ import org.joml.Vector4f;
 
 public class WorldGeometry {
 	
+	public static final float STRUCTURE_INITIAL_SIZE = 1.0f;
+	public static final float STRUCTURE_RELATIVE_SIZE = 0.1f;
+	public static final float SUB_STRUCT_DIST_CENTER_REL_SIZE = 0.75f; // The distance from the center of a parent structure to the center of a child structure relative to the size of the parent structure.
+	
 	private final List<WorldElement> hierarchy = new ArrayList<>();
 	private final List<WorldElement> inheritance = new ArrayList<>();
 	private final List<WorldElement> callGraph = new ArrayList<>();
 
 	private List<WorldElement> current = this.hierarchy;
-	
-	private final IEventDispatcher dispatcher;
-	
-	protected WorldGeometry(IEventDispatcher dispatcher) {
-		this.dispatcher = dispatcher;
-	}
-	
+
 	@IAm("building the world's geometry")
 	protected void buildGeometry(Project project) {
-		if(project != null) {
+		this.hierarchy.clear();
+		this.inheritance.clear();
+		this.callGraph.clear();
+		this.current = this.hierarchy;
+
+		if(project != null) {			
 			Storage storage = project.getStorage();
 			
-			WorldElement main = new WorldElement(-1, null, new Vector3f(), new Vector4f(), 1.0f);
+			WorldElement main = new WorldElement(-1, null, new Vector3f(), new Vector4f(), -1.0f);
 						
 			Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
 			
-			this.build(main, this.hierarchy, storage.getHierarchy(), metaData, 20.0f);
-			this.build(main, this.inheritance, storage.getInheritance(), metaData, 20.0f);
-			this.build(main, this.callGraph, storage.getCallGraph(), metaData, 20.0f);
-		} else {
-			this.hierarchy.clear();
-			this.inheritance.clear();
-			this.callGraph.clear();
+			float virtualSize = STRUCTURE_INITIAL_SIZE / STRUCTURE_RELATIVE_SIZE;
+			
+			this.build(main, this.hierarchy, storage.getHierarchy(), metaData, virtualSize);
+			this.build(main, this.inheritance, storage.getInheritance(), metaData, virtualSize);
+			this.build(main, this.callGraph, storage.getCallGraph(), metaData, virtualSize);
 		}
-		
-		this.current = this.hierarchy;
 	}
 	
 	private void build(WorldElement parent, List<WorldElement> list, List<StructureElement> elements, Map<Integer, StructureMeta> metaData, float size) {
@@ -77,10 +75,10 @@ public class WorldGeometry {
 			Quaternionf quaternion = new Quaternionf(new AxisAngle4f((float) Math.PI * 2.0f / elements.size(), parent.getAxis()));
 			Vector3f base = parent.getBaseVector();
 			
-			size /= 20.0f;
+			size *= STRUCTURE_RELATIVE_SIZE;
 			
 			for(StructureElement element : elements) {
-				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(5.0f * size); // 75.0% of enclosing size
+				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(SUB_STRUCT_DIST_CENTER_REL_SIZE * size / STRUCTURE_RELATIVE_SIZE).add(parent.getCenter());
 				
 				StructureMeta structMeta = metaData.get(element.getID());
 				Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.3f);
@@ -94,7 +92,7 @@ public class WorldGeometry {
 	}
 	
 	protected float getSizeForGeneration(int count) {
-		return (float) Math.pow(0.05f, count);
+		return (float) Math.pow(STRUCTURE_RELATIVE_SIZE, count);
 	}
 
 	protected Stream<WorldElement> getCollisions(Vector3f player) {

@@ -130,6 +130,7 @@ public class CodeView extends View implements EventHandler {
 					if(name != null) {
 						MessageEvent message = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().newStructure(name, this.getAppManager().getCoreRenderer().getInside());
 						this.getAppManager().getEventDispatcher().fire(message);
+						this.getAppManager().getCoreRenderer().loadProject(this.currentProject);
 					}
 				}).start();
 			} else if(click.isTargetting((Component) null, "SCROLL")) {

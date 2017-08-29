@@ -32,8 +32,6 @@ import org.azentreprise.arionide.ui.core.RenderingScene;
 public class AWTCoreRenderer implements CoreRenderer {
 	public void render(AppDrawingContext context) {
 		assert context instanceof AWTDrawingContext;
-		
-		AWTDrawingContext awtContext = (AWTDrawingContext) context;
 	}
 
 	@Override
