@@ -22,7 +22,7 @@ float rand(float id) {
 }
 
 float sunBrightness() {
-    return pow(max(0.0, dot(normalize(fragNormal), normalize(lightPosition))), sunEmissionConcentration);
+    return pow(max(0.0, dot(normalize(fragNormal), normalize(lightPosition - camera))), sunEmissionConcentration);
 }
 
 void main() {

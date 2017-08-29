@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
+import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
@@ -52,6 +53,8 @@ public class StructureEdition extends Menu {
 	protected void onClick(String element) {
 		assert this.current != null;
 		
+		this.setCurrentID(0);
+		
 		switch(element) {
 			case go:
 				this.go();
@@ -61,7 +64,9 @@ public class StructureEdition extends Menu {
 					String name = JOptionPane.showInputDialog(null, "Please enter the new name of the structure", "New name", JOptionPane.PLAIN_MESSAGE);
 					
 					if(name != null) {
-						MessageEvent message = this.getManager().getWorkspace().getCurrentProject().getDataManager().setName(this.current.getID(), name);
+						Project project = this.getManager().getWorkspace().getCurrentProject();
+						MessageEvent message = project.getDataManager().setName(this.current.getID(), name);
+						this.getManager().getCoreRenderer().loadProject(project);
 						this.getManager().getEventDispatcher().fire(message);
 					}
 				}).start();

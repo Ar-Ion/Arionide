@@ -21,20 +21,33 @@
 package org.azentreprise.arionide.ui.core.opengl;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-public class WorldElement {
-	
+public class WorldElement {	
 	private static final Random rand = new Random();
+		
+	public static final Supplier<Vector3f> RANDOM_GENERATOR = () -> new Vector3f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
+
+	private static Supplier<Vector3f> axisGenerator = RANDOM_GENERATOR;
+	private static Supplier<Vector3f> baseGenerator = RANDOM_GENERATOR;
+
+	protected static void setAxisGenerator(Supplier<Vector3f> generator) {
+		axisGenerator = generator;
+	}
+	
+	protected static void setBaseGenerator(Supplier<Vector3f> generator) {
+		baseGenerator = generator;
+	}
 	
 	/* Data needed for tesselation, rendering and collision detection. */
 	
 	private final int id;
 	private final Vector3f center;
-	private final Vector3f randVector;
-	private final Vector3f randAxis;
+	private final Vector3f axis;
+	private final Vector3f base;
 	private final float size;
 	
 	private String name;
@@ -44,14 +57,10 @@ public class WorldElement {
 		this.id = id;
 		this.name = name;
 		this.center = new Vector3f(center);
-		this.randVector = this.generateRandomVector().normalize();
-		this.randAxis = new Vector3f(this.randVector).cross(this.generateRandomVector()).normalize();
+		this.axis = axisGenerator.get().normalize();
+		this.base = new Vector3f(this.axis).cross(baseGenerator.get()).normalize();
 		this.color = new Vector4f(color);
 		this.size = size;
-	}
-	
-	private Vector3f generateRandomVector() {
-		return new Vector3f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
 	}
 	
 	protected boolean collidesWith(Vector3f object) {
@@ -67,11 +76,11 @@ public class WorldElement {
 	}
 	
 	public Vector3f getBaseVector() {
-		return new Vector3f(this.randVector);
+		return new Vector3f(this.base);
 	}
 	
 	public Vector3f getAxis() {
-		return new Vector3f(this.randAxis);
+		return new Vector3f(this.axis);
 	}
 	
 	public float getSize() {
@@ -93,7 +102,7 @@ public class WorldElement {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String toString() {
 		return this.name;
 	}

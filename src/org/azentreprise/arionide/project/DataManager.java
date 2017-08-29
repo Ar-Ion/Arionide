@@ -52,13 +52,17 @@ public class DataManager {
 	}
 	
 	public MessageEvent setName(int id, String name) {
+		StructureMeta meta = this.storage.getStructureMeta().get(id);
+		
 		if(this.storage.getStructureMeta().containsKey(id)) {
-			this.storage.getStructureMeta().get(id).setName(name);
+			meta.setName(name);
 			
 			this.storage.saveStructureMeta();
 			
 			if(name.isEmpty()) {
 				return new MessageEvent("Empty names are discouraged", MessageType.WARN);
+			} else if(name.equals(meta.getName())) {
+				return new MessageEvent("Non structure-unique names are discouraged", MessageType.WARN);
 			} else {
 				return new MessageEvent("Name successfully updated", MessageType.SUCCESS);
 			}

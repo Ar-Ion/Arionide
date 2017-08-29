@@ -69,8 +69,8 @@ import com.jogamp.opengl.GL4;
 public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {	
 	private static final int stars = 4096;
 	
-	private static final int sphereLongitudes = 64;
-	private static final int sphereLatitudes = 64;
+	private static final int sphereLongitudes = 32;
+	private static final int sphereLatitudes = 32;
 
 	private static final int forward = KeyEvent.VK_W;
 	private static final int backward = KeyEvent.VK_S;
@@ -82,7 +82,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private static final int spawnKey = KeyEvent.VK_C;
 	private static final int fullscreen = KeyEvent.VK_F;
 
-	private static final float initialAcceleration = 0.01f;
+	private static final float initialAcceleration = 0.005f;
 	private static final float ambientEnergyConservation = 0.9f;
 
 	private static final float fov = (float) Math.toRadians(90.0f);
@@ -457,8 +457,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 
 	public void setScene(RenderingScene scene) {
-		// TODO Auto-generated method stub
-		
+		this.geometry.loadScene(scene);
 	}
 
 	public void loadProject(Project project) {
@@ -640,7 +639,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 						this.dispatcher.fire(new MenuEvent(MainMenus.STRUCT_LIST));
 					}
 				} else if(action.isButton(ActionEvent.BUTTON_LEFT)) {
-					this.dispatcher.fire(new ClickEvent(null, "SCROLL"));
+					this.dispatcher.fire(new ClickEvent(null, "menuScroll"));
 				}
 				
 				action.abortDispatching();

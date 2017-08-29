@@ -30,6 +30,7 @@ import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.project.StructureElement;
 import org.azentreprise.arionide.project.StructureMeta;
+import org.azentreprise.arionide.ui.core.RenderingScene;
 import org.azentreprise.arionide.ui.menu.Coloring;
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
@@ -40,13 +41,18 @@ public class WorldGeometry {
 	
 	public static final float STRUCTURE_INITIAL_SIZE = 1.0f;
 	public static final float STRUCTURE_RELATIVE_SIZE = 0.1f;
-	public static final float SUB_STRUCT_DIST_CENTER_REL_SIZE = 0.75f; // The distance from the center of a parent structure to the center of a child structure relative to the size of the parent structure.
+	
+	// The distance from the center of a parent structure to the center of a child structure relative to the size of the parent structure.
+	
+	public static final float SUB_STRUCT_DIST_CENTER_REL_SIZE_HIERARCHY = 0.75f; 
+	public static final float SUB_STRUCT_DIST_CENTER_REL_SIZE_INHERITANCE = 2.5f;
 	
 	private final List<WorldElement> hierarchy = new ArrayList<>();
 	private final List<WorldElement> inheritance = new ArrayList<>();
 	private final List<WorldElement> callGraph = new ArrayList<>();
-
+	
 	private List<WorldElement> current = this.hierarchy;
+	private float currentSubStructDistCenterRelSize = 0.0f;
 
 	@IAm("building the world's geometry")
 	protected void buildGeometry(Project project) {
@@ -64,8 +70,13 @@ public class WorldGeometry {
 			
 			float virtualSize = STRUCTURE_INITIAL_SIZE / STRUCTURE_RELATIVE_SIZE;
 			
+			this.currentSubStructDistCenterRelSize = SUB_STRUCT_DIST_CENTER_REL_SIZE_HIERARCHY;
 			this.build(main, this.hierarchy, storage.getHierarchy(), metaData, virtualSize);
+			
+			this.currentSubStructDistCenterRelSize = SUB_STRUCT_DIST_CENTER_REL_SIZE_INHERITANCE;
 			this.build(main, this.inheritance, storage.getInheritance(), metaData, virtualSize);
+			
+			/* Undefined */
 			this.build(main, this.callGraph, storage.getCallGraph(), metaData, virtualSize);
 		}
 	}
@@ -78,7 +89,7 @@ public class WorldGeometry {
 			size *= STRUCTURE_RELATIVE_SIZE;
 			
 			for(StructureElement element : elements) {
-				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(SUB_STRUCT_DIST_CENTER_REL_SIZE * size / STRUCTURE_RELATIVE_SIZE).add(parent.getCenter());
+				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(this.currentSubStructDistCenterRelSize * size / STRUCTURE_RELATIVE_SIZE).add(parent.getCenter());
 				
 				StructureMeta structMeta = metaData.get(element.getID());
 				Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.3f);
@@ -88,6 +99,20 @@ public class WorldGeometry {
 				
 				this.build(object, list, element.getChildren(), metaData, size);
 			}
+		}
+	}
+
+	protected void loadScene(RenderingScene scene) {
+		switch(scene) {
+			case INHERITANCE:
+				this.current = this.inheritance;
+				break;
+			case HIERARCHY:
+				this.current = this.hierarchy;
+				break;
+			case CALLGRAPH:
+				this.current = this.callGraph;
+				break;
 		}
 	}
 	

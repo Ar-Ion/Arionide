@@ -108,6 +108,11 @@ public class Tab extends MultiComponent implements EventHandler {
 		return this;
 	}
 	
+	public Tab setActiveComponent(int id) {
+		this.activeComponent = id;
+		return this;
+	}
+	
 	public boolean isFocusable() {
 		return true;
 	}
@@ -179,10 +184,6 @@ public class Tab extends MultiComponent implements EventHandler {
 				x += width;
 			}
 		}
-	}
-	
-	public void setActiveComponent(int id) {
-		this.activeComponent = id;
 	}
 	
 	public void setComponents(List<Component> components) {
