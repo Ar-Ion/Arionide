@@ -489,6 +489,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private void ajustAcceleration() {
 		this.generalAcceleration = initialAcceleration * this.geometry.getSizeForGeneration(this.inside.size());;
 		this.zNear = (float) this.generalAcceleration * 10.0f;
+		this.updatePerspective();
 	}
 	
 	private void updatePerspective() {
