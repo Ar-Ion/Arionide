@@ -22,11 +22,13 @@ package org.azentreprise.arionide.ui.menu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.project.Project;
+import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 import org.joml.Vector3f;
@@ -230,6 +232,12 @@ public class Coloring extends Menu {
 	
 	public void setCurrent(WorldElement current) {
 		this.current = current;
+		
+		Map<Integer, StructureMeta> metaData = this.getManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta();
+		
+		if(metaData.containsKey(current.getID())) {
+			this.setCurrentID(metaData.get(current.getID()).getColorID());
+		}
 	}
 
 	protected void onSelect(String element) {

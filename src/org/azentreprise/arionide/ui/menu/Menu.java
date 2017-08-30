@@ -33,6 +33,7 @@ public abstract class Menu {
 	private final AppManager manager;
 	private List<String> elements = new ArrayList<>();
 	private int current;
+	private boolean active;
 	
 	protected Menu(AppManager manager, String... elements) {
 		this.manager = manager;
@@ -65,6 +66,14 @@ public abstract class Menu {
 	
 	public void setCurrentID(int id) {
 		this.current = id;
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
+	public boolean isActive() {
+		return this.active;
 	}
 	
 	public void select(int id) {

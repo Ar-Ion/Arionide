@@ -149,9 +149,15 @@ public class CodeView extends View implements EventHandler {
 				this.currentMessageAlphaAnimation.startAnimation(1000, (animation) -> animation.startAnimation(5000, 1), 0xFF);
 			}
 		} else if(event instanceof MenuEvent) {
+			if(this.currentMenu != null) {
+				this.currentMenu.setActive(false);
+			}
+			
 			this.currentMenu = ((MenuEvent) event).getMenu();
 			this.menu.setActiveComponent(this.currentMenu.getCurrentID());
 			this.menu.setComponents(this.currentMenu.getElements().stream().map(this.menu.getMapper()).collect(Collectors.toList()));
+			
+			this.currentMenu.setActive(true);
 		} else if(event instanceof ScrollEvent) {
 			ScrollEvent scroll = (ScrollEvent) event;
 			

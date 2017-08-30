@@ -21,6 +21,7 @@
 package org.azentreprise.arionide.ui.core.opengl;
 
 import java.util.Random;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.joml.Vector3f;
@@ -32,13 +33,13 @@ public class WorldElement {
 	public static final Supplier<Vector3f> RANDOM_GENERATOR = () -> new Vector3f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
 
 	private static Supplier<Vector3f> axisGenerator = RANDOM_GENERATOR;
-	private static Supplier<Vector3f> baseGenerator = RANDOM_GENERATOR;
+	private static Function<Vector3f, Vector3f> baseGenerator = (axis) -> RANDOM_GENERATOR.get().cross(axis);
 
 	protected static void setAxisGenerator(Supplier<Vector3f> generator) {
 		axisGenerator = generator;
 	}
 	
-	protected static void setBaseGenerator(Supplier<Vector3f> generator) {
+	protected static void setBaseGenerator(Function<Vector3f, Vector3f> generator) {
 		baseGenerator = generator;
 	}
 	
@@ -58,7 +59,7 @@ public class WorldElement {
 		this.name = name;
 		this.center = new Vector3f(center);
 		this.axis = axisGenerator.get().normalize();
-		this.base = new Vector3f(this.axis).cross(baseGenerator.get()).normalize();
+		this.base = baseGenerator.apply(this.axis).normalize();
 		this.color = new Vector4f(color);
 		this.size = size;
 	}

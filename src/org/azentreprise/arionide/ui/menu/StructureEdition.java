@@ -49,6 +49,10 @@ public class StructureEdition extends Menu {
 		this.current = current;
 		this.coloring.setCurrent(current);
 	}
+	
+	public Coloring getColoring() {
+		return this.coloring;
+	}
 
 	protected void onClick(String element) {
 		assert this.current != null;

@@ -303,6 +303,8 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 			} else {
 				this.theManager.getFocusManager().prev();
 			}
+		} else if(event.getKeyCode() == KeyEvent.VK_F11) {
+			this.toggleFullscreen();
 		} else {
 			this.dispatcher.fire(new WriteEvent(event.getKeyChar(), event.getKeyCode(), event.getModifiers()));
 		}

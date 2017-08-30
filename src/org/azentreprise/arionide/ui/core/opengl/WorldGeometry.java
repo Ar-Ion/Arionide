@@ -74,6 +74,8 @@ public class WorldGeometry {
 			this.build(main, this.hierarchy, storage.getHierarchy(), metaData, virtualSize);
 			
 			this.currentSubStructDistCenterRelSize = SUB_STRUCT_DIST_CENTER_REL_SIZE_INHERITANCE;
+			WorldElement.setAxisGenerator(() -> new Vector3f(0.0f, 1.0f, 0.0f));
+			WorldElement.setBaseGenerator((axis) -> new Vector3f(1.0f, 1.0f, 0.0f));
 			this.build(main, this.inheritance, storage.getInheritance(), metaData, virtualSize);
 			
 			/* Undefined */
@@ -114,6 +116,10 @@ public class WorldGeometry {
 				this.current = this.callGraph;
 				break;
 		}
+	}
+	
+	protected void select(WorldElement element) {
+		
 	}
 	
 	protected float getSizeForGeneration(int count) {
