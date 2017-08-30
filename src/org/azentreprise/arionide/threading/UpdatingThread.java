@@ -35,8 +35,4 @@ public class UpdatingThread extends UIThread {
 	public String getDescriptor() {
 		return "Updating thread";
 	}
-
-	public boolean respawn(int attempt) {
-		return false;
-	}
 }

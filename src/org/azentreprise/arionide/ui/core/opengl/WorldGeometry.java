@@ -26,6 +26,9 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import org.azentreprise.arionide.debugging.IAm;
+import org.azentreprise.arionide.events.MessageEvent;
+import org.azentreprise.arionide.events.MessageType;
+import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.project.StructureElement;
@@ -50,17 +53,26 @@ public class WorldGeometry {
 	private final List<WorldElement> hierarchy = new ArrayList<>();
 	private final List<WorldElement> inheritance = new ArrayList<>();
 	private final List<WorldElement> callGraph = new ArrayList<>();
+
+	private final IEventDispatcher dispatcher;
 	
 	private List<WorldElement> current = this.hierarchy;
+	private List<StructureElement> inheritanceBuffer = new ArrayList<>();
+	private List<StructureElement> callGraphBuffer = new ArrayList<>();
+
 	private float currentSubStructDistCenterRelSize = 0.0f;
+	
+	private WorldElement selected;
+	
+	public WorldGeometry(IEventDispatcher dispatcher) {
+		this.dispatcher = dispatcher;
+	}
 
 	@IAm("building the world's geometry")
 	protected void buildGeometry(Project project) {
+		
 		this.hierarchy.clear();
-		this.inheritance.clear();
-		this.callGraph.clear();
-		this.current = this.hierarchy;
-
+		
 		if(project != null) {			
 			Storage storage = project.getStorage();
 			
@@ -76,11 +88,13 @@ public class WorldGeometry {
 			this.currentSubStructDistCenterRelSize = SUB_STRUCT_DIST_CENTER_REL_SIZE_INHERITANCE;
 			WorldElement.setAxisGenerator(() -> new Vector3f(0.0f, 1.0f, 0.0f));
 			WorldElement.setBaseGenerator((axis) -> new Vector3f(1.0f, 1.0f, 0.0f));
-			this.build(main, this.inheritance, storage.getInheritance(), metaData, virtualSize);
+			this.build(main, this.inheritance, this.inheritanceBuffer, metaData, virtualSize);
 			
 			/* Undefined */
 			this.build(main, this.callGraph, storage.getCallGraph(), metaData, virtualSize);
 		}
+		
+		this.current = this.hierarchy;
 	}
 	
 	private void build(WorldElement parent, List<WorldElement> list, List<StructureElement> elements, Map<Integer, StructureMeta> metaData, float size) {
@@ -107,19 +121,33 @@ public class WorldGeometry {
 	protected void loadScene(RenderingScene scene) {
 		switch(scene) {
 			case INHERITANCE:
-				this.current = this.inheritance;
+				if(this.selected != null) {
+					this.current = this.inheritance;
+				} else {
+					this.dispatcher.fire(new MessageEvent("Please first select a structure to view its inheritance", MessageType.ERROR));
+				}
+				
 				break;
 			case HIERARCHY:
 				this.current = this.hierarchy;
 				break;
 			case CALLGRAPH:
-				this.current = this.callGraph;
+				if(this.selected != null) {
+					this.current = this.callGraph;
+				} else {
+					this.dispatcher.fire(new MessageEvent("Please first select a structure to view its call graph", MessageType.ERROR));
+				}
+				
 				break;
 		}
 	}
 	
 	protected void select(WorldElement element) {
-		
+		if(this.selected != element) {
+			this.selected = element;
+			this.inheritance.clear();
+			this.callGraph.clear();
+		}
 	}
 	
 	protected float getSizeForGeneration(int count) {

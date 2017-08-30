@@ -20,9 +20,34 @@
  *******************************************************************************/
 package org.azentreprise.arionide.threading;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 public class UserHelpingThread extends WorkingThread {
-	public void tick() {
+	
+	public static final int PROCESSING = 0;
+	public static final int WAITING = 1;
+	
+	private static final Queue<Runnable> queue = new ArrayDeque<>();
+	
+	public static int registerTask(Runnable task) {
+		boolean empty = queue.isEmpty();
 		
+		queue.add(task);
+		
+		if(empty) {
+			return PROCESSING;
+		} else {
+			return WAITING;
+		}
+	}
+	
+	public void tick() {
+		Runnable task = queue.poll();
+		
+		if(task != null) {
+			task.run();
+		}
 	}
 
 	public long getRefreshDelay() {

@@ -36,6 +36,6 @@ public abstract class UIThread extends WorkingThread {
 	
 	public boolean respawn(int attempt) {
 		this.context.purge();
-		return false;
+		return true;
 	}
 }

@@ -145,7 +145,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	public OpenGLCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher) {
 		this.context = (OpenGLDrawingContext) context;
 		this.dispatcher = dispatcher;
-		this.geometry = new WorldGeometry();
+		this.geometry = new WorldGeometry(dispatcher);
 		
 		dispatcher.registerHandler(this);
 		
