@@ -178,6 +178,10 @@ public class LocalProject implements Project {
 		this.properties.put(key, encoder.encode(value));
 		SystemCache.set(key, value, SystemCache.NEVER);
 	}
+	
+	public void invalidateCacheProperty(String key) {
+		SystemCache.invalidate(this.hashCode() + key);
+	}
 
 	public Map<String, byte[]> getProtocolMapping() {
 		return LocalProject.projectProtocolMapping;

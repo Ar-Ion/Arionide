@@ -20,33 +20,38 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu;
 
+import java.util.List;
+import java.util.function.BiFunction;
+
 import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
+import org.azentreprise.arionide.project.DataManager;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
 import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 
-public class StructureEdition extends Menu {
+public class StructureEdition extends SpecificMenu {
 		
 	private static final String go = "Go";
 	private static final String name = "Name";
 	private static final String color = "Color";
+	private static final String delete = "Delete";
 
 	private final Coloring coloring;
-	
-	private WorldElement current;
-	
+	private final ConfirmMenu confirmDelete;
+
 	public StructureEdition(AppManager manager) {
-		super(manager, go, name, color);
+		super(manager, go, name, color, delete);
 		this.coloring = new Coloring(manager);
+		this.confirmDelete = new ConfirmMenu(manager, this, this::delete, "Are you sure you want to delete this structure?");
 	}
 	
 	public void setCurrent(WorldElement current) {
-		this.current = current;
+		super.setCurrent(current);
 		this.coloring.setCurrent(current);
 	}
 	
@@ -55,7 +60,7 @@ public class StructureEdition extends Menu {
 	}
 
 	protected void onClick(String element) {
-		assert this.current != null;
+		assert this.getCurrent() != null;
 		
 		this.setCurrentID(0);
 		
@@ -69,8 +74,8 @@ public class StructureEdition extends Menu {
 					
 					if(name != null) {
 						Project project = this.getManager().getWorkspace().getCurrentProject();
-						MessageEvent message = project.getDataManager().setName(this.current.getID(), name);
-						this.getManager().getCoreRenderer().loadProject(project);
+						MessageEvent message = project.getDataManager().setName(this.getCurrent().getID(), name, this.getManager().getCoreRenderer().getInside());
+						this.getManager().getCoreRenderer().loadProject(this.getManager().getWorkspace().getCurrentProject());
 						this.getManager().getEventDispatcher().fire(message);
 					}
 				}).start();
@@ -78,14 +83,23 @@ public class StructureEdition extends Menu {
 			case color:
 				this.show(this.coloring);
 				break;
+			case delete:
+				this.show(this.confirmDelete);
 		}
+	}
+	
+	private void delete() {
+		Project project = this.getManager().getWorkspace().getCurrentProject();
+		MessageEvent message = project.getDataManager().deleteStructure(this.getCurrent().getID(), this.getManager().getCoreRenderer().getInside());
+		this.getManager().getCoreRenderer().loadProject(project);
+		this.getManager().getEventDispatcher().fire(message);
 	}
 	
 	private void go() {
 		CoreRenderer renderer = this.getManager().getCoreRenderer();
 		
 		if(renderer instanceof OpenGLCoreRenderer) {
-			((OpenGLCoreRenderer) renderer).teleport(this.current.getCenter());
+			((OpenGLCoreRenderer) renderer).teleport(this.getCurrent().getCenter());
 		} else {
 			this.getManager().getEventDispatcher().fire(new MessageEvent("This GUI implementation doesn't support teleporting.", MessageType.ERROR));
 		}

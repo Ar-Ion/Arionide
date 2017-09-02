@@ -163,6 +163,10 @@ public class ZipStorage extends Storage {
 	
 	public void loadInheritance() {	
 		this.inheritance = this.load(this.inheritancePath);
+		
+		for(StructureElement root : this.inheritance) {
+			root.computeParents();
+		}
 	}
 	
 	public void saveInheritance() {
@@ -171,6 +175,10 @@ public class ZipStorage extends Storage {
 	
 	public void loadCallGraph() {	
 		this.callGraph = this.load(this.callGraphPath);
+		
+		for(StructureElement root : this.callGraph) {
+			root.computeParents();
+		}
 	}
 	
 	public void saveCallGraph() {

@@ -1,6 +1,7 @@
 package org.azentreprise.arionide.project;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.azentreprise.arionide.coders.Coder;
@@ -18,51 +19,103 @@ public class DataManager {
 		this.storage = this.project.getStorage();
 	}
 	
-	public MessageEvent newStructure(String name, List<Integer> parents) {
-		List<StructureElement> brothers = this.storage.getHierarchy0();
+	public MessageEvent newStructure(String name, List<Integer> parents) {		
+		long structureID = this.project.getProperty("structureGen", Coder.integerDecoder).intValue();
+		this.project.setProperty("structureGen", structureID + 1, Coder.integerEncoder); // Increment generator
+		this.project.invalidateCacheProperty("structureGen");
+		this.project.save();
+				
+		StructureElement structure = new StructureElement((int) structureID, new ArrayList<>());
 		
+		List<StructureElement> brothers = this.getBrothers(this.storage.hierarchy, parents);
+		
+		if(brothers == null) {
+			return new MessageEvent("Invalid parent hierarchy", MessageType.ERROR);
+		}
+		
+		brothers.add(structure);
+		this.storage.saveHierarchy();
+
+		this.storage.inheritance.add(structure);
+		this.storage.saveInheritance();
+		
+		this.storage.callGraph.add(structure);
+		this.storage.saveCallGraph();
+		
+		this.storage.structMeta.put((int) structureID, new StructureMeta());
+		
+		MessageEvent message = this.setName((int) structureID, name, parents);
+				
+		return message.getMessageType() != MessageType.SUCCESS ? message : new MessageEvent("Structure created", MessageType.SUCCESS);
+	}
+	
+	public MessageEvent deleteStructure(int id, List<Integer> parents) {
+		Iterator<StructureElement> iterator = this.getBrothers(this.storage.hierarchy, parents).iterator();
+		
+		while(iterator.hasNext()) {
+			StructureElement element = iterator.next();
+			
+			if(element.getID() == id) {
+				iterator.remove();
+				this.storage.saveHierarchy();
+				
+				this.deleteMeta(element);
+				this.storage.saveStructureMeta();
+				
+				return new MessageEvent("Structure deleted", MessageType.SUCCESS);
+			}
+		}
+		
+		return new MessageEvent("This structure doesn't exist anymore", MessageType.ERROR);			
+	}
+	
+	private void deleteMeta(StructureElement element) {
+		this.storage.structMeta.remove(element.getID());
+		element.getChildren().stream().forEach(this::deleteMeta);
+	}
+	
+	/* Might need some optimization */
+	private StructureElement find(List<StructureElement> elements, int id) {
+		for(StructureElement element : elements) {
+			if(element.getID() != id) {
+				return this.find(element.getChildren(), id);
+			} else {
+				return element;
+			}
+		}
+		
+		return null;
+	}
+	
+	private List<StructureElement> getBrothers(List<StructureElement> root, List<Integer> parents) {
 		for(Integer id : parents) {
 			boolean found = false;
-
-			for(StructureElement bro : brothers) {				
+			
+			for(StructureElement bro : root) {				
 				if(bro.getID() == id) {
-					brothers = bro.getChildren0();
+					root = bro.getChildren0();
 					found = true;
 					break;
 				}
 			}
 			
 			if(!found) {
-				return new MessageEvent("The structure you are in is invalid", MessageType.ERROR);
+				return null;
 			}
 		}
 		
-		long structureID = this.project.getProperty("structureGen", Coder.integerDecoder).intValue();
-		this.project.setProperty("structureGen", structureID + 1, Coder.integerEncoder); // Increment generator
-		this.project.save();
-		
-		brothers.add(new StructureElement((int) structureID, new ArrayList<>()));
-		this.storage.getStructureMeta0().put((int) structureID, new StructureMeta());
-
-		this.storage.saveHierarchy();
-		
-		MessageEvent message = this.setName((int) structureID, name);
-				
-		return message.getMessageType() != MessageType.SUCCESS ? message : new MessageEvent("Structure successfully created", MessageType.SUCCESS);
+		return root;
 	}
 	
-	public MessageEvent setName(int id, String name) {
+	public MessageEvent setName(int id, String name, List<Integer> parents) {
 		StructureMeta meta = this.storage.getStructureMeta().get(id);
 		
-		if(this.storage.getStructureMeta().containsKey(id)) {
+		if(meta != null) {
 			meta.setName(name);
-			
 			this.storage.saveStructureMeta();
 			
 			if(name.isEmpty()) {
 				return new MessageEvent("Empty names are discouraged", MessageType.WARN);
-			} else if(name.equals(meta.getName())) {
-				return new MessageEvent("Non structure-unique names are discouraged", MessageType.WARN);
 			} else {
 				return new MessageEvent("Name successfully updated", MessageType.SUCCESS);
 			}

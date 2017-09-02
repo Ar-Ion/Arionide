@@ -58,31 +58,7 @@ public abstract class Storage {
 	public List<DataElement> getCurrentData() {
 		return Collections.unmodifiableList(this.currentData);
 	}
-	
-	protected List<StructureElement> getHierarchy0() {
-		return this.hierarchy;
-	}
-	
-	protected List<StructureElement> getInheritance0() {
-		return this.inheritance;
-	}
-	
-	protected List<StructureElement> getCallGraph0() {
-		return this.callGraph;
-	}
-	
-	protected Map<Integer, StructureMeta> getStructureMeta0() {
-		return this.structMeta;
-	}
-	
-	protected List<HistoryElement> getHistory0() {
-		return this.history;
-	}
-	
-	protected List<DataElement> getCurrentData0() {
-		return this.currentData;
-	}
-	
+
 	@IAm("loading the hierarchy")
 	public abstract void loadHierarchy();
 	@IAm("saving the hierarchy")

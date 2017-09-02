@@ -182,6 +182,10 @@ public class LocalWorkspace implements Workspace {
 		
 	}
 	
+	public void invalidateCacheProperty(String key) {
+		
+	}
+	
 	public Map<?, ?> getProtocolMapping() {
 		return LocalWorkspace.workspaceProtocolMapping;
 	}

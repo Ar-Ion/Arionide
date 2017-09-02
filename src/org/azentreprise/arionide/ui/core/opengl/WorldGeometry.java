@@ -21,6 +21,7 @@
 package org.azentreprise.arionide.ui.core.opengl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -57,8 +58,12 @@ public class WorldGeometry {
 	private final IEventDispatcher dispatcher;
 	
 	private List<WorldElement> current = this.hierarchy;
-	private List<StructureElement> inheritanceBuffer = new ArrayList<>();
-	private List<StructureElement> callGraphBuffer = new ArrayList<>();
+	private RenderingScene currentScene = RenderingScene.HIERARCHY;
+	
+	private List<StructureElement> inheritanceBuffer = Arrays.asList();
+	private List<StructureElement> callGraphBuffer = Arrays.asList();
+	
+	private InheritanceGenerator inheritanceGenerator;
 
 	private float currentSubStructDistCenterRelSize = 0.0f;
 	
@@ -72,12 +77,14 @@ public class WorldGeometry {
 	protected void buildGeometry(Project project) {
 		
 		this.hierarchy.clear();
-		
-		if(project != null) {			
+				
+		if(project != null) {
 			Storage storage = project.getStorage();
 			
+			this.inheritanceGenerator = new InheritanceGenerator(storage.getInheritance(), this::loadInheritance);
+			
 			WorldElement main = new WorldElement(-1, null, new Vector3f(), new Vector4f(), -1.0f);
-						
+			
 			Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
 			
 			float virtualSize = STRUCTURE_INITIAL_SIZE / STRUCTURE_RELATIVE_SIZE;
@@ -108,23 +115,33 @@ public class WorldGeometry {
 				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(this.currentSubStructDistCenterRelSize * size / STRUCTURE_RELATIVE_SIZE).add(parent.getCenter());
 				
 				StructureMeta structMeta = metaData.get(element.getID());
-				Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.3f);
 				
-				WorldElement object = new WorldElement(element.getID(), structMeta.getName(), position, color, size);
-				list.add(object);
-				
-				this.build(object, list, element.getChildren(), metaData, size);
+				if(structMeta != null) {
+					Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.3f);
+					
+					WorldElement object = new WorldElement(element.getID(), structMeta.getName(), position, color, size);
+					list.add(object);
+					
+					this.build(object, list, element.getChildren(), metaData, size);
+				}
 			}
 		}
 	}
 
+	private void loadInheritance(List<StructureElement> elements) {
+		this.inheritanceBuffer = elements;
+	}
+	
 	protected void loadScene(RenderingScene scene) {
+		this.currentScene = scene;
+		
 		switch(scene) {
 			case INHERITANCE:
 				if(this.selected != null) {
 					this.current = this.inheritance;
+					this.inheritanceGenerator.generate(this.selected.getID());
 				} else {
-					this.dispatcher.fire(new MessageEvent("Please first select a structure to view its inheritance", MessageType.ERROR));
+					this.dispatcher.fire(new MessageEvent("Please select a structure to view its inheritance", MessageType.ERROR));
 				}
 				
 				break;
@@ -145,8 +162,10 @@ public class WorldGeometry {
 	protected void select(WorldElement element) {
 		if(this.selected != element) {
 			this.selected = element;
-			this.inheritance.clear();
-			this.callGraph.clear();
+			
+			if(this.currentScene.equals(RenderingScene.INHERITANCE)) {
+				this.inheritanceGenerator.generate(element.getID());
+			}
 		}
 	}
 	
