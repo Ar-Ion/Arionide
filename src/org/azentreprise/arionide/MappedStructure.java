@@ -33,9 +33,6 @@ public interface MappedStructure {
 	@IAm("setting a property")
 	public <T> void setProperty(String key, T value, Encoder<T> encoder);
 	
-	@IAm("invalidating a property")
-	public void invalidateCacheProperty(String key);
-	
 	@IAm("getting the protocol mapping")
 	public Map<?, ?> getProtocolMapping();
 }

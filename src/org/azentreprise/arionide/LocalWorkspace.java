@@ -84,7 +84,11 @@ public class LocalWorkspace implements Workspace {
 					
 					if(!this.projects.contains(element)) {
 						element.initFS();
-						this.projects.add(element);
+						element.load();
+						
+						if(element.checkVersionCompatibility()) {
+							this.projects.add(element);
+						}
 					}
 				}
 			}
@@ -132,15 +136,16 @@ public class LocalWorkspace implements Workspace {
 
 	public void loadProject(Project project) {
 		if(this.current != project) {
-			project.load();
 			this.current = project;
 			this.dispatcher.fire(new ProjectOpenEvent(project));
 		}
 	}
 
 	public void closeProject(Project project) {
-		project.save();
-		this.close0(project);
+		if(this.current == project) {
+			this.current = null;
+			this.dispatcher.fire(new ProjectCloseEvent());
+		}
 	}
 
 	public void createProject(String name) throws IOException {
@@ -150,9 +155,11 @@ public class LocalWorkspace implements Workspace {
 			Project project = new LocalProject(file);
 			
 			project.initFS();
+			project.load();
 			
 			project.setProperty("name", name, Coder.stringEncoder);
-			project.save();
+			
+			this.projects.add(project);
 			
 			this.current = project;
 			this.dispatcher.fire(new ProjectOpenEvent(project));
@@ -164,14 +171,7 @@ public class LocalWorkspace implements Workspace {
 	public void deleteProject(Project project) {
 		project.getPath().delete();
 		this.projects.remove(project);
-		this.close0(project);
-	}
-	
-	private void close0(Project project) {
-		if(this.current == project) {
-			this.current = null;
-			this.dispatcher.fire(new ProjectCloseEvent());
-		}
+		this.closeProject(project);
 	}
 
 	public <T> T getProperty(String key, Decoder<T> decoder) {
@@ -181,11 +181,7 @@ public class LocalWorkspace implements Workspace {
 	public <T> void setProperty(String key, T value, Encoder<T> encoder) {
 		
 	}
-	
-	public void invalidateCacheProperty(String key) {
-		
-	}
-	
+
 	public Map<?, ?> getProtocolMapping() {
 		return LocalWorkspace.workspaceProtocolMapping;
 	}

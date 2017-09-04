@@ -34,7 +34,6 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -66,42 +65,28 @@ public class ZipStorage extends Storage {
 	@IAm("initializing the project storage")
 	public ZipStorage(File path) {
 		this.location = path;
-		
-		try {
-			Path backup = new File(path.getParentFile(), path.getName() + ".bak").toPath();
-			
-			if(path.exists()) {
-				Files.copy(path.toPath(), backup, StandardCopyOption.REPLACE_EXISTING);
-			}
-			
-			this.uri = URI.create("jar:" + path.toURI());
-			
-			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-				try {
-					if(this.fs != null && this.fs.isOpen()) {
-						this.fs.close();
-					}
-				} catch (IOException e) {
-					// Do not use an AWT popup in a shutdown hook
-					e.printStackTrace();
-				}
-			}));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void initFS() {
 		try {
+			try {
+				Path backup = new File(this.location.getParentFile(), this.location.getName() + ".bak").toPath();
+				
+				if(this.location.exists()) {
+					Files.copy(this.location.toPath(), backup, StandardCopyOption.REPLACE_EXISTING);
+				}
+				
+				this.uri = URI.create("jar:" + this.location.toURI());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
 			this.initFS0();
 						
 			this.metaPath = this.init(null, null, "meta", "project");
-			
-			Supplier<List<StructureElement>> supplier = ArrayList<StructureElement>::new;
-			
-			this.hierarchyPath = this.init(supplier, e -> this.hierarchy = e, "struct", "hierarchy");
-			this.inheritancePath = this.init(supplier, e -> this.inheritance = e, "struct", "inheritance");
-			this.callGraphPath = this.init(supplier, e -> this.callGraph = e, "struct", "callgraph");
+			this.hierarchyPath = this.init(ArrayList<HierarchyElement>::new, e -> this.hierarchy = e, "struct", "hierarchy");
+			this.inheritancePath = this.init(HashMap<Integer, InheritanceElement>::new, e -> this.inheritance = e, "struct", "inheritance");
+			this.callGraphPath = this.init(ArrayList<HierarchyElement>::new, e -> this.callGraph = e, "struct", "callgraph");
 			this.structureMetaPath = this.init(HashMap<Integer, StructureMeta>::new, e -> this.structMeta = e, "meta", "structures");
 			this.historyPath = this.init(ArrayList<HistoryElement>::new, e -> this.history = e, "history");
 		} catch (IOException exception) {
@@ -114,6 +99,17 @@ public class ZipStorage extends Storage {
 			this.fs = FileSystems.getFileSystem(this.uri);
 		} catch(Exception e) {
 			this.fs = FileSystems.newFileSystem(this.uri, fileSystemEnvironment);
+		}
+	}
+	
+	protected void closeFS() {
+		if(this.fs != null && this.fs.isOpen()) {
+			try {
+				this.fs.close();
+			} catch (IOException e) {
+				// Do not use an AWT popup in a shutdown hook
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -163,10 +159,6 @@ public class ZipStorage extends Storage {
 	
 	public void loadInheritance() {	
 		this.inheritance = this.load(this.inheritancePath);
-		
-		for(StructureElement root : this.inheritance) {
-			root.computeParents();
-		}
 	}
 	
 	public void saveInheritance() {
@@ -175,10 +167,6 @@ public class ZipStorage extends Storage {
 	
 	public void loadCallGraph() {	
 		this.callGraph = this.load(this.callGraphPath);
-		
-		for(StructureElement root : this.callGraph) {
-			root.computeParents();
-		}
 	}
 	
 	public void saveCallGraph() {

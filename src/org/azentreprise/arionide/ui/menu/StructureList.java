@@ -38,9 +38,7 @@ public class StructureList extends Menu {
 	
 	public void set(List<WorldElement> elements) {
 		this.elements = elements;
-		
-		this.setCurrentID(0);
-		
+				
 		if(elements.size() > 0) {
 			this.setElements(elements.stream().map((e) -> e.toString()).collect(Collectors.toList()));
 		} else {
@@ -49,7 +47,7 @@ public class StructureList extends Menu {
 	}
 	
 	protected void onClick(int id) {
-		if(id < this.elements.size()) {
+		if(this.elements != null && id < this.elements.size()) {
 			MainMenus.STRUCT_EDIT.setCurrent(this.elements.get(id));
 			this.show(MainMenus.STRUCT_EDIT);
 		}

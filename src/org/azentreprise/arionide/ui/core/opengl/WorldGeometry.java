@@ -30,12 +30,12 @@ import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
+import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.Storage;
-import org.azentreprise.arionide.project.StructureElement;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.core.RenderingScene;
-import org.azentreprise.arionide.ui.menu.Coloring;
+import org.azentreprise.arionide.ui.menu.edition.Coloring;
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -59,9 +59,10 @@ public class WorldGeometry {
 	
 	private List<WorldElement> current = this.hierarchy;
 	private RenderingScene currentScene = RenderingScene.HIERARCHY;
+	private Project currentProject;
 	
-	private List<StructureElement> inheritanceBuffer = Arrays.asList();
-	private List<StructureElement> callGraphBuffer = Arrays.asList();
+	private List<HierarchyElement> inheritanceBuffer = Arrays.asList();
+	private List<HierarchyElement> callGraphBuffer = Arrays.asList();
 	
 	private InheritanceGenerator inheritanceGenerator;
 
@@ -74,11 +75,14 @@ public class WorldGeometry {
 	}
 
 	@IAm("building the world's geometry")
-	protected void buildGeometry(Project project) {
-		
+	protected synchronized void buildGeometry(Project project) {
 		this.hierarchy.clear();
-				
+		this.inheritance.clear();
+		this.callGraph.clear();
+		
 		if(project != null) {
+			this.currentProject = project;
+
 			Storage storage = project.getStorage();
 			
 			this.inheritanceGenerator = new InheritanceGenerator(storage.getInheritance(), this::loadInheritance);
@@ -90,6 +94,8 @@ public class WorldGeometry {
 			float virtualSize = STRUCTURE_INITIAL_SIZE / STRUCTURE_RELATIVE_SIZE;
 			
 			this.currentSubStructDistCenterRelSize = SUB_STRUCT_DIST_CENTER_REL_SIZE_HIERARCHY;
+			WorldElement.setAxisGenerator(WorldElement.RANDOM_GENERATOR);
+			WorldElement.setBaseGenerator(WorldElement.RANDOM_GENERATOR.get()::cross);
 			this.build(main, this.hierarchy, storage.getHierarchy(), metaData, virtualSize);
 			
 			this.currentSubStructDistCenterRelSize = SUB_STRUCT_DIST_CENTER_REL_SIZE_INHERITANCE;
@@ -100,18 +106,16 @@ public class WorldGeometry {
 			/* Undefined */
 			this.build(main, this.callGraph, storage.getCallGraph(), metaData, virtualSize);
 		}
-		
-		this.current = this.hierarchy;
 	}
 	
-	private void build(WorldElement parent, List<WorldElement> list, List<StructureElement> elements, Map<Integer, StructureMeta> metaData, float size) {
+	private void build(WorldElement parent, List<WorldElement> list, List<HierarchyElement> elements, Map<Integer, StructureMeta> metaData, float size) {
 		if(elements != null && elements.size() > 0) {
 			Quaternionf quaternion = new Quaternionf(new AxisAngle4f((float) Math.PI * 2.0f / elements.size(), parent.getAxis()));
-			Vector3f base = parent.getBaseVector();
+			Vector3f base = elements.size() != 1 ? parent.getBaseVector() : new Vector3f();
 			
 			size *= STRUCTURE_RELATIVE_SIZE;
 			
-			for(StructureElement element : elements) {
+			for(HierarchyElement element : elements) {
 				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(this.currentSubStructDistCenterRelSize * size / STRUCTURE_RELATIVE_SIZE).add(parent.getCenter());
 				
 				StructureMeta structMeta = metaData.get(element.getID());
@@ -128,8 +132,11 @@ public class WorldGeometry {
 		}
 	}
 
-	private void loadInheritance(List<StructureElement> elements) {
-		this.inheritanceBuffer = elements;
+	private void loadInheritance(List<HierarchyElement> elements) {
+		if(this.currentProject != null) {
+			this.inheritanceBuffer = new ArrayList<>(elements);
+			this.buildGeometry(this.currentProject);
+		}
 	}
 	
 	protected void loadScene(RenderingScene scene) {
@@ -173,7 +180,7 @@ public class WorldGeometry {
 		return (float) Math.pow(STRUCTURE_RELATIVE_SIZE, count);
 	}
 
-	protected Stream<WorldElement> getCollisions(Vector3f player) {
+	protected synchronized Stream<WorldElement> getCollisions(Vector3f player) {
 		return this.current.stream().filter((element) -> element.collidesWith(player));
 	}
 	

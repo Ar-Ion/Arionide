@@ -480,6 +480,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
 	private void updateMenu() {
 		if(this.needMenuUpdate) {
+			MainMenus.STRUCT_LIST.setCurrentID(0);
 			this.dispatcher.fire(new MenuEvent(MainMenus.STRUCT_LIST));
 			this.updateInfo();
 			this.ajustAcceleration();

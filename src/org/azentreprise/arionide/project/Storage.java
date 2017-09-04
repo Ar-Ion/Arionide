@@ -28,22 +28,22 @@ import org.azentreprise.arionide.debugging.IAm;
 
 public abstract class Storage {
 	
-	protected List<StructureElement> hierarchy;
-	protected List<StructureElement> inheritance;
-	protected List<StructureElement> callGraph;
+	protected List<HierarchyElement> hierarchy;
+	protected Map<Integer, InheritanceElement> inheritance;
+	protected List<HierarchyElement> callGraph;
 	protected Map<Integer, StructureMeta> structMeta;
 	protected List<HistoryElement> history;
 	protected List<DataElement> currentData;
 	
-	public List<StructureElement> getHierarchy() {
+	public List<HierarchyElement> getHierarchy() {
 		return Collections.unmodifiableList(this.hierarchy);
 	}
 	
-	public List<StructureElement> getInheritance() {
-		return Collections.unmodifiableList(this.inheritance);
+	public Map<Integer, InheritanceElement> getInheritance() {
+		return Collections.unmodifiableMap(this.inheritance);
 	}
 	
-	public List<StructureElement> getCallGraph() {
+	public List<HierarchyElement> getCallGraph() {
 		return Collections.unmodifiableList(this.callGraph);
 	}
 	

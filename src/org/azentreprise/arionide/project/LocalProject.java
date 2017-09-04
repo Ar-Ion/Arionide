@@ -38,7 +38,7 @@ import org.azentreprise.arionide.debugging.IAm;
 
 public class LocalProject implements Project {
 
-	public static final long versionUID = 100L;
+	public static final long versionUID = 176L;
 	
 	private static final Map<String, byte[]> projectProtocolMapping = new LinkedHashMap<>();
 	
@@ -60,13 +60,24 @@ public class LocalProject implements Project {
 	}
 	
 	public void initFS() {
+		if(!this.properties.isEmpty()) {
+			return;
+		}
+		
 		this.storage.initFS();
+		
+		Runtime.getRuntime().addShutdownHook(new Thread(this::closeFS));
 		
 		this.storage.loadHierarchy();
 		this.storage.loadInheritance();
 		this.storage.loadCallGraph();
 		this.storage.loadStructureMeta();
 		this.storage.loadHistory();
+	}
+	
+	private void closeFS() {
+		this.save();
+		this.storage.closeFS();
 	}
 	
 	public Storage getStorage() {
@@ -79,23 +90,17 @@ public class LocalProject implements Project {
 	
 	@IAm("loading a project")
 	public void load() {
-		this.load("Microsoft sucks");
-	}
-	
-	private void load(String neededKey) {
+		if(!this.properties.isEmpty()) {
+			return;
+		}
+		
 		try {
-			if(this.properties.containsKey(neededKey)) {
-				return;
-			}
-			
-			this.properties.clear();
-			
 			byte[] data = Files.readAllBytes(this.storage.getMetaPath());
-
+			
 			int startIndex = 0;
 			int endIndex = 0;
 			
-			while((endIndex = Utils.search(data, startIndex, data.length, Coder.separator)) > -1 && !this.properties.containsKey(neededKey)) {
+			while((endIndex = Utils.search(data, startIndex, data.length, Coder.separator)) > -1) {
 				byte[] keyBuffer = new byte[endIndex - startIndex];
 				System.arraycopy(data, startIndex, keyBuffer, 0, keyBuffer.length);
 								
@@ -108,7 +113,7 @@ public class LocalProject implements Project {
 				
 				startIndex = endIndex + 1;
 			}
-									
+			
 			this.verifyProtocol();
 		} catch (Exception exception) {
 			Debug.exception(exception);
@@ -117,8 +122,7 @@ public class LocalProject implements Project {
 
 	@IAm("saving a project")
 	public void save() {
-		try {			
-			OutputStream stream = Files.newOutputStream(this.storage.getMetaPath(), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+		try(OutputStream stream = Files.newOutputStream(this.storage.getMetaPath(), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)) {
 						
 			this.verifyProtocol();
 						
@@ -144,9 +148,6 @@ public class LocalProject implements Project {
 				stream.write(Coder.windowsNewline);
 				stream.write(Coder.newline);
 			}
-			
-			stream.flush();
-			stream.close();
 		} catch(Exception exception) {
 			Debug.exception(exception);
 		}
@@ -176,11 +177,7 @@ public class LocalProject implements Project {
 
 	public <T> void setProperty(String key, T value, Encoder<T> encoder) {
 		this.properties.put(key, encoder.encode(value));
-		SystemCache.set(key, value, SystemCache.NEVER);
-	}
-	
-	public void invalidateCacheProperty(String key) {
-		SystemCache.invalidate(this.hashCode() + key);
+		SystemCache.set(this.hashCode() + key, value, SystemCache.NEVER);
 	}
 
 	public Map<String, byte[]> getProtocolMapping() {
@@ -188,7 +185,6 @@ public class LocalProject implements Project {
 	}
 	
 	public String getName() {
-		this.load("name");
 		return this.getProperty("name", Coder.stringDecoder);
 	}
 
@@ -197,10 +193,8 @@ public class LocalProject implements Project {
 	}
 
 	public boolean checkVersionCompatibility() {
-		this.load("version");
 		return this.getProperty("version", Coder.integerDecoder) == LocalProject.versionUID;
 	}
-	
 	
 	public boolean equals(Object other) {
 		if(other instanceof LocalProject) {

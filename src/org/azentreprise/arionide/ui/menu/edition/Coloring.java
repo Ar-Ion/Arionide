@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.menu;
+package org.azentreprise.arionide.ui.menu.edition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +31,8 @@ import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.opengl.WorldElement;
+import org.azentreprise.arionide.ui.menu.MainMenus;
+import org.azentreprise.arionide.ui.menu.Menu;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -205,6 +207,8 @@ public class Coloring extends Menu {
 		addColor("White", 0xFFFFFF);
 	}
 	
+	private static final String back = "Back";
+	
 	private static void addColor(String name, int color) {
 		names.add(name);
 		colors.add(new Vector3f(Utils.getRed(color) / 255.0f, Utils.getGreen(color) / 255.0f, Utils.getBlue(color) / 255.0f));
@@ -228,6 +232,7 @@ public class Coloring extends Menu {
 	public Coloring(AppManager manager) {
 		super(manager);
 		this.getElements().addAll(names);
+		this.getElements().add(back);
 	}
 	
 	public void setCurrent(WorldElement current) {
@@ -249,17 +254,19 @@ public class Coloring extends Menu {
 	protected void onClick(String element) {
 		assert this.current != null;
 		
-		Project project = this.getManager().getWorkspace().getCurrentProject();
-		
-		MessageEvent message = null;
-		
-		if(project != null) {
-			message = project.getDataManager().setColor(this.current.getID(), names.indexOf(element));
-		} else {
-			message = new MessageEvent("No project is currently loaded", MessageType.ERROR);
+		if(element != back) {
+			Project project = this.getManager().getWorkspace().getCurrentProject();
+			
+			MessageEvent message = null;
+			
+			if(project != null) {
+				message = project.getDataManager().setColor(this.current.getID(), names.indexOf(element));
+			} else {
+				message = new MessageEvent("No project is currently loaded", MessageType.ERROR);
+			}
+			
+			this.getManager().getEventDispatcher().fire(message);
 		}
-		
-		this.getManager().getEventDispatcher().fire(message);
 		
 		this.show(MainMenus.STRUCT_LIST);
 	}

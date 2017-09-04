@@ -46,11 +46,7 @@ public class SystemCache {
 	public static boolean has(String key) {
 		return elements.containsKey(key);
 	}
-	
-	public static void invalidate(String key) {
-		elements.remove(key);
-	}
-	
+
 	public static synchronized void clean() {
 		Iterator<Entry<Object, Long>> values = elements.values().iterator();
 		

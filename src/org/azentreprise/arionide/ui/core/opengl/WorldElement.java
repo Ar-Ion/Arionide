@@ -33,7 +33,7 @@ public class WorldElement {
 	public static final Supplier<Vector3f> RANDOM_GENERATOR = () -> new Vector3f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
 
 	private static Supplier<Vector3f> axisGenerator = RANDOM_GENERATOR;
-	private static Function<Vector3f, Vector3f> baseGenerator = (axis) -> RANDOM_GENERATOR.get().cross(axis);
+	private static Function<Vector3f, Vector3f> baseGenerator = RANDOM_GENERATOR.get()::cross;
 
 	protected static void setAxisGenerator(Supplier<Vector3f> generator) {
 		axisGenerator = generator;
@@ -96,7 +96,7 @@ public class WorldElement {
 		this.color = color;
 	}
 		
-	protected String getName() {
+	public String getName() {
 		return this.name;
 	}
 

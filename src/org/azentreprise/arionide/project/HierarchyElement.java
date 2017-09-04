@@ -21,46 +21,37 @@
 package org.azentreprise.arionide.project;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class StructureElement implements Serializable {
+public class HierarchyElement implements Serializable {
 	private static final long serialVersionUID = -5901117492235888923L;
 
 	private final int id;
-	private final List<StructureElement> children;
-	private transient List<StructureElement> parents;
+	protected final List<HierarchyElement> children;
 
-	public StructureElement(int id, List<StructureElement> children) {
+	public HierarchyElement(int id, List<HierarchyElement> children) {
 		this.id = id;
 		this.children = children;
 	}
 	
-	public List<StructureElement> getChildren() {
+	public List<HierarchyElement> getChildren() {
 		return Collections.unmodifiableList(this.children);
 	}
-	
-	public List<StructureElement> getChildren0() {
-		return this.children;
-	}
-	
-	public List<StructureElement> getParents() {
-		return this.parents;
-	}
-	
-	public void computeParents() {
-		for(StructureElement child : this.children) {
-			if(child.parents != null) {
-				child.parents.add(this);
-			} else {
-				child.parents = new ArrayList<>(Arrays.asList(this));
-			}
-		}
-	}
-	
+
 	public int getID() {
+		return this.id;
+	}
+	
+	public boolean equals(Object other) {
+		if(other instanceof HierarchyElement) {
+			return this.id == ((HierarchyElement) other).id;
+		}
+		
+		return false;
+	}
+	
+	public int hashCode() {
 		return this.id;
 	}
 }

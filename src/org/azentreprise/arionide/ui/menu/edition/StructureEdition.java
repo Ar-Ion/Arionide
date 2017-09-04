@@ -18,41 +18,38 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.menu;
-
-import java.util.List;
-import java.util.function.BiFunction;
+package org.azentreprise.arionide.ui.menu.edition;
 
 import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
-import org.azentreprise.arionide.project.DataManager;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
-import org.azentreprise.arionide.ui.core.opengl.WorldElement;
+import org.azentreprise.arionide.ui.menu.ConfirmMenu;
+import org.azentreprise.arionide.ui.menu.MainMenus;
+import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
 public class StructureEdition extends SpecificMenu {
 		
 	private static final String go = "Go";
+	private static final String inheritance = "Inherit";
 	private static final String name = "Name";
 	private static final String color = "Color";
 	private static final String delete = "Delete";
+	private static final String close = "Close";
 
+	private final Inheritance inheritanceMenu;
 	private final Coloring coloring;
 	private final ConfirmMenu confirmDelete;
 
 	public StructureEdition(AppManager manager) {
-		super(manager, go, name, color, delete);
+		super(manager, go, inheritance, name, color, delete, close);
 		this.coloring = new Coloring(manager);
-		this.confirmDelete = new ConfirmMenu(manager, this, this::delete, "Are you sure you want to delete this structure?");
-	}
-	
-	public void setCurrent(WorldElement current) {
-		super.setCurrent(current);
-		this.coloring.setCurrent(current);
+		this.confirmDelete = new ConfirmMenu(manager, this, this::delete, "Are you sure you want to delete the structure '$name'?");
+		this.inheritanceMenu = new Inheritance(manager);
 	}
 	
 	public Coloring getColoring() {
@@ -68,6 +65,10 @@ public class StructureEdition extends SpecificMenu {
 			case go:
 				this.go();
 				break;
+			case inheritance:
+				this.inheritanceMenu.setCurrent(this.getCurrent());
+				this.show(this.inheritanceMenu);
+				break;
 			case name:
 				new Thread(() -> {
 					String name = JOptionPane.showInputDialog(null, "Please enter the new name of the structure", "New name", JOptionPane.PLAIN_MESSAGE);
@@ -81,10 +82,15 @@ public class StructureEdition extends SpecificMenu {
 				}).start();
 				break;
 			case color:
+				this.coloring.setCurrent(this.getCurrent());
 				this.show(this.coloring);
 				break;
 			case delete:
+				this.confirmDelete.setCurrent(this.getCurrent());
 				this.show(this.confirmDelete);
+				break;
+			case close:
+				this.show(MainMenus.STRUCT_LIST);
 		}
 	}
 	
