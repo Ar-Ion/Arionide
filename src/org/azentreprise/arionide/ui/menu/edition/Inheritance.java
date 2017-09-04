@@ -49,7 +49,7 @@ public class Inheritance extends SpecificMenu {
 	}
 	
 	public void inherit(int parent) {
-		MessageEvent message = this.getManager().getWorkspace().getCurrentProject().getDataManager().inherit(this.getCurrentID(), parent);
+		MessageEvent message = this.getManager().getWorkspace().getCurrentProject().getDataManager().inherit(this.getCurrent().getID(), parent);
 		this.getManager().getEventDispatcher().fire(message);
 		this.show(this); // This is being called by the structure selection menu...
 	}

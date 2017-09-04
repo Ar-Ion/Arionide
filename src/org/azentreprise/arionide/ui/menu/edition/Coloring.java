@@ -207,6 +207,8 @@ public class Coloring extends Menu {
 		addColor("White", 0xFFFFFF);
 	}
 	
+	public static final int WHITE = 161;
+	
 	private static final String back = "Back";
 	
 	private static void addColor(String name, int color) {

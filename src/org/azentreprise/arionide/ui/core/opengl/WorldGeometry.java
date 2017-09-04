@@ -43,13 +43,8 @@ import org.joml.Vector4f;
 
 public class WorldGeometry {
 	
-	public static final float STRUCTURE_INITIAL_SIZE = 1.0f;
-	public static final float STRUCTURE_RELATIVE_SIZE = 0.1f;
-	
-	// The distance from the center of a parent structure to the center of a child structure relative to the size of the parent structure.
-	
-	public static final float SUB_STRUCT_DIST_CENTER_REL_SIZE_HIERARCHY = 0.75f; 
-	public static final float SUB_STRUCT_DIST_CENTER_REL_SIZE_INHERITANCE = 2.5f;
+	private static final float structInitialSize = 1.0f;
+	private static final float structRelSizeHierarchy = 0.1f;
 	
 	private final List<WorldElement> hierarchy = new ArrayList<>();
 	private final List<WorldElement> inheritance = new ArrayList<>();
@@ -66,8 +61,6 @@ public class WorldGeometry {
 	
 	private InheritanceGenerator inheritanceGenerator;
 
-	private float currentSubStructDistCenterRelSize = 0.0f;
-	
 	private WorldElement selected;
 	
 	public WorldGeometry(IEventDispatcher dispatcher) {
@@ -87,46 +80,52 @@ public class WorldGeometry {
 			
 			this.inheritanceGenerator = new InheritanceGenerator(storage.getInheritance(), this::loadInheritance);
 			
-			WorldElement main = new WorldElement(-1, null, new Vector3f(), new Vector4f(), -1.0f);
-			
 			Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
 			
-			float virtualSize = STRUCTURE_INITIAL_SIZE / STRUCTURE_RELATIVE_SIZE;
-			
-			this.currentSubStructDistCenterRelSize = SUB_STRUCT_DIST_CENTER_REL_SIZE_HIERARCHY;
 			WorldElement.setAxisGenerator(WorldElement.RANDOM_GENERATOR);
 			WorldElement.setBaseGenerator(WorldElement.RANDOM_GENERATOR.get()::cross);
-			this.build(main, this.hierarchy, storage.getHierarchy(), metaData, virtualSize);
+			this.build(this.hierarchy, storage.getHierarchy(), metaData, structRelSizeHierarchy, 0.75f);
 			
-			this.currentSubStructDistCenterRelSize = SUB_STRUCT_DIST_CENTER_REL_SIZE_INHERITANCE;
 			WorldElement.setAxisGenerator(() -> new Vector3f(0.0f, 1.0f, 0.0f));
 			WorldElement.setBaseGenerator((axis) -> new Vector3f(1.0f, 1.0f, 0.0f));
-			this.build(main, this.inheritance, this.inheritanceBuffer, metaData, virtualSize);
-			
-			/* Undefined */
-			this.build(main, this.callGraph, storage.getCallGraph(), metaData, virtualSize);
+			this.build(this.inheritance, this.inheritanceBuffer, metaData, 0.5f, 2.5f);
 		}
 	}
 	
-	private void build(WorldElement parent, List<WorldElement> list, List<HierarchyElement> elements, Map<Integer, StructureMeta> metaData, float size) {
+	private void build(List<WorldElement> list, List<HierarchyElement> elements, Map<Integer, StructureMeta> metaData, float structRelSize, float subStructDistCenterRelSize) {
+		WorldElement main = new WorldElement(-1, null, new Vector3f(), new Vector4f(), new Vector3f(), -1.0f, true);
+		float virtualSize = structInitialSize / structRelSize;
+		this.build(main, list, elements, metaData, virtualSize, structRelSize, subStructDistCenterRelSize);
+	}
+	
+	private void build(WorldElement parent, List<WorldElement> list, List<HierarchyElement> elements, Map<Integer, StructureMeta> metaData, float size, float structRelSize, float subStructDistCenterRelSize) {
 		if(elements != null && elements.size() > 0) {
+			size *= structRelSize;
+
 			Quaternionf quaternion = new Quaternionf(new AxisAngle4f((float) Math.PI * 2.0f / elements.size(), parent.getAxis()));
-			Vector3f base = elements.size() != 1 ? parent.getBaseVector() : new Vector3f();
-			
-			size *= STRUCTURE_RELATIVE_SIZE;
-			
+			Vector3f base = elements.size() != 1 || size != structInitialSize ? parent.getBaseVector() : new Vector3f();
+
 			for(HierarchyElement element : elements) {
-				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(this.currentSubStructDistCenterRelSize * size / STRUCTURE_RELATIVE_SIZE).add(parent.getCenter());
+				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(subStructDistCenterRelSize * size / structRelSize).add(parent.getCenter());
 				
 				StructureMeta structMeta = metaData.get(element.getID());
 				
 				if(structMeta != null) {
-					Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.3f);
+					Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.5f);
+					Vector3f spotColor = new Vector3f(Coloring.getColorByID(structMeta.getSpotColorID()));
 					
-					WorldElement object = new WorldElement(element.getID(), structMeta.getName(), position, color, size);
+					if(list == this.inheritance) {
+						if(list.size() > 0) {
+							spotColor = new Vector3f(0.0f, 1.0f, 0.0f);
+						} else {
+							spotColor = new Vector3f(0.0f, 0.0f, 1.0f);
+						}
+					}
+					
+					WorldElement object = new WorldElement(element.getID(), structMeta.getName(), position, color, spotColor, size, structMeta.isAccessAllowed());
 					list.add(object);
 					
-					this.build(object, list, element.getChildren(), metaData, size);
+					this.build(object, list, element.getChildren(), metaData, size, structRelSize, subStructDistCenterRelSize);
 				}
 			}
 		}
@@ -171,13 +170,14 @@ public class WorldGeometry {
 			this.selected = element;
 			
 			if(this.currentScene.equals(RenderingScene.INHERITANCE)) {
+				this.current = this.inheritance;
 				this.inheritanceGenerator.generate(element.getID());
 			}
 		}
 	}
 	
 	protected float getSizeForGeneration(int count) {
-		return (float) Math.pow(STRUCTURE_RELATIVE_SIZE, count);
+		return this.current != this.hierarchy ? -666.0f : (float) Math.pow(structRelSizeHierarchy, count);
 	}
 
 	protected synchronized Stream<WorldElement> getCollisions(Vector3f player) {

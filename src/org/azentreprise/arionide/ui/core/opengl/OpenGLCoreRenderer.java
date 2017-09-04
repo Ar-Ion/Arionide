@@ -343,7 +343,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 					gl.glEnable(GL4.GL_BLEND);
 				}
 				
-				if(element != this.selected) {
+				if(element != this.selected && !blending) {
 					gl.glUniform1f(this.ambientFactor, 0.3f);
 				} else {
 					gl.glUniform1f(this.ambientFactor, 0.6f);
@@ -352,7 +352,11 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				gl.glEnable(GL4.GL_DEPTH_TEST);
 				
 				Vector4f color = element.getColor();
+				Vector3f spot = element.getSpotColor();
+				
 				gl.glUniform4f(this.color, color.x, color.y, color.z, color.w);
+				gl.glUniform3f(this.lightColor, spot.x, spot.y, spot.z);
+				
 				gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, structureRenderingQuality * structureRenderingQuality * 4, GL4.GL_UNSIGNED_INT, 0);
 				
 				gl.glDisable(GL4.GL_DEPTH_TEST);
@@ -383,13 +387,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private void updatePlayer() {
-		this.velocity.add(this.acceleration);
-
-		this.player.x -= Math.cos(Math.PI / 2 + this.yaw) * this.velocity.x + Math.cos(this.yaw) * this.velocity.z;
-		this.player.y += this.velocity.y;
-		this.player.z -= Math.sin(Math.PI / 2 + this.yaw) * this.velocity.x + Math.sin(this.yaw) * this.velocity.z;
+		this.velocity.x += (float) -(Math.cos(Math.PI / 2 + this.yaw) * this.acceleration.x + Math.cos(this.yaw) * this.acceleration.z);
+		this.velocity.y += this.acceleration.y;
+		this.velocity.z += (float) -(Math.sin(Math.PI / 2 + this.yaw) * this.acceleration.x + Math.sin(this.yaw) * this.acceleration.z);
 		
-		this.velocity.mul(1.0f - spaceFriction, this.velocity);
+		this.velocity.mul(1.0f - spaceFriction);
+		
+		this.player.add(this.velocity);
 	}
 	
 	private void updateCamera() {
@@ -408,7 +412,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 		
 	private void ajustAcceleration() {
-		this.generalAcceleration = initialAcceleration * this.geometry.getSizeForGeneration(this.inside.size());;
+		this.generalAcceleration = initialAcceleration * Math.max(1.0d, this.geometry.getSizeForGeneration(this.inside.size()));
 		this.zNear = (float) this.generalAcceleration * 10.0f;
 		this.updatePerspective();
 	}
@@ -446,10 +450,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 		synchronized(this.geometry) {
 			for(WorldElement element : this.geometry.getElements()) {
-				if(element.getSize() == size && (this.current == null || element.getCenter().distance(this.current.getCenter()) < size * 20.0f)) {
+				boolean insideConstraint = this.current == null || this.current.getCenter().distance(element.getCenter()) < this.geometry.getSizeForGeneration(this.inside.size() - 1);
+				if((element.getSize() == size && insideConstraint) || size < -42.0f) {
 					float currentDistance = this.player.distance(element.getCenter());
 	
-					menuData.add(element);
+					if(element.getSize() == size) {
+						menuData.add(element);
+					}
 					
 					if(currentDistance < distance) {
 						if(element.collidesWith(new Vector3f(cameraDirection).normalize(currentDistance).add(this.player))) {
@@ -466,10 +473,15 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.lookingAt = found;
 	}
 	
-	private boolean enterElement(WorldElement element) {		
-		this.current = element;
-		this.needMenuUpdate = true;
-		return true;
+	private boolean enterElement(WorldElement element) {
+		if(element.isAccessAllowed()) {
+			this.current = element;
+			this.needMenuUpdate = true;
+			return true;
+		} else {
+			this.repulseFrom(element.getCenter());
+			return false;
+		}
 	}
 	
 	private boolean exitElement(WorldElement element) {
@@ -525,13 +537,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		target.put(15, matrix.m33());
 	}
 	
-	/*  
-	 	private void repulseFrom(Vector3f center) {
-			Vector3f normal = new Vector3f(this.player).sub(center).normalize();
-			this.velocity.reflect(normal);
-			this.updatePosition();
-		}	
-	*/
+ 	private void repulseFrom(Vector3f center) {
+		Vector3f normal = new Vector3f(this.player).sub(center).normalize();
+		
+		if(new Vector3f(this.velocity).normalize().dot(normal) < 0.0f) {
+			this.velocity.reflect(normal).normalize((float) this.generalAcceleration * 32.0f);
+		}
+ 	}
 
 	public void teleport(Vector3f dest) {
 		this.updatePerspective();

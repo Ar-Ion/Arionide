@@ -50,22 +50,26 @@ public class WorldElement {
 	private final Vector3f axis;
 	private final Vector3f base;
 	private final float size;
+	private final boolean accessAllowed;
 	
 	private String name;
 	private Vector4f color;
+	private Vector3f spotColor;
 	
-	protected WorldElement(int id, String name, Vector3f center, Vector4f color, float size) {
+	protected WorldElement(int id, String name, Vector3f center, Vector4f color, Vector3f spotColor, float size, boolean accessAllowed) {
 		this.id = id;
 		this.name = name;
-		this.center = new Vector3f(center);
+		this.center = center;
 		this.axis = axisGenerator.get().normalize();
 		this.base = baseGenerator.apply(this.axis).normalize();
-		this.color = new Vector4f(color);
+		this.color = color;
+		this.spotColor = spotColor;
 		this.size = size;
+		this.accessAllowed = accessAllowed;
 	}
 	
 	protected boolean collidesWith(Vector3f object) {
-		return object.distance(this.center) <= this.size;
+		return object.distance(this.center) <= this.size * 1.2f;
 	}
 	
 	public int getID() {
@@ -84,8 +88,16 @@ public class WorldElement {
 		return new Vector3f(this.axis);
 	}
 	
+	public Vector3f getSpotColor() {
+		return this.spotColor;
+	}
+	
 	public float getSize() {
 		return this.size;
+	}
+	
+	public boolean isAccessAllowed() {
+		return this.accessAllowed;
 	}
 	
 	public Vector4f getColor() {

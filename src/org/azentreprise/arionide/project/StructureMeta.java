@@ -22,12 +22,16 @@ package org.azentreprise.arionide.project;
 
 import java.io.Serializable;
 
+import org.azentreprise.arionide.ui.menu.edition.Coloring;
+
 public class StructureMeta implements Serializable {
 	private static final long serialVersionUID = 5582101421258702064L;
 	
 	private String name = "Lambda";
-	private int colorID = 0;
-	
+	private int colorID = Coloring.WHITE;
+	private int spotColorID = Coloring.WHITE;
+	private boolean accessAllowed = true;
+
 	public String getName() {
 		return this.name;
 	}
@@ -42,5 +46,21 @@ public class StructureMeta implements Serializable {
 	
 	protected void setColorID(int colorID) {
 		this.colorID = colorID;
+	}
+	
+	public int getSpotColorID() {
+		return this.spotColorID;
+	}
+	
+	protected void setSpotColorID(int spotColorID) {
+		this.spotColorID = spotColorID;
+	}
+	
+	public boolean isAccessAllowed() {
+		return this.accessAllowed;
+	}
+	
+	public void setAccessAllowed(boolean allowed) {
+		this.accessAllowed = allowed;
 	}
 }
