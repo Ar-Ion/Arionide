@@ -28,7 +28,7 @@ import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
-import org.azentreprise.arionide.ui.menu.ConfirmMenu;
+import org.azentreprise.arionide.ui.menu.Confirm;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
@@ -43,12 +43,12 @@ public class StructureEdition extends SpecificMenu {
 
 	private final Inheritance inheritanceMenu;
 	private final Coloring coloring;
-	private final ConfirmMenu confirmDelete;
+	private final Confirm confirmDelete;
 
 	public StructureEdition(AppManager manager) {
 		super(manager, go, inheritance, name, color, delete, close);
 		this.coloring = new Coloring(manager);
-		this.confirmDelete = new ConfirmMenu(manager, this, this::delete, "Are you sure you want to delete the structure '$name'?");
+		this.confirmDelete = new Confirm(manager, this, this::delete, "Are you sure you want to delete the structure '$name'?");
 		this.inheritanceMenu = new Inheritance(manager);
 	}
 	

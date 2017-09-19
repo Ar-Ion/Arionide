@@ -91,6 +91,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private final OpenGLDrawingContext context;
 	private final IEventDispatcher dispatcher;
 	private final WorldGeometry geometry;
+	private final CodeGeometry code;
 	private final Robot robot;
 	
 	private float zNear = 1.0f;
@@ -146,6 +147,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.context = (OpenGLDrawingContext) context;
 		this.dispatcher = dispatcher;
 		this.geometry = new WorldGeometry(dispatcher);
+		this.code = new CodeGeometry();
 		
 		dispatcher.registerHandler(this);
 		
@@ -333,8 +335,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				
 		gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 		
-		synchronized(this.geometry) {
-			for(WorldElement element : this.geometry.getElements()) {
+		this.renderScene0(gl, this.geometry.getElements());
+		this.renderScene0(gl, this.code.getElements());
+	}
+	
+	private void renderScene0(GL4 gl, List<WorldElement> elements) {
+		synchronized(elements) {
+			for(WorldElement element : elements) {
 				this.setupModel(gl, this.matrix.identity().translate(element.getCenter()).scale(element.getSize()));
 	
 				boolean blending = this.inside.contains(element);

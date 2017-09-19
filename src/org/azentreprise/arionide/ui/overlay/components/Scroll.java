@@ -76,24 +76,27 @@ public class Scroll extends Tab {
 			
 			Rectangle2D bounds = this.getBounds();
 			int count = this.getComponents().size();
+			
 			double initial = bounds.getWidth() / 3;
+			double initialHeight = bounds.getHeight();
 
-			for(int i = -this.activeComponent; i < 0; i++) {
+			for(int i = -this.activeComponent; i < 1; i++) {
 				double power = Math.pow(2, i);
-				double x = initial * (1 - power);
 				double width = initial * power;
-	
-				this.rectangles.add(new Rectangle2D.Double(bounds.getX() + initial - x, bounds.getY(), width, bounds.getHeight()));
+				double height = initialHeight * power;
+				
+				this.rectangles.add(new Rectangle2D.Double(bounds.getX() + width, bounds.getCenterY() - height / 2, width, height));
 			}
 			
-			this.rectangles.add(new Rectangle2D.Double(bounds.getX() + initial, bounds.getY(), initial, bounds.getHeight()));
+			this.rectangles.add(new Rectangle2D.Double(bounds.getX() - initial, bounds.getCenterY() - initialHeight / 2, initial, initialHeight));
 			
 			for(int i = 1; i < count; i++) {
 				double power = Math.pow(2, -i);
 				double x = initial * (1 - power) * 2;
 				double width = initial * power;
+				double height = initialHeight * power;
 	
-				this.rectangles.add(new Rectangle2D.Double(bounds.getX() + initial + x, bounds.getY(), width, bounds.getHeight()));
+				this.rectangles.add(new Rectangle2D.Double(bounds.getX() + initial + x, bounds.getCenterY() - height / 2, width, height));
 			}
 		}
 	}

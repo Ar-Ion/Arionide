@@ -33,7 +33,7 @@ public abstract class Storage {
 	protected List<HierarchyElement> callGraph;
 	protected Map<Integer, StructureMeta> structMeta;
 	protected List<HistoryElement> history;
-	protected List<DataElement> currentData;
+	protected List<HierarchyElement> currentData;
 	
 	public List<HierarchyElement> getHierarchy() {
 		return Collections.unmodifiableList(this.hierarchy);
@@ -55,7 +55,7 @@ public abstract class Storage {
 		return Collections.unmodifiableList(this.history);
 	}
 	
-	public List<DataElement> getCurrentData() {
+	public List<HierarchyElement> getCurrentData() {
 		return Collections.unmodifiableList(this.currentData);
 	}
 

@@ -29,8 +29,9 @@ import org.joml.Vector4f;
 
 public class WorldElement {	
 	private static final Random rand = new Random();
-		
-	public static final Supplier<Vector3f> RANDOM_GENERATOR = () -> new Vector3f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
+	
+	// "Random": this one is not uniform (more likely to become vertical)
+	public static final Supplier<Vector3f> RANDOM_GENERATOR = () -> new Vector3f(rand.nextFloat() - 0.5f, rand.nextFloat() * 2.0f, rand.nextFloat() - 0.5f);
 
 	private static Supplier<Vector3f> axisGenerator = RANDOM_GENERATOR;
 	private static Function<Vector3f, Vector3f> baseGenerator = RANDOM_GENERATOR.get()::cross;

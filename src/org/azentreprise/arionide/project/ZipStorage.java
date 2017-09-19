@@ -34,6 +34,7 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -191,7 +192,7 @@ public class ZipStorage extends Storage {
 	
 	public void loadData(int id) {
 		try {
-			this.currentDataPath = this.init(ArrayList<DataElement>::new, e -> this.currentData = e, "data", String.valueOf(id));
+			this.currentDataPath = this.init(ArrayList<HierarchyElement>::new, e -> this.currentData = e, "data", String.valueOf(id));
 		} catch (IOException exception) {
 			Debug.exception(exception);
 		}

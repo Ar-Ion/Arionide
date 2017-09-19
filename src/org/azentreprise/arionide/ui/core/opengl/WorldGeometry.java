@@ -45,6 +45,7 @@ public class WorldGeometry {
 	
 	private static final float structInitialSize = 1.0f;
 	private static final float structRelSizeHierarchy = 0.1f;
+	private static final float structRelSizeInheritance = 0.5f;
 	
 	private final List<WorldElement> hierarchy = new ArrayList<>();
 	private final List<WorldElement> inheritance = new ArrayList<>();
@@ -88,7 +89,7 @@ public class WorldGeometry {
 			
 			WorldElement.setAxisGenerator(() -> new Vector3f(0.0f, 1.0f, 0.0f));
 			WorldElement.setBaseGenerator((axis) -> new Vector3f(1.0f, 1.0f, 0.0f));
-			this.build(this.inheritance, this.inheritanceBuffer, metaData, 0.5f, 2.5f);
+			this.build(this.inheritance, this.inheritanceBuffer, metaData, structRelSizeInheritance, 2.5f);
 		}
 	}
 	
@@ -105,6 +106,8 @@ public class WorldGeometry {
 			Quaternionf quaternion = new Quaternionf(new AxisAngle4f((float) Math.PI * 2.0f / elements.size(), parent.getAxis()));
 			Vector3f base = elements.size() != 1 || size != structInitialSize ? parent.getBaseVector() : new Vector3f();
 
+			boolean flag = false;
+			
 			for(HierarchyElement element : elements) {
 				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(subStructDistCenterRelSize * size / structRelSize).add(parent.getCenter());
 				
@@ -114,9 +117,10 @@ public class WorldGeometry {
 					Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.5f);
 					Vector3f spotColor = new Vector3f(Coloring.getColorByID(structMeta.getSpotColorID()));
 					
-					if(list == this.inheritance) {
-						if(list.size() > 0) {
+					if(size == structInitialSize && structRelSize == structRelSizeInheritance) {
+						if(!flag) {
 							spotColor = new Vector3f(0.0f, 1.0f, 0.0f);
+							flag = true;
 						} else {
 							spotColor = new Vector3f(0.0f, 0.0f, 1.0f);
 						}

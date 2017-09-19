@@ -18,11 +18,39 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.project;
+package org.azentreprise.arionide.ui.menu;
 
-import java.io.Serializable;
+import org.azentreprise.arionide.events.MessageEvent;
+import org.azentreprise.arionide.events.MessageType;
+import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 
-public class DataElement implements Serializable {
-	private static final long serialVersionUID = -1912296639527852370L;
+public class Confirm extends SpecificMenu {
+	
+	private static final String yes = "Yes";
+	private static final String no = "No";
 
+	private final Menu parent;
+	private final Confirmable confirm;
+	private final String caption;
+	
+	public Confirm(AppManager manager, Menu parent, Confirmable confirm, String caption) {
+		super(manager, yes, no);
+		this.parent = parent;
+		this.confirm = confirm;
+		this.caption = caption;
+	}
+	
+	public void setCurrent(WorldElement current) {
+		super.setCurrent(current);
+		this.getManager().getEventDispatcher().fire(new MessageEvent(this.caption.replace("$name", current.getName()), MessageType.INFO));
+	}
+	
+	public void onClick(String element) {
+		this.show(this.parent);
+
+		if(element.equals(yes)) {
+			this.confirm.confirm();
+		}
+	}
 }

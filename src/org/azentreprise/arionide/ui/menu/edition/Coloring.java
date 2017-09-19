@@ -221,7 +221,8 @@ public class Coloring extends Menu {
 	}
 	
 	public static Vector3f getColorByID(int id) {
-		return colors.get(id);
+		int delta = colors.size() + 1 - id;
+		return colors.get(id < 0 ? colors.size() - 1 : delta > 1 ? id : id - delta);
 	}
 	
 	public static boolean hasColor(int id) {
