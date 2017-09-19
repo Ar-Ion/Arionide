@@ -419,7 +419,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 		
 	private void ajustAcceleration() {
-		this.generalAcceleration = initialAcceleration * Math.max(1.0d, this.geometry.getSizeForGeneration(this.inside.size()));
+		this.generalAcceleration = initialAcceleration * Math.max(0.000000001d, this.geometry.getSizeForGeneration(this.inside.size()));
 		this.zNear = (float) this.generalAcceleration * 10.0f;
 		this.updatePerspective();
 	}
@@ -455,7 +455,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 
 		List<WorldElement> menuData = new ArrayList<>();
 		
-		synchronized(this.geometry) {
+		synchronized(this.geometry.getElements()) {
 			for(WorldElement element : this.geometry.getElements()) {
 				boolean insideConstraint = this.current == null || this.current.getCenter().distance(element.getCenter()) < this.geometry.getSizeForGeneration(this.inside.size() - 1);
 				if((element.getSize() == size && insideConstraint) || size < -42.0f) {
@@ -570,9 +570,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.project = project;
 		this.needMenuUpdate = true;
 				
-		synchronized(this.geometry) {
-			this.geometry.buildGeometry(project);
-		}
+		this.geometry.buildGeometry(project);
 	}
 
 	public void update(Rectangle bounds) {

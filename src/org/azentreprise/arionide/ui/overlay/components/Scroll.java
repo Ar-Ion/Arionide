@@ -79,7 +79,7 @@ public class Scroll extends Tab {
 			
 			double initial = bounds.getWidth() / 3;
 			double initialHeight = bounds.getHeight();
-
+			
 			for(int i = -this.activeComponent; i < 1; i++) {
 				double power = Math.pow(2, i);
 				double width = initial * power;
@@ -87,9 +87,7 @@ public class Scroll extends Tab {
 				
 				this.rectangles.add(new Rectangle2D.Double(bounds.getX() + width, bounds.getCenterY() - height / 2, width, height));
 			}
-			
-			this.rectangles.add(new Rectangle2D.Double(bounds.getX() - initial, bounds.getCenterY() - initialHeight / 2, initial, initialHeight));
-			
+						
 			for(int i = 1; i < count; i++) {
 				double power = Math.pow(2, -i);
 				double x = initial * (1 - power) * 2;

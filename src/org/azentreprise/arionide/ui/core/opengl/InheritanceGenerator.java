@@ -46,7 +46,9 @@ public class InheritanceGenerator {
 		this.processChildren(this.inheritance.get(id), parents);
 		this.processParents(this.inheritance.get(id), children);
 		
-		this.completion.accept(Arrays.asList(new HierarchyElement(id, parents), new HierarchyElement(id, children)));
+		parents.addAll(children);
+		
+		this.completion.accept(Arrays.asList(new HierarchyElement(id, parents)));
 	}
 	
 	private void processChildren(InheritanceElement src, List<HierarchyElement> dest) {		

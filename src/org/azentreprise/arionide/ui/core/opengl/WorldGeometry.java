@@ -22,6 +22,7 @@ package org.azentreprise.arionide.ui.core.opengl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -47,9 +48,9 @@ public class WorldGeometry {
 	private static final float structRelSizeHierarchy = 0.1f;
 	private static final float structRelSizeInheritance = 0.5f;
 	
-	private final List<WorldElement> hierarchy = new ArrayList<>();
-	private final List<WorldElement> inheritance = new ArrayList<>();
-	private final List<WorldElement> callGraph = new ArrayList<>();
+	private final List<WorldElement> hierarchy = Collections.synchronizedList(new ArrayList<>());
+	private final List<WorldElement> inheritance = Collections.synchronizedList(new ArrayList<>());
+	private final List<WorldElement> callGraph = Collections.synchronizedList(new ArrayList<>());
 
 	private final IEventDispatcher dispatcher;
 	
@@ -69,7 +70,7 @@ public class WorldGeometry {
 	}
 
 	@IAm("building the world's geometry")
-	protected synchronized void buildGeometry(Project project) {
+	protected void buildGeometry(Project project) {
 		this.hierarchy.clear();
 		this.inheritance.clear();
 		this.callGraph.clear();
@@ -94,9 +95,11 @@ public class WorldGeometry {
 	}
 	
 	private void build(List<WorldElement> list, List<HierarchyElement> elements, Map<Integer, StructureMeta> metaData, float structRelSize, float subStructDistCenterRelSize) {
-		WorldElement main = new WorldElement(-1, null, new Vector3f(), new Vector4f(), new Vector3f(), -1.0f, true);
-		float virtualSize = structInitialSize / structRelSize;
-		this.build(main, list, elements, metaData, virtualSize, structRelSize, subStructDistCenterRelSize);
+		synchronized(list) {
+			WorldElement main = new WorldElement(-1, null, new Vector3f(), new Vector4f(), new Vector3f(), -1.0f, true);
+			float virtualSize = structInitialSize / structRelSize;
+			this.build(main, list, elements, metaData, virtualSize, structRelSize, subStructDistCenterRelSize);
+		}
 	}
 	
 	private void build(WorldElement parent, List<WorldElement> list, List<HierarchyElement> elements, Map<Integer, StructureMeta> metaData, float size, float structRelSize, float subStructDistCenterRelSize) {
@@ -106,7 +109,7 @@ public class WorldGeometry {
 			Quaternionf quaternion = new Quaternionf(new AxisAngle4f((float) Math.PI * 2.0f / elements.size(), parent.getAxis()));
 			Vector3f base = elements.size() != 1 || size != structInitialSize ? parent.getBaseVector() : new Vector3f();
 
-			boolean flag = false;
+			int id = 0;
 			
 			for(HierarchyElement element : elements) {
 				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(subStructDistCenterRelSize * size / structRelSize).add(parent.getCenter());
@@ -116,17 +119,25 @@ public class WorldGeometry {
 				if(structMeta != null) {
 					Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.5f);
 					Vector3f spotColor = new Vector3f(Coloring.getColorByID(structMeta.getSpotColorID()));
-					
-					if(size == structInitialSize && structRelSize == structRelSizeInheritance) {
-						if(!flag) {
-							spotColor = new Vector3f(0.0f, 1.0f, 0.0f);
-							flag = true;
+					boolean access = structMeta.isAccessAllowed();
+
+					if(list == this.inheritance) {
+						access = false;
+						
+						if(id <= elements.size() / 2) {
+							spotColor = new Vector3f(Coloring.getColorByName("Scarlet"));
 						} else {
-							spotColor = new Vector3f(0.0f, 0.0f, 1.0f);
+							spotColor = new Vector3f(Coloring.getColorByName("Burnt Orange"));
+						}
+						
+						if(parent.getSize() < 0.0f) {
+							spotColor = new Vector3f(Coloring.getColorByName("Orange"));
+						} else if(parent.getSpotColor().equals(Coloring.getColorByName("Orange"))) {
+							id++;
 						}
 					}
 					
-					WorldElement object = new WorldElement(element.getID(), structMeta.getName(), position, color, spotColor, size, structMeta.isAccessAllowed());
+					WorldElement object = new WorldElement(element.getID(), structMeta.getName(), position, color, spotColor, size, access);
 					list.add(object);
 					
 					this.build(object, list, element.getChildren(), metaData, size, structRelSize, subStructDistCenterRelSize);
