@@ -32,11 +32,11 @@ import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 import org.azentreprise.arionide.ui.menu.MainMenus;
-import org.azentreprise.arionide.ui.menu.Menu;
+import org.azentreprise.arionide.ui.menu.SpecificMenu;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-public class Coloring extends Menu {
+public class Coloring extends SpecificMenu {
 	
 	private static final List<String> names = new ArrayList<>();
 	private static final List<Vector3f> colors = new ArrayList<>();
@@ -230,16 +230,18 @@ public class Coloring extends Menu {
 	}
 	
 	
-	private WorldElement current;
-	
 	public Coloring(AppManager manager) {
 		super(manager);
 		this.getElements().addAll(names);
 		this.getElements().add(back);
 	}
+
+	protected void onSelect(String element) {
+		this.getCurrent().setColor(new Vector4f(getColorByName(element), 0.3f));
+	}
 	
 	public void setCurrent(WorldElement current) {
-		this.current = current;
+		super.setCurrent(current);
 		
 		Map<Integer, StructureMeta> metaData = this.getManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta();
 		
@@ -247,23 +249,15 @@ public class Coloring extends Menu {
 			this.setCurrentID(metaData.get(current.getID()).getColorID());
 		}
 	}
-
-	protected void onSelect(String element) {
-		assert this.current != null;
-		
-		this.current.setColor(new Vector4f(getColorByName(element), 0.3f));
-	}
 	
-	protected void onClick(String element) {
-		assert this.current != null;
-		
+	protected void onClick(String element) {		
 		if(element != back) {
 			Project project = this.getManager().getWorkspace().getCurrentProject();
 			
 			MessageEvent message = null;
 			
 			if(project != null) {
-				message = project.getDataManager().setColor(this.current.getID(), names.indexOf(element));
+				message = project.getDataManager().setColor(this.getCurrent().getID(), names.indexOf(element));
 			} else {
 				message = new MessageEvent("No project is currently loaded", MessageType.ERROR);
 			}
@@ -272,5 +266,9 @@ public class Coloring extends Menu {
 		}
 		
 		this.show(MainMenus.STRUCT_LIST);
+	}
+	
+	public String getDescription() {
+		return "Please select a color for " + super.getDescription();
 	}
 }

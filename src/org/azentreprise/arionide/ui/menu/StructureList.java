@@ -52,4 +52,8 @@ public class StructureList extends Menu {
 			this.show(MainMenus.STRUCT_EDIT);
 		}
 	}
+	
+	public String getDescription() {
+		return "Please select a structure in " + super.getDescription();
+	}
 }

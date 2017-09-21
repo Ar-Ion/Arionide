@@ -40,4 +40,8 @@ public class StructureSelection extends Menu {
 			this.delegate.accept(this.ordered.get(element));
 		}
 	}
+	
+	public String getDescription() {
+		return "Please select a structure";
+	}
 }

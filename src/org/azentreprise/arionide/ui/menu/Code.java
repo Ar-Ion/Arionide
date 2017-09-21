@@ -5,7 +5,10 @@ import org.azentreprise.arionide.ui.AppManager;
 public class Code extends Menu {
 
 	protected Code(AppManager manager) {
-		super(manager, "call", "if");
+		super(manager, "nop");
 	}
-
+	
+	public String getDescription() {
+		return "Code editor for " + super.getDescription();
+	}
 }

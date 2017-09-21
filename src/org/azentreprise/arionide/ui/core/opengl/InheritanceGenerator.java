@@ -40,15 +40,15 @@ public class InheritanceGenerator {
 	}
 	
 	protected void generate(int id) {
-		List<HierarchyElement> parents = new ArrayList<HierarchyElement>();
-		List<HierarchyElement> children = new ArrayList<HierarchyElement>();
+		List<HierarchyElement> elements = new ArrayList<HierarchyElement>();
 		
-		this.processChildren(this.inheritance.get(id), parents);
-		this.processParents(this.inheritance.get(id), children);
+		this.processChildren(this.inheritance.get(id), elements);		
+		elements.add(new HierarchyElement(-1, null));
+		this.processParents(this.inheritance.get(id), elements);
+				
+		System.out.println(elements);
 		
-		parents.addAll(children);
-		
-		this.completion.accept(Arrays.asList(new HierarchyElement(id, parents)));
+		this.completion.accept(Arrays.asList(new HierarchyElement(id, elements)));
 	}
 	
 	private void processChildren(InheritanceElement src, List<HierarchyElement> dest) {		

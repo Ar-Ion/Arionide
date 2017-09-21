@@ -98,20 +98,24 @@ public class WorldGeometry {
 		synchronized(list) {
 			WorldElement main = new WorldElement(-1, null, new Vector3f(), new Vector4f(), new Vector3f(), -1.0f, true);
 			float virtualSize = structInitialSize / structRelSize;
-			this.build(main, list, elements, metaData, virtualSize, structRelSize, subStructDistCenterRelSize);
+			boolean flag = false;
+			this.build(main, list, elements, metaData, virtualSize, structRelSize, subStructDistCenterRelSize, flag);
 		}
 	}
 	
-	private void build(WorldElement parent, List<WorldElement> list, List<HierarchyElement> elements, Map<Integer, StructureMeta> metaData, float size, float structRelSize, float subStructDistCenterRelSize) {
+	private void build(WorldElement parent, List<WorldElement> list, List<HierarchyElement> elements, Map<Integer, StructureMeta> metaData, float size, float structRelSize, float subStructDistCenterRelSize, boolean flag) {
 		if(elements != null && elements.size() > 0) {
 			size *= structRelSize;
 
-			Quaternionf quaternion = new Quaternionf(new AxisAngle4f((float) Math.PI * 2.0f / elements.size(), parent.getAxis()));
+			Quaternionf quaternion = new Quaternionf(new AxisAngle4f((float) Math.PI * 2.0f / (elements.size() - (elements.contains(new HierarchyElement(-1, null)) ? 1 : 0)), parent.getAxis()));
 			Vector3f base = elements.size() != 1 || size != structInitialSize ? parent.getBaseVector() : new Vector3f();
-
-			int id = 0;
 			
-			for(HierarchyElement element : elements) {
+			for(HierarchyElement element : elements) {				
+				if(element.getID() < 0) {
+					flag = true;
+					continue;
+				} // cf. Inheritance Generator
+				
 				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(subStructDistCenterRelSize * size / structRelSize).add(parent.getCenter());
 				
 				StructureMeta structMeta = metaData.get(element.getID());
@@ -123,24 +127,22 @@ public class WorldGeometry {
 
 					if(list == this.inheritance) {
 						access = false;
-						
-						if(id <= elements.size() / 2) {
-							spotColor = new Vector3f(Coloring.getColorByName("Scarlet"));
+
+						if(flag) {
+							spotColor = new Vector3f(Coloring.getColorByName("Cerulean")); // Children
 						} else {
-							spotColor = new Vector3f(Coloring.getColorByName("Burnt Orange"));
+							spotColor = new Vector3f(Coloring.getColorByName("Scarlet")); // Parents
 						}
 						
-						if(parent.getSize() < 0.0f) {
+						if(parent.getID() < 0) {
 							spotColor = new Vector3f(Coloring.getColorByName("Orange"));
-						} else if(parent.getSpotColor().equals(Coloring.getColorByName("Orange"))) {
-							id++;
 						}
 					}
 					
 					WorldElement object = new WorldElement(element.getID(), structMeta.getName(), position, color, spotColor, size, access);
 					list.add(object);
 					
-					this.build(object, list, element.getChildren(), metaData, size, structRelSize, subStructDistCenterRelSize);
+					this.build(object, list, element.getChildren(), metaData, size, structRelSize, subStructDistCenterRelSize, flag);
 				}
 			}
 		}

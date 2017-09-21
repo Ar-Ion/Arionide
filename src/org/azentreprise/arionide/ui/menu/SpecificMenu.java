@@ -32,10 +32,16 @@ public class SpecificMenu extends Menu {
 	}
 	
 	public void setCurrent(WorldElement current) {
+		assert current != null;
 		this.current = current;
 	}
 	
 	protected WorldElement getCurrent() {
+		assert this.current != null;
 		return this.current;
+	}
+	
+	public String getDescription() {
+		return this.current != null ? "'" + this.current.getName() + "'" : "nothing";
 	}
 }

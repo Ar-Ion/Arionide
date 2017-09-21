@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.MenuEvent;
+import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
 
 public abstract class Menu {
@@ -101,5 +102,21 @@ public abstract class Menu {
 	
 	protected void onSelect(int id) {
 		;
+	}
+	
+	public String getDescription() {
+		List<Integer> list = this.manager.getCoreRenderer().getInside();
+		
+		if(list.size() > 0) {
+			try {
+				int id = list.get(list.size() - 1);
+				StructureMeta meta = this.manager.getWorkspace().getCurrentProject().getStorage().getStructureMeta().get(id);
+				return "'" + meta.getName() + "' (" + meta.getComment() + ")";
+			} catch(Exception e) {
+				return "unknown";
+			}
+		} else {
+			return "the space";
+		}
 	}
 }

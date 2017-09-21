@@ -15,10 +15,13 @@ import org.azentreprise.arionide.ui.menu.StructureSelection;
 
 public class Inheritance extends SpecificMenu {
 		
+	private final InheritanceElementEdition editor;
+	
 	private List<Integer> parents;
 	
 	protected Inheritance(AppManager manager) {
 		super(manager);
+		this.editor = new InheritanceElementEdition(manager, this);
 	}
 
 	public void setCurrent(WorldElement element) {
@@ -39,7 +42,9 @@ public class Inheritance extends SpecificMenu {
 	
 	public void onClick(int id) {
 		if(this.parents != null && id < this.parents.size()) {
-			
+			int element = this.parents.get(id);
+			// TODO set current element
+			this.show(this.editor);
 		} else if(id == this.parents.size()){
 			Storage storage = this.getManager().getWorkspace().getCurrentProject().getStorage();
 			this.show(new StructureSelection(this.getManager(), this::inherit, new AlphabeticalComparator(storage)));
@@ -52,5 +57,9 @@ public class Inheritance extends SpecificMenu {
 		MessageEvent message = this.getManager().getWorkspace().getCurrentProject().getDataManager().inherit(this.getCurrent().getID(), parent);
 		this.getManager().getEventDispatcher().fire(message);
 		this.show(this); // This is being called by the structure selection menu...
+	}
+	
+	public String getDescription() {
+		return "Inheritance editor for " + super.getDescription();
 	}
 }

@@ -110,4 +110,8 @@ public class StructureEdition extends SpecificMenu {
 			this.getManager().getEventDispatcher().fire(new MessageEvent("This GUI implementation doesn't support teleporting.", MessageType.ERROR));
 		}
 	}
+	
+	public String getDescription() {
+		return "Structure edition for " + super.getDescription();
+	}
 }
