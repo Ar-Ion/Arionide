@@ -67,8 +67,24 @@ public class DataManager {
 			this.storage.structMeta.put(structureID, new StructureMeta());
 			
 			MessageEvent message = this.setName(structureID, name);
+			
+			if(message.getMessageType() != MessageType.SUCCESS) {
+				return message;
+			} else if(this.project.getCompiler().getInstructionSet() != null) {
+				this.project.getStorage().loadData(structureID); // Push
+				
+				if(this.insertCode(0, this.project.getCompiler().getInstructionSet().getStructureEntry())) {
+					if(parents.size() > 0) {
+						this.project.getStorage().loadData(parents.get(parents.size() - 1)); // Pop
+					}
 					
-			return message.getMessageType() != MessageType.SUCCESS ? message : new MessageEvent("Structure created", MessageType.SUCCESS);
+					return new MessageEvent("Structure created", MessageType.SUCCESS);
+				} else {
+					return new MessageEvent("Couldn't initialize structure", MessageType.ERROR);
+				}
+			} else {
+				return new MessageEvent("#flag0#", MessageType.SUCCESS);
+			}
 		}
 	}
 	
@@ -162,22 +178,30 @@ public class DataManager {
 		return new MessageEvent("Inheritance updated", MessageType.SUCCESS);
 	}
 	
-	public MessageEvent insertCode(int i, String element) {
+	public MessageEvent insertCode(int index, String element) {
+		if(this.insertCode(index, this.project.getCompiler().getInstructionSet().getInstructionID(element))) {
+			return new MessageEvent("Added" + (element.matches("[^aeiou]") ? " an " : " a ") + element + " instruction to the code", MessageType.SUCCESS);
+		} else {
+			return new MessageEvent("Failed to insert code", MessageType.ERROR);
+		}
+	}
+	
+	public boolean insertCode(int index, int instructionID) {
 		int structureID = this.project.getProperty("structureGen", Coder.integerDecoder).intValue();
 		this.project.setProperty("structureGen", (long) structureID + 1, Coder.integerEncoder); // Increment generator
 		this.project.save();
 		
 		StructureMeta meta = new StructureMeta();
-		meta.setComment("code@" + this.project.getCompiler().getInstructionSet().getInstructionID(element));
+		meta.setComment("code@" + instructionID);
 		meta.setAccessAllowed(false);
 		
 		this.storage.structMeta.put(structureID, meta);
 		this.storage.saveStructureMeta();
 		
-		this.storage.currentData.add(i, new HierarchyElement(structureID, new ArrayList<>()));
+		this.storage.currentData.add(index, new HierarchyElement(structureID, new ArrayList<>()));
 		this.storage.saveData();
 		
-		return new MessageEvent("Added" + (element.matches("[^aeiou]") ? " an " : " a ") + element + " instruction to the code", MessageType.SUCCESS);
+		return true;
 	}
 	
 	public MessageEvent setName(int id, String name) {

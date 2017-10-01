@@ -59,7 +59,7 @@ public class StructureEdition extends SpecificMenu {
 	protected void onClick(String element) {
 		assert this.getCurrent() != null;
 		
-		this.setCurrentID(0);
+		this.setMenuCursor(0);
 		
 		switch(element) {
 			case go:

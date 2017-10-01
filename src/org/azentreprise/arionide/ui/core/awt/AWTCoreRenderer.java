@@ -58,4 +58,10 @@ public class AWTCoreRenderer implements CoreRenderer {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void selectInstruction(int id) {
+		// TODO Auto-generated method stub
+		
+	}
 }

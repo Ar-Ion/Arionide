@@ -499,7 +499,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
 	private void updateMenu() {
 		if(this.needMenuUpdate) {
-			MainMenus.STRUCT_LIST.setCurrentID(0);
+			MainMenus.STRUCT_LIST.setMenuCursor(0);
 			this.dispatcher.fire(new MenuEvent(MainMenus.STRUCT_LIST));
 			this.updateInfo();
 			this.ajustAcceleration();
@@ -564,6 +564,12 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 
 	public void setScene(RenderingScene scene) {
 		this.geometry.loadScene(scene);
+	}
+	
+	public void selectInstruction(int id) {
+		synchronized(this.geometry) {
+			this.geometry.getElements().stream().filter(e -> e.getID() == id).findAny().ifPresent(e -> this.selected = e);
+		}
 	}
 
 	public void loadProject(Project project) {

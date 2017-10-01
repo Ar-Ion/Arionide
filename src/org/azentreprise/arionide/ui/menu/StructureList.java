@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,11 +31,11 @@ public class StructureList extends Menu {
 	private static final String code = "Code";
 	private List<WorldElement> elements;
 	
-	private final CodeEdit codeMenu;
+	private final Code codeMenu;
 	
 	public StructureList(AppManager manager) {
 		super(manager, code);
-		this.codeMenu = new CodeEdit(manager);
+		this.codeMenu = new Code(manager, this);
 	}
 	
 	public void set(List<WorldElement> elements) {

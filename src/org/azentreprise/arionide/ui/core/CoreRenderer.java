@@ -38,6 +38,9 @@ public interface CoreRenderer {
 	@IAm("changing the core scene")
 	public void setScene(RenderingScene scene);
 	
+	@IAm("selecting an instruction")
+	public void selectInstruction(int id);
+	
 	@IAm("setting up the current project")
 	public void loadProject(Project project);
 	

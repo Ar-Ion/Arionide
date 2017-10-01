@@ -154,7 +154,7 @@ public class CodeView extends View implements EventHandler {
 			}
 			
 			this.currentMenu = ((MenuEvent) event).getMenu();
-			this.menu.setActiveComponent(this.currentMenu.getCurrentID());
+			this.menu.setActiveComponent(this.currentMenu.getMenuCursor());
 			this.menu.setComponents(this.currentMenu.getElements().stream().map(this.menu.getMapper()).collect(Collectors.toList()));
 			this.currentInfo.setLabel(this.currentMenu.getDescription());
 			

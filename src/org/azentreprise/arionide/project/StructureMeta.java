@@ -32,6 +32,7 @@ public class StructureMeta implements Serializable {
 	private int colorID = Coloring.WHITE;
 	private int spotColorID = Coloring.WHITE;
 	private boolean accessAllowed = true;
+	private Specification specification = new Specification();
 
 	public String getName() {
 		return this.name;
@@ -71,5 +72,13 @@ public class StructureMeta implements Serializable {
 	
 	protected void setAccessAllowed(boolean allowed) {
 		this.accessAllowed = allowed;
+	}
+
+	public Specification getSpecification() {
+		return this.specification;
+	}
+	
+	public void setSpecification(Specification specification) {
+		this.specification = specification;
 	}
 }

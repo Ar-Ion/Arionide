@@ -33,7 +33,7 @@ public abstract class Menu {
 	
 	private final AppManager manager;
 	private List<String> elements = new ArrayList<>();
-	private int current;
+	private int menuCursor;
 	private boolean active;
 	
 	protected Menu(AppManager manager, String... elements) {
@@ -57,12 +57,12 @@ public abstract class Menu {
 		this.manager.getEventDispatcher().fire(new MenuEvent(this));
 	}
 	
-	public int getCurrentID() {
-		return this.current;
+	public int getMenuCursor() {
+		return this.menuCursor;
 	}
 	
-	public void setCurrentID(int id) {
-		this.current = id;
+	public void setMenuCursor(int id) {
+		this.menuCursor = id;
 	}
 	
 	public void setActive(boolean active) {
@@ -74,14 +74,14 @@ public abstract class Menu {
 	}
 	
 	public void select(int id) {
-		this.setCurrentID(id);
+		this.setMenuCursor(id);
 		this.onSelect(id);
 		this.onSelect(this.elements.get(id));
 	}
 	
 	public void click() {
-		this.onClick(this.current);
-		this.onClick(this.elements.get(this.current));
+		this.onClick(this.menuCursor);
+		this.onClick(this.elements.get(this.menuCursor));
 	}
 		
 	protected void onClick(String element) {

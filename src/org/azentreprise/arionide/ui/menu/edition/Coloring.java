@@ -246,7 +246,7 @@ public class Coloring extends SpecificMenu {
 		Map<Integer, StructureMeta> metaData = this.getManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta();
 		
 		if(metaData.containsKey(current.getID())) {
-			this.setCurrentID(metaData.get(current.getID()).getColorID());
+			this.setMenuCursor(metaData.get(current.getID()).getColorID());
 		}
 	}
 	

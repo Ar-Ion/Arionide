@@ -1,6 +1,5 @@
 package org.azentreprise.arionide.ui.menu;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.azentreprise.arionide.project.Project;
@@ -39,7 +38,7 @@ public class CodeEdit extends Menu {
 			this.getManager().getEventDispatcher().fire(project.getDataManager().insertCode(0, element));
 			
 			this.getManager().getCoreRenderer().loadProject(project); // Reload renderers
-		} else if(element == comment) {
+		} else if(element == append) {
 			
 		} else if(element == back) {
 			
