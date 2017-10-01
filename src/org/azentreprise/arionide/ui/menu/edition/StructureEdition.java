@@ -67,7 +67,7 @@ public class StructureEdition extends SpecificMenu {
 				break;
 			case inheritance:
 				this.inheritanceMenu.setCurrent(this.getCurrent());
-				this.show(this.inheritanceMenu);
+				this.inheritanceMenu.show();
 				break;
 			case name:
 				new Thread(() -> {
@@ -75,7 +75,7 @@ public class StructureEdition extends SpecificMenu {
 					
 					if(name != null) {
 						Project project = this.getManager().getWorkspace().getCurrentProject();
-						MessageEvent message = project.getDataManager().setName(this.getCurrent().getID(), name, this.getManager().getCoreRenderer().getInside());
+						MessageEvent message = project.getDataManager().setName(this.getCurrent().getID(), name);
 						this.getManager().getCoreRenderer().loadProject(this.getManager().getWorkspace().getCurrentProject());
 						this.getManager().getEventDispatcher().fire(message);
 					}
@@ -83,14 +83,14 @@ public class StructureEdition extends SpecificMenu {
 				break;
 			case color:
 				this.coloring.setCurrent(this.getCurrent());
-				this.show(this.coloring);
+				this.coloring.show();
 				break;
 			case delete:
 				this.confirmDelete.setCurrent(this.getCurrent());
-				this.show(this.confirmDelete);
+				this.confirmDelete.show();
 				break;
 			case close:
-				this.show(MainMenus.STRUCT_LIST);
+				MainMenus.STRUCT_LIST.show();
 		}
 	}
 	

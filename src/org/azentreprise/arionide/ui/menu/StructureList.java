@@ -29,27 +29,40 @@ import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 
 public class StructureList extends Menu {
 	
-	private static final String empty = "<Empty structure>";
+	private static final String code = "Code";
 	private List<WorldElement> elements;
 	
+	private final CodeEdit codeMenu;
+	
 	public StructureList(AppManager manager) {
-		super(manager, empty);
+		super(manager, code);
+		this.codeMenu = new CodeEdit(manager);
 	}
 	
 	public void set(List<WorldElement> elements) {
 		this.elements = elements;
+
+		this.getElements().clear();
+		
+		this.getElements().add(code);
 				
 		if(elements.size() > 0) {
-			this.setElements(elements.stream().map((e) -> e.toString()).collect(Collectors.toList()));
-		} else {
-			this.setElements(Arrays.asList(empty));
+			this.getElements().addAll(elements.stream().map((e) -> e.toString()).collect(Collectors.toList()));
 		}
 	}
 	
 	protected void onClick(int id) {
-		if(this.elements != null && id < this.elements.size()) {
+		id--;
+		
+		if(id >= 0 && this.elements != null && id < this.elements.size()) {
 			MainMenus.STRUCT_EDIT.setCurrent(this.elements.get(id));
-			this.show(MainMenus.STRUCT_EDIT);
+			MainMenus.STRUCT_EDIT.show();
+		}
+	}
+	
+	protected void onClick(String element) {
+		if(element.equals(code)) {
+			this.codeMenu.show();
 		}
 	}
 	

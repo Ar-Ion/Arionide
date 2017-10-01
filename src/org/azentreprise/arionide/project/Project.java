@@ -37,4 +37,6 @@ public interface Project extends Resource, MappedStructure, Loadable, Saveable {
 	public Storage getStorage();
 	
 	public DataManager getDataManager();
+	
+	public org.azentreprise.arionide.lang.Compiler getCompiler();
 }

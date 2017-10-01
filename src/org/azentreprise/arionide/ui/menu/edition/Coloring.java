@@ -265,7 +265,7 @@ public class Coloring extends SpecificMenu {
 			this.getManager().getEventDispatcher().fire(message);
 		}
 		
-		this.show(MainMenus.STRUCT_LIST);
+		MainMenus.STRUCT_LIST.show();
 	}
 	
 	public String getDescription() {

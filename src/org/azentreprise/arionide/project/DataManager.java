@@ -39,33 +39,72 @@ public class DataManager {
 		this.storage = this.project.getStorage();
 	}
 	
-	public MessageEvent newStructure(String name, List<Integer> parents) {		
-		int structureID = this.project.getProperty("structureGen", Coder.integerDecoder).intValue();
-		this.project.setProperty("structureGen", (long) structureID + 1, Coder.integerEncoder); // Increment generator
-		this.project.save();
-				
-		HierarchyElement structure = new HierarchyElement(structureID, new ArrayList<>());
-		
-		List<HierarchyElement> brothers = this.getBrothers(this.storage.hierarchy, parents);
-		
-		if(brothers == null) {
-			return new MessageEvent("Invalid parent hierarchy", MessageType.ERROR);
-		}
-		
-		brothers.add(structure);
-		this.storage.saveHierarchy();
+	public MessageEvent newStructure(String name, List<Integer> parents) {
+		if(this.storage.getStructureMeta().values().stream().filter(meta -> meta.getName().equals(name)).count() > 0) {
+			return new MessageEvent("This structure name is already used", MessageType.ERROR);
+		} else {
+			int structureID = this.project.getProperty("structureGen", Coder.integerDecoder).intValue();
+			this.project.setProperty("structureGen", (long) structureID + 1, Coder.integerEncoder); // Increment generator
+			this.project.save();
+					
+			HierarchyElement structure = new HierarchyElement(structureID, new ArrayList<>());
+			
+			List<HierarchyElement> brothers = this.getBrothers(this.storage.hierarchy, parents);
+			
+			if(brothers == null) {
+				return new MessageEvent("Invalid parent hierarchy", MessageType.ERROR);
+			}
+			
+			brothers.add(structure);
+			this.storage.saveHierarchy();
 
-		this.storage.inheritance.put(structureID, new InheritanceElement());
-		this.storage.saveInheritance();
-		
-		this.storage.callGraph.add(structure);
-		this.storage.saveCallGraph();
-		
-		this.storage.structMeta.put(structureID, new StructureMeta());
-		
-		MessageEvent message = this.setName(structureID, name, parents);
-				
-		return message.getMessageType() != MessageType.SUCCESS ? message : new MessageEvent("Structure created", MessageType.SUCCESS);
+			this.storage.inheritance.put(structureID, new InheritanceElement());
+			this.storage.saveInheritance();
+			
+			this.storage.callGraph.add(structure);
+			this.storage.saveCallGraph();
+			
+			this.storage.structMeta.put(structureID, new StructureMeta());
+			
+			MessageEvent message = this.setName(structureID, name);
+					
+			return message.getMessageType() != MessageType.SUCCESS ? message : new MessageEvent("Structure created", MessageType.SUCCESS);
+		}
+	}
+	
+	public int installInstruction(String name, int color, List<Integer> parents) {
+		if(this.storage.getStructureMeta().values().stream().filter(meta -> meta.getName().equals(name)).count() > 0) {
+			return -1;
+		} else {
+			int structureID = this.project.getProperty("structureGen", Coder.integerDecoder).intValue();
+			this.project.setProperty("structureGen", (long) structureID + 1, Coder.integerEncoder); // Increment generator
+			this.project.save();
+					
+			HierarchyElement structure = new HierarchyElement(structureID, new ArrayList<>());
+			
+			List<HierarchyElement> brothers = this.getBrothers(this.storage.hierarchy, parents);
+			
+			if(brothers == null) {
+				return -1;
+			}
+			
+			brothers.add(structure);
+			this.storage.saveHierarchy();
+			
+			StructureMeta meta = new StructureMeta();
+			meta.setName(name);
+			meta.setColorID(color);
+			meta.setAccessAllowed(false);
+			
+			this.storage.structMeta.put(structureID, meta);
+			this.storage.saveStructureMeta();
+						
+			return structureID;
+		}
+	}
+	
+	public int retrieveInstruction(String name) {
+		return this.storage.getStructureMeta().entrySet().stream().filter(meta -> meta.getValue().getName().equals(name)).findAny().get().getKey();
 	}
 	
 	public MessageEvent deleteStructure(int id, List<Integer> parents) {
@@ -114,7 +153,7 @@ public class DataManager {
 		}
 	}
 	
-	public MessageEvent desinherit(int id, int parent) {
+	public MessageEvent desinherit(Integer parent, Integer id) {
 		this.storage.getInheritance().get(parent).children.remove(id);
 		this.storage.getInheritance().get(id).parents.remove(parent);
 		
@@ -123,7 +162,25 @@ public class DataManager {
 		return new MessageEvent("Inheritance updated", MessageType.SUCCESS);
 	}
 	
-	public MessageEvent setName(int id, String name, List<Integer> parents) {
+	public MessageEvent insertCode(int i, String element) {
+		int structureID = this.project.getProperty("structureGen", Coder.integerDecoder).intValue();
+		this.project.setProperty("structureGen", (long) structureID + 1, Coder.integerEncoder); // Increment generator
+		this.project.save();
+		
+		StructureMeta meta = new StructureMeta();
+		meta.setComment("code@" + this.project.getCompiler().getInstructionSet().getInstructionID(element));
+		meta.setAccessAllowed(false);
+		
+		this.storage.structMeta.put(structureID, meta);
+		this.storage.saveStructureMeta();
+		
+		this.storage.currentData.add(i, new HierarchyElement(structureID, new ArrayList<>()));
+		this.storage.saveData();
+		
+		return new MessageEvent("Added" + (element.matches("[^aeiou]") ? " an " : " a ") + element + " instruction to the code", MessageType.SUCCESS);
+	}
+	
+	public MessageEvent setName(int id, String name) {
 		StructureMeta meta = this.storage.getStructureMeta().get(id);
 		
 		if(meta != null) {

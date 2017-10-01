@@ -35,6 +35,7 @@ import org.azentreprise.arionide.coders.Decoder;
 import org.azentreprise.arionide.coders.Encoder;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.debugging.IAm;
+import org.azentreprise.arionide.lang.NativeCompiler;
 
 public class LocalProject implements Project {
 
@@ -52,11 +53,13 @@ public class LocalProject implements Project {
 	
 	private final ZipStorage storage;
 	private final DataManager manager;
+	private final org.azentreprise.arionide.lang.Compiler compiler;
 	private final Map<String, byte[]> properties = new LinkedHashMap<>();
 	
 	public LocalProject(File path) {
 		this.storage = new ZipStorage(path);
 		this.manager = new DataManager(this);
+		this.compiler = new NativeCompiler(this);
 	}
 	
 	public void initFS() {
@@ -78,14 +81,6 @@ public class LocalProject implements Project {
 	private void closeFS() {
 		this.save();
 		this.storage.closeFS();
-	}
-	
-	public Storage getStorage() {
-		return this.storage;
-	}
-
-	public DataManager getDataManager() {
-		return this.manager;
 	}
 	
 	@IAm("loading a project")
@@ -115,6 +110,8 @@ public class LocalProject implements Project {
 			}
 			
 			this.verifyProtocol();
+			
+			this.compiler.load();
 		} catch (Exception exception) {
 			Debug.exception(exception);
 		}
@@ -191,7 +188,19 @@ public class LocalProject implements Project {
 	public File getPath() {
 		return this.storage.getLocation();
 	}
+	
+	public Storage getStorage() {
+		return this.storage;
+	}
 
+	public DataManager getDataManager() {
+		return this.manager;
+	}
+	
+	public org.azentreprise.arionide.lang.Compiler getCompiler() {
+		return this.compiler;
+	}
+	
 	public boolean checkVersionCompatibility() {
 		return this.getProperty("version", Coder.integerDecoder) == LocalProject.versionUID;
 	}

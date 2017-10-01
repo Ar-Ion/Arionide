@@ -1,5 +1,5 @@
 package org.azentreprise.arionide.ui.menu;
 
-public class Code extends Menu {
+public class AddCode {
 
 }

@@ -49,16 +49,12 @@ public abstract class Menu {
 		return this.elements;
 	}
 	
-	public void setElements(List<String> elements) {
-		this.elements = elements;
-	}
-	
 	protected void fire(Event event) {
 		this.manager.getEventDispatcher().fire(event);
 	}
 	
-	protected void show(Menu menu) {
-		this.manager.getEventDispatcher().fire(new MenuEvent(menu));
+	public void show() {
+		this.manager.getEventDispatcher().fire(new MenuEvent(this));
 	}
 	
 	public int getCurrentID() {

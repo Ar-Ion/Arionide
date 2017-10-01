@@ -32,7 +32,8 @@ public class StructureSelection extends Menu {
 			this.ordered.sort(comparator);
 		}
 		
-		this.setElements(this.ordered.stream().map(e -> elements.get(e).getName()).collect(Collectors.toList()));
+		this.getElements().clear();
+		this.getElements().addAll(this.ordered.stream().map(e -> elements.get(e).getName()).collect(Collectors.toList()));
 	}
 	
 	public void onClick(int element) {

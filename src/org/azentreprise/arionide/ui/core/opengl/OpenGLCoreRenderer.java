@@ -158,7 +158,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		} catch (AWTException e) {
 			; // What can we do...
 		} finally {
-			this.robot = robot;			
+			this.robot = robot;
 		}
 	}
 	
@@ -503,6 +503,11 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			this.dispatcher.fire(new MenuEvent(MainMenus.STRUCT_LIST));
 			this.updateInfo();
 			this.ajustAcceleration();
+			
+			if(this.current != null && this.current.getID() >= 0) {
+				this.code.buildGeometry(this.project, this.current);
+			}
+			
 			this.needMenuUpdate = false;
 		}
 	}
@@ -566,7 +571,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			this.isInWorld = false;
 			this.context.setCursor(Cursor.getDefaultCursor());
 		}
-		
+				
 		this.project = project;
 		this.needMenuUpdate = true;
 				

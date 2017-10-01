@@ -70,7 +70,7 @@ public class WorldElement {
 	}
 	
 	protected boolean collidesWith(Vector3f object) {
-		return object.distance(this.center) <= this.size * 1.2f;
+		return object.distance(this.center) <= this.size;
 	}
 	
 	public int getID() {
@@ -78,7 +78,7 @@ public class WorldElement {
 	}
 	
 	public Vector3f getCenter() {
-		return this.center;
+		return new Vector3f(this.center);
 	}
 	
 	public Vector3f getBaseVector() {

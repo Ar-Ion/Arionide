@@ -31,12 +31,7 @@ public class StructureMeta implements Serializable {
 	private String comment = new String();
 	private int colorID = Coloring.WHITE;
 	private int spotColorID = Coloring.WHITE;
-	private boolean sequential = false;
 	private boolean accessAllowed = true;
-	
-	private boolean[] flags = new boolean[0];
-	private int[] references = new int[0];
-	private String[] constants = new String[0];
 
 	public String getName() {
 		return this.name;
@@ -70,43 +65,11 @@ public class StructureMeta implements Serializable {
 		this.spotColorID = spotColorID;
 	}
 	
-	public boolean isSequential() {
-		return this.accessAllowed;
-	}
-	
-	protected void setSequential(boolean sequential) {
-		this.sequential = sequential;
-	}
-	
 	public boolean isAccessAllowed() {
 		return this.accessAllowed;
 	}
 	
 	protected void setAccessAllowed(boolean allowed) {
 		this.accessAllowed = allowed;
-	}
-	
-	public boolean[] getFlags() {
-		return this.flags;
-	}
-	
-	protected void setFlags(boolean... flags) {
-		this.flags = flags;
-	}
-	
-	public int[] getReferences() {
-		return this.references;
-	}
-	
-	protected void setReferences(int... references) {
-		this.references = references;
-	}
-	
-	public String[] getConstants() {
-		return this.constants;
-	}
-	
-	public void setConstants(String... constants) {
-		this.constants = constants;
 	}
 }

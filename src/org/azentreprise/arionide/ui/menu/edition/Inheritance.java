@@ -33,30 +33,33 @@ public class Inheritance extends SpecificMenu {
 		
 		if(object != null) {
 			this.parents = object.getParents();
-			List<String> elements = this.parents.stream().map(e -> storage.getStructureMeta().get(e).getName()).collect(Collectors.toList());
+			
+			List<String> elements = this.getElements();
+			elements.clear();
+			elements.addAll(this.parents.stream().map(e -> storage.getStructureMeta().get(e).getName()).collect(Collectors.toList()));
 			elements.add("Add");
 			elements.add("Cancel");
-			this.setElements(elements);
 		}
 	}
 	
 	public void onClick(int id) {
 		if(this.parents != null && id < this.parents.size()) {
 			int element = this.parents.get(id);
-			// TODO set current element
-			this.show(this.editor);
+			this.editor.setTarget(element);
+			this.editor.show();
 		} else if(id == this.parents.size()){
 			Storage storage = this.getManager().getWorkspace().getCurrentProject().getStorage();
-			this.show(new StructureSelection(this.getManager(), this::inherit, new AlphabeticalComparator(storage)));
+			new StructureSelection(this.getManager(), this::inherit, new AlphabeticalComparator(storage)).show();
 		} else {
-			this.show(MainMenus.STRUCT_EDIT);
+			MainMenus.STRUCT_EDIT.show();
 		}
 	}
 	
 	public void inherit(int parent) {
 		MessageEvent message = this.getManager().getWorkspace().getCurrentProject().getDataManager().inherit(this.getCurrent().getID(), parent);
 		this.getManager().getEventDispatcher().fire(message);
-		this.show(this); // This is being called by the structure selection menu...
+		this.reload();
+		this.show(); // This is being called by the structure selection menu...
 	}
 	
 	public String getDescription() {

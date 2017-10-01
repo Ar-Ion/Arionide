@@ -47,7 +47,7 @@ public class Confirm extends SpecificMenu {
 	}
 	
 	public void onClick(String element) {
-		this.show(this.parent);
+		this.parent.show();
 
 		if(element.equals(yes)) {
 			this.confirm.confirm();
