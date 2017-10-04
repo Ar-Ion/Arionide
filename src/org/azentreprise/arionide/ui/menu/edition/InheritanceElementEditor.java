@@ -7,7 +7,7 @@ import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.menu.Menu;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
-public class InheritanceElementEdition extends Menu {
+public class InheritanceElementEditor extends Menu {
 
 	private static final String remove = "Remove from inheritance";
 	private static final String close = "Close";
@@ -16,7 +16,7 @@ public class InheritanceElementEdition extends Menu {
 		
 	private int target;
 	
-	protected InheritanceElementEdition(AppManager manager, SpecificMenu parent) {
+	protected InheritanceElementEditor(AppManager manager, SpecificMenu parent) {
 		super(manager, remove, close);
 		this.parent = parent;
 	}

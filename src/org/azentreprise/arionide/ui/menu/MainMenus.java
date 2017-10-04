@@ -21,19 +21,33 @@
 package org.azentreprise.arionide.ui.menu;
 
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.menu.edition.StructureEdition;
+import org.azentreprise.arionide.ui.menu.edition.StructureEditor;
 
 public class MainMenus {
 	
-	public static StructureList STRUCT_LIST;
-	public static StructureEdition STRUCT_EDIT;
+	private static StructureList structList;
+	private static StructureEditor structEditor;
+	private static Code code;
 	
 	private static boolean initialized = false;
 	
 	public static void init(AppManager manager) {
 		assert !initialized : "Already initialized";
 	
-		STRUCT_LIST = new StructureList(manager);
-		STRUCT_EDIT = new StructureEdition(manager);
+		structList = new StructureList(manager);
+		structEditor = new StructureEditor(manager);
+		code = new Code(manager);
+	}
+	
+	public static StructureList getStructureList() {
+		return structList;
+	}
+	
+	public static StructureEditor getStructureEditor() {
+		return structEditor;
+	}
+	
+	public static Code getCode() {
+		return code;
 	}
 }

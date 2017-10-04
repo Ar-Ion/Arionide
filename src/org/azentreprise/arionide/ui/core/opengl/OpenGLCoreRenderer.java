@@ -57,6 +57,7 @@ import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
+import org.azentreprise.arionide.ui.menu.Code;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.shaders.Shaders;
 import org.joml.Matrix4f;
@@ -90,8 +91,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			
 	private final OpenGLDrawingContext context;
 	private final IEventDispatcher dispatcher;
-	private final WorldGeometry geometry;
-	private final CodeGeometry code;
+	private final WorldGeometry worldGeometry;
+	private final CodeGeometry codeGeometry;
 	private final Robot robot;
 	
 	private float zNear = 1.0f;
@@ -146,8 +147,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	public OpenGLCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher) {
 		this.context = (OpenGLDrawingContext) context;
 		this.dispatcher = dispatcher;
-		this.geometry = new WorldGeometry(dispatcher);
-		this.code = new CodeGeometry();
+		this.worldGeometry = new WorldGeometry(dispatcher);
+		this.codeGeometry = new CodeGeometry();
 		
 		dispatcher.registerHandler(this);
 		
@@ -335,8 +336,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				
 		gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 		
-		this.renderScene0(gl, this.geometry.getElements());
-		this.renderScene0(gl, this.code.getElements());
+		this.renderScene0(gl, this.worldGeometry.getElements());
+		this.renderScene0(gl, this.codeGeometry.getElements());
 	}
 	
 	private void renderScene0(GL4 gl, List<WorldElement> elements) {
@@ -419,16 +420,27 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 		
 	private void ajustAcceleration() {
-		this.generalAcceleration = initialAcceleration * Math.max(0.000000001d, this.geometry.getSizeForGeneration(this.inside.size()));
+		this.generalAcceleration = initialAcceleration * Math.max(0.000000001d, this.worldGeometry.getSizeForGeneration(this.inside.size()));
 		this.zNear = (float) this.generalAcceleration * 10.0f;
 		this.updatePerspective();
 	}
 	
 	private void checkForCollisions() {
-		Stream<WorldElement> elements = this.geometry.getCollisions(this.player);
-		
+		Stream<WorldElement> worldElements = this.worldGeometry.getCollisions(this.player);
+		Stream<WorldElement> codeElements = this.codeGeometry.getCollisions(this.player);
+
 		synchronized(this.inside) {
-			elements.forEach((element) -> {
+			worldElements.forEach((element) -> {
+				if(!this.inside.remove(element)) {
+					if(this.enterElement(element)) {
+						this.buffer.add(element);
+					}
+				} else {
+					this.buffer.add(element);
+				}
+			});
+			
+			codeElements.forEach((element) -> {
 				if(!this.inside.remove(element)) {
 					if(this.enterElement(element)) {
 						this.buffer.add(element);
@@ -448,16 +460,16 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 
 	private void checkForTarget() {
 		Vector3f cameraDirection = new Vector3f(-this.viewData.get(2), -this.viewData.get(6), -this.viewData.get(10)); // DOF
-		float size = this.geometry.getSizeForGeneration(this.inside.size());
+		float size = this.worldGeometry.getSizeForGeneration(this.inside.size());
 		
 		WorldElement found = null;
 		float distance = 10000.0f;
 
 		List<WorldElement> menuData = new ArrayList<>();
 		
-		synchronized(this.geometry.getElements()) {
-			for(WorldElement element : this.geometry.getElements()) {
-				boolean insideConstraint = this.current == null || this.current.getCenter().distance(element.getCenter()) < this.geometry.getSizeForGeneration(this.inside.size() - 1);
+		synchronized(this.worldGeometry.getElements()) {
+			for(WorldElement element : this.worldGeometry.getElements()) {
+				boolean insideConstraint = this.current == null || this.current.getCenter().distance(element.getCenter()) < this.worldGeometry.getSizeForGeneration(this.inside.size() - 1);
 				if((element.getSize() == size && insideConstraint) || size < -42.0f) {
 					float currentDistance = this.player.distance(element.getCenter());
 	
@@ -475,7 +487,19 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			}
 		}
 		
-		MainMenus.STRUCT_LIST.set(menuData);
+		synchronized(this.codeGeometry.getElements()) {
+			for(WorldElement element : this.codeGeometry.getElements()) {
+				float currentDistance = this.player.distance(element.getCenter());
+				if(currentDistance < distance) {
+					if(element.collidesWith(new Vector3f(cameraDirection).normalize(currentDistance).add(this.player))) {
+						found = element;
+						distance = currentDistance;
+					}
+				}
+			}
+		}
+		
+		MainMenus.getStructureList().set(menuData);
 
 		this.lookingAt = found;
 	}
@@ -499,13 +523,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
 	private void updateMenu() {
 		if(this.needMenuUpdate) {
-			MainMenus.STRUCT_LIST.setMenuCursor(0);
-			this.dispatcher.fire(new MenuEvent(MainMenus.STRUCT_LIST));
+			MainMenus.getStructureList().setMenuCursor(0);
+			this.dispatcher.fire(new MenuEvent(MainMenus.getStructureList()));
 			this.updateInfo();
 			this.ajustAcceleration();
 			
 			if(this.current != null && this.current.getID() >= 0) {
-				this.code.buildGeometry(this.project, this.current);
+				this.codeGeometry.buildGeometry(this.project, this.current);
 			}
 			
 			this.needMenuUpdate = false;
@@ -563,12 +587,12 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 
 	public void setScene(RenderingScene scene) {
-		this.geometry.loadScene(scene);
+		this.worldGeometry.loadScene(scene);
 	}
 	
 	public void selectInstruction(int id) {
-		synchronized(this.geometry) {
-			this.geometry.getElements().stream().filter(e -> e.getID() == id).findAny().ifPresent(e -> this.selected = e);
+		synchronized(this.worldGeometry) {
+			this.worldGeometry.getElements().stream().filter(e -> e.getID() == id).findAny().ifPresent(e -> this.selected = e);
 		}
 	}
 
@@ -581,7 +605,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.project = project;
 		this.needMenuUpdate = true;
 				
-		this.geometry.buildGeometry(project);
+		this.worldGeometry.buildGeometry(project);
 	}
 
 	public void update(Rectangle bounds) {
@@ -686,6 +710,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.yaw %= 4 * halfPI;
 		
 		if(this.robot != null) {
+			this.robot.setAutoDelay(0);
+			this.robot.setAutoWaitForIdle(false);
 			this.robot.mouseMove(this.bounds.x + this.bounds.width / 2, this.bounds.y + this.bounds.height / 2);
 		}
 	}
@@ -701,7 +727,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private void onRightClick() {
-		if(MainMenus.STRUCT_EDIT.getColoring().isActive()) {
+		if(MainMenus.getStructureEditor().getColoring().isActive()) {
 			/* Validate choice */
 			this.dispatcher.fire(new ClickEvent(null, "menuScroll"));
 		}
@@ -712,16 +738,27 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			this.selected = null;
 		}
 		
-		if(this.selected != null) {			
-			this.geometry.select(this.selected);
+		if(this.selected != null) {
+			List<WorldElement> elements = this.codeGeometry.getElements();
 			
-			MainMenus.STRUCT_EDIT.setCurrent(this.selected);
-			
-			this.dispatcher.fire(new MessageEvent(this.getElementName(this.selected) + " is selected", MessageType.INFO));
-			this.dispatcher.fire(new MenuEvent(MainMenus.STRUCT_EDIT));
+			synchronized(elements) {
+				if(elements.contains(this.selected)) {
+					Code code = MainMenus.getCode();
+					code.setCurrent(this.current);
+					code.select(elements.indexOf(this.selected));
+					code.show();
+				} else {
+					this.worldGeometry.select(this.selected);
+					
+					MainMenus.getStructureEditor().setCurrent(this.selected);
+					
+					this.dispatcher.fire(new MessageEvent(this.getElementName(this.selected) + " is selected", MessageType.INFO));
+					this.dispatcher.fire(new MenuEvent(MainMenus.getStructureEditor()));
+				}
+			}
 		} else {
 			this.updateInfo();
-			this.dispatcher.fire(new MenuEvent(MainMenus.STRUCT_LIST));
+			this.dispatcher.fire(new MenuEvent(MainMenus.getStructureList()));
 		}
 	}
 

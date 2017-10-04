@@ -42,7 +42,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-public class WorldGeometry {
+public class WorldGeometry implements Geometry {
 	
 	private static final float structInitialSize = 1.0f;
 	private static final float structRelSizeHierarchy = 0.1f;
@@ -197,11 +197,11 @@ public class WorldGeometry {
 		return this.current != this.hierarchy ? -666.0f : (float) Math.pow(structRelSizeHierarchy, count);
 	}
 
-	protected synchronized Stream<WorldElement> getCollisions(Vector3f player) {
+	public synchronized Stream<WorldElement> getCollisions(Vector3f player) {
 		return this.current.stream().filter((element) -> element.collidesWith(player));
 	}
 	
-	protected List<WorldElement> getElements() {
+	public List<WorldElement> getElements() {
 		return this.current;
 	}
 }

@@ -28,22 +28,16 @@ import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 
 public class StructureList extends Menu {
 	
-	private static final String code = "Code";
 	private List<WorldElement> elements;
-	
-	private final Code codeMenu;
-	
+		
 	public StructureList(AppManager manager) {
-		super(manager, code);
-		this.codeMenu = new Code(manager, this);
+		super(manager);
 	}
 	
 	public void set(List<WorldElement> elements) {
 		this.elements = elements;
 
 		this.getElements().clear();
-		
-		this.getElements().add(code);
 				
 		if(elements.size() > 0) {
 			this.getElements().addAll(elements.stream().map((e) -> e.toString()).collect(Collectors.toList()));
@@ -54,14 +48,8 @@ public class StructureList extends Menu {
 		id--;
 		
 		if(id >= 0 && this.elements != null && id < this.elements.size()) {
-			MainMenus.STRUCT_EDIT.setCurrent(this.elements.get(id));
-			MainMenus.STRUCT_EDIT.show();
-		}
-	}
-	
-	protected void onClick(String element) {
-		if(element.equals(code)) {
-			this.codeMenu.show();
+			MainMenus.getStructureEditor().setCurrent(this.elements.get(id));
+			MainMenus.getStructureEditor().show();
 		}
 	}
 	

@@ -15,13 +15,13 @@ import org.azentreprise.arionide.ui.menu.StructureSelection;
 
 public class Inheritance extends SpecificMenu {
 		
-	private final InheritanceElementEdition editor;
+	private final InheritanceElementEditor editor;
 	
 	private List<Integer> parents;
 	
 	protected Inheritance(AppManager manager) {
 		super(manager);
-		this.editor = new InheritanceElementEdition(manager, this);
+		this.editor = new InheritanceElementEditor(manager, this);
 	}
 
 	public void setCurrent(WorldElement element) {
@@ -51,7 +51,7 @@ public class Inheritance extends SpecificMenu {
 			Storage storage = this.getManager().getWorkspace().getCurrentProject().getStorage();
 			new StructureSelection(this.getManager(), this::inherit, new AlphabeticalComparator(storage)).show();
 		} else {
-			MainMenus.STRUCT_EDIT.show();
+			MainMenus.getStructureEditor().show();
 		}
 	}
 	

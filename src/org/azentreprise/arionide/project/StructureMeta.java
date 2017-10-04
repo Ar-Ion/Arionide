@@ -27,8 +27,8 @@ import org.azentreprise.arionide.ui.menu.edition.Coloring;
 public class StructureMeta implements Serializable {
 	private static final long serialVersionUID = 5582101421258702064L;
 	
-	private String name = new String();
-	private String comment = new String();
+	private String name = new String("?");
+	private String comment = new String("?");
 	private int colorID = Coloring.WHITE;
 	private int spotColorID = Coloring.WHITE;
 	private boolean accessAllowed = true;
@@ -78,7 +78,11 @@ public class StructureMeta implements Serializable {
 		return this.specification;
 	}
 	
-	public void setSpecification(Specification specification) {
+	protected void setSpecification(Specification specification) {
 		this.specification = specification;
+	}
+	
+	public String toString() {
+		return "Name: " + this.name + "; Comment: " + this.comment;
 	}
 }

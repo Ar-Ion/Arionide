@@ -74,14 +74,18 @@ public abstract class Menu {
 	}
 	
 	public void select(int id) {
-		this.setMenuCursor(id);
-		this.onSelect(id);
-		this.onSelect(this.elements.get(id));
+		if(id >= 0 && id < this.elements.size()) {
+			this.setMenuCursor(id);
+			this.onSelect(id);
+			this.onSelect(this.elements.get(id));
+		}
 	}
 	
 	public void click() {
-		this.onClick(this.menuCursor);
-		this.onClick(this.elements.get(this.menuCursor));
+		if(this.menuCursor >= 0 && this.menuCursor < this.elements.size()) {
+			this.onClick(this.menuCursor);
+			this.onClick(this.elements.get(this.menuCursor));
+		}
 	}
 		
 	protected void onClick(String element) {
@@ -107,7 +111,7 @@ public abstract class Menu {
 			try {
 				int id = list.get(list.size() - 1);
 				StructureMeta meta = this.manager.getWorkspace().getCurrentProject().getStorage().getStructureMeta().get(id);
-				return "'" + meta.getName() + "' (" + meta.getComment() + ")";
+				return "'" + meta.getName() + "'" + (meta.getComment().isEmpty() ? "" : " (" + meta.getComment() + ")");
 			} catch(Exception e) {
 				return "unknown";
 			}

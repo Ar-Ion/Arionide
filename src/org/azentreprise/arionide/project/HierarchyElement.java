@@ -23,6 +23,7 @@ package org.azentreprise.arionide.project;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HierarchyElement implements Serializable {
 	private static final long serialVersionUID = -5901117492235888923L;
@@ -53,5 +54,9 @@ public class HierarchyElement implements Serializable {
 	
 	public int hashCode() {
 		return this.id;
+	}
+	
+	public String toString() {
+		return this.id + "{" + String.join(",", this.children.stream().map(HierarchyElement::toString).collect(Collectors.toList())) + "}";
 	}
 }

@@ -32,7 +32,7 @@ import org.azentreprise.arionide.ui.menu.Confirm;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
-public class StructureEdition extends SpecificMenu {
+public class StructureEditor extends SpecificMenu {
 		
 	private static final String go = "Go";
 	private static final String inheritance = "Inherit";
@@ -45,7 +45,7 @@ public class StructureEdition extends SpecificMenu {
 	private final Coloring coloring;
 	private final Confirm confirmDelete;
 
-	public StructureEdition(AppManager manager) {
+	public StructureEditor(AppManager manager) {
 		super(manager, go, inheritance, name, color, delete, close);
 		this.coloring = new Coloring(manager);
 		this.confirmDelete = new Confirm(manager, this, this::delete, "Are you sure you want to delete the structure '$name'?");
@@ -90,7 +90,7 @@ public class StructureEdition extends SpecificMenu {
 				this.confirmDelete.show();
 				break;
 			case close:
-				MainMenus.STRUCT_LIST.show();
+				MainMenus.getStructureEditor().show();
 		}
 	}
 	

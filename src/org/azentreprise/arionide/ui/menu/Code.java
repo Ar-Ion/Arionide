@@ -1,8 +1,6 @@
 package org.azentreprise.arionide.ui.menu;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.StructureMeta;
@@ -10,16 +8,14 @@ import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 
 public class Code extends SpecificMenu {
-
-	private static final String back = "Back";
 	
-	private final Menu parent;
+	private final CodeEditor editor;
 	
 	private int selected = -1;
 	
-	protected Code(AppManager manager, Menu parent) {
-		super(manager, back);
-		this.parent = parent;
+	protected Code(AppManager manager) {
+		super(manager);
+		this.editor = new CodeEditor(manager, this);
 	}
 
 	public void setCurrent(WorldElement element) {
@@ -29,19 +25,17 @@ public class Code extends SpecificMenu {
 	
 		if(project != null) {
 			Map<Integer, StructureMeta> meta = project.getStorage().getStructureMeta();
-			List<String> elements = project.getStorage().getCurrentData().stream().map(e -> meta.get(e.getID()).getName()).collect(Collectors.toList());
-			List<String> strings = this.getElements();
-			
-			strings.clear();
-			strings.addAll(elements);
-			strings.add(back);
+			this.getElements().clear();
+			project.getStorage().getCurrentData().stream()
+					.map(e -> meta.get(Integer.parseInt(meta.get(e.getID()).getComment().substring(5))).getName())
+					.forEach(this.getElements()::add);
 		}
 	}
 	
 	public void onSelect(int id) {
 		Project project = this.getManager().getWorkspace().getCurrentProject();
 		
-		if(project != null && id < this.getElements().size() - 1) {
+		if(project != null) {
 			this.selected = project.getStorage().getCurrentData().get(id).getID();
 			this.getManager().getCoreRenderer().selectInstruction(this.selected);
 		}
@@ -50,10 +44,9 @@ public class Code extends SpecificMenu {
 	public void onClick(int id) {
 		Project project = this.getManager().getWorkspace().getCurrentProject();
 		
-		if(project != null && id < this.getElements().size() - 1) {
-		
-		} else {
-			this.parent.show();
+		if(project != null && id < this.getElements().size()) {
+			this.editor.setTargetInstruction(project.getStorage().getCurrentData().get(id));
+			this.editor.show();
 		}
 	}
 	
@@ -61,7 +54,7 @@ public class Code extends SpecificMenu {
 		Project project = this.getManager().getWorkspace().getCurrentProject();
 
 		if(project != null) {
-			return this.selected > 0 ? project.getStorage().getStructureMeta().get(this.selected).getSpecification().toString() : "No code is available";
+			return this.selected >= 0 ? project.getStorage().getStructureMeta().get(this.selected).getSpecification().toString() : "No code is available";
 		}
 		
 		return "Error";

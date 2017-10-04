@@ -72,12 +72,12 @@ public class DataManager {
 				return message;
 			} else if(this.project.getCompiler().getInstructionSet() != null) {
 				this.project.getStorage().loadData(structureID); // Push
-				
+
 				if(this.insertCode(0, this.project.getCompiler().getInstructionSet().getStructureEntry())) {
 					if(parents.size() > 0) {
 						this.project.getStorage().loadData(parents.get(parents.size() - 1)); // Pop
 					}
-					
+															
 					return new MessageEvent("Structure created", MessageType.SUCCESS);
 				} else {
 					return new MessageEvent("Couldn't initialize structure", MessageType.ERROR);
