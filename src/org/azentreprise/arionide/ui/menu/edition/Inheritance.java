@@ -27,7 +27,7 @@ public class Inheritance extends SpecificMenu {
 	public void setCurrent(WorldElement element) {
 		super.setCurrent(element);
 		
-		Storage storage = this.getManager().getWorkspace().getCurrentProject().getStorage();
+		Storage storage = this.getAppManager().getWorkspace().getCurrentProject().getStorage();
 		
 		InheritanceElement object = storage.getInheritance().get(element.getID());
 		
@@ -48,16 +48,16 @@ public class Inheritance extends SpecificMenu {
 			this.editor.setTarget(element);
 			this.editor.show();
 		} else if(id == this.parents.size()){
-			Storage storage = this.getManager().getWorkspace().getCurrentProject().getStorage();
-			new StructureSelection(this.getManager(), this::inherit, new AlphabeticalComparator(storage)).show();
+			Storage storage = this.getAppManager().getWorkspace().getCurrentProject().getStorage();
+			new StructureSelection(this.getAppManager(), this::inherit, new AlphabeticalComparator(storage)).show();
 		} else {
 			MainMenus.getStructureEditor().show();
 		}
 	}
 	
 	public void inherit(int parent) {
-		MessageEvent message = this.getManager().getWorkspace().getCurrentProject().getDataManager().inherit(this.getCurrent().getID(), parent);
-		this.getManager().getEventDispatcher().fire(message);
+		MessageEvent message = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().inherit(this.getCurrent().getID(), parent);
+		this.getAppManager().getEventDispatcher().fire(message);
 		this.reload();
 		this.show(); // This is being called by the structure selection menu...
 	}

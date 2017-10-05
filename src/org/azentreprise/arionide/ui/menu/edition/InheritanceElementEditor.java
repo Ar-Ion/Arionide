@@ -28,7 +28,7 @@ public class InheritanceElementEditor extends Menu {
 	protected void onClick(String element) {		
 		switch(element) {
 			case remove:
-				Project project = this.getManager().getWorkspace().getCurrentProject();
+				Project project = this.getAppManager().getWorkspace().getCurrentProject();
 				
 				MessageEvent message = null;
 				
@@ -39,7 +39,7 @@ public class InheritanceElementEditor extends Menu {
 					message = new MessageEvent("No project is currently loaded", MessageType.ERROR);
 				}
 				
-				this.getManager().getEventDispatcher().fire(message);
+				this.getAppManager().getEventDispatcher().fire(message);
 				
 				this.parent.reload();
 				this.parent.show();

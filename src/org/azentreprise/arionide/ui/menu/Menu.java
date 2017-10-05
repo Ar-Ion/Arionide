@@ -41,7 +41,7 @@ public abstract class Menu {
 		this.elements.addAll(Arrays.asList(elements));
 	}
 	
-	public AppManager getManager() {
+	public AppManager getAppManager() {
 		return this.manager;
 	}
 	

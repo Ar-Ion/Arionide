@@ -43,7 +43,7 @@ public class Confirm extends SpecificMenu {
 	
 	public void setCurrent(WorldElement current) {
 		super.setCurrent(current);
-		this.getManager().getEventDispatcher().fire(new MessageEvent(this.caption.replace("$name", current.getName()), MessageType.INFO));
+		this.getAppManager().getEventDispatcher().fire(new MessageEvent(this.caption.replace("$name", current.getName()), MessageType.INFO));
 	}
 	
 	public void onClick(String element) {

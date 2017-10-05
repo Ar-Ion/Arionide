@@ -243,7 +243,7 @@ public class Coloring extends SpecificMenu {
 	public void setCurrent(WorldElement current) {
 		super.setCurrent(current);
 		
-		Map<Integer, StructureMeta> metaData = this.getManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta();
+		Map<Integer, StructureMeta> metaData = this.getAppManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta();
 		
 		if(metaData.containsKey(current.getID())) {
 			this.setMenuCursor(metaData.get(current.getID()).getColorID());
@@ -252,7 +252,7 @@ public class Coloring extends SpecificMenu {
 	
 	protected void onClick(String element) {		
 		if(element != back) {
-			Project project = this.getManager().getWorkspace().getCurrentProject();
+			Project project = this.getAppManager().getWorkspace().getCurrentProject();
 			
 			MessageEvent message = null;
 			
@@ -262,7 +262,7 @@ public class Coloring extends SpecificMenu {
 				message = new MessageEvent("No project is currently loaded", MessageType.ERROR);
 			}
 			
-			this.getManager().getEventDispatcher().fire(message);
+			this.getAppManager().getEventDispatcher().fire(message);
 		}
 		
 		MainMenus.getStructureEditor().show();

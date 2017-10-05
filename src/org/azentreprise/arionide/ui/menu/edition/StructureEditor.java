@@ -74,10 +74,10 @@ public class StructureEditor extends SpecificMenu {
 					String name = JOptionPane.showInputDialog(null, "Please enter the new name of the structure", "New name", JOptionPane.PLAIN_MESSAGE);
 					
 					if(name != null) {
-						Project project = this.getManager().getWorkspace().getCurrentProject();
+						Project project = this.getAppManager().getWorkspace().getCurrentProject();
 						MessageEvent message = project.getDataManager().setName(this.getCurrent().getID(), name);
-						this.getManager().getCoreRenderer().loadProject(this.getManager().getWorkspace().getCurrentProject());
-						this.getManager().getEventDispatcher().fire(message);
+						this.getAppManager().getCoreRenderer().loadProject(this.getAppManager().getWorkspace().getCurrentProject());
+						this.getAppManager().getEventDispatcher().fire(message);
 					}
 				}).start();
 				break;
@@ -95,19 +95,19 @@ public class StructureEditor extends SpecificMenu {
 	}
 	
 	private void delete() {
-		Project project = this.getManager().getWorkspace().getCurrentProject();
-		MessageEvent message = project.getDataManager().deleteStructure(this.getCurrent().getID(), this.getManager().getCoreRenderer().getInside());
-		this.getManager().getCoreRenderer().loadProject(project);
-		this.getManager().getEventDispatcher().fire(message);
+		Project project = this.getAppManager().getWorkspace().getCurrentProject();
+		MessageEvent message = project.getDataManager().deleteStructure(this.getCurrent().getID(), this.getAppManager().getCoreRenderer().getInside());
+		this.getAppManager().getCoreRenderer().loadProject(project);
+		this.getAppManager().getEventDispatcher().fire(message);
 	}
 	
 	private void go() {
-		CoreRenderer renderer = this.getManager().getCoreRenderer();
+		CoreRenderer renderer = this.getAppManager().getCoreRenderer();
 		
 		if(renderer instanceof OpenGLCoreRenderer) {
 			((OpenGLCoreRenderer) renderer).teleport(this.getCurrent().getCenter());
 		} else {
-			this.getManager().getEventDispatcher().fire(new MessageEvent("This GUI implementation doesn't support teleporting.", MessageType.ERROR));
+			this.getAppManager().getEventDispatcher().fire(new MessageEvent("This GUI implementation doesn't support teleporting.", MessageType.ERROR));
 		}
 	}
 	

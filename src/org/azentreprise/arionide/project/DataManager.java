@@ -212,9 +212,9 @@ public class DataManager {
 			this.storage.saveStructureMeta();
 			
 			if(name.isEmpty()) {
-				return new MessageEvent("Empty names are discouraged", MessageType.WARN);
+				return new MessageEvent("Empty strings are discouraged", MessageType.WARN);
 			} else {
-				return new MessageEvent("Name successfully updated", MessageType.SUCCESS);
+				return new MessageEvent("Update successful", MessageType.SUCCESS);
 			}
 		} else {
 			return new MessageEvent("Invalid structure id", MessageType.ERROR);

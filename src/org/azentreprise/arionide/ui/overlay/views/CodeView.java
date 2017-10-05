@@ -128,7 +128,7 @@ public class CodeView extends View implements EventHandler {
 					String name = JOptionPane.showInputDialog(null, "Please enter the name of the new structure", "New structure", JOptionPane.PLAIN_MESSAGE);
 					
 					if(name != null) {
-						MessageEvent message = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().newStructure(name, this.getAppManager().getCoreRenderer().getInside());
+						MessageEvent message = this.currentProject.getDataManager().newStructure(name, this.getAppManager().getCoreRenderer().getInside());
 						this.getAppManager().getEventDispatcher().fire(message);
 						this.getAppManager().getCoreRenderer().loadProject(this.currentProject);
 					}

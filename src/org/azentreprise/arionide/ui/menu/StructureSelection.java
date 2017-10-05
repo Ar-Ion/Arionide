@@ -25,7 +25,7 @@ public class StructureSelection extends Menu {
 	}
 
 	public void reload() {
-		Map<Integer, StructureMeta> elements = this.getManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta();
+		Map<Integer, StructureMeta> elements = this.getAppManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta();
 		this.ordered = new ArrayList<>(elements.keySet());
 		
 		for(Comparator<Integer> comparator : this.comparators) {
