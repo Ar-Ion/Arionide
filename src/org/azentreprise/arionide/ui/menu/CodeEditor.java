@@ -12,6 +12,7 @@ public class CodeEditor extends Menu {
 
 	private static final String back = "Back";
 	private static final String description = "Set description";
+	private static final String delete = "Delete";
 	private static final String append = "Append";
 	
 	private final Menu parent;
@@ -45,23 +46,24 @@ public class CodeEditor extends Menu {
 		
 		this.setMenuCursor(2);
 	}
-	
+		
 	public void onClick(String element) {
 		Project project = this.getAppManager().getWorkspace().getCurrentProject();
 
-		if(project.getCompiler().getInstructionSet().getInstructions().contains(element)) {
-			this.getAppManager().getEventDispatcher().fire(project.getDataManager().insertCode(0, element));
-			
-			this.getAppManager().getCoreRenderer().loadProject(project); // Reload renderers
-		} else if(element == append) {
+		if(element == append) {
 			this.appender.setAppenderPosition(this.instructionID);
 			this.appender.show();
+		} else if(element == delete) {
+			MessageEvent message = project.getDataManager().deleteCode(this.instruction.getID());
+			this.getAppManager().getEventDispatcher().fire(message);
+			this.getAppManager().getCoreRenderer().loadProject(project);
+			this.parent.show();
 		} else if(element == description) {
 			new Thread(() -> {
 				String name = JOptionPane.showInputDialog(null, "Please enter the description of the instruction", "Description", JOptionPane.PLAIN_MESSAGE);
 				
 				if(name != null) {
-					MessageEvent message = project.getDataManager().setName(this.instructionID, name);
+					MessageEvent message = project.getDataManager().setName(this.instruction.getID(), name);
 					this.getAppManager().getEventDispatcher().fire(message);
 					this.getAppManager().getCoreRenderer().loadProject(project);
 				}
@@ -76,7 +78,7 @@ public class CodeEditor extends Menu {
 	}
 	
 	private String getInstructionName() {
-		if(this.instructionMeta.getName().isEmpty() && this.getAppManager().getWorkspace().getCurrentProject() != null) {
+		if(this.instructionMeta.getName().equals("?") && this.getAppManager().getWorkspace().getCurrentProject() != null) {
 			int realID = Integer.parseInt(this.instructionMeta.getComment().substring(5));
 			return this.getAppManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta().get(realID).getName();
 		} else {

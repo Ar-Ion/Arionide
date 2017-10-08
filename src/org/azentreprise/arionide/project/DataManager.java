@@ -203,6 +203,17 @@ public class DataManager {
 		
 		return true;
 	}
+
+	public MessageEvent deleteCode(int id) {
+		HierarchyElement element = this.storage.currentData.remove(id);
+		this.storage.saveData();
+		
+		if(element != null) {
+			this.storage.structMeta.remove(element.getID());
+		}
+		
+		return new MessageEvent("Removed an instruction from the code", MessageType.SUCCESS);
+	}
 	
 	public MessageEvent setName(int id, String name) {
 		StructureMeta meta = this.storage.getStructureMeta().get(id);

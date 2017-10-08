@@ -1,6 +1,7 @@
 package org.azentreprise.arionide.ui.core.opengl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -19,28 +20,40 @@ public class CodeGeometry implements Geometry {
 	
 	private static final float structRelSize = 0.05f;
 	private static final float structRelDistance = 0.1f;
-	private static final float axisEntropy = 0.5f;
-	private static final float axisCorrection = 1.0f;
+	private static final float axisEntropy = 1.0f;
+	private static final float axisCorrection = 0.2f;
 	private static final float axisCorrectionFlexibility = 5.0f;
 
 	private final Random random = new Random();
-	private final List<WorldElement> elements = new ArrayList<>();
+	private final List<WorldElement> elements = Collections.synchronizedList(new ArrayList<>());
+	
+	private long seed;
+	
+	public void setGenerationSeed(long seed) {
+		this.seed = seed;
+	}
 	
 	@IAm("building the code geometry")
 	protected void buildGeometry(Project project, WorldElement element) {
-		Storage storage = project.getStorage();
-		storage.loadData(element.getID());
-		
-		this.elements.clear();
-		
-		this.build(element, storage.getStructureMeta(), storage.getCurrentData(), element.getSize() * structRelSize);
-		
+		synchronized(this.elements) {
+			this.elements.clear();
+						
+			if(element != null && element.getID() > -1) {
+				Storage storage = project.getStorage();
+				storage.loadData(element.getID());
+				
+				WorldElement.setSeed(this.seed * element.getID());
+				this.random.setSeed(this.seed * element.getID());
+				
+				this.build(element, storage.getStructureMeta(), storage.getCurrentData(), element.getSize() * structRelSize);
+			}
+		}
 	}
 	
 	private void build(WorldElement parent, Map<Integer, StructureMeta> meta, List<HierarchyElement> code, float size) {
 		Vector3f axis = parent.getAxis();
 		Vector3f position = parent.getCenter();
-				
+		
 		for(HierarchyElement element : code) {
 			StructureMeta structMeta = meta.get(element.getID());
 						
@@ -80,8 +93,10 @@ public class CodeGeometry implements Geometry {
 		axis.add(correction);
 	}
 	
-	public synchronized Stream<WorldElement> getCollisions(Vector3f player) {
-		return this.elements.stream().filter((element) -> element.collidesWith(player));
+	public Stream<WorldElement> getCollisions(Vector3f player) {
+		synchronized(this.elements) {
+			return this.elements.stream().filter((element) -> element.collidesWith(player));
+		}
 	}
 	
 	public List<WorldElement> getElements() {

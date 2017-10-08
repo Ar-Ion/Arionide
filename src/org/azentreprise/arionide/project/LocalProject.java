@@ -27,6 +27,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import org.azentreprise.arionide.SystemCache;
 import org.azentreprise.arionide.Utils;
@@ -46,7 +47,8 @@ public class LocalProject implements Project {
 	static {
 		projectProtocolMapping.put("version", Long.toString(versionUID).getBytes(Coder.charset));
 		projectProtocolMapping.put("name", new String("Undefined").getBytes(Coder.charset));
-		projectProtocolMapping.put("structureGen", new String("0").getBytes(Coder.charset));
+		projectProtocolMapping.put("structureGen", Integer.toString(0).getBytes(Coder.charset));
+		projectProtocolMapping.put("seed", Long.toString(new Random().nextLong()).getBytes(Coder.charset));
 		projectProtocolMapping.put("definitions", new String("org.azentreprise.arionide.native.NativeDefinitions()").getBytes(Coder.charset));
 		projectProtocolMapping.put("runtime", new String("org.azentreprise.arionide.native.NativeRuntime()").getBytes(Coder.charset));
 	}

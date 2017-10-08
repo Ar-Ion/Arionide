@@ -41,19 +41,15 @@ public class StructureList extends Menu {
 				
 		if(elements.size() > 0) {
 			this.getElements().addAll(elements.stream().map((e) -> e.toString()).collect(Collectors.toList()));
+		} else {
+			this.getElements().add("No children");
 		}
 	}
 	
 	protected void onClick(int id) {
-		id--;
-		
-		if(id >= 0 && this.elements != null && id < this.elements.size()) {
+		if(this.elements.size() > 0) {
 			MainMenus.getStructureEditor().setCurrent(this.elements.get(id));
 			MainMenus.getStructureEditor().show();
 		}
-	}
-	
-	public String getDescription() {
-		return "Please select a structure in " + super.getDescription();
 	}
 }

@@ -155,9 +155,11 @@ public class CodeView extends View implements EventHandler {
 			
 			this.currentMenu = ((MenuEvent) event).getMenu();
 			this.menu.setActiveComponent(this.currentMenu.getMenuCursor());
-			this.menu.setComponents(this.currentMenu.getElements().stream().map(this.menu.getMapper()).collect(Collectors.toList()));
-			this.currentInfo.setLabel(this.currentMenu.getDescription());
+			this.menu.setComponents(this.currentMenu.getMenuElements().stream().map(this.menu.getMapper()).collect(Collectors.toList()));
 			
+			this.currentInfo.setLabel(this.currentMenu.getDescription());
+			this.currentInfo.setColor(MessageType.INFO.getColor());
+
 			this.currentMenu.setActive(true);
 		} else if(event instanceof ScrollEvent) {
 			ScrollEvent scroll = (ScrollEvent) event;

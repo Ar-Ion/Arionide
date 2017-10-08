@@ -90,7 +90,7 @@ public class StructureEditor extends SpecificMenu {
 				this.confirmDelete.show();
 				break;
 			case close:
-				MainMenus.getStructureEditor().show();
+				MainMenus.getStructureList().show();
 		}
 	}
 	

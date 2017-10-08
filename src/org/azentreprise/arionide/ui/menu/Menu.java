@@ -22,6 +22,7 @@ package org.azentreprise.arionide.ui.menu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.azentreprise.arionide.events.Event;
@@ -45,8 +46,12 @@ public abstract class Menu {
 		return this.manager;
 	}
 	
-	public List<String> getElements() {
+	protected List<String> getElements() {
 		return this.elements;
+	}
+	
+	public List<String> getMenuElements() {
+		return Collections.unmodifiableList(this.elements);
 	}
 	
 	protected void fire(Event event) {
@@ -111,12 +116,12 @@ public abstract class Menu {
 			try {
 				int id = list.get(list.size() - 1);
 				StructureMeta meta = this.manager.getWorkspace().getCurrentProject().getStorage().getStructureMeta().get(id);
-				return "'" + meta.getName() + "'" + (meta.getComment().isEmpty() ? "" : " (" + meta.getComment() + ")");
+				return "The " + meta.getName() + (meta.getComment().equals("?") ? "" : " (" + meta.getComment() + ")");
 			} catch(Exception e) {
-				return "unknown";
+				return "Unknown";
 			}
 		} else {
-			return "the space";
+			return "The space";
 		}
 	}
 }

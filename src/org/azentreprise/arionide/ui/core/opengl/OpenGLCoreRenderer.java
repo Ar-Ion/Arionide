@@ -39,6 +39,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.ActionType;
@@ -525,20 +526,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		if(this.needMenuUpdate) {
 			MainMenus.getStructureList().setMenuCursor(0);
 			this.dispatcher.fire(new MenuEvent(MainMenus.getStructureList()));
-			this.updateInfo();
 			this.ajustAcceleration();
 			
-			if(this.current != null && this.current.getID() >= 0) {
-				this.codeGeometry.buildGeometry(this.project, this.current);
-			}
-			
+			this.selected = null;
 			this.needMenuUpdate = false;
+			
+			this.codeGeometry.buildGeometry(this.project, this.current);
 		}
-	}
-	
-	private void updateInfo() {
-		this.selected = null;
-		this.dispatcher.fire(new MessageEvent("You are in " + this.getElementName(this.current), MessageType.INFO));
 	}
 	
 	private String getElementName(WorldElement element) {
@@ -591,8 +585,10 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	public void selectInstruction(int id) {
-		synchronized(this.worldGeometry) {
-			this.worldGeometry.getElements().stream().filter(e -> e.getID() == id).findAny().ifPresent(e -> this.selected = e);
+		List<WorldElement> elements = this.codeGeometry.getElements();
+		
+		synchronized(elements) {
+			elements.stream().filter(e -> e.getID() == id).findAny().ifPresent(e -> this.selected = e);
 		}
 	}
 
@@ -600,12 +596,22 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		if(project == null) {
 			this.isInWorld = false;
 			this.context.setCursor(Cursor.getDefaultCursor());
+			return;
 		}
 				
 		this.project = project;
-		this.needMenuUpdate = true;
+		this.needMenuUpdate = this.selected == null;
 				
+		long seed = project.getProperty("seed", Coder.integerDecoder);
+		
+		this.codeGeometry.setGenerationSeed(seed);
+		this.worldGeometry.setGenerationSeed(seed);
+
 		this.worldGeometry.buildGeometry(project);
+		
+		if(this.current != null && this.current.getID() >= 0) {
+			this.codeGeometry.buildGeometry(this.project, this.current);
+		}
 	}
 
 	public void update(Rectangle bounds) {
@@ -757,7 +763,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				}
 			}
 		} else {
-			this.updateInfo();
 			this.dispatcher.fire(new MenuEvent(MainMenus.getStructureList()));
 		}
 	}

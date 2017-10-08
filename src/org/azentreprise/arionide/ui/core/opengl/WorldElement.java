@@ -44,6 +44,10 @@ public class WorldElement {
 		baseGenerator = generator;
 	}
 	
+	protected static void setSeed(long seed) {
+		rand.setSeed(seed);
+	}
+	
 	/* Data needed for tesselation, rendering and collision detection. */
 	
 	private final int id;
@@ -119,5 +123,13 @@ public class WorldElement {
 
 	public String toString() {
 		return this.name;
+	}
+	
+	public boolean equals(Object other) {
+		if(other instanceof WorldElement) {
+			return ((WorldElement) other).id == this.id;
+		}
+		
+		return false;
 	}
 }

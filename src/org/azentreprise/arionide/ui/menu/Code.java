@@ -2,10 +2,12 @@ package org.azentreprise.arionide.ui.menu;
 
 import java.util.Map;
 
+import org.azentreprise.arionide.events.MessageEvent;
+import org.azentreprise.arionide.events.MessageType;
+import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 
 public class Code extends SpecificMenu {
 	
@@ -18,26 +20,39 @@ public class Code extends SpecificMenu {
 		this.editor = new CodeEditor(manager, this);
 	}
 
-	public void setCurrent(WorldElement element) {
-		super.setCurrent(element);
+	public void show() {
+		super.show();
 		
-		Project project = this.getAppManager().getWorkspace().getCurrentProject();
-	
-		if(project != null) {
-			Map<Integer, StructureMeta> meta = project.getStorage().getStructureMeta();
-			this.getElements().clear();
-			project.getStorage().getCurrentData().stream()
-					.map(e -> meta.get(Integer.parseInt(meta.get(e.getID()).getComment().substring(5))).getName())
-					.forEach(this.getElements()::add);
+		if(this.getCurrent() != null) {
+			Project project = this.getAppManager().getWorkspace().getCurrentProject();
+			
+			if(project != null) {
+				Map<Integer, StructureMeta> meta = project.getStorage().getStructureMeta();
+				
+				this.getElements().clear();
+				
+				for(HierarchyElement object : project.getStorage().getCurrentData()) {
+					StructureMeta objectMeta = meta.get(object.getID());
+					
+					String name = objectMeta.getName();
+					
+					if(name.equals("?")) {
+						this.getElements().add(meta.get(Integer.parseInt(objectMeta.getComment().substring(5))).getName());
+					} else {
+						this.getElements().add(name);
+					}
+				}
+			}
 		}
 	}
-	
+
 	public void onSelect(int id) {
 		Project project = this.getAppManager().getWorkspace().getCurrentProject();
 		
 		if(project != null) {
 			this.selected = project.getStorage().getCurrentData().get(id).getID();
 			this.getAppManager().getCoreRenderer().selectInstruction(this.selected);
+			this.getAppManager().getEventDispatcher().fire(new MessageEvent(this.getDescription(), MessageType.INFO));
 		}
 	}
 	
@@ -53,10 +68,13 @@ public class Code extends SpecificMenu {
 	public String getDescription() {
 		Project project = this.getAppManager().getWorkspace().getCurrentProject();
 
-		if(project != null) {
-			return this.selected >= 0 ? project.getStorage().getStructureMeta().get(this.selected).getSpecification().toString() : "No code is available";
+		if(project != null && this.selected > -1) {
+			Map<Integer, StructureMeta> metaData = project.getStorage().getStructureMeta();
+			StructureMeta meta = metaData.get(this.selected);
+			
+			return metaData.get(Integer.parseInt(meta.getComment().substring(5))).getName() + " [" + meta.getSpecification() + "]";
 		}
 		
-		return "Error";
+		return "No code is available";
 	}
 }

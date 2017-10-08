@@ -54,6 +54,8 @@ public class WorldGeometry implements Geometry {
 
 	private final IEventDispatcher dispatcher;
 	
+	private long seed;
+	
 	private List<WorldElement> current = this.hierarchy;
 	private RenderingScene currentScene = RenderingScene.HIERARCHY;
 	private Project currentProject;
@@ -69,8 +71,14 @@ public class WorldGeometry implements Geometry {
 		this.dispatcher = dispatcher;
 	}
 
+	public void setGenerationSeed(long seed) {
+		this.seed = seed;
+	}
+	
 	@IAm("building the world's geometry")
 	protected void buildGeometry(Project project) {
+		WorldElement.setSeed(this.seed);
+		
 		this.hierarchy.clear();
 		this.inheritance.clear();
 		this.callGraph.clear();
@@ -198,7 +206,9 @@ public class WorldGeometry implements Geometry {
 	}
 
 	public synchronized Stream<WorldElement> getCollisions(Vector3f player) {
-		return this.current.stream().filter((element) -> element.collidesWith(player));
+		synchronized(this.current) {
+			return this.current.stream().filter((element) -> element.collidesWith(player));
+		}
 	}
 	
 	public List<WorldElement> getElements() {

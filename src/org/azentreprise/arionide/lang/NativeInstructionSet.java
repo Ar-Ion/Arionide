@@ -28,6 +28,7 @@ public class NativeInstructionSet extends InstructionSet implements Serializable
 			this.install("nop", 15, parents);
 		} else {
 			this.retrieve("init");
+			this.retrieve("nop");
 		}
 	}
 	
