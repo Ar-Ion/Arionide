@@ -18,29 +18,25 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.lang;
+package org.azentreprise.arionide.lang.natives;
 
-import java.util.List;
-
+import org.azentreprise.arionide.lang.Compiler;
+import org.azentreprise.arionide.lang.InstructionSet;
 import org.azentreprise.arionide.project.Project;
 
-public abstract class InstructionSet {
+public class NativeCompiler extends Compiler {
 	
-	private final Project project;
+	private NativeInstructionSet instructionSet;
 	
-	public InstructionSet(Project project) {
-		this.project = project;
+	public NativeCompiler(Project project) {
+		super(project);
+	}
+
+	public void load() {
+		this.instructionSet = new NativeInstructionSet(this.getProject());
 	}
 	
-	protected int installInstruction(String name, int color, List<Integer> parents) {
-		return this.project.getDataManager().installInstruction(name, color, parents);
+	public InstructionSet getInstructionSet() {
+		return this.instructionSet;
 	}
-	
-	protected int retrieveInstruction(String name) {
-		return this.project.getDataManager().retrieveInstruction(name);
-	}
-	
-	public abstract int getStructureEntry();
-	public abstract int getInstructionID(String name);
-	public abstract List<String> getInstructions();
 }

@@ -193,6 +193,7 @@ public class DataManager {
 		
 		StructureMeta meta = new StructureMeta();
 		meta.setComment("code@" + instructionID);
+		meta.setSpecification(this.storage.getStructureMeta().get(instructionID).getSpecification());
 		meta.setAccessAllowed(false);
 		
 		this.storage.structMeta.put(structureID, meta);

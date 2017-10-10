@@ -36,7 +36,7 @@ import org.azentreprise.arionide.coders.Decoder;
 import org.azentreprise.arionide.coders.Encoder;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.debugging.IAm;
-import org.azentreprise.arionide.lang.NativeCompiler;
+import org.azentreprise.arionide.lang.natives.NativeCompiler;
 
 public class LocalProject implements Project {
 

@@ -22,6 +22,7 @@ package org.azentreprise.arionide.project;
 
 import java.io.Serializable;
 
+import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.ui.menu.edition.Coloring;
 
 public class StructureMeta implements Serializable {

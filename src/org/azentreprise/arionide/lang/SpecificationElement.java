@@ -20,27 +20,34 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang;
 
-import java.util.List;
+import java.io.Serializable;
 
-import org.azentreprise.arionide.project.Project;
+public class SpecificationElement implements Serializable {
+	private static final long serialVersionUID = -2821188218676151203L;
 
-public abstract class InstructionSet {
+	private final String name;
+	private final int type;
+	private String value;
 	
-	private final Project project;
-	
-	public InstructionSet(Project project) {
-		this.project = project;
+	public SpecificationElement(String name, int type, String value) {
+		this.name = name;
+		this.type = type;
+		this.value = value;
 	}
 	
-	protected int installInstruction(String name, int color, List<Integer> parents) {
-		return this.project.getDataManager().installInstruction(name, color, parents);
+	public String getName() {
+		return this.name;
 	}
 	
-	protected int retrieveInstruction(String name) {
-		return this.project.getDataManager().retrieveInstruction(name);
+	public int getType() {
+		return this.type;
 	}
 	
-	public abstract int getStructureEntry();
-	public abstract int getInstructionID(String name);
-	public abstract List<String> getInstructions();
+	public String getValue() {
+		return this.value;
+	}
+	
+	public void setValue(String value) {
+		this.value = value;
+	}
 }
