@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.events.MessageEvent;
@@ -205,9 +204,17 @@ public class WorldGeometry implements Geometry {
 		return this.current != this.hierarchy ? -666.0f : (float) Math.pow(structRelSizeHierarchy, count);
 	}
 
-	public synchronized Stream<WorldElement> getCollisions(Vector3f player) {
+	public List<WorldElement> getCollisions(Vector3f player) {
 		synchronized(this.current) {
-			return this.current.stream().filter((element) -> element.collidesWith(player));
+			List<WorldElement> collisions = new ArrayList<>();
+			
+			for(WorldElement element : this.current) {
+				if(element != null && element.collidesWith(player)) {
+					collisions.add(element);
+				}
+			}
+			
+			return collisions;
 		}
 	}
 	

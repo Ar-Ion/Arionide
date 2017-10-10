@@ -34,10 +34,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.debugging.Debug;
@@ -86,7 +85,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private static final float initialAcceleration = 0.005f;
 	private static final float spaceFriction = 0.1f;
 
-	private static final float fov = (float) Math.toRadians(90.0f);
+	private static final float fov = (float) Math.toRadians(60.0f);
 	
 	private static final float skyDistance = 32.0f;
 			
@@ -96,14 +95,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private final CodeGeometry codeGeometry;
 	private final Robot robot;
 	
+	private final List<ScaledRenderingInfo> structures = new ArrayList<>();
+	private int skyVAO;	
+	
 	private float zNear = 1.0f;
 	private float zFar = 64.0f;
 	
 	private int shader;
-	
-	private int skyVAO;	
-	private int structureVAO;
-	private int structureEBO;
 	
 	/* Uniforms */
 	private int model;
@@ -150,7 +148,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.dispatcher = dispatcher;
 		this.worldGeometry = new WorldGeometry(dispatcher);
 		this.codeGeometry = new CodeGeometry();
-		
+				
 		dispatcher.registerHandler(this);
 		
 		Robot robot = null;
@@ -169,22 +167,32 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 		int positionAttribute = gl.glGetAttribLocation(this.shader, "position");
 		
-		IntBuffer vertexArrays = IntBuffer.allocate(2);
-		IntBuffer buffers = IntBuffer.allocate(3);
+		IntBuffer vertexArrays = IntBuffer.allocate(1 + 2 * structureRenderingQuality);
+		IntBuffer buffers = IntBuffer.allocate(1 + 4 * structureRenderingQuality);
 		
-		gl.glGenVertexArrays(2, vertexArrays);
-		gl.glGenBuffers(3, buffers);
+		gl.glGenVertexArrays(vertexArrays.capacity(), vertexArrays);
+		gl.glGenBuffers(buffers.capacity(), buffers);
 		
 		/* Sky */
 		this.beginUsingVertexArray(gl, this.skyVAO = vertexArrays.get(0));
-		this.initBufferObject(gl, buffers.get(0), GL4.GL_ARRAY_BUFFER, this::createSkyShapeData);
+		this.initBufferObject(gl, buffers.get(0), GL4.GL_ARRAY_BUFFER, stars, this::createSkyShapeData);
 		this.endUsingVertexArray(gl, positionAttribute);
 		
 		/* Structures */
-		this.beginUsingVertexArray(gl, this.structureVAO = vertexArrays.get(1));
-		this.initBufferObject(gl, buffers.get(1), GL4.GL_ARRAY_BUFFER, this::createStructureShapeData);
-		this.endUsingVertexArray(gl, positionAttribute);
-		this.initBufferObject(gl, this.structureEBO = buffers.get(2), GL4.GL_ELEMENT_ARRAY_BUFFER, this::createStructureIndicesData);
+		for(int i = 0; i < structureRenderingQuality; i++) {
+			int vertexArray = vertexArrays.get(i + 1);
+			int buffer = buffers.get(i * 2 + 1);
+			int vertices = i + 8;
+			
+			this.structures.add(new ScaledRenderingInfo(vertexArray, buffer + 1, vertices));
+			
+			this.beginUsingVertexArray(gl, vertexArray);
+			this.initBufferObject(gl, buffer, GL4.GL_ARRAY_BUFFER, vertices, this::createStructureShapeData);
+			this.endUsingVertexArray(gl, positionAttribute);
+			
+			this.initBufferObject(gl, buffer + 1, GL4.GL_ELEMENT_ARRAY_BUFFER, vertices, this::createStructureIndicesData);
+		}
+		
 		
 		/* Init player */
 		this.ajustAcceleration();
@@ -230,50 +238,43 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glVertexAttribPointer(positionAttribute, 3, GL4.GL_DOUBLE, false, 3 * Double.BYTES, 0);
 	}
 	
-	private void initBufferObject(GL4 gl, int bufferID, int bufferType, Supplier<Buffer> shapeDataSupplier) {
-		Buffer buffer = shapeDataSupplier.get();
+	private void initBufferObject(GL4 gl, int bufferID, int bufferType, int param, Function<Integer, Buffer> shapeDataSupplier) {
+		Buffer buffer = shapeDataSupplier.apply(param);
 		
 		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, bufferID);
 		gl.glBufferData(GL4.GL_ARRAY_BUFFER, buffer.capacity() * Double.BYTES, buffer.flip(), GL4.GL_STATIC_DRAW);
 	}
 	
-	private Buffer createSkyShapeData() {
-		DoubleBuffer sky = DoubleBuffer.allocate(6 * stars);
+	private Buffer createSkyShapeData(int triangles) {
+		DoubleBuffer sky = DoubleBuffer.allocate(6 * triangles);
 		
-		new UniformSampling.Sphere(System.currentTimeMillis(), stars, (x, y, z) -> sky.put(x).put(y).put(z).put(1.0).put(1.0).put(1.0));
+		new UniformSampling.Sphere(System.currentTimeMillis(), triangles, (x, y, z) -> sky.put(x).put(y).put(z).put(1.0).put(1.0).put(1.0));
 		
 		return sky;
 	}
 	
-	private Buffer createStructureShapeData() {
-		DoubleBuffer sphere = DoubleBuffer.allocate(structureRenderingQuality * (structureRenderingQuality  + 1) * 3);
-
-		for(int latitudeID = 0; latitudeID <= structureRenderingQuality; latitudeID++) {
-			float alpha = latitudeID * (float) Math.PI / structureRenderingQuality;
-			
-			float sinAlpha = (float) Math.sin(alpha);
-			float cosAlpha = (float) Math.cos(alpha);
-			
-			for(int longitudeID = 0; longitudeID < structureRenderingQuality; longitudeID++) {
-				float beta = longitudeID * 2 * (float) Math.PI / structureRenderingQuality;
-
-				sphere.put(sinAlpha * Math.cos(beta));
-				sphere.put(cosAlpha);
-				sphere.put(sinAlpha * Math.sin(beta));
+	private Buffer createStructureShapeData(int vertices) {
+		DoubleBuffer sphere = DoubleBuffer.allocate(vertices * vertices * 3);
+				
+		for(double phi = 0.0d; phi < Math.PI; phi += Math.PI / (vertices - 0.999d)) {
+			for(double theta = 0.0d; theta < 2.0d * Math.PI; theta += 2.0d * Math.PI / (vertices - 0.999d)) {
+				sphere.put(Math.sin(phi) * Math.cos(theta));
+				sphere.put(Math.cos(phi));
+				sphere.put(Math.sin(phi) * Math.sin(theta));
 			}
 		}
-		
+				
 		return sphere;
 	}
 	
-	private Buffer createStructureIndicesData() {
-		IntBuffer indices = IntBuffer.allocate(structureRenderingQuality * structureRenderingQuality * 4);
-
-		for(int latitudeID = 0; latitudeID < structureRenderingQuality; latitudeID++) {
-			for(int longitudeID = 0; longitudeID < structureRenderingQuality; longitudeID++) {
-				int latitudeElementID = latitudeID * structureRenderingQuality;
-				int nextLatitudeElementID = (latitudeID + 1) * structureRenderingQuality;
-				int nextLongitudeElementID = ((longitudeID + 1) % structureRenderingQuality);
+	private Buffer createStructureIndicesData(int vertices) {
+		IntBuffer indices = IntBuffer.allocate(vertices * vertices * 4);
+		
+		for(int latitudeID = 0; latitudeID < vertices; latitudeID++) {
+			for(int longitudeID = 0; longitudeID < vertices; longitudeID++) {
+				int latitudeElementID = latitudeID * vertices;
+				int nextLatitudeElementID = (latitudeID + 1) * vertices;
+				int nextLongitudeElementID = ((longitudeID + 1) % vertices);
 
 				indices.put(latitudeElementID + longitudeID);
 				indices.put(latitudeElementID + nextLongitudeElementID);
@@ -281,7 +282,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				indices.put(nextLatitudeElementID + nextLongitudeElementID);
 			}
 		}
-		
+				
 		return indices;
 	}
 	
@@ -332,9 +333,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private void renderScene(GL4 gl) {
-		gl.glBindVertexArray(this.structureVAO);
-		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, this.structureEBO);
-				
 		gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 		
 		this.renderScene0(gl, this.worldGeometry.getElements());
@@ -366,8 +364,14 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				gl.glUniform4f(this.color, color.x, color.y, color.z, color.w);
 				gl.glUniform3f(this.lightColor, spot.x, spot.y, spot.z);
 				
-				gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, structureRenderingQuality * structureRenderingQuality * 4, GL4.GL_UNSIGNED_INT, 0);
+				double viewHeight = 2.0d * Math.atan(fov / 2.0d) * this.player.distance(element.getCenter());
+				int quality = (int) ((this.structures.size()) * Math.min(0.999d, 2 * element.getSize() / viewHeight));
 				
+				ScaledRenderingInfo info = this.structures.get(quality);
+				
+				gl.glBindVertexArray(info.getVAO());
+				gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, info.getEBO());
+				gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * info.getVertices() * (info.getVertices() - 1), GL4.GL_UNSIGNED_INT, 0);
 				gl.glDisable(GL4.GL_DEPTH_TEST);
 				
 				if(blending) {
@@ -427,11 +431,11 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private void checkForCollisions() {
-		Stream<WorldElement> worldElements = this.worldGeometry.getCollisions(this.player);
-		Stream<WorldElement> codeElements = this.codeGeometry.getCollisions(this.player);
-
+		List<WorldElement> worldElements = this.worldGeometry.getCollisions(this.player);
+		worldElements.addAll(this.codeGeometry.getCollisions(this.player));
+		
 		synchronized(this.inside) {
-			worldElements.forEach((element) -> {
+			for(WorldElement element : worldElements) {
 				if(!this.inside.remove(element)) {
 					if(this.enterElement(element)) {
 						this.buffer.add(element);
@@ -439,18 +443,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				} else {
 					this.buffer.add(element);
 				}
-			});
-			
-			codeElements.forEach((element) -> {
-				if(!this.inside.remove(element)) {
-					if(this.enterElement(element)) {
-						this.buffer.add(element);
-					}
-				} else {
-					this.buffer.add(element);
-				}
-			});
-			
+			}
+
 			this.inside.stream().filter(((Predicate<WorldElement>) this::exitElement).negate()).forEach(this.buffer::add);
 			
 			this.inside.clear();
@@ -751,8 +745,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				if(elements.contains(this.selected)) {
 					Code code = MainMenus.getCode();
 					code.setCurrent(this.current);
-					code.select(elements.indexOf(this.selected));
 					code.show();
+					code.select(elements.indexOf(this.selected));
 				} else {
 					this.worldGeometry.select(this.selected);
 					

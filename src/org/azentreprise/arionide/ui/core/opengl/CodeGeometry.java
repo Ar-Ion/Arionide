@@ -93,9 +93,17 @@ public class CodeGeometry implements Geometry {
 		axis.add(correction);
 	}
 	
-	public Stream<WorldElement> getCollisions(Vector3f player) {
+	public List<WorldElement> getCollisions(Vector3f player) {
 		synchronized(this.elements) {
-			return this.elements.stream().filter((element) -> element.collidesWith(player));
+			List<WorldElement> collisions = new ArrayList<>();
+			
+			for(WorldElement element : this.elements) {
+				if(element != null && element.collidesWith(player)) {
+					collisions.add(element);
+				}
+			}
+			
+			return collisions;
 		}
 	}
 	

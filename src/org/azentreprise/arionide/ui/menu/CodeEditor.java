@@ -3,6 +3,7 @@ package org.azentreprise.arionide.ui.menu;
 import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
+import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.StructureMeta;
@@ -30,12 +31,13 @@ public class CodeEditor extends Menu {
 		
 		this.getElements().add(back);
 		this.getElements().add(description);
+		this.getElements().add(delete);
 		this.getElements().add(append);
 	}
 	
 	protected void setTargetInstruction(int id) {
 		Project project = this.getAppManager().getWorkspace().getCurrentProject();
-		
+
 		if(project != null) {
 			this.instructionID = id;
 			this.instruction = project.getStorage().getCurrentData().get(id);
@@ -44,7 +46,7 @@ public class CodeEditor extends Menu {
 			assert this.instructionMeta != null;
 		}
 		
-		this.setMenuCursor(2);
+		this.setMenuCursor(3);
 	}
 		
 	public void onClick(String element) {
@@ -54,10 +56,15 @@ public class CodeEditor extends Menu {
 			this.appender.setAppenderPosition(this.instructionID);
 			this.appender.show();
 		} else if(element == delete) {
-			MessageEvent message = project.getDataManager().deleteCode(this.instruction.getID());
-			this.getAppManager().getEventDispatcher().fire(message);
-			this.getAppManager().getCoreRenderer().loadProject(project);
-			this.parent.show();
+			if(this.instructionID > 0) {
+				MessageEvent message = project.getDataManager().deleteCode(this.instructionID);
+				this.getAppManager().getEventDispatcher().fire(message);
+				this.getAppManager().getCoreRenderer().loadProject(project);
+				this.parent.select(this.instructionID - 1);
+				this.parent.show();
+			} else {
+				this.getAppManager().getEventDispatcher().fire(new MessageEvent("You can't delete the entry instruction", MessageType.ERROR));
+			}
 		} else if(element == description) {
 			new Thread(() -> {
 				String name = JOptionPane.showInputDialog(null, "Please enter the description of the instruction", "Description", JOptionPane.PLAIN_MESSAGE);

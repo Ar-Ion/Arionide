@@ -48,7 +48,7 @@ public class Code extends SpecificMenu {
 
 	public void onSelect(int id) {
 		Project project = this.getAppManager().getWorkspace().getCurrentProject();
-		
+
 		if(project != null) {
 			this.selected = project.getStorage().getCurrentData().get(id).getID();
 			this.getAppManager().getCoreRenderer().selectInstruction(this.selected);
