@@ -135,7 +135,7 @@ public class GLTextRenderer {
 		this.alpha = (int) (alpha * 255.0f);
 	}
 	
-	protected Point2D drawString(Rectangle2D bounds, String string, FontAdapter adapter, int yCorrection) {
+	protected Point2D drawString(Rectangle2D bounds, String string, FontAdapter adapter) {
 		Rectangle outerBounds = new GLCoordinates(bounds).getAWTBoundings(this.viewport);
 
 		Font font = adapter.adapt(string, outerBounds.getWidth(), outerBounds.getHeight());
@@ -147,7 +147,7 @@ public class GLTextRenderer {
 		FontMetrics metrics = this.g2d.getFontMetrics();
 		
 		int x = outerBounds.x + (outerBounds.width - metrics.stringWidth(string)) / 2;
-		int y = outerBounds.y + (outerBounds.height - metrics.getMaxDescent() + metrics.getMaxAscent() + 1 + yCorrection) / 2;
+		int y = outerBounds.y + (outerBounds.height - metrics.getMaxDescent() + metrics.getMaxAscent() + 1) / 2;
 		
 		int color = Utils.packARGB(this.rgb, this.alpha);
 		long packed = 17 * string.hashCode() + 31 * (((x & 0xFFFFL) << 48) | ((y & 0xFFFFL) << 32) | color) + 47 * (this.paint != null ? this.paint.hashCode() : 0);

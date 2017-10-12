@@ -20,6 +20,10 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang;
 
-public interface TypeManager {
+import java.util.List;
 
+public interface TypeManager {
+	public List<String> getSuggestions(CoreDataManager cdm);
+	public List<String> getActions(CoreDataManager cdm);
+	public void onAction(String action);
 }

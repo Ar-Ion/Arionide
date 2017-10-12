@@ -243,7 +243,7 @@ public class OpenGLPrimitives implements IPrimitives {
 	}
 
 	public Point2D drawText(AppDrawingContext context, String text, Rectangle2D bounds, int yCorrection) {	
-		return this.textRenderer.drawString(bounds, text, context.getFontAdapter(), yCorrection);
+		return this.textRenderer.drawString(bounds, text, context.getFontAdapter());
 	}
 	
 	public void setColor(GL4 gl, float r, float g, float b) {

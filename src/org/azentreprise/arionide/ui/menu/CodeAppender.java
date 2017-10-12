@@ -63,8 +63,8 @@ public class CodeAppender extends Menu {
 			this.getAppManager().getEventDispatcher().fire(event);
 			this.getAppManager().getCoreRenderer().loadProject(project);
 			
-			this.parent.onSelect(this.position);
-			this.parent.onClick(this.position);
+			this.parent.show();
+			this.parent.select(this.position);
 		} catch(IndexOutOfBoundsException e) {
 			this.parent.show();
 		}

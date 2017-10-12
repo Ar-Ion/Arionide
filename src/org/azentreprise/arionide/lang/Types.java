@@ -21,5 +21,5 @@
 package org.azentreprise.arionide.lang;
 
 public interface Types {
-	public TypeManager setupType(int instructionID, String name, int type);
+	public TypeManager getTypeManager(int type);
 }
