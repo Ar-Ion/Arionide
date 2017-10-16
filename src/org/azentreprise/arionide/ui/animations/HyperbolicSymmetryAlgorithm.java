@@ -40,7 +40,7 @@ public class HyperbolicSymmetryAlgorithm implements TransformationAlgorithm {
 		}
 	}
 	
-	private double computeWithoutVectorTranslation(double x, double factor) { // preserves function oddness
+	private double computeWithoutVectorTranslation(double x, double factor) { // preserves function parity
 		return factor * (1.0d - Math.pow(this.base, -this.scaling * x));
 	}
 }

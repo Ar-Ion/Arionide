@@ -24,12 +24,12 @@ public class ScaledRenderingInfo {
 	
 	private final int vao;
 	private final int ebo;
-	private final int vertices;
+	private final int layers;
 	
-	protected ScaledRenderingInfo(int vao, int ebo, int vertices) {
+	protected ScaledRenderingInfo(int vao, int ebo, int layers) {
 		this.vao = vao;
 		this.ebo = ebo;
-		this.vertices = vertices;
+		this.layers = layers;
 	}
 	
 	protected int getVAO() {
@@ -40,7 +40,7 @@ public class ScaledRenderingInfo {
 		return this.ebo;
 	}
 	
-	protected int getVertices() {
-		return this.vertices;
+	protected int getLayers() {
+		return this.layers;
 	}
 }

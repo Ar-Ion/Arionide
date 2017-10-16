@@ -8,7 +8,8 @@ public class NativeTypes implements Types {
 	public TypeManager getTypeManager(int type) {
 		switch(type) {
 		case 0:
-			return 
 		}
+		
+		return null;
 	}
 }

@@ -69,7 +69,7 @@ import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.opengl.GL4;
 
 public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {	
-	private static final int stars = 4096;
+	private static final int stars = 2048;
 	
 	private static final int structureRenderingQuality = 32;
 
@@ -83,7 +83,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private static final int spawnKey = KeyEvent.VK_C;
 
 	private static final float initialAcceleration = 0.005f;
-	private static final float spaceFriction = 0.1f;
+	private static final float spaceFriction = 0.075f;
 
 	private static final float fov = (float) Math.toRadians(60.0f);
 	
@@ -182,15 +182,15 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		for(int i = 0; i < structureRenderingQuality; i++) {
 			int vertexArray = vertexArrays.get(i + 1);
 			int buffer = buffers.get(i * 2 + 1);
-			int vertices = i + 8;
+			int layers = i + 8;
 			
-			this.structures.add(new ScaledRenderingInfo(vertexArray, buffer + 1, vertices));
+			this.structures.add(new ScaledRenderingInfo(vertexArray, buffer + 1, layers));
 			
 			this.beginUsingVertexArray(gl, vertexArray);
-			this.initBufferObject(gl, buffer, GL4.GL_ARRAY_BUFFER, vertices, this::createStructureShapeData);
+			this.initBufferObject(gl, buffer, GL4.GL_ARRAY_BUFFER, layers, this::createStructureShapeData);
 			this.endUsingVertexArray(gl, positionAttribute);
 			
-			this.initBufferObject(gl, buffer + 1, GL4.GL_ELEMENT_ARRAY_BUFFER, vertices, this::createStructureIndicesData);
+			this.initBufferObject(gl, buffer + 1, GL4.GL_ELEMENT_ARRAY_BUFFER, layers, this::createStructureIndicesData);
 		}
 		
 		
@@ -253,11 +253,11 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		return sky;
 	}
 	
-	private Buffer createStructureShapeData(int vertices) {
-		DoubleBuffer sphere = DoubleBuffer.allocate(vertices * vertices * 3);
+	private Buffer createStructureShapeData(int layers) {
+		DoubleBuffer sphere = DoubleBuffer.allocate(layers * layers * 3);
 				
-		for(double phi = 0.0d; phi < Math.PI; phi += Math.PI / (vertices - 0.999d)) {
-			for(double theta = 0.0d; theta < 2.0d * Math.PI; theta += 2.0d * Math.PI / (vertices - 0.999d)) {
+		for(double phi = 0.0d; phi < Math.PI; phi += Math.PI / (layers - 1.0d)) {
+			for(double theta = 0.0d; theta < 2.0d * Math.PI; theta += 2.0d * Math.PI / (layers - 1.0d)) {
 				sphere.put(Math.sin(phi) * Math.cos(theta));
 				sphere.put(Math.cos(phi));
 				sphere.put(Math.sin(phi) * Math.sin(theta));
@@ -371,7 +371,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				
 				gl.glBindVertexArray(info.getVAO());
 				gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, info.getEBO());
-				gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * info.getVertices() * (info.getVertices() - 1), GL4.GL_UNSIGNED_INT, 0);
+				gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * info.getLayers() * (info.getLayers() - 1), GL4.GL_UNSIGNED_INT, 0);
 				gl.glDisable(GL4.GL_DEPTH_TEST);
 				
 				if(blending) {

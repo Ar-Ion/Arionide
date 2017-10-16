@@ -22,12 +22,12 @@ public class IntegerTypeManager implements TypeManager {
 
 	public void onAction(String action) {
 		switch(action) {
-		case decimal:
-			break;
-		case binary:
-			break;
-		case hexadecimal:
-			break;
+			case decimal:
+				break;
+			case binary:
+				break;
+			case hexadecimal:
+				break;
 		}
 	}
 }

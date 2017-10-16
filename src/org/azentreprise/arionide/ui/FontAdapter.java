@@ -28,15 +28,15 @@ import java.util.List;
 
 public class FontAdapter {
 	
-	// Please consider using powers of two for these variables
+	// Please consider using powers of two for this variable
 	private static final int MAX_FONT_SIZE = 64;
 	private static final float STEP = 0.25f;
 	
 	// Faster than (int) (Math.log(MAX_FONT_SIZE / STEP) / Math.log(2));
-	private static final int COMPLEXITY = 31 - Integer.numberOfLeadingZeros((int) (MAX_FONT_SIZE / STEP));
+	private static final int DICHOTOMY_ITERATIONS = 31 - Integer.numberOfLeadingZeros((int) (MAX_FONT_SIZE / STEP));
 
 	// Approximation of the width ratio
-	private static final String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	private static final String CHARS = "aaabcdeeefghiiijklmnooopqrstuuuvwxyzAAABCDEEEFGHIIIJKLMNOOOPQRSTUUUVWXYZ0123456789";
 	
 	private static final double CORRECTION_WIDTH = 0.9d;
 	private static final double CORRECTION_HEIGHT = 0.7d;
@@ -83,13 +83,13 @@ public class FontAdapter {
 		int current = (int) (MAX_FONT_SIZE / STEP / 2);
 		CacheInfo sample = null;
 
-		for(int i = 2; i < COMPLEXITY; i++) {
+		for(int i = 2; i < DICHOTOMY_ITERATIONS; i++) {
 			sample = this.cache.get(current);
 			
 			if(sample.getWidthRatio() >= iw || sample.getHeightRatio() >= ih) {
-				current -= 0x1 << (COMPLEXITY - i);
+				current -= 0x1 << (DICHOTOMY_ITERATIONS - i);
 			} else {
-				current += 0x1 << (COMPLEXITY - i);
+				current += 0x1 << (DICHOTOMY_ITERATIONS - i);
 			}
 		}
 		
