@@ -32,8 +32,8 @@ public abstract class InstructionSet {
 		this.project = project;
 	}
 	
-	protected int installInstruction(String name, int color, List<Integer> parents) {
-		return this.project.getDataManager().installInstruction(name, color, parents);
+	protected int installInstruction(String name, int color, List<Integer> parents, Specification specification) {
+		return this.project.getDataManager().installInstruction(name, color, parents, specification);
 	}
 	
 	protected int retrieveInstruction(String name) {

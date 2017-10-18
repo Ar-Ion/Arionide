@@ -18,16 +18,20 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.menu;
+package org.azentreprise.arionide.ui.menu.code;
+
+import java.util.stream.Stream;
 
 import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.menu.Menu;
 
 public class CodeEditor extends Menu {
 
@@ -62,8 +66,14 @@ public class CodeEditor extends Menu {
 			this.instructionID = id;
 			this.instruction = project.getStorage().getCurrentData().get(id);
 			this.instructionMeta = project.getStorage().getStructureMeta().get(this.instruction.getID());
-			
+						
 			assert this.instructionMeta != null;
+			
+			this.getElements().subList(4, this.getElements().size()).clear();
+			
+			for(SpecificationElement element : this.instructionMeta.getSpecification().getElements()) {
+				this.getElements().add(element.getName());
+			}
 		}
 		
 		this.setMenuCursor(3);
@@ -97,7 +107,12 @@ public class CodeEditor extends Menu {
 			}).start();
 		} else if(element == back) {
 			this.parent.show();
-		} else assert false : "default case is not permitted";
+		} else {
+			SpecificationElement spec = Stream.of(this.instructionMeta.getSpecification().getElements())
+				.filter(e -> e.getName().equals(element))
+				.findAny()
+				.orElseThrow(RuntimeException::new);
+					}
 	}
 	
 	public String getDescription() {

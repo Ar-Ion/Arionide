@@ -22,4 +22,31 @@ package org.azentreprise.arionide.lang;
 
 public class Language {
 
+	private final CoreDataManager cdm;
+	private final Types types;
+	private final InstructionSet instructionSet;
+	private final Compiler compiler;
+	
+	public Language(CoreDataManager cdm, Types types, InstructionSet set, Compiler compiler) {
+		this.cdm = cdm;
+		this.types = types;
+		this.instructionSet = set;
+		this.compiler = compiler;
+	}
+	
+	public CoreDataManager getCoreDataManager() {
+		return this.cdm;
+	}
+	
+	public Types getTypes() {
+		return this.types;
+	}
+	
+	public InstructionSet getInstructionSet() {
+		return this.instructionSet;
+	}
+	
+	public Compiler getCompiler() {
+		return this.compiler;
+	}
 }

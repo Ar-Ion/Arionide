@@ -21,15 +21,22 @@
 package org.azentreprise.arionide.lang;
 
 import java.io.Serializable;
+import java.util.stream.Stream;
 
 public class Specification implements Serializable {
 	private static final long serialVersionUID = -7857295906601141122L;
 	
+	private final SpecificationElement[] elements;
+	
 	public Specification(SpecificationElement... elements) {
-		
+		this.elements = elements;
+	}
+	
+	public SpecificationElement[] getElements() {
+		return this.elements;
 	}
 	
 	public String toString() {
-		return "Default specification";
+		return Stream.of(this.elements).map(SpecificationElement::toString).reduce((a, b) -> a + ", " + b).orElse(new String());
 	}
 }

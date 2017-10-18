@@ -36,7 +36,11 @@ import org.azentreprise.arionide.coders.Decoder;
 import org.azentreprise.arionide.coders.Encoder;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.debugging.IAm;
+import org.azentreprise.arionide.lang.CoreDataManager;
+import org.azentreprise.arionide.lang.Language;
 import org.azentreprise.arionide.lang.natives.NativeCompiler;
+import org.azentreprise.arionide.lang.natives.NativeInstructionSet;
+import org.azentreprise.arionide.lang.natives.NativeTypes;
 
 public class LocalProject implements Project {
 
@@ -55,13 +59,13 @@ public class LocalProject implements Project {
 	
 	private final ZipStorage storage;
 	private final DataManager manager;
-	private final org.azentreprise.arionide.lang.Compiler compiler;
 	private final Map<String, byte[]> properties = new LinkedHashMap<>();
+	
+	private Language language;
 	
 	public LocalProject(File path) {
 		this.storage = new ZipStorage(path);
 		this.manager = new DataManager(this);
-		this.compiler = new NativeCompiler(this);
 	}
 	
 	public void initFS() {
@@ -113,7 +117,7 @@ public class LocalProject implements Project {
 			
 			this.verifyProtocol();
 			
-			this.compiler.load();
+			this.language = new Language(new CoreDataManager(), new NativeTypes(), new NativeInstructionSet(this), new NativeCompiler(this));
 		} catch (Exception exception) {
 			Debug.exception(exception);
 		}
@@ -199,8 +203,8 @@ public class LocalProject implements Project {
 		return this.manager;
 	}
 	
-	public org.azentreprise.arionide.lang.Compiler getCompiler() {
-		return this.compiler;
+	public Language getLanguage() {
+		return this.language;
 	}
 	
 	public boolean checkVersionCompatibility() {

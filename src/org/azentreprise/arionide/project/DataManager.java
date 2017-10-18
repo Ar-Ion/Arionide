@@ -27,6 +27,7 @@ import java.util.List;
 import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
+import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.ui.menu.edition.Coloring;
 
 public class DataManager {
@@ -70,10 +71,10 @@ public class DataManager {
 			
 			if(message.getMessageType() != MessageType.SUCCESS) {
 				return message;
-			} else if(this.project.getCompiler().getInstructionSet() != null) {
+			} else if(this.project.getLanguage().getInstructionSet() != null) {
 				this.project.getStorage().loadData(structureID); // Push
 
-				if(this.insertCode(0, this.project.getCompiler().getInstructionSet().getStructureEntry())) {
+				if(this.insertCode(0, this.project.getLanguage().getInstructionSet().getStructureEntry())) {
 					if(parents.size() > 0) {
 						this.project.getStorage().loadData(parents.get(parents.size() - 1)); // Pop
 					}
@@ -88,7 +89,7 @@ public class DataManager {
 		}
 	}
 	
-	public int installInstruction(String name, int color, List<Integer> parents) {
+	public int installInstruction(String name, int color, List<Integer> parents, Specification specification) {
 		if(this.storage.getStructureMeta().values().stream().filter(meta -> meta.getName().equals(name)).count() > 0) {
 			return -1;
 		} else {
@@ -111,6 +112,7 @@ public class DataManager {
 			meta.setName(name);
 			meta.setColorID(color);
 			meta.setAccessAllowed(false);
+			meta.setSpecification(specification);
 			
 			this.storage.structMeta.put(structureID, meta);
 			this.storage.saveStructureMeta();
@@ -179,7 +181,7 @@ public class DataManager {
 	}
 	
 	public MessageEvent insertCode(int index, String element) {
-		if(this.insertCode(index, this.project.getCompiler().getInstructionSet().getInstructionID(element))) {
+		if(this.insertCode(index, this.project.getLanguage().getInstructionSet().getInstructionID(element))) {
 			return new MessageEvent("Added" + (element.matches("[^aeiou]") ? " an " : " a ") + element + " instruction to the code", MessageType.SUCCESS);
 		} else {
 			return new MessageEvent("Failed to insert code", MessageType.ERROR);

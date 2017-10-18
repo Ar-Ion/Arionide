@@ -25,6 +25,7 @@ import org.azentreprise.arionide.MappedStructure;
 import org.azentreprise.arionide.Resource;
 import org.azentreprise.arionide.Saveable;
 import org.azentreprise.arionide.debugging.IAm;
+import org.azentreprise.arionide.lang.Language;
 
 public interface Project extends Resource, MappedStructure, Loadable, Saveable {
 	
@@ -38,5 +39,5 @@ public interface Project extends Resource, MappedStructure, Loadable, Saveable {
 	
 	public DataManager getDataManager();
 	
-	public org.azentreprise.arionide.lang.Compiler getCompiler();
+	public Language getLanguage();
 }

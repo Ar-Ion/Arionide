@@ -20,7 +20,7 @@ public class IntegerTypeManager implements TypeManager {
 		return Arrays.asList(decimal, binary, hexadecimal);
 	}
 
-	public void onAction(String action) {
+	public void onAction(String action, String current) {
 		switch(action) {
 			case decimal:
 				break;

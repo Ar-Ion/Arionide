@@ -30,6 +30,8 @@ import java.util.Map;
 import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.lang.InstructionSet;
+import org.azentreprise.arionide.lang.Specification;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.project.Project;
 
 public class NativeInstructionSet extends InstructionSet implements Serializable {
@@ -45,16 +47,18 @@ public class NativeInstructionSet extends InstructionSet implements Serializable
 		if(project.getDataManager().newStructure("compiler", Arrays.asList()).getMessageType().equals(MessageType.SUCCESS)) {
 			List<Integer> parents = Arrays.asList(structID);
 			
-			this.install("init", 0, parents);
-			this.install("nop", 15, parents);
+			this.install("init", 0, parents, new Specification());
+			this.install("nop", 15, parents, new Specification());
+			this.install("debug", 30, parents, new Specification(new SpecificationElement("Info", NativeTypes.STR, "#debug#")));
 		} else {
 			this.retrieve("init");
 			this.retrieve("nop");
+			this.retrieve("debug");
 		}
 	}
 	
-	private void install(String name, int color, List<Integer> parents) {
-		this.instructionSet.put(name, this.installInstruction(name, color, parents));
+	private void install(String name, int color, List<Integer> parents, Specification specification) {
+		this.instructionSet.put(name, this.installInstruction(name, color, parents, specification));
 	}
 	
 	private void retrieve(String name) {

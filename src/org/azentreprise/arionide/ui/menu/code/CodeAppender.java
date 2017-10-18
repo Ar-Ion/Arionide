@@ -18,13 +18,14 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.menu;
+package org.azentreprise.arionide.ui.menu.code;
 
 import java.util.List;
 
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.menu.Menu;
 
 public class CodeAppender extends Menu {
 	
@@ -49,7 +50,7 @@ public class CodeAppender extends Menu {
 		elements.clear();
 		
 		if(project != null) {
-			elements.addAll(this.instructions = project.getCompiler().getInstructionSet().getInstructions());
+			elements.addAll(this.instructions = project.getLanguage().getInstructionSet().getInstructions());
 		}
 		
 		this.getElements().add("Back");

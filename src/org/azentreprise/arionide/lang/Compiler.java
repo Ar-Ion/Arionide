@@ -33,7 +33,4 @@ public abstract class Compiler {
 	protected Project getProject() {
 		return this.project;
 	}
-	
-	public abstract void load();
-	public abstract InstructionSet getInstructionSet();
 }
