@@ -40,6 +40,11 @@ public abstract class InstructionSet {
 		return this.project.getDataManager().retrieveInstruction(name);
 	}
 	
+	protected Project getProject() {
+		return this.project;
+	}
+	
+	public abstract void install();
 	public abstract int getStructureEntry();
 	public abstract int getInstructionID(String name);
 	public abstract List<String> getInstructions();

@@ -42,7 +42,7 @@ public class InheritanceGenerator {
 	protected void generate(int id) {
 		List<HierarchyElement> elements = new ArrayList<HierarchyElement>();
 		
-		this.processChildren(this.inheritance.get(id), elements);		
+		this.processChildren(this.inheritance.get(id), elements);
 		elements.add(new HierarchyElement(-1, null));
 		this.processParents(this.inheritance.get(id), elements);
 				

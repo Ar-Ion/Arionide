@@ -297,7 +297,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.update();
 	}
 	
-	private void renderWorld(GL4 gl) {
+	private void renderWorld(GL4 gl) {	    
 		gl.glUseProgram(this.shader);
 		
 		/* Setup vertex data */

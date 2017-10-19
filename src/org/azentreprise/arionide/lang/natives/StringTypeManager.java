@@ -18,14 +18,39 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.lang;
+package org.azentreprise.arionide.lang.natives;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public interface TypeManager {
-	public List<String> getSuggestions(CoreDataManager cdm);
-	public List<String> getActionLabels();
-	public List<BiConsumer<String, Consumer<String>>> getActions();
+import javax.swing.JOptionPane;
+
+import org.azentreprise.arionide.lang.CoreDataManager;
+import org.azentreprise.arionide.lang.TypeManager;
+
+public class StringTypeManager implements TypeManager {
+
+	public List<String> getSuggestions(CoreDataManager cdm) {
+		return Arrays.asList();
+	}
+
+	public List<String> getActionLabels() {
+		return Arrays.asList("Custom string");
+	}
+
+	public List<BiConsumer<String, Consumer<String>>> getActions() {
+		return Arrays.asList(this::edit);
+	}
+	
+	private void edit(String current, Consumer<String> callback) {		
+		new Thread(() -> {
+			Object output = JOptionPane.showInputDialog(null, "Enter the new string:", "Custom string", JOptionPane.PLAIN_MESSAGE, null, null, current);
+			
+			if(output != null) {
+				callback.accept((String) output);
+			}
+		}).start();
+	}
 }

@@ -21,12 +21,17 @@
 package org.azentreprise.arionide.lang;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class Specification implements Serializable {
+public class Specification implements Serializable, Cloneable {
 	private static final long serialVersionUID = -7857295906601141122L;
 	
 	private final SpecificationElement[] elements;
+	
+	public Specification(Specification model) {
+		this.elements = Arrays.asList(model.elements).stream().map(SpecificationElement::new).toArray(SpecificationElement[]::new);
+	}
 	
 	public Specification(SpecificationElement... elements) {
 		this.elements = elements;

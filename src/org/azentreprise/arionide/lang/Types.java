@@ -22,4 +22,5 @@ package org.azentreprise.arionide.lang;
 
 public interface Types {
 	public TypeManager getTypeManager(int type);
+	public Validator getValidator(int type);
 }

@@ -112,7 +112,10 @@ public class CodeEditor extends Menu {
 				.filter(e -> e.getName().equals(element))
 				.findAny()
 				.orElseThrow(RuntimeException::new);
-					}
+						
+			Menu menu = new TypeEditor(this.getAppManager(), this, spec);
+			menu.show();
+		}
 	}
 	
 	public String getDescription() {

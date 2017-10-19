@@ -35,16 +35,19 @@ import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.project.Project;
 
 public class NativeInstructionSet extends InstructionSet implements Serializable {
+
 	private static final long serialVersionUID = 4171728714732308283L;
 	
 	private final Map<String, Integer> instructionSet = new HashMap<>();
 	
 	public NativeInstructionSet(Project project) {
 		super(project);
+	}
+	
+	public void install() {
+		int structID = this.getProject().getProperty("structureGen", Coder.integerDecoder).intValue();
 		
-		int structID = project.getProperty("structureGen", Coder.integerDecoder).intValue();
-		
-		if(project.getDataManager().newStructure("compiler", Arrays.asList()).getMessageType().equals(MessageType.SUCCESS)) {
+		if(this.getProject().getDataManager().newStructure("compiler", Arrays.asList()).getMessageType().equals(MessageType.SUCCESS)) {
 			List<Integer> parents = Arrays.asList(structID);
 			
 			this.install("init", 0, parents, new Specification());

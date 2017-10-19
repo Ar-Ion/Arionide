@@ -20,12 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang;
 
-import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
-public interface TypeManager {
-	public List<String> getSuggestions(CoreDataManager cdm);
-	public List<String> getActionLabels();
-	public List<BiConsumer<String, Consumer<String>>> getActions();
+public interface Validator {
+	public boolean validate(String data);
 }

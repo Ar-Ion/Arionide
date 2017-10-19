@@ -18,14 +18,29 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.lang;
+package org.azentreprise.arionide.lang.natives;
 
-import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import java.util.HashMap;
+import java.util.Map;
 
-public interface TypeManager {
-	public List<String> getSuggestions(CoreDataManager cdm);
-	public List<String> getActionLabels();
-	public List<BiConsumer<String, Consumer<String>>> getActions();
+import org.azentreprise.arionide.lang.Validator;
+
+public class IntegerValidator implements Validator {
+	
+	private static final Map<Character, String> validators = new HashMap<>();
+	
+	static {
+		validators.put('d', "/^(+-)?[0-9]+$/");
+		validators.put('h', "/^(+-)?[A-Fa-f0-9]+$");
+		validators.put('b', "/^(+-)?[01]+$");
+	}
+	
+	public boolean validate(String data) {
+		if(data != null && data.length() > 0) {
+			String validator = validators.get(data.charAt(0));
+			return validator != null && data.substring(0).matches(validator);
+		}
+		
+		return false;
+	}
 }

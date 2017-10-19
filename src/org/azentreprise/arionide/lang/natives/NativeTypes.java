@@ -1,16 +1,44 @@
+/*******************************************************************************
+ * This file is part of Arionide.
+ *
+ * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
+ * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
+ *
+ * Arionide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Arionide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
+ *******************************************************************************/
 package org.azentreprise.arionide.lang.natives;
 
+import org.azentreprise.arionide.lang.DummyValidator;
 import org.azentreprise.arionide.lang.TypeManager;
 import org.azentreprise.arionide.lang.Types;
+import org.azentreprise.arionide.lang.Validator;
 
 public class NativeTypes implements Types {
-
+	
 	public static final int VAR = 0x0;
 	public static final int REF = 0x1;
 	public static final int INT = 0x2;
 	public static final int STR = 0x3;
 	public static final int OBJ = 0x4;
 	
+	private final TypeManager intTypeManager = new IntegerTypeManager();
+	private final TypeManager strTypeManager = new StringTypeManager();
+
+	private final Validator intValidator = new IntegerValidator();
+	private final Validator strValidator = new DummyValidator();
+
 	public TypeManager getTypeManager(int type) {		
 		switch(type) {
 			case VAR:
@@ -18,9 +46,28 @@ public class NativeTypes implements Types {
 			case REF:
 				break;
 			case INT:
-				break;
+				return this.intTypeManager;
 			case STR:
+				return this.strTypeManager;
+			case OBJ:
 				break;
+			default:
+				throw new IllegalArgumentException("Invalid type");
+		}
+		
+		return null;
+	}
+	
+	public Validator getValidator(int type) {
+			switch(type) {
+			case VAR:
+				break;
+			case REF:
+				break;
+			case INT:
+				return this.intValidator;
+			case STR:
+				return this.strValidator;
 			case OBJ:
 				break;
 			default:

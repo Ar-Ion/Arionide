@@ -71,7 +71,7 @@ public class DataManager {
 			
 			if(message.getMessageType() != MessageType.SUCCESS) {
 				return message;
-			} else if(this.project.getLanguage().getInstructionSet() != null) {
+			} else if(this.project.getLanguage().isReady()) {
 				this.project.getStorage().loadData(structureID); // Push
 
 				if(this.insertCode(0, this.project.getLanguage().getInstructionSet().getStructureEntry())) {
@@ -195,7 +195,7 @@ public class DataManager {
 		
 		StructureMeta meta = new StructureMeta();
 		meta.setComment("code@" + instructionID);
-		meta.setSpecification(this.storage.getStructureMeta().get(instructionID).getSpecification());
+		meta.setSpecification(new Specification(this.storage.getStructureMeta().get(instructionID).getSpecification()));
 		meta.setAccessAllowed(false);
 		
 		this.storage.structMeta.put(structureID, meta);

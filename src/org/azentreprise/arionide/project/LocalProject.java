@@ -118,6 +118,7 @@ public class LocalProject implements Project {
 			this.verifyProtocol();
 			
 			this.language = new Language(new CoreDataManager(), new NativeTypes(), new NativeInstructionSet(this), new NativeCompiler(this));
+			this.language.postInit();
 		} catch (Exception exception) {
 			Debug.exception(exception);
 		}

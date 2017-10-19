@@ -57,6 +57,10 @@ public class HierarchyElement implements Serializable {
 	}
 	
 	public String toString() {
-		return this.id + "{" + String.join(",", this.children.stream().map(HierarchyElement::toString).collect(Collectors.toList())) + "}";
+		if(this.children != null) {
+			return this.id + "{" + String.join(",", this.children.stream().map(HierarchyElement::toString).collect(Collectors.toList())) + "}";
+		} else {
+			return "null";
+		}
 	}
 }

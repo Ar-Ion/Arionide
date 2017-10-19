@@ -22,12 +22,18 @@ package org.azentreprise.arionide.lang;
 
 import java.io.Serializable;
 
-public class SpecificationElement implements Serializable {
+public class SpecificationElement implements Serializable, Cloneable {
 	private static final long serialVersionUID = -2821188218676151203L;
 
 	private final String name;
 	private final int type;
 	private String value;
+	
+	protected SpecificationElement(SpecificationElement model) {
+		this.name = model.name;
+		this.type = model.type;
+		this.value = model.value;
+	}
 	
 	public SpecificationElement(String name, int type, String value) {
 		this.name = name;
@@ -53,5 +59,13 @@ public class SpecificationElement implements Serializable {
 	
 	public String toString() {
 		return this.name + ": " + this.value;
+	}
+	
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

@@ -27,11 +27,22 @@ public class Language {
 	private final InstructionSet instructionSet;
 	private final Compiler compiler;
 	
+	private boolean ready = false;
+	
 	public Language(CoreDataManager cdm, Types types, InstructionSet set, Compiler compiler) {
 		this.cdm = cdm;
 		this.types = types;
 		this.instructionSet = set;
 		this.compiler = compiler;
+	}
+	
+	public void postInit() {
+		this.instructionSet.install();
+		this.ready = true;
+	}
+	
+	public boolean isReady() {
+		return this.ready;
 	}
 	
 	public CoreDataManager getCoreDataManager() {

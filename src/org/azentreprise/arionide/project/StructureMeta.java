@@ -84,6 +84,6 @@ public class StructureMeta implements Serializable {
 	}
 	
 	public String toString() {
-		return "Name: " + this.name + "; Comment: " + this.comment;
+		return "[Name: " + this.name + "; Comment: " + this.comment + "; Specification: [" + this.specification + "]]";
 	}
 }
