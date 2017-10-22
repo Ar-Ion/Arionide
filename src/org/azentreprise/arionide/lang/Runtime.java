@@ -20,14 +20,14 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import org.azentreprise.arionide.project.Project;
 
 public abstract class Runtime {
 	
 	private final Project project;
-	private Consumer<String> output;
+	private BiConsumer<String, Integer> output;
 
 	public Runtime(Project project) {
 		this.project = project;
@@ -37,12 +37,12 @@ public abstract class Runtime {
 		return this.project;
 	}
 	
-	public void setupOutput(Consumer<String> output) {
+	public void setupOutput(BiConsumer<String, Integer> output) {
 		this.output = output;
 	}
 	
-	protected void info(String info) {
-		this.output.accept(info);
+	protected void info(String info, int color) {
+		this.output.accept(info, color);
 	}
 	
 	public abstract void load(int id);

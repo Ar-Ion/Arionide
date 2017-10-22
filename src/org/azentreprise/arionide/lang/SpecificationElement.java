@@ -69,6 +69,15 @@ public class SpecificationElement implements Serializable, Cloneable {
 		return this.name + ": " + (this.value != null ? this.value : "undefined");
 	}
 	
+	public boolean equals(Object other) {
+		if(other instanceof SpecificationElement) {
+			SpecificationElement casted = (SpecificationElement) other;
+			return this.name == casted.name && this.type == casted.type;
+		} else {
+			return false;
+		}
+	}
+	
 	public Object clone() {
 		try {
 			return super.clone();
