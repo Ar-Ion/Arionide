@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.azentreprise.arionide;
 
+import java.util.function.Function;
+
 public class Utils {
 	public static double fakeComplexPower(double x, double power) {
 		return Math.signum(x) * Math.pow(Math.abs(x), power);

@@ -33,7 +33,6 @@ import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
-import org.azentreprise.arionide.ui.menu.code.TypeEditor;
 
 public class SpecificationMenu extends SpecificMenu {
 		

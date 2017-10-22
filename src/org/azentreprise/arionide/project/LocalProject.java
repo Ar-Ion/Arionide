@@ -38,7 +38,7 @@ import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.lang.CoreDataManager;
 import org.azentreprise.arionide.lang.Language;
-import org.azentreprise.arionide.lang.natives.NativeCompiler;
+import org.azentreprise.arionide.lang.natives.NativeRuntime;
 import org.azentreprise.arionide.lang.natives.NativeInstructionSet;
 import org.azentreprise.arionide.lang.natives.NativeTypes;
 
@@ -118,7 +118,7 @@ public class LocalProject implements Project {
 			
 			this.verifyProtocol();
 			
-			this.language = new Language(new CoreDataManager(), new NativeTypes(), new NativeInstructionSet(this), new NativeCompiler(this));
+			this.language = new Language(new CoreDataManager(), new NativeTypes(), new NativeInstructionSet(this), new NativeRuntime(this));
 			this.language.postInit();
 		} catch (Exception exception) {
 			Debug.exception(exception);

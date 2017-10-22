@@ -113,6 +113,15 @@ public class Tab extends MultiComponent implements EventHandler {
 		return this;
 	}
 	
+	public void setComponents(List<Component> components) {
+		super.setComponents(components);
+		this.updateAll();
+	}
+	
+	public void setComponents(String... tabs) {
+		this.setComponents(makeLabels(this.getParentView(), tabs));
+	}
+	
 	public boolean isFocusable() {
 		return true;
 	}
@@ -184,11 +193,6 @@ public class Tab extends MultiComponent implements EventHandler {
 				x += width;
 			}
 		}
-	}
-	
-	public void setComponents(List<Component> components) {
-		super.setComponents(components);
-		this.updateAll();
 	}
 	
 	public <T extends Event> void handleEvent(T event) {

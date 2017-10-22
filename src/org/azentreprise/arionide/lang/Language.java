@@ -25,15 +25,15 @@ public class Language {
 	private final CoreDataManager cdm;
 	private final Types types;
 	private final InstructionSet instructionSet;
-	private final Compiler compiler;
+	private final Runtime runtime;
 	
 	private boolean ready = false;
 	
-	public Language(CoreDataManager cdm, Types types, InstructionSet set, Compiler compiler) {
+	public Language(CoreDataManager cdm, Types types, InstructionSet set, Runtime runtime) {
 		this.cdm = cdm;
 		this.types = types;
 		this.instructionSet = set;
-		this.compiler = compiler;
+		this.runtime = runtime;
 	}
 	
 	public void postInit() {
@@ -57,7 +57,7 @@ public class Language {
 		return this.instructionSet;
 	}
 	
-	public Compiler getCompiler() {
-		return this.compiler;
+	public Runtime getRuntime() {
+		return this.runtime;
 	}
 }
