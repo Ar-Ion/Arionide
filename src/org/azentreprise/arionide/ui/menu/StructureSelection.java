@@ -20,10 +20,10 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -46,7 +46,7 @@ public class StructureSelection extends Menu {
 
 	public void reload() {
 		Map<Integer, StructureMeta> elements = this.getAppManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta();
-		this.ordered = new ArrayList<>(elements.keySet());
+		this.ordered = elements.entrySet().stream().filter(e -> !e.getValue().getName().equals("?")).map(Entry::getKey).collect(Collectors.toList());
 		
 		for(Comparator<Integer> comparator : this.comparators) {
 			this.ordered.sort(comparator);

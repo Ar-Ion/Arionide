@@ -53,4 +53,8 @@ public class StringTypeManager implements TypeManager {
 			}
 		}).start();
 	}
+	
+	public String toString() {
+		return "String";
+	}
 }

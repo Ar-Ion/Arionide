@@ -50,9 +50,14 @@ public class NativeInstructionSet extends InstructionSet implements Serializable
 		if(this.getProject().getDataManager().newStructure("compiler", Arrays.asList()).getMessageType().equals(MessageType.SUCCESS)) {
 			List<Integer> parents = Arrays.asList(structID);
 			
-			this.install("init", 0, parents, new Specification());
-			this.install("nop", 15, parents, new Specification());
-			this.install("debug", 30, parents, new Specification(new SpecificationElement("Info", NativeTypes.STR, "#debug#")));
+			
+			this.install("init", 0, parents, new Specification(this.getProject().getDataManager().allocSpecification()));
+			
+			this.install("nop", 15, parents, new Specification(this.getProject().getDataManager().allocSpecification()));
+			
+			this.install("debug", 30, parents, new Specification(this.getProject().getDataManager().allocSpecification(), 
+					new SpecificationElement("Info", NativeTypes.STR, "#debug#")));
+			
 		} else {
 			this.retrieve("init");
 			this.retrieve("nop");

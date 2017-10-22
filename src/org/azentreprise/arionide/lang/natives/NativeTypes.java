@@ -20,6 +20,9 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.azentreprise.arionide.lang.DummyValidator;
 import org.azentreprise.arionide.lang.TypeManager;
 import org.azentreprise.arionide.lang.Types;
@@ -51,8 +54,6 @@ public class NativeTypes implements Types {
 				return this.strTypeManager;
 			case OBJ:
 				break;
-			default:
-				throw new IllegalArgumentException("Invalid type");
 		}
 		
 		return null;
@@ -70,10 +71,12 @@ public class NativeTypes implements Types {
 				return this.strValidator;
 			case OBJ:
 				break;
-			default:
-				throw new IllegalArgumentException("Invalid type");
 		}
 		
 		return null;
+	}
+	
+	public List<String> getAvailableTypes() {
+		return Arrays.asList("Variable", "Reference", "Integer", "String", "Object");
 	}
 }

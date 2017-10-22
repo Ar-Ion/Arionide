@@ -20,7 +20,10 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang;
 
+import java.util.List;
+
 public interface Types {
 	public TypeManager getTypeManager(int type);
 	public Validator getValidator(int type);
+	public List<String> getAvailableTypes();
 }

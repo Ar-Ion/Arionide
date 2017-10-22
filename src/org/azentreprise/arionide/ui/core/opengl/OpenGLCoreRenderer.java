@@ -633,46 +633,48 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		} else if(event instanceof PressureEvent) {
 			PressureEvent pressure = (PressureEvent) event;
 
-			switch(pressure.getKeycode()) {
-				case forward:
-					this.acceleration.x = (pressure.isDown() ? (float) this.generalAcceleration : 0.0f);
-					break;
-				case backward:
-					this.acceleration.x = (pressure.isDown() ? (float) -this.generalAcceleration : 0.0f);
-					break;
-				case left:
-					this.acceleration.z = (pressure.isDown() ? (float) this.generalAcceleration : 0.0f);
-					break;
-				case right:
-					this.acceleration.z = (pressure.isDown() ? (float) -this.generalAcceleration : 0.0f);
-					break;
-				case up:
-					this.acceleration.y = (pressure.isDown() ? (float) this.generalAcceleration : 0.0f);
-					break;
-				case down:
-					this.acceleration.y = (pressure.isDown() ? (float) -this.generalAcceleration : 0.0f);
-					break;
-				case worldToggle:
-					if(pressure.isDown()) {
-						this.isInWorld = !this.isInWorld;
-						
-						if(this.isInWorld) {
-							this.context.setCursor(null);
-						} else {
-							this.context.setCursor(Cursor.getDefaultCursor());
+			if(this.isInWorld || pressure.getKeycode() == worldToggle) {
+				switch(pressure.getKeycode()) {
+					case forward:
+						this.acceleration.x = (pressure.isDown() ? (float) this.generalAcceleration : 0.0f);
+						break;
+					case backward:
+						this.acceleration.x = (pressure.isDown() ? (float) -this.generalAcceleration : 0.0f);
+						break;
+					case left:
+						this.acceleration.z = (pressure.isDown() ? (float) this.generalAcceleration : 0.0f);
+						break;
+					case right:
+						this.acceleration.z = (pressure.isDown() ? (float) -this.generalAcceleration : 0.0f);
+						break;
+					case up:
+						this.acceleration.y = (pressure.isDown() ? (float) this.generalAcceleration : 0.0f);
+						break;
+					case down:
+						this.acceleration.y = (pressure.isDown() ? (float) -this.generalAcceleration : 0.0f);
+						break;
+					case worldToggle:
+						if(pressure.isDown()) {
+							this.isInWorld = !this.isInWorld;
+							
+							if(this.isInWorld) {
+								this.context.setCursor(null);
+							} else {
+								this.context.setCursor(Cursor.getDefaultCursor());
+							}
 						}
-					}
-
-					break;
-				case spawnKey:
-					if(this.isControlDown && pressure.isDown()) {
-						this.teleport(this.spawn);
-					}
-					
-					break;
-				case KeyEvent.VK_CONTROL:
-					this.isControlDown = pressure.isDown();
-					break;
+	
+						break;
+					case spawnKey:
+						if(this.isControlDown && pressure.isDown()) {
+							this.teleport(this.spawn);
+						}
+						
+						break;
+					case KeyEvent.VK_CONTROL:
+						this.isControlDown = pressure.isDown();
+						break;
+				}
 			}
 		} else if(event instanceof WheelEvent) {
 			if(this.isControlDown) {

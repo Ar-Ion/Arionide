@@ -33,23 +33,28 @@ import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
 public class StructureEditor extends SpecificMenu {
-		
-	private static final String go = "Go";
+	
 	private static final String inheritance = "Inherit";
+	private static final String specification = "Specify";
+	private static final String go = "Go";
 	private static final String name = "Name";
 	private static final String color = "Color";
 	private static final String delete = "Delete";
 	private static final String close = "Close";
 
-	private final Inheritance inheritanceMenu;
+	private final SpecificMenu inheritanceMenu;
+	private final SpecificMenu specificationMenu;
 	private final Coloring coloring;
 	private final Confirm confirmDelete;
 
 	public StructureEditor(AppManager manager) {
-		super(manager, go, inheritance, name, color, delete, close);
+		super(manager, inheritance, specification, go, name, color, delete, close);
 		this.coloring = new Coloring(manager);
 		this.confirmDelete = new Confirm(manager, this, this::delete, "Are you sure you want to delete the structure '$name'?");
-		this.inheritanceMenu = new Inheritance(manager);
+		this.inheritanceMenu = new InheritanceMenu(manager);
+		this.specificationMenu = new SpecificationMenu(manager);
+		
+		this.setMenuCursor(2);
 	}
 	
 	public Coloring getColoring() {
@@ -59,15 +64,19 @@ public class StructureEditor extends SpecificMenu {
 	protected void onClick(String element) {
 		assert this.getCurrent() != null;
 		
-		this.setMenuCursor(0);
+		this.setMenuCursor(2);
 		
 		switch(element) {
-			case go:
-				this.go();
-				break;
 			case inheritance:
 				this.inheritanceMenu.setCurrent(this.getCurrent());
 				this.inheritanceMenu.show();
+				break;
+			case specification:
+				this.specificationMenu.setCurrent(this.getCurrent());
+				this.specificationMenu.show();
+				break;
+			case go:
+				this.go();
 				break;
 			case name:
 				new Thread(() -> {

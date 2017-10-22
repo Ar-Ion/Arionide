@@ -79,4 +79,8 @@ public class IntegerTypeManager implements TypeManager {
 			}
 		}).start();
 	}
+	
+	public String toString() {
+		return "Integer";
+	}
 }

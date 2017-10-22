@@ -52,6 +52,7 @@ public class LocalProject implements Project {
 		projectProtocolMapping.put("version", Long.toString(versionUID).getBytes(Coder.charset));
 		projectProtocolMapping.put("name", new String("Undefined").getBytes(Coder.charset));
 		projectProtocolMapping.put("structureGen", Integer.toString(0).getBytes(Coder.charset));
+		projectProtocolMapping.put("specificationGen", Integer.toString(0).getBytes(Coder.charset));
 		projectProtocolMapping.put("seed", Long.toString(new Random().nextLong()).getBytes(Coder.charset));
 		projectProtocolMapping.put("definitions", new String("org.azentreprise.arionide.native.NativeDefinitions()").getBytes(Coder.charset));
 		projectProtocolMapping.put("runtime", new String("org.azentreprise.arionide.native.NativeRuntime()").getBytes(Coder.charset));

@@ -23,25 +23,27 @@ package org.azentreprise.arionide.ui.menu.edition;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.azentreprise.arionide.comparators.AlphabeticalComparator;
+import javax.swing.JOptionPane;
+
 import org.azentreprise.arionide.events.MessageEvent;
-import org.azentreprise.arionide.project.InheritanceElement;
+import org.azentreprise.arionide.lang.Specification;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
-import org.azentreprise.arionide.ui.menu.StructureSelection;
+import org.azentreprise.arionide.ui.menu.code.TypeEditor;
 
-public class Inheritance extends SpecificMenu {
+public class SpecificationMenu extends SpecificMenu {
 		
-	private final InheritanceElementEditor editor;
+	private final SpecificationEditor editor;
 	
-	private List<Integer> parents;
+	private Specification specification;
 	
-	protected Inheritance(AppManager manager) {
+	protected SpecificationMenu(AppManager manager) {
 		super(manager);
-		this.editor = new InheritanceElementEditor(manager, this);
+		this.editor = new SpecificationEditor(manager, this);
 	}
 
 	public void setCurrent(WorldElement element) {
@@ -49,40 +51,41 @@ public class Inheritance extends SpecificMenu {
 		
 		Storage storage = this.getAppManager().getWorkspace().getCurrentProject().getStorage();
 		
-		InheritanceElement object = storage.getInheritance().get(element.getID());
+		this.specification = storage.getStructureMeta().get(element.getID()).getSpecification();
 		
-		if(object != null) {
-			this.parents = object.getParents();
-			
+		if(this.specification != null) {
 			List<String> elements = this.getElements();
+			
 			elements.clear();
-			elements.addAll(this.parents.stream().map(e -> storage.getStructureMeta().get(e).getName()).collect(Collectors.toList()));
+			elements.addAll(this.specification.getElements().stream().map(SpecificationElement::getName).collect(Collectors.toList()));
 			elements.add("Add");
 			elements.add("Cancel");
 		}
 	}
 	
 	public void onClick(int id) {
-		if(this.parents != null && id < this.parents.size()) {
-			int element = this.parents.get(id);
-			this.editor.setTarget(element);
+		if(id < this.getElements().size() - 2) {
+			this.editor.setTarget(this.specification, id);
 			this.editor.show();
-		} else if(id == this.parents.size()){
-			Storage storage = this.getAppManager().getWorkspace().getCurrentProject().getStorage();
-			new StructureSelection(this.getAppManager(), this::inherit, new AlphabeticalComparator(storage)).show();
+		} else if(id == this.getElements().size() - 2){
+			new Thread(() -> {
+				String name = JOptionPane.showInputDialog(null, "Enter the new specification element's name", "New specification element", JOptionPane.PLAIN_MESSAGE);
+				
+				if(name != null) {
+					SpecificationElement element = new SpecificationElement(name, -1, null);
+					MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().addSpecificationElement(this.specification, element);
+					this.getAppManager().getEventDispatcher().fire(event);
+					
+					TypeSelector selector = new TypeSelector(this.getAppManager(), this, this.specification, this.specification.getElements().size() - 1);
+					selector.show();
+				}
+			}).start();
 		} else {
 			MainMenus.getStructureEditor().show();
 		}
 	}
 	
-	public void inherit(int parent) {
-		MessageEvent message = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().inherit(this.getCurrent().getID(), parent);
-		this.getAppManager().getEventDispatcher().fire(message);
-		this.reload();
-		this.show(); // This is being called by the structure selection menu...
-	}
-	
 	public String getDescription() {
-		return "Inheritance editor for " + super.getDescription();
+		return "Specification menu for " + super.getDescription();
 	}
 }

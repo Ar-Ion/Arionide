@@ -42,7 +42,7 @@ public class TypeEditor extends Menu {
 	
 	private boolean eventAborted = false;
 	
-	protected TypeEditor(AppManager manager, Menu parent, SpecificationElement element) {
+	public TypeEditor(AppManager manager, Menu parent, SpecificationElement element) {
 		super(manager);
 		
 		this.parent = parent;
@@ -54,16 +54,21 @@ public class TypeEditor extends Menu {
 		
 		this.typeManager = lang.getTypes().getTypeManager(element.getType());
 		this.validator = lang.getTypes().getValidator(element.getType());
-				
-		this.getElements().addAll(this.typeManager.getSuggestions(cdm));
-		this.separator = this.getElements().size();
-		this.getElements().add(back);
-		this.getElements().addAll(this.typeManager.getActionLabels());
-		
-		if(this.separator > 0) {
-			this.setMenuCursor(this.separator - 1);
-		} else if(this.getElements().size() > 1) {
-			this.setMenuCursor(1);
+
+		if(this.typeManager != null) {
+			this.getElements().addAll(this.typeManager.getSuggestions(cdm));
+			this.separator = this.getElements().size();
+			this.getElements().add(back);
+			this.getElements().addAll(this.typeManager.getActionLabels());
+			
+			if(this.separator > 0) {
+				this.setMenuCursor(this.separator - 1);
+			} else if(this.getElements().size() > 1) {
+				this.setMenuCursor(1);
+			}
+		} else {
+			this.getElements().add(back);
+			this.separator = 0;
 		}
 	}
 	
@@ -99,10 +104,12 @@ public class TypeEditor extends Menu {
 		if(!this.eventAborted) {
 			this.element.setValue(element);
 			this.parent.show();
+			this.getAppManager().getEventDispatcher().fire(new MessageEvent("Value successfully updated", MessageType.SUCCESS));
+			this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
 		}
 	}
 	
 	public String getDescription() {
-		return this.element.getName() + ": " + this.element.getValue();
+		return this.typeManager != null ? this.element.getName() + ": " + this.element.getValue() : "Error: the type is undefined";
 	}
 }

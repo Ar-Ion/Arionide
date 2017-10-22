@@ -25,8 +25,8 @@ import java.io.Serializable;
 public class SpecificationElement implements Serializable, Cloneable {
 	private static final long serialVersionUID = -2821188218676151203L;
 
-	private final String name;
-	private final int type;
+	private String name;
+	private int type;
 	private String value;
 	
 	protected SpecificationElement(SpecificationElement model) {
@@ -45,8 +45,16 @@ public class SpecificationElement implements Serializable, Cloneable {
 		return this.name;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public int getType() {
 		return this.type;
+	}
+	
+	public void setType(int type) {
+		this.type = type;
 	}
 	
 	public String getValue() {
@@ -58,7 +66,7 @@ public class SpecificationElement implements Serializable, Cloneable {
 	}
 	
 	public String toString() {
-		return this.name + ": " + this.value;
+		return this.name + ": " + (this.value != null ? this.value : "undefined");
 	}
 	
 	public Object clone() {

@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu.code;
 
-import java.util.stream.Stream;
-
 import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
@@ -108,11 +106,11 @@ public class CodeEditor extends Menu {
 		} else if(element == back) {
 			this.parent.show();
 		} else {
-			SpecificationElement spec = Stream.of(this.instructionMeta.getSpecification().getElements())
+			SpecificationElement spec = this.instructionMeta.getSpecification().getElements().stream()
 				.filter(e -> e.getName().equals(element))
 				.findAny()
 				.orElseThrow(RuntimeException::new);
-						
+			
 			Menu menu = new TypeEditor(this.getAppManager(), this, spec);
 			menu.show();
 		}

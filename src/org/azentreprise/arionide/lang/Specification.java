@@ -21,27 +21,37 @@
 package org.azentreprise.arionide.lang;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Stream;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Specification implements Serializable, Cloneable {
 	private static final long serialVersionUID = -7857295906601141122L;
 	
-	private final SpecificationElement[] elements;
+	private final int id;
+	private final List<SpecificationElement> elements;
 	
 	public Specification(Specification model) {
-		this.elements = Arrays.asList(model.elements).stream().map(SpecificationElement::new).toArray(SpecificationElement[]::new);
+		this.id = model.id;
+		this.elements = Collections.synchronizedList(model.elements.stream().map(SpecificationElement::new).collect(Collectors.toList()));
 	}
 	
-	public Specification(SpecificationElement... elements) {
-		this.elements = elements;
+	public Specification(int id, SpecificationElement... elements) {
+		this.id = id;
+		this.elements = Collections.synchronizedList(new ArrayList<>(Arrays.asList(elements)));
 	}
 	
-	public SpecificationElement[] getElements() {
+	public List<SpecificationElement> getElements() {
 		return this.elements;
 	}
 	
 	public String toString() {
-		return Stream.of(this.elements).map(SpecificationElement::toString).reduce((a, b) -> a + ", " + b).orElse(new String());
+		return this.elements.stream().map(SpecificationElement::toString).reduce((a, b) -> a + ", " + b).orElse(new String());
+	}
+	
+	public boolean hasSameOrigin(Specification other) {
+		return other.id == this.id;
 	}
 }

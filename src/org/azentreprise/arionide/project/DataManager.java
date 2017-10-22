@@ -28,6 +28,7 @@ import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.lang.Specification;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.ui.menu.edition.Coloring;
 
 public class DataManager {
@@ -38,6 +39,14 @@ public class DataManager {
 	public DataManager(Project project) {
 		this.project = project;
 		this.storage = this.project.getStorage();
+	}
+	
+	public int allocSpecification() {
+		int specificationID = this.project.getProperty("specificationGen", Coder.integerDecoder).intValue();
+		this.project.setProperty("specificationGen", (long) specificationID + 1, Coder.integerEncoder); // Increment generator
+		this.project.save();
+		
+		return specificationID;
 	}
 	
 	public MessageEvent newStructure(String name, List<Integer> parents) {
@@ -65,7 +74,7 @@ public class DataManager {
 			this.storage.callGraph.add(structure);
 			this.storage.saveCallGraph();
 			
-			this.storage.structMeta.put(structureID, new StructureMeta());
+			this.storage.structMeta.put(structureID, new StructureMeta(this.allocSpecification()));
 			
 			MessageEvent message = this.setName(structureID, name);
 			
@@ -108,7 +117,7 @@ public class DataManager {
 			brothers.add(structure);
 			this.storage.saveHierarchy();
 			
-			StructureMeta meta = new StructureMeta();
+			StructureMeta meta = new StructureMeta(this.allocSpecification());
 			meta.setName(name);
 			meta.setColorID(color);
 			meta.setAccessAllowed(false);
@@ -193,7 +202,7 @@ public class DataManager {
 		this.project.setProperty("structureGen", (long) structureID + 1, Coder.integerEncoder); // Increment generator
 		this.project.save();
 		
-		StructureMeta meta = new StructureMeta();
+		StructureMeta meta = new StructureMeta(-1);
 		meta.setComment("code@" + instructionID);
 		meta.setSpecification(new Specification(this.storage.getStructureMeta().get(instructionID).getSpecification()));
 		meta.setAccessAllowed(false);
@@ -233,6 +242,40 @@ public class DataManager {
 		} else {
 			return new MessageEvent("Invalid structure id", MessageType.ERROR);
 		}
+	}
+	
+	public MessageEvent addSpecificationElement(Specification spec, SpecificationElement element) {
+		this.storage.structMeta.values().stream()
+			.map(StructureMeta::getSpecification)
+			.filter(spec::hasSameOrigin)
+			.forEach(other -> other.getElements().add(element));
+	
+		this.storage.saveStructureMeta();
+		
+		return new MessageEvent("Specification successfully updated", MessageType.SUCCESS);
+	}
+	
+	public MessageEvent refactorSpecificationName(Specification spec, int id, String newName) {
+		this.storage.structMeta.values().stream()
+			.map(StructureMeta::getSpecification)
+			.filter(spec::hasSameOrigin)
+			.forEach(other -> other.getElements().get(id).setName(newName));
+		
+		this.storage.saveStructureMeta();
+		
+		return new MessageEvent("Name successfully refactored", MessageType.SUCCESS);
+	}
+	
+
+	public MessageEvent refactorSpecificationType(Specification spec, int id, int newType) {
+		this.storage.structMeta.values().stream()
+		.map(StructureMeta::getSpecification)
+		.filter(spec::hasSameOrigin)
+		.forEach(other -> other.getElements().get(id).setType(newType));
+	
+		this.storage.saveStructureMeta();
+	
+		return new MessageEvent("Type successfully refactored", MessageType.SUCCESS);
 	}
 	
 	public MessageEvent setColor(int id, int colorID) {
