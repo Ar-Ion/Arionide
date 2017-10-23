@@ -23,7 +23,9 @@ package org.azentreprise.arionide.ui.menu.code;
 import java.util.List;
 
 import org.azentreprise.arionide.events.MessageEvent;
+import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
+import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.menu.Menu;
 
@@ -47,13 +49,32 @@ public class CodeAppender extends Menu {
 		Project project = this.getAppManager().getWorkspace().getCurrentProject();
 		List<String> elements = this.getElements();
 
-		elements.clear();
-		
 		if(project != null) {
-			elements.addAll(this.instructions = project.getLanguage().getInstructionSet().getInstructions());
+			elements.clear();
+			
+			List<Integer> inside = this.getAppManager().getCoreRenderer().getInside();
+			
+			int parent = inside.get(inside.size() - 1);
+			
+			StructureMeta parentMeta = project.getStorage().getStructureMeta().get(parent);
+			
+			if(parentMeta != null) {
+				HierarchyElement instructionSet = project.getStorage().getHierarchy().get(parentMeta.getLanguage());
+				
+				for(HierarchyElement instruction : instructionSet.getChildren()) {
+					StructureMeta instructionMeta = project.getStorage().getStructureMeta().get(instruction.getID());
+					
+					if(instructionMeta != null) {
+						String instructionName = instructionMeta.getName();
+						
+						this.getElements().add(instructionName);
+						this.instructions.add(instructionName);
+					}
+				}
+			}
+			
+			this.getElements().add("Back");
 		}
-		
-		this.getElements().add("Back");
 	}
 		
 	public void onClick(int id) {

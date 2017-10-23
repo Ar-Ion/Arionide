@@ -122,7 +122,7 @@ public class CodeView extends View implements EventHandler {
 						throw new RuntimeException("Invalid scene id");
 				}
 			} else if(click.isTargetting(this, "run")) {
-				this.currentProject.save();
+				this.openView(Views.run);
 			} else if(click.isTargetting(this, "add")) {
 				new Thread(() -> {
 					String name = JOptionPane.showInputDialog(null, "Please enter the name of the new structure", "New structure", JOptionPane.PLAIN_MESSAGE);

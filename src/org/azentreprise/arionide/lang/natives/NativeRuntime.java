@@ -28,10 +28,12 @@ import org.azentreprise.arionide.lang.Runtime;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.Validator;
+import org.azentreprise.arionide.lang.natives.instructions.Debug;
 import org.azentreprise.arionide.lang.natives.instructions.Init;
 import org.azentreprise.arionide.lang.natives.instructions.NativeInstruction;
 import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
+import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.project.StructureMeta;
 
 public class NativeRuntime extends Runtime {
@@ -45,7 +47,7 @@ public class NativeRuntime extends Runtime {
 		super(project);
 	}
 
-	public void load(int id) {
+	public void run(int id) {
 		this.code.clear();
 		this.symbols.clear();
 		
@@ -53,15 +55,28 @@ public class NativeRuntime extends Runtime {
 		
 		Map<Integer, StructureMeta> metaData = this.getProject().getStorage().getStructureMeta();
 		
-		boolean success = this.compile(id, "root", metaData);
-		
-		this.info("Compilation " + (success ? "succeed" : "failed"), success ? 0x00FF00 : 0xFF0000);
+		if(this.compile(id, "root", metaData)) {
+			this.info("Compilation succeed", 0x00FF00);
+			this.info("Running program...", 0xFFAA00);
+			
+			if(this.code.size() > 0) {
+				for(NativeInstruction instruction : this.code.get(0)) {
+					instruction.execute(this.ndc, this.references);
+				}
+			}
+			
+			this.info("Program execution finished", 0xFFAA00);
+		} else {
+			this.info("Compilation failed", 0xFF0000);	
+		}
 	}
 	
 	private boolean compile(int id, String name, Map<Integer, StructureMeta> metaData) {
-		this.getProject().getStorage().loadData(id);
+		Storage storage = this.getProject().getStorage();
 		
-		List<HierarchyElement> elements = this.getProject().getStorage().getCurrentData();
+		storage.loadData(storage.getHierarchy().get(id).getID());
+		
+		List<HierarchyElement> elements = storage.getCurrentData();
 		List<NativeInstruction> structure = new ArrayList<>();
 		List<Integer> nextElements = new ArrayList<>();
 		
@@ -72,7 +87,7 @@ public class NativeRuntime extends Runtime {
 						
 			this.symbols.add(name);
 			this.references.add(id);
-			
+						
 			for(HierarchyElement element : elements) {
 				StructureMeta meta = metaData.get(element.getID());
 				
@@ -96,27 +111,32 @@ public class NativeRuntime extends Runtime {
 										structure.add(compiled);
 									} else {
 										this.info("Instruction compilation failed for " + name + ":" + element.getID(), 0xFF0000);
+										return false;
 									}
 								} else {
 									this.info("Specification origin check failed for " + name + ":" + element.getID(), 0xFF0000);
+									return false;
 								}
 							} else {
 								this.info("Instruction ID " + instructionID + " was not properly installed", 0xFF0000);
+								return false;
 							}
 						} catch(NumberFormatException e) {
 							this.info("Invalid instruction ID " + comment + " in " + name + ":" + element.getID(), 0xFF0000);
+							return false;
 						}
 					} else {
 						this.info(name + ":" + element.getID() + " is not an instruction", 0xFF0000);
+						return false;
 					}
-					
-					meta.getSpecification();
 				} else {
 					this.info("Invalid structure ID " + name + ":" + element.getID(), 0xFF0000);
+					return false;
 				}
 			}
 		} else {
 			this.info("Invalid structure ID: " + id, 0xFF0000);
+			return false;
 		}
 		
 		this.code.add(structure);
@@ -127,7 +147,7 @@ public class NativeRuntime extends Runtime {
 			}
 		}
 		
-		return false;
+		return true;
 	}
 	
 	private NativeInstruction compileInstruction(int symID, String instruction, Specification spec, List<Integer> nextElements) {
@@ -152,26 +172,12 @@ public class NativeRuntime extends Runtime {
 		switch(instruction) {
 			case "init":
 				return new Init();
+			case "debug":
+				return new Debug(spec.getElements().get(0).getValue());
 			default:
 				this.info(instruction + " is not compilable", 0xFF0000);
 				return null;
 			
 		}
-	}
-
-	public void run() {
-		if(this.code.size() > 0) {
-			this.run(0);
-		}
-	}
-	
-	private void run(int entry) {
-		this.info("Running program...", 0xFFAA00);
-		
-		for(NativeInstruction instruction : this.code.get(entry)) {
-			instruction.execute(this.ndc, this.references);
-		}
-		
-		this.info("Program execution finished...", 0xFFAA00);
 	}
 }

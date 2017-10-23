@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
+import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
@@ -34,6 +35,7 @@ import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
 public class StructureEditor extends SpecificMenu {
 	
+	private static final String language = "Set language";
 	private static final String inheritance = "Inherit";
 	private static final String specification = "Specify";
 	private static final String go = "Go";
@@ -42,19 +44,21 @@ public class StructureEditor extends SpecificMenu {
 	private static final String delete = "Delete";
 	private static final String close = "Close";
 
+	private final SpecificMenu languageSelection;
 	private final SpecificMenu inheritanceMenu;
 	private final SpecificMenu specificationMenu;
 	private final Coloring coloring;
 	private final Confirm confirmDelete;
 
 	public StructureEditor(AppManager manager) {
-		super(manager, inheritance, specification, go, name, color, delete, close);
+		super(manager, language, inheritance, specification, go, name, color, delete, close);
 		this.coloring = new Coloring(manager);
 		this.confirmDelete = new Confirm(manager, this, this::delete, "Are you sure you want to delete the structure '$name'?");
+		this.languageSelection = new LanguageSelection(manager);
 		this.inheritanceMenu = new InheritanceMenu(manager);
 		this.specificationMenu = new SpecificationMenu(manager);
 		
-		this.setMenuCursor(2);
+		this.setMenuCursor(3);
 	}
 	
 	public Coloring getColoring() {
@@ -67,6 +71,18 @@ public class StructureEditor extends SpecificMenu {
 		this.setMenuCursor(2);
 		
 		switch(element) {
+			case language:
+				Project theProject = this.getAppManager().getWorkspace().getCurrentProject();
+				
+				if(theProject != null) {
+					if(theProject.getStorage().getHierarchy().contains(new HierarchyElement(this.getCurrent().getID(), null))) {
+						this.languageSelection.setCurrent(this.getCurrent());
+						this.languageSelection.show();
+					} else {
+						this.getAppManager().getEventDispatcher().fire(new MessageEvent("This structure isn't directly in the space", MessageType.ERROR));
+					}
+				}
+				break;
 			case inheritance:
 				this.inheritanceMenu.setCurrent(this.getCurrent());
 				this.inheritanceMenu.show();

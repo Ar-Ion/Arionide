@@ -45,6 +45,5 @@ public abstract class Runtime {
 		this.output.accept(info, color);
 	}
 	
-	public abstract void load(int id);
-	public abstract void run();
+	public abstract void run(int id);
 }

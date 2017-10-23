@@ -244,6 +244,24 @@ public class DataManager {
 		}
 	}
 	
+	public MessageEvent setLanguage(int element, int language) {
+		HierarchyElement object = this.storage.getHierarchy().get(element);
+		
+		this.setLanguage0(object, language);
+		
+		this.storage.saveStructureMeta();
+		
+		return new MessageEvent("Language successfully set", MessageType.SUCCESS);
+	}
+	
+	private void setLanguage0(HierarchyElement element, int language) {
+		this.storage.getStructureMeta().get(element.getID()).setLanguage(language);
+		
+		for(HierarchyElement children : element.getChildren()) {
+			this.setLanguage0(children, language);
+		}
+	}
+	
 	public MessageEvent addSpecificationElement(Specification spec, SpecificationElement element) {
 		this.storage.structMeta.values().stream()
 			.map(StructureMeta::getSpecification)

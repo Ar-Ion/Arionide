@@ -25,14 +25,16 @@ public class RunView extends View implements EventHandler {
 	public RunView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
+		layoutManager.register(this, null, 0.0f, 0.0f, 1.0f, 1.0f);
+
 		this.add(new Button(this, "<").setSignal("back").setYCorrection(4), 0.05f, 0.05f, 0.15f, 0.1f);
-		this.add(this.sourceSelector = new Tab(this).setSignal("setSource").setActiveComponent(1), 0.2f, 0.05f, 0.8f, 0.1f);
+		this.add(this.sourceSelector = new Tab(this, "<No source available>").setSignal("setSource"), 0.2f, 0.05f, 0.8f, 0.1f);
 		this.add(new Button(this, "Run").setSignal("run"), 0.85f, 0.05f, 0.95f, 0.1f);
+		
+		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
 
-	public void show(boolean transition) {
-		super.show(transition);
-		
+	public void show(boolean transition) {		
 		Storage storage = this.getAppManager().getWorkspace().getCurrentProject().getStorage();
 		
 		List<HierarchyElement> elements = storage.getHierarchy();
@@ -41,10 +43,12 @@ public class RunView extends View implements EventHandler {
 		
 		int i = 0;
 		for(HierarchyElement element : elements) {
-			buffer[i] = metaData.get(element.getID()).getName();
+			buffer[i++] = metaData.get(element.getID()).getName();
 		}
-		
+				
 		this.sourceSelector.setComponents(buffer);
+		
+		super.show(transition);
 	}
 	
 	public <T extends Event> void handleEvent(T event) {
@@ -57,10 +61,14 @@ public class RunView extends View implements EventHandler {
 				this.sourceID = (int) click.getData()[0];
 			} else if(click.isTargetting(this, "run")) {
 				org.azentreprise.arionide.lang.Runtime runtime = this.getAppManager().getWorkspace().getCurrentProject().getLanguage().getRuntime();
-				runtime.load(this.sourceID);
-				runtime.run();
+				runtime.setupOutput(this::debug);
+				runtime.run(this.sourceID);
 			}
 		}
+	}
+	
+	private void debug(String message, int color) {
+		System.out.println(message);
 	}
 
 	public List<Class<? extends Event>> getHandleableEvents() {

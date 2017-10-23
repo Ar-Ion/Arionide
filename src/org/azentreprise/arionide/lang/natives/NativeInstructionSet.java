@@ -49,7 +49,7 @@ public class NativeInstructionSet extends InstructionSet implements Serializable
 		
 		if(this.getProject().getDataManager().newStructure("natives", Arrays.asList()).getMessageType().equals(MessageType.SUCCESS)) {
 			List<Integer> parents = Arrays.asList(structID);
-			
+
 			
 			this.install("init", 0, parents, new Specification(this.getProject().getDataManager().allocSpecification()));
 						
@@ -58,7 +58,6 @@ public class NativeInstructionSet extends InstructionSet implements Serializable
 			
 		} else {
 			this.retrieve("init");
-			this.retrieve("nop");
 			this.retrieve("debug");
 		}
 	}

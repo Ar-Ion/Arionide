@@ -185,7 +185,7 @@ public class Tab extends MultiComponent implements EventHandler {
 			
 			double x = this.getBounds().getX();
 			double y = this.getBounds().getY();
-			double width = this.getBounds().getWidth() / 3;
+			double width = this.getBounds().getWidth() / this.getComponents().size();
 			double height = this.getBounds().getHeight();
 			
 			for(int i = 0; i < count; i++) {
@@ -268,9 +268,11 @@ public class Tab extends MultiComponent implements EventHandler {
 		List<Component> labels = new ArrayList<>();
 		
 		for(String tab : tabs) {
-			labels.add(new Label(parent, tab).setAlpha(0)); // Let the TabDesign handle the color
+			if(tab != null) {
+				labels.add(new Label(parent, tab).setAlpha(0)); // Let the TabDesign handle the color
+			}
 		}
-		
+				
 		return labels;
 	}
 }

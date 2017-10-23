@@ -657,6 +657,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 						if(pressure.isDown()) {
 							this.isInWorld = !this.isInWorld;
 							
+							this.acceleration.set(0.0f, 0.0f, 0.0f);
+							
 							if(this.isInWorld) {
 								this.context.setCursor(null);
 							} else {
