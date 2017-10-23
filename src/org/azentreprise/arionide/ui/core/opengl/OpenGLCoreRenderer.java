@@ -148,7 +148,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.dispatcher = dispatcher;
 		this.worldGeometry = new WorldGeometry(dispatcher);
 		this.codeGeometry = new CodeGeometry();
-				
+						
 		dispatcher.registerHandler(this);
 		
 		Robot robot = null;

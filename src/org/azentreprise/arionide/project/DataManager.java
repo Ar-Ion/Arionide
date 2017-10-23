@@ -84,7 +84,7 @@ public class DataManager {
 			} else if(this.project.getLanguage().isReady()) {
 				this.project.getStorage().loadData(structureID); // Push
 
-				if(this.insertCode(0, this.project.getLanguage().getInstructionSet().getStructureEntry())) {
+				if(this.insertCode(0, this.project.getLanguage().getInstructionSet().getStructureEntry()).getMessageType() == MessageType.SUCCESS) {
 					if(parents.size() > 0) {
 						this.project.getStorage().loadData(parents.get(parents.size() - 1)); // Pop
 					}
@@ -94,7 +94,7 @@ public class DataManager {
 					return new MessageEvent("Couldn't initialize structure", MessageType.ERROR);
 				}
 			} else {
-				return new MessageEvent("#flag0#", MessageType.SUCCESS);
+				return new MessageEvent("Structure created", MessageType.SUCCESS);
 			}
 		}
 	}
@@ -190,15 +190,7 @@ public class DataManager {
 		return new MessageEvent("Inheritance updated", MessageType.SUCCESS);
 	}
 	
-	public MessageEvent insertCode(int index, String element) {
-		if(this.insertCode(index, this.project.getLanguage().getInstructionSet().getInstructionID(element))) {
-			return new MessageEvent("Added" + (element.matches("[^aeiou]") ? " an " : " a ") + element + " instruction to the code", MessageType.SUCCESS);
-		} else {
-			return new MessageEvent("Failed to insert code", MessageType.ERROR);
-		}
-	}
-	
-	public boolean insertCode(int index, int instructionID) {
+	public MessageEvent insertCode(int index, int instructionID) {
 		int structureID = this.project.getProperty("structureGen", Coder.integerDecoder).intValue();
 		this.project.setProperty("structureGen", (long) structureID + 1, Coder.integerEncoder); // Increment generator
 		this.project.save();
@@ -213,8 +205,8 @@ public class DataManager {
 		
 		this.storage.currentData.add(index, new HierarchyElement(structureID, new ArrayList<>()));
 		this.storage.saveData();
-		
-		return true;
+			
+		return new MessageEvent("Added an instruction to the code", MessageType.SUCCESS);
 	}
 
 	public MessageEvent deleteCode(int id) {

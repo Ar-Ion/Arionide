@@ -47,8 +47,11 @@ public class Button extends Label implements EventHandler {
 	private static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
 	
 	protected final Animation animation;
+	
 	protected boolean hasFocus;
+	
 	private boolean disabled = false;
+	private boolean hasBorders = true;
 	
 	private boolean mouseOver = false;
 	private Cursor overCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
@@ -89,6 +92,11 @@ public class Button extends Label implements EventHandler {
 				
 		return this;
 	}
+	
+	public Button setBordered(boolean bordered) {
+		this.hasBorders = bordered;
+		return this;
+	}
 
 	protected void setOverCursor(Cursor cursor) {
 		this.overCursor = cursor;
@@ -96,7 +104,10 @@ public class Button extends Label implements EventHandler {
 		
 	public void drawComponent(AppDrawingContext context) {
 		super.drawComponent(context);
-		context.getPrimitives().drawRoundRect(context, this.getBounds());
+		
+		if(this.hasBorders) {
+			context.getPrimitives().drawRoundRect(context, this.getBounds());
+		}
 	}
 	
 	public boolean isFocusable() {

@@ -28,7 +28,7 @@ import org.azentreprise.arionide.lang.Runtime;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.Validator;
-import org.azentreprise.arionide.lang.natives.instructions.Debug;
+import org.azentreprise.arionide.lang.natives.instructions.Print;
 import org.azentreprise.arionide.lang.natives.instructions.Init;
 import org.azentreprise.arionide.lang.natives.instructions.NativeInstruction;
 import org.azentreprise.arionide.project.HierarchyElement;
@@ -45,6 +45,7 @@ public class NativeRuntime extends Runtime {
 	
 	public NativeRuntime(Project project) {
 		super(project);
+		this.ndc.setInfoChannel(this::info);
 	}
 
 	public void run(int id) {
@@ -82,12 +83,14 @@ public class NativeRuntime extends Runtime {
 		
 		StructureMeta structureMeta = metaData.get(id);
 		
+		boolean state = true;
+
 		if(structureMeta != null) {
 			name += "." + structureMeta.getName();
 						
 			this.symbols.add(name);
 			this.references.add(id);
-						
+									
 			for(HierarchyElement element : elements) {
 				StructureMeta meta = metaData.get(element.getID());
 				
@@ -110,44 +113,44 @@ public class NativeRuntime extends Runtime {
 									if(compiled != null) {
 										structure.add(compiled);
 									} else {
-										this.info("Instruction compilation failed for " + name + ":" + element.getID(), 0xFF0000);
-										return false;
+										this.info("Instruction compilation failed for " + name + ":" + element.getID(), 0x663300);
+										state = false;
 									}
 								} else {
-									this.info("Specification origin check failed for " + name + ":" + element.getID(), 0xFF0000);
-									return false;
+									this.info("Specification origin check failed for " + name + ":" + element.getID(), 0x663300);
+									state = false;
 								}
 							} else {
-								this.info("Instruction ID " + instructionID + " was not properly installed", 0xFF0000);
-								return false;
+								this.info("Instruction ID " + instructionID + " was not properly installed", 0x663300);
+								state = false;
 							}
 						} catch(NumberFormatException e) {
-							this.info("Invalid instruction ID " + comment + " in " + name + ":" + element.getID(), 0xFF0000);
-							return false;
+							this.info("Invalid instruction ID " + comment + " in " + name + ":" + element.getID(), 0x663300);
+							state = false;
 						}
 					} else {
-						this.info(name + ":" + element.getID() + " is not an instruction", 0xFF0000);
-						return false;
+						this.info("Object " + name + ":" + element.getID() + " is not an instruction", 0x663300);
+						state = false;
 					}
 				} else {
-					this.info("Invalid structure ID " + name + ":" + element.getID(), 0xFF0000);
-					return false;
+					this.info("Invalid structure ID " + name + ":" + element.getID(), 0x663300);
+					state = false;
 				}
 			}
 		} else {
-			this.info("Invalid structure ID: " + id, 0xFF0000);
-			return false;
+			this.info("Invalid structure ID: " + id, 0x663300);
+			state = false;
 		}
 		
 		this.code.add(structure);
 		
 		for(Integer next : nextElements) {
 			if(!this.compile(next, name, metaData)) {
-				return false;
+				state = false;
 			}
 		}
 		
-		return true;
+		return state;
 	}
 	
 	private NativeInstruction compileInstruction(int symID, String instruction, Specification spec, List<Integer> nextElements) {
@@ -155,7 +158,7 @@ public class NativeRuntime extends Runtime {
 			Validator validator = this.getProject().getLanguage().getTypes().getValidator(element.getType());
 			
 			if(validator == null || !validator.validate(element.getValue())) {
-				this.info("Invalid type", 0xFF0000);
+				this.info("Invalid type", 0x663300);
 				return null;
 			}
 			
@@ -163,7 +166,7 @@ public class NativeRuntime extends Runtime {
 				try {
 					nextElements.add(Integer.parseInt(element.getValue()));
 				} catch(NumberFormatException e) {
-					this.info("Invalid reference", 0xFF0000);
+					this.info("Invalid reference", 0x663300);
 					return null;
 				}
 			}
@@ -173,9 +176,9 @@ public class NativeRuntime extends Runtime {
 			case "init":
 				return new Init();
 			case "debug":
-				return new Debug(spec.getElements().get(0).getValue());
+				return new Print(spec.getElements().get(0).getValue());
 			default:
-				this.info(instruction + " is not compilable", 0xFF0000);
+				this.info("Instruction " + instruction + " is not compilable", 0x663300);
 				return null;
 			
 		}

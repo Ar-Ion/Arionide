@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -34,9 +32,7 @@ import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.project.Project;
 
-public class NativeInstructionSet extends InstructionSet implements Serializable {
-
-	private static final long serialVersionUID = 4171728714732308283L;
+public class NativeInstructionSet extends InstructionSet {
 	
 	private final Map<String, Integer> instructionSet = new HashMap<>();
 	
@@ -53,12 +49,12 @@ public class NativeInstructionSet extends InstructionSet implements Serializable
 			
 			this.install("init", 0, parents, new Specification(this.getProject().getDataManager().allocSpecification()));
 						
-			this.install("debug", 30, parents, new Specification(this.getProject().getDataManager().allocSpecification(), 
-					new SpecificationElement("Info", NativeTypes.STR, "debug")));
+			this.install("print", 30, parents, new Specification(this.getProject().getDataManager().allocSpecification(), 
+					new SpecificationElement("message", NativeTypes.STR, "debug")));
 			
 		} else {
 			this.retrieve("init");
-			this.retrieve("debug");
+			this.retrieve("print");
 		}
 	}
 	
@@ -76,11 +72,5 @@ public class NativeInstructionSet extends InstructionSet implements Serializable
 	
 	public int getInstructionID(String name) {
 		return this.instructionSet.get(name);
-	}
-	
-	public List<String> getInstructions() {
-		List<String> list = new ArrayList<>(this.instructionSet.keySet());
-		list.remove("init");
-		return list;
 	}
 }

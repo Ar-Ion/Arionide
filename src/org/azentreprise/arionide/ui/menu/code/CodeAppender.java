@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu.code;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.azentreprise.arionide.events.MessageEvent;
@@ -32,6 +33,7 @@ import org.azentreprise.arionide.ui.menu.Menu;
 public class CodeAppender extends Menu {
 	
 	private final Menu parent; // This refers to the Code menu
+	private final List<Integer> instructions = new ArrayList<>();
 	
 	private int position = -1;
 	
@@ -50,6 +52,7 @@ public class CodeAppender extends Menu {
 
 		if(project != null) {
 			elements.clear();
+			this.instructions.clear();
 			
 			List<Integer> inside = this.getAppManager().getCoreRenderer().getInside();
 			
@@ -64,19 +67,20 @@ public class CodeAppender extends Menu {
 					StructureMeta instructionMeta = project.getStorage().getStructureMeta().get(instruction.getID());
 					
 					if(instructionMeta != null) {
-						this.getElements().add(instructionMeta.getName());
+						elements.add(instructionMeta.getName());
+						this.instructions.add(instruction.getID());
 					}
 				}
 			}
 			
-			this.getElements().add("Back");
+			elements.add("Back");
 		}
 	}
 		
 	public void onClick(int id) {
 		if(id < this.getElements().size() - 1) {
 			Project project = this.getAppManager().getWorkspace().getCurrentProject();
-			MessageEvent event = project.getDataManager().insertCode(this.position, this.getElements().get(id));
+			MessageEvent event = project.getDataManager().insertCode(this.position, this.instructions.get(id));
 			
 			this.getAppManager().getEventDispatcher().fire(event);
 			this.getAppManager().getCoreRenderer().loadProject(project);

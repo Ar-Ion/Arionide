@@ -135,8 +135,10 @@ public class CodeView extends View implements EventHandler {
 					}
 				}).start();
 			} else if(click.isTargetting((Component) null, "menuScroll")) {
-				assert this.currentMenu != null;
-				this.currentMenu.click();
+				if(!this.isHidden()) {
+					assert this.currentMenu != null;
+					this.currentMenu.click();
+				}
 			}
 		} else if(event instanceof MessageEvent) {
 			MessageEvent message = (MessageEvent) event;

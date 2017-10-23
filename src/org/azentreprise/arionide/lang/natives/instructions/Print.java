@@ -4,15 +4,15 @@ import java.util.List;
 
 import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
 
-public class Debug implements NativeInstruction {
+public class Print implements NativeInstruction {
 	
 	private final String message;
 	
-	public Debug(String message) {
+	public Print(String message) {
 		this.message = message;
 	}
 
 	public void execute(NativeDataCommunicator communicator, List<Integer> references) {
-		System.out.println(this.message);
+		communicator.info(this.message, 0xFFFFFF);
 	}
 }
