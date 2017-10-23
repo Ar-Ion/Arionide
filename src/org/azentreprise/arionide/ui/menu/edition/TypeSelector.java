@@ -26,6 +26,7 @@ import org.azentreprise.arionide.lang.TypeManager;
 import org.azentreprise.arionide.lang.Types;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.menu.Menu;
+import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
 public class TypeSelector extends Menu {
 		
@@ -59,6 +60,11 @@ public class TypeSelector extends Menu {
 		if(id < this.getElements().size() - 1) {
 			MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().refactorSpecificationType(this.specification, this.id, id);
 			this.getAppManager().getEventDispatcher().fire(event);
+			
+			if(this.parent instanceof SpecificMenu) {
+				((SpecificMenu) this.parent).reload();
+			}
+			
 			this.parent.show();
 		} else {
 			this.parent.show();

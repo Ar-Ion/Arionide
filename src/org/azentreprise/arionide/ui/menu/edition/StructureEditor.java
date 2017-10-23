@@ -68,7 +68,7 @@ public class StructureEditor extends SpecificMenu {
 	protected void onClick(String element) {
 		assert this.getCurrent() != null;
 		
-		this.setMenuCursor(2);
+		this.setMenuCursor(3);
 		
 		switch(element) {
 			case language:

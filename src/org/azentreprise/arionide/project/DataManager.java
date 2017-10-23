@@ -23,6 +23,7 @@ package org.azentreprise.arionide.project;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.events.MessageEvent;
@@ -273,12 +274,17 @@ public class DataManager {
 		return new MessageEvent("Specification successfully updated", MessageType.SUCCESS);
 	}
 	
+	public MessageEvent deleteSpecificationElement(Specification spec, int id) {
+		this.doForeachConnectedSpecification(spec, id, l -> l.getElements().remove(id));
+
+		this.storage.saveStructureMeta();
+
+		return new MessageEvent("Specification element successfully deleted", MessageType.SUCCESS);
+	}
+	
 	public MessageEvent refactorSpecificationName(Specification spec, int id, String newName) {
-		this.storage.structMeta.values().stream()
-			.map(StructureMeta::getSpecification)
-			.filter(spec::hasSameOrigin)
-			.forEach(other -> other.getElements().get(id).setName(newName));
-		
+		this.doForeachConnectedSpecification(spec, id, l -> l.getElements().get(id).setName(newName));
+
 		this.storage.saveStructureMeta();
 		
 		return new MessageEvent("Name successfully refactored", MessageType.SUCCESS);
@@ -286,14 +292,18 @@ public class DataManager {
 	
 
 	public MessageEvent refactorSpecificationType(Specification spec, int id, int newType) {
-		this.storage.structMeta.values().stream()
-		.map(StructureMeta::getSpecification)
-		.filter(spec::hasSameOrigin)
-		.forEach(other -> other.getElements().get(id).setType(newType));
-	
+		this.doForeachConnectedSpecification(spec, id, l -> l.getElements().get(id).setType(newType));
+		
 		this.storage.saveStructureMeta();
-	
+		
 		return new MessageEvent("Type successfully refactored", MessageType.SUCCESS);
+	}
+	
+	private void doForeachConnectedSpecification(Specification spec, int id, Consumer<Specification> action) {
+		this.storage.structMeta.values().stream()
+			.map(StructureMeta::getSpecification)
+			.filter(spec::hasSameOrigin)
+			.forEach(action);
 	}
 	
 	public MessageEvent setColor(int id, int colorID) {

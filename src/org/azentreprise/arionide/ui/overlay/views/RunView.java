@@ -15,11 +15,14 @@ import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.overlay.Views;
 import org.azentreprise.arionide.ui.overlay.components.Button;
+import org.azentreprise.arionide.ui.overlay.components.Label;
 import org.azentreprise.arionide.ui.overlay.components.Tab;
 
 public class RunView extends View implements EventHandler {
 
 	private final Tab sourceSelector;
+	private final Label[] console = new Label[15];
+	
 	private int sourceID;
 	
 	public RunView(AppManager appManager, LayoutManager layoutManager) {
@@ -27,9 +30,14 @@ public class RunView extends View implements EventHandler {
 		
 		layoutManager.register(this, null, 0.0f, 0.0f, 1.0f, 1.0f);
 
-		this.add(new Button(this, "<").setSignal("back").setYCorrection(4), 0.05f, 0.05f, 0.15f, 0.1f);
 		this.add(this.sourceSelector = new Tab(this, "<No source available>").setSignal("setSource"), 0.2f, 0.05f, 0.8f, 0.1f);
+		
+		this.add(new Button(this, "<").setSignal("back").setYCorrection(4), 0.05f, 0.05f, 0.15f, 0.1f);
 		this.add(new Button(this, "Run").setSignal("run"), 0.85f, 0.05f, 0.95f, 0.1f);
+		
+		for(int i = 0; i < this.console.length; i++) {
+			this.add(this.console[i] = new Label(this, "blablbalblablablbalbalablablab"), 0.0f, 0.15f + i * 0.05f, 0.5f, 0.2f + i * 0.05f);
+		}
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}

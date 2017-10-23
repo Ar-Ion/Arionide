@@ -34,7 +34,6 @@ public class CodeAppender extends Menu {
 	private final Menu parent; // This refers to the Code menu
 	
 	private int position = -1;
-	private List<String> instructions;
 	
 	protected CodeAppender(AppManager manager, Menu parent) {
 		super(manager);
@@ -65,10 +64,7 @@ public class CodeAppender extends Menu {
 					StructureMeta instructionMeta = project.getStorage().getStructureMeta().get(instruction.getID());
 					
 					if(instructionMeta != null) {
-						String instructionName = instructionMeta.getName();
-						
-						this.getElements().add(instructionName);
-						this.instructions.add(instructionName);
+						this.getElements().add(instructionMeta.getName());
 					}
 				}
 			}
@@ -78,16 +74,16 @@ public class CodeAppender extends Menu {
 	}
 		
 	public void onClick(int id) {
-		try {
+		if(id < this.getElements().size() - 1) {
 			Project project = this.getAppManager().getWorkspace().getCurrentProject();
-			MessageEvent event = project.getDataManager().insertCode(this.position, this.instructions.get(id));
+			MessageEvent event = project.getDataManager().insertCode(this.position, this.getElements().get(id));
 			
 			this.getAppManager().getEventDispatcher().fire(event);
 			this.getAppManager().getCoreRenderer().loadProject(project);
 			
 			this.parent.show();
 			this.parent.select(this.position);
-		} catch(IndexOutOfBoundsException e) {
+		} else {
 			this.parent.show();
 		}
 	}

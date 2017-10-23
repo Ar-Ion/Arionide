@@ -88,7 +88,6 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 
 	private FontAdapter adapter;
 	
-	private int rgb = 0;
 	private int alpha = 0;
 		
 	public OpenGLDrawingContext(Arionide theInstance, IEventDispatcher dispatcher, int width, int height) {
@@ -215,17 +214,13 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	public void setColor(int rgb) {
 		if(rgb > 0xFFFFFF) {
 			throw new IllegalArgumentException("Alpha values are not allowed");
-		}
+		}		
+				
+		float r = Utils.getRed(rgb) / 255.0f;
+		float g = Utils.getGreen(rgb) / 255.0f;
+		float b = Utils.getBlue(rgb) / 255.0f;
 		
-		if(rgb != this.rgb) {
-			this.rgb = rgb;
-			
-			float r = Utils.getRed(rgb) / 255.0f;
-			float g = Utils.getGreen(rgb) / 255.0f;
-			float b = Utils.getBlue(rgb) / 255.0f;
-			
-			this.primitives.setColor(this.gl, r, g, b);
-		}
+		this.primitives.setColor(this.gl, r, g, b);
 	}
 	
 	public void setAlpha(int alpha) {

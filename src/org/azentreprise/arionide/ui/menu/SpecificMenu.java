@@ -37,7 +37,6 @@ public class SpecificMenu extends Menu {
 	}
 	
 	public WorldElement getCurrent() {
-		assert this.current != null;
 		return this.current;
 	}
 	

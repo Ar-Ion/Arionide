@@ -42,6 +42,7 @@ import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
+import org.azentreprise.arionide.ui.primitives.OpenGLPrimitives;
 
 public class Tab extends MultiComponent implements EventHandler {
 		
@@ -136,10 +137,11 @@ public class Tab extends MultiComponent implements EventHandler {
 		Rectangle2D bounds = this.getBounds();
 		
 		this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.alpha);
-		context.setColor(this.rgb);
-
-		this.design.enterDesignContext(this.getAppManager(), new Point2D.Double(this.shadow, bounds.getCenterY()), this.shadingRadius);
 		
+		context.setColor(this.rgb);
+		
+		this.design.enterDesignContext(this.getAppManager(), new Point2D.Double(this.shadow, bounds.getCenterY()), this.shadingRadius);
+
 		context.getPrimitives().drawRoundRect(context, bounds);
 
 		int i = 0;

@@ -20,10 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu;
 
-import org.azentreprise.arionide.events.MessageEvent;
-import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 
 public class Confirm extends SpecificMenu {
 	
@@ -41,16 +38,15 @@ public class Confirm extends SpecificMenu {
 		this.caption = caption;
 	}
 	
-	public void setCurrent(WorldElement current) {
-		super.setCurrent(current);
-		this.getAppManager().getEventDispatcher().fire(new MessageEvent(this.caption.replace("$name", current.getName()), MessageType.INFO));
-	}
-	
 	public void onClick(String element) {
 		this.parent.show();
 
 		if(element.equals(yes)) {
 			this.confirm.confirm();
 		}
+	}
+	
+	public String getDescription() {
+		return this.caption.replace("$name", this.getCurrent() != null ? this.getCurrent().getName() : "?");
 	}
 }
