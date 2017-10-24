@@ -44,6 +44,9 @@ public interface CoreRenderer {
 	@IAm("setting up the current project")
 	public void loadProject(Project project);
 	
+	@IAm("teleporting to an element")
+	public void teleport(String identifier);
+	
 	/* The IDs in which the user is. */
 	public List<Integer> getInside();
 }

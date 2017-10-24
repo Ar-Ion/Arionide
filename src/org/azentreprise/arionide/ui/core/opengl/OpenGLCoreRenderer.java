@@ -256,25 +256,25 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private Buffer createStructureShapeData(int layers) {
 		DoubleBuffer sphere = DoubleBuffer.allocate(layers * layers * 3);
 				
-		for(double phi = 0.0d; phi < Math.PI; phi += Math.PI / (layers - 1.0d)) {
-			for(double theta = 0.0d; theta < 2.0d * Math.PI; theta += 2.0d * Math.PI / (layers - 1.0d)) {
-				sphere.put(Math.sin(phi) * Math.cos(theta));
-				sphere.put(Math.cos(phi));
-				sphere.put(Math.sin(phi) * Math.sin(theta));
+		for(double theta = 0.0d; theta < Math.PI; theta += Math.PI / (layers - 1.0d)) {
+			for(double phi = 0.0d; phi < 2.0d * Math.PI; phi += 2.0d * Math.PI / (layers - 1.0d)) {
+				sphere.put(Math.sin(theta) * Math.cos(phi));
+				sphere.put(Math.cos(theta));
+				sphere.put(Math.sin(theta) * Math.sin(phi));
 			}
 		}
-				
+		
 		return sphere;
 	}
 	
-	private Buffer createStructureIndicesData(int vertices) {
-		IntBuffer indices = IntBuffer.allocate(vertices * vertices * 4);
+	private Buffer createStructureIndicesData(int layers) {
+		IntBuffer indices = IntBuffer.allocate(layers * layers * 4);
 		
-		for(int latitudeID = 0; latitudeID < vertices; latitudeID++) {
-			for(int longitudeID = 0; longitudeID < vertices; longitudeID++) {
-				int latitudeElementID = latitudeID * vertices;
-				int nextLatitudeElementID = (latitudeID + 1) * vertices;
-				int nextLongitudeElementID = ((longitudeID + 1) % vertices);
+		for(int latitudeID = 0; latitudeID < layers; latitudeID++) {
+			for(int longitudeID = 0; longitudeID < layers; longitudeID++) {
+				int latitudeElementID = latitudeID * layers;
+				int nextLatitudeElementID = (latitudeID + 1) * layers;
+				int nextLongitudeElementID = ((longitudeID + 1) % layers);
 
 				indices.put(latitudeElementID + longitudeID);
 				indices.put(latitudeElementID + nextLongitudeElementID);
@@ -573,6 +573,62 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.updatePerspective();
 		this.player.set(dest);
 	}
+	
+	public void teleport(String identifier) {
+		String[] elements = identifier.split(":");
+		
+		assert elements.length == 2;
+				
+		try {
+			int teleport = Integer.parseInt(elements[0]);
+			WorldElement teleportElement = null;
+			List<WorldElement> world = this.worldGeometry.getElements();
+			
+			synchronized(world) {
+				for(WorldElement obj : world) {
+					if(obj.getID() == teleport) {
+						teleportElement = obj;
+						break;
+					}
+				}
+			}
+			
+			this.teleport(teleportElement.getCenter().add(0.0f, teleportElement.getSize() * 0.8f, 0.0f));
+						
+			int lookAt = Integer.parseInt(elements[1]);
+			WorldElement lookAtElement = null;
+			this.codeGeometry.buildGeometry(this.project, teleportElement);
+			List<WorldElement> code = this.codeGeometry.getElements();
+			
+			synchronized(world) {
+				int i = 0;
+				
+				for(WorldElement obj : code) {
+					if(obj.getID() == lookAt) {
+						lookAtElement = obj;
+						lookAt = i; // Changes lookAt variable !!!
+						break;
+					}
+					
+					i++;
+				}
+			}
+			
+			Vector3f lookAtVector = (lookAtElement.getCenter().sub(this.player)).normalize();
+			
+			this.yaw = (float) (Math.PI - Math.atan2(lookAtVector.x, lookAtVector.z));
+			this.pitch = (float) Math.asin(lookAtVector.y);
+			
+			this.selected = lookAtElement;
+			
+			Code menu = MainMenus.getCode();
+			menu.setCurrent(teleportElement);
+			menu.show();
+			menu.select(lookAt);
+		} catch(NumberFormatException e) {
+			;
+		}
+	}
 
 	public void setScene(RenderingScene scene) {
 		this.worldGeometry.loadScene(scene);
@@ -587,13 +643,14 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 
 	public void loadProject(Project project) {
+		this.project = project;
+
 		if(project == null) {
 			this.isInWorld = false;
 			this.context.setCursor(Cursor.getDefaultCursor());
 			return;
 		}
 				
-		this.project = project;
 		this.needMenuUpdate = this.selected == null;
 				
 		long seed = project.getProperty("seed", Coder.integerDecoder);

@@ -46,6 +46,11 @@ public class Label extends Component {
 		return this;
 	}
 	
+
+	public String getLabel() {
+		return this.label;
+	}
+	
 	public Label setColor(int rgb) {
 		if(rgb > 0xFFFFFF) {
 			throw new IllegalArgumentException("Alpha values are not allowed");

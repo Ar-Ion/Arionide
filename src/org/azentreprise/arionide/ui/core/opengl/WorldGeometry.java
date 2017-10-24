@@ -126,7 +126,7 @@ public class WorldGeometry implements Geometry {
 				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(subStructDistCenterRelSize * size / structRelSize).add(parent.getCenter());
 				
 				StructureMeta structMeta = metaData.get(element.getID());
-				
+								
 				if(structMeta != null) {
 					Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.5f);
 					Vector3f spotColor = new Vector3f(Coloring.getColorByID(structMeta.getSpotColorID()));

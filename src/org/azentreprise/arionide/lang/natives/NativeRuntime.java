@@ -75,7 +75,9 @@ public class NativeRuntime extends Runtime {
 	private boolean compile(int id, String name, Map<Integer, StructureMeta> metaData) {
 		Storage storage = this.getProject().getStorage();
 		
-		storage.loadData(storage.getHierarchy().get(id).getID());
+		int realID = storage.getHierarchy().get(id).getID();
+		
+		storage.loadData(realID);
 		
 		List<HierarchyElement> elements = storage.getCurrentData();
 		List<NativeInstruction> structure = new ArrayList<>();
@@ -89,7 +91,7 @@ public class NativeRuntime extends Runtime {
 			name += "." + structureMeta.getName();
 						
 			this.symbols.add(name);
-			this.references.add(id);
+			this.references.add(realID);
 									
 			for(HierarchyElement element : elements) {
 				StructureMeta meta = metaData.get(element.getID());
@@ -108,37 +110,37 @@ public class NativeRuntime extends Runtime {
 								Specification instructionSpec = instructionMeta.getSpecification();
 
 								if(spec.hasSameOrigin(instructionSpec) && spec.getElements().equals(instructionSpec.getElements())) {
-									NativeInstruction compiled = this.compileInstruction(this.symbols.size(), instructionMeta.getName(), instructionSpec, nextElements);
+									NativeInstruction compiled = this.compileInstruction(this.symbols.size(), instructionMeta.getName(), spec, nextElements);
 									
 									if(compiled != null) {
 										structure.add(compiled);
 									} else {
-										this.info("Instruction compilation failed for " + name + ":" + element.getID(), 0x663300);
+										this.info("Instruction compilation failed in " + name + " (" + realID + ":" + element.getID() + ")", 0xFF6000);
 										state = false;
 									}
 								} else {
-									this.info("Specification origin check failed for " + name + ":" + element.getID(), 0x663300);
+									this.info("Specification origin check failed in " + name +  " (" + realID + ":" + element.getID() + ")", 0xFF6000);
 									state = false;
 								}
 							} else {
-								this.info("Instruction ID " + instructionID + " was not properly installed", 0x663300);
+								this.info("Instruction ID " + instructionID + " was not properly installed", 0xFF6000);
 								state = false;
 							}
 						} catch(NumberFormatException e) {
-							this.info("Invalid instruction ID " + comment + " in " + name + ":" + element.getID(), 0x663300);
+							this.info("Invalid instruction ID " + comment + " in " + name + " (" + realID + ":" + element.getID() + ")", 0xFF6000);
 							state = false;
 						}
 					} else {
-						this.info("Object " + name + ":" + element.getID() + " is not an instruction", 0x663300);
+						this.info("Object in " + name + " (" + realID + ":" + element.getID() + ") is not an instruction", 0xFF6000);
 						state = false;
 					}
 				} else {
-					this.info("Invalid structure ID " + name + ":" + element.getID(), 0x663300);
+					this.info("Invalid structure ID in " + name + " (" + realID + ":" + element.getID() + ")", 0xFF6000);
 					state = false;
 				}
 			}
 		} else {
-			this.info("Invalid structure ID: " + id, 0x663300);
+			this.info("Invalid structure ID: (" + realID + ":?)", 0xFF6000);
 			state = false;
 		}
 		
@@ -158,7 +160,7 @@ public class NativeRuntime extends Runtime {
 			Validator validator = this.getProject().getLanguage().getTypes().getValidator(element.getType());
 			
 			if(validator == null || !validator.validate(element.getValue())) {
-				this.info("Invalid type", 0x663300);
+				this.info("Invalid type", 0xFF6000);
 				return null;
 			}
 			
@@ -166,7 +168,7 @@ public class NativeRuntime extends Runtime {
 				try {
 					nextElements.add(Integer.parseInt(element.getValue()));
 				} catch(NumberFormatException e) {
-					this.info("Invalid reference", 0x663300);
+					this.info("Invalid reference", 0xFF6000);
 					return null;
 				}
 			}
@@ -175,10 +177,10 @@ public class NativeRuntime extends Runtime {
 		switch(instruction) {
 			case "init":
 				return new Init();
-			case "debug":
+			case "print":
 				return new Print(spec.getElements().get(0).getValue());
 			default:
-				this.info("Instruction " + instruction + " is not compilable", 0x663300);
+				this.info("Instruction " + instruction + " is not compilable", 0xFF6000);
 				return null;
 			
 		}

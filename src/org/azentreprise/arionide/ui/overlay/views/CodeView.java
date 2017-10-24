@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay.views;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -158,7 +159,12 @@ public class CodeView extends View implements EventHandler {
 			
 			this.currentMenu = ((MenuEvent) event).getMenu();
 			this.menu.setActiveComponent(this.currentMenu.getMenuCursor());
-			this.menu.setComponents(this.currentMenu.getMenuElements().stream().map(this.menu.getMapper()).collect(Collectors.toList()));
+			
+			List<String> elements = new ArrayList<>(this.currentMenu.getMenuElements());
+			
+			synchronized(elements) {
+				this.menu.setComponents(elements.stream().map(this.menu.getMapper()).collect(Collectors.toList()));
+			}
 			
 			this.currentInfo.setLabel(this.currentMenu.getDescription());
 			this.currentInfo.setColor(MessageType.INFO.getColor());

@@ -42,7 +42,7 @@ public class RunView extends View implements EventHandler {
 		this.add(new Button(this, "Run").setSignal("run"), 0.85f, 0.05f, 0.95f, 0.1f);
 		
 		for(int i = 0; i < this.console.length; i++) {
-			this.add(this.console[i] = new Button(this, new String()).setSignal("console", i), 0.0f, 0.17f + i * 0.05f, 1.0f, 0.22f + i * 0.05f);
+			this.add(this.console[i] = new Button(this, new String()).setSignal("console", i).setBordered(false), 0.0f, 0.17f + i * 0.05f, 1.0f, 0.22f + i * 0.05f);
 		}
 
 		this.getAppManager().getEventDispatcher().registerHandler(this);
@@ -82,6 +82,20 @@ public class RunView extends View implements EventHandler {
 				runtime.run(this.sourceID);
 			} else if(click.isTargetting(this, "console")) {
 				int row = (int) click.getData()[0];
+				
+				String data = this.console[row].getLabel();
+				
+				int start = data.indexOf('(');
+				
+				if(start > -1) {
+					int end = data.indexOf(')', start);
+					
+					if(end > start) {
+						String identifier = data.substring(start + 1, end);
+						this.openView(Views.code);
+						this.getAppManager().getCoreRenderer().teleport(identifier);
+					}
+				}
 			}
 		} else if(event instanceof WheelEvent) {
 			WheelEvent wheel = (WheelEvent) event;

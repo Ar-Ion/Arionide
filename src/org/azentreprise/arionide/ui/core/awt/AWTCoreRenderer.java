@@ -64,4 +64,10 @@ public class AWTCoreRenderer implements CoreRenderer {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void teleport(String identifier) {
+		// TODO Auto-generated method stub
+		
+	}
 }

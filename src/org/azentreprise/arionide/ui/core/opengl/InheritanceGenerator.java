@@ -45,17 +45,17 @@ public class InheritanceGenerator {
 		this.processChildren(this.inheritance.get(id), elements);
 		elements.add(new HierarchyElement(-1, null));
 		this.processParents(this.inheritance.get(id), elements);
-				
-		System.out.println(elements);
-		
+						
 		this.completion.accept(Arrays.asList(new HierarchyElement(id, elements)));
 	}
 	
 	private void processChildren(InheritanceElement src, List<HierarchyElement> dest) {		
-		for(int childID : src.getChildren()) {
-			List<HierarchyElement> next = new ArrayList<>();
-			dest.add(new HierarchyElement(childID, next));
-			this.processChildren(this.inheritance.get(childID), next);
+		if(src.getChildren() != null) {
+			for(int childID : src.getChildren()) {
+				List<HierarchyElement> next = new ArrayList<>();
+				dest.add(new HierarchyElement(childID, next));
+				this.processChildren(this.inheritance.get(childID), next);
+			}
 		}
 	}
 	
