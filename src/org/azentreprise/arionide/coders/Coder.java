@@ -33,6 +33,9 @@ public interface Coder<T> {
 	public static final Encoder<Long> integerEncoder = new IntegerEncoder();
 	public static final Decoder<Long> integerDecoder = new IntegerDecoder();
 	
+	public static final Encoder<CameraInfo> cameraEncoder = new CameraEncoder();
+	public static final Decoder<CameraInfo> cameraDecoder = new CameraDecoder();
+	
 	/* We may change this if the encoding takes more than one byte for a character */
 	public static final byte sectionStart = new String("{").getBytes(Coder.charset)[0];
 	public static final byte sectionEnd = new String("}").getBytes(Coder.charset)[0];

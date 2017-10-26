@@ -1,6 +1,6 @@
 #version 400
 
-const vec3 specularColor = vec3(1.0, 1.0, 1.0);
+const vec3 lightColor = vec3(1.0, 1.0, 1.0);
 const float shininess = 8.0;
 const float attenuationFactor = 0.0001;
 const float sunEmissionConcentration = 32.0;
@@ -13,7 +13,7 @@ out vec4 outColor;
 
 uniform vec4 color;
 uniform vec3 camera;
-uniform vec3 lightColor;
+uniform vec3 specularColor;
 uniform vec3 lightPosition;
 uniform float ambientFactor;
 

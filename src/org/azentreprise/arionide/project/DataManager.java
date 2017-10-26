@@ -160,25 +160,42 @@ public class DataManager {
 		element.getChildren().stream().forEach(this::deleteMeta);
 	}
 	
-	public MessageEvent inherit(int id, int parent) {
-		if(id != parent) {
-			List<Integer> children = this.storage.getInheritance().get(parent).children;
-			List<Integer> parents = this.storage.getInheritance().get(id).parents;
+	public MessageEvent inherit(int child, int parent) {
+		if(child != parent) {
+			InheritanceElement parentElement = this.storage.getInheritance().get(parent);
+			InheritanceElement childElement = this.storage.getInheritance().get(child);
 			
-			if(!children.contains(id)) {
-				children.add(id);
+			if(this.recursiveCheck(childElement, parent) && this.recursiveCheck(parentElement, child)) { /* Check for cycle */
+				List<Integer> children = parentElement.children;
+				List<Integer> parents = childElement.parents;
+				
+				if(!children.contains(child)) {
+					children.add(child);
+				}
+		
+				if(!parents.contains(parent)) {
+					parents.add(parent);
+				}
+				
+				this.storage.saveInheritance();
+				
+				return new MessageEvent("Inheritance updated", MessageType.SUCCESS);
+			} else {
+				return new MessageEvent("Cyclic inheritance is not permitted", MessageType.ERROR);
 			}
-	
-			if(!parents.contains(parent)) {
-				parents.add(parent);
-			}
-			
-			this.storage.saveInheritance();
-			
-			return new MessageEvent("Inheritance updated", MessageType.SUCCESS);
 		} else {
 			return new MessageEvent("A structure cannot inherit itself", MessageType.ERROR);
 		}
+	}
+	
+	private boolean recursiveCheck(InheritanceElement object, int potentialParent) {		
+		for(int nextGenParent : object.parents) {
+			if(nextGenParent == potentialParent || !this.recursiveCheck(this.storage.getInheritance().get(nextGenParent), potentialParent)) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	public MessageEvent desinherit(Integer parent, Integer id) {

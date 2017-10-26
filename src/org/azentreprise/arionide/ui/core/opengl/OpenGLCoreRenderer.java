@@ -38,6 +38,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.azentreprise.arionide.coders.CameraInfo;
 import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.events.ActionEvent;
@@ -69,7 +70,7 @@ import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.opengl.GL4;
 
 public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {	
-	private static final int stars = 2048;
+	private static final int stars = 1024;
 	
 	private static final int structureRenderingQuality = 32;
 
@@ -109,7 +110,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private int projection;
 	private int color;
 	private int camera;
-	private int lightColor;
+	private int specularColor;
 	private int lightPosition;
 	private int ambientFactor;
 			
@@ -126,15 +127,15 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private WorldElement lookingAt;
 	private WorldElement selected;
 	
+	private RenderingScene scene = null;
+	
 	private boolean needMenuUpdate = false;
 
 	private float yaw = 0.0f;
 	private float pitch = 0.0f;
 	private Vector3f player = new Vector3f();
 	private Vector3f sun = new Vector3f(0.0f, skyDistance, 0.0f);
-	
-	private final Vector3f spawn = new Vector3f(0.0f, 0.0f, 0.0f);
-		
+			
 	private Vector3f velocity = new Vector3f();
 	private Vector3f acceleration = new Vector3f();
 	private double generalAcceleration = initialAcceleration;
@@ -182,7 +183,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		for(int i = 0; i < structureRenderingQuality; i++) {
 			int vertexArray = vertexArrays.get(i + 1);
 			int buffer = buffers.get(i * 2 + 1);
-			int layers = i + 8;
+			int layers = 8 + i;
 			
 			this.structures.add(new ScaledRenderingInfo(vertexArray, buffer + 1, layers));
 			
@@ -224,7 +225,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.projection = gl.glGetUniformLocation(this.shader, "projection");
 		this.color = gl.glGetUniformLocation(this.shader, "color");
 		this.camera = gl.glGetUniformLocation(this.shader, "camera");
-		this.lightColor = gl.glGetUniformLocation(this.shader, "lightColor");
+		this.specularColor = gl.glGetUniformLocation(this.shader, "specularColor");
 		this.lightPosition = gl.glGetUniformLocation(this.shader, "lightPosition");
 		this.ambientFactor = gl.glGetUniformLocation(this.shader, "ambientFactor");
 	}
@@ -254,10 +255,10 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private Buffer createStructureShapeData(int layers) {
-		DoubleBuffer sphere = DoubleBuffer.allocate(layers * layers * 3);
+		DoubleBuffer sphere = DoubleBuffer.allocate(2*layers * layers * 3);
 				
-		for(double theta = 0.0d; theta < Math.PI; theta += Math.PI / (layers - 1.0d)) {
-			for(double phi = 0.0d; phi < 2.0d * Math.PI; phi += 2.0d * Math.PI / (layers - 1.0d)) {
+		for(double theta = 0.0d; theta < Math.PI + 10E-4; theta += Math.PI / (layers - 1)) {
+			for(double phi = 0.0d; phi < 2.0d * Math.PI - 10E-4; phi += Math.PI / layers) {
 				sphere.put(Math.sin(theta) * Math.cos(phi));
 				sphere.put(Math.cos(theta));
 				sphere.put(Math.sin(theta) * Math.sin(phi));
@@ -268,24 +269,17 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private Buffer createStructureIndicesData(int layers) {
-		IntBuffer indices = IntBuffer.allocate(layers * layers * 4);
+		IntBuffer indices = IntBuffer.allocate(2*layers * layers * 2);
 		
 		for(int latitudeID = 0; latitudeID < layers; latitudeID++) {
-			for(int longitudeID = 0; longitudeID < layers; longitudeID++) {
-				int latitudeElementID = latitudeID * layers;
-				int nextLatitudeElementID = (latitudeID + 1) * layers;
-				int nextLongitudeElementID = ((longitudeID + 1) % layers);
-
-				indices.put(latitudeElementID + longitudeID);
-				indices.put(latitudeElementID + nextLongitudeElementID);
-				indices.put(nextLatitudeElementID + longitudeID);
-				indices.put(nextLatitudeElementID + nextLongitudeElementID);
+			for(int longitudeID = 0; longitudeID < 2*layers; longitudeID++) {
+				indices.put(latitudeID * 2*layers + longitudeID);
+				indices.put((latitudeID + 1) * 2*layers + longitudeID);
 			}
 		}
 				
 		return indices;
 	}
-	
 	
 	public void render(AppDrawingContext context) {
 		assert context instanceof OpenGLDrawingContext;
@@ -308,7 +302,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glUniform3f(this.camera, this.player.x, this.player.y, this.player.z);
 				
 		gl.glUniform1f(this.ambientFactor, 1.0f);
-		gl.glUniform3f(this.lightColor, 1.0f, 1.0f, 1.0f);
+		gl.glUniform3f(this.specularColor, 1.0f, 1.0f, 1.0f);
 		gl.glUniform3f(this.lightPosition, sunPosition.x, sunPosition.y, sunPosition.z);
 		
 		this.renderStars(gl);
@@ -336,7 +330,10 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 		
 		this.renderScene0(gl, this.worldGeometry.getElements());
-		this.renderScene0(gl, this.codeGeometry.getElements());
+		
+		if(this.scene != RenderingScene.INHERITANCE) {
+			this.renderScene0(gl, this.codeGeometry.getElements());
+		}
 	}
 	
 	private void renderScene0(GL4 gl, List<WorldElement> elements) {
@@ -362,7 +359,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				Vector3f spot = element.getSpotColor();
 				
 				gl.glUniform4f(this.color, color.x, color.y, color.z, color.w);
-				gl.glUniform3f(this.lightColor, spot.x, spot.y, spot.z);
+				gl.glUniform3f(this.specularColor, spot.x, spot.y, spot.z);
 				
 				double viewHeight = 2.0d * Math.atan(fov / 2.0d) * this.player.distance(element.getCenter());
 				int quality = (int) ((this.structures.size()) * Math.min(0.999d, 2 * element.getSize() / viewHeight));
@@ -372,6 +369,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				gl.glBindVertexArray(info.getVAO());
 				gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, info.getEBO());
 				gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * info.getLayers() * (info.getLayers() - 1), GL4.GL_UNSIGNED_INT, 0);
+				
 				gl.glDisable(GL4.GL_DEPTH_TEST);
 				
 				if(blending) {
@@ -416,6 +414,11 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				.rotate(this.yaw, 0.0f, 1.0f, 0.0f)
 				.translate(-this.player.x, -this.player.y, -this.player.z)
 		, this.viewData);
+		
+		if(this.project != null && this.scene == RenderingScene.HIERARCHY) {
+			CameraInfo info = new CameraInfo(this.player.x, this.player.y, this.player.z, this.yaw, this.pitch);
+			this.project.setProperty("player", info, Coder.cameraEncoder);
+		}
 	}
 	
 	private void updatePerspective() {
@@ -425,8 +428,14 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 		
 	private void ajustAcceleration() {
-		this.generalAcceleration = initialAcceleration * Math.max(0.000000001d, this.worldGeometry.getSizeForGeneration(this.inside.size()));
+		if(this.scene != RenderingScene.INHERITANCE) {
+			this.generalAcceleration = initialAcceleration * Math.max(10E-10D, this.worldGeometry.getSizeForGeneration(this.inside.size()));
+		} else {
+			this.generalAcceleration = initialAcceleration;
+		}
+		
 		this.zNear = (float) this.generalAcceleration * 10.0f;
+		
 		this.updatePerspective();
 	}
 	
@@ -631,7 +640,28 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 
 	public void setScene(RenderingScene scene) {
+		this.scene = scene;
 		this.worldGeometry.loadScene(scene);
+		
+		if(scene != RenderingScene.HIERARCHY) {
+			this.teleport(new Vector3f(0.0f, 0.0f, 5.0f));
+			
+			this.yaw = 0.0f;
+			this.pitch = 0.0f;
+		} else {
+			CameraInfo info = this.project.getProperty("player", Coder.cameraDecoder);
+			
+			this.teleport(new Vector3f(info.getX(), info.getY(), info.getZ()));
+			
+			this.yaw = info.getYaw();
+			this.pitch = info.getPitch();
+		}
+		
+		synchronized(this.inside) {
+			this.inside.clear();
+		}
+		
+		this.ajustAcceleration();
 	}
 	
 	public void selectInstruction(int id) {
@@ -726,7 +756,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 						break;
 					case spawnKey:
 						if(this.isControlDown && pressure.isDown()) {
-							this.teleport(this.spawn);
+							this.teleport(new Vector3f(0.0f, 0.0f, 0.0f));
 						}
 						
 						break;

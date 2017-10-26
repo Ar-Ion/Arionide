@@ -27,6 +27,7 @@ import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
 
@@ -45,8 +46,14 @@ public class StructureSelection extends Menu {
 	}
 
 	public void reload() {
-		Map<Integer, StructureMeta> elements = this.getAppManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta();
-		this.ordered = elements.entrySet().stream().filter(e -> !e.getValue().getName().equals("?")).map(Entry::getKey).collect(Collectors.toList());
+		Storage storage = this.getAppManager().getWorkspace().getCurrentProject().getStorage();
+		
+		Map<Integer, StructureMeta> elements = storage.getStructureMeta();
+		this.ordered = elements.entrySet().stream()
+				.filter(e -> !e.getValue().getName().equals("?") && storage.getInheritance().containsKey(e.getKey()))
+				.map(Entry::getKey)
+				.collect(Collectors.toList());
+		
 		
 		for(Comparator<Integer> comparator : this.comparators) {
 			this.ordered.sort(comparator);

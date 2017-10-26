@@ -93,6 +93,7 @@ public class CodeView extends View implements EventHandler {
 		this.currentProject = this.getAppManager().getWorkspace().getCurrentProject();
 		this.getAppManager().getEventDispatcher().fire(new MessageEvent("'" + this.currentProject.getName() + "' has been successfully loaded", MessageType.SUCCESS));
 		this.getAppManager().getCoreRenderer().loadProject(this.currentProject);
+		this.getAppManager().getCoreRenderer().setScene(RenderingScene.HIERARCHY);
 	}
 	
 	public void drawSurface(AppDrawingContext context) {

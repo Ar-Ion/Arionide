@@ -38,8 +38,8 @@ import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.lang.CoreDataManager;
 import org.azentreprise.arionide.lang.Language;
-import org.azentreprise.arionide.lang.natives.NativeRuntime;
 import org.azentreprise.arionide.lang.natives.NativeInstructionSet;
+import org.azentreprise.arionide.lang.natives.NativeRuntime;
 import org.azentreprise.arionide.lang.natives.NativeTypes;
 
 public class LocalProject implements Project {
@@ -54,8 +54,7 @@ public class LocalProject implements Project {
 		projectProtocolMapping.put("structureGen", Integer.toString(0).getBytes(Coder.charset));
 		projectProtocolMapping.put("specificationGen", Integer.toString(0).getBytes(Coder.charset));
 		projectProtocolMapping.put("seed", Long.toString(new Random().nextLong()).getBytes(Coder.charset));
-		projectProtocolMapping.put("definitions", new String("org.azentreprise.arionide.native.NativeDefinitions()").getBytes(Coder.charset));
-		projectProtocolMapping.put("runtime", new String("org.azentreprise.arionide.native.NativeRuntime()").getBytes(Coder.charset));
+		projectProtocolMapping.put("player", new String("0.0|0.0|5.0|0.0|0.0").getBytes(Coder.charset));
 	}
 	
 	private final ZipStorage storage;
@@ -117,7 +116,7 @@ public class LocalProject implements Project {
 			}
 			
 			this.verifyProtocol();
-			
+						
 			this.language = new Language(new CoreDataManager(), new NativeTypes(), new NativeInstructionSet(this), new NativeRuntime(this));
 			this.language.postInit();
 		} catch (Exception exception) {
@@ -172,7 +171,7 @@ public class LocalProject implements Project {
 		if(SystemCache.has(hash)) {
 			return SystemCache.get(hash);
 		}
-		
+
 		T decoded = decoder.decode(this.properties.get(key));
 		
 		SystemCache.set(hash, decoded, SystemCache.NEVER);

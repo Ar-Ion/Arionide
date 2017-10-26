@@ -126,7 +126,7 @@ public class WorldGeometry implements Geometry {
 				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(subStructDistCenterRelSize * size / structRelSize).add(parent.getCenter());
 				
 				StructureMeta structMeta = metaData.get(element.getID());
-								
+
 				if(structMeta != null) {
 					Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.5f);
 					Vector3f spotColor = new Vector3f(Coloring.getColorByID(structMeta.getSpotColorID()));
@@ -136,13 +136,11 @@ public class WorldGeometry implements Geometry {
 						access = false;
 
 						if(flag) {
-							spotColor = new Vector3f(Coloring.getColorByName("Cerulean")); // Children
+							spotColor = new Vector3f(0.0f, 0.0f, 0.0f); // Children
+						} else if(parent.getID() < 0) {
+							spotColor = new Vector3f(0.5f, 0.5f, 0.5f); // Reference
 						} else {
-							spotColor = new Vector3f(Coloring.getColorByName("Scarlet")); // Parents
-						}
-						
-						if(parent.getID() < 0) {
-							spotColor = new Vector3f(Coloring.getColorByName("Orange"));
+							spotColor = new Vector3f(1.0f, 1.0f, 1.0f); // Parents
 						}
 					}
 					

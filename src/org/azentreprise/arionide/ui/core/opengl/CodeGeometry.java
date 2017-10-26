@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.stream.Stream;
 
 import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.project.HierarchyElement;
