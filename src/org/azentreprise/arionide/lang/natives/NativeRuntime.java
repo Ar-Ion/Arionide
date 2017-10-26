@@ -57,9 +57,9 @@ public class NativeRuntime extends Runtime {
 		
 		this.info("Compiling sources...", 0xFFFF00);
 		
-		Map<Integer, StructureMeta> metaData = this.getProject().getStorage().getStructureMeta();
-				
-		if(this.compile(id, "root", metaData)) {
+		Storage storage = this.getProject().getStorage();
+		
+		if(this.compile(storage.getHierarchy().get(id).getID(), "root", storage)) {
 			this.info("Compilation succeed", 0x00FF00);
 			this.info("Running program...", 0xFFAA00);
 			
@@ -77,7 +77,7 @@ public class NativeRuntime extends Runtime {
 		}
 	}
 	
-	public boolean exec(int structureID) {		
+	public boolean exec(int structureID) {
 		for(NativeInstruction instruction : this.code.get(structureID)) {
 			if(!instruction.execute(this.ndc, this.references)) {
 				return false;
@@ -87,14 +87,11 @@ public class NativeRuntime extends Runtime {
 		return true;
 	}
 	
-	private boolean compile(int id, String name, Map<Integer, StructureMeta> metaData) {
-		Storage storage = this.getProject().getStorage();
-		
-		int realID = storage.getHierarchy().get(id).getID();
-		
+	private boolean compile(int realID, String name, Storage storage) {				
 		storage.loadData(realID);
 		
 		List<HierarchyElement> elements = storage.getCurrentData();
+		Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
 		List<NativeInstruction> structure = new ArrayList<>();
 		List<Integer> nextElements = new ArrayList<>();
 		
@@ -162,7 +159,7 @@ public class NativeRuntime extends Runtime {
 		this.code.add(structure);
 		
 		for(Integer next : nextElements) {
-			if(!this.compile(next, name, metaData)) {
+			if(!this.compile(next, name, storage)) {
 				state = false;
 			}
 		}
@@ -171,7 +168,7 @@ public class NativeRuntime extends Runtime {
 	}
 	
 	private NativeInstruction compileInstruction(int symID, String instruction, Specification spec, List<Integer> nextElements) {
-		for(SpecificationElement element : spec.getElements()) {			
+		for(SpecificationElement element : spec.getElements()) {
 			Validator validator = this.getProject().getLanguage().getTypes().getValidator(element.getType());
 			
 			if(validator == null || !validator.validate(element.getValue())) {
@@ -207,20 +204,18 @@ public class NativeRuntime extends Runtime {
 	
 	protected void info(String message, int color) {
 		int index = 0;
-		
-		String output = message;
-		
-		while((index = message.indexOf("@{", index)) > -1) {
+				
+		while((index = message.indexOf("@{", index) + 2) > 1) {
 			int end = message.indexOf("}", index);
-			
-			String symbol = message.substring(index + 2, end);
-			int id = Integer.parseInt(symbol);
+						
+			String symbol = message.substring(index, end);
+			int id = this.references.indexOf(Integer.parseInt(symbol));
 			
 			if(id < this.symbols.size()) {
-				output = message.replace(symbol, this.symbols.get(id));
+				message = message.replace("@{" + symbol + "}", this.symbols.get(id));
 			}
 		}
 		
-		super.info(output, color);
+		super.info(message, color);
 	}
 }

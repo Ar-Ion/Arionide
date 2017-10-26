@@ -36,7 +36,7 @@ public abstract class MultiComponent extends Component {
 		
 		assert components.size() > 0;
 		
-		this.componentSupplier = (str) -> new Label(parent, str);
+		this.componentSupplier = (str) -> new Label(parent, str.contains("$$$") ? str.substring(0, str.indexOf("$$$")) : str);
 		this.components = components;
 	}
 	

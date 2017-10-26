@@ -27,10 +27,11 @@ public class NativeDataCommunicator {
 	}
 	
 	public void exception(String message) {
-		this.channel.accept("[!!!] " + message, 0xFF0000);
+		this.channel.accept(message, 0xFF0000);
 		
-		for(int element : this.stack) {
-			this.channel.accept("[!!!]     from @{" + element + "} (" + element + ":?)", 0xFF7700);
+		while(!this.stack.empty()) {
+			int element = this.stack.pop();
+			this.channel.accept("In @{" + element + "} (" + element + ":?)", 0xFF7700);
 		}
 	}
 }

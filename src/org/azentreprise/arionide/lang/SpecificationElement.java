@@ -58,7 +58,16 @@ public class SpecificationElement implements Serializable, Cloneable {
 	}
 	
 	public String getValue() {
-		return this.value;
+		String realValue = this.value;
+		
+		if(realValue != null) {
+			int index = realValue.indexOf("$$$");
+			if(index > -1) {
+				realValue = realValue.substring(index + 3);
+			}
+		}
+		
+		return realValue;
 	}
 	
 	public void setValue(String value) {
@@ -66,7 +75,19 @@ public class SpecificationElement implements Serializable, Cloneable {
 	}
 	
 	public String toString() {
-		return this.name + ": " + (this.value != null ? this.value : "undefined");
+		String displayValue = this.value;
+		
+		if(displayValue == null) {
+			displayValue = "undefined";
+		}
+		
+		int index = displayValue.indexOf("$$$");
+		
+		if(index > -1) {
+			displayValue = displayValue.substring(0, index);
+		}
+		
+		return this.name + ": " + displayValue;
 	}
 	
 	public boolean equals(Object other) {

@@ -110,6 +110,6 @@ public class TypeEditor extends Menu {
 	}
 	
 	public String getDescription() {
-		return this.typeManager != null ? this.element.getName() + ": " + this.element.getValue() : "Error: the type is undefined";
+		return this.typeManager != null ? this.element.getName() + ": " + (this.element.getValue() != null ? this.element.getValue() : "undefined") : "Error: the type is undefined";
 	}
 }

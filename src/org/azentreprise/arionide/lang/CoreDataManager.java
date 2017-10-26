@@ -20,6 +20,21 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang;
 
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import org.azentreprise.arionide.project.Storage;
+
 public class CoreDataManager {
 
+	private final Storage storage;
+	
+	public CoreDataManager(Storage storage) {
+		this.storage = storage;
+	}
+	
+	public Map<Integer, String> getReferencables() {
+		return this.storage.getInheritance().keySet().stream().collect(Collectors.toMap(Function.identity(), e -> this.storage.getStructureMeta().get(e).getName()));
+	}
 }

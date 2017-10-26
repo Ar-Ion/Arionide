@@ -38,16 +38,18 @@ public class NativeTypes implements Types {
 	
 	private final TypeManager intTypeManager = new IntegerTypeManager();
 	private final TypeManager strTypeManager = new StringTypeManager();
+	private final TypeManager refTypeManager = new ReferenceTypeManager();
 
 	private final Validator intValidator = new IntegerValidator();
 	private final Validator strValidator = new DummyValidator();
+	private final Validator refValidator = new ReferenceValidator();
 
 	public TypeManager getTypeManager(int type) {		
 		switch(type) {
 			case VAR:
 				break;
 			case REF:
-				break;
+				return this.refTypeManager;
 			case INT:
 				return this.intTypeManager;
 			case STR:
@@ -64,7 +66,7 @@ public class NativeTypes implements Types {
 			case VAR:
 				break;
 			case REF:
-				break;
+				return this.refValidator;
 			case INT:
 				return this.intValidator;
 			case STR:

@@ -37,7 +37,7 @@ public class IntegerTypeManager implements TypeManager {
 	private static final String hexadecimal = "Hexadecimal";
 	
 	public List<String> getSuggestions(CoreDataManager cdm) {
-		return Arrays.asList("b0", "b1", "d-1", "hFF");
+		return Arrays.asList("0$$$b0", "1$$$b1", "-1$$$d-1", "False$$$b0", "True$$$b1", "Error$$$d-1", "Max Byte$$$hFF", "Max Short$$$FFFF", "Max Integer$$$h7FFFFFFF", "Min Integer$$$h-7FFFFFFF");
 	}
 
 	public List<String> getActionLabels() {
