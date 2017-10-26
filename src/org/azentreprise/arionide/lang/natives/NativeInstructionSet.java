@@ -48,13 +48,19 @@ public class NativeInstructionSet extends InstructionSet {
 
 			
 			this.install("init", 0, parents, new Specification(this.getProject().getDataManager().allocSpecification()));
-						
+			
+			this.install("nothing", 15, parents, new Specification(this.getProject().getDataManager().allocSpecification()));
+			
 			this.install("print", 30, parents, new Specification(this.getProject().getDataManager().allocSpecification(), 
 					new SpecificationElement("message", NativeTypes.STR, "debug")));
 			
+			this.install("call", 45, parents, new Specification(this.getProject().getDataManager().allocSpecification(), 
+					new SpecificationElement("structure", NativeTypes.REF, null)));
 		} else {
 			this.retrieve("init");
+			this.retrieve("nothing");
 			this.retrieve("print");
+			this.retrieve("call");
 		}
 	}
 	
@@ -66,10 +72,6 @@ public class NativeInstructionSet extends InstructionSet {
 		this.instructionSet.put(name, this.retrieveInstruction(name));
 	}
 
-	public int getStructureEntry() {
-		return this.instructionSet.get("init");
-	}
-	
 	public int getInstructionID(String name) {
 		return this.instructionSet.get(name);
 	}

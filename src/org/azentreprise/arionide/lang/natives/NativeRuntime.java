@@ -28,9 +28,11 @@ import org.azentreprise.arionide.lang.Runtime;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.Validator;
-import org.azentreprise.arionide.lang.natives.instructions.Print;
+import org.azentreprise.arionide.lang.natives.instructions.Call;
 import org.azentreprise.arionide.lang.natives.instructions.Init;
 import org.azentreprise.arionide.lang.natives.instructions.NativeInstruction;
+import org.azentreprise.arionide.lang.natives.instructions.Nothing;
+import org.azentreprise.arionide.lang.natives.instructions.Print;
 import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.Storage;
@@ -38,14 +40,15 @@ import org.azentreprise.arionide.project.StructureMeta;
 
 public class NativeRuntime extends Runtime {
 	
-	private final NativeDataCommunicator ndc = new NativeDataCommunicator();
+	private final NativeDataCommunicator ndc;
 	private final List<List<NativeInstruction>> code = new ArrayList<>();
 	private final List<String> symbols = new ArrayList<>();
 	private final List<Integer> references = new ArrayList<>(); // ID in code list --> Real ID
 	
 	public NativeRuntime(Project project) {
 		super(project);
-		this.ndc.setInfoChannel(this::info);
+		
+		this.ndc = new NativeDataCommunicator(this, this::info);
 	}
 
 	public void run(int id) {
@@ -55,21 +58,33 @@ public class NativeRuntime extends Runtime {
 		this.info("Compiling sources...", 0xFFFF00);
 		
 		Map<Integer, StructureMeta> metaData = this.getProject().getStorage().getStructureMeta();
-		
+				
 		if(this.compile(id, "root", metaData)) {
 			this.info("Compilation succeed", 0x00FF00);
 			this.info("Running program...", 0xFFAA00);
 			
 			if(this.code.size() > 0) {
-				for(NativeInstruction instruction : this.code.get(0)) {
-					instruction.execute(this.ndc, this.references);
+				if(this.exec(0)) {
+					this.info("Program execution finished with no error", 0x00FF00);
+				} else {
+					this.info("Program execution finished because of a runtime error", 0xFF0000);
 				}
+			} else {
+				this.info("Nothing to run", 0xFFAA00);	
 			}
-			
-			this.info("Program execution finished", 0xFFAA00);
 		} else {
 			this.info("Compilation failed", 0xFF0000);	
 		}
+	}
+	
+	public boolean exec(int structureID) {		
+		for(NativeInstruction instruction : this.code.get(structureID)) {
+			if(!instruction.execute(this.ndc, this.references)) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	private boolean compile(int id, String name, Map<Integer, StructureMeta> metaData) {
@@ -83,7 +98,7 @@ public class NativeRuntime extends Runtime {
 		List<NativeInstruction> structure = new ArrayList<>();
 		List<Integer> nextElements = new ArrayList<>();
 		
-		StructureMeta structureMeta = metaData.get(id);
+		StructureMeta structureMeta = metaData.get(realID);
 		
 		boolean state = true;
 
@@ -177,12 +192,35 @@ public class NativeRuntime extends Runtime {
 		switch(instruction) {
 			case "init":
 				return new Init();
+			case "nothing":
+				return new Nothing();
 			case "print":
 				return new Print(spec.getElements().get(0).getValue());
+			case "call":
+				return new Call(Integer.parseInt(spec.getElements().get(0).getValue()));
 			default:
 				this.info("Instruction " + instruction + " is not compilable", 0xFF6000);
 				return null;
 			
 		}
+	}
+	
+	protected void info(String message, int color) {
+		int index = 0;
+		
+		String output = message;
+		
+		while((index = message.indexOf("@{", index)) > -1) {
+			int end = message.indexOf("}", index);
+			
+			String symbol = message.substring(index + 2, end);
+			int id = Integer.parseInt(symbol);
+			
+			if(id < this.symbols.size()) {
+				output = message.replace(symbol, this.symbols.get(id));
+			}
+		}
+		
+		super.info(output, color);
 	}
 }

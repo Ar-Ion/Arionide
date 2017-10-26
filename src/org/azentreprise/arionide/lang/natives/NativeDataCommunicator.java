@@ -1,18 +1,36 @@
 package org.azentreprise.arionide.lang.natives;
 
+import java.util.Stack;
 import java.util.function.BiConsumer;
 
 public class NativeDataCommunicator {
 	
-	private BiConsumer<String, Integer> channel;
+	private final NativeRuntime runtime;
+	private final BiConsumer<String, Integer> channel;
+	private final Stack<Integer> stack = new Stack<>();
 	
-	public void setInfoChannel(BiConsumer<String, Integer> channel) {
+	protected NativeDataCommunicator(NativeRuntime runtime, BiConsumer<String, Integer> channel) {
+		this.runtime = runtime;
 		this.channel = channel;
 	}
 	
 	public void info(String message, int color) {
-		if(this.channel != null) {
-			this.channel.accept("[prog] " + message, color);
+		this.channel.accept("[prog] " + message, color);
+	}
+	
+	public void exec(int structureID) {
+		this.runtime.exec(structureID);
+	}
+	
+	public Stack<Integer> getStack() {
+		return this.stack;
+	}
+	
+	public void exception(String message) {
+		this.channel.accept("[!!!] " + message, 0xFF0000);
+		
+		for(int element : this.stack) {
+			this.channel.accept("[!!!]     from @{" + element + "} (" + element + ":?)", 0xFF7700);
 		}
 	}
 }

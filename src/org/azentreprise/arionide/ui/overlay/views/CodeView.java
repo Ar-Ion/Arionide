@@ -35,6 +35,7 @@ import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.events.ScrollEvent;
 import org.azentreprise.arionide.project.Project;
+import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.animations.Animation;
@@ -133,7 +134,19 @@ public class CodeView extends View implements EventHandler {
 					if(name != null) {
 						MessageEvent message = this.currentProject.getDataManager().newStructure(name, this.getAppManager().getCoreRenderer().getInside());
 						this.getAppManager().getEventDispatcher().fire(message);
-						this.getAppManager().getCoreRenderer().loadProject(this.currentProject);
+						
+						if(message.getMessageType() != MessageType.ERROR) {
+							this.getAppManager().getCoreRenderer().loadProject(this.currentProject);
+							
+							Storage storage = this.currentProject.getStorage();
+							
+							int structID = storage.getCallGraph().get(storage.getCallGraph().size() - 1).getID();
+							
+							storage.loadData(structID);
+							int instructionID = this.currentProject.getStorage().getCurrentData().get(0).getID();
+							
+							this.getAppManager().getCoreRenderer().teleport(structID + ":" + instructionID);
+						}
 					}
 				}).start();
 			} else if(click.isTargetting((Component) null, "menuScroll")) {

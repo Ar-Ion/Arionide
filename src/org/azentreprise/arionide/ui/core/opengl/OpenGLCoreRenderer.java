@@ -603,7 +603,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			}
 			
 			this.teleport(teleportElement.getCenter().add(0.0f, teleportElement.getSize() * 0.8f, 0.0f));
-						
+			
+			this.checkForCollisions();
+			
 			int lookAt = Integer.parseInt(elements[1]);
 			WorldElement lookAtElement = null;
 			this.codeGeometry.buildGeometry(this.project, teleportElement);
@@ -623,12 +625,16 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				}
 			}
 			
-			Vector3f lookAtVector = (lookAtElement.getCenter().sub(this.player)).normalize();
+			if(lookAtElement != null) {
+				Vector3f lookAtVector = (lookAtElement.getCenter().sub(this.player)).normalize();
+				
+				this.yaw = (float) (Math.PI - Math.atan2(lookAtVector.x, lookAtVector.z));
+				this.pitch = (float) Math.asin(lookAtVector.y);
+				
+				this.selected = lookAtElement;
+			}
 			
-			this.yaw = (float) (Math.PI - Math.atan2(lookAtVector.x, lookAtVector.z));
-			this.pitch = (float) Math.asin(lookAtVector.y);
-			
-			this.selected = lookAtElement;
+			this.needMenuUpdate = false;
 			
 			Code menu = MainMenus.getCode();
 			menu.setCurrent(teleportElement);

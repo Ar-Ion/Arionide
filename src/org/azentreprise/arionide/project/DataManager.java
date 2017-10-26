@@ -84,7 +84,7 @@ public class DataManager {
 			} else if(this.project.getLanguage().isReady()) {
 				this.project.getStorage().loadData(structureID); // Push
 
-				if(this.insertCode(0, this.project.getLanguage().getInstructionSet().getStructureEntry()).getMessageType() == MessageType.SUCCESS) {
+				if(this.insertCode(0, this.retrieveInstruction("init")).getMessageType() != MessageType.ERROR) {
 					if(parents.size() > 0) {
 						this.project.getStorage().loadData(parents.get(parents.size() - 1)); // Pop
 					}

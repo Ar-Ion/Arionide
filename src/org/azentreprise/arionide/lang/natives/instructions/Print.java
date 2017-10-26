@@ -12,7 +12,8 @@ public class Print implements NativeInstruction {
 		this.message = message;
 	}
 
-	public void execute(NativeDataCommunicator communicator, List<Integer> references) {
+	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
 		communicator.info(this.message, 0xFFFFFF);
+		return true;
 	}
 }
