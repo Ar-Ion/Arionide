@@ -96,6 +96,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 		this.theManager = new AppManager(theInstance, this, dispatcher);
 		this.caps.setDoubleBuffered(true);
 		this.caps.setHardwareAccelerated(true);
+		this.caps.setDepthBits(32);
 		this.window = GLWindow.create(this.caps);
 		this.animator = new FPSAnimator(this.window, 60, true);
 
@@ -159,9 +160,6 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	public void display(GLAutoDrawable arg0) {
 		if(this.thread != null) {
 			this.thread.incrementTicks();
-			
-			this.gl.glClearBufferfv(GL4.GL_COLOR, 0, this.clearColor);
-	        this.gl.glClearBufferfv(GL4.GL_DEPTH, 0, this.clearDepth);
 	        
 	        this.core.render(this);
 	        

@@ -36,16 +36,17 @@ import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.core.RenderingScene;
 import org.azentreprise.arionide.ui.menu.edition.Coloring;
-import org.joml.AxisAngle4f;
-import org.joml.Quaternionf;
+import org.joml.AxisAngle4d;
+import org.joml.Quaterniond;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 public class WorldGeometry implements Geometry {
 	
-	private static final float structInitialSize = 1.0f;
-	private static final float structRelSizeHierarchy = 0.1f;
-	private static final float structRelSizeInheritance = 0.5f;
+	private static final double structInitialSize = 1.0f;
+	private static final double structRelSizeHierarchy = 0.1f;
+	private static final double structRelSizeInheritance = 0.5f;
 	
 	private final List<WorldElement> hierarchy = Collections.synchronizedList(new ArrayList<>());
 	private final List<WorldElement> inheritance = Collections.synchronizedList(new ArrayList<>());
@@ -93,29 +94,29 @@ public class WorldGeometry implements Geometry {
 			
 			WorldElement.setAxisGenerator(WorldElement.RANDOM_GENERATOR);
 			WorldElement.setBaseGenerator(WorldElement.RANDOM_GENERATOR.get()::cross);
-			this.build(this.hierarchy, storage.getHierarchy(), metaData, structRelSizeHierarchy, 0.75f);
+			this.build(this.hierarchy, storage.getHierarchy(), metaData, structRelSizeHierarchy, 0.75d);
 			
-			WorldElement.setAxisGenerator(() -> new Vector3f(0.0f, 1.0f, 0.0f));
-			WorldElement.setBaseGenerator((axis) -> new Vector3f(1.0f, 1.0f, 0.0f));
-			this.build(this.inheritance, this.inheritanceBuffer, metaData, structRelSizeInheritance, 2.5f);
+			WorldElement.setAxisGenerator(() -> new Vector3d(0.0d, 1.0d, 0.0d));
+			WorldElement.setBaseGenerator((axis) -> new Vector3d(1.0d, 1.0d, 0.0d));
+			this.build(this.inheritance, this.inheritanceBuffer, metaData, structRelSizeInheritance, 2.5d);
 		}
 	}
 	
-	private void build(List<WorldElement> list, List<HierarchyElement> elements, Map<Integer, StructureMeta> metaData, float structRelSize, float subStructDistCenterRelSize) {
+	private void build(List<WorldElement> list, List<HierarchyElement> elements, Map<Integer, StructureMeta> metaData, double structRelSize, double subStructDistCenterRelSize) {
 		synchronized(list) {
-			WorldElement main = new WorldElement(-1, null, new Vector3f(), new Vector4f(), new Vector3f(), -1.0f, true);
-			float virtualSize = structInitialSize / structRelSize;
+			WorldElement main = new WorldElement(-1, null, new Vector3d(), new Vector4f(), new Vector3f(), -1.0f, true);
+			double virtualSize = structInitialSize / structRelSize;
 			boolean flag = false;
 			this.build(main, list, elements, metaData, virtualSize, structRelSize, subStructDistCenterRelSize, flag);
 		}
 	}
 	
-	private void build(WorldElement parent, List<WorldElement> list, List<HierarchyElement> elements, Map<Integer, StructureMeta> metaData, float size, float structRelSize, float subStructDistCenterRelSize, boolean flag) {
+	private void build(WorldElement parent, List<WorldElement> list, List<HierarchyElement> elements, Map<Integer, StructureMeta> metaData, double size, double structRelSize, double subStructDistCenterRelSize, boolean flag) {
 		if(elements != null && elements.size() > 0) {
 			size *= structRelSize;
 
-			Quaternionf quaternion = new Quaternionf(new AxisAngle4f((float) Math.PI * 2.0f / (elements.size() - (elements.contains(new HierarchyElement(-1, null)) ? 1 : 0)), parent.getAxis()));
-			Vector3f base = elements.size() != 1 || size != structInitialSize ? parent.getBaseVector() : new Vector3f();
+			Quaterniond quaternion = new Quaterniond(new AxisAngle4d(Math.PI * 2.0d / (elements.size() - (elements.contains(new HierarchyElement(-1, null)) ? 1 : 0)), parent.getAxis()));
+			Vector3d base = elements.size() != 1 || size != structInitialSize ? parent.getBaseVector() : new Vector3d();
 			
 			for(HierarchyElement element : elements) {				
 				if(element.getID() < 0) {
@@ -123,7 +124,7 @@ public class WorldGeometry implements Geometry {
 					continue;
 				} // cf. Inheritance Generator
 				
-				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(subStructDistCenterRelSize * size / structRelSize).add(parent.getCenter());
+				Vector3d position = new Vector3d(base.rotate(quaternion)).mul(subStructDistCenterRelSize * size / structRelSize).add(parent.getCenter());
 				
 				StructureMeta structMeta = metaData.get(element.getID());
 
@@ -198,11 +199,11 @@ public class WorldGeometry implements Geometry {
 		}
 	}
 	
-	protected float getSizeForGeneration(int count) {
-		return this.current != this.hierarchy ? -666.0f : (float) Math.pow(structRelSizeHierarchy, count);
+	protected double getSizeForGeneration(int count) {
+		return this.current != this.hierarchy ? -666.0d : (double) Math.pow(structRelSizeHierarchy, count);
 	}
 
-	public List<WorldElement> getCollisions(Vector3f player) {
+	public List<WorldElement> getCollisions(Vector3d player) {
 		synchronized(this.current) {
 			List<WorldElement> collisions = new ArrayList<>();
 			

@@ -14,11 +14,11 @@ public class CameraDecoder implements Decoder<CameraInfo> {
 				
 		String[] parts = data.split("\\|");
 		
-		float x = Float.parseFloat(parts[0]);
-		float y = Float.parseFloat(parts[1]);
-		float z = Float.parseFloat(parts[2]);
-		float yaw = Float.parseFloat(parts[3]);
-		float pitch = Float.parseFloat(parts[4]);
+		double x = Double.parseDouble(parts[0]);
+		double y = Double.parseDouble(parts[1]);
+		double z = Double.parseDouble(parts[2]);
+		double yaw = Double.parseDouble(parts[3]);
+		double pitch = Double.parseDouble(parts[4]);
 
 		return new CameraInfo(x, y, z, yaw, pitch);
 	}

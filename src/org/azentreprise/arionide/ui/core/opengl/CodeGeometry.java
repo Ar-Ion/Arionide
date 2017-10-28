@@ -32,16 +32,17 @@ import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.menu.edition.Coloring;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 public class CodeGeometry implements Geometry {
 	
-	private static final float structRelSize = 0.05f;
-	private static final float structRelDistance = 0.1f;
-	private static final float axisEntropy = 1.0f;
-	private static final float axisCorrection = 0.2f;
-	private static final float axisCorrectionFlexibility = 5.0f;
+	private static final double structRelSize = 0.05d;
+	private static final double structRelDistance = 0.1d;
+	private static final double axisEntropy = 1.0d;
+	private static final double axisCorrection = 0.2d;
+	private static final double axisCorrectionFlexibility = 5.0d;
 
 	private final Random random = new Random();
 	private final List<WorldElement> elements = Collections.synchronizedList(new ArrayList<>());
@@ -69,9 +70,9 @@ public class CodeGeometry implements Geometry {
 		}
 	}
 	
-	private void build(WorldElement parent, Map<Integer, StructureMeta> meta, List<HierarchyElement> code, float size) {
-		Vector3f axis = parent.getAxis();
-		Vector3f position = parent.getCenter();
+	private void build(WorldElement parent, Map<Integer, StructureMeta> meta, List<HierarchyElement> code, double size) {
+		Vector3d axis = parent.getAxis();
+		Vector3d position = parent.getCenter();
 		
 		for(HierarchyElement element : code) {
 			StructureMeta structMeta = meta.get(element.getID());
@@ -88,31 +89,31 @@ public class CodeGeometry implements Geometry {
 					axis.normalize(parent.getSize() * structRelDistance);
 					
 					WorldElement.setAxisGenerator(() -> WorldElement.RANDOM_GENERATOR.get().cross(axis));
-					WorldElement object = new WorldElement(element.getID(), resolved.getName(), new Vector3f(position), color, spotColor, size, structMeta.isAccessAllowed());
+					WorldElement object = new WorldElement(element.getID(), resolved.getName(), new Vector3d(position), color, spotColor, size, structMeta.isAccessAllowed());
 					this.elements.add(object);
 					
 					this.build(parent, meta, element.getChildren(), size);
 					position.add(axis);
-					this.applyDerivation(axis, new Vector3f(position).sub(parent.getCenter()).div(parent.getSize()).mul(2.0f));
+					this.applyDerivation(axis, new Vector3d(position).sub(parent.getCenter()).div(parent.getSize()).mul(2.0f));
 				}
 			}
 		}
 	}
 	
-	private void applyDerivation(Vector3f axis, Vector3f relPos) {
-		float length = relPos.length();
+	private void applyDerivation(Vector3d axis, Vector3d relPos) {
+		double length = relPos.length();
 		
-		Vector3f entropy = new Vector3f(this.random.nextFloat() - 0.5f, this.random.nextFloat() - 0.5f, this.random.nextFloat() - 0.5f);
-		Vector3f correction = new Vector3f(axis).reflect(new Vector3f(relPos.negate().normalize()));
+		Vector3d entropy = new Vector3d(this.random.nextDouble() - 0.5d, this.random.nextFloat() - 0.5d, this.random.nextFloat() - 0.5d);
+		Vector3d correction = new Vector3d(axis).reflect(new Vector3d(relPos.negate().normalize()));
 		
 		entropy.normalize(axis.length() * axisEntropy);
-		correction.normalize(axis.length() * axisCorrection * (float) Math.pow(length, axisCorrectionFlexibility));
+		correction.normalize(axis.length() * axisCorrection * Math.pow(length, axisCorrectionFlexibility));
 
 		axis.add(entropy);
 		axis.add(correction);
 	}
 	
-	public List<WorldElement> getCollisions(Vector3f player) {
+	public List<WorldElement> getCollisions(Vector3d player) {
 		synchronized(this.elements) {
 			List<WorldElement> collisions = new ArrayList<>();
 			

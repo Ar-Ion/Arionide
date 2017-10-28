@@ -2,13 +2,13 @@ package org.azentreprise.arionide.coders;
 
 public class CameraInfo {
 	
-	private final float x;
-	private final float y;
-	private final float z;
-	private final float yaw;
-	private final float pitch;
+	private final double x;
+	private final double y;
+	private final double z;
+	private final double yaw;
+	private final double pitch;
 
-	public CameraInfo(float x, float y, float z, float yaw, float pitch) {
+	public CameraInfo(double x, double y, double z, double yaw, double pitch) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -16,23 +16,23 @@ public class CameraInfo {
 		this.pitch = pitch;
 	}
 	
-	public float getX() {
+	public double getX() {
 		return this.x;
 	}
 	
-	public float getY() {
+	public double getY() {
 		return this.y;
 	}
 	
-	public float getZ() {
+	public double getZ() {
 		return this.z;
 	}
 	
-	public float getYaw() {
+	public double getYaw() {
 		return this.yaw;
 	}
 	
-	public float getPitch() {
+	public double getPitch() {
 		return this.pitch;
 	}
 }

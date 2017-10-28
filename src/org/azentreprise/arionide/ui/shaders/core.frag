@@ -12,9 +12,9 @@ in vec3 fragNormal;
 out vec4 outColor;
 
 uniform vec4 color;
-uniform vec3 camera;
+uniform dvec3 camera;
 uniform vec3 specularColor;
-uniform vec3 lightPosition;
+uniform dvec3 lightPosition;
 uniform float ambientFactor;
 
 float rand(float id) {
@@ -22,7 +22,7 @@ float rand(float id) {
 }
 
 float sunBrightness() {
-    return pow(max(0.0, dot(normalize(fragNormal), normalize(lightPosition - camera))), sunEmissionConcentration);
+    return pow(max(0.0, float(dot(normalize(fragNormal), normalize(lightPosition - camera)))), sunEmissionConcentration);
 }
 
 void main() {
@@ -34,16 +34,16 @@ void main() {
         float brightness = sunBrightness();
         outColor = vec4(brightness, brightness, brightness, 1.0);
     } else {
-        vec3 normal = normalize(fragNormal);
-        vec3 lightDirection = normalize(lightPosition);
-        vec3 cameraDirection = normalize(camera - vec3(fragVertex));
-        vec3 reflectionDirection = reflect(-lightDirection, normal);
+        dvec3 normal = normalize(dvec3(fragNormal));
+        dvec3 lightDirection = normalize(lightPosition);
+        dvec3 cameraDirection = normalize(camera - dvec3(fragVertex));
+        dvec3 reflectionDirection = reflect(-lightDirection, normal);
         
-        float diffuseFactor = max(0.0, dot(normal, lightDirection));
+        float diffuseFactor = max(0.0, float(dot(normal, lightDirection)));
         float specularFactor = 0.0;
         
         if(diffuseFactor > 0.0) {
-            specularFactor = pow(max(0.0, dot(reflectionDirection, cameraDirection)), shininess);
+            specularFactor = pow(max(0.0, float(dot(reflectionDirection, cameraDirection))), shininess);
         }
         
         vec3 ambient = ambientFactor * color.xyz;
