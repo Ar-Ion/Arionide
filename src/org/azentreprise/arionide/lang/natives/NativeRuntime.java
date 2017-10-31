@@ -31,7 +31,6 @@ import org.azentreprise.arionide.lang.Validator;
 import org.azentreprise.arionide.lang.natives.instructions.Call;
 import org.azentreprise.arionide.lang.natives.instructions.Init;
 import org.azentreprise.arionide.lang.natives.instructions.NativeInstruction;
-import org.azentreprise.arionide.lang.natives.instructions.Nothing;
 import org.azentreprise.arionide.lang.natives.instructions.Print;
 import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
@@ -189,8 +188,6 @@ public class NativeRuntime extends Runtime {
 		switch(instruction) {
 			case "init":
 				return new Init();
-			case "nothing":
-				return new Nothing();
 			case "print":
 				return new Print(spec.getElements().get(0).getValue());
 			case "call":

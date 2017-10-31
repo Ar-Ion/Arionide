@@ -64,7 +64,6 @@ import org.azentreprise.arionide.ui.menu.code.Code;
 import org.azentreprise.arionide.ui.primitives.GLCoordinates;
 import org.azentreprise.arionide.ui.shaders.Shaders;
 import org.joml.Matrix4d;
-import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector4d;
@@ -75,7 +74,8 @@ import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLContext;
 
-public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {	
+public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
+	
 	private static final int stars = 1024;
 	
 	private static final int structureRenderingQuality = 32;
@@ -95,6 +95,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private static final double fov = Math.toRadians(60.0d);
 	
 	private static final double skyDistance = 32.0d;
+	
+	private static final float timeResolution = 0.1f;
+	
 			
 	private final OpenGLDrawingContext context;
 	private final IEventDispatcher dispatcher;
@@ -135,6 +138,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
 	private int fxFBOTexture;
 	private int fxLightPosition;
+	private int fxExposure;
 
 	private Project project;
 	
@@ -164,6 +168,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private Vector3d velocity = new Vector3d();
 	private Vector3d acceleration = new Vector3d();
 	private double generalAcceleration = initialAcceleration;
+	
+	private long lastPositionUpdate = System.currentTimeMillis();
 	
 	public OpenGLCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher) {
 		this.context = (OpenGLDrawingContext) context;
@@ -279,6 +285,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private void loadFXUniforms(GL4 gl) {
 		this.fxFBOTexture = gl.glGetUniformLocation(this.fx, "texture");
 		this.fxLightPosition = gl.glGetUniformLocation(this.fx, "lightPosition");
+		this.fxExposure = gl.glGetUniformLocation(this.fx, "exposure");
 	}
 	
 	private void initFXFramebuffer(GL4 gl) {
@@ -437,9 +444,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				
 		/* Setup FX uniforms */
 		gl.glUniform1i(this.fxFBOTexture, 2);
-		gl.glUniform2f(this.fxLightPosition, (float) (point.x) + 0.5f, (float) (-point.y) + 0.5f);
-		
-		System.out.println((float) (point.y / point.z) + 0.5f);
+		gl.glUniform2f(this.fxLightPosition, (float) (point.x / point.z) + 0.5f, (float) (point.y / point.z) + 0.5f);
+		gl.glUniform1f(this.fxExposure, 0.002f / (4 * this.inside.size() + 1));
 		
 		gl.glBindVertexArray(this.fxVAO);
 		gl.glDrawArrays(GL4.GL_TRIANGLE_STRIP, 0, 4);
@@ -531,13 +537,16 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private void updatePlayer() {
-		this.velocity.x += (float) -(Math.cos(Math.PI / 2 + this.yaw) * this.acceleration.x + Math.cos(this.yaw) * this.acceleration.z);
+		this.velocity.x += -Math.cos(Math.PI / 2 + this.yaw) * this.acceleration.x - Math.cos(this.yaw) * this.acceleration.z;
 		this.velocity.y += this.acceleration.y;
-		this.velocity.z += (float) -(Math.sin(Math.PI / 2 + this.yaw) * this.acceleration.x + Math.sin(this.yaw) * this.acceleration.z);
+		this.velocity.z += -Math.sin(Math.PI / 2 + this.yaw) * this.acceleration.x - Math.sin(this.yaw) * this.acceleration.z;
 		
 		this.velocity.mul(1.0f - spaceFriction);
 		
-		this.player.add(this.velocity);
+		long deltaTime = System.currentTimeMillis() - this.lastPositionUpdate;
+		this.lastPositionUpdate += deltaTime;
+		
+		this.player.add(new Vector3d(this.velocity).mul(deltaTime * timeResolution));
 	}
 	
 	private void updateCamera() {
