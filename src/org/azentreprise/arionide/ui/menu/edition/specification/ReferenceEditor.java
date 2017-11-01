@@ -6,6 +6,7 @@ import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.menu.Menu;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
 public class ReferenceEditor extends SpecificationElementEditor {
@@ -36,7 +37,8 @@ public class ReferenceEditor extends SpecificationElementEditor {
 				break;
 			case setParameters:
 				if(reference.getParameters() != null) {
-					
+					Menu menu = new ReferenceParameters(this.getAppManager(), this, reference.getParameters());
+					menu.show();
 				} else {
 					this.getAppManager().getEventDispatcher().fire(new MessageEvent("This reference is not callable", MessageType.ERROR));
 				}

@@ -13,9 +13,9 @@ import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
 public abstract class SpecificationElementEditor extends Menu {
 	
-	private static final String setName = "Set name";
-	private static final String delete = "Delete";
 	private static final String back = "Back";
+	private static final String delete = "Delete";
+	private static final String setName = "Set name";
 
 	private final SpecificMenu parent;
 	private int id;
@@ -52,6 +52,13 @@ public abstract class SpecificationElementEditor extends Menu {
 	
 	public void onClick(String element) {
 		switch(element) {
+			case back:
+				this.parent.show();
+				break;
+			case delete:
+				Menu confirm = new Confirm(this.getAppManager(), this, this::delete, "Do you really want to delete this element?");
+				confirm.show();
+				break;
 			case setName:
 				new Thread(() -> {
 					String name = JOptionPane.showInputDialog(null, "Enter the specification element's new name", "Specification name editor", JOptionPane.PLAIN_MESSAGE);
@@ -64,21 +71,13 @@ public abstract class SpecificationElementEditor extends Menu {
 							this.getAppManager().getEventDispatcher().fire(message);
 						}
 					}
+					
+					this.setTarget(this.specification, this.id);
 				}).start();
-				
-				this.setTarget(this.specification, this.id);
-				
-				break;
-			case delete:
-				Menu confirm = new Confirm(this.getAppManager(), this, this::delete, "Do you really want to delete this element?");
-				confirm.show();
-				break;
-			case back:
-				this.parent.show();
 		}
 	}
 	
-	public void delete() {
+	private void delete() {
 		Project project = this.getAppManager().getWorkspace().getCurrentProject();
 		
 		if(project != null) {

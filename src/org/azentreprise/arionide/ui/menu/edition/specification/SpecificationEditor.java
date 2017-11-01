@@ -35,17 +35,21 @@ import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 import org.azentreprise.arionide.ui.menu.MainMenus;
+import org.azentreprise.arionide.ui.menu.Menu;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
 public class SpecificationEditor extends SpecificMenu {
 		
-	private final DataEditor editor;
+	private final DataEditor dataEditor;
+	private final ReferenceEditor referenceEditor;
 	
 	private Specification specification;
 	
 	protected SpecificationEditor(AppManager manager) {
 		super(manager);
-		this.editor = new DataEditor(manager, this);
+		
+		this.dataEditor = new DataEditor(manager, this);
+		this.referenceEditor = new ReferenceEditor(manager, this);
 	}
 
 	public void setCurrent(WorldElement element) {
@@ -68,8 +72,17 @@ public class SpecificationEditor extends SpecificMenu {
 	
 	public void onClick(int id) {
 		if(id < this.getElements().size() - 3) {
-			this.editor.setTarget(this.specification, id);
-			this.editor.show();
+			SpecificationElement element = this.specification.getElements().get(id);
+			
+			if(element instanceof Data) {
+				this.dataEditor.setTarget(this.specification, id);
+				this.dataEditor.show();	
+			} else if(element instanceof Reference) {
+				this.referenceEditor.setTarget(this.specification, id);
+				this.referenceEditor.show();
+			} else {
+				throw new RuntimeException("Strange object found");
+			}
 		} else if(id == this.getElements().size() - 3) {
 			new Thread(() -> {
 				String name = JOptionPane.showInputDialog(null, "Enter the name for the new data", "New data", JOptionPane.PLAIN_MESSAGE);
@@ -92,8 +105,7 @@ public class SpecificationEditor extends SpecificMenu {
 					MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().addSpecificationElement(this.specification, element);
 					this.getAppManager().getEventDispatcher().fire(event);
 					
-					ReferenceParametersEditor selector = new ReferenceParametersEditor(this.getAppManager(), this, this.specification, this.specification.getElements().size() - 1);
-					selector.show();
+					this.reload();
 				}
 			}).start();
 		} else {
