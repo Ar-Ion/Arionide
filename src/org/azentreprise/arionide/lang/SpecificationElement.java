@@ -22,22 +22,14 @@ package org.azentreprise.arionide.lang;
 
 import java.io.Serializable;
 
-public class SpecificationElement implements Serializable, Cloneable {
+public abstract class SpecificationElement implements Serializable {
 	private static final long serialVersionUID = -2821188218676151203L;
 
 	private String name;
-	private int type;
 	private String value;
 	
-	protected SpecificationElement(SpecificationElement model) {
-		this.name = model.name;
-		this.type = model.type;
-		this.value = model.value;
-	}
-	
-	public SpecificationElement(String name, int type, String value) {
+	public SpecificationElement(String name, String value) {
 		this.name = name;
-		this.type = type;
 		this.value = value;
 	}
 	
@@ -47,14 +39,6 @@ public class SpecificationElement implements Serializable, Cloneable {
 	
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public int getType() {
-		return this.type;
-	}
-	
-	public void setType(int type) {
-		this.type = type;
 	}
 	
 	public String getValue() {
@@ -68,6 +52,10 @@ public class SpecificationElement implements Serializable, Cloneable {
 		}
 		
 		return realValue;
+	}
+	
+	protected String getRawValue() {
+		return this.value;
 	}
 	
 	public void setValue(String value) {
@@ -93,17 +81,11 @@ public class SpecificationElement implements Serializable, Cloneable {
 	public boolean equals(Object other) {
 		if(other instanceof SpecificationElement) {
 			SpecificationElement casted = (SpecificationElement) other;
-			return this.name == casted.name && this.type == casted.type;
+			return this.name == casted.name;
 		} else {
 			return false;
 		}
 	}
 	
-	public Object clone() {
-		try {
-			return super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException(e);
-		}
-	}
+	public abstract SpecificationElement clone();
 }

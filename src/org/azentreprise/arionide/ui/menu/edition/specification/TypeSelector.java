@@ -18,9 +18,10 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.menu.edition;
+package org.azentreprise.arionide.ui.menu.edition.specification;
 
 import org.azentreprise.arionide.events.MessageEvent;
+import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.TypeManager;
 import org.azentreprise.arionide.lang.Types;
@@ -44,7 +45,7 @@ public class TypeSelector extends Menu {
 		
 		Types types = manager.getWorkspace().getCurrentProject().getLanguage().getTypes();
 				
-		TypeManager typeManager = types.getTypeManager(this.specification.getElements().get(id).getType());
+		TypeManager typeManager = types.getTypeManager(((Data) this.specification.getElements().get(id)).getType());
 		
 		if(typeManager != null) {
 			this.currentType = typeManager.toString();

@@ -39,7 +39,7 @@ public class InheritanceMenu extends SpecificMenu {
 	
 	private List<Integer> parents;
 	
-	protected InheritanceMenu(AppManager manager) {
+	public InheritanceMenu(AppManager manager) {
 		super(manager);
 		this.editor = new InheritanceEditor(manager, this);
 	}

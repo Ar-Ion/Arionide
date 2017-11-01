@@ -35,7 +35,7 @@ public class Specification implements Serializable, Cloneable {
 	
 	public Specification(Specification model) {
 		this.id = model.id;
-		this.elements = Collections.synchronizedList(model.elements.stream().map(SpecificationElement::new).collect(Collectors.toList()));
+		this.elements = Collections.synchronizedList(model.elements.stream().map(SpecificationElement::clone).collect(Collectors.toList()));
 	}
 	
 	public Specification(int id, SpecificationElement... elements) {

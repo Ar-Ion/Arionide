@@ -19,7 +19,7 @@ public class LanguageSelection extends SpecificMenu {
 
 	private int current;
 	
-	protected LanguageSelection(AppManager manager) {
+	public LanguageSelection(AppManager manager) {
 		super(manager, "<Error>");
 	}
 	

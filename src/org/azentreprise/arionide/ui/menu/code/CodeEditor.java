@@ -24,6 +24,8 @@ import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
+import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
@@ -111,8 +113,15 @@ public class CodeEditor extends Menu {
 				.findAny()
 				.orElseThrow(RuntimeException::new);
 			
-			Menu menu = new TypeEditor(this.getAppManager(), this, spec);
-			menu.show();
+			if(spec instanceof Data) {
+				Menu menu = new TypeEditor(this.getAppManager(), this, (Data) spec);
+				menu.show();
+			} else if(spec instanceof Reference) {
+				Menu menu = new ReferenceEditor(this.getAppManager(), this, (Reference) spec);
+				menu.show();
+			} else {
+				throw new RuntimeException("Strange object found");
+			}
 		}
 	}
 	

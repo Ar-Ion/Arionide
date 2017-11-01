@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 import org.azentreprise.arionide.lang.CoreDataManager;
 import org.azentreprise.arionide.lang.TypeManager;
 
-public class ReferenceTypeManager implements TypeManager {
+public class StructureTypeManager implements TypeManager {
 	public List<String> getSuggestions(CoreDataManager cdm) {
 		List<String> suggestions = new ArrayList<>();
 		

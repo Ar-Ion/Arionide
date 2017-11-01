@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -27,9 +28,10 @@ import java.util.Map;
 
 import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.events.MessageType;
+import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.InstructionSet;
+import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.Specification;
-import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.project.Project;
 
 public class NativeInstructionSet extends InstructionSet {
@@ -49,11 +51,13 @@ public class NativeInstructionSet extends InstructionSet {
 			
 			this.install("init", 0, parents, new Specification(this.getProject().getDataManager().allocSpecification()));
 						
-			this.install("print", 15, parents, new Specification(this.getProject().getDataManager().allocSpecification(), 
-					new SpecificationElement("message", NativeTypes.STR, "debug")));
+			this.install("print", 15, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(), 
+					new Data("message", "debug", NativeTypes.TEXT)));
 			
-			this.install("call", 30, parents, new Specification(this.getProject().getDataManager().allocSpecification(), 
-					new SpecificationElement("structure", NativeTypes.REF, null)));
+			this.install("call", 30, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(),
+					new Reference("structure", null, new ArrayList<>())));
 		} else {
 			this.retrieve("init");
 			this.retrieve("print");

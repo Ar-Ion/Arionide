@@ -28,6 +28,7 @@ import java.util.function.Consumer;
 import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
+import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.ui.menu.edition.Coloring;
@@ -301,7 +302,7 @@ public class DataManager {
 	
 
 	public MessageEvent refactorSpecificationType(Specification spec, int id, int newType) {
-		this.doForeachConnectedSpecification(spec, id, l -> l.getElements().get(id).setType(newType));
+		this.doForeachConnectedSpecification(spec, id, l -> ((Data) l.getElements().get(id)).setType(newType));
 		
 		this.storage.saveStructureMeta();
 		

@@ -30,55 +30,45 @@ import org.azentreprise.arionide.lang.Validator;
 
 public class NativeTypes implements Types {
 	
-	public static final int VAR = 0x0;
-	public static final int REF = 0x1;
-	public static final int INT = 0x2;
-	public static final int STR = 0x3;
-	public static final int OBJ = 0x4;
+	public static final int INTEGER = 0x1;
+	public static final int TEXT = 0x2;
+	public static final int STRUCTURE = 0x3;
 	
-	private final TypeManager intTypeManager = new IntegerTypeManager();
-	private final TypeManager strTypeManager = new StringTypeManager();
-	private final TypeManager refTypeManager = new ReferenceTypeManager();
+	private final TypeManager structureTypeManager = new StructureTypeManager();
+	private final TypeManager integerTypeManager = new IntegerTypeManager();
+	private final TypeManager textTypeManager = new StringTypeManager();
 
-	private final Validator intValidator = new IntegerValidator();
-	private final Validator strValidator = new DummyValidator();
-	private final Validator refValidator = new ReferenceValidator();
+	private final Validator structureValidator = new StructureValidator();
+	private final Validator integerValidator = new IntegerValidator();
+	private final Validator textValidator = new DummyValidator();
 
 	public TypeManager getTypeManager(int type) {		
 		switch(type) {
-			case VAR:
-				break;
-			case REF:
-				return this.refTypeManager;
-			case INT:
-				return this.intTypeManager;
-			case STR:
-				return this.strTypeManager;
-			case OBJ:
-				break;
+			case STRUCTURE:
+				return this.structureTypeManager;
+			case INTEGER:
+				return this.integerTypeManager;
+			case TEXT:
+				return this.textTypeManager;
 		}
 		
 		return null;
 	}
 	
 	public Validator getValidator(int type) {
-			switch(type) {
-			case VAR:
-				break;
-			case REF:
-				return this.refValidator;
-			case INT:
-				return this.intValidator;
-			case STR:
-				return this.strValidator;
-			case OBJ:
-				break;
+		switch(type) {
+		case STRUCTURE:
+			return this.structureValidator;
+		case INTEGER:
+			return this.integerValidator;
+		case TEXT:
+			return this.textValidator;
 		}
 		
 		return null;
 	}
 	
 	public List<String> getAvailableTypes() {
-		return Arrays.asList("Variable", "Reference", "Integer", "String", "Object");
+		return Arrays.asList("Structure", "Integer", "Text");
 	}
 }

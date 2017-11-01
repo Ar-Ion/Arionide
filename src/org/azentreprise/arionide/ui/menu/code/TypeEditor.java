@@ -23,6 +23,7 @@ package org.azentreprise.arionide.ui.menu.code;
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.lang.CoreDataManager;
+import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.Language;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.TypeManager;
@@ -42,7 +43,7 @@ public class TypeEditor extends Menu {
 	
 	private boolean eventAborted = false;
 	
-	public TypeEditor(AppManager manager, Menu parent, SpecificationElement element) {
+	public TypeEditor(AppManager manager, Menu parent, Data element) {
 		super(manager);
 		
 		this.parent = parent;
@@ -110,6 +111,6 @@ public class TypeEditor extends Menu {
 	}
 	
 	public String getDescription() {
-		return this.typeManager != null ? this.element.getName() + ": " + (this.element.getValue() != null ? this.element.getValue() : "undefined") : "Error: the type is undefined";
+		return this.element.toString();
 	}
 }

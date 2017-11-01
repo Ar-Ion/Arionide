@@ -18,14 +18,17 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.menu.edition;
+package org.azentreprise.arionide.ui.menu.edition.specification;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
+import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.project.Storage;
@@ -34,15 +37,15 @@ import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
-public class SpecificationMenu extends SpecificMenu {
+public class SpecificationEditor extends SpecificMenu {
 		
-	private final SpecificationEditor editor;
+	private final DataEditor editor;
 	
 	private Specification specification;
 	
-	protected SpecificationMenu(AppManager manager) {
+	protected SpecificationEditor(AppManager manager) {
 		super(manager);
-		this.editor = new SpecificationEditor(manager, this);
+		this.editor = new DataEditor(manager, this);
 	}
 
 	public void setCurrent(WorldElement element) {
@@ -57,25 +60,39 @@ public class SpecificationMenu extends SpecificMenu {
 			
 			elements.clear();
 			elements.addAll(this.specification.getElements().stream().map(SpecificationElement::getName).collect(Collectors.toList()));
-			elements.add("Add");
+			elements.add("Add data");
+			elements.add("Add reference");
 			elements.add("Cancel");
 		}
 	}
 	
 	public void onClick(int id) {
-		if(id < this.getElements().size() - 2) {
+		if(id < this.getElements().size() - 3) {
 			this.editor.setTarget(this.specification, id);
 			this.editor.show();
-		} else if(id == this.getElements().size() - 2){
+		} else if(id == this.getElements().size() - 3) {
 			new Thread(() -> {
-				String name = JOptionPane.showInputDialog(null, "Enter the new specification element's name", "New specification element", JOptionPane.PLAIN_MESSAGE);
+				String name = JOptionPane.showInputDialog(null, "Enter the name for the new data", "New data", JOptionPane.PLAIN_MESSAGE);
 				
 				if(name != null) {
-					SpecificationElement element = new SpecificationElement(name, -1, null);
+					SpecificationElement element = new Data(name, null, -1);
 					MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().addSpecificationElement(this.specification, element);
 					this.getAppManager().getEventDispatcher().fire(event);
 					
 					TypeSelector selector = new TypeSelector(this.getAppManager(), this, this.specification, this.specification.getElements().size() - 1);
+					selector.show();
+				}
+			}).start();
+		} else if(id == this.getElements().size() - 2) {
+			new Thread(() -> {
+				String name = JOptionPane.showInputDialog(null, "Enter the name for the new reference", "New reference", JOptionPane.PLAIN_MESSAGE);
+				
+				if(name != null) {
+					SpecificationElement element = new Reference(name, null, new ArrayList<>());
+					MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().addSpecificationElement(this.specification, element);
+					this.getAppManager().getEventDispatcher().fire(event);
+					
+					ReferenceParametersSelector selector = new ReferenceParametersSelector(this.getAppManager(), this, this.specification, this.specification.getElements().size() - 1);
 					selector.show();
 				}
 			}).start();
@@ -85,6 +102,6 @@ public class SpecificationMenu extends SpecificMenu {
 	}
 	
 	public String getDescription() {
-		return "Specification menu for " + super.getDescription();
+		return "Specification editor for " + super.getDescription();
 	}
 }

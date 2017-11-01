@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.Runtime;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
@@ -168,20 +170,23 @@ public class NativeRuntime extends Runtime {
 	
 	private NativeInstruction compileInstruction(int symID, String instruction, Specification spec, List<Integer> nextElements) {
 		for(SpecificationElement element : spec.getElements()) {
-			Validator validator = this.getProject().getLanguage().getTypes().getValidator(element.getType());
-			
-			if(validator == null || !validator.validate(element.getValue())) {
-				this.info("Invalid type", 0xFF6000);
-				return null;
-			}
-			
-			if(element.getType() == NativeTypes.REF) {
+			if(element instanceof Data) {
+				Validator validator = this.getProject().getLanguage().getTypes().getValidator(((Data) element).getType());
+				
+				if(validator == null || !validator.validate(element.getValue())) {
+					this.info("Invalid type", 0xFF6000);
+					return null;
+				}
+			} else if(element instanceof Reference) {
 				try {
 					nextElements.add(Integer.parseInt(element.getValue()));
 				} catch(NumberFormatException e) {
 					this.info("Invalid reference", 0xFF6000);
 					return null;
 				}
+			} else {
+				this.info("Strange object detected: " + element.toString(), 0xFF6000);
+				return null;
 			}
 		}
 		
@@ -195,7 +200,6 @@ public class NativeRuntime extends Runtime {
 			default:
 				this.info("Instruction " + instruction + " is not compilable", 0xFF6000);
 				return null;
-			
 		}
 	}
 	

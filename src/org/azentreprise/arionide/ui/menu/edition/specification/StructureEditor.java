@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.menu.edition;
+package org.azentreprise.arionide.ui.menu.edition.specification;
 
 import javax.swing.JOptionPane;
 
@@ -32,6 +32,9 @@ import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
 import org.azentreprise.arionide.ui.menu.Confirm;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
+import org.azentreprise.arionide.ui.menu.edition.Coloring;
+import org.azentreprise.arionide.ui.menu.edition.InheritanceMenu;
+import org.azentreprise.arionide.ui.menu.edition.LanguageSelection;
 
 public class StructureEditor extends SpecificMenu {
 	
@@ -56,7 +59,7 @@ public class StructureEditor extends SpecificMenu {
 		this.confirmDelete = new Confirm(manager, this, this::delete, "Are you sure you want to delete the structure '$name'?");
 		this.languageSelection = new LanguageSelection(manager);
 		this.inheritanceMenu = new InheritanceMenu(manager);
-		this.specificationMenu = new SpecificationMenu(manager);
+		this.specificationMenu = new SpecificationEditor(manager);
 		
 		this.setMenuCursor(3);
 	}
