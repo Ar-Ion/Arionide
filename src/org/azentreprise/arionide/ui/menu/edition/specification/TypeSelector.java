@@ -43,8 +43,7 @@ public class TypeSelector extends Menu {
 		this.specification = specification;
 		this.id = id;
 		
-		Types types = manager.getWorkspace().getCurrentProject().getLanguage().getTypes();
-				
+		Types types = manager.getWorkspace().getCurrentProject().getLanguage().getTypes();		
 		TypeManager typeManager = types.getTypeManager(((Data) this.specification.getElements().get(id)).getType());
 		
 		if(typeManager != null) {

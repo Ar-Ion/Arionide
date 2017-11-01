@@ -22,7 +22,7 @@ package org.azentreprise.arionide.ui.menu;
 
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.menu.code.Code;
-import org.azentreprise.arionide.ui.menu.edition.specification.StructureEditor;
+import org.azentreprise.arionide.ui.menu.edition.StructureEditor;
 
 public class MainMenus {
 	

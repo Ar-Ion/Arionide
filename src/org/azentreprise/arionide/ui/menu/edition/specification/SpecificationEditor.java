@@ -92,7 +92,7 @@ public class SpecificationEditor extends SpecificMenu {
 					MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().addSpecificationElement(this.specification, element);
 					this.getAppManager().getEventDispatcher().fire(event);
 					
-					ReferenceParametersSelector selector = new ReferenceParametersSelector(this.getAppManager(), this, this.specification, this.specification.getElements().size() - 1);
+					ReferenceParametersEditor selector = new ReferenceParametersEditor(this.getAppManager(), this, this.specification, this.specification.getElements().size() - 1);
 					selector.show();
 				}
 			}).start();

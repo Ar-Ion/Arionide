@@ -35,9 +35,7 @@ public class DataEditor extends SpecificationElementEditor {
 		}
 	}
 	
-	public void onClick(String element) {
-		super.onClick(element);
-		
+	public void onClick(String element) {		
 		switch(element) {
 			case setType:
 				TypeSelector selector = new TypeSelector(this.getAppManager(), this, this.getSpecification(), this.getElementID());
@@ -47,6 +45,8 @@ public class DataEditor extends SpecificationElementEditor {
 				TypeEditor editor = new TypeEditor(this.getAppManager(), this, (Data) this.getElement());
 				editor.show();
 				break;
+			default: 
+				super.onClick(element);
 		}
 	}
 	
