@@ -10,9 +10,10 @@ import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.menu.Confirm;
 import org.azentreprise.arionide.ui.menu.Menu;
+import org.azentreprise.arionide.ui.menu.SpecificMenu;
 import org.azentreprise.arionide.ui.menu.code.TypeEditor;
 
-public class ReferenceParametersEditor extends Menu {
+public class ReferenceParametersEditor extends SpecificMenu {
 
 	private static final String back = "Back";
 	private static final String delete = "Delete";
@@ -22,6 +23,9 @@ public class ReferenceParametersEditor extends Menu {
 
 	private final Menu parent;
 	
+	private Specification spec;
+	private int id;
+	private int dataID;
 	private Data data;
 	private TypeManager type;
 	private String description;
@@ -31,12 +35,15 @@ public class ReferenceParametersEditor extends Menu {
 		this.parent = parent;
 	}
 
-	protected void setTarget(Specification specification, Data data) {
+	protected void setTarget(Specification specification, int id, int dataID, Data data) {
+		this.spec = specification;
+		this.id = id;
+		this.dataID = dataID;
 		this.data = data;
 		this.type = this.getAppManager().getWorkspace().getCurrentProject().getLanguage().getTypes().getTypeManager(data.getType());			
 		this.description = data.getName() + " [" + this.type + "]";
 		
-		if(data.getValue() != null) {
+		if(this.data.getValue() != null) {
 			this.description += " (default: " + data.getValue() + ")";
 		}
 	}
@@ -58,16 +65,16 @@ public class ReferenceParametersEditor extends Menu {
 						Project project = this.getAppManager().getWorkspace().getCurrentProject();
 						
 						if(project != null) {
-							// TODO MessageEvent message = project.getDataManager().refactorSpecificationName(this.specification, this.id, name);
-							// this.getAppManager().getEventDispatcher().fire(message);
+							MessageEvent message = project.getDataManager().refactorParameterName(this.spec, this.id, this.dataID, name);
+							this.getAppManager().getEventDispatcher().fire(message);
 						}
 					}
 				}).start();
 				
 				break;
 			case setType:
-				// TODO TypeSelector selector = new TypeSelector(this.getAppManager(), this, this.getSpecification(), this.getElementID());
-				// selector.show();
+				Menu selector = new ReferenceParameterTypeSelector(this.getAppManager(), this, this.spec, this.id, this.dataID);
+				selector.show();
 				break;
 			case setDefault:
 				TypeEditor editor = new TypeEditor(this.getAppManager(), this, this.data);

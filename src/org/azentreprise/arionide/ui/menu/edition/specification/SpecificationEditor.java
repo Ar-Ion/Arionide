@@ -35,7 +35,6 @@ import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 import org.azentreprise.arionide.ui.menu.MainMenus;
-import org.azentreprise.arionide.ui.menu.Menu;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
 public class SpecificationEditor extends SpecificMenu {
@@ -45,7 +44,7 @@ public class SpecificationEditor extends SpecificMenu {
 	
 	private Specification specification;
 	
-	protected SpecificationEditor(AppManager manager) {
+	public SpecificationEditor(AppManager manager) {
 		super(manager);
 		
 		this.dataEditor = new DataEditor(manager, this);

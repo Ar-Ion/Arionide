@@ -29,6 +29,7 @@ import org.azentreprise.arionide.coders.Coder;
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.ui.menu.edition.Coloring;
@@ -299,10 +300,25 @@ public class DataManager {
 		
 		return new MessageEvent("Name successfully refactored", MessageType.SUCCESS);
 	}
-	
 
 	public MessageEvent refactorSpecificationType(Specification spec, int id, int newType) {
 		this.doForeachConnectedSpecification(spec, id, l -> ((Data) l.getElements().get(id)).setType(newType));
+		
+		this.storage.saveStructureMeta();
+		
+		return new MessageEvent("Type successfully refactored", MessageType.SUCCESS);
+	}
+	
+	public MessageEvent refactorParameterName(Specification spec, int id, int data, String newName) {
+		this.doForeachConnectedSpecification(spec, id, l -> ((Reference) l.getElements().get(id)).getParameters().get(data).setName(newName));
+
+		this.storage.saveStructureMeta();
+		
+		return new MessageEvent("Name successfully refactored", MessageType.SUCCESS);
+	}
+	
+	public MessageEvent refactorParameterType(Specification spec, int id, int data, int newType) {
+		this.doForeachConnectedSpecification(spec, id, l -> ((Reference) l.getElements().get(id)).getParameters().get(data).setType(newType));
 		
 		this.storage.saveStructureMeta();
 		
