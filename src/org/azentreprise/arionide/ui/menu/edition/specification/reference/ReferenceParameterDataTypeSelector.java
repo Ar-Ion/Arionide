@@ -22,6 +22,7 @@ package org.azentreprise.arionide.ui.menu.edition.specification.reference;
 
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.TypeManager;
 import org.azentreprise.arionide.lang.Types;
@@ -46,7 +47,7 @@ public class ReferenceParameterDataTypeSelector extends Menu {
 		this.data = data;
 		
 		Types types = manager.getWorkspace().getCurrentProject().getLanguage().getTypes();		
-		TypeManager typeManager = types.getTypeManager(((Data) this.specification.getElements().get(id)).getType());
+		TypeManager typeManager = types.getTypeManager(((Data) ((Reference) this.specification.getElements().get(id)).getNeededParameters().get(id)).getType());
 		
 		if(typeManager != null) {
 			this.currentType = typeManager.toString();

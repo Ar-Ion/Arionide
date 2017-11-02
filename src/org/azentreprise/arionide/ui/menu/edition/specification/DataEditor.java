@@ -20,9 +20,11 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu.edition.specification;
 
+import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.TypeManager;
+import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 import org.azentreprise.arionide.ui.menu.code.TypeEditor;
@@ -67,6 +69,18 @@ public class DataEditor extends SpecificationElementEditor {
 				break;
 			default: 
 				super.onClick(element);
+		}
+	}
+	
+	public void delete() {
+		Project project = this.getAppManager().getWorkspace().getCurrentProject();
+		
+		if(project != null) {
+			MessageEvent message = project.getDataManager().deleteSpecificationElement(this.getSpecification(), this.getElementID());
+			this.getAppManager().getEventDispatcher().fire(message);
+			
+			this.getParent().reload();
+			this.getParent().show();
 		}
 	}
 	

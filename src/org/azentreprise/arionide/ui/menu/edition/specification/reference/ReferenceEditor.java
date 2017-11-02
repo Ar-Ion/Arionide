@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.lang.Reference;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.menu.Menu;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
@@ -55,6 +56,8 @@ public class ReferenceEditor extends SpecificationElementEditor {
 					this.getAppManager().getEventDispatcher().fire(new MessageEvent("This reference is now callable", MessageType.SUCCESS));
 				}
 				
+				this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
+				
 				break;
 			case setParameters:
 				Menu menu = new ReferenceParameters(this.getAppManager(), this, this.getSpecification(), this.getElementID(), reference.getNeededParameters());
@@ -66,7 +69,17 @@ public class ReferenceEditor extends SpecificationElementEditor {
 		}
 	}
 	
+	public void delete() {
+		this.getSpecification().getElements().remove(this.getElement());
+		
+		this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
+		this.getAppManager().getEventDispatcher().fire(new MessageEvent("Reference sucessfully removed", MessageType.SUCCESS));
+		
+		this.getParent().reload();
+		this.getParent().show();
+	}
+	
 	public String getDescription() {
-		return this.getElement().toString();
+		return this.getElement().getName() + " <" + String.join("; ", ((Reference) this.getElement()).getNeededParameters().stream().map(SpecificationElement::toString).toArray(String[]::new)) + ">";
 	}
 }

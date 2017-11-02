@@ -23,7 +23,9 @@ package org.azentreprise.arionide.ui.menu.edition.specification.reference;
 import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
+import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.TypeManager;
 import org.azentreprise.arionide.project.Project;
@@ -33,7 +35,7 @@ import org.azentreprise.arionide.ui.menu.Menu;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 import org.azentreprise.arionide.ui.menu.code.TypeEditor;
 
-public class ReferenceParametersDataEditor extends SpecificMenu {
+public class ReferenceParameterDataEditor extends SpecificMenu {
 
 	private static final String back = "Back";
 	private static final String delete = "Delete";
@@ -41,7 +43,7 @@ public class ReferenceParametersDataEditor extends SpecificMenu {
 	private static final String setType = "Set type";
 	private static final String setDefault = "Set default";
 
-	private final Menu parent;
+	private final ReferenceParameters parent;
 	
 	private Specification spec;
 	private int id;
@@ -50,7 +52,7 @@ public class ReferenceParametersDataEditor extends SpecificMenu {
 	private TypeManager type;
 	private String description;
 	
-	protected ReferenceParametersDataEditor(AppManager manager, Menu parent) {
+	protected ReferenceParameterDataEditor(AppManager manager, ReferenceParameters parent) {
 		super(manager, back, delete, setName, setType, setDefault);
 		this.parent = parent;
 	}
@@ -66,6 +68,10 @@ public class ReferenceParametersDataEditor extends SpecificMenu {
 		if(this.data.getValue() != null) {
 			this.description += " (default: " + data.getValue() + ")";
 		}
+	}
+	
+	public void reload() {
+		this.setTarget(this.spec, this.id, this.dataID, this.data);
 	}
 	
 	public void onClick(String element) {		
@@ -87,6 +93,9 @@ public class ReferenceParametersDataEditor extends SpecificMenu {
 						if(project != null) {
 							MessageEvent message = project.getDataManager().refactorParameterName(this.spec, this.id, this.dataID, name);
 							this.getAppManager().getEventDispatcher().fire(message);
+							
+							this.reload();
+							this.show();
 						}
 					}
 				}).start();
@@ -106,7 +115,13 @@ public class ReferenceParametersDataEditor extends SpecificMenu {
 	}
 	
 	private void delete() {
-		// TODO
+		Reference ref = (Reference) this.spec.getElements().get(this.id);
+		ref.getNeededParameters().remove(this.dataID);
+		
+		this.getAppManager().getEventDispatcher().fire(new MessageEvent("Parameter successfully removed", MessageType.SUCCESS));
+		
+		this.parent.load();
+		this.parent.show();
 	}
 
 	public String getDescription() {

@@ -30,14 +30,14 @@ import javax.swing.JOptionPane;
 import org.azentreprise.arionide.lang.CoreDataManager;
 import org.azentreprise.arionide.lang.TypeManager;
 
-public class StringTypeManager implements TypeManager {
+public class TextTypeManager implements TypeManager {
 
 	public List<String> getSuggestions(CoreDataManager cdm) {
 		return Arrays.asList();
 	}
 
 	public List<String> getActionLabels() {
-		return Arrays.asList("Custom string");
+		return Arrays.asList("Custom text");
 	}
 
 	public List<BiConsumer<String, Consumer<String>>> getActions() {
@@ -46,7 +46,7 @@ public class StringTypeManager implements TypeManager {
 	
 	private void edit(String current, Consumer<String> callback) {		
 		new Thread(() -> {
-			Object output = JOptionPane.showInputDialog(null, "Enter the new string:", "Custom string", JOptionPane.PLAIN_MESSAGE, null, null, current);
+			Object output = JOptionPane.showInputDialog(null, "Enter the new text:", "Custom text", JOptionPane.PLAIN_MESSAGE, null, null, current);
 			
 			if(output != null) {
 				callback.accept((String) output);
@@ -55,6 +55,6 @@ public class StringTypeManager implements TypeManager {
 	}
 	
 	public String toString() {
-		return "String";
+		return "Text";
 	}
 }

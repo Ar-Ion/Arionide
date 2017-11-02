@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu.edition.specification.reference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -27,6 +28,7 @@ import javax.swing.JOptionPane;
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.ui.AppManager;
@@ -38,22 +40,28 @@ public class ReferenceParameters extends Menu {
 	private final Specification spec;
 	private final int id;
 	private final List<SpecificationElement> parameters;
-	private final ReferenceParametersDataEditor paramsEditor;
+	private final ReferenceParameterDataEditor dataEditor;
 	
 	protected ReferenceParameters(AppManager manager, Menu parent, Specification spec, int id, List<SpecificationElement> parameters) {
-		super(manager, "Back", "Add");
+		super(manager, "Back", "Add data", "Add reference");
 		
 		this.parent = parent;
 		this.spec = spec;
 		this.id = id;
 		this.parameters = parameters;
-		this.paramsEditor = new ReferenceParametersDataEditor(manager, parent);
+		this.dataEditor = new ReferenceParameterDataEditor(manager, this);
 		
-		for(SpecificationElement data : parameters) {
-			this.getElements().add(data.getName());
-		}
+		this.load();
 		
 		this.setMenuCursor(1);
+	}
+	
+	protected void load() {
+		this.getElements().subList(2, this.getElements().size()).clear();
+		
+		for(SpecificationElement data : this.parameters) {
+			this.getElements().add(data.getName());
+		}
 	}
 	
 	public void onClick(int id) {
@@ -61,12 +69,30 @@ public class ReferenceParameters extends Menu {
 			this.parent.show();
 		} else if(id == 1) {
 			new Thread(() -> {
-				String name = JOptionPane.showInputDialog(null, "Enter the name for the new parameter", "New parameter", JOptionPane.PLAIN_MESSAGE);
+				String name = JOptionPane.showInputDialog(null, "Enter the name for the new parameter", "New data parameter", JOptionPane.PLAIN_MESSAGE);
 				
 				if(name != null) {
 					Data data = new Data(name, null, -1);
 					this.parameters.add(data);
-					this.getAppManager().getEventDispatcher().fire(new MessageEvent("Parameter successfully added", MessageType.SUCCESS));
+					this.getAppManager().getEventDispatcher().fire(new MessageEvent("Data parameter successfully added", MessageType.SUCCESS));
+					this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
+					
+					Menu selector = new ReferenceParameterDataTypeSelector(this.getAppManager(), this, this.spec, this.id, this.parameters.size() - 1);
+					selector.show();
+				}
+			}).start();
+		} else if(id == 2) {
+			new Thread(() -> {
+				String name = JOptionPane.showInputDialog(null, "Enter the name for the new parameter", "New reference parameter", JOptionPane.PLAIN_MESSAGE);
+				
+				if(name != null) {
+					Reference ref = new Reference(name, null, new ArrayList<>(), new ArrayList<>());
+					this.parameters.add(ref);
+					this.getAppManager().getEventDispatcher().fire(new MessageEvent("Reference parameter successfully added", MessageType.SUCCESS));
+					this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
+
+					this.load();
+					this.show();
 				}
 			}).start();
 		} else {
@@ -75,8 +101,10 @@ public class ReferenceParameters extends Menu {
 			SpecificationElement element = this.parameters.get(id);
 			
 			if(element instanceof Data) {
-				this.paramsEditor.setTarget(this.spec, this.id, id, (Data) element);
-				this.paramsEditor.show();
+				this.dataEditor.setTarget(this.spec, this.id, id, (Data) element);
+				this.dataEditor.show();
+			} else if(element instanceof Reference) {
+				// TODO
 			}
 		}
 	}

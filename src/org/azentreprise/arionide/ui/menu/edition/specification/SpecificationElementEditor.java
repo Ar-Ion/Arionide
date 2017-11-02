@@ -73,7 +73,8 @@ public abstract class SpecificationElementEditor extends Menu {
 	public void onClick(String element) {
 		switch(element) {
 			case back:
-				this.parent.show();
+				this.getParent().reload();
+				this.getParent().show();
 				break;
 			case delete:
 				Menu confirm = new Confirm(this.getAppManager(), this, this::delete, "Do you really want to delete this element?");
@@ -90,24 +91,17 @@ public abstract class SpecificationElementEditor extends Menu {
 							MessageEvent message = project.getDataManager().refactorSpecificationName(this.specification, this.id, name);
 							this.getAppManager().getEventDispatcher().fire(message);
 						}
+						
+						this.setTarget(this.specification, this.id);
 					}
-					
-					this.setTarget(this.specification, this.id);
 				}).start();
 		}
 	}
 	
-	private void delete() {
-		Project project = this.getAppManager().getWorkspace().getCurrentProject();
-		
-		if(project != null) {
-			MessageEvent message = project.getDataManager().deleteSpecificationElement(this.specification, this.id);
-			this.getAppManager().getEventDispatcher().fire(message);
-			
-			this.parent.reload();
-			this.parent.show();
-		}
+	public SpecificMenu getParent() {
+		return this.parent;
 	}
 	
+	public abstract void delete();
 	public abstract String getDescription();
 }

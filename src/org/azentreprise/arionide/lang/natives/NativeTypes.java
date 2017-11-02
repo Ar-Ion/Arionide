@@ -36,7 +36,7 @@ public class NativeTypes implements Types {
 	
 	private final TypeManager structureTypeManager = new StructureTypeManager();
 	private final TypeManager integerTypeManager = new IntegerTypeManager();
-	private final TypeManager textTypeManager = new StringTypeManager();
+	private final TypeManager textTypeManager = new TextTypeManager();
 
 	private final Validator structureValidator = new StructureValidator();
 	private final Validator integerValidator = new IntegerValidator();

@@ -66,7 +66,7 @@ public class SpecificationEditor extends SpecificMenu {
 			elements.addAll(this.specification.getElements().stream().map(SpecificationElement::getName).collect(Collectors.toList()));
 			elements.add("Add data");
 			elements.add("Add reference");
-			elements.add("Cancel");
+			elements.add("Back");
 		}
 	}
 	
@@ -106,6 +106,7 @@ public class SpecificationEditor extends SpecificMenu {
 					this.getAppManager().getEventDispatcher().fire(event);
 					
 					this.reload();
+					this.show();
 				}
 			}).start();
 		} else {
