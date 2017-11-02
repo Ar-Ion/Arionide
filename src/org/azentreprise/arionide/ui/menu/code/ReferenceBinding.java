@@ -22,61 +22,40 @@ package org.azentreprise.arionide.ui.menu.code;
 
 import java.util.List;
 
-import org.azentreprise.arionide.lang.Data;
-import org.azentreprise.arionide.lang.Reference;
+import org.azentreprise.arionide.events.MessageEvent;
+import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.menu.Menu;
 
-public class ReferenceEditor extends Menu {
+public class ReferenceBinding extends Menu {
 	
 	private final Menu parent;
-	private final Reference element;
-	private final ReferenceSelector selector;
+	private final SpecificationElement element;
+	private final List<SpecificationElement> possible;
 	
-	private final int refIndex;
-		
-	public ReferenceEditor(AppManager manager, Menu parent, Reference element) {
-		super(manager);
+	public ReferenceBinding(AppManager manager, Menu parent, SpecificationElement element, List<SpecificationElement> possible) {
+		super(manager, "Back");
 		
 		this.parent = parent;
 		this.element = element;
-		this.selector = new ReferenceSelector(manager, parent, element);
+		this.possible = possible;
 		
-		List<String> elements = this.getElements();
-		
-		for(SpecificationElement data : element.getNeededParameters()) {
-			elements.add(data.getName());
+		for(SpecificationElement poss : possible) {
+			if(element.getClass().isInstance(poss)) {
+				this.getElements().add(poss.getName());
+			}
 		}
-		
-		elements.add("Back");
-		this.refIndex = elements.size();
-		elements.add("Reference");
-
-		for(SpecificationElement data : element.getSpecificationParameters()) {
-			elements.add(data.getName());
-		}
-		
-		this.setMenuCursor(this.refIndex);
 	}
 	
 	public void onClick(int id) {
-		if(id == this.refIndex) {
-			this.selector.show();
-		} else if(id == this.refIndex - 1) {
+		if(id != 0) {
+			this.possible.get(id - 1).setValue("var@" + this.element.getName());
+			this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
+			this.getAppManager().getEventDispatcher().fire(new MessageEvent("Parameter successfully bound", MessageType.SUCCESS));
 			this.parent.show();
-		} else if(id < this.refIndex) {
-			Menu binding = new ReferenceBinding(this.getAppManager(), this, (Data) this.element.getSpecificationParameters().get(id), this.element.getSpecificationParameters());
-			binding.show();
-		} else {
-			id -= this.refIndex;
-			
-			Menu menu = new TypeEditor(this.getAppManager(), this, (Data) this.element.getSpecificationParameters().get(id));
-			menu.show();
 		}
-	}
-	
-	public String getDescription() {
-		return "Reference editor for '" + this.element + "'";
+		
+		this.parent.show();
 	}
 }

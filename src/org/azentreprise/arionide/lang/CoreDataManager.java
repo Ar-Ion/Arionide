@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -32,6 +33,10 @@ public class CoreDataManager {
 	
 	public CoreDataManager(Storage storage) {
 		this.storage = storage;
+	}
+	
+	public List<String> getVariables(int type) {
+		return null; // TODO
 	}
 	
 	public Map<Integer, String> getReferencables() {

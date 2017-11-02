@@ -29,7 +29,7 @@ import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.menu.Menu;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
-public class ReferenceParameterTypeSelector extends Menu {
+public class ReferenceParameterDataTypeSelector extends Menu {
 		
 	private final Menu parent;
 	private final Specification specification;
@@ -37,7 +37,7 @@ public class ReferenceParameterTypeSelector extends Menu {
 	private final int data;
 	private final String currentType;
 	
-	public ReferenceParameterTypeSelector(AppManager manager, Menu parent, Specification specification, int id, int data) {
+	public ReferenceParameterDataTypeSelector(AppManager manager, Menu parent, Specification specification, int id, int data) {
 		super(manager);
 		
 		this.parent = parent;

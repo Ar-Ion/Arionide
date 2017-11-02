@@ -28,6 +28,7 @@ import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.Specification;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.menu.Menu;
 
@@ -36,19 +37,19 @@ public class ReferenceParameters extends Menu {
 	private final Menu parent;
 	private final Specification spec;
 	private final int id;
-	private final List<Data> parameters;
-	private final ReferenceParametersEditor paramsEditor;
+	private final List<SpecificationElement> parameters;
+	private final ReferenceParametersDataEditor paramsEditor;
 	
-	protected ReferenceParameters(AppManager manager, Menu parent, Specification spec, int id, List<Data> parameters) {
+	protected ReferenceParameters(AppManager manager, Menu parent, Specification spec, int id, List<SpecificationElement> parameters) {
 		super(manager, "Back", "Add");
 		
 		this.parent = parent;
 		this.spec = spec;
 		this.id = id;
 		this.parameters = parameters;
-		this.paramsEditor = new ReferenceParametersEditor(manager, parent);
+		this.paramsEditor = new ReferenceParametersDataEditor(manager, parent);
 		
-		for(Data data : parameters) {
+		for(SpecificationElement data : parameters) {
 			this.getElements().add(data.getName());
 		}
 		
@@ -71,8 +72,12 @@ public class ReferenceParameters extends Menu {
 		} else {
 			id -= 2;
 			
-			this.paramsEditor.setTarget(this.spec, this.id, id, this.parameters.get(id));
-			this.paramsEditor.show();
+			SpecificationElement element = this.parameters.get(id);
+			
+			if(element instanceof Data) {
+				this.paramsEditor.setTarget(this.spec, this.id, id, (Data) element);
+				this.paramsEditor.show();
+			}
 		}
 	}
 }

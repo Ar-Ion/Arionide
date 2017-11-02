@@ -318,7 +318,7 @@ public class DataManager {
 	}
 	
 	public MessageEvent refactorParameterType(Specification spec, int id, int data, int newType) {
-		this.doForeachConnectedSpecification(spec, id, l -> ((Reference) l.getElements().get(id)).getNeededParameters().get(data).setType(newType));
+		this.doForeachConnectedSpecification(spec, id, l -> ((Data) ((Reference) l.getElements().get(id)).getNeededParameters().get(data)).setType(newType));
 		
 		this.storage.saveStructureMeta();
 		

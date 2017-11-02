@@ -33,7 +33,7 @@ import org.azentreprise.arionide.ui.menu.Menu;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 import org.azentreprise.arionide.ui.menu.code.TypeEditor;
 
-public class ReferenceParametersEditor extends SpecificMenu {
+public class ReferenceParametersDataEditor extends SpecificMenu {
 
 	private static final String back = "Back";
 	private static final String delete = "Delete";
@@ -50,7 +50,7 @@ public class ReferenceParametersEditor extends SpecificMenu {
 	private TypeManager type;
 	private String description;
 	
-	protected ReferenceParametersEditor(AppManager manager, Menu parent) {
+	protected ReferenceParametersDataEditor(AppManager manager, Menu parent) {
 		super(manager, back, delete, setName, setType, setDefault);
 		this.parent = parent;
 	}
@@ -93,7 +93,7 @@ public class ReferenceParametersEditor extends SpecificMenu {
 				
 				break;
 			case setType:
-				Menu selector = new ReferenceParameterTypeSelector(this.getAppManager(), this, this.spec, this.id, this.dataID);
+				Menu selector = new ReferenceParameterDataTypeSelector(this.getAppManager(), this, this.spec, this.id, this.dataID);
 				selector.show();
 				break;
 			case setDefault:

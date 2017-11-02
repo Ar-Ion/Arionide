@@ -28,30 +28,30 @@ public class Reference extends SpecificationElement {
 
 	private static final long serialVersionUID = -3387831385820354646L;
 
-	private List<Data> neededParameters;
-	private List<Data> specificationParameters;
+	private List<SpecificationElement> neededParameters;
+	private List<SpecificationElement> specificationParameters;
 
-	public Reference(String name, String value, List<Data> neededParameters, List<Data> specificationParameters) {
+	public Reference(String name, String value, List<SpecificationElement> neededParameters, List<SpecificationElement> specificationParameters) {
 		super(name, value);
 		this.neededParameters = neededParameters;
 		this.specificationParameters = specificationParameters;
 	}
 	
-	public List<Data> getNeededParameters() {
+	public List<SpecificationElement> getNeededParameters() {
 		return this.neededParameters;
 	}
 	
-	public List<Data> getSpecificationParameters() {
+	public List<SpecificationElement> getSpecificationParameters() {
 		return this.specificationParameters;
 	}
 	
-	public void setSpecificationParameters(List<Data> specificationParameters) {
+	public void setSpecificationParameters(List<SpecificationElement> specificationParameters) {
 		this.specificationParameters = specificationParameters;
 	}
 	
 	public String toString() {
 		return super.toString() + " <" + String.join("; ", Stream.concat(this.neededParameters.stream(), this.specificationParameters.stream())
-				.map(Data::toString).toArray(String[]::new)) + ">";
+				.map(SpecificationElement::toString).toArray(String[]::new)) + ">";
 	}
 	
 	public boolean equals(Object other) {
@@ -65,7 +65,7 @@ public class Reference extends SpecificationElement {
 	
 	public Reference clone() {
 		return new Reference(this.getName(), this.getRawValue(), 
-				this.neededParameters.stream().map(Data::clone).collect(Collectors.toList()),
-				this.specificationParameters.stream().map(Data::clone).collect(Collectors.toList()));
+				this.neededParameters.stream().map(SpecificationElement::clone).collect(Collectors.toList()),
+				this.specificationParameters.stream().map(SpecificationElement::clone).collect(Collectors.toList()));
 	}
 }

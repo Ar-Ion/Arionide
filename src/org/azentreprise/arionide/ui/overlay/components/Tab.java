@@ -42,7 +42,6 @@ import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
-import org.azentreprise.arionide.ui.primitives.OpenGLPrimitives;
 
 public class Tab extends MultiComponent implements EventHandler {
 		
