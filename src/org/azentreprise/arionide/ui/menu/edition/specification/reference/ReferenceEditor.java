@@ -47,23 +47,19 @@ public class ReferenceEditor extends SpecificationElementEditor {
 
 		switch(element) {
 			case callability:				
-				if(reference.getParameters() != null) {
-					reference.setParameters(null);
+				if(reference.getSpecificationParameters() != null) {
+					reference.setSpecificationParameters(null);
 					this.getAppManager().getEventDispatcher().fire(new MessageEvent("This reference is not callable anymore", MessageType.SUCCESS));
 				} else {
-					reference.setParameters(new ArrayList<>());
+					reference.setSpecificationParameters(new ArrayList<>());
 					this.getAppManager().getEventDispatcher().fire(new MessageEvent("This reference is now callable", MessageType.SUCCESS));
 				}
 				
 				break;
 			case setParameters:
-				if(reference.getParameters() != null) {
-					Menu menu = new ReferenceParameters(this.getAppManager(), this, reference.getParameters());
-					menu.show();
-				} else {
-					this.getAppManager().getEventDispatcher().fire(new MessageEvent("This reference is not callable", MessageType.ERROR));
-				}
-				
+				Menu menu = new ReferenceParameters(this.getAppManager(), this, this.getSpecification(), this.getElementID(), reference.getNeededParameters());
+				menu.show();
+
 				break;
 			default: 
 				super.onClick(element);

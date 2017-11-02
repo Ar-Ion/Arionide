@@ -20,6 +20,9 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu.code;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
@@ -69,11 +72,14 @@ public class CodeEditor extends Menu {
 						
 			assert this.instructionMeta != null;
 			
-			this.getElements().subList(4, this.getElements().size()).clear();
+			List<String> list = this.getElements().subList(4, this.getElements().size());
+			list.clear();
 			
 			for(SpecificationElement element : this.instructionMeta.getSpecification().getElements()) {
-				this.getElements().add(element.getName());
+				list.add(element.getName());
 			}
+			
+			Collections.sort(list);
 		}
 		
 		this.setMenuCursor(3);

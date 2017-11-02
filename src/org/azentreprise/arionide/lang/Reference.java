@@ -21,40 +21,51 @@
 package org.azentreprise.arionide.lang;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Reference extends SpecificationElement {
 
 	private static final long serialVersionUID = -3387831385820354646L;
 
-	private List<Data> parameters;
+	private List<Data> neededParameters;
+	private List<Data> specificationParameters;
 
-	public Reference(String name, String value, List<Data> parameters) {
+	public Reference(String name, String value, List<Data> neededParameters, List<Data> specificationParameters) {
 		super(name, value);
-		this.parameters = parameters;
+		this.neededParameters = neededParameters;
+		this.specificationParameters = specificationParameters;
 	}
 	
-	public List<Data> getParameters() {
-		return this.parameters;
+	public List<Data> getNeededParameters() {
+		return this.neededParameters;
 	}
 	
-	public void setParameters(List<Data> parameters) {
-		this.parameters = parameters;
+	public List<Data> getSpecificationParameters() {
+		return this.specificationParameters;
+	}
+	
+	public void setSpecificationParameters(List<Data> specificationParameters) {
+		this.specificationParameters = specificationParameters;
 	}
 	
 	public String toString() {
-		return super.toString() + " <" + String.join("; ", this.parameters.stream().map(Data::toString).toArray(String[]::new)) + ">";
+		return super.toString() + " <" + String.join("; ", Stream.concat(this.neededParameters.stream(), this.specificationParameters.stream())
+				.map(Data::toString).toArray(String[]::new)) + ">";
 	}
 	
 	public boolean equals(Object other) {
 		if(other instanceof Reference) {
 			Reference casted = (Reference) other;
-			return super.equals(other) && this.parameters.equals(casted.parameters);
+			return super.equals(other) && this.neededParameters.equals(casted.neededParameters);
 		} else {
 			return false;
 		}
 	}
 	
 	public Reference clone() {
-		return new Reference(this.getName(), this.getRawValue(), this.parameters);
+		return new Reference(this.getName(), this.getRawValue(), 
+				this.neededParameters.stream().map(Data::clone).collect(Collectors.toList()),
+				this.specificationParameters.stream().map(Data::clone).collect(Collectors.toList()));
 	}
 }

@@ -101,7 +101,7 @@ public class SpecificationEditor extends SpecificMenu {
 				String name = JOptionPane.showInputDialog(null, "Enter the name for the new reference", "New reference", JOptionPane.PLAIN_MESSAGE);
 				
 				if(name != null) {
-					SpecificationElement element = new Reference(name, null, new ArrayList<>());
+					SpecificationElement element = new Reference(name, null, new ArrayList<>(), new ArrayList<>());
 					MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().addSpecificationElement(this.specification, element);
 					this.getAppManager().getEventDispatcher().fire(event);
 					

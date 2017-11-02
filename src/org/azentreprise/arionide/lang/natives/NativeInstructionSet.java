@@ -57,7 +57,7 @@ public class NativeInstructionSet extends InstructionSet {
 			
 			this.install("call", 30, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
-					new Reference("structure", null, new ArrayList<>())));
+					new Reference("structure", null, new ArrayList<>(), new ArrayList<>())));
 		} else {
 			this.retrieve("init");
 			this.retrieve("print");
