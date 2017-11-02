@@ -35,7 +35,7 @@ public class ReferenceEditor extends SpecificationElementEditor {
 	private static final String callability = "Callability";
 	private static final String setParameters = "Parameters";
 	
-	protected ReferenceEditor(AppManager manager, SpecificMenu parent) {
+	public ReferenceEditor(AppManager manager, SpecificMenu parent) {
 		super(manager, parent);
 		
 		this.getElements().add(callability);
