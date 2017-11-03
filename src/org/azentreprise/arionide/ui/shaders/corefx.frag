@@ -1,8 +1,8 @@
 #version 400
 
-const float decay = 0.995;
-const float density = 0.5;
-const float weight = 3.0;
+const float decay = 1.0;
+const float density = 0.84;
+const float weight = 5.65;
 
 const int samples = 100;
 

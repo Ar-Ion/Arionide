@@ -163,7 +163,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private double yaw = 0.0d;
 	private double pitch = 0.0d;
 	private Vector3d player = new Vector3d();
-	private Vector3d sun = new Vector3d(0.0d, skyDistance, 0.0d);
+	private Vector3d sun = new Vector3d(0.0d, 2 * skyDistance, 0.0d);
 	
 	private Vector3d velocity = new Vector3d();
 	private Vector3d acceleration = new Vector3d();
@@ -440,12 +440,12 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 		/* Load sun position in screen coords */
 		
-		Vector4d point = new Matrix4d(this.projectionMatrix).mul(this.viewMatrix).transform(new Vector4d(new Vector3d(this.sun).add(this.player), 1.0d));
+		Vector4d point = new Matrix4d(this.projectionMatrix).mul(this.viewMatrix).transform(new Vector4d(new Vector3d(this.sun).add(this.player.x, 0, this.player.z), 1.0d));
 				
 		/* Setup FX uniforms */
 		gl.glUniform1i(this.fxFBOTexture, 2);
 		gl.glUniform2f(this.fxLightPosition, (float) (point.x / point.z) + 0.5f, (float) (point.y / point.z) + 0.5f);
-		gl.glUniform1f(this.fxExposure, 0.002f / (4 * this.inside.size() + 1));
+		gl.glUniform1f(this.fxExposure, 0.001f / (4 * this.inside.size() + 1));
 		
 		gl.glBindVertexArray(this.fxVAO);
 		gl.glDrawArrays(GL4.GL_TRIANGLE_STRIP, 0, 4);
