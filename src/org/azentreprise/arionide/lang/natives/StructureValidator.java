@@ -24,9 +24,15 @@ import org.azentreprise.arionide.lang.Validator;
 
 public class StructureValidator implements Validator {
 	public boolean validate(String data) {
+		String[] elements = data.split(";");
+		
 		try {
-			return Integer.parseInt(data) > -1;
-		} catch (NumberFormatException e) {
+			for(String element : elements) {
+				Integer.parseInt(element.trim());
+			}
+			
+			return true;
+		} catch(NumberFormatException e) {
 			return false;
 		}
 	}

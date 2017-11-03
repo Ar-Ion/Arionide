@@ -20,10 +20,8 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -31,21 +29,46 @@ import org.azentreprise.arionide.lang.CoreDataManager;
 import org.azentreprise.arionide.lang.TypeManager;
 
 public class StructureTypeManager implements TypeManager {
+		
 	public List<String> getSuggestions(CoreDataManager cdm) {
-		List<String> suggestions = new ArrayList<>();
-		
-		for(Entry<Integer, String> entry : cdm.getReferencables().entrySet()) {
-			suggestions.add(entry.getValue() + "$$$" + entry.getKey());
-		}
-		
-		return suggestions;
+		return Arrays.asList();
 	}
 
 	public List<String> getActionLabels() {
-		return Arrays.asList();
+		return Arrays.asList("Add structure", "Add integer", "Add text", "Delete last");
 	}
 
 	public List<BiConsumer<String, Consumer<String>>> getActions() {
-		return Arrays.asList();
+		return Arrays.asList(this::addStructure, this::addInteger, this::addText, this::deleteLast);
+	}
+	
+	private void addStructure(String current, Consumer<String> callback) {
+		this.add(NativeTypes.STRUCTURE, current, callback);
+	}
+	
+	private void addInteger(String current, Consumer<String> callback) {
+		this.add(NativeTypes.INTEGER, current, callback);
+	}
+
+	private void addText(String current, Consumer<String> callback) {
+		this.add(NativeTypes.TEXT, current, callback);
+	}
+	
+	private void add(int element, String current, Consumer<String> callback) {
+		if(!current.isEmpty()) {
+			current += "; ";
+		}
+		
+		callback.accept(current + element);
+	}
+	
+	private void deleteLast(String current, Consumer<String> callback) {
+		int index = current.lastIndexOf(';');
+		
+		if(index > -1) {
+			callback.accept(current.substring(0, index));
+		} else {
+			callback.accept(new String());
+		}
 	}
 }
