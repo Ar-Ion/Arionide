@@ -19,26 +19,47 @@
     The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  -->
 <project name="Arionide" basedir="." default="main">
-    <target name="clean">
+    
+	<path id="arionide-classpath">
+	    <fileset dir="lib">
+	    	<include name="*.jar"/>
+	    </fileset>
+	</path>
+	
+	<target name="clean">
         <delete dir="bin"/>
     </target>
     
     <target name="compile">
         <mkdir dir="bin"/>
-        <javac includeantruntime="false" srcdir="src" destdir="bin"/>
+        <javac includeantruntime="false" srcdir="src" destdir="bin">
+        	<classpath refid="arionide-classpath" />
+        </javac>
+    	
+    	<copy todir="bin">
+    		<fileset dir="src">
+    			<exclude name="**/*.java"/>
+    		</fileset>
+    	</copy>
     </target>
     
     <target name="jar" depends="compile">
         <jar destfile="Arionide.jar" basedir="bin">
+        	<zipgroupfileset dir="lib" includes="*.jar"/>
+        	
             <manifest>
-                <attribute name="Main-Class" value="org.azentreprise.Arionide"/>
+                <attribute name="Main-Class" value="org.azentreprise.arionide.Main"/>
             </manifest>
         </jar>
     </target>
     
     <target name="run" depends="jar">
-        <java jar="Arionide.jar" maxmemory="2G" fork="true"/>
+        <java jar="Arionide.jar" maxmemory="2G" fork="true">
+        	<classpath>
+        		<path refid="arionide-classpath" />
+        	</classpath>
+    	</java>
     </target>
         
-    <target name="main" depends="clean,compile,jar,run"/>
+    <target name="main" depends="clean, compile, jar, run"/>
 </project>
