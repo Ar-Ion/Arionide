@@ -55,6 +55,7 @@ public class NativeRuntime extends Runtime {
 	public void run(int id) {
 		this.code.clear();
 		this.symbols.clear();
+		this.references.clear();
 		
 		this.info("Compiling sources...", 0xFFFF00);
 		
@@ -62,14 +63,21 @@ public class NativeRuntime extends Runtime {
 		
 		if(this.compile(storage.getHierarchy().get(id).getID(), "root", storage)) {
 			this.info("Compilation succeed", 0x00FF00);
+						
 			this.info("Running program...", 0xFFAA00);
 			
 			if(this.code.size() > 0) {
+				this.ndc.getStack().push(id);
+				this.ndc.initVariablePool();
+
 				if(this.exec(0)) {
 					this.info("Program execution finished with no error", 0x00FF00);
 				} else {
 					this.info("Program execution finished because of a runtime error", 0xFF0000);
 				}
+				
+				this.ndc.clearVariablePool();
+				this.ndc.getStack().pop();
 			} else {
 				this.info("Nothing to run", 0xFFAA00);	
 			}
@@ -90,7 +98,7 @@ public class NativeRuntime extends Runtime {
 	
 	private boolean compile(int realID, String name, Storage storage) {				
 		storage.loadData(realID);
-		
+				
 		List<HierarchyElement> elements = storage.getCurrentData();
 		Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
 		List<NativeInstruction> structure = new ArrayList<>();

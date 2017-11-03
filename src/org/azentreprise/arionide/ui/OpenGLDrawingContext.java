@@ -90,8 +90,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	
 	private int alpha = 0;
 		
-	public OpenGLDrawingContext(Arionide theInstance, IEventDispatcher dispatcher, int width, int height) {
-		
+	public OpenGLDrawingContext(Arionide theInstance, IEventDispatcher dispatcher, int width, int height) {		
 		this.dispatcher = dispatcher;
 		this.theManager = new AppManager(theInstance, this, dispatcher);
 		this.caps.setDoubleBuffered(true);

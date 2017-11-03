@@ -69,7 +69,7 @@ public class ReferenceEditor extends Menu {
 			Menu binding = new ReferenceBinding(this.getAppManager(), this, (Data) this.element.getSpecificationParameters().get(id), this.element.getSpecificationParameters());
 			binding.show();
 		} else {
-			id -= this.refIndex;
+			id -= this.refIndex + 1;
 			
 			Menu menu = new TypeEditor(this.getAppManager(), this, (Data) this.element.getSpecificationParameters().get(id));
 			menu.show();

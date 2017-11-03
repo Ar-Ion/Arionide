@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu.code;
 
+import javax.swing.JOptionPane;
+
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.lang.CoreDataManager;
@@ -32,9 +34,7 @@ import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.menu.Menu;
 
 public class TypeEditor extends Menu {
-	
-	private static final String back = "Back";
-	
+
 	private final Menu parent;
 	private final SpecificationElement element;
 	private final TypeManager typeManager;
@@ -60,7 +60,8 @@ public class TypeEditor extends Menu {
 			this.getElements().addAll(cdm.getVariables(element.getType()));
 			this.getElements().addAll(this.typeManager.getSuggestions(cdm));
 			this.separator = this.getElements().size();
-			this.getElements().add(back);
+			this.getElements().add("Back");
+			this.getElements().add("New variable");
 			this.getElements().addAll(this.typeManager.getActionLabels());
 			
 			if(this.separator > 0) {
@@ -69,7 +70,7 @@ public class TypeEditor extends Menu {
 				this.setMenuCursor(1);
 			}
 		} else {
-			this.getElements().add(back);
+			this.getElements().add("Back");
 			this.separator = 0;
 		}
 	}
@@ -86,8 +87,16 @@ public class TypeEditor extends Menu {
 	private void processAction(int id) {
 		if(id == 0) {
 			this.parent.show();
+		} else if(id == 1) {
+			new Thread(() -> {
+				String name = JOptionPane.showInputDialog(null, "Please enter the description of the instruction", "Description", JOptionPane.PLAIN_MESSAGE);
+				
+				if(name != null) {
+					this.validateAction("var@" + name);
+				}
+			}).start();
 		} else {
-			this.typeManager.getActions().get(id - 1).accept(this.element.getValue(), this::validateAction);
+			this.typeManager.getActions().get(id - 2).accept(this.element.getValue(), this::validateAction);
 		}
 	}
 	

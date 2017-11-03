@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Stack;
 
 import org.azentreprise.arionide.lang.Reference;
-import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
 
@@ -38,7 +37,9 @@ public class Call implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(references.contains(this.reference)) {
+		int refID = Integer.parseInt(this.reference.getValue());
+		
+		if(references.contains(refID)) {
 			Stack<Integer> theStack = communicator.getStack();
 			
 			if(theStack.size() > 65535) {
@@ -55,6 +56,8 @@ public class Call implements NativeInstruction {
 					SpecificationElement specElement = communicator.getVariable(value.substring(4)).clone();
 					specElement.setName(element.getName());
 					specVars.add(specElement);
+				} else {
+					specVars.add(element.clone());
 				}
 			}
 			
@@ -65,10 +68,12 @@ public class Call implements NativeInstruction {
 					SpecificationElement specElement = communicator.getVariable(value.substring(4)).clone();
 					specElement.setName(element.getName());
 					specVars.add(specElement);
+				} else {
+					specVars.add(element.clone());
 				}
 			}
-			
-			theStack.push(Integer.parseInt(this.reference.getValue()));
+						
+			theStack.push(refID);
 			
 			communicator.initVariablePool();
 			
@@ -76,7 +81,7 @@ public class Call implements NativeInstruction {
 				communicator.setVariable(specVar.getName(), true, specVar);
 			}
 			
-			communicator.exec(references.indexOf(this.reference));
+			communicator.exec(references.indexOf(refID));
 			
 			List<SpecificationElement> newVars = new ArrayList<>();
 			
@@ -86,9 +91,11 @@ public class Call implements NativeInstruction {
 			
 			communicator.clearVariablePool();
 			theStack.pop();
-			
+						
 			for(SpecificationElement newVar : newVars) {
-				communicator.setVariable(newVar.getName(), communicator.isLocal(newVar.getName()), newVar);
+				if(communicator.isDefined(newVar.getName())) {
+					communicator.setVariable(newVar.getName(), communicator.isLocal(newVar.getName()), newVar);
+				}
 			}
 			
 			return true;

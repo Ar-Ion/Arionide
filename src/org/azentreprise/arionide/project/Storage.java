@@ -88,4 +88,6 @@ public abstract class Storage {
 	public abstract void loadData(int id);
 	@IAm("saving data")
 	public abstract void saveData();
+	
+	public abstract int getCurrentDataID();
 }

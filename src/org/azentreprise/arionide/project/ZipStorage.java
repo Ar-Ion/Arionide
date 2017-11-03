@@ -61,7 +61,9 @@ public class ZipStorage extends Storage {
 	private Path historyPath;
 	private Path structureMetaPath;
 	private Path currentDataPath;
-
+	
+	private int currentDataID;
+	
 	@IAm("initializing the project storage")
 	public ZipStorage(File path) {
 		this.location = path;
@@ -196,6 +198,7 @@ public class ZipStorage extends Storage {
 			Debug.exception(exception);
 		}
 		
+		this.currentDataID = id;
 		this.currentData = this.load(this.currentDataPath);
 	}
 	
@@ -225,5 +228,9 @@ public class ZipStorage extends Storage {
 		} catch (IOException exception) {
 			Debug.exception(exception);
 		}
+	}
+	
+	public int getCurrentDataID() {
+		return this.currentDataID;
 	}
 }

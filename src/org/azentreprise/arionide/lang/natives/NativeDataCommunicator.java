@@ -58,7 +58,7 @@ public class NativeDataCommunicator {
 	}
 	
 	public void clearVariablePool() {
-		this.variables.get(this.stack.peek()).clear();
+		this.variables.remove(this.stack.peek());
 	}
 	
 	public void setVariable(String name, boolean local, SpecificationElement value) {
@@ -86,8 +86,13 @@ public class NativeDataCommunicator {
 		return null;
 	}
 	
+	public boolean isDefined(String name) {
+		return this.variables.get(this.stack.peek()).containsKey(name);
+	}
+	
 	public boolean isLocal(String name) {
-		return this.variables.get(stack.peek()).get(name).getKey();
+		Entry<Boolean, SpecificationElement> var = this.variables.get(this.stack.peek()).get(name);
+		return var != null ? var.getKey() : true;
 	}
 	
 	public void exception(String message) {

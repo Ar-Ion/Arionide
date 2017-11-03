@@ -20,11 +20,14 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Storage;
 
 public class CoreDataManager {
@@ -36,9 +39,37 @@ public class CoreDataManager {
 	}
 	
 	public List<String> getVariables(int type) {
-		return null; // TODO
+		int id = this.storage.getCurrentDataID();
+		
+		List<String> variables = new ArrayList<>();
+		
+		for(HierarchyElement element : this.storage.getHierarchy()) {
+			this.browse(element, id, variables);
+		}
+		
+		return variables;
 	}
 	
+	private boolean browse(HierarchyElement element, int id, List<String> variables) {		
+		if(element.getID() == id) {
+			this.loadVars(id, variables);
+			return true;
+		} else {
+			for(HierarchyElement child : element.getChildren()) {
+				if(this.browse(child, id, variables)) {
+					this.loadVars(id, variables);
+					return true;
+				}
+			}
+			
+			return false;
+		}
+	}
+	
+	private void loadVars(int id, List<String> variables) {
+		
+	}
+		
 	public Map<Integer, String> getReferencables() {
 		return this.storage.getInheritance().keySet().stream().collect(Collectors.toMap(Function.identity(), e -> this.storage.getStructureMeta().get(e).getName()));
 	}

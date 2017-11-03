@@ -75,10 +75,9 @@ class ReferenceSelector extends Menu {
 				int index = element.indexOf("$$$");
 				
 				if(index > -1) {
-					int id = Integer.parseInt(element.substring(0, index));
+					int id = Integer.parseInt(element.substring(index + 3));
 					Specification spec = this.getAppManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta().get(id).getSpecification();
-				
-					spec.getElements();
+					this.element.setSpecificationParameters(spec.getElements());
 				}
 			}
 			
