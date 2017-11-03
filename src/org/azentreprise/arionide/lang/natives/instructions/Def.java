@@ -20,6 +20,23 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives.instructions;
 
-public class Def {
+import java.util.List;
+
+import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
+
+public class Def implements NativeInstruction {
+	
+	private final Data data;
+	
+	public Def(Data data) {
+		this.data = data;
+	}
+	
+	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
+		communicator.setVariable(this.data.getName(), false, this.data);
+		
+		return true;
+	}
 
 }

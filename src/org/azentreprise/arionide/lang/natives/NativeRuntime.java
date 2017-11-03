@@ -194,9 +194,9 @@ public class NativeRuntime extends Runtime {
 			case "init":
 				return new Init();
 			case "print":
-				return new Print(spec.getElements().get(0).getValue());
+				return new Print((Data) spec.getElements().get(0));
 			case "call":
-				return new Call(Integer.parseInt(spec.getElements().get(0).getValue()));
+				return new Call((Reference) spec.getElements().get(0));
 			default:
 				this.info("Instruction " + instruction + " is not compilable", 0xFF6000);
 				return null;

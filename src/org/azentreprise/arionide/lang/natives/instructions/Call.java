@@ -20,16 +20,20 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives.instructions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import org.azentreprise.arionide.lang.Reference;
+import org.azentreprise.arionide.lang.Specification;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
 
 public class Call implements NativeInstruction {
 	
-	private final int reference;
+	private final Reference reference;
 	
-	public Call(int reference) {
+	public Call(Reference reference) {
 		this.reference = reference;
 	}
 	
@@ -37,14 +41,55 @@ public class Call implements NativeInstruction {
 		if(references.contains(this.reference)) {
 			Stack<Integer> theStack = communicator.getStack();
 			
-			if(theStack.size() > 100) {
+			if(theStack.size() > 65535) {
 				communicator.exception("Stack overflow");
 				return false;
 			}
 			
-			theStack.push(this.reference);
+			List<SpecificationElement> specVars = new ArrayList<>();
+			
+			for(SpecificationElement element : this.reference.getSpecificationParameters()) {
+				String value = element.getValue();
+								
+				if(value.startsWith("var@")) {
+					SpecificationElement specElement = communicator.getVariable(value.substring(4)).clone();
+					specElement.setName(element.getName());
+					specVars.add(specElement);
+				}
+			}
+			
+			for(SpecificationElement element : this.reference.getNeededParameters()) {
+				String value = element.getValue();
+								
+				if(value.startsWith("var@")) {
+					SpecificationElement specElement = communicator.getVariable(value.substring(4)).clone();
+					specElement.setName(element.getName());
+					specVars.add(specElement);
+				}
+			}
+			
+			theStack.push(Integer.parseInt(this.reference.getValue()));
+			
+			communicator.initVariablePool();
+			
+			for(SpecificationElement specVar : specVars) {
+				communicator.setVariable(specVar.getName(), true, specVar);
+			}
+			
 			communicator.exec(references.indexOf(this.reference));
+			
+			List<SpecificationElement> newVars = new ArrayList<>();
+			
+			for(SpecificationElement specVar : specVars) {
+				newVars.add(communicator.getVariable(specVar.getName())); // Variable might be redefined but not deleted
+			}
+			
+			communicator.clearVariablePool();
 			theStack.pop();
+			
+			for(SpecificationElement newVar : newVars) {
+				communicator.setVariable(newVar.getName(), communicator.isLocal(newVar.getName()), newVar);
+			}
 			
 			return true;
 		} else {

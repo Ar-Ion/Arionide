@@ -22,18 +22,26 @@ package org.azentreprise.arionide.lang.natives.instructions;
 
 import java.util.List;
 
+import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
 
 public class Print implements NativeInstruction {
 	
 	private final String message;
 	
-	public Print(String message) {
-		this.message = message;
+	public Print(Data data) {
+		this.message = data.getValue();
 	}
 
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		communicator.info(this.message, 0xFFFFFF);
+		String realMessage = this.message;
+		
+		if(realMessage.startsWith("var@")) {
+			realMessage = communicator.getVariable(this.message.substring(4)).getValue();
+		}
+		
+		communicator.info(realMessage, 0xFFFFFF);
+		
 		return true;
 	}
 }

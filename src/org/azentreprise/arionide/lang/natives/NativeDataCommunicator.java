@@ -20,15 +20,22 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Stack;
 import java.util.function.BiConsumer;
+
+import org.azentreprise.arionide.lang.SpecificationElement;
 
 public class NativeDataCommunicator {
 	
 	private final NativeRuntime runtime;
 	private final BiConsumer<String, Integer> channel;
 	private final Stack<Integer> stack = new Stack<>();
-	
+	private final Map<Integer, Map<String, Entry<Boolean, SpecificationElement>>> variables = new HashMap<>();
+
 	protected NativeDataCommunicator(NativeRuntime runtime, BiConsumer<String, Integer> channel) {
 		this.runtime = runtime;
 		this.channel = channel;
@@ -44,6 +51,43 @@ public class NativeDataCommunicator {
 	
 	public Stack<Integer> getStack() {
 		return this.stack;
+	}
+	
+	public void initVariablePool() {
+		this.variables.put(this.stack.peek(), new HashMap<>());
+	}
+	
+	public void clearVariablePool() {
+		this.variables.get(this.stack.peek()).clear();
+	}
+	
+	public void setVariable(String name, boolean local, SpecificationElement value) {
+		this.variables.get(this.stack.peek()).put(name, new SimpleEntry<Boolean, SpecificationElement>(local, value));
+	}
+	
+	public SpecificationElement getVariable(String name) {
+		@SuppressWarnings("unchecked")
+		Stack<Integer> stack = (Stack<Integer>) this.stack.clone();
+	
+		boolean first = true;
+		
+		while(!stack.isEmpty()) {		
+			Entry<Boolean, SpecificationElement> variable = this.variables.get(stack.pop()).get(name);
+			
+			if(variable != null) {
+				if(first || !variable.getKey()) { // If it is the current scope or the variable is not local
+					return variable.getValue();
+				}
+			}
+				
+			first = false;
+		}
+		
+		return null;
+	}
+	
+	public boolean isLocal(String name) {
+		return this.variables.get(stack.peek()).get(name).getKey();
 	}
 	
 	public void exception(String message) {
