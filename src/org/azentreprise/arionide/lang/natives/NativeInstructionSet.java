@@ -51,90 +51,96 @@ public class NativeInstructionSet extends InstructionSet {
 			
 			this.install("init", 0, parents, new Specification(this.getProject().getDataManager().allocSpecification()));
 			
-			this.install("print", 15, parents, new Specification(
+			this.install("print", 10, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(), 
 					new Data("message", "debug", NativeTypes.TEXT)));
 			
-			this.install("call", 30, parents, new Specification(
+			this.install("call", 20, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Reference("reference", null, new ArrayList<>(), new ArrayList<>())));
 		
-			this.install("defineText", 45, parents, new Specification(
+			this.install("defineText", 28, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.TEXT),
 					new Data("local", "0$$$b0", NativeTypes.INTEGER)));
 			
-			this.install("defineInteger", 47, parents, new Specification(
+			this.install("defineInteger", 30, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.INTEGER),
 					new Data("local", "0$$$b0", NativeTypes.INTEGER)));
 			
-			this.install("defineStructure", 49, parents, new Specification(
+			this.install("defineStructure", 32, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.STRUCTURE),
 					new Data("local", "0$$$b0", NativeTypes.INTEGER)));
 			
-			this.install("redo", 60, parents, new Specification(
+			this.install("redo", 40, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Reference("predicate", null, new ArrayList<>(Arrays.asList(new Data("condition", null, NativeTypes.INTEGER))), new ArrayList<>())));
 		
-			this.install("if", 75, parents, new Specification(
+			this.install("if", 50, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Reference("predicate", null, new ArrayList<>(Arrays.asList(new Data("condition", null, NativeTypes.INTEGER))), new ArrayList<>()),
 					new Reference("true", null, new ArrayList<>(), new ArrayList<>()),
 					new Reference("false", null, new ArrayList<>(), new ArrayList<>())));
 			
-			this.install("compareText", 90, parents, new Specification(
+			this.install("compareText", 58, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Data("first", null, NativeTypes.TEXT),
 					new Data("second", null, NativeTypes.TEXT),
 					new Data("result", null, NativeTypes.INTEGER)));
 			
-			this.install("compareInteger", 92, parents, new Specification(
+			this.install("compareInteger", 60, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Data("first", null, NativeTypes.INTEGER),
 					new Data("second", null, NativeTypes.INTEGER),
 					new Data("result", null, NativeTypes.INTEGER)));
 			
-			this.install("compareStructure", 94, parents, new Specification(
+			this.install("compareStructure", 62, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Data("first", null, NativeTypes.STRUCTURE),
 					new Data("second", null, NativeTypes.STRUCTURE),
 					new Data("result", null, NativeTypes.INTEGER)));
 			
-			this.install("object", 105, parents, new Specification(
+			this.install("object", 70, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("structure", null, NativeTypes.STRUCTURE),
 					new Reference("constructor", null, new ArrayList<>(), new ArrayList<>())));
 			
 			
-			this.install("addInteger", 120, parents, new Specification(
+			this.install("addInteger", 79, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(), 
 					new Data("data", null, NativeTypes.INTEGER)));
 			
-			this.install("addComplex", 122, parents, new Specification(
+			this.install("addComplex", 81, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(), 
 					new Data("data", null, NativeTypes.TEXT)));
 			
-			this.install("write", 135, parents, new Specification(
+			this.install("write", 90, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(), 
 					new Data("path", null, NativeTypes.TEXT),
 					new Data("object", null, NativeTypes.TEXT)));
 			
-			this.install("update", 150, parents, new Specification(
+			this.install("iterate", 100, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(), 
 					new Data("object", null, NativeTypes.TEXT),
 					new Data("selector", null, NativeTypes.TEXT),
-					new Reference("selector", null, new ArrayList<>(Arrays.asList(new Data("value", null, NativeTypes.TEXT))), new ArrayList<>())));
+					new Reference("updater", null, new ArrayList<>(Arrays.asList(new Data("value", null, NativeTypes.TEXT))), new ArrayList<>())));
 			
-			this.install("size", 165, parents, new Specification(
+			this.install("size", 110, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Data("object", null, NativeTypes.TEXT),
 					new Data("result", null, NativeTypes.TEXT)));
+			
+			this.install("merge", 120, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(),
+					new Data("source1", null, NativeTypes.TEXT),
+					new Data("source2", null, NativeTypes.TEXT),
+					new Data("destination", null, NativeTypes.TEXT)));
 			
 		} else {
 			this.retrieve("init");
@@ -152,8 +158,9 @@ public class NativeInstructionSet extends InstructionSet {
 			this.retrieve("addInteger");
 			this.retrieve("addComplex");
 			this.retrieve("write");
-			this.retrieve("update");
+			this.retrieve("iterate");
 			this.retrieve("size");
+			this.retrieve("merge");
 		}
 	}
 	

@@ -29,13 +29,13 @@ import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
 import org.azentreprise.arionide.lang.natives.NativeTypes;
 
-public class Update implements NativeInstruction {
+public class Iterate implements NativeInstruction {
 
 	private final Data object;
 	private final Data selector;
 	private final Call updater;
 	
-	public Update(Data object, Data selector, Reference updater) {
+	public Iterate(Data object, Data selector, Reference updater) {
 		this.object = object;
 		this.selector = selector;
 		this.updater = new Call(updater);
