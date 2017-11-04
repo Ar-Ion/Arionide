@@ -721,6 +721,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	public void teleport(Vector3d position) {
 		this.updatePerspective();
 		this.player.set(position);
+		
+		this.checkForCollisions();
+		this.ajustAcceleration();
 	}
 	
 	public void teleport(String identifier) {
@@ -842,9 +845,10 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 
 	public void update(Rectangle bounds) {
-		this.updatePerspective();
 		this.bounds = bounds;
 
+		this.updatePerspective();
+		
 		GL4 gl = (GL4) GLContext.getCurrentGL();
 		
 		gl.glActiveTexture(GL4.GL_TEXTURE2);

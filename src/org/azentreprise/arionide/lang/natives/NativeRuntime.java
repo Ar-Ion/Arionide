@@ -191,7 +191,7 @@ public class NativeRuntime extends Runtime {
 				Validator validator = this.getProject().getLanguage().getTypes().getValidator(((Data) element).getType());
 				
 				if(validator == null || !validator.validate(element.getValue())) {
-					this.info("Invalid type", 0xFF6000);
+					this.info("Couldn't validate '" + element.getValue() + "'", 0xFF6000);
 					return null;
 				}
 			} else if(element instanceof Reference) {

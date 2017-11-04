@@ -109,7 +109,7 @@ public class CoreDataManager {
 			for(SpecificationElement specElement : meta.getSpecification().getElements()) {
 				String value = specElement.getRawValue();
 				
-				if(value != null && value.contains("var@")) {
+				if(value != null && value.startsWith("var@")) {
 					value = value.substring(4) + "$$$" + value;
 						
 					if(!variables.contains(value)) {

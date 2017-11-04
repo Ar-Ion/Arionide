@@ -24,24 +24,28 @@ import org.azentreprise.arionide.lang.Validator;
 
 public class StructureValidator implements Validator {
 	public boolean validate(String data) {
-		int index = data.indexOf("$$$");
-		
-		if(index > -1) {
-			data = data.substring(index + 3);
-		}
-		
-		String[] elements = data.split(";");
-		
-		try {
-			for(String element : elements) {
-				if(!element.isEmpty()) {
-					Integer.parseInt(element.trim());
-				}
+		if(data.startsWith("var@")) {
+			return true;
+		} else {
+			int index = data.indexOf("$$$");
+			
+			if(index > -1) {
+				data = data.substring(index + 3);
 			}
 			
-			return true;
-		} catch(NumberFormatException e) {
-			return false;
+			String[] elements = data.split(";");
+			
+			try {
+				for(String element : elements) {
+					if(!element.isEmpty()) {
+						Integer.parseInt(element.trim());
+					}
+				}
+				
+				return true;
+			} catch(NumberFormatException e) {
+				return false;
+			}
 		}
 	}
 }

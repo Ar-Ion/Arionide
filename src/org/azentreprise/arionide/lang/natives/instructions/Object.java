@@ -44,7 +44,14 @@ public class Object implements NativeInstruction {
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
 		if(this.result.getValue().contains("var@")) {
 			String variable = this.result.getValue().substring(4);
-			String identifier = communicator.allocObject(this.structure.getValue());
+			
+			String structure = this.structure.getValue();
+			
+			if(structure.startsWith("var@")) {
+				structure = communicator.getVariable(structure.substring(4)).getValue();
+			}
+			
+			String identifier = communicator.allocObject(structure);
 			
 			communicator.setVariable(variable, true, new Data(variable, identifier, NativeTypes.TEXT));
 			

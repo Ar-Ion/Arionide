@@ -122,6 +122,7 @@ public class NativeInstructionSet extends InstructionSet {
 			
 			this.install("write", 135, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(), 
+					new Data("path", null, NativeTypes.TEXT),
 					new Data("object", null, NativeTypes.TEXT)));
 		} else {
 			this.retrieve("init");

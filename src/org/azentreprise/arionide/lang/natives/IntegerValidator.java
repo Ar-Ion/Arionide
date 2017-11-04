@@ -36,7 +36,9 @@ public class IntegerValidator implements Validator {
 	}
 	
 	public boolean validate(String data) {
-		if(data != null && data.length() > 0) {
+		if(data.startsWith("var@")) {
+			return true;
+		} else if(data != null && data.length() > 0) {
 			int index = data.indexOf("$$$");
 			
 			if(index > -1) {
