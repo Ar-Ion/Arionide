@@ -21,7 +21,7 @@ public class IntegerObject extends Object {
 		return this.value;
 	}
 	
-	protected Bit[] getData() {
+	public Bit[] getData() {
 		char type = this.value.charAt(0);
 		String realValue = this.value.substring(1);
 		

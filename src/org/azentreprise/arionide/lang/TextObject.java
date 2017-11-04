@@ -22,7 +22,7 @@ public class TextObject extends Object {
 		return this.value;
 	}
 	
-	protected Bit[] getData() {
+	public Bit[] getData() {
 		return Bit.fromByteArray(this.value.getBytes(Charset.forName("utf8")));
 	}
 }
