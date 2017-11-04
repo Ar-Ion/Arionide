@@ -18,7 +18,7 @@ public class Object {
 		this.structure = structure;
 	}
 	
-	protected void add(String value, NativeDataCommunicator communicator) {
+	public void add(String value, NativeDataCommunicator communicator) {
 		switch(this.structure.get(this.index++ % this.structure.size())) {
 			case NativeTypes.INTEGER:
 				this.data.add(new IntegerObject(value));
@@ -35,7 +35,7 @@ public class Object {
 		return this.index % this.structure.size() == 0;
 	}
 	
-	protected Bit[] getData() {
+	public Bit[] getData() {
 		return this.data.stream().map(Object::getDataStream).reduce(Stream::concat).orElse(Stream.of()).toArray(Bit[]::new);
 	}
 	
@@ -43,7 +43,7 @@ public class Object {
 		return Arrays.stream(this.getData());
 	}
 	
-	protected int getSize() {
+	public int getSize() {
 		return this.getData().length;
 	}
 }

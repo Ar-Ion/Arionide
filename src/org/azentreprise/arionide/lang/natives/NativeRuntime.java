@@ -30,6 +30,7 @@ import org.azentreprise.arionide.lang.Runtime;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.Validator;
+import org.azentreprise.arionide.lang.natives.instructions.Add;
 import org.azentreprise.arionide.lang.natives.instructions.Call;
 import org.azentreprise.arionide.lang.natives.instructions.Compare;
 import org.azentreprise.arionide.lang.natives.instructions.Define;
@@ -212,7 +213,7 @@ public class NativeRuntime extends Runtime {
 				return new Print((Data) spec.getElements().get(0));
 			case "call":
 				return new Call((Reference) spec.getElements().get(0));
-			case "defineString":
+			case "defineText":
 			case "defineInteger":
 			case "defineStructure":
 				return new Define((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Data) spec.getElements().get(2));
@@ -220,10 +221,15 @@ public class NativeRuntime extends Runtime {
 				return new Redo((Reference) spec.getElements().get(0));
 			case "if":
 				return new If((Reference) spec.getElements().get(0), (Reference) spec.getElements().get(1), (Reference) spec.getElements().get(2));
-			case "compare":
+			case "compareText":
+			case "compareInteger":
+			case "compareStructure":
 				return new Compare((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Data) spec.getElements().get(2));
 			case "object":
 				return new Object((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Reference) spec.getElements().get(2));
+			case "addInteger":
+			case "addComplex":
+				return new Add((Data) spec.getElements().get(0));
 			default:
 				this.info("Instruction " + instruction + " is not compilable", 0xFF6000);
 				return null;

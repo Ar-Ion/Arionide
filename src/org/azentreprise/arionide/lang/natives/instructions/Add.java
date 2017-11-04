@@ -20,6 +20,29 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives.instructions;
 
-public class Add {
+import java.util.List;
 
+import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.Object;
+import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
+
+public class Add implements NativeInstruction {
+
+	private final Data data;
+	
+	public Add(Data data) {
+		this.data = data;
+	}
+	
+	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
+		Object object = communicator.getBoundObject();
+		
+		if(object != null) {
+			object.add(this.data.getValue(), communicator);
+			return true;
+		} else {
+			communicator.exception("Invalid state error: No object is bound to this context");
+			return false;
+		}
+	}
 }
