@@ -51,9 +51,9 @@ public class ReferenceBinding extends Menu {
 	public void onClick(int id) {
 		if(id != 0) {
 			this.possible.get(id - 1).setValue("var@" + this.element.getName());
+			this.element.setValue(null);
 			this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
 			this.getAppManager().getEventDispatcher().fire(new MessageEvent("Parameter successfully bound", MessageType.SUCCESS));
-			this.parent.show();
 		}
 		
 		this.parent.show();

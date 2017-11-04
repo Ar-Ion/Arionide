@@ -55,8 +55,10 @@ public class StructureTypeManager implements TypeManager {
 	}
 	
 	private void add(int element, String current, Consumer<String> callback) {
-		if(!current.isEmpty()) {
+		if(current != null && !current.isEmpty()) {
 			current += "; ";
+		} else {
+			current = new String();
 		}
 		
 		callback.accept(current + element);

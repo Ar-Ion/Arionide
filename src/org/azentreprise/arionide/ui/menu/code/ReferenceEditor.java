@@ -66,7 +66,7 @@ public class ReferenceEditor extends Menu {
 		} else if(id == this.refIndex - 1) {
 			this.parent.show();
 		} else if(id < this.refIndex) {
-			Menu binding = new ReferenceBinding(this.getAppManager(), this, (Data) this.element.getSpecificationParameters().get(id), this.element.getSpecificationParameters());
+			Menu binding = new ReferenceBinding(this.getAppManager(), this, (Data) this.element.getNeededParameters().get(id), this.element.getSpecificationParameters());
 			binding.show();
 		} else {
 			id -= this.refIndex + 1;

@@ -76,6 +76,16 @@ public class NativeInstructionSet extends InstructionSet {
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.STRUCTURE),
 					new Data("local", "0$$$b0", NativeTypes.INTEGER)));
+			
+			this.install("redo", 60, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(),
+					new Reference("predicate", null, new ArrayList<>(Arrays.asList(new Data("condition", null, NativeTypes.INTEGER))), new ArrayList<>())));
+		
+			this.install("if", 75, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(),
+					new Reference("predicate", null, new ArrayList<>(Arrays.asList(new Data("condition", null, NativeTypes.INTEGER))), new ArrayList<>()),
+					new Reference("true", null, new ArrayList<>(), new ArrayList<>()),
+					new Reference("false", null, new ArrayList<>(), new ArrayList<>())));
 		} else {
 			this.retrieve("init");
 			this.retrieve("print");
@@ -83,6 +93,8 @@ public class NativeInstructionSet extends InstructionSet {
 			this.retrieve("defineString");
 			this.retrieve("defineInteger");
 			this.retrieve("defineStructure");
+			this.retrieve("redo");
+			this.retrieve("if");
 		}
 	}
 	

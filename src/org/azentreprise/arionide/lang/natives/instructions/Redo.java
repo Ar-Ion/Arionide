@@ -20,6 +20,31 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives.instructions;
 
-public class Redo {
+import java.util.List;
+
+import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.Reference;
+import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
+import org.azentreprise.arionide.lang.natives.NativeTypes;
+
+public class Redo implements NativeInstruction {
+
+	private final Call predicate;
+	
+	public Redo(Reference predicate) {
+		this.predicate = new Call(predicate);
+	}
+
+	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
+		communicator.setVariable("condition", true, new Data("condition", "b0", NativeTypes.INTEGER));
+		this.predicate.execute(communicator, references);
+		boolean redo = communicator.getVariable("condition").getValue().substring(1).equals("1");
+		
+		if(redo) {
+			communicator.exec(references.indexOf(communicator.getStack().peek()));
+		}
+		
+		return true;
+	}
 
 }

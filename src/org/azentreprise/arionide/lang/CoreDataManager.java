@@ -21,6 +21,8 @@
 package org.azentreprise.arionide.lang;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -34,14 +36,18 @@ public class CoreDataManager {
 
 	private final Storage storage;
 	
-	public CoreDataManager(Storage storage) {
+	public CoreDataManager(Storage storage, String varName) {
 		this.storage = storage;
 	}
 	
-	public List<String> getVariables(int type) {
+	public List<String> getVariables(int type, String name) {
 		int id = this.storage.getCurrentDataID();
 		
 		List<String> variables = new ArrayList<>();
+		
+		for(SpecificationElement element : this.storage.getStructureMeta().get(id).getSpecification().getElements()) {
+			variables.add(element.getName() + "$$$var@" + element.getName());
+		}
 		
 		for(HierarchyElement element : this.storage.getHierarchy()) {
 			this.browseHierarchy(element, id, variables);
@@ -49,9 +55,21 @@ public class CoreDataManager {
 		
 		this.browseInheritance(id, variables);
 		
-		for(SpecificationElement element : this.storage.getStructureMeta().get(id).getSpecification().getElements()) {
-			variables.add(element.getName() + "$$$var@" + element.getName());
+		Collections.reverse(variables);
+		
+		Iterator<String> iterator = variables.iterator();
+		List<String> priority = new ArrayList<>();
+		
+		while(iterator.hasNext()) {
+			String var = iterator.next();
+			
+			if(var.startsWith(name)) {
+				priority.add(var);
+				iterator.remove();
+			}
 		}
+		
+		variables.addAll(priority);
 				
 		this.storage.loadData(id); // Restore initial state
 		

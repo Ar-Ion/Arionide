@@ -82,7 +82,7 @@ public class CodeView extends View implements EventHandler {
 		this.add(new Button(this, "...").setSignal("more"), 0.85f, 0.86f, 0.95f, 0.94f);
 
 		this.add(this.currentMessage, 0.2f, 0.1f, 0.8f, 0.2f);
-		this.add(this.currentInfo, 0.2f, 0.78f, 0.8f, 0.85f);
+		this.add(this.currentInfo, 0.0f, 0.75f, 1.0f, 0.85f);
 		this.add(this.currentDebug, 0.0f, 0.95f, 1.0f, 1.0f);
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);

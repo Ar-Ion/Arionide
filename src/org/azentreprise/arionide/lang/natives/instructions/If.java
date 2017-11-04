@@ -20,6 +20,46 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives.instructions;
 
-public class If {
+import java.util.List;
 
+import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.Reference;
+import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
+import org.azentreprise.arionide.lang.natives.NativeTypes;
+
+public class If implements NativeInstruction {
+
+	private final Reference trueCaseRef;
+	private final Reference falseCaseRef;
+	
+	private final Call predicate;
+	private final Call trueCase;
+	private final Call falseCase;
+	
+	public If(Reference predicate, Reference trueCase, Reference falseCase) {
+		this.trueCaseRef = trueCase;
+		this.falseCaseRef = falseCase;
+		
+		this.predicate = new Call(predicate);
+		this.trueCase = new Call(trueCase);
+		this.falseCase = new Call(falseCase);
+	}
+	
+	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
+		communicator.setVariable("condition", true, new Data("condition", "b0", NativeTypes.INTEGER));
+		this.predicate.execute(communicator, references);
+		boolean redo = communicator.getVariable("condition").getValue().substring(1).equals("1");
+		
+		if(redo) {
+			if(this.trueCaseRef.getValue() != null) {
+				this.trueCase.execute(communicator, references);
+			}
+		} else {
+			if(this.falseCaseRef.getValue() != null) {
+				this.falseCase.execute(communicator, references);
+			}
+		}
+		
+		return true;
+	}
 }

@@ -31,10 +31,13 @@ import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.Validator;
 import org.azentreprise.arionide.lang.natives.instructions.Call;
+import org.azentreprise.arionide.lang.natives.instructions.Compare;
 import org.azentreprise.arionide.lang.natives.instructions.Define;
+import org.azentreprise.arionide.lang.natives.instructions.If;
 import org.azentreprise.arionide.lang.natives.instructions.Init;
 import org.azentreprise.arionide.lang.natives.instructions.NativeInstruction;
 import org.azentreprise.arionide.lang.natives.instructions.Print;
+import org.azentreprise.arionide.lang.natives.instructions.Redo;
 import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.Storage;
@@ -62,13 +65,15 @@ public class NativeRuntime extends Runtime {
 		
 		Storage storage = this.getProject().getStorage();
 		
-		if(this.compile(storage.getHierarchy().get(id).getID(), "root", storage)) {
+		int realID = storage.getHierarchy().get(id).getID();
+		
+		if(this.compile(realID, "root", storage)) {
 			this.info("Compilation succeed", 0x00FF00);
 						
 			this.info("Running program...", 0xFFAA00);
 			
 			if(this.code.size() > 0) {
-				this.ndc.getStack().push(id);
+				this.ndc.getStack().push(realID);
 				this.ndc.initVariablePool();
 
 				if(this.exec(0)) {
@@ -210,6 +215,12 @@ public class NativeRuntime extends Runtime {
 			case "defineInteger":
 			case "defineStructure":
 				return new Define((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Data) spec.getElements().get(2));
+			case "redo":
+				return new Redo((Reference) spec.getElements().get(0));
+			case "if":
+				return new If((Reference) spec.getElements().get(0), (Reference) spec.getElements().get(1), (Reference) spec.getElements().get(2));
+			case "compare":
+				return new Compare((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Data) spec.getElements().get(2));
 			default:
 				this.info("Instruction " + instruction + " is not compilable", 0xFF6000);
 				return null;

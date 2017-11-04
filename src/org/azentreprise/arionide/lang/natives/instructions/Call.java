@@ -51,7 +51,7 @@ public class Call implements NativeInstruction {
 			
 			for(SpecificationElement element : this.reference.getSpecificationParameters()) {
 				String value = element.getValue();
-								
+												
 				if(value.startsWith("var@")) {
 					SpecificationElement specElement = communicator.getVariable(value.substring(4)).clone();
 					specElement.setName(element.getName());
@@ -63,13 +63,15 @@ public class Call implements NativeInstruction {
 			
 			for(SpecificationElement element : this.reference.getNeededParameters()) {
 				String value = element.getValue();
-								
-				if(value.startsWith("var@")) {
-					SpecificationElement specElement = communicator.getVariable(value.substring(4)).clone();
-					specElement.setName(element.getName());
-					specVars.add(specElement);
-				} else {
-					specVars.add(element.clone());
+					
+				if(value != null) {
+					if(value.startsWith("var@")) {
+						SpecificationElement specElement = communicator.getVariable(value.substring(4)).clone();
+						specElement.setName(element.getName());
+						specVars.add(specElement);
+					} else {
+						specVars.add(element.clone());
+					}
 				}
 			}
 						
@@ -88,11 +90,21 @@ public class Call implements NativeInstruction {
 			for(SpecificationElement specVar : specVars) {
 				newVars.add(communicator.getVariable(specVar.getName())); // Variable might be redefined but not deleted
 			}
-			
+						
 			communicator.clearVariablePool();
 			theStack.pop();
 						
 			for(SpecificationElement newVar : newVars) {
+				for(SpecificationElement original : this.reference.getSpecificationParameters()) { // Rename variable according to the parent's context					
+					if(original.getName().equals(newVar.getName())) {
+						if(original.getValue().contains("var@")) {
+							newVar.setName(original.getValue().substring(4));
+						}
+						
+						break;
+					}
+				}
+								
 				if(communicator.isDefined(newVar.getName())) {
 					communicator.setVariable(newVar.getName(), communicator.isLocal(newVar.getName()), newVar);
 				}

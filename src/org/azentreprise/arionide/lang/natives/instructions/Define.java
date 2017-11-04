@@ -49,7 +49,7 @@ public class Define implements NativeInstruction {
 			value = communicator.getVariable(value.substring(4)).getValue();
 		}
 				
-		boolean local = this.local.getValue().substring(1) == "1";
+		boolean local = this.local.getValue().substring(1).equals("1");
 		
 		Data data = new Data(this.name.getValue().substring(4), value, this.value.getType());
 		

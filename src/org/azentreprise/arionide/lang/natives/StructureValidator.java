@@ -34,7 +34,9 @@ public class StructureValidator implements Validator {
 		
 		try {
 			for(String element : elements) {
-				Integer.parseInt(element.trim());
+				if(!element.isEmpty()) {
+					Integer.parseInt(element.trim());
+				}
 			}
 			
 			return true;
