@@ -15,19 +15,23 @@ out vec4 outColor;
 
 void main()
 {
-    vec2 delta = (textureCoords - lightPosition) / float(samples) * density;
-    vec2 coords = textureCoords;
-    vec4 color = vec4(0.0);
-    float illumination = 1.0;
+    if(exposure > 0.0) {
+        vec2 delta = (textureCoords - lightPosition) / float(samples) * density;
+        vec2 coords = textureCoords;
+        vec4 color = vec4(0.0);
+        float illumination = 1.0;
 
-    for(int i = 0; i < samples ; i++) {
-        coords -= delta;
-        color += texture(texture, coords) * illumination * weight;
-        illumination *= decay;
+        for(int i = 0; i < samples ; i++) {
+            coords -= delta;
+            color += texture(texture, coords) * illumination * weight;
+            illumination *= decay;
+        }
+    
+        color *= exposure;
+    
+        outColor += color;
+        outColor += texture(texture, textureCoords);
+    } else {
+        outColor = texture(texture, textureCoords);
     }
-    
-    color *= exposure;
-    
-    outColor += color;
-    outColor += texture(texture, textureCoords);
 }

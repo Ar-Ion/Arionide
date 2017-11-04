@@ -30,15 +30,21 @@ public class IntegerValidator implements Validator {
 	private static final Map<Character, String> validators = new HashMap<>();
 	
 	static {
-		validators.put('d', "/^(+-)?[0-9]+$/");
-		validators.put('h', "/^(+-)?[A-Fa-f0-9]+$");
-		validators.put('b', "/^(+-)?[01]+$");
+		validators.put('d', "^(-)?[0-9]+$");
+		validators.put('h', "^(-)?[A-Fa-f0-9]+$");
+		validators.put('b', "^(-)?[01]+$");
 	}
 	
 	public boolean validate(String data) {
 		if(data != null && data.length() > 0) {
+			int index = data.indexOf("$$$");
+			
+			if(index > -1) {
+				data = data.substring(index + 3);
+			}
+			
 			String validator = validators.get(data.charAt(0));
-			return validator != null && data.substring(0).matches(validator);
+			return validator != null && data.substring(1).matches(validator);
 		}
 		
 		return false;

@@ -50,18 +50,39 @@ public class NativeInstructionSet extends InstructionSet {
 
 			
 			this.install("init", 0, parents, new Specification(this.getProject().getDataManager().allocSpecification()));
-						
+			
 			this.install("print", 15, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(), 
 					new Data("message", "debug", NativeTypes.TEXT)));
 			
 			this.install("call", 30, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
-					new Reference("structure", null, new ArrayList<>(), new ArrayList<>())));
+					new Reference("reference", null, new ArrayList<>(), new ArrayList<>())));
+		
+			this.install("defineString", 45, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(),
+					new Data("name", null, NativeTypes.TEXT),
+					new Data("value", null, NativeTypes.TEXT),
+					new Data("local", "0$$$b0", NativeTypes.INTEGER)));
+			
+			this.install("defineInteger", 47, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(),
+					new Data("name", null, NativeTypes.TEXT),
+					new Data("value", null, NativeTypes.INTEGER),
+					new Data("local", "0$$$b0", NativeTypes.INTEGER)));
+			
+			this.install("defineStructure", 49, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(),
+					new Data("name", null, NativeTypes.TEXT),
+					new Data("value", null, NativeTypes.STRUCTURE),
+					new Data("local", "0$$$b0", NativeTypes.INTEGER)));
 		} else {
 			this.retrieve("init");
 			this.retrieve("print");
 			this.retrieve("call");
+			this.retrieve("defineString");
+			this.retrieve("defineInteger");
+			this.retrieve("defineStructure");
 		}
 	}
 	

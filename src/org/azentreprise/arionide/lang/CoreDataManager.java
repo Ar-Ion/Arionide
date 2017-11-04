@@ -21,7 +21,6 @@
 package org.azentreprise.arionide.lang;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -29,6 +28,7 @@ import java.util.stream.Collectors;
 
 import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Storage;
+import org.azentreprise.arionide.project.StructureMeta;
 
 public class CoreDataManager {
 
@@ -44,20 +44,28 @@ public class CoreDataManager {
 		List<String> variables = new ArrayList<>();
 		
 		for(HierarchyElement element : this.storage.getHierarchy()) {
-			this.browse(element, id, variables);
+			this.browseHierarchy(element, id, variables);
 		}
+		
+		this.browseInheritance(id, variables);
+		
+		for(SpecificationElement element : this.storage.getStructureMeta().get(id).getSpecification().getElements()) {
+			variables.add(element.getName() + "$$$var@" + element.getName());
+		}
+				
+		this.storage.loadData(id); // Restore initial state
 		
 		return variables;
 	}
 	
-	private boolean browse(HierarchyElement element, int id, List<String> variables) {		
+	private boolean browseHierarchy(HierarchyElement element, int id, List<String> variables) {
 		if(element.getID() == id) {
 			this.loadVars(id, variables);
 			return true;
 		} else {
 			for(HierarchyElement child : element.getChildren()) {
-				if(this.browse(child, id, variables)) {
-					this.loadVars(id, variables);
+				if(this.browseHierarchy(child, id, variables)) {
+					this.loadVars(element.getID(), variables);
 					return true;
 				}
 			}
@@ -66,8 +74,32 @@ public class CoreDataManager {
 		}
 	}
 	
-	private void loadVars(int id, List<String> variables) {
+	private void browseInheritance(int element, List<String> variables) {
+		this.loadVars(element, variables);
 		
+		for(int parent : this.storage.getInheritance().get(element).getParents()) {
+			this.browseInheritance(parent, variables);
+		}
+	}
+	
+	private void loadVars(int id, List<String> variables) {
+		this.storage.loadData(id);
+				
+		for(HierarchyElement element : this.storage.getCurrentData()) {
+			StructureMeta meta = this.storage.getStructureMeta().get(element.getID());
+			
+			for(SpecificationElement specElement : meta.getSpecification().getElements()) {
+				String value = specElement.getRawValue();
+				
+				if(value != null && value.contains("var@")) {
+					value = value.substring(4) + "$$$" + value;
+						
+					if(!variables.contains(value)) {
+						variables.add(value);
+					}
+				}
+			}
+		}
 	}
 		
 	public Map<Integer, String> getReferencables() {

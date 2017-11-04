@@ -147,6 +147,9 @@ public class DataManager {
 				iterator.remove();
 				this.storage.saveHierarchy();
 				
+				this.storage.inheritance.remove(id);
+				this.storage.saveInheritance();
+				
 				this.deleteMeta(element);
 				this.storage.saveStructureMeta();
 				

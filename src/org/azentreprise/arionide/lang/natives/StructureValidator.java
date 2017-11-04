@@ -24,6 +24,12 @@ import org.azentreprise.arionide.lang.Validator;
 
 public class StructureValidator implements Validator {
 	public boolean validate(String data) {
+		int index = data.indexOf("$$$");
+		
+		if(index > -1) {
+			data = data.substring(index + 3);
+		}
+		
 		String[] elements = data.split(";");
 		
 		try {

@@ -63,10 +63,10 @@ public class TypeEditor extends Menu {
 			this.getElements().add("Back");
 			this.getElements().add("New variable");
 			this.getElements().addAll(this.typeManager.getActionLabels());
-			
+						
 			if(this.separator > 0) {
 				this.setMenuCursor(this.separator - 1);
-			} else if(this.getElements().size() > 1) {
+			} else {
 				this.setMenuCursor(1);
 			}
 		} else {
@@ -89,7 +89,7 @@ public class TypeEditor extends Menu {
 			this.parent.show();
 		} else if(id == 1) {
 			new Thread(() -> {
-				String name = JOptionPane.showInputDialog(null, "Please enter the description of the instruction", "Description", JOptionPane.PLAIN_MESSAGE);
+				String name = JOptionPane.showInputDialog(null, "Please enter the name of the variable", "New variable", JOptionPane.PLAIN_MESSAGE);
 				
 				if(name != null) {
 					this.validateAction("var@" + name);
@@ -107,7 +107,7 @@ public class TypeEditor extends Menu {
 			this.getAppManager().getEventDispatcher().fire(new MessageEvent("Value successfully updated", MessageType.SUCCESS));
 			this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
 		} else {
-			this.getAppManager().getEventDispatcher().fire(new MessageEvent("Failed to update value", MessageType.ERROR));
+			this.getAppManager().getEventDispatcher().fire(new MessageEvent("Unable to validate the input '" + newValue + "'", MessageType.ERROR));
 		}
 	}
 	

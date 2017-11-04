@@ -25,16 +25,36 @@ import java.util.List;
 import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
 
-public class Set implements NativeInstruction {
+public class Define implements NativeInstruction {
 	
-	private final Data data;
+	private final Data name;
+	private final Data value;
+	private final Data local;
 	
-	public Set(Data data) {
-		this.data = data;
+	public Define(Data name, Data value, Data local) {
+		this.name = name;
+		this.value = value;
+		this.local = local;
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		communicator.setVariable(this.data.getName(), false, this.data);
+		if(!this.name.getValue().startsWith("var@")) {
+			communicator.exception("The variable '" + this.name.getValue() + "' is not defined with the 'New variable' button but with the 'Custom string' one.");
+			return false;
+		}
+		
+		String value = this.value.getValue();
+		
+		if(value.startsWith("var@")) {
+			value = communicator.getVariable(value.substring(4)).getValue();
+		}
+				
+		boolean local = this.local.getValue().substring(1) == "1";
+		
+		Data data = new Data(this.name.getValue().substring(4), value, this.value.getType());
+		
+		communicator.setVariable(data.getName(), local, data);
+		
 		return true;
 	}
 }

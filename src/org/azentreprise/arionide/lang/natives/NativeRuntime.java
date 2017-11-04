@@ -31,6 +31,7 @@ import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.Validator;
 import org.azentreprise.arionide.lang.natives.instructions.Call;
+import org.azentreprise.arionide.lang.natives.instructions.Define;
 import org.azentreprise.arionide.lang.natives.instructions.Init;
 import org.azentreprise.arionide.lang.natives.instructions.NativeInstruction;
 import org.azentreprise.arionide.lang.natives.instructions.Print;
@@ -205,6 +206,10 @@ public class NativeRuntime extends Runtime {
 				return new Print((Data) spec.getElements().get(0));
 			case "call":
 				return new Call((Reference) spec.getElements().get(0));
+			case "defineString":
+			case "defineInteger":
+			case "defineStructure":
+				return new Define((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Data) spec.getElements().get(2));
 			default:
 				this.info("Instruction " + instruction + " is not compilable", 0xFF6000);
 				return null;
@@ -218,11 +223,8 @@ public class NativeRuntime extends Runtime {
 			int end = message.indexOf("}", index);
 						
 			String symbol = message.substring(index, end);
-			int id = this.references.indexOf(Integer.parseInt(symbol));
 			
-			if(id < this.symbols.size()) {
-				message = message.replace("@{" + symbol + "}", this.symbols.get(id));
-			}
+			message = message.replace("@{" + symbol + "}", this.symbols.get(Integer.parseInt(symbol)));
 		}
 		
 		super.info(message, color);

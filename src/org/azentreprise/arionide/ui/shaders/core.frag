@@ -1,5 +1,7 @@
 #version 400
 
+precision lowp float;
+
 const vec3 lightColor = vec3(1.0, 1.0, 1.0);
 const float shininess = 8.0;
 const float attenuationFactor = 0.0001;
@@ -22,7 +24,7 @@ float rand(float id) {
 }
 
 float sunBrightness() {
-    return pow(max(0.0, float(dot(normalize(fragNormal), normalize(lightPosition - camera)))), sunEmissionConcentration);
+    return pow(max(0.0, float(dot(normalize(fragNormal), normalize(vec3(lightPosition - camera))))), sunEmissionConcentration);
 }
 
 void main() {

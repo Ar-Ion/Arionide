@@ -37,7 +37,7 @@ public class Print implements NativeInstruction {
 		String realMessage = this.message;
 		
 		if(realMessage.startsWith("var@")) {
-			realMessage = communicator.getVariable(this.message.substring(4)).getValue();
+			realMessage = communicator.getVariable(realMessage.substring(4)).getValue();
 		}
 		
 		communicator.info(realMessage, 0xFFFFFF);

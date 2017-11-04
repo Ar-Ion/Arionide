@@ -410,7 +410,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 		gl.glUseProgram(this.shader);
 		
-		/* Setup vertex data */
 		Vector3d sunPosition = new Vector3d(this.player).add(this.sun);
 		
 		gl.glUniformMatrix4dv(this.view, 1, false, this.viewData);

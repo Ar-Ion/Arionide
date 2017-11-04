@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu.code;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -78,8 +77,6 @@ public class CodeEditor extends Menu {
 			for(SpecificationElement element : this.instructionMeta.getSpecification().getElements()) {
 				list.add(element.getName());
 			}
-			
-			Collections.sort(list);
 		}
 		
 		this.setMenuCursor(3);

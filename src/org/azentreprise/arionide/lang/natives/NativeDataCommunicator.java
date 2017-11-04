@@ -62,7 +62,13 @@ public class NativeDataCommunicator {
 	}
 	
 	public void setVariable(String name, boolean local, SpecificationElement value) {
-		this.variables.get(this.stack.peek()).put(name, new SimpleEntry<Boolean, SpecificationElement>(local, value));
+		SpecificationElement element = this.getVariable(name);
+		
+		if(!local && element != null) {
+			element.setValue(value.getValue());
+		} else {
+			this.variables.get(this.stack.peek()).put(name, new SimpleEntry<Boolean, SpecificationElement>(local, value));			
+		}
 	}
 	
 	public SpecificationElement getVariable(String name) {
@@ -70,8 +76,8 @@ public class NativeDataCommunicator {
 		Stack<Integer> stack = (Stack<Integer>) this.stack.clone();
 	
 		boolean first = true;
-		
-		while(!stack.isEmpty()) {		
+				
+		while(!stack.isEmpty()) {
 			Entry<Boolean, SpecificationElement> variable = this.variables.get(stack.pop()).get(name);
 			
 			if(variable != null) {
