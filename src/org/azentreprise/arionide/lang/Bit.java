@@ -5,6 +5,7 @@ public class Bit {
 	private final int bit;
 	
 	public Bit(int bit) {
+		assert (bit + 2) / 2 == 1;
 		this.bit = bit;
 	}
 	

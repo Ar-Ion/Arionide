@@ -40,6 +40,7 @@ import org.azentreprise.arionide.lang.natives.instructions.NativeInstruction;
 import org.azentreprise.arionide.lang.natives.instructions.Object;
 import org.azentreprise.arionide.lang.natives.instructions.Print;
 import org.azentreprise.arionide.lang.natives.instructions.Redo;
+import org.azentreprise.arionide.lang.natives.instructions.Write;
 import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.Storage;
@@ -230,6 +231,8 @@ public class NativeRuntime extends Runtime {
 			case "addInteger":
 			case "addComplex":
 				return new Add((Data) spec.getElements().get(0));
+			case "write":
+				return new Write((Data) spec.getElements().get(0), (Data) spec.getElements().get(1));
 			default:
 				this.info("Instruction " + instruction + " is not compilable", 0xFF6000);
 				return null;

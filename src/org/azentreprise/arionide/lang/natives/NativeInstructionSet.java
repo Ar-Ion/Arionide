@@ -119,6 +119,10 @@ public class NativeInstructionSet extends InstructionSet {
 			this.install("addComplex", 122, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(), 
 					new Data("data", null, NativeTypes.TEXT)));
+			
+			this.install("write", 135, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(), 
+					new Data("object", null, NativeTypes.TEXT)));
 		} else {
 			this.retrieve("init");
 			this.retrieve("print");
@@ -134,6 +138,7 @@ public class NativeInstructionSet extends InstructionSet {
 			this.retrieve("object");
 			this.retrieve("addInteger");
 			this.retrieve("addComplex");
+			this.retrieve("write");
 		}
 	}
 	
