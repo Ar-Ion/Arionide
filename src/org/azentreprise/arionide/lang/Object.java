@@ -31,6 +31,14 @@ public class Object {
 		}
 	}
 	
+	public void setValue(String value) {
+		;
+	}
+	
+	public String getValue() {
+		return null;
+	}
+	
 	public boolean isConsistent() {
 		return this.index % this.structure.size() == 0;
 	}
@@ -45,5 +53,9 @@ public class Object {
 	
 	public int getSize() {
 		return this.getData().length;
+	}
+
+	public List<Object> getObjects() {
+		return this.data;
 	}
 }

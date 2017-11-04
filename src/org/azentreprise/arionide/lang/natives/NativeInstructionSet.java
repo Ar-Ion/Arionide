@@ -124,6 +124,18 @@ public class NativeInstructionSet extends InstructionSet {
 					this.getProject().getDataManager().allocSpecification(), 
 					new Data("path", null, NativeTypes.TEXT),
 					new Data("object", null, NativeTypes.TEXT)));
+			
+			this.install("update", 150, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(), 
+					new Data("object", null, NativeTypes.TEXT),
+					new Data("selector", null, NativeTypes.TEXT),
+					new Reference("selector", null, new ArrayList<>(Arrays.asList(new Data("value", null, NativeTypes.TEXT))), new ArrayList<>())));
+			
+			this.install("size", 165, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(),
+					new Data("object", null, NativeTypes.TEXT),
+					new Data("result", null, NativeTypes.TEXT)));
+			
 		} else {
 			this.retrieve("init");
 			this.retrieve("print");
@@ -140,6 +152,8 @@ public class NativeInstructionSet extends InstructionSet {
 			this.retrieve("addInteger");
 			this.retrieve("addComplex");
 			this.retrieve("write");
+			this.retrieve("update");
+			this.retrieve("size");
 		}
 	}
 	

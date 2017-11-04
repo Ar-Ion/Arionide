@@ -14,11 +14,11 @@ public class TextObject extends Object {
 		this.value = value;
 	}
 	
-	protected void setValue(String value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 	
-	protected String getValue() {
+	public String getValue() {
 		return this.value;
 	}
 	

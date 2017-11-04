@@ -23,7 +23,6 @@ package org.azentreprise.arionide.lang.natives.instructions;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.List;
 
 import org.azentreprise.arionide.lang.Bit;
@@ -59,9 +58,7 @@ public class Write implements NativeInstruction {
 					if(object != null) {
 						Bit[] bits = object.getData();
 						byte[] data = new byte[bits.length / 8 + 1];
-						
-						System.out.println(Arrays.toString(bits));
-						
+												
 						for(int i = 0; i < data.length; i++) {
 							byte b = 0x0;
 							
@@ -69,7 +66,6 @@ public class Write implements NativeInstruction {
 								int bitID = 8 * i + j;
 								
 								if(bitID < bits.length) {
-									System.out.println(bits[bitID].getBit());
 									b |= bits[bitID].getBit() << (7 - j);
 								}
 							}

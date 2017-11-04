@@ -1,7 +1,5 @@
 package org.azentreprise.arionide.lang;
 
-import java.util.Arrays;
-
 public class Bit {
 	
 	private final int bit;
