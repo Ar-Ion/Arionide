@@ -54,7 +54,7 @@ public class Reference extends SpecificationElement {
 				.map(SpecificationElement::toString).toArray(String[]::new)) + ">";
 	}
 	
-	public boolean equals(Object other) {
+	public boolean equals(java.lang.Object other) {
 		if(other instanceof Reference) {
 			Reference casted = (Reference) other;
 			return super.equals(other) && this.neededParameters.equals(casted.neededParameters);

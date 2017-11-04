@@ -78,7 +78,7 @@ public abstract class SpecificationElement implements Serializable {
 		return this.name + ": " + displayValue;
 	}
 	
-	public boolean equals(Object other) {
+	public boolean equals(java.lang.Object other) {
 		if(other instanceof SpecificationElement) {
 			SpecificationElement casted = (SpecificationElement) other;
 			return this.name == casted.name;

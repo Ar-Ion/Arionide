@@ -57,7 +57,7 @@ public class TypeEditor extends Menu {
 		this.validator = lang.getTypes().getValidator(element.getType());
 
 		if(this.typeManager != null) {
-			this.getElements().addAll(cdm.getVariables(element.getType()));
+			this.getElements().addAll(cdm.getVariables(element.getType(), element.getName()));
 			this.getElements().addAll(this.typeManager.getSuggestions(cdm));
 			this.separator = this.getElements().size();
 			this.getElements().add("Back");

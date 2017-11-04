@@ -20,6 +20,47 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives.instructions;
 
-public class Object {
+import java.util.List;
 
+import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.Reference;
+import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
+import org.azentreprise.arionide.lang.natives.NativeTypes;
+
+public class Object implements NativeInstruction {
+
+	private final Data result;
+	private final Data structure;
+	private final int constructorRef;
+	private final Call constructor;
+	
+	public Object(Data result, Data structure, Reference constructor) {
+		this.result = result;
+		this.structure = structure;
+		this.constructorRef = Integer.parseInt(constructor.getValue());
+		this.constructor = new Call(constructor);
+	}
+	
+	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
+		if(this.result.getValue().contains("var@")) {
+			String variable = this.result.getValue().substring(4);
+			String identifier = communicator.allocObject(this.structure.getValue());
+			
+			communicator.setVariable(variable, true, new Data(variable, identifier, NativeTypes.TEXT));
+			
+			communicator.bindObject(this.constructorRef, identifier);
+			this.constructor.execute(communicator, references);
+			communicator.unbindObject(this.constructorRef);
+			
+			if(communicator.getObject(identifier).isConsistent()) {
+				return true;
+			} else {
+				communicator.exception("Inconsitent object");
+				return false;
+			}
+		} else {
+			communicator.exception("You can't use a direct value for an object instance");
+			return false;
+		}
+	}
 }

@@ -21,13 +21,18 @@
 package org.azentreprise.arionide.lang.natives;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Stack;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import org.azentreprise.arionide.lang.SpecificationElement;
+import org.azentreprise.arionide.lang.Object;
 
 public class NativeDataCommunicator {
 	
@@ -35,7 +40,9 @@ public class NativeDataCommunicator {
 	private final BiConsumer<String, Integer> channel;
 	private final Stack<Integer> stack = new Stack<>();
 	private final Map<Integer, Map<String, Entry<Boolean, SpecificationElement>>> variables = new HashMap<>();
-
+	private final List<Object> objects = new ArrayList<>();
+	private final Map<Integer, String> boundObjects = new HashMap<>();
+	
 	protected NativeDataCommunicator(NativeRuntime runtime, BiConsumer<String, Integer> channel) {
 		this.runtime = runtime;
 		this.channel = channel;
@@ -107,6 +114,31 @@ public class NativeDataCommunicator {
 		while(!this.stack.empty()) {
 			int element = this.stack.pop();
 			this.channel.accept("In @{" + element + "} (" + element + ":?)", 0xFF7700);
+		}
+	}
+	
+	public String allocObject(String structure) {
+		this.objects.add(new Object(Arrays.stream(structure.split("; ")).map(Integer::parseInt).collect(Collectors.toList())));
+		return "#@" + (this.objects.size() - 1);
+	}
+	
+	public void bindObject(int reference, String identifier) {
+		this.boundObjects.put(reference, identifier);
+	}
+	
+	public void unbindObject(int reference) {
+		this.boundObjects.remove(reference);
+	}
+
+	public Object getBoundObject() {
+		return this.getObject(this.boundObjects.get(this.stack.peek()));
+	}
+	
+	public Object getObject(String identifier) {
+		if(identifier != null && identifier.startsWith("#@")) {
+			return this.objects.get(Integer.parseInt(identifier.substring(2)));
+		} else {
+			return null;
 		}
 	}
 }

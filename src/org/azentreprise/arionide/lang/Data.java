@@ -39,7 +39,7 @@ public class Data extends SpecificationElement {
 		this.type = type;
 	}
 	
-	public boolean equals(Object other) {
+	public boolean equals(java.lang.Object other) {
 		if(other instanceof Data) {
 			Data casted = (Data) other;
 			return super.equals(other) && this.type == casted.type;

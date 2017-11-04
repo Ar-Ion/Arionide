@@ -59,7 +59,7 @@ public class NativeInstructionSet extends InstructionSet {
 					this.getProject().getDataManager().allocSpecification(),
 					new Reference("reference", null, new ArrayList<>(), new ArrayList<>())));
 		
-			this.install("defineString", 45, parents, new Specification(
+			this.install("defineText", 45, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.TEXT),
@@ -86,15 +86,42 @@ public class NativeInstructionSet extends InstructionSet {
 					new Reference("predicate", null, new ArrayList<>(Arrays.asList(new Data("condition", null, NativeTypes.INTEGER))), new ArrayList<>()),
 					new Reference("true", null, new ArrayList<>(), new ArrayList<>()),
 					new Reference("false", null, new ArrayList<>(), new ArrayList<>())));
+			
+			this.install("compareText", 90, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(),
+					new Data("first", null, NativeTypes.TEXT),
+					new Data("second", null, NativeTypes.TEXT),
+					new Data("result", null, NativeTypes.INTEGER)));
+			
+			this.install("compareInteger", 92, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(),
+					new Data("first", null, NativeTypes.INTEGER),
+					new Data("second", null, NativeTypes.INTEGER),
+					new Data("result", null, NativeTypes.INTEGER)));
+			
+			this.install("compareStructure", 94, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(),
+					new Data("first", null, NativeTypes.STRUCTURE),
+					new Data("second", null, NativeTypes.STRUCTURE),
+					new Data("result", null, NativeTypes.INTEGER)));
+			
+			this.install("object", 105, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(),
+					new Data("name", null, NativeTypes.TEXT),
+					new Data("structure", null, NativeTypes.STRUCTURE),
+					new Reference("constructor", null, new ArrayList<>(), new ArrayList<>())));
 		} else {
 			this.retrieve("init");
 			this.retrieve("print");
 			this.retrieve("call");
-			this.retrieve("defineString");
+			this.retrieve("defineText");
 			this.retrieve("defineInteger");
 			this.retrieve("defineStructure");
 			this.retrieve("redo");
 			this.retrieve("if");
+			this.retrieve("compareText");
+			this.retrieve("compareInteger");
+			this.retrieve("compareStructure");
 		}
 	}
 	

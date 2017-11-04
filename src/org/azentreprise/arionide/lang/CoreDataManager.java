@@ -36,7 +36,7 @@ public class CoreDataManager {
 
 	private final Storage storage;
 	
-	public CoreDataManager(Storage storage, String varName) {
+	public CoreDataManager(Storage storage) {
 		this.storage = storage;
 	}
 	
