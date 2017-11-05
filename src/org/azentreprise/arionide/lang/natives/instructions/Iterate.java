@@ -34,14 +34,19 @@ public class Iterate implements NativeInstruction {
 	private final Data object;
 	private final Data selector;
 	private final Call updater;
+	private final Data layers;
+	private int index = 0;
 	
-	public Iterate(Data object, Data selector, Reference updater) {
+	public Iterate(Data object, Data selector, Reference updater, Data layers) {
 		this.object = object;
 		this.selector = selector;
 		this.updater = new Call(updater);
+		this.layers = layers;
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
+		this.index = 0;
+		
 		if(this.object.getValue().startsWith("var@")) {
 			SpecificationElement element = communicator.getVariable(this.object.getValue().substring(4));
 			
@@ -52,12 +57,22 @@ public class Iterate implements NativeInstruction {
 					selector = communicator.getVariable(selector.substring(4)).getValue();
 				}
 				
-				if(selector != null) {
+				if(selector == null) {
+					selector = new String();
+				}
+				
+				String layers = this.layers.getValue();
+				
+				if(layers.startsWith("var@")) {
+					layers = communicator.getVariable(layers.substring(4)).getValue();
+				}
+				
+				if(layers != null) {
 					Object object = communicator.getObject(element.getValue());
 					
 					if(object != null) {
 						for(Object obj : object.getObjects()) {
-							this.scan(obj, selector, communicator, references);
+							this.scan(obj, selector, communicator, references, Integer.valueOf(layers.substring(1), layers.charAt(0) != 'd' ? layers.charAt(0) != 'b' ? 16 : 2 : 10));
 						}
 						
 						return true;
@@ -65,7 +80,7 @@ public class Iterate implements NativeInstruction {
 						communicator.exception("Invalid object: " + element.getValue());
 					}
 				} else {
-					communicator.exception("Dead variable: " + selector);
+					communicator.exception("Dead variable: " + this.selector.getValue());
 				}
 			} else {
 				communicator.exception("Dead variable: " + this.object.getValue());
@@ -77,17 +92,20 @@ public class Iterate implements NativeInstruction {
 		return false;
 	}
 	
-	private void scan(Object obj, String selector, NativeDataCommunicator communicator, List<Integer> references) {
+	private void scan(Object obj, String selector, NativeDataCommunicator communicator, List<Integer> references, int layers) {
 		if(obj.getValue() != null && obj.getValue().startsWith(selector)) {
 			String value = obj.getValue().substring(selector.length());
 			
 			communicator.setVariable("value", true, new Data("value", value, NativeTypes.TEXT));
+			communicator.setVariable("index", true, new Data("index", "d" + this.index++, NativeTypes.INTEGER));
 			this.updater.execute(communicator, references);
 			obj.setValue(communicator.getVariable("value").getValue());
 		}
 		
-		for(Object sub : obj.getObjects()) {
-			this.scan(sub, selector, communicator, references);
+		if(layers > 0) {
+			for(Object sub : obj.getObjects()) {
+				this.scan(sub, selector, communicator, references, layers - 1);
+			}
 		}
 	}
 }

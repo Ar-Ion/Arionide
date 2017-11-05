@@ -237,7 +237,7 @@ public class NativeRuntime extends Runtime {
 			case "write":
 				return new Write((Data) spec.getElements().get(0), (Data) spec.getElements().get(1));
 			case "iterate":
-				return new Iterate((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Reference) spec.getElements().get(2));
+				return new Iterate((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Reference) spec.getElements().get(2), (Data) spec.getElements().get(3));
 			case "size":
 				return new Size((Data) spec.getElements().get(0), (Data) spec.getElements().get(1));
 			case "merge":

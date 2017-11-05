@@ -129,7 +129,8 @@ public class NativeInstructionSet extends InstructionSet {
 					this.getProject().getDataManager().allocSpecification(), 
 					new Data("object", null, NativeTypes.TEXT),
 					new Data("selector", null, NativeTypes.TEXT),
-					new Reference("updater", null, new ArrayList<>(Arrays.asList(new Data("value", null, NativeTypes.TEXT))), new ArrayList<>())));
+					new Reference("updater", null, new ArrayList<>(Arrays.asList(new Data("value", null, NativeTypes.TEXT), new Data("index", null, NativeTypes.INTEGER))), new ArrayList<>()),
+					new Data("layers", "b0", NativeTypes.INTEGER)));
 			
 			this.install("size", 110, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
