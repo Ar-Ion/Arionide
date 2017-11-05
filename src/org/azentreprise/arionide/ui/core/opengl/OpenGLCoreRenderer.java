@@ -614,10 +614,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		synchronized(this.worldGeometry.getElements()) {
 			for(WorldElement element : this.worldGeometry.getElements()) {
 				boolean insideConstraint = this.current == null || this.current.getCenter().distance(element.getCenter()) < this.worldGeometry.getSizeForGeneration(this.inside.size() - 1);
-				if((element.getSize() == size && insideConstraint) || size < -42.0d) {
+				
+				boolean sameSize = Math.abs(element.getSize() - size) < 10E-10D;
+				
+				if((sameSize && insideConstraint) || size < -42.0d) {
 					double currentDistance = this.player.distance(element.getCenter());
 	
-					if(element.getSize() == size) {
+					if(sameSize) {
 						menuData.add(element);
 					}
 					

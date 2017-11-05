@@ -33,6 +33,7 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	private final Queue<Event> events = new LinkedList<>();
 	
 	private int insertionIndex = 0;
+	private boolean paused = false;
 		
 	public MainEventDispatcher(EventDispatchingThread thread) {
 		thread.setup(this);
@@ -47,7 +48,7 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	}
 	
 	public synchronized void dispatchEvents() {
-		while(true) {
+		while(!this.paused) {
 			Event event = this.events.poll();
 			
 			if(event == null) break;
@@ -67,5 +68,13 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	public synchronized void registerHandler(EventHandler handler) {
 		assert this.insertionIndex < this.handlers.length : "Overflow: too many handlers trying to register";
 		this.handlers[this.insertionIndex++] = handler;
+	}
+	
+	public void pause() {
+		this.paused = true;
+	}
+	
+	public void resume() {
+		this.paused = false;
 	}
 }

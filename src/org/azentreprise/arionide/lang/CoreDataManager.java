@@ -121,6 +121,8 @@ public class CoreDataManager {
 	}
 		
 	public Map<Integer, String> getReferencables() {
-		return this.storage.getInheritance().keySet().stream().collect(Collectors.toMap(Function.identity(), e -> this.storage.getStructureMeta().get(e).getName()));
+		return this.storage.getInheritance().keySet().stream().collect(Collectors.toMap(Function.identity(), e -> {
+			return this.storage.getStructureMeta().containsKey(e) ? this.storage.getStructureMeta().get(e).getName() : "?";
+		}));
 	}
 }

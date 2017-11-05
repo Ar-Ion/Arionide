@@ -48,9 +48,9 @@ public class If implements NativeInstruction {
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
 		communicator.setVariable("condition", true, new Data("condition", "b0", NativeTypes.INTEGER));
 		this.predicate.execute(communicator, references);
-		boolean redo = communicator.getVariable("condition").getValue().substring(1).equals("1");
+		boolean action = communicator.getVariable("condition").getValue().substring(1).equals("1");
 		
-		if(redo) {
+		if(action) {
 			if(this.trueCaseRef.getValue() != null) {
 				this.trueCase.execute(communicator, references);
 			}

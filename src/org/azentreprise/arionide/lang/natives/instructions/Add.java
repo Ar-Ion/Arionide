@@ -38,7 +38,14 @@ public class Add implements NativeInstruction {
 		Object object = communicator.getBoundObject();
 		
 		if(object != null) {
-			object.add(this.data.getValue(), communicator);
+			String value = this.data.getValue();
+			
+			if(value.startsWith("var@")) {
+				value = communicator.getVariable(value.substring(4)).getValue();
+			}
+			
+			object.add(value, communicator);
+			
 			return true;
 		} else {
 			communicator.exception("Invalid state error: No object is bound to this context");

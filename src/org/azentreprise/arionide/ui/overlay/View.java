@@ -116,12 +116,12 @@ public abstract class View extends Surface {
 	
 	public void show() {
 		super.show();
-		this.components.forEach(comp -> comp.show());
+		this.components.forEach(Component::show);
 	}
 	
 	public void hide() {
 		super.hide();
-		this.components.forEach(comp -> comp.hide());
+		this.components.forEach(Component::hide);
 	}
 	
 	public void openView(View target) {
@@ -146,8 +146,11 @@ public abstract class View extends Surface {
 	
 	public void hide(boolean transition) {		
 		if(transition) {
+			this.getAppManager().getEventDispatcher().pause();
+			
 			this.getAlphaAnimation().startAnimation(500, after -> {
 				this.hide();
+				this.getAppManager().getEventDispatcher().resume();
 			}, 0);
 		} else {
 			this.alpha = 0;

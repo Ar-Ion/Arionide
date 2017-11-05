@@ -44,7 +44,7 @@ public class NativeDataCommunicator {
 	private final Stack<Integer> stack = new Stack<>();
 	private final Map<Integer, Map<String, Entry<Boolean, SpecificationElement>>> variables = new HashMap<>();
 	private final List<Object> objects = new ArrayList<>();
-	private final Map<Integer, String> boundObjects = new HashMap<>();
+	private final Stack<String> boundObjects = new Stack<>();
 	
 	protected NativeDataCommunicator(NativeRuntime runtime, BiConsumer<String, Integer> channel) {
 		this.runtime = runtime;
@@ -83,8 +83,8 @@ public class NativeDataCommunicator {
 	
 	public SpecificationElement getVariable(String name) {
 		@SuppressWarnings("unchecked")
-		Stack<Integer> stack = (Stack<Integer>) this.stack.clone();
-	
+		Stack<Integer> stack = (Stack<Integer>) this.stack.clone();		
+		
 		boolean first = true;
 				
 		while(!stack.isEmpty()) {
@@ -111,30 +111,32 @@ public class NativeDataCommunicator {
 		return var != null ? var.getKey() : true;
 	}
 	
-	public void exception(String message) {
+	public void exception(String message) {		
 		this.channel.accept(message, 0xFF0000);
 		
 		while(!this.stack.empty()) {
 			int element = this.stack.pop();
 			this.channel.accept("In @{" + element + "} (" + element + ":?)", 0xFF7700);
 		}
+		
+		new Exception().printStackTrace();
 	}
 	
 	public String allocObject(String structure) {
-		this.objects.add(new Object(Arrays.stream(structure.split("; ")).map(Integer::parseInt).collect(Collectors.toList())));
+		this.objects.add(new Object(Arrays.stream(structure.split("; ")).map(Integer::parseInt).collect(Collectors.toList()), "#@" + this.objects.size()));
 		return "#@" + (this.objects.size() - 1);
 	}
 	
-	public void bindObject(int reference, String identifier) {
-		this.boundObjects.put(reference, identifier);
+	public void bindObject(String identifier) {
+		this.boundObjects.push(identifier);
 	}
 	
-	public void unbindObject(int reference) {
-		this.boundObjects.remove(reference);
+	public void unbindObject() {
+		this.boundObjects.pop();
 	}
 
 	public Object getBoundObject() {
-		return this.getObject(this.boundObjects.get(this.stack.peek()));
+		return this.getObject(this.boundObjects.peek());
 	}
 	
 	public Object getObject(String identifier) {
@@ -150,9 +152,11 @@ public class NativeDataCommunicator {
 		Object theObject = this.getObject(identifier);
 		
 		List<Entry<String, Specification>> code = this.runtime.getCode(object);
-		
+				
 		for(Entry<String, Specification> instruction : code) {
 			List<String> types = new ArrayList<>();
+			
+			types.add(Integer.toString(NativeTypes.TEXT));
 			
 			for(SpecificationElement element : instruction.getValue().getElements()) {
 				if(element instanceof Reference || ((Data) element).getType() == NativeTypes.INTEGER) {
@@ -165,8 +169,20 @@ public class NativeDataCommunicator {
 			String instrID = this.allocObject(String.join("; ", types));
 			Object instrObject = this.getObject(instrID);
 			
+			instrObject.add(instruction.getKey(), this);
+			
 			for(SpecificationElement element : instruction.getValue().getElements()) {
-				instrObject.add(element.getValue(), this);
+				if(element.getValue().startsWith("var@")) {
+					SpecificationElement real = this.getVariable(element.getValue().substring(4));
+					
+					if(real != null) {
+						instrObject.add(real.getValue(), this);	
+					} else {
+						instrObject.add(element.getValue(), this);
+					}
+				} else {
+					instrObject.add(element.getValue(), this);
+				}
 			}
 			
 			theObject.add(instrID, this);

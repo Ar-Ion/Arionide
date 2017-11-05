@@ -53,20 +53,24 @@ public class LanguageSelection extends SpecificMenu {
 			this.getElements().clear();
 			this.languageIDs.clear();
 			
+			int i = 0;
+			
 			for(HierarchyElement element : project.getStorage().getHierarchy()) {
 				if(element.getID() != current.getID()) {
 					StructureMeta meta = metaData.get(element.getID());
 					
 					if(meta != null) {
 						this.getElements().add(meta.getName());
-						this.languageIDs.add(element.getID());
+						this.languageIDs.add(i);
 					}
+				} else {
+					this.current = i;
 				}
+
+				i++;
 			}
 			
 			this.getElements().add("Cancel");
-			
-			this.current = current.getID();
 		}
 	}
 	

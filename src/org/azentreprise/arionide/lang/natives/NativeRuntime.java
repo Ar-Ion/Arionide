@@ -261,10 +261,10 @@ public class NativeRuntime extends Runtime {
 		List<HierarchyElement> elements = storage.getCurrentData();
 		Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
 		List<Entry<String, Specification>> code = new ArrayList<>();
-													
+		
 		for(HierarchyElement element : elements) {
 			StructureMeta meta = metaData.get(element.getID());
-			
+						
 			if(meta != null) {
 				String comment = meta.getComment();
 				Specification spec = meta.getSpecification();
@@ -308,7 +308,9 @@ public class NativeRuntime extends Runtime {
 						
 			String symbol = message.substring(index, end);
 			
-			message = message.replace("@{" + symbol + "}", this.symbols.get(Integer.parseInt(symbol)));
+			if(Integer.parseInt(symbol) < this.symbols.size()) {
+				message = message.replace("@{" + symbol + "}", this.symbols.get(Integer.parseInt(symbol)));
+			}
 		}
 		
 		super.info(message, color);

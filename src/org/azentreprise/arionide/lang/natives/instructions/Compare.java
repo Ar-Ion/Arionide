@@ -39,9 +39,27 @@ public class Compare implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		String value1 = this.var1.getType() != NativeTypes.INTEGER ? this.var1.getValue() : this.var1.getValue().substring(1);
-		String value2 = this.var2.getType() != NativeTypes.INTEGER ? this.var2.getValue() : this.var2.getValue().substring(1);
+		String value1 = this.var1.getValue();
+		String value2 = this.var2.getValue();
 
+		if(value1.startsWith("var@")) {
+			value1 = communicator.getVariable(value1.substring(4)).getValue();
+		}
+		
+		if(value2.startsWith("var@")) {
+			value2 = communicator.getVariable(value2.substring(4)).getValue();
+		}
+		
+		if(this.var1.getType() == NativeTypes.INTEGER) {
+			value1 = value1.substring(1);
+		}
+		
+		if(this.var2.getType() == NativeTypes.INTEGER) {
+			value2 = value2.substring(1);
+		}
+		
+		System.out.println(value1 + " =?= " + value2);
+		
 		boolean equals = value1.equals(value2);
 		
 		if(this.result.getValue().contains("var@")) {

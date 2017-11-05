@@ -31,13 +31,11 @@ public class Object implements NativeInstruction {
 
 	private final Data result;
 	private final Data structure;
-	private final int constructorRef;
 	private final Call constructor;
 	
 	public Object(Data result, Data structure, Reference constructor) {
 		this.result = result;
 		this.structure = structure;
-		this.constructorRef = Integer.parseInt(constructor.getValue());
 		this.constructor = new Call(constructor);
 	}
 	
@@ -55,9 +53,9 @@ public class Object implements NativeInstruction {
 			
 			communicator.setVariable(variable, true, new Data(variable, identifier, NativeTypes.TEXT));
 			
-			communicator.bindObject(this.constructorRef, identifier);
+			communicator.bindObject(identifier);
 			this.constructor.execute(communicator, references);
-			communicator.unbindObject(this.constructorRef);
+			communicator.unbindObject();
 			
 			if(communicator.getObject(identifier).isConsistent()) {
 				return true;

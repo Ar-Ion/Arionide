@@ -45,7 +45,7 @@ public class Load implements NativeInstruction {
 				refID = communicator.getVariable(refID.substring(4)).getValue();
 			}
 			
-			String identifier = communicator.load(Integer.parseInt(refID, refID.charAt(0) != 'd' ? refID.charAt(0) != 'b' ? 16 : 2 : 10));
+			String identifier = communicator.load(Integer.parseInt(refID.substring(1), refID.charAt(0) != 'd' ? refID.charAt(0) != 'b' ? 16 : 2 : 10));
 			
 			communicator.setVariable(target, !communicator.isDefined(target) || communicator.isLocal(target), new Data(target, identifier, NativeTypes.TEXT));
 		

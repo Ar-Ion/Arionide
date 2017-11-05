@@ -26,4 +26,6 @@ import org.azentreprise.arionide.events.EventHandler;
 public interface IEventDispatcher {
 	public void fire(Event event);
 	public void registerHandler(EventHandler handler);
+	public void pause();
+	public void resume();
 }

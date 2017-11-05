@@ -53,12 +53,12 @@ public class Iterate implements NativeInstruction {
 			if(element != null) {
 				String selector = this.selector.getValue();
 				
-				if(selector.startsWith("var@")) {
-					selector = communicator.getVariable(selector.substring(4)).getValue();
-				}
-				
 				if(selector == null) {
 					selector = new String();
+				}
+				
+				if(selector.startsWith("var@")) {
+					selector = communicator.getVariable(selector.substring(4)).getValue();
 				}
 				
 				String layers = this.layers.getValue();
@@ -93,7 +93,7 @@ public class Iterate implements NativeInstruction {
 	}
 	
 	private void scan(Object obj, String selector, NativeDataCommunicator communicator, List<Integer> references, int layers) {
-		if(obj.getValue() != null && obj.getValue().startsWith(selector)) {
+		if(obj.getValue() != null && (selector.isEmpty() || obj.getValue().startsWith(selector))) {			
 			String value = obj.getValue().substring(selector.length());
 			
 			communicator.setVariable("value", true, new Data("value", value, NativeTypes.TEXT));
