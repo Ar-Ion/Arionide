@@ -20,9 +20,11 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.Reference;
@@ -37,6 +39,7 @@ import org.azentreprise.arionide.lang.natives.instructions.Define;
 import org.azentreprise.arionide.lang.natives.instructions.If;
 import org.azentreprise.arionide.lang.natives.instructions.Init;
 import org.azentreprise.arionide.lang.natives.instructions.Iterate;
+import org.azentreprise.arionide.lang.natives.instructions.Load;
 import org.azentreprise.arionide.lang.natives.instructions.Merge;
 import org.azentreprise.arionide.lang.natives.instructions.NativeInstruction;
 import org.azentreprise.arionide.lang.natives.instructions.Object;
@@ -242,10 +245,59 @@ public class NativeRuntime extends Runtime {
 				return new Size((Data) spec.getElements().get(0), (Data) spec.getElements().get(1));
 			case "merge":
 				return new Merge((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Data) spec.getElements().get(2));
+			case "load":
+				return new Load((Data) spec.getElements().get(0), (Data) spec.getElements().get(1));
 			default:
 				this.info("Instruction " + instruction + " is not compilable", 0xFF6000);
 				return null;
 		}
+	}
+	
+	protected List<Entry<String, Specification>> getCode(int objectID) {
+		Storage storage = this.getProject().getStorage();
+		
+		storage.loadData(objectID);
+		
+		List<HierarchyElement> elements = storage.getCurrentData();
+		Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
+		List<Entry<String, Specification>> code = new ArrayList<>();
+													
+		for(HierarchyElement element : elements) {
+			StructureMeta meta = metaData.get(element.getID());
+			
+			if(meta != null) {
+				String comment = meta.getComment();
+				Specification spec = meta.getSpecification();
+				
+				if(comment.startsWith("code@")) {
+					try {
+						int instructionID = Integer.parseInt(comment.substring(5));
+						
+						StructureMeta instructionMeta = metaData.get(instructionID);
+						
+						if(instructionMeta != null) {
+							Specification instructionSpec = instructionMeta.getSpecification();
+
+							if(spec.hasSameOrigin(instructionSpec) && spec.getElements().equals(instructionSpec.getElements())) {
+								code.add(new SimpleEntry<String, Specification>(instructionMeta.getName(), spec));
+							} else {
+								this.info("Specification origin check failed in (" + objectID + ":" + element.getID() + ")", 0xFF6000);
+							}
+						} else {
+							this.info("Instruction ID " + instructionID + " was not properly installed", 0xFF6000);
+						}
+					} catch(NumberFormatException e) {
+						this.info("Invalid instruction ID " + comment + " in (" + objectID + ":" + element.getID() + ")", 0xFF6000);
+					}
+				} else {
+					this.info("Object in (" + objectID + ":" + element.getID() + ") is not an instruction", 0xFF6000);
+				}
+			} else {
+				this.info("Invalid structure ID in (" + objectID + ":" + element.getID() + ")", 0xFF6000);
+			}
+		}
+		
+		return code;
 	}
 	
 	protected void info(String message, int color) {

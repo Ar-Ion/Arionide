@@ -20,6 +20,40 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives.instructions;
 
-public class Load {
+import java.util.List;
+
+import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
+import org.azentreprise.arionide.lang.natives.NativeTypes;
+
+public class Load implements NativeInstruction {
+
+	private final Data source;
+	private final Data target;
+	
+	public Load(Data source, Data target) {
+		this.source = source;
+		this.target = target;
+	}
+	
+	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
+		if(this.target.getValue().startsWith("var@")) {
+			String refID = this.source.getValue();
+			String target = this.target.getValue().substring(4);
+			
+			if(refID.startsWith("var@")) {
+				refID = communicator.getVariable(refID.substring(4)).getValue();
+			}
+			
+			String identifier = communicator.load(Integer.parseInt(refID, refID.charAt(0) != 'd' ? refID.charAt(0) != 'b' ? 16 : 2 : 10));
+			
+			communicator.setVariable(target, !communicator.isDefined(target) || communicator.isLocal(target), new Data(target, identifier, NativeTypes.TEXT));
+		
+			return true;
+		} else {
+			communicator.exception("You can't use direct values for an object");
+			return false;
+		}
+	}
 
 }

@@ -31,8 +31,11 @@ import java.util.Stack;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-import org.azentreprise.arionide.lang.SpecificationElement;
+import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.Object;
+import org.azentreprise.arionide.lang.Reference;
+import org.azentreprise.arionide.lang.Specification;
+import org.azentreprise.arionide.lang.SpecificationElement;
 
 public class NativeDataCommunicator {
 	
@@ -140,5 +143,35 @@ public class NativeDataCommunicator {
 		} else {
 			return null;
 		}
+	}
+	
+	public String load(int object) {
+		String identifier = this.allocObject(Integer.toString(NativeTypes.STRUCTURE));
+		Object theObject = this.getObject(identifier);
+		
+		List<Entry<String, Specification>> code = this.runtime.getCode(object);
+		
+		for(Entry<String, Specification> instruction : code) {
+			List<String> types = new ArrayList<>();
+			
+			for(SpecificationElement element : instruction.getValue().getElements()) {
+				if(element instanceof Reference || ((Data) element).getType() == NativeTypes.INTEGER) {
+					types.add(String.valueOf(NativeTypes.INTEGER));
+				} else {
+					types.add(String.valueOf(NativeTypes.TEXT));
+				}
+			}
+			
+			String instrID = this.allocObject(String.join("; ", types));
+			Object instrObject = this.getObject(instrID);
+			
+			for(SpecificationElement element : instruction.getValue().getElements()) {
+				instrObject.add(element.getValue(), this);
+			}
+			
+			theObject.add(instrID, this);
+		}
+		
+		return identifier;
 	}
 }

@@ -48,7 +48,6 @@ public class NativeInstructionSet extends InstructionSet {
 		if(this.getProject().getDataManager().newStructure("natives", Arrays.asList()).getMessageType().equals(MessageType.SUCCESS)) {
 			List<Integer> parents = Arrays.asList(structID);
 
-			
 			this.install("init", 0, parents, new Specification(this.getProject().getDataManager().allocSpecification()));
 			
 			this.install("print", 10, parents, new Specification(
@@ -143,6 +142,11 @@ public class NativeInstructionSet extends InstructionSet {
 					new Data("source2", null, NativeTypes.TEXT),
 					new Data("destination", null, NativeTypes.TEXT)));
 			
+			this.install("load", 130, parents, new Specification(
+					this.getProject().getDataManager().allocSpecification(),
+					new Data("source", null, NativeTypes.TEXT),
+					new Data("target", null, NativeTypes.TEXT)));
+			
 		} else {
 			this.retrieve("init");
 			this.retrieve("print");
@@ -162,6 +166,7 @@ public class NativeInstructionSet extends InstructionSet {
 			this.retrieve("iterate");
 			this.retrieve("size");
 			this.retrieve("merge");
+			this.retrieve("load");
 		}
 	}
 	
