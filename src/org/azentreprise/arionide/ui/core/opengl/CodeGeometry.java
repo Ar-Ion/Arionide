@@ -83,7 +83,7 @@ public class CodeGeometry implements Geometry {
 				if(index > -1) {					
 					StructureMeta resolved = meta.get(Integer.parseInt(structMeta.getComment().substring(index + 5)));
 					
-					Vector4f color = new Vector4f(Coloring.getColorByID(resolved.getColorID()), 0.5f);
+					Vector4f color = new Vector4f(Coloring.getColorByID(resolved.getColorID()), 1.0f);
 					Vector3f spotColor = new Vector3f(Coloring.getColorByID(resolved.getSpotColorID()));
 	
 					axis.normalize(parent.getSize() * structRelDistance);

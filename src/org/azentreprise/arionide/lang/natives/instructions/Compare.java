@@ -57,9 +57,7 @@ public class Compare implements NativeInstruction {
 		if(this.var2.getType() == NativeTypes.INTEGER) {
 			value2 = value2.substring(1);
 		}
-		
-		System.out.println(value1 + " =?= " + value2);
-		
+				
 		boolean equals = value1.equals(value2);
 		
 		if(this.result.getValue().contains("var@")) {

@@ -68,7 +68,6 @@ import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector4d;
 import org.joml.Vector4f;
-import org.joml.sampling.UniformSampling;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.opengl.GL4;
@@ -76,7 +75,7 @@ import com.jogamp.opengl.GLContext;
 
 public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
-	private static final int stars = 1024;
+	private static final int spaceSphereQuality = 3;
 	
 	private static final int structureRenderingQuality = 32;
 
@@ -90,13 +89,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private static final int spawnKey = KeyEvent.VK_C;
 
 	private static final double initialAcceleration = 0.005d;
-	private static final double spaceFriction = 0.075d;
+	private static final double spaceFriction = 0.05d;
 
 	private static final double fov = Math.toRadians(60.0d);
 	
 	private static final double skyDistance = 32.0d;
 	
-	private static final float timeResolution = 0.1f;
+	private static final double timeResolution = 0.00000005d;
 	
 			
 	private final OpenGLDrawingContext context;
@@ -108,43 +107,57 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private final DoubleBuffer modelData = DoubleBuffer.allocate(16);
 	private final DoubleBuffer viewData = DoubleBuffer.allocate(16);
 	private final DoubleBuffer projectionData = DoubleBuffer.allocate(16);
-	
+	private final DoubleBuffer currentToPreviousViewportData = DoubleBuffer.allocate(16);
+
 	private final FloatBuffer clearColor = FloatBuffer.allocate(4);
 	private final FloatBuffer clearDepth = FloatBuffer.allocate(1);
 	
+	private final Matrix4d viewMatrix = new Matrix4d();
+	private final Matrix4d projectionMatrix = new Matrix4d();
+	private Matrix4d previousViewProjectionMatrix = new Matrix4d();
+	
 	private int fxFBO;
-	private int fxColorBuffer;
-	private int fxDepthBuffer;
+	private int fxColorTexture;
+	private int fxDepthTexture;
 	
 	private final List<ScaledRenderingInfo> structures = new ArrayList<>();
-	private int skyVAO;
+	private int spaceVAO;
+	private int spaceEBO;
 	private int fxVAO;
 	
 	private double zNear = 1.0d;
-	private double zFar = 64.0d;
+	private double zFar = 100.0d;
 	
-	private int shader;
-	private int fx;
+	private int structuresShader;
+	private int spaceShader;
+	private int fxShader;
 	
-	/* Uniforms */
-	private int model;
-	private int view;
-	private int projection;
+	/* Structures uniforms */
+	private int structModel;
+	private int structView;
+	private int structProjection;
 	private int color;
 	private int camera;
 	private int specularColor;
-	private int lightPosition;
+	private int structuresLightPosition;
 	private int ambientFactor;
 	
-	private int fxFBOTexture;
+	/* Space uniforms */
+	private int spaceModel;
+	private int spaceView;
+	private int spaceProjection;
+	private int spaceLightPosition;
+	private int windowDimensions;
+
+	/* FX uniforms */
+	private int colorTexture;
+	private int depthTexture;
+	private int currentToPreviousViewportMatrix;
 	private int fxLightPosition;
-	private int fxExposure;
+	private int exposure;
+	private int pixelSize;
 
 	private Project project;
-	
-	private Matrix4d modelMatrix = new Matrix4d();
-	private Matrix4d viewMatrix = new Matrix4d();
-	private Matrix4d projectionMatrix = new Matrix4d();
 
 	private Rectangle bounds;
 	private boolean isInWorld = false;
@@ -169,7 +182,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private Vector3d acceleration = new Vector3d();
 	private double generalAcceleration = initialAcceleration;
 	
-	private long lastPositionUpdate = System.currentTimeMillis();
+	private long lastPositionUpdate = System.nanoTime();
 	
 	public OpenGLCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher) {
 		this.context = (OpenGLDrawingContext) context;
@@ -198,44 +211,47 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.clearColor.put(0, 0.0f).put(1, 0.0f).put(2, 0.0f).put(3, 1.0f);
 		this.clearDepth.put(0, 1.0f);
 		
-		int positionAttribute = gl.glGetAttribLocation(this.shader, "position");
-		int fxPositionAttribute = gl.glGetAttribLocation(this.fx, "position");
+		int structuresPositionAttribute = gl.glGetAttribLocation(this.structuresShader, "position");
+		int spacePositionAttribute = gl.glGetAttribLocation(this.spaceShader, "position");
+		int fxPositionAttribute = gl.glGetAttribLocation(this.fxShader, "position");
 
 		IntBuffer vertexArrays = IntBuffer.allocate(2 + 2 * structureRenderingQuality);
-		IntBuffer buffers = IntBuffer.allocate(2 + 4 * structureRenderingQuality);
+		IntBuffer buffers = IntBuffer.allocate(3 + 4 * structureRenderingQuality);
 		
 		gl.glGenVertexArrays(vertexArrays.capacity(), vertexArrays);
 		gl.glGenBuffers(buffers.capacity(), buffers);
 
-		/* Sky */
-		this.beginUsingVertexArray(gl, this.skyVAO = vertexArrays.get(0));
-		this.initBufferObject(gl, buffers.get(0), GL4.GL_ARRAY_BUFFER, stars, this::createSkyShapeData);
-		this.endUsingVertexArray(gl, positionAttribute);
+		/* Space */
+		this.beginUsingVertexArray(gl, this.spaceVAO = vertexArrays.get(0));
+		this.initBufferObject(gl, buffers.get(0), GL4.GL_ARRAY_BUFFER, spaceSphereQuality, this::createStructureShapeData);
+		this.endUsingVertexArray(gl, spacePositionAttribute);
+
+		this.initBufferObject(gl, this.spaceEBO = buffers.get(1), GL4.GL_ELEMENT_ARRAY_BUFFER, spaceSphereQuality, this::createStructureIndicesData);
 
 		/* FX */
 		GLCoordinates coords = new GLCoordinates(new Rectangle2D.Double(0.0d, 0.0d, 2.0d, 2.0d));		
 		this.fxVAO = vertexArrays.get(1);
 		
 		gl.glBindVertexArray(this.fxVAO);
-		
-		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, buffers.get(1));
+
+		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, buffers.get(2));
 		gl.glBufferData(GL4.GL_ARRAY_BUFFER, 8 * Double.BYTES, coords.allocDataBuffer(8).putNorth().putSouth().getDataBuffer(), GL4.GL_STATIC_DRAW);
 		gl.glEnableVertexAttribArray(fxPositionAttribute);
 		gl.glVertexAttribPointer(fxPositionAttribute, 2, GL4.GL_DOUBLE, false, 0, 0);
 				
 		/* Structures */
 		for(int i = 0; i < structureRenderingQuality; i++) {
-			int vertexArray = vertexArrays.get(i + 2);
-			int buffer = buffers.get(i * 2 + 2);
+			int vertexArray = vertexArrays.get(i + 3);
+			int bufferID = buffers.get(i * 2 + 3);
 			int layers = i + 8;
 			
-			this.structures.add(new ScaledRenderingInfo(vertexArray, buffer + 1, layers));
+			this.structures.add(new ScaledRenderingInfo(vertexArray, bufferID + 1, layers));
 			
 			this.beginUsingVertexArray(gl, vertexArray);
-			this.initBufferObject(gl, buffer, GL4.GL_ARRAY_BUFFER, layers, this::createStructureShapeData);
-			this.endUsingVertexArray(gl, positionAttribute);
+			this.initBufferObject(gl, bufferID, GL4.GL_ARRAY_BUFFER, layers, this::createStructureShapeData);
+			this.endUsingVertexArray(gl, structuresPositionAttribute);
 			 
-			this.initBufferObject(gl, buffer + 1, GL4.GL_ELEMENT_ARRAY_BUFFER, layers, this::createStructureIndicesData);
+			this.initBufferObject(gl, bufferID + 1, GL4.GL_ELEMENT_ARRAY_BUFFER, layers, this::createStructureIndicesData);
 		}
 		
 		/* Init player */
@@ -244,62 +260,83 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
 	private void initShaders(GL4 gl) {		
 		try {
-			int vert = Shaders.loadShader(gl, "core.vert", GL4.GL_VERTEX_SHADER);
-			int frag = Shaders.loadShader(gl, "core.frag", GL4.GL_FRAGMENT_SHADER);
-			int fxVert = Shaders.loadShader(gl, "corefx.vert", GL4.GL_VERTEX_SHADER);
-			int fxFrag = Shaders.loadShader(gl, "corefx.frag", GL4.GL_FRAGMENT_SHADER);
+			int structuresVert = Shaders.loadShader(gl, "structures.vert", GL4.GL_VERTEX_SHADER);
+			int structuresFrag = Shaders.loadShader(gl, "structures.frag", GL4.GL_FRAGMENT_SHADER);
+			int spaceVert = Shaders.loadShader(gl, "space.vert", GL4.GL_VERTEX_SHADER);
+			int spaceFrag = Shaders.loadShader(gl, "space.frag", GL4.GL_FRAGMENT_SHADER);
+			int fxVert = Shaders.loadShader(gl, "fx.vert", GL4.GL_VERTEX_SHADER);
+			int fxFrag = Shaders.loadShader(gl, "fx.frag", GL4.GL_FRAGMENT_SHADER);
 			
-			this.shader = gl.glCreateProgram();
-			this.fx = gl.glCreateProgram();
+			this.structuresShader = gl.glCreateProgram();
+			this.spaceShader = gl.glCreateProgram();
+			this.fxShader = gl.glCreateProgram();
 			
-			gl.glAttachShader(this.shader, vert);
-			gl.glAttachShader(this.shader, frag);
-						
-			gl.glAttachShader(this.fx, fxVert);
-			gl.glAttachShader(this.fx, fxFrag);
+			gl.glAttachShader(this.structuresShader, structuresVert);
+			gl.glAttachShader(this.structuresShader, structuresFrag);
+			
+			gl.glAttachShader(this.spaceShader, spaceVert);
+			gl.glAttachShader(this.spaceShader, spaceFrag);
+			
+			gl.glAttachShader(this.fxShader, fxVert);
+			gl.glAttachShader(this.fxShader, fxFrag);
 		} catch(IOException exception) {
 			Debug.exception(exception);
 		}
 		
-		gl.glBindFragDataLocation(this.shader, 0, "outColor");
-		gl.glBindFragDataLocation(this.fx, 0, "outColor");
+		gl.glBindFragDataLocation(this.structuresShader, 0, "outColor");
+		gl.glBindFragDataLocation(this.spaceShader, 0, "outColor");
+		gl.glBindFragDataLocation(this.fxShader, 0, "outColor");
 
-		gl.glLinkProgram(this.shader);
-		gl.glLinkProgram(this.fx);
+		gl.glLinkProgram(this.structuresShader);
+		gl.glLinkProgram(this.spaceShader);
+		gl.glLinkProgram(this.fxShader);
 
-		this.loadUniforms(gl);
+		this.loadStructuresUniforms(gl);
+		this.loadSpaceUniforms(gl);
 		this.loadFXUniforms(gl);
 	}
 	
-	private void loadUniforms(GL4 gl) {
-		this.model = gl.glGetUniformLocation(this.shader, "model");
-		this.view = gl.glGetUniformLocation(this.shader, "view");
-		this.projection = gl.glGetUniformLocation(this.shader, "projection");
-		this.color = gl.glGetUniformLocation(this.shader, "color");
-		this.camera = gl.glGetUniformLocation(this.shader, "camera");
-		this.specularColor = gl.glGetUniformLocation(this.shader, "specularColor");
-		this.lightPosition = gl.glGetUniformLocation(this.shader, "lightPosition");
-		this.ambientFactor = gl.glGetUniformLocation(this.shader, "ambientFactor");
+	private void loadStructuresUniforms(GL4 gl) {
+		this.structModel = gl.glGetUniformLocation(this.structuresShader, "model");
+		this.structView = gl.glGetUniformLocation(this.structuresShader, "view");
+		this.structProjection = gl.glGetUniformLocation(this.structuresShader, "projection");
+		this.color = gl.glGetUniformLocation(this.structuresShader, "color");
+		this.camera = gl.glGetUniformLocation(this.structuresShader, "camera");
+		this.specularColor = gl.glGetUniformLocation(this.structuresShader, "specularColor");
+		this.structuresLightPosition = gl.glGetUniformLocation(this.structuresShader, "lightPosition");
+		this.ambientFactor = gl.glGetUniformLocation(this.structuresShader, "ambientFactor");
+	}
+	
+	private void loadSpaceUniforms(GL4 gl) {
+		this.spaceModel = gl.glGetUniformLocation(this.spaceShader, "model");
+		this.spaceView = gl.glGetUniformLocation(this.spaceShader, "view");
+		this.spaceProjection = gl.glGetUniformLocation(this.spaceShader, "projection");
+		this.spaceLightPosition = gl.glGetUniformLocation(this.spaceShader, "lightPosition");
+		this.windowDimensions = gl.glGetUniformLocation(this.spaceShader, "windowDimensions");
 	}
 	
 	private void loadFXUniforms(GL4 gl) {
-		this.fxFBOTexture = gl.glGetUniformLocation(this.fx, "texture");
-		this.fxLightPosition = gl.glGetUniformLocation(this.fx, "lightPosition");
-		this.fxExposure = gl.glGetUniformLocation(this.fx, "exposure");
+		this.colorTexture = gl.glGetUniformLocation(this.fxShader, "colorTexture");
+		this.depthTexture = gl.glGetUniformLocation(this.fxShader, "depthTexture");
+		this.currentToPreviousViewportMatrix = gl.glGetUniformLocation(this.fxShader, "currentToPreviousViewportMatrix");
+		this.fxLightPosition = gl.glGetUniformLocation(this.fxShader, "lightPosition");
+		this.exposure = gl.glGetUniformLocation(this.fxShader, "exposure");
+		this.pixelSize = gl.glGetUniformLocation(this.fxShader, "pixelSize");
 	}
 	
 	private void initFXFramebuffer(GL4 gl) {
-		this.fxColorBuffer = this.initColorBuffer(gl);
-		this.fxDepthBuffer = this.initDepthBuffer(gl);
-		
 		IntBuffer buffer = IntBuffer.allocate(1);
 		gl.glGenFramebuffers(1, buffer);
 		this.fxFBO = buffer.get(0);
 		
 		gl.glBindFramebuffer(GL4.GL_FRAMEBUFFER, this.fxFBO);
+		gl.glDrawBuffer(GL4.GL_COLOR_ATTACHMENT0);
+
+		this.fxColorTexture = this.initColorBuffer(gl);
+		this.fxDepthTexture = this.initDepthBuffer(gl);
 		
-		gl.glFramebufferTexture2D(GL4.GL_FRAMEBUFFER, GL4.GL_COLOR_ATTACHMENT0, GL4.GL_TEXTURE_2D, this.fxColorBuffer, 0);
-		gl.glFramebufferRenderbuffer(GL4.GL_FRAMEBUFFER, GL4.GL_DEPTH_ATTACHMENT, GL4.GL_RENDERBUFFER, this.fxDepthBuffer);
+		gl.glFramebufferTexture(GL4.GL_FRAMEBUFFER, GL4.GL_COLOR_ATTACHMENT0, this.fxColorTexture, 0);
+		gl.glFramebufferTexture(GL4.GL_FRAMEBUFFER, GL4.GL_DEPTH_ATTACHMENT, this.fxDepthTexture, 0);
 		
 		if(gl.glCheckFramebufferStatus(GL4.GL_FRAMEBUFFER) != GL4.GL_FRAMEBUFFER_COMPLETE) {
 			throw new RuntimeException("Failed to initialize the FX framebuffer");
@@ -309,36 +346,45 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private int initColorBuffer(GL4 gl) {
-		gl.glActiveTexture(GL4.GL_TEXTURE2);
-
 		IntBuffer buffer = IntBuffer.allocate(1);
 		gl.glGenTextures(1, buffer);
-		int colorBufferID = buffer.get(0);
+		int colorTextureID = buffer.get(0);
 		
-		gl.glBindTexture(GL4.GL_TEXTURE_2D, colorBufferID);
+		gl.glActiveTexture(GL4.GL_TEXTURE2);
+		
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, colorTextureID);
+
+		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGB, 128, 128, 0, GL4.GL_RGB, GL4.GL_UNSIGNED_BYTE, null);
+		
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_MIRRORED_REPEAT);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_MIRRORED_REPEAT);
+		
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, 0);
+		
+		return colorTextureID;
+	}
+	
+	private int initDepthBuffer(GL4 gl) {
+		IntBuffer buffer = IntBuffer.allocate(1);
+		gl.glGenTextures(1, buffer);
+		int depthTextureID = buffer.get(0);
+		
+		gl.glActiveTexture(GL4.GL_TEXTURE3);
+
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, depthTextureID);
+		
+		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_DEPTH_COMPONENT32, 128, 128, 0, GL4.GL_DEPTH_COMPONENT, GL4.GL_FLOAT, null);
 		
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR);
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
-
-		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, 1024, 1024, 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, null);
-		
+				
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, 0);
 		
-		return colorBufferID;
-	}
-	
-	private int initDepthBuffer(GL4 gl) {
-		IntBuffer buffer = IntBuffer.allocate(1);
-		gl.glGenRenderbuffers(1, buffer);
-		int depthBufferID = buffer.get(0);
-		
-		gl.glBindRenderbuffer(GL4.GL_RENDERBUFFER, depthBufferID);
-		gl.glRenderbufferStorage(GL4.GL_RENDERBUFFER, GL4.GL_DEPTH_COMPONENT16, 512, 512);
-		gl.glBindRenderbuffer(GL4.GL_RENDERBUFFER, 0);
-		
-		return depthBufferID;
+		return depthTextureID;
 	}
 	
 	private void beginUsingVertexArray(GL4 gl, int arrayID) {
@@ -356,15 +402,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, bufferID);
 		gl.glBufferData(GL4.GL_ARRAY_BUFFER, buffer.capacity() * Double.BYTES, buffer.flip(), GL4.GL_STATIC_DRAW);
 	}
-	
-	private Buffer createSkyShapeData(int triangles) {
-		DoubleBuffer sky = DoubleBuffer.allocate(6 * triangles);
-		
-		new UniformSampling.Sphere(System.currentTimeMillis(), triangles, (x, y, z) -> sky.put(x).put(y).put(z).put(1.0d).put(1.0d).put(1.0d));
-		
-		return sky;
-	}
-	
+
 	private Buffer createStructureShapeData(int layers) {
 		DoubleBuffer sphere = DoubleBuffer.allocate(2*layers * layers * 3);
 				
@@ -398,76 +436,72 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		OpenGLDrawingContext glContext = (OpenGLDrawingContext) context;
 		GL4 gl = glContext.getRenderer();
 		
-		this.renderWorld(gl);
+		this.renderUniverse(gl);
 		this.update();
 	}
 	
-	private void renderWorld(GL4 gl) {
+	private void renderUniverse(GL4 gl) {
 		gl.glBindFramebuffer(GL4.GL_FRAMEBUFFER, this.fxFBO);
 		
 		gl.glClearBufferfv(GL4.GL_COLOR, 0, this.clearColor);
         gl.glClearBufferfv(GL4.GL_DEPTH, 0, this.clearDepth);
-		
-		gl.glUseProgram(this.shader);
-		
-		Vector3d sunPosition = new Vector3d(this.player).add(this.sun);
-		
-		gl.glUniformMatrix4dv(this.view, 1, false, this.viewData);
-		gl.glUniformMatrix4dv(this.projection, 1, false, this.projectionData);
-		gl.glUniform3d(this.camera, this.player.x, this.player.y, this.player.z);
-				
-		gl.glUniform1f(this.ambientFactor, 1.0f);
-		gl.glUniform3f(this.specularColor, 1.0f, 1.0f, 1.0f);
-		gl.glUniform3d(this.lightPosition, sunPosition.x, sunPosition.y, sunPosition.z);
-		
-		this.renderStars(gl);
 
+        this.setupSpace(gl);
+        this.renderSpace(gl);
+		
 		if(this.project != null) {
-			this.renderScene(gl);
+			this.setupStructures(gl);
+			this.renderStructures(gl);
 		}
 		
-		/* Post-processing FX */
-		gl.glBindFramebuffer(GL4.GL_FRAMEBUFFER, 0);
-		
-		gl.glClearBufferfv(GL4.GL_COLOR, 0, this.clearColor);
-        gl.glClearBufferfv(GL4.GL_DEPTH, 0, this.clearDepth);
-				
-		gl.glUseProgram(this.fx);
-		
-		gl.glActiveTexture(GL4.GL_TEXTURE2);
-		gl.glBindTexture(GL4.GL_TEXTURE_2D, this.fxColorBuffer);
-		
-		/* Load sun position in screen coords */
-		
-		Vector4d point = new Matrix4d(this.projectionMatrix).mul(this.viewMatrix).transform(new Vector4d(new Vector3d(this.sun).add(this.player.x, 0, this.player.z), 1.0d));
-				
-		/* Setup FX uniforms */
-		gl.glUniform1i(this.fxFBOTexture, 2);
-		gl.glUniform2f(this.fxLightPosition, (float) (point.x / point.z) + 0.5f, (float) (point.y / point.z) + 0.5f);
-		gl.glUniform1f(this.fxExposure, 0.001f / (4 * this.inside.size() + 1));
-		
-		gl.glBindVertexArray(this.fxVAO);
-		gl.glDrawArrays(GL4.GL_TRIANGLE_STRIP, 0, 4);
+		this.setupFX(gl);
+		this.postProcess(gl);
 	}
 	
-	private void renderStars(GL4 gl) {
-		gl.glBindVertexArray(this.skyVAO);
+	private void setupSpace(GL4 gl) {
+		gl.glUseProgram(this.spaceShader);
+		
+		this.loadMatrix(new Matrix4d().translate(this.player).scale(skyDistance), this.modelData);
+		
+		gl.glUniformMatrix4dv(this.spaceModel, 1, false, this.modelData);
+		gl.glUniformMatrix4dv(this.spaceView, 1, false, this.viewData);
+		gl.glUniformMatrix4dv(this.spaceProjection, 1, false, this.projectionData);
+		gl.glUniform3d(this.spaceLightPosition, this.sun.x, this.sun.y, this.sun.z);
+		
+		if(this.bounds != null) {
+			gl.glUniform2i(this.windowDimensions, this.bounds.width, this.bounds.height);
+		}
+	}
+	
+	private void renderSpace(GL4 gl) {
+		gl.glDepthFunc(GL4.GL_ALWAYS);
 
-		this.setupModel(gl, this.modelMatrix.identity().translate(this.player).scale(skyDistance));
-		
-		/* Sun */
-		gl.glUniform4f(this.color, 1.0f, 666.0f, 1.0f, 1.0f);
-		gl.glDrawArrays(GL4.GL_TRIANGLE_STRIP, 0, stars);
-		
-		/* Stars */
-		gl.glUniform4f(this.color, 666.0f, 1.0f, 1.0f, 1.0f);
-		gl.glDrawArrays(GL4.GL_POINTS, 0, stars);
+		gl.glBindVertexArray(this.spaceVAO);
+		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, this.spaceEBO);
+		gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * spaceSphereQuality * (spaceSphereQuality - 1), GL4.GL_UNSIGNED_INT, 0);
 	}
 	
-	private void renderScene(GL4 gl) {
+	private void setupStructures(GL4 gl) {
+		gl.glUseProgram(this.structuresShader);
+		
+		gl.glUniformMatrix4dv(this.structView, 1, false, this.viewData);
+		gl.glUniformMatrix4dv(this.structProjection, 1, false, this.projectionData);
+		gl.glUniform3d(this.camera, this.player.x, this.player.y, this.player.z);
+		gl.glUniform1f(this.ambientFactor, 1.0f);
+		gl.glUniform3f(this.specularColor, 1.0f, 1.0f, 1.0f);
+		gl.glUniform3d(this.structuresLightPosition, this.sun.x, this.sun.y, this.sun.z);
+	}
+	
+	private void renderStructures(GL4 gl) {
+		gl.glEnable(GL4.GL_DEPTH_TEST);
+		gl.glEnable(GL4.GL_BLEND);
+		
 		gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 		
 		this.renderScene0(gl, this.worldGeometry.getElements());
+	
+		gl.glDisable(GL4.GL_BLEND);
+		gl.glDisable(GL4.GL_DEPTH_TEST);
 		
 		if(this.scene != RenderingScene.INHERITANCE) {
 			this.renderScene0(gl, this.codeGeometry.getElements());
@@ -476,27 +510,33 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
 	private void renderScene0(GL4 gl, List<WorldElement> elements) {
 		synchronized(elements) {
+			elements.sort((a, b) -> (int) Math.signum(Double.compare(b.getCenter().distance(this.player) - b.getSize(), a.getCenter().distance(this.player) - a.getSize())));
+			
 			for(WorldElement element : elements) {
-				this.setupModel(gl, this.modelMatrix.identity().translate(element.getCenter()).scale(element.getSize()));
-	
-				boolean blending = this.inside.contains(element);
+				Vector3d unitVector = new Vector3d(0.0d, 1.0d, 0.0d);
+				Vector3d delta = new Vector3d(this.player).sub(element.getCenter());
 				
-				if(blending) {
-					gl.glEnable(GL4.GL_BLEND);
-				}
+				double angle = Math.PI + delta.angle(unitVector);
+				Vector3d axis = unitVector.cross(delta).normalize();
+								
+				this.loadMatrix(new Matrix4d().translate(element.getCenter()).rotate(angle, axis).scale(element.getSize()), this.modelData);
+				gl.glUniformMatrix4dv(this.structModel, 1, false, this.modelData);
 				
-				if(element != this.selected && !blending) {
-					gl.glUniform1f(this.ambientFactor, 0.3f);
+				if(element != this.selected) {
+					gl.glUniform1f(this.ambientFactor, 0.5f);
 				} else {
-					gl.glUniform1f(this.ambientFactor, 0.6f);
+					gl.glUniform1f(this.ambientFactor, 1.0f);
 				}
-				
-				gl.glEnable(GL4.GL_DEPTH_TEST);
 				
 				Vector4f color = element.getColor();
 				Vector3f spot = element.getSpotColor();
 				
-				gl.glUniform4f(this.color, color.x, color.y, color.z, color.w);
+				if(this.inside.contains(element)) {
+					gl.glUniform4f(this.color, color.x, color.y, color.z, color.w / 2);
+				} else {
+					gl.glUniform4f(this.color, color.x, color.y, color.z, color.w);
+				}
+				
 				gl.glUniform3f(this.specularColor, spot.x, spot.y, spot.z);
 				
 				double viewHeight = 2.0d * Math.atan(fov / 2.0d) * this.player.distance(element.getCenter());
@@ -507,22 +547,54 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				gl.glBindVertexArray(info.getVAO());
 				gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, info.getEBO());
 				gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * info.getLayers() * (info.getLayers() - 1), GL4.GL_UNSIGNED_INT, 0);
-				
-				gl.glDisable(GL4.GL_DEPTH_TEST);
-				
-				if(blending) {
-					gl.glDisable(GL4.GL_BLEND);
-				}
 			}
 		}
 	}
 	
-	private void setupModel(GL4 gl, Matrix4d matrix4d) {
-		this.loadMatrixData(matrix4d, this.modelData);
-		gl.glUniformMatrix4dv(this.model, 1, false, this.modelData);
+	private void setupFX(GL4 gl) {
+		gl.glUseProgram(this.fxShader);
+		
+		/* Load sun position in screen coords */
+		
+		if(this.pitch > 0.0d) {
+			Vector4d point = new Matrix4d(this.projectionMatrix).mul(this.viewMatrix).transform(new Vector4d(new Vector3d(this.sun).add(this.player.x, 0, this.player.z), 1.0d));
+			gl.glUniform2f(this.fxLightPosition, (float) (point.x / point.z) + 0.5f, (float) (point.y / point.z) + 0.5f);
+		} else {
+			gl.glUniform2f(this.fxLightPosition, -123.0f, -123.0f);
+		}
+		
+		/* Setup FX uniforms */
+		
+		gl.glActiveTexture(GL4.GL_TEXTURE2);
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, this.fxColorTexture);
+		gl.glUniform1i(this.colorTexture, 2);
+		
+		gl.glActiveTexture(GL4.GL_TEXTURE3);
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, this.fxDepthTexture);
+		gl.glUniform1i(this.depthTexture, 3);
+		
+		gl.glUniform1f(this.exposure, 0.001f);
+		
+		if(this.bounds != null) {
+			gl.glUniform2f(this.pixelSize, 1.0f / this.bounds.width, 1.0f / this.bounds.height);
+		}
+		
+		this.loadMatrix(this.previousViewProjectionMatrix.mul(new Matrix4d(this.projectionMatrix).mul(this.viewMatrix).invert()), this.currentToPreviousViewportData);
+		gl.glUniformMatrix4dv(this.currentToPreviousViewportMatrix, 1, false, this.currentToPreviousViewportData);
+		
+		this.previousViewProjectionMatrix = new Matrix4d(this.projectionMatrix).mul(this.viewMatrix); // Do not trash the projection matrix: it will be reused!
 	}
 	
-	
+	private void postProcess(GL4 gl) {		
+		gl.glBindFramebuffer(GL4.GL_FRAMEBUFFER, 0);
+		
+		gl.glClearBufferfv(GL4.GL_COLOR, 0, this.clearColor);
+        gl.glClearBufferfv(GL4.GL_DEPTH, 0, this.clearDepth);
+		
+		gl.glBindVertexArray(this.fxVAO);
+		gl.glDrawArrays(GL4.GL_TRIANGLE_STRIP, 0, 4);
+	}
+
 	private void update() {		
 		this.updatePlayer();
 		this.updateCamera();
@@ -542,15 +614,14 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 		this.velocity.mul(1.0f - spaceFriction);
 		
-		long deltaTime = System.currentTimeMillis() - this.lastPositionUpdate;
+		long deltaTime = System.nanoTime() - this.lastPositionUpdate;
 		this.lastPositionUpdate += deltaTime;
 		
 		this.player.add(new Vector3d(this.velocity).mul(deltaTime * timeResolution));
 	}
 	
 	private void updateCamera() {
-		this.loadMatrixData(this.viewMatrix
-				.identity()
+		this.loadMatrix(this.viewMatrix.identity()
 				.rotate((float) -this.pitch, 1.0f, 0.0f, 0.0f)
 				.rotate((float) this.yaw, 0.0f, 1.0f, 0.0f)
 				.translate(-this.player.x, -this.player.y, -this.player.z), this.viewData);
@@ -563,7 +634,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
 	private void updatePerspective() {
 		if(this.bounds != null) {
-			this.loadMatrixData(this.projectionMatrix.identity().perspective(fov, this.bounds.getWidth() / this.bounds.getHeight(), this.zNear, this.zFar), this.projectionData);
+			this.loadMatrix(this.projectionMatrix.identity().perspective(fov, this.bounds.getWidth() / this.bounds.getHeight(), this.zNear, this.zFar), this.projectionData);
 		}
 	}
 		
@@ -575,7 +646,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		}
 		
 		this.zNear = this.generalAcceleration * 10.0f;
-		
+
 		this.updatePerspective();
 	}
 	
@@ -694,7 +765,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	/* Hack */
-	private void loadMatrixData(Matrix4d matrix, DoubleBuffer modelData) {
+	private void loadMatrix(Matrix4d matrix, DoubleBuffer modelData) {
 		modelData.put(0, matrix.m00());
 		modelData.put(1, matrix.m01());
 		modelData.put(2, matrix.m02());
@@ -855,13 +926,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		GL4 gl = (GL4) GLContext.getCurrentGL();
 		
 		gl.glActiveTexture(GL4.GL_TEXTURE2);
-		gl.glBindTexture(GL4.GL_TEXTURE_2D, this.fxColorBuffer);
-		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, bounds.width, bounds.height, 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, null);
-		gl.glBindTexture(GL4.GL_TEXTURE_2D, 0);
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, this.fxColorTexture);
+		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGB, bounds.width, bounds.height, 0, GL4.GL_RGB, GL4.GL_UNSIGNED_BYTE, null);
 		
-		gl.glBindRenderbuffer(GL4.GL_RENDERBUFFER, this.fxDepthBuffer);
-		gl.glRenderbufferStorage(GL4.GL_RENDERBUFFER, GL4.GL_DEPTH_COMPONENT16, bounds.width, bounds.height);
-		gl.glBindRenderbuffer(GL4.GL_RENDERBUFFER, 0);
+		gl.glActiveTexture(GL4.GL_TEXTURE3);
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, this.fxDepthTexture);
+		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_DEPTH_COMPONENT32, bounds.width, bounds.height, 0, GL4.GL_DEPTH_COMPONENT, GL4.GL_FLOAT, null);
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, 0);
 	}
 	
 	public List<Integer> getInside() {
@@ -972,8 +1043,10 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private void updateAcceleration(double wheelDelta) {
-		this.generalAcceleration = Math.min(this.generalAcceleration * Math.pow(1.1d, 2 * wheelDelta), 1.0d);
-		this.zNear = (float) this.generalAcceleration * 10.0d;
+		this.generalAcceleration = Math.min(this.generalAcceleration * Math.pow(1.01d, 2 * wheelDelta), 1.0d);
+		
+		this.zNear = this.generalAcceleration * 10.0f;
+
 		this.updatePerspective();
 	}
 	

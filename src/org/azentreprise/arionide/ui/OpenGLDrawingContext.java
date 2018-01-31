@@ -28,6 +28,8 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
+import java.util.List;
 
 import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.Utils;
@@ -35,6 +37,10 @@ import org.azentreprise.arionide.Workspace;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.ActionType;
+import org.azentreprise.arionide.events.Event;
+import org.azentreprise.arionide.events.EventHandler;
+import org.azentreprise.arionide.events.MessageEvent;
+import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.events.MoveEvent;
 import org.azentreprise.arionide.events.MoveType;
 import org.azentreprise.arionide.events.PressureEvent;
@@ -65,7 +71,7 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.FPSAnimator;
 
-public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener, KeyListener, MouseListener {
+public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener, KeyListener, MouseListener, EventHandler {
 	
 	private final IEventDispatcher dispatcher;
 	private final AppManager theManager;
@@ -96,9 +102,10 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 		this.caps.setDoubleBuffered(true);
 		this.caps.setHardwareAccelerated(true);
 		this.caps.setDepthBits(32);
+
 		this.window = GLWindow.create(this.caps);
 		this.animator = new FPSAnimator(this.window, 60, true);
-
+		
 		this.window.addGLEventListener(this);
 		this.window.addKeyListener(this);
 		this.window.addMouseListener(this);
@@ -111,6 +118,8 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 				theManager.shutdown();
 			}
 		});
+		
+		dispatcher.registerHandler(this);
 	}
 
 	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
@@ -145,9 +154,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 
 	public void init(GLAutoDrawable arg0) {
 		this.gl = this.window.getGL().getGL4();
-		
-		this.gl.setSwapInterval(0);
-		
+				
 		this.primitives.init(this.gl);
 		
 		this.clearColor.put(0, 0.0f).put(1, 0.0f).put(2, 0.0f).put(3, 1.0f);
@@ -160,14 +167,36 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 		if(this.thread != null) {
 			this.thread.incrementTicks();
 	        
+			performanceBegin();
+			
 	        this.core.render(this);
+	        
+	        performanceNext("Core");
 	        
 	        this.primitives.beginUI(this.gl);
 	        	        
+	        performanceNext("2D begin");
+	        
 			this.theManager.draw();
+			
+	        performanceNext("2D draw");
 
 			this.primitives.endUI(this.gl);
+			
+	        performanceNext("2D end");
 		}
+	}
+	
+	long time1;
+	
+	private void performanceBegin() {
+		time1 = System.nanoTime();
+	}
+	
+	private void performanceNext(String label) {
+		long time2 = System.nanoTime();
+		System.out.println(label + ": " + (time2 - time1));
+		time1 = time2;
 	}
 
 	public void dispose(GLAutoDrawable arg0) {
@@ -304,5 +333,17 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 
 	public void keyReleased(KeyEvent event) {
 		this.dispatcher.fire(new PressureEvent(event.getKeyChar(), event.getKeyCode(), event.getModifiers(), false));
+	}
+
+	public <T extends Event> void handleEvent(T event) {
+		MessageEvent message = (MessageEvent) event;
+	
+		if(message.getMessageType().equals(MessageType.DEBUG)) {
+			this.window.setTitle("Arionide - " + message.getMessage());
+		}
+	}
+
+	public List<Class<? extends Event>> getHandleableEvents() {
+		return Arrays.asList(MessageEvent.class);
 	}
 }

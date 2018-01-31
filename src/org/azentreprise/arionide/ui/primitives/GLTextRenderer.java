@@ -150,7 +150,7 @@ public class GLTextRenderer {
 		int y = outerBounds.y + (outerBounds.height - metrics.getMaxDescent() + metrics.getMaxAscent() + 1) / 2;
 		
 		int color = Utils.packARGB(this.rgb, this.alpha);
-		long packed = 17 * string.hashCode() + 31 * (((x & 0xFFFFL) << 48) | ((y & 0xFFFFL) << 32) | color) + 47 * (this.paint != null ? this.paint.hashCode() : 0);
+		long packed = 17 * string.hashCode() + 31 * (((x & 0xFFFFL) << 48) | ((y & 0xFFFFL) << 32) | color); // + 47 * (this.paint != null ? this.paint.hashCode() : 0);
 		
 		if(this.iterationIndex == this.hashes.size()) {
 			this.preDirty = true;

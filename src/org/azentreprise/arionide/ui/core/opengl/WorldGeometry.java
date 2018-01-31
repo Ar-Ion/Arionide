@@ -118,7 +118,7 @@ public class WorldGeometry implements Geometry {
 			Quaterniond quaternion = new Quaterniond(new AxisAngle4d(Math.PI * 2.0d / (elements.size() - (elements.contains(new HierarchyElement(-1, null)) ? 1 : 0)), parent.getAxis()));
 			Vector3d base = elements.size() != 1 || size != structInitialSize ? parent.getBaseVector() : new Vector3d();
 			
-			for(HierarchyElement element : elements) {				
+			for(HierarchyElement element : elements) {
 				if(element.getID() < 0) {
 					flag = true;
 					continue;

@@ -59,7 +59,6 @@ public class CodeView extends View implements EventHandler {
 	
 	private final Label currentInfo = new Label(this, "");
 	private final Label currentMessage = new Label(this, "");
-	private final Label currentDebug = new Label(this, "");
 	
 	private Project currentProject;
 	private Menu currentMenu;
@@ -83,7 +82,6 @@ public class CodeView extends View implements EventHandler {
 
 		this.add(this.currentMessage, 0.2f, 0.1f, 0.8f, 0.2f);
 		this.add(this.currentInfo, 0.0f, 0.75f, 1.0f, 0.85f);
-		this.add(this.currentDebug, 0.0f, 0.95f, 1.0f, 1.0f);
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
@@ -158,13 +156,15 @@ public class CodeView extends View implements EventHandler {
 		} else if(event instanceof MessageEvent) {
 			MessageEvent message = (MessageEvent) event;
 			
-			Label ref = message.getMessageType().equals(MessageType.INFO) ? this.currentInfo : message.getMessageType().equals(MessageType.DEBUG) ? this.currentDebug : this.currentMessage;
-			
-			ref.setLabel(message.getMessage());
-			ref.setColor(message.getMessageType().getColor());
-			
-			if(ref == this.currentMessage) {
-				this.currentMessageAlphaAnimation.startAnimation(1000, (animation) -> animation.startAnimation(5000, 1), 0xFF);
+			if(message.getMessageType() != MessageType.DEBUG) {
+				Label ref = message.getMessageType().equals(MessageType.INFO) ? this.currentInfo : this.currentMessage;
+							
+				ref.setLabel(message.getMessage());
+				ref.setColor(message.getMessageType().getColor());
+				
+				if(ref == this.currentMessage) {
+					this.currentMessageAlphaAnimation.startAnimation(1000, (animation) -> animation.startAnimation(5000, 1), 0xFF);
+				}
 			}
 		} else if(event instanceof MenuEvent) {
 			if(this.currentMenu != null) {

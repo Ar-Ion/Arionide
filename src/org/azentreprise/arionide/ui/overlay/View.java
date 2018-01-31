@@ -134,7 +134,7 @@ public abstract class View extends Surface {
 		this.hide(transition);
 	}
 	
-	public void show(boolean transition) {
+	public void show(boolean transition) {		
 		this.show();
 		
 		if(transition) {
