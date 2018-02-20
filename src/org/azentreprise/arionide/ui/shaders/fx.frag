@@ -2,6 +2,7 @@
 
 /* FXAA */
 const vec3 lumaVector = vec3(0.299, 0.587, 0.114);
+const float quality[] = float[](1.0, 1.0, 1.0, 1.0, 1.0, 1.5, 2.0, 2.0, 2.0, 2.0, 4.0, 8.0, 16.0, 24.0, 32.0);
 
 uniform vec2 pixelSize;
 
@@ -32,74 +33,164 @@ float getLuma(vec3 color) {
 	return sqrt(dot(color, lumaVector));
 }
 
+float getLuma(vec4 color) {
+	return sqrt(dot(color.rgb, lumaVector));
+}
 
 void lightAdaptation() {
-	float lightDistanceFromCenter = length(lightPosition - vec2(0.5, 0.5));
+	float lightDistanceFromCenter = length(lightPosition - vec2(0.5, 0.5)) / 2.0;
 
 	float adaptationFactor = min(1.5, lightDistanceFromCenter);
 
 	fragColor *= max(adaptationFactor, getLuma(fragColor.rgb));
 }
 
-
 vec4 fxaa(vec2 coords) {
-	vec3 rgbM = texture(colorTexture, coords).rgb;
+	vec4 color = texture(colorTexture, coords);
 
-	vec3 rgbNW = textureOffset(colorTexture, coords, ivec2(-1, 1)).rgb;
-	vec3 rgbNE = textureOffset(colorTexture, coords, ivec2(1, 1)).rgb;
-	vec3 rgbSW = textureOffset(colorTexture, coords, ivec2(-1, -1)).rgb;
-	vec3 rgbSE = textureOffset(colorTexture, coords, ivec2(1, -1)).rgb;
+	float lumaCenter = getLuma(color);
+	float lumaUp = getLuma(textureOffset(colorTexture, coords, ivec2(0, 1)));
+	float lumaDown = getLuma(textureOffset(colorTexture, coords, ivec2(0, -1)));
+	float lumaLeft = getLuma(textureOffset(colorTexture, coords, ivec2(-1, 0)));
+	float lumaRight = getLuma(textureOffset(colorTexture, coords, ivec2(1, 0)));
 
-	vec4 color = vec4(0.0);
+	float lumaMin = min(lumaCenter, min(min(lumaUp, lumaDown), min(lumaLeft, lumaRight)));
+	float lumaMax = max(lumaCenter, max(max(lumaUp, lumaDown), max(lumaLeft, lumaRight)));
 
-	const vec3 toLuma = vec3(0.299, 0.587, 0.114);
+	float lumaRange = lumaMax - lumaMin;
 
-	float lumaNW = dot(rgbNW, toLuma);
-	float lumaNE = dot(rgbNE, toLuma);
-	float lumaSW = dot(rgbSW, toLuma);
-	float lumaSE = dot(rgbSE, toLuma);
-	float lumaM = dot(rgbM, toLuma);
-
-	float lumaMin = min(lumaM, min(min(lumaNW, lumaNE), min(lumaSW, lumaSE)));
-	float lumaMax = max(lumaM, max(max(lumaNW, lumaNE), max(lumaSW, lumaSE)));
-
-	if (lumaMax - lumaMin < lumaMax * 0.1)
-	{
-		return vec4(rgbM, 1.0);
+	if (lumaRange < max(0.0625, lumaMax * 0.125)) {
+		return color.rgb;
 	}
 
-	vec2 samplingDirection;
-	samplingDirection.x = -((lumaNW + lumaNE) - (lumaSW + lumaSE));
-	samplingDirection.y =  ((lumaNW + lumaSW) - (lumaNE + lumaSE));
+	float lumaNW = getLuma(textureOffset(colorTexture, coords, ivec2(-1, 1)));
+	float lumaNE = getLuma(textureOffset(colorTexture, coords, ivec2(1, 1)));
+	float lumaSW = getLuma(textureOffset(colorTexture, coords, ivec2(-1, -1)));
+	float lumaSE = getLuma(textureOffset(colorTexture, coords, ivec2(1, -1)));
 
-	float samplingDirectionReduce = max((lumaNW + lumaNE + lumaSW + lumaSE) * 0.25 * 8.0, 128.0);
+	float lumaVertical = lumaUp + lumaDown;
+	float lumaHorizontal = lumaLeft + lumaRight;
 
-	float minSamplingDirectionFactor = 1.0 / (min(abs(samplingDirection.x), abs(samplingDirection.y)) + samplingDirectionReduce);
+	float lumaNorth = lumaNW + lumaNE;
+	float lumaSouth = lumaSW + lumaSE;
+	float lumaWest = lumaNW + lumaSW;
+	float lumaEast = lumaNE + lumaSE;
 
-	samplingDirection = clamp(samplingDirection * minSamplingDirectionFactor, vec2(-8.0, -8.0), vec2(8.0, 8.0)) * 0.2;
+	float horizontalEdge = abs(lumaWest - 2.0 * lumaLeft) + 2.0 * abs(lumaVertical - 2.0 * lumaCenter) + abs(lumaEast - 2.0 * lumaRight);
+	float verticalEdge = abs(lumaNorth - 2.0 * lumaUp) + 2.0 * abs(lumaHorizontal - 2.0 * lumaCenter) + abs(lumaSouth - 2.0 * lumaDown);
 
-	vec3 rgbSampleNeg = texture(colorTexture, coords + samplingDirection * (1.0/3.0 - 0.5)).rgb;
-	vec3 rgbSamplePos = texture(colorTexture, coords + samplingDirection * (2.0/3.0 - 0.5)).rgb;
+	bool isHorizontal = horizontalEdge >= verticalEdge;
 
-	vec3 rgbTwoTab = (rgbSamplePos + rgbSampleNeg) * 0.5;
+	float firstLuma = isHorizontal ? lumaDown : lumaLeft;
+	float secondLuma = isHorizontal ? lumaUp : lumaRight;
 
-	vec3 rgbSampleNegOuter = texture(colorTexture, coords + samplingDirection * (0.0/3.0 - 0.5)).rgb;
-	vec3 rgbSamplePosOuter = texture(colorTexture, coords + samplingDirection * (3.0/3.0 - 0.5)).rgb;
+	float firstGradient = firstLuma - lumaCenter;
+	float secondGradient = secondLuma - lumaCenter;
 
-	vec3 rgbFourTab = (rgbSamplePosOuter + rgbSampleNegOuter) * 0.25 + rgbTwoTab * 0.5;
+	bool isFirstGradientSteeper = abs(firstGradient) >= abs(secondGradient);
 
-	float lumaFourTab = dot(rgbFourTab, toLuma);
+	float scaledGradient = 0.25 * max(abs(firstGradient), abs(secondGradient));
 
-	if (lumaFourTab < lumaMin || lumaFourTab > lumaMax)
-	{
-		color = vec4(rgbTwoTab, 1.0);
+	float stepLength = isHorizontal ? pixelSize.y : pixelSize.x;
+
+	float lumaAVG = 0.0;
+
+	if(isFirstGradientSteeper) {
+		stepLength = -stepLength;
+		lumaAVG = 0.5 * (firstLuma + lumaCenter);
+	} else {
+		lumaAVG = 0.5 * (secondLuma + lumaCenter);
 	}
-	else
-	{
-		color = vec4(rgbFourTab, 1.0);
+
+	vec2 uv = coords;
+
+	if(isHorizontal) {
+		uv.y += stepLength * 0.5;
+	} else {
+		uv.x += stepLength * 0.5;
 	}
 
-	return color;
+	vec2 offset = isHorizontal ? vec2(pixelSize.x, 0.0) : vec2(0.0, pixelSize.y);
+
+	vec2 firstUV = uv - offset;
+	vec2 secondUV = uv + offset;
+
+	float firstLumaEnd = getLuma(texture(colorTexture, firstUV)) - lumaAVG;
+	float secondLumaEnd = getLuma(texture(colorTexture, secondUV)) - lumaAVG;
+
+	bool firstReached = abs(firstLumaEnd) >= scaledGradient;
+	bool secondReached = abs(secondLumaEnd) >= scaledGradient;
+
+	bool bothReached = firstReached && secondReached;
+
+	if(!firstReached) {
+		firstUV -= offset;
+	}
+
+	if(!secondReached) {
+		secondUV += offset;
+	}
+
+	if(!bothReached) {
+		for(int i = 0; i < quality.length(); i++) {
+			if(!firstReached) {
+				firstLumaEnd = getLuma(texture(colorTexture, firstUV)) - lumaAVG;
+			}
+
+			if(!secondReached) {
+				secondLumaEnd = getLuma(texture(colorTexture, secondUV)) - lumaAVG;
+			}
+
+			firstReached = abs(firstLumaEnd) >= scaledGradient;
+			secondReached = abs(secondLumaEnd) >= scaledGradient;
+			bothReached = firstReached && secondReached;
+
+			if(!firstReached) {
+				firstUV -= offset * quality[i];
+			}
+
+			if(!secondReached) {
+				secondUV += offset * quality[i];
+			}
+
+			if(bothReached) {
+				break;
+			}
+		}
+	}
+
+	float firstDistance = isHorizontal ? (coords.x - firstUV.x) : (coords.y - firstUV.y);
+	float secondDistance = isHorizontal ? (secondUV.x - coords.x) : (secondUV.y - coords.y);
+
+	bool isFirstDirection = firstDistance < secondDistance;
+	float finalDistance = min(firstDistance, secondDistance);
+
+	float thickness = firstDistance + secondDistance;
+
+	float pixelOffset = -finalDistance / thickness + 0.5;
+
+	bool isLumaCenterSmaller = lumaCenter < lumaAVG;
+
+	bool correctVariation = ((isFirstDirection ? firstLumaEnd : secondLumaEnd) < 0.0) != isLumaCenterSmaller;
+
+	float finalOffset = correctVariation ? pixelOffset : 0.0;
+
+	float average = (1.0 / 12.0) * (2.0 * (lumaVertical + lumaHorizontal) + lumaWest + lumaEast);
+
+	float value = clamp(abs(average - lumaCenter) / lumaRange, 0.0, 1.0);
+	value *= (-2.0 * value + 3.0) * value;
+
+	float finalSubPixelOffset = value * value * 0.75;
+
+	finalOffset = max(finalOffset, finalSubPixelOffset);
+
+	if(isHorizontal) {
+		coords.y += finalOffset * stepLength;
+	} else {
+		coords.x += finalOffset * stepLength;
+	}
+
+	return texture(colorTexture, coords);
 }
 
 dvec4 normalizeHVC(dvec4 hvc) {
@@ -118,7 +209,7 @@ vec4 motionBlur() {
 
     float contributions = 0.0;
 
-    for (int i = 1; i < blurSamples; i++) {
+    for (int i = 0; i < blurSamples; i++) {
     	vec4 color = fxaa(textureCoords + vec2(velocity) * (float(i) / float(blurSamples - 1) - 0.5));
 
     	if(length(color.rgb) < length(minColor)) {
