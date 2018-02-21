@@ -166,37 +166,51 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	public void display(GLAutoDrawable arg0) {
 		if(this.thread != null) {
 			this.thread.incrementTicks();
-	        
+	        			
 			performanceBegin();
 			
-	        this.core.render(this);
+	        this.core.render3D(this);
 	        
-	        performanceNext("Core");
+	        performanceNext("3D Core");
 	        
 	        this.primitives.beginUI(this.gl);
 	        	        
-	        performanceNext("2D begin");
+	        performanceNext("2D Begin");
 	        
 			this.theManager.draw();
 			
-	        performanceNext("2D draw");
+	        performanceNext("2D Draw");
 
+	        this.core.render2D(this);
+	        
+	        performanceNext("2D Core Extra");
+	        
 			this.primitives.endUI(this.gl);
 			
-	        performanceNext("2D end");
+	        performanceNext("2D End");
 		}
 	}
 	
+	/* Just some ugly debugging */
 	long time1;
 	
 	private void performanceBegin() {
+		
 		time1 = System.nanoTime();
+		
+		if(time1 % 200 != 0) { // ca. 200 frames interval between samples
+			time1 = -1;
+		} else {
+			System.out.println("**** Performance Debugger Sample ****");
+		}
 	}
 	
 	private void performanceNext(String label) {
-		long time2 = System.nanoTime();
-		System.out.println(label + ": " + (time2 - time1));
-		time1 = time2;
+		if(time1 >= 0) {
+			long time2 = System.nanoTime();
+			System.out.println(label + ": " + (time2 - time1));
+			time1 = time2;
+		}
 	}
 
 	public void dispose(GLAutoDrawable arg0) {

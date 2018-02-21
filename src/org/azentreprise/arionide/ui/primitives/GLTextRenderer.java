@@ -45,6 +45,8 @@ import org.azentreprise.arionide.ui.FontAdapter;
 import com.jogamp.opengl.GL4;
 
 // I agree: using AWT for text rendering and GL for what's left is bullshit.
+
+@Deprecated
 public class GLTextRenderer {
 	
 	private static final int BUFFER_SIZE = 2048;
@@ -146,11 +148,11 @@ public class GLTextRenderer {
 				
 		FontMetrics metrics = this.g2d.getFontMetrics();
 		
-		int x = outerBounds.x + (outerBounds.width - metrics.stringWidth(string)) / 2;
-		int y = outerBounds.y + (outerBounds.height - metrics.getMaxDescent() + metrics.getMaxAscent() + 1) / 2;
-		
+		long x = outerBounds.x + (outerBounds.width - metrics.stringWidth(string)) / 2;
+		long y = outerBounds.y + (outerBounds.height - metrics.getMaxDescent() + metrics.getMaxAscent() + 1) / 2;
+				
 		int color = Utils.packARGB(this.rgb, this.alpha);
-		long packed = 17 * string.hashCode() + 31 * (((x & 0xFFFFL) << 48) | ((y & 0xFFFFL) << 32) | color); // + 47 * (this.paint != null ? this.paint.hashCode() : 0);
+		long packed = 17L * string.hashCode() + 31L * (((x & 0xFFFFL) << 48) | ((y & 0xFFFFL) << 32) | color); // + 47 * (this.paint != null ? this.paint.hashCode() : 0);
 		
 		if(this.iterationIndex == this.hashes.size()) {
 			this.preDirty = true;
@@ -185,7 +187,10 @@ public class GLTextRenderer {
 			Arrays.fill(this.textureBuffer.array(), 0);
 
 			this.dirty = true;
-			this.preDirty = false;
+			
+			/* WARNING: The dirty/clean feature isn't supported anymore */
+			
+			// this.preDirty = false;
 		}
 
 		gl.glUniform1i(this.samplerUniform, 1);

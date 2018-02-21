@@ -31,6 +31,7 @@ import java.nio.Buffer;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,8 +63,10 @@ import org.azentreprise.arionide.ui.core.RenderingScene;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.code.Code;
 import org.azentreprise.arionide.ui.primitives.GLCoordinates;
+import org.azentreprise.arionide.ui.primitives.IPrimitives;
 import org.azentreprise.arionide.ui.shaders.Shaders;
 import org.joml.Matrix4d;
+import org.joml.Vector2d;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector4d;
@@ -430,7 +433,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		return indices;
 	}
 	
-	public void render(AppDrawingContext context) {
+	public void render3D(AppDrawingContext context) {
 		assert context instanceof OpenGLDrawingContext;
 		
 		OpenGLDrawingContext glContext = (OpenGLDrawingContext) context;
@@ -557,8 +560,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		/* Load sun position in screen coords */
 		
 		if(this.pitch > 0.0d) {
-			Vector4d point = new Matrix4d(this.projectionMatrix).mul(this.viewMatrix).transform(new Vector4d(new Vector3d(this.sun).add(this.player.x, 0, this.player.z), 1.0d));
-			gl.glUniform2f(this.fxLightPosition, (float) (point.x / point.z) + 0.5f, (float) (point.y / point.z) + 0.5f);
+			Vector2d point = this.getHVCFrom3D(new Vector3d(this.sun).add(this.player.x, 0, this.player.z));
+			gl.glUniform2f(this.fxLightPosition, (float) point.x + 0.5f, (float) point.y + 0.5f);
 		} else {
 			gl.glUniform2f(this.fxLightPosition, -123.0f, -123.0f);
 		}
@@ -594,8 +597,57 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glBindVertexArray(this.fxVAO);
 		gl.glDrawArrays(GL4.GL_TRIANGLE_STRIP, 0, 4);
 	}
+	
+	public void render2D(AppDrawingContext context) {		
+		this.renderLabels(context, this.worldGeometry.getElements());
+		this.renderLabels(context, this.codeGeometry.getElements());
+	}
+	
+	private void renderLabels(AppDrawingContext context, List<WorldElement> elements) {
+		synchronized(elements) {
+			
+			// The elements are supposed to be already sorted
+						
+			for(WorldElement element : elements) {
+				context.setColor(0xFFFFFF);
+				context.setAlpha(0xFF);
 
-	private void update() {		
+				if(!this.inside.isEmpty()) {
+					WorldElement enclosing = this.inside.get(this.inside.size() - 1);
+					
+					if(element.getCenter().distance(enclosing.getCenter()) > enclosing.getSize()) {
+						context.setAlpha(0x1F);
+					}
+				}
+				
+				/*
+				
+				GL4 gl = (GL4) GLContext.getCurrentGL();
+				gl.glBlendFunc(GL4.GL_ONE_MINUS_DST_COLOR, GL4.GL_ONE_MINUS_SRC_COLOR);
+				
+				 */
+				
+				
+				Vector2d anchor = this.getHVCFrom3D(element.getCenter().add(0.0d, 2.0d * element.getSize(), 0.0d)).mul(1.0d, -1.0d).add(0.85d, 1.0d);
+				double height = 1.0d - this.getHVCFrom3D(element.getCenter().add(0.0d, element.getSize(), 0.0d)).add(anchor).y;
+								
+				if(height > 0.01d) {
+					Vector2d dimensions = new Vector2d(0.3d, height);
+					
+					if(anchor.x >= 0.0 && anchor.y >= 0.0 && anchor.x + dimensions.x <= 2.0 && anchor.y + dimensions.y <= 2.0) { // Inside the unit circle
+						context.getPrimitives().drawText(context, element.getName(), new Rectangle2D.Double(anchor.x, anchor.y, dimensions.x, dimensions.y));
+					}
+				}
+			}
+		}
+	}
+
+	private Vector2d getHVCFrom3D(Vector3d input) { // HVC stands for Homogeneous vector coordinates
+		Vector4d point = new Matrix4d(this.projectionMatrix).mul(this.viewMatrix).transform(new Vector4d(input, 1.0d));
+		return new Vector2d(point.x / point.z, point.y / point.z);
+	}
+
+	private void update() {	
 		this.updatePlayer();
 		this.updateCamera();
 

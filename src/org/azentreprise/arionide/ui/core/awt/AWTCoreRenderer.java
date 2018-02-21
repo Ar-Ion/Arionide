@@ -30,14 +30,13 @@ import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
 
 public class AWTCoreRenderer implements CoreRenderer {
-	public void render(AppDrawingContext context) {
+	public void render3D(AppDrawingContext context) {
 		assert context instanceof AWTDrawingContext;
 	}
 
 	@Override
 	public void setScene(RenderingScene scene) {
 		// TODO Auto-generated method stub
-		System.out.println(scene);
 		
 	}
 
@@ -67,6 +66,12 @@ public class AWTCoreRenderer implements CoreRenderer {
 
 	@Override
 	public void teleport(String identifier) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void render2D(AppDrawingContext context) {
 		// TODO Auto-generated method stub
 		
 	}

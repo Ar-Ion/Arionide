@@ -33,7 +33,10 @@ public interface CoreRenderer {
 	public void update(Rectangle bounds);
 	
 	@IAm("rendering the core scene")
-	public void render(AppDrawingContext context);
+	public void render3D(AppDrawingContext context);
+	
+	@IAm("rendering extra gui 2D")
+	public void render2D(AppDrawingContext context);
 	
 	@IAm("changing the core scene")
 	public void setScene(RenderingScene scene);

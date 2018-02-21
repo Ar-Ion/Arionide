@@ -34,13 +34,13 @@ float getLuma(vec3 color) {
 }
 
 float getLuma(vec4 color) {
-	return sqrt(dot(color.rgb, lumaVector));
+	return getLuma(color.rgb);
 }
 
 void lightAdaptation() {
-	float lightDistanceFromCenter = length(lightPosition - vec2(0.5, 0.5)) / 2.0;
+	float lightDistanceFromCenter = length(lightPosition - vec2(0.5, 0.5));
 
-	float adaptationFactor = min(1.5, lightDistanceFromCenter);
+	float adaptationFactor = min(1.2, lightDistanceFromCenter);
 
 	fragColor *= max(adaptationFactor, getLuma(fragColor.rgb));
 }
@@ -60,7 +60,7 @@ vec4 fxaa(vec2 coords) {
 	float lumaRange = lumaMax - lumaMin;
 
 	if (lumaRange < max(0.0625, lumaMax * 0.125)) {
-		return color.rgb;
+		return color;
 	}
 
 	float lumaNW = getLuma(textureOffset(colorTexture, coords, ivec2(-1, 1)));
@@ -178,9 +178,9 @@ vec4 fxaa(vec2 coords) {
 	float average = (1.0 / 12.0) * (2.0 * (lumaVertical + lumaHorizontal) + lumaWest + lumaEast);
 
 	float value = clamp(abs(average - lumaCenter) / lumaRange, 0.0, 1.0);
-	value *= (-2.0 * value + 3.0) * value;
+	float var = (-2.0 * value + 3.0) * value * value;
 
-	float finalSubPixelOffset = value * value * 0.75;
+	float finalSubPixelOffset = var * var * 0.75;
 
 	finalOffset = max(finalOffset, finalSubPixelOffset);
 
