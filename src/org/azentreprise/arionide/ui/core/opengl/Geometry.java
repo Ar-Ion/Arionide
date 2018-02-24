@@ -2,7 +2,7 @@
  * This file is part of Arionide.
  *
  * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
- * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
+ * Copyright (C) 2018 AZEntreprise Corporation. All rights reserved.
  *
  * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,4 +28,5 @@ public interface Geometry {
 	public void setGenerationSeed(long seed);
 	public List<WorldElement> getCollisions(Vector3d player);
 	public List<WorldElement> getElements();
+	public List<Connection> getConnections();
 }

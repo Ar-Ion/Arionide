@@ -2,7 +2,7 @@
  * This file is part of Arionide.
  *
  * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
- * Copyright (C) 2017 AZEntreprise Corporation. All rights reserved.
+ * Copyright (C) 2018 AZEntreprise Corporation. All rights reserved.
  *
  * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,8 @@ public class CodeGeometry implements Geometry {
 
 	private final Random random = new Random();
 	private final List<WorldElement> elements = Collections.synchronizedList(new ArrayList<>());
-	
+	private final List<Connection> connections = Collections.synchronizedList(new ArrayList<>());
+
 	private long seed;
 	
 	public void setGenerationSeed(long seed) {
@@ -94,7 +95,7 @@ public class CodeGeometry implements Geometry {
 					/* Process specification */					
 					List<SpecificationElement> specification = resolved.getSpecification().getElements();
 					
-					Vector3d specPos = new Vector3d(axis).cross(0.0d, 1.0d, 0.0d).cross(axis).normalize(size * 1.5d);
+					Vector3d specPos = new Vector3d(axis).cross(0.0d, 1.0d, 0.0d).normalize(size * 1.5d);
 					
 					Quaterniond specQuaternion = new Quaterniond(new AxisAngle4d(2.0d * Math.PI / specification.size(), new Vector3d(axis).normalize()));
 					
@@ -153,5 +154,9 @@ public class CodeGeometry implements Geometry {
 	
 	public List<WorldElement> getElements() {
 		return this.elements;
+	}
+
+	public List<Connection> getConnections() {
+		return this.connections;
 	}
 }
