@@ -27,11 +27,14 @@ import java.util.Map;
 import java.util.Random;
 
 import org.azentreprise.arionide.debugging.IAm;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.menu.edition.Coloring;
+import org.joml.AxisAngle4d;
+import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -74,6 +77,8 @@ public class CodeGeometry implements Geometry {
 		Vector3d axis = parent.getAxis();
 		Vector3d position = parent.getCenter();
 		
+		List<WorldElement> specElements = new ArrayList<>();
+		
 		for(HierarchyElement element : code) {
 			StructureMeta structMeta = meta.get(element.getID());
 						
@@ -83,9 +88,26 @@ public class CodeGeometry implements Geometry {
 				if(index > -1) {					
 					StructureMeta resolved = meta.get(Integer.parseInt(structMeta.getComment().substring(index + 5)));
 					
-					Vector4f color = new Vector4f(Coloring.getColorByID(resolved.getColorID()), 1.0f);
+					Vector4f color = new Vector4f(Coloring.getColorByID(resolved.getColorID()), 0.5f);
 					Vector3f spotColor = new Vector3f(Coloring.getColorByID(resolved.getSpotColorID()));
 	
+					/* Process specification */					
+					List<SpecificationElement> specification = resolved.getSpecification().getElements();
+					
+					Vector3d specPos = new Vector3d(axis).cross(0.0d, 1.0d, 0.0d).cross(axis).normalize(size * 1.5d);
+					
+					Quaterniond specQuaternion = new Quaterniond(new AxisAngle4d(2.0d * Math.PI / specification.size(), new Vector3d(axis).normalize()));
+					
+					for(int i = 0; i < specification.size(); i++) {
+						SpecificationElement specElement = specification.get(i);
+						WorldElement specObject = new WorldElement((((i + 1) & 0xFF) << 24) | element.getID(), specElement.getName(), new Vector3d(specPos).add(position), color, spotColor, size / 5.0d, structMeta.isAccessAllowed());
+						
+						specElements.add(specObject);
+						
+						specPos.rotate(specQuaternion);
+					}
+					
+					/* Process instruction */
 					axis.normalize(parent.getSize() * structRelDistance);
 					
 					WorldElement.setAxisGenerator(() -> WorldElement.RANDOM_GENERATOR.get().cross(axis));
@@ -96,6 +118,8 @@ public class CodeGeometry implements Geometry {
 					position.add(axis);
 					this.applyDerivation(axis, new Vector3d(position).sub(parent.getCenter()).div(parent.getSize()).mul(2.0f));
 				}
+				
+				this.elements.addAll(specElements);
 			}
 		}
 	}

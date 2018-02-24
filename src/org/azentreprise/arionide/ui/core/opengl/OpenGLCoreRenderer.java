@@ -31,7 +31,6 @@ import java.nio.Buffer;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -63,7 +62,6 @@ import org.azentreprise.arionide.ui.core.RenderingScene;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.code.Code;
 import org.azentreprise.arionide.ui.primitives.GLCoordinates;
-import org.azentreprise.arionide.ui.primitives.IPrimitives;
 import org.azentreprise.arionide.ui.shaders.Shaders;
 import org.joml.Matrix4d;
 import org.joml.Vector2d;
@@ -81,7 +79,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private static final int spaceSphereQuality = 3;
 	
 	private static final int structureRenderingQuality = 32;
-
+	private static final boolean crystalMode = true;
+	private static final int crystalQuality = 1;
+	
 	private static final int forward = KeyEvent.VK_W;
 	private static final int backward = KeyEvent.VK_S;
 	private static final int left = KeyEvent.VK_A;
@@ -243,18 +243,32 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glVertexAttribPointer(fxPositionAttribute, 2, GL4.GL_DOUBLE, false, 0, 0);
 				
 		/* Structures */
-		for(int i = 0; i < structureRenderingQuality; i++) {
-			int vertexArray = vertexArrays.get(i + 3);
-			int bufferID = buffers.get(i * 2 + 3);
-			int layers = i + 8;
+		
+		if(crystalMode) {
+			int vertexArray = vertexArrays.get(3);
+			int bufferID = buffers.get(3);
 			
-			this.structures.add(new ScaledRenderingInfo(vertexArray, bufferID + 1, layers));
+			this.structures.add(new ScaledRenderingInfo(vertexArray, bufferID + 1, crystalQuality + 2));
 			
 			this.beginUsingVertexArray(gl, vertexArray);
-			this.initBufferObject(gl, bufferID, GL4.GL_ARRAY_BUFFER, layers, this::createStructureShapeData);
+			this.initBufferObject(gl, bufferID, GL4.GL_ARRAY_BUFFER, crystalQuality + 2, this::createStructureShapeData);
 			this.endUsingVertexArray(gl, structuresPositionAttribute);
 			 
-			this.initBufferObject(gl, bufferID + 1, GL4.GL_ELEMENT_ARRAY_BUFFER, layers, this::createStructureIndicesData);
+			this.initBufferObject(gl, bufferID + 1, GL4.GL_ELEMENT_ARRAY_BUFFER, crystalQuality + 2, this::createStructureIndicesData);
+		} else {
+			for(int i = 0; i < structureRenderingQuality; i++) {
+				int vertexArray = vertexArrays.get(i + 3);
+				int bufferID = buffers.get(i * 2 + 3);
+				int layers = i + 8;
+				
+				this.structures.add(new ScaledRenderingInfo(vertexArray, bufferID + 1, layers));
+				
+				this.beginUsingVertexArray(gl, vertexArray);
+				this.initBufferObject(gl, bufferID, GL4.GL_ARRAY_BUFFER, layers, this::createStructureShapeData);
+				this.endUsingVertexArray(gl, structuresPositionAttribute);
+				 
+				this.initBufferObject(gl, bufferID + 1, GL4.GL_ELEMENT_ARRAY_BUFFER, layers, this::createStructureIndicesData);
+			}
 		}
 		
 		/* Init player */
@@ -502,18 +516,20 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 		
 		this.renderScene0(gl, this.worldGeometry.getElements());
-	
-		gl.glDisable(GL4.GL_BLEND);
-		gl.glDisable(GL4.GL_DEPTH_TEST);
 		
 		if(this.scene != RenderingScene.INHERITANCE) {
-			this.renderScene0(gl, this.codeGeometry.getElements());
+			this.renderScene0(gl, new ArrayList<>(this.codeGeometry.getElements())); // We need to preserve the original ordering of the list
 		}
+		
+		
+		
+		gl.glDisable(GL4.GL_BLEND);
+		gl.glDisable(GL4.GL_DEPTH_TEST);
 	}
 	
-	private void renderScene0(GL4 gl, List<WorldElement> elements) {
+	private void renderScene0(GL4 gl, List<WorldElement> elements) {		
 		synchronized(elements) {
-			elements.sort((a, b) -> (int) Math.signum(Double.compare(b.getCenter().distance(this.player) - b.getSize(), a.getCenter().distance(this.player) - a.getSize())));
+			elements.sort((a, b) -> Double.compare(b.getCenter().distance(this.player) - b.getSize(), a.getCenter().distance(this.player) - a.getSize()));
 			
 			for(WorldElement element : elements) {
 				Vector3d unitVector = new Vector3d(0.0d, 1.0d, 0.0d);
@@ -522,9 +538,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				double angle = Math.PI + delta.angle(unitVector);
 				Vector3d axis = unitVector.cross(delta).normalize();
 								
-				this.loadMatrix(new Matrix4d().translate(element.getCenter()).rotate(angle, axis).scale(element.getSize()), this.modelData);
+				this.loadMatrix(new Matrix4d().translate(element.getCenter()).rotate(angle, axis).scale(element.getSize()), this.modelData); // For sorting
 				gl.glUniformMatrix4dv(this.structModel, 1, false, this.modelData);
-				
+												
 				if(element != this.selected) {
 					gl.glUniform1f(this.ambientFactor, 0.5f);
 				} else {
@@ -560,7 +576,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		/* Load sun position in screen coords */
 		
 		if(this.pitch > 0.0d) {
-			Vector2d point = this.getHVCFrom3D(new Vector3d(this.sun).add(this.player.x, 0, this.player.z));
+			Vector2d point = this.getHVCFrom3D(new Vector3d(this.sun).add(this.player.x, 0, this.player.z), this.projectionMatrix);
 			gl.glUniform2f(this.fxLightPosition, (float) point.x + 0.5f, (float) point.y + 0.5f);
 		} else {
 			gl.glUniform2f(this.fxLightPosition, -123.0f, -123.0f);
@@ -611,28 +627,38 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			for(WorldElement element : elements) {
 				context.setColor(0xFFFFFF);
 				context.setAlpha(0xFF);
-
+				
+				if(element.getCenter().sub(this.player).angle(this.getDOF()) > Math.PI / 2) {
+					continue;
+				}
+				
 				if(!this.inside.isEmpty()) {
 					WorldElement enclosing = this.inside.get(this.inside.size() - 1);
+					
+					if(enclosing == element) {
+						continue;
+					}
 					
 					if(element.getCenter().distance(enclosing.getCenter()) > enclosing.getSize()) {
 						context.setAlpha(0x1F);
 					}
 				}
-				
-				/*
+								
+				/* Might be useful after rework of GLTextRenderer;
 				
 				GL4 gl = (GL4) GLContext.getCurrentGL();
 				gl.glBlendFunc(GL4.GL_ONE_MINUS_DST_COLOR, GL4.GL_ONE_MINUS_SRC_COLOR);
 				
 				 */
-				
-				
-				Vector2d anchor = this.getHVCFrom3D(element.getCenter().add(0.0d, 2.0d * element.getSize(), 0.0d)).mul(1.0d, -1.0d).add(0.85d, 1.0d);
-				double height = 1.0d - this.getHVCFrom3D(element.getCenter().add(0.0d, element.getSize(), 0.0d)).add(anchor).y;
 								
+				// Construct a new perspective with a null near plane (I don't know why it has to be null ?!)
+				Matrix4d proj = new Matrix4d().perspective(fov, this.bounds.getWidth() / this.bounds.getHeight(), 0.0d, 1.0d);
+				
+				Vector2d anchor = this.getHVCFrom3D(element.getCenter().add(0.0d, 2.0d * element.getSize(), 0.0d), proj).mul(1.0d, -1.0d).add(0.75d, 1.0d);
+				double height = 1.0d - this.getHVCFrom3D(element.getCenter().add(0.0d, element.getSize(), 0.0d), proj).mul(1.0d).add(anchor).y;
+				
 				if(height > 0.01d) {
-					Vector2d dimensions = new Vector2d(0.3d, height);
+					Vector2d dimensions = new Vector2d(0.5d, height);
 					
 					if(anchor.x >= 0.0 && anchor.y >= 0.0 && anchor.x + dimensions.x <= 2.0 && anchor.y + dimensions.y <= 2.0) { // Inside the unit circle
 						context.getPrimitives().drawText(context, element.getName(), new Rectangle2D.Double(anchor.x, anchor.y, dimensions.x, dimensions.y));
@@ -642,8 +668,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		}
 	}
 
-	private Vector2d getHVCFrom3D(Vector3d input) { // HVC stands for Homogeneous vector coordinates
-		Vector4d point = new Matrix4d(this.projectionMatrix).mul(this.viewMatrix).transform(new Vector4d(input, 1.0d));
+	private Vector2d getHVCFrom3D(Vector3d input, Matrix4d projection) { // HVC stands for Homogeneous vector coordinates
+		Vector4d point = new Matrix4d(projection).mul(this.viewMatrix).transform(new Vector4d(input, 1.0d));
 		return new Vector2d(point.x / point.z, point.y / point.z);
 	}
 
@@ -726,7 +752,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 
 	private void checkForTarget() {
-		Vector3d cameraDirection = new Vector3d(-this.viewData.get(2), -this.viewData.get(6), -this.viewData.get(10)); // DOF
+		Vector3d cameraDirection = this.getDOF();
 		double size = this.worldGeometry.getSizeForGeneration(this.inside.size());
 		
 		WorldElement found = null;
@@ -772,6 +798,10 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		MainMenus.getStructureList().set(menuData);
 
 		this.lookingAt = found;
+	}
+	
+	private Vector3d getDOF() {
+		return new Vector3d(-this.viewData.get(2), -this.viewData.get(6), -this.viewData.get(10));
 	}
 	
 	private boolean enterElement(WorldElement element) {
@@ -940,6 +970,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	public void selectInstruction(int id) {
+		System.out.println(id);
+		
 		List<WorldElement> elements = this.codeGeometry.getElements();
 		
 		synchronized(elements) {
@@ -977,6 +1009,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 		GL4 gl = (GL4) GLContext.getCurrentGL();
 		
+		/*
+		 * Resize buffers
+		 */
 		gl.glActiveTexture(GL4.GL_TEXTURE2);
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, this.fxColorTexture);
 		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGB, bounds.width, bounds.height, 0, GL4.GL_RGB, GL4.GL_UNSIGNED_BYTE, null);

@@ -28,6 +28,7 @@ import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
 public class Code extends SpecificMenu {
@@ -71,7 +72,8 @@ public class Code extends SpecificMenu {
 		Project project = this.getAppManager().getWorkspace().getCurrentProject();
 
 		if(project != null) {
-			this.selected = project.getStorage().getCurrentData().get(id).getID();
+			HierarchyElement element = project.getStorage().getCurrentData().get(id);
+			this.selected = element.getID();
 			this.getAppManager().getCoreRenderer().selectInstruction(this.selected);
 			this.getAppManager().getEventDispatcher().fire(new MessageEvent(this.getDescription(), MessageType.INFO));
 		}

@@ -47,6 +47,11 @@ import com.jogamp.opengl.GL4;
 // I agree: using AWT for text rendering and GL for what's left is bullshit.
 
 @Deprecated
+
+/*
+ * LOW PERFORMANCE HERE ### NEED REWORK
+ */
+
 public class GLTextRenderer {
 	
 	private static final int BUFFER_SIZE = 2048;
