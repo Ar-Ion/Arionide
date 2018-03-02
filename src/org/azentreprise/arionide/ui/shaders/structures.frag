@@ -1,5 +1,8 @@
 #version 400
 
+precision highp double;
+precision highp float;
+
 const vec3 lightColor = vec3(1.0, 1.0, 1.0);
 const float shininess = 4.0;
 const float diffuseAmplifier = 2.0;

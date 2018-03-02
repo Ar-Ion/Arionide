@@ -61,6 +61,7 @@ public class CodeGeometry implements Geometry {
 	protected void buildGeometry(Project project, WorldElement element) {
 		synchronized(this.elements) {
 			this.elements.clear();
+			this.connections.clear();
 						
 			if(element != null && element.getID() > -1) {
 				Storage storage = project.getStorage();
@@ -69,17 +70,19 @@ public class CodeGeometry implements Geometry {
 				WorldElement.setSeed(this.seed * element.getID());
 				this.random.setSeed(this.seed * element.getID());
 				
-				this.build(element, storage.getStructureMeta(), storage.getCurrentData(), element.getSize() * structRelSize);
+				List<WorldElement> specElements = new ArrayList<>();
+				
+				this.build(element, storage.getStructureMeta(), storage.getCurrentData(), specElements, element.getSize() * structRelSize);
+				
+				this.elements.addAll(specElements);
 			}
 		}
 	}
 	
-	private void build(WorldElement parent, Map<Integer, StructureMeta> meta, List<HierarchyElement> code, double size) {
+	private void build(WorldElement parent, Map<Integer, StructureMeta> meta, List<HierarchyElement> code, List<WorldElement> specElements, double size) {
 		Vector3d axis = parent.getAxis();
 		Vector3d position = parent.getCenter();
-		
-		List<WorldElement> specElements = new ArrayList<>();
-		
+				
 		for(HierarchyElement element : code) {
 			StructureMeta structMeta = meta.get(element.getID());
 						
@@ -91,36 +94,36 @@ public class CodeGeometry implements Geometry {
 					
 					Vector4f color = new Vector4f(Coloring.getColorByID(resolved.getColorID()), 0.5f);
 					Vector3f spotColor = new Vector3f(Coloring.getColorByID(resolved.getSpotColorID()));
-	
-					/* Process specification */					
-					List<SpecificationElement> specification = resolved.getSpecification().getElements();
 					
+					/* Process instruction */
+					axis.normalize(parent.getSize() * structRelDistance);
+					
+					WorldElement.setAxisGenerator(() -> WorldElement.RANDOM_GENERATOR.get().cross(axis));
+					WorldElement object = new WorldElement(element.getID(), resolved.getName(), resolved.getComment(), new Vector3d(position), color, spotColor, size, structMeta.isAccessAllowed());
+					this.elements.add(object);
+					
+					/* Process specification */					
+					List<SpecificationElement> specification = structMeta.getSpecification().getElements();
+										
 					Vector3d specPos = new Vector3d(axis).cross(0.0d, 1.0d, 0.0d).normalize(size * 1.5d);
 					
 					Quaterniond specQuaternion = new Quaterniond(new AxisAngle4d(2.0d * Math.PI / specification.size(), new Vector3d(axis).normalize()));
 					
 					for(int i = 0; i < specification.size(); i++) {
 						SpecificationElement specElement = specification.get(i);
-						WorldElement specObject = new WorldElement((((i + 1) & 0xFF) << 24) | element.getID(), specElement.getName(), new Vector3d(specPos).add(position), color, spotColor, size / 5.0d, structMeta.isAccessAllowed());
+						WorldElement specObject = new WorldElement((((i + 1) & 0xFF) << 24) | element.getID(), specElement.getName(), specElement.getValue(), new Vector3d(specPos).add(position), color, spotColor, size / 5.0d, structMeta.isAccessAllowed());
 						
 						specElements.add(specObject);
+						this.connections.add(new Connection(object, specObject));
 						
 						specPos.rotate(specQuaternion);
 					}
 					
-					/* Process instruction */
-					axis.normalize(parent.getSize() * structRelDistance);
-					
-					WorldElement.setAxisGenerator(() -> WorldElement.RANDOM_GENERATOR.get().cross(axis));
-					WorldElement object = new WorldElement(element.getID(), resolved.getName(), new Vector3d(position), color, spotColor, size, structMeta.isAccessAllowed());
-					this.elements.add(object);
-					
-					this.build(parent, meta, element.getChildren(), size);
+					/* Process children and apply transformation */
+					this.build(parent, meta, element.getChildren(), specElements, size);
 					position.add(axis);
 					this.applyDerivation(axis, new Vector3d(position).sub(parent.getCenter()).div(parent.getSize()).mul(2.0f));
 				}
-				
-				this.elements.addAll(specElements);
 			}
 		}
 	}

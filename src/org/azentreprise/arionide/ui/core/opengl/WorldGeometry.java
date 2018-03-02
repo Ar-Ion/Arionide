@@ -52,11 +52,17 @@ public class WorldGeometry implements Geometry {
 	private final List<WorldElement> inheritance = Collections.synchronizedList(new ArrayList<>());
 	private final List<WorldElement> callGraph = Collections.synchronizedList(new ArrayList<>());
 
+	private final List<Connection> hierarchyConnections = Collections.synchronizedList(new ArrayList<>());
+	private final List<Connection> inheritanceConnections = Collections.synchronizedList(new ArrayList<>());
+	private final List<Connection> callGraphConnections = Collections.synchronizedList(new ArrayList<>());
+	
 	private final IEventDispatcher dispatcher;
 	
 	private long seed;
 	
 	private List<WorldElement> current = this.hierarchy;
+	private List<Connection> currentConnections = this.hierarchyConnections;
+	
 	private RenderingScene currentScene = RenderingScene.HIERARCHY;
 	private Project currentProject;
 	
@@ -104,7 +110,7 @@ public class WorldGeometry implements Geometry {
 	
 	private void build(List<WorldElement> list, List<HierarchyElement> elements, Map<Integer, StructureMeta> metaData, double structRelSize, double subStructDistCenterRelSize) {
 		synchronized(list) {
-			WorldElement main = new WorldElement(-1, null, new Vector3d(), new Vector4f(), new Vector3f(), -1.0f, true);
+			WorldElement main = new WorldElement(-1, null, null, new Vector3d(), new Vector4f(), new Vector3f(), -1.0f, true);
 			double virtualSize = structInitialSize / structRelSize;
 			boolean flag = false;
 			this.build(main, list, elements, metaData, virtualSize, structRelSize, subStructDistCenterRelSize, flag);
@@ -145,7 +151,7 @@ public class WorldGeometry implements Geometry {
 						}
 					}
 					
-					WorldElement object = new WorldElement(element.getID(), structMeta.getName(), position, color, spotColor, size, access);
+					WorldElement object = new WorldElement(element.getID(), structMeta.getName(), structMeta.getComment(), position, color, spotColor, size, access);
 					list.add(object);
 					
 					this.build(object, list, element.getChildren(), metaData, size, structRelSize, subStructDistCenterRelSize, flag);
@@ -219,5 +225,9 @@ public class WorldGeometry implements Geometry {
 	
 	public List<WorldElement> getElements() {
 		return this.current;
+	}
+
+	public List<Connection> getConnections() {
+		return this.currentConnections;
 	}
 }

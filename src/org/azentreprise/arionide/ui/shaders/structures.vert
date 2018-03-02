@@ -1,5 +1,8 @@
 #version 400
 
+precision highp double;
+precision highp float;
+
 in vec3 position;
 
 out vec4 fragVertex;

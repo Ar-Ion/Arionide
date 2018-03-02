@@ -59,12 +59,14 @@ public class WorldElement {
 	private final boolean accessAllowed;
 	
 	private String name;
+	private String desc;
 	private Vector4f color;
 	private Vector3f spotColor;
 	
-	protected WorldElement(int id, String name, Vector3d center, Vector4f color, Vector3f spotColor, double size, boolean accessAllowed) {
+	protected WorldElement(int id, String name, String desc, Vector3d center, Vector4f color, Vector3f spotColor, double size, boolean accessAllowed) {
 		this.id = id;
 		this.name = name;
+		this.desc = desc;
 		this.center = center;
 		this.axis = axisGenerator.get().normalize();
 		this.base = baseGenerator.apply(this.axis).normalize();
@@ -122,6 +124,14 @@ public class WorldElement {
 		this.name = name;
 	}
 
+	public String getDescription() {
+		return this.desc;
+	}
+
+	public void setDescription(String desc) {
+		this.desc = desc;
+	}
+	
 	public String toString() {
 		return this.name;
 	}

@@ -80,8 +80,14 @@ public class GLCoordinates {
 	}
 	
 	private long getUUID(double component) {
+		/* Old version:
+	
 		assert Math.abs(component) <= 1.0d;
-		return (long) (component * Short.MAX_VALUE) + Short.MAX_VALUE;
+		return (long) (component * Short.MAX_VALUE) + Short.MAX_VALUE; 
+		
+		*/
+		
+		return Double.doubleToRawLongBits(component);
 	}
 	
 	public long getUUID() {
