@@ -109,7 +109,7 @@ public class WorldElement {
 	}
 	
 	public Vector4f getColor() {
-		return this.color;
+		return new Vector4f(this.color);
 	}
 	
 	public void setColor(Vector4f color) {
@@ -142,5 +142,9 @@ public class WorldElement {
 		}
 		
 		return false;
+	}
+	
+	public int hashCode() {
+		return this.id;
 	}
 }

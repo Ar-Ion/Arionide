@@ -114,6 +114,8 @@ public class WorldGeometry implements Geometry {
 			double virtualSize = structInitialSize / structRelSize;
 			boolean flag = false;
 			this.build(main, list, elements, metaData, virtualSize, structRelSize, subStructDistCenterRelSize, flag);
+			
+			list.sort((a, b) -> Integer.compare(a.getID(), b.getID())); // Allows binary search
 		}
 	}
 	

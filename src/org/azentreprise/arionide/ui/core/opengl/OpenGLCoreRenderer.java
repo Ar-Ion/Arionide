@@ -34,7 +34,10 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -527,11 +530,11 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 		gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 		
-		this.renderStructures0(gl, new ArrayList<>(this.worldGeometry.getElements()));
+		this.renderStructures0(gl, new ArrayList<>(this.worldGeometry.getElements()), false);
 		this.renderConnections(gl, this.worldGeometry.getConnections());
 
 		if(this.scene != RenderingScene.INHERITANCE) {
-			this.renderStructures0(gl, new ArrayList<>(this.codeGeometry.getElements())); // We need to preserve the original ordering of the list
+			this.renderStructures0(gl, new ArrayList<>(this.codeGeometry.getElements()), true); // We need to preserve the original ordering of the list
 			this.renderConnections(gl, this.codeGeometry.getConnections());
 		}
 		
@@ -539,11 +542,14 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glDisable(GL4.GL_DEPTH_TEST);
 	}
 	
-	private void renderStructures0(GL4 gl, List<WorldElement> elements) {		
+	private void renderStructures0(GL4 gl, List<WorldElement> elements, boolean specialResolve) {		
 		synchronized(elements) {
 			elements.sort((a, b) -> Double.compare(b.getCenter().distance(this.player) - b.getSize(), a.getCenter().distance(this.player) - a.getSize()));
 			
+			Map<String, List<WorldElement>> references = new HashMap<>();
+			
 			for(WorldElement element : elements) {
+				/* Rendering */
 				Vector3d unitVector = new Vector3d(0.0d, 1.0d, 0.0d);
 				Vector3d delta = new Vector3d(this.player).sub(element.getCenter());
 				
@@ -578,6 +584,83 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				gl.glBindVertexArray(info.getVAO());
 				gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, info.getEBO());
 				gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * info.getLayers() * (info.getLayers() - 1), GL4.GL_UNSIGNED_INT, 0);
+				
+				/* X-Resolve: Dynamic references rendering */
+				String component = element.getDescription();
+
+				if(specialResolve && component != null) {					
+					Vector3d first = element.getCenter();
+										
+					this.loadMatrix(new Matrix4d(), this.modelData);
+					gl.glUniformMatrix4dv(this.structModel, 1, false, this.modelData);
+					gl.glDisable(GL4.GL_DEPTH_TEST);
+					gl.glEnable(GL4.GL_BLEND);
+					gl.glBlendFunc(GL4.GL_SRC_COLOR, GL4.GL_ONE_MINUS_SRC_COLOR);
+					gl.glUniform4f(this.color, 1.0f, 1.0f, 1.0f, 1.0f);
+					gl.glBindVertexArray(this.connectionVAO);
+										
+					try {
+						int structRef = Integer.parseInt(component);
+						
+						/* Resolved to a structure reference */
+						
+						List<WorldElement> world = this.worldGeometry.getElements(); // Multi-threading incoherence is not a problem because of the high inertia of the system: synchronization is not needed
+						
+						int id = Arrays.<WorldElement>binarySearch(world.toArray(new WorldElement[0]), new WorldElement(structRef, null, null, null, null, null, -1.0d, false), (a, b) -> Integer.compare(a.getID(), b.getID()));
+					
+						WorldElement second = world.get(id);
+						
+						Vector4f connectionColor = second.getColor();
+						
+						gl.glUniform4f(this.color, connectionColor.x, connectionColor.y, connectionColor.z, connectionColor.w);
+						
+						if(this.selected != element && this.selected != second) {
+							gl.glUniform1f(this.ambientFactor, 0.5f);
+						} else {
+							gl.glUniform1f(this.ambientFactor, 1.0f);
+						}
+						
+						this.connect(gl, first, second.getCenter());
+					} catch(NumberFormatException e) {
+						if(component.startsWith("var@")) {
+							/* Resolved to a variable reference */
+							
+							List<WorldElement> list = references.get(component);
+							
+							Random colorGenerator = new Random(component.hashCode());
+							
+							/* High contrast colors */
+							int red = 0x80 + colorGenerator.nextInt(0x80);
+							int green = 0x80 + colorGenerator.nextInt(0x80);
+							int blue = 0x80 + colorGenerator.nextInt(0x80);
+
+							Vector4f connectionColor = new Vector4f(red / 255.0f, green / 255.0f, blue / 255.0f, 1.0f);
+							
+							gl.glUniform4f(this.color, connectionColor.x, connectionColor.y, connectionColor.z, connectionColor.w);
+							
+							if(list != null) {
+								for(WorldElement second : list) {
+									if(this.selected != null && this.selected.getDescription() != null && this.selected.getDescription().contentEquals(component)) {
+										gl.glUniform1f(this.ambientFactor, 1.0f);
+									} else {
+										gl.glUniform1f(this.ambientFactor, 0.5f);
+									}
+									
+									this.connect(gl, first, second.getCenter());
+								}
+							} else {
+								list = new ArrayList<>();
+								references.put(component, list);
+							}
+							
+							list.add(element);
+						}
+					}
+					
+					gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
+					gl.glEnable(GL4.GL_DEPTH_TEST);
+					gl.glDisable(GL4.GL_BLEND);
+				}
 			}
 		}
 	}
@@ -589,9 +672,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			
 			this.loadMatrix(new Matrix4d(), this.modelData);
 			gl.glUniformMatrix4dv(this.structModel, 1, false, this.modelData);
-			
-			gl.glBlendFunc(GL4.GL_ONE_MINUS_DST_COLOR, GL4.GL_ONE_MINUS_SRC_COLOR);
+			gl.glEnable(GL4.GL_BLEND);
 			gl.glDepthFunc(GL4.GL_LEQUAL);
+			gl.glBlendFunc(GL4.GL_SRC_COLOR, GL4.GL_ONE_MINUS_SRC_COLOR);
 			gl.glUniform4f(this.color, 1.0f, 1.0f, 1.0f, 1.0f);
 			gl.glBindVertexArray(this.connectionVAO);
 
@@ -599,20 +682,21 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				WorldElement first = connection.getFirstElement();
 				WorldElement second = connection.getSecondElement();
 				
-				Vector3d firstCenter = first.getCenter();
-				Vector3d secondCenter = second.getCenter();
-				
-				double[] unwrapped = new double[] {firstCenter.x, firstCenter.y, firstCenter.z, secondCenter.x, secondCenter.y, secondCenter.z};
-				
-				DoubleBuffer data = DoubleBuffer.wrap(unwrapped);
-								
-				gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, this.connectionVBO);
-				gl.glBufferSubData(GL4.GL_ARRAY_BUFFER, 0, 6 * Double.BYTES, data);
-				gl.glDrawArrays(GL4.GL_LINES, 0, 2);
+				this.connect(gl, first.getCenter(), second.getCenter());
 			}
 			
 			gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 		}
+	}
+	
+	private void connect(GL4 gl, Vector3d first, Vector3d second) {
+		double[] unwrapped = new double[] {first.x, first.y, first.z, second.x, second.y, second.z};
+		
+		DoubleBuffer data = DoubleBuffer.wrap(unwrapped);
+						
+		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, this.connectionVBO);
+		gl.glBufferSubData(GL4.GL_ARRAY_BUFFER, 0, 6 * Double.BYTES, data);
+		gl.glDrawArrays(GL4.GL_LINES, 0, 2);
 	}
 	
 	private void setupFX(GL4 gl) {
@@ -712,13 +796,15 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				}
 								
 				if(renderSub && element.getDescription() != null && !element.getDescription().contentEquals("?")) {
+					String description = element.getDescription().replace("var@", "");
+										
 					Vector2d screenAnchor = this.getHVCFrom3D(subSpaceAnchor, proj).mul(1.0d, -1.0d).add(0.75d, 1.0d);
 
 					if(height < 0.0d) { // Avoid double calculation (considering both heights approximately the same: lim(dist(player, object) -> infty) {dh -> 0})
 						height = 1.0d - this.getHVCFrom3D(element.getCenter().add(0.0d, element.getSize(), 0.0d), proj).mul(1.0d).add(screenAnchor).y;
 					}
 					
-					this.renderLabel(context, element.getDescription(), 0x888888, screenAnchor, height);
+					this.renderLabel(context, description, 0x888888, screenAnchor, height);
 				}
 			}
 		}
@@ -1230,7 +1316,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 					Code code = MainMenus.getCode();
 					code.setCurrent(this.current);
 					code.show();
-					System.out.println(elements);
 					code.select(elements.indexOf(this.selected));
 				} else {
 					this.worldGeometry.select(this.selected);
