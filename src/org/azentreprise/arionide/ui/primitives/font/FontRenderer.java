@@ -35,13 +35,16 @@ import com.jogamp.opengl.util.texture.TextureData;
 public class FontRenderer {
 	
 	public static final String CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!№;%:?*()_+-=.,/|\\\"'@#$^&{}[]°§<>≤≥";
-	public static final float BBOXFITTING = 0.5f;
+	
+	private static final float bboxFitting = 0.5f;
+	private static final int maxChars = 256;
 	
 	private final Map<String, TextCacheEntry> cache = new HashMap<>();
 	private final TextTessellator tessellator;
 	private final TextureData fontData;
 	
 	private boolean initialized = false;
+	private int indices;
 	private int shader;
 	private int samplerUniform;
 	private int translationUniform;
@@ -76,6 +79,16 @@ public class FontRenderer {
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR_MIPMAP_LINEAR);
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);
 		
+		IntBuffer buffer = IntBuffer.allocate(1);
+		gl.glGenBuffers(1, buffer);
+		this.indices = buffer.get(0);
+		
+		IntBuffer data = IntBuffer.allocate(6 * maxChars);
+		this.generateIndices(maxChars, data);
+		
+		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, this.indices);
+		gl.glBufferData(GL4.GL_ELEMENT_ARRAY_BUFFER, data.capacity() * Integer.BYTES, data.flip(), GL4.GL_STATIC_DRAW);
+		
 		this.shader = shader;
 		this.samplerUniform = gl.glGetUniformLocation(shader, "bitmap");
 		this.translationUniform = gl.glGetUniformLocation(shader, "translation");
@@ -92,6 +105,17 @@ public class FontRenderer {
 		}
 	}
 	
+	private void generateIndices(int count, IntBuffer indices) {
+		for(int i = 0; i < count; i++) {
+			indices.put(4 * i);
+			indices.put(4 * i + 1);
+			indices.put(4 * i + 2);
+			indices.put(4 * i + 1);
+			indices.put(4 * i + 2);
+			indices.put(4 * i + 3);
+		}
+	}
+	
 	public TextCacheEntry prepareString(GL4 gl, String str) {
 		this.checkInitialized();
 		
@@ -99,7 +123,6 @@ public class FontRenderer {
 		
 		Buffer verticesBuffer = output.getVerticesBuffer();
 		Buffer uvBuffer = output.getUVBuffer();
-		Buffer indicesBuffer = output.getIndicesBuffer();
 
 		IntBuffer vao = IntBuffer.allocate(1);
 		IntBuffer buffers = IntBuffer.allocate(3);
@@ -127,10 +150,9 @@ public class FontRenderer {
 		int uv = gl.glGetAttribLocation(this.shader, "uv");
 		gl.glVertexAttribPointer(uv, 2, GL4.GL_FLOAT, false, 0, 0);
 		gl.glEnableVertexAttribArray(uv);
-		
+
 		// Indices
-		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, buffers.get(2));
-		gl.glBufferData(GL4.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer.capacity() * Integer.BYTES, indicesBuffer, GL4.GL_STATIC_DRAW);
+		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, this.indices);
 		
 		TextCacheEntry entry = new TextCacheEntry(output.getWidth(), output.getHeight(), vaoID, output.getCount());
 		
@@ -154,6 +176,10 @@ public class FontRenderer {
 	}
 	
 	public Point2D renderString(GL4 gl, String str, Rectangle2D bounds) {
+		if(str.length() > maxChars) {
+			str = str.substring(0, maxChars - 1);
+		}
+		
 		TextCacheEntry entry = this.cache.get(str);
 		
 		if(entry == null) {
@@ -171,7 +197,7 @@ public class FontRenderer {
 		float halfScaleX = (float) bounds.getWidth() / entry.getWidth() * this.ratio;
 		float halfScaleY = (float) bounds.getHeight() / entry.getHeight() / this.ratio;
 		
-		float halfMainScale = BBOXFITTING * Math.min(halfScaleX, halfScaleY);
+		float halfMainScale = bboxFitting * Math.min(halfScaleX, halfScaleY);
 		
 		float translateX = (float) bounds.getCenterX() - 1.0f;
 		float translateY = (float) -bounds.getCenterY() + 1.0f;
@@ -189,7 +215,7 @@ public class FontRenderer {
 		gl.glBindVertexArray(entry.getVAO());
 
 		gl.glDrawElements(GL4.GL_TRIANGLES, entry.getCount() * 6, GL4.GL_UNSIGNED_INT, 0);
-		
+
 		return new Point2D.Float(translateX, translateY);
 	}
 	

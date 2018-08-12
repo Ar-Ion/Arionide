@@ -51,8 +51,7 @@ public class VAOManager {
 	private void createVAO(long uuid, Supplier<DoubleBuffer> bufferAllocator, BiConsumer<String, Integer> attributeLoader, String... attributes) {		
 		IntBuffer vao = IntBuffer.allocate(1);
 		IntBuffer vbo = IntBuffer.allocate(1);
-		
-		
+				
 		this.gl.glGenVertexArrays(1, vao);
 		
 		int vaoID = vao.get(0);

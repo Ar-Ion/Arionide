@@ -26,15 +26,13 @@ public class TessellationOutput {
 	
 	private final Buffer vertices;
 	private final Buffer uv;
-	private final Buffer indices;
 	private final float width;
 	private final float height;
 	private final int count; // number of chars
 	
-	protected TessellationOutput(Buffer vertices, Buffer uv, Buffer indices, float width, float height, int count) {
+	protected TessellationOutput(Buffer vertices, Buffer uv, float width, float height, int count) {
 		this.vertices = vertices;
 		this.uv = uv;
-		this.indices = indices;
 		this.width = width;
 		this.height = height;
 		this.count = count;
@@ -46,10 +44,6 @@ public class TessellationOutput {
 	
 	public Buffer getUVBuffer() {
 		return this.uv;
-	}
-	
-	public Buffer getIndicesBuffer() {
-		return this.indices;
 	}
 	
 	public float getWidth() {

@@ -21,7 +21,6 @@
 package org.azentreprise.arionide.ui.primitives.font;
 
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.function.Function;
 
 public class TextTessellator {
@@ -62,9 +61,6 @@ public class TextTessellator {
 		
 		FloatBuffer vertices = FloatBuffer.allocate(8 * data.length);
 		FloatBuffer textures = FloatBuffer.allocate(8 * data.length);
-		IntBuffer indices = IntBuffer.allocate(6 * data.length);
-		
-		this.generateIndices(data.length, indices);
 
 		int width = this.getWidth(input);
 		int height = input.chars().mapToObj(this.metrics::fetchMeta).mapToInt(CharMeta::getAscent).max().orElse(0) + input.chars().mapToObj(this.metrics::fetchMeta).mapToInt(CharMeta::getDescent).max().orElse(0);
@@ -80,9 +76,8 @@ public class TextTessellator {
 		
 		vertices.flip();
 		textures.flip();
-		indices.flip();
 		
-		return new TessellationOutput(vertices, textures, indices, width * factor, height * factor, data.length);
+		return new TessellationOutput(vertices, textures, width * factor, height * factor, data.length);
 	}
 	
 	private void tessellateString(char[] data, float factor, float xOrigin, float yOrigin, FloatBuffer vertices, FloatBuffer textures) {
@@ -117,16 +112,5 @@ public class TextTessellator {
 		textures.put(this.uv1.apply(meta));
 		textures.put(this.uv2.apply(meta));
 		textures.put(this.uv3.apply(meta));
-	}
-	
-	private void generateIndices(int count, IntBuffer indices) {
-		for(int i = 0; i < count; i++) {
-			indices.put(4 * i);
-			indices.put(4 * i + 1);
-			indices.put(4 * i + 2);
-			indices.put(4 * i + 1);
-			indices.put(4 * i + 2);
-			indices.put(4 * i + 3);
-		}
 	}
 }
