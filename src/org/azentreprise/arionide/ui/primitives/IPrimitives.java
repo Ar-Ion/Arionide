@@ -24,13 +24,16 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.primitives.font.FontRenderer;
 
 public interface IPrimitives {
-	public void drawRect(AppDrawingContext context, Rectangle2D bounds);
-	public void fillRect(AppDrawingContext context, Rectangle2D bounds);
-	public void drawRoundRect(AppDrawingContext context, Rectangle2D bounds);
-	public void fillRoundRect(AppDrawingContext context, Rectangle2D bounds);
-	public void drawLine(AppDrawingContext context, double x1, double y1, double x2, double y2);
-	public Point2D drawText(AppDrawingContext context, String text, Rectangle2D bounds);
-	public Point2D drawText(AppDrawingContext context, String text, Rectangle2D bounds, int yCorrection);
+	public void init(AppDrawingContext context);
+	public void drawRect(Rectangle2D bounds);
+	public void fillRect(Rectangle2D bounds);
+	public void drawRoundRect(Rectangle2D bounds);
+	public void fillRoundRect(Rectangle2D bounds);
+	public void drawLine(double x1, double y1, double x2, double y2);
+	public Point2D drawText(String text, Rectangle2D bounds);
+	public void drawCursor();
+	public FontRenderer getFontRenderer();
 }

@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.Object;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
 
 public class Add implements NativeInstruction {
@@ -40,7 +41,7 @@ public class Add implements NativeInstruction {
 		if(object != null) {
 			String value = this.data.getValue();
 			
-			if(value.startsWith("var@")) {
+			if(value.startsWith(SpecificationElement.VAR)) {
 				value = communicator.getVariable(value.substring(4)).getValue();
 			}
 			

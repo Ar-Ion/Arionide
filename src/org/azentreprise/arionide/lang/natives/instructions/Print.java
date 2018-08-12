@@ -23,6 +23,7 @@ package org.azentreprise.arionide.lang.natives.instructions;
 import java.util.List;
 
 import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
 
 public class Print implements NativeInstruction {
@@ -36,7 +37,7 @@ public class Print implements NativeInstruction {
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
 		String realMessage = this.message;
 		
-		if(realMessage.startsWith("var@")) {
+		if(realMessage.startsWith(SpecificationElement.VAR)) {
 			realMessage = communicator.getVariable(realMessage.substring(4)).getValue();
 		}
 		

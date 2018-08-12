@@ -21,14 +21,18 @@
 package org.azentreprise.arionide.ui.menu;
 
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.menu.code.Code;
+import org.azentreprise.arionide.ui.menu.code.CodeEditor;
+import org.azentreprise.arionide.ui.menu.code.ReferenceEditor;
+import org.azentreprise.arionide.ui.menu.code.TypeEditor;
 import org.azentreprise.arionide.ui.menu.edition.StructureEditor;
 
 public class MainMenus {
 	
 	private static StructureList structList;
 	private static StructureEditor structEditor;
-	private static Code code;
+	private static CodeEditor codeEditor;
+	private static TypeEditor typeEditor;
+	private static ReferenceEditor referenceEditor;
 	
 	private static boolean initialized = false;
 	
@@ -37,7 +41,9 @@ public class MainMenus {
 	
 		structList = new StructureList(manager);
 		structEditor = new StructureEditor(manager);
-		code = new Code(manager);
+		codeEditor = new CodeEditor(manager, structList);
+		typeEditor = new TypeEditor(manager, structList);
+		referenceEditor = new ReferenceEditor(manager, structList);
 	}
 	
 	public static StructureList getStructureList() {
@@ -48,7 +54,15 @@ public class MainMenus {
 		return structEditor;
 	}
 	
-	public static Code getCode() {
-		return code;
+	public static CodeEditor getCodeEditor() {
+		return codeEditor;
+	}
+	
+	public static TypeEditor getTypeEditor() {
+		return typeEditor;
+	}
+	
+	public static ReferenceEditor getReferenceEditor() {
+		return referenceEditor;
 	}
 }

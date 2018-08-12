@@ -39,7 +39,7 @@ public interface AppDrawingContext extends Purgeable {
 	public void update();
 	public Dimension getSize();
 	public IPrimitives getPrimitives();
-	public FontAdapter getFontAdapter();
+	public Resources getResources();
 	public void setCursor(Cursor cursor);
 	public void setColor(int rgb);
 	public void setAlpha(int alpha);

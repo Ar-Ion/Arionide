@@ -23,6 +23,7 @@ package org.azentreprise.arionide.lang.natives.instructions;
 import java.util.List;
 
 import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
 
 public class Define implements NativeInstruction {
@@ -38,14 +39,14 @@ public class Define implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(!this.name.getValue().startsWith("var@")) {
+		if(!this.name.getValue().startsWith(SpecificationElement.VAR)) {
 			communicator.exception("The variable '" + this.name.getValue() + "' is not defined with the 'New variable' button but with the 'Custom string' one.");
 			return false;
 		}
 		
 		String value = this.value.getValue();
 		
-		if(value.startsWith("var@")) {
+		if(value.startsWith(SpecificationElement.VAR)) {
 			value = communicator.getVariable(value.substring(4)).getValue();
 		}
 				

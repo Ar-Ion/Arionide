@@ -172,7 +172,7 @@ public class NativeDataCommunicator {
 			instrObject.add(instruction.getKey(), this);
 			
 			for(SpecificationElement element : instruction.getValue().getElements()) {
-				if(element.getValue().startsWith("var@")) {
+				if(element.getValue().startsWith(SpecificationElement.VAR)) {
 					SpecificationElement real = this.getVariable(element.getValue().substring(4));
 					
 					if(real != null) {

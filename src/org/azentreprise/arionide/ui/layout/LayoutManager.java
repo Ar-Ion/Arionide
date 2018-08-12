@@ -52,7 +52,7 @@ public class LayoutManager implements EventHandler {
 		dispatcher.registerHandler(this);
 	}
 	
-	public void register(Surface surface, Surface parent, double x1, double y1, double x2, double y2) {
+	public synchronized void register(Surface surface, Surface parent, double x1, double y1, double x2, double y2) {
 		if(parent == null || this.surfaces.containsKey(parent)) {
 			this.surfaces.put(surface, new LayoutConfiguration(parent, x1, y1, x2, y2));
 		} else {
@@ -61,7 +61,7 @@ public class LayoutManager implements EventHandler {
 	}
 
 	@IAm("computing the layout")
-	public void compute() {
+	public synchronized void compute() {
 		this.surfaces.values().forEach(config -> {
 			this.compute(config);
 		});

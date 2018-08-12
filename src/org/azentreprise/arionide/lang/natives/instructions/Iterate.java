@@ -47,7 +47,7 @@ public class Iterate implements NativeInstruction {
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
 		this.index = 0;
 		
-		if(this.object.getValue().startsWith("var@")) {
+		if(this.object.getValue().startsWith(SpecificationElement.VAR)) {
 			SpecificationElement element = communicator.getVariable(this.object.getValue().substring(4));
 			
 			if(element != null) {
@@ -57,13 +57,13 @@ public class Iterate implements NativeInstruction {
 					selector = new String();
 				}
 				
-				if(selector.startsWith("var@")) {
+				if(selector.startsWith(SpecificationElement.VAR)) {
 					selector = communicator.getVariable(selector.substring(4)).getValue();
 				}
 				
 				String layers = this.layers.getValue();
 				
-				if(layers.startsWith("var@")) {
+				if(layers.startsWith(SpecificationElement.VAR)) {
 					layers = communicator.getVariable(layers.substring(4)).getValue();
 				}
 				

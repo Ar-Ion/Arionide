@@ -39,13 +39,13 @@ public class Size implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(this.object.getValue().startsWith("var@")) {
+		if(this.object.getValue().startsWith(SpecificationElement.VAR)) {
 			SpecificationElement element = communicator.getVariable(this.object.getValue().substring(4));
 			
 			if(element != null) {
 				String result = this.result.getValue();
 				
-				if(result.startsWith("var@")) {
+				if(result.startsWith(SpecificationElement.VAR)) {
 					result = result.substring(4);
 					
 					Object object = communicator.getObject(element.getValue());

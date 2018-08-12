@@ -26,24 +26,29 @@ import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.Menu;
 
 public class ReferenceEditor extends Menu {
 	
 	private final Menu parent;
-	private final Reference element;
-	private final ReferenceSelector selector;
+	private Reference element;
+	private ReferenceSelector selector;
 	
-	private final int refIndex;
+	private int refIndex;
 		
-	public ReferenceEditor(AppManager manager, Menu parent, Reference element) {
+	public ReferenceEditor(AppManager manager, Menu parent) {
 		super(manager);
-		
 		this.parent = parent;
+	}
+	
+	public void setTarget(Reference element) {
 		this.element = element;
-		this.selector = new ReferenceSelector(manager, parent, element);
+		this.selector = new ReferenceSelector(this.getAppManager(), parent, element);
 		
 		List<String> elements = this.getElements();
+		
+		elements.clear();
 		
 		for(SpecificationElement data : element.getNeededParameters()) {
 			elements.add(data.getName());
@@ -71,7 +76,8 @@ public class ReferenceEditor extends Menu {
 		} else {
 			id -= this.refIndex + 1;
 			
-			Menu menu = new TypeEditor(this.getAppManager(), this, (Data) this.element.getSpecificationParameters().get(id));
+			TypeEditor menu = MainMenus.getTypeEditor();
+			menu.setTarget((Data) this.element.getSpecificationParameters().get(id));
 			menu.show();
 		}
 	}

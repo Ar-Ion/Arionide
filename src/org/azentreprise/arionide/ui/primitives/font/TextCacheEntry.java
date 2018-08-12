@@ -18,36 +18,35 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.shaders;
+package org.azentreprise.arionide.ui.primitives.font;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.IntBuffer;
-import java.nio.charset.Charset;
-
-import com.jogamp.opengl.GL4;
-import com.jogamp.opengl.util.glsl.ShaderUtil;
-
-public class Shaders {
-	public static int loadShader(GL4 gl, String name, int type) throws IOException {
-		InputStream input = Shaders.class.getResourceAsStream(name);
-		
-		byte[] buffer = new byte[128];
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		int count = 0;
-		
-		while((count = input.read(buffer)) != -1) {
-			baos.write(buffer, 0, count);
-		}
-		
-		String code = new String(baos.toByteArray(), Charset.forName("utf8"));
-
-		IntBuffer shaderID = IntBuffer.allocate(1);
-		
-		System.out.println(name);
-		ShaderUtil.createAndCompileShader(gl, shaderID, type, new String[][] {{ code }}, System.err);
-		
-		return shaderID.get(0);
+public class TextCacheEntry {
+	
+	private final float width;
+	private final float height;
+	private final int vao;
+	private final int count; // number of chars
+	
+	protected TextCacheEntry(float width, float height, int vao, int count) {
+		this.width = width;
+		this.height = height;
+		this.vao = vao;
+		this.count = count;
+	}
+	
+	protected float getWidth() {
+		return this.width;
+	}
+	
+	protected float getHeight() {
+		return this.height;
+	}
+	
+	protected int getVAO() {
+		return this.vao;
+	}
+	
+	protected int getCount() {
+		return this.count;
 	}
 }

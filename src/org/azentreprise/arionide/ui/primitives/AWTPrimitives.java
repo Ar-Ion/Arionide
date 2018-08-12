@@ -29,56 +29,63 @@ import java.awt.geom.Rectangle2D;
 
 import org.azentreprise.arionide.ui.AWTDrawingContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.primitives.font.FontRenderer;
 
 public class AWTPrimitives implements IPrimitives {
-		
-	public void drawRect(AppDrawingContext context, Rectangle2D bounds) {
-		this.loadContext(context).getRenderer().draw(bounds);
+	
+	private AWTDrawingContext context;
+	
+	public void init(AppDrawingContext context) {
+		assert context instanceof AWTDrawingContext;
+		this.context = (AWTDrawingContext) context;
 	}
 	
-	public void fillRect(AppDrawingContext context, Rectangle2D bounds) {
-		this.loadContext(context).getRenderer().fill(bounds);
+	public void drawRect(Rectangle2D bounds) {
+		this.context.getRenderer().draw(bounds);
 	}
 	
-	public void drawRoundRect(AppDrawingContext context, Rectangle2D bounds) {
+	public void fillRect(Rectangle2D bounds) {
+		this.context.getRenderer().fill(bounds);
+	}
+	
+	public void drawRoundRect(Rectangle2D bounds) {
 		Rectangle integerRect = bounds.getBounds();
-		this.loadContext(context).getRenderer().drawRoundRect(integerRect.x, integerRect.y, integerRect.width, integerRect.height, 32, 32);
+		this.context.getRenderer().drawRoundRect(integerRect.x, integerRect.y, integerRect.width, integerRect.height, 32, 32);
 	}
 
-	public void fillRoundRect(AppDrawingContext context, Rectangle2D bounds) {
+	public void fillRoundRect(Rectangle2D bounds) {
 		Rectangle integerRect = bounds.getBounds();
-		this.loadContext(context).getRenderer().fillRoundRect(integerRect.x, integerRect.y, integerRect.width, integerRect.height, 32, 32);
+		this.context.getRenderer().fillRoundRect(integerRect.x, integerRect.y, integerRect.width, integerRect.height, 32, 32);
 	}
 
-	public void drawLine(AppDrawingContext context, double x1, double y1, double x2, double y2) {
-		this.loadContext(context).getRenderer().drawLine((int) x1, (int) y1, (int) x2, (int) y2);
+	public void drawLine(double x1, double y1, double x2, double y2) {
+		this.context.getRenderer().drawLine((int) x1, (int) y1, (int) x2, (int) y2);
 	}
 	
-	public Point2D drawText(AppDrawingContext context, String text, Rectangle2D bounds) {
-		return this.drawText(context, text, bounds, 0);
-	}
-	
-	public Point2D drawText(AppDrawingContext context, String text, Rectangle2D bounds, int yCorrection) {			
-		Graphics2D g2d = this.loadContext(context).getRenderer();
+	public Point2D drawText(String text, Rectangle2D bounds) {			
+		Graphics2D g2d = this.context.getRenderer();
 		
-		Font font = context.getFontAdapter().adapt(text, bounds.getWidth(), bounds.getHeight());
+		/*Font font = context.getFontAdapter().adapt(text, bounds.getWidth(), bounds.getHeight());
 		
 		if(g2d.getFont() != font) {
 			g2d.setFont(font);
-		}
+		}*/
 		
 		FontMetrics metrics = g2d.getFontMetrics();
 				
 		double x = bounds.getX() + (bounds.getWidth() - metrics.stringWidth(text)) / 2;
-		double y = bounds.getY() + (bounds.getHeight() - metrics.getMaxDescent() + metrics.getMaxAscent() + 1 + yCorrection) / 2;
+		double y = bounds.getY() + (bounds.getHeight() - metrics.getMaxDescent() + metrics.getMaxAscent() + 1) / 2;
 		
 		g2d.drawString(text, (int) x, (int) y);
 		
 		return new Point2D.Double(x, y);
 	}
-	
-	private AWTDrawingContext loadContext(AppDrawingContext context) {
-		assert context instanceof AWTDrawingContext;
-		return (AWTDrawingContext) context;
+
+	public void drawCursor() {
+		// Not implemented
+	}
+
+	public FontRenderer getFontRenderer() {
+		return null;
 	}
 }

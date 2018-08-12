@@ -20,14 +20,15 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang.natives;
 
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.Validator;
 
 public class StructureValidator implements Validator {
 	public boolean validate(String data) {
-		if(data.startsWith("var@")) {
+		if(data.startsWith(SpecificationElement.VAR)) {
 			return true;
 		} else {
-			int index = data.indexOf("$$$");
+			int index = data.indexOf(SpecificationElement.ALIAS);
 			
 			if(index > -1) {
 				data = data.substring(index + 3);

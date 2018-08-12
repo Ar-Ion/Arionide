@@ -52,8 +52,8 @@ public class Main {
 	
 			Workspace workspace = theInstance.setupWorkspace(dispatcher);
 	
+			Resources resources = theInstance.loadResources(workspace);
 			AppDrawingContext context = theInstance.setupAppDrawingContext(dispatcher);
-			Resources resources = theInstance.loadResources(workspace, context);
 			CoreRenderer renderer = theInstance.loadCoreRenderer(context, dispatcher, resources);
 			LayoutManager manager = theInstance.setupLayoutManager(context, dispatcher);
 			

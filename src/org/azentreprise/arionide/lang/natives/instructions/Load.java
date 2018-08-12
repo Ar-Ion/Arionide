@@ -23,6 +23,7 @@ package org.azentreprise.arionide.lang.natives.instructions;
 import java.util.List;
 
 import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
 import org.azentreprise.arionide.lang.natives.NativeTypes;
 
@@ -37,11 +38,11 @@ public class Load implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(this.target.getValue().startsWith("var@")) {
+		if(this.target.getValue().startsWith(SpecificationElement.VAR)) {
 			String refID = this.source.getValue();
 			String target = this.target.getValue().substring(4);
 			
-			if(refID.startsWith("var@")) {
+			if(refID.startsWith(SpecificationElement.VAR)) {
 				refID = communicator.getVariable(refID.substring(4)).getValue();
 			}
 			

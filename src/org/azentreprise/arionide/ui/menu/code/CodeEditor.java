@@ -26,8 +26,6 @@ import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
-import org.azentreprise.arionide.lang.Data;
-import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
@@ -49,7 +47,7 @@ public class CodeEditor extends Menu {
 	private HierarchyElement instruction;
 	private StructureMeta instructionMeta;
 	
-	protected CodeEditor(AppManager manager, Menu parent) {
+	public CodeEditor(AppManager manager, Menu parent) {
 		super(manager);
 		
 		this.parent = parent;
@@ -61,7 +59,7 @@ public class CodeEditor extends Menu {
 		this.getElements().add(append);
 	}
 	
-	protected void setTargetInstruction(int id) {
+	public void setTargetInstruction(int id) {
 		Project project = this.getAppManager().getWorkspace().getCurrentProject();
 
 		if(project != null) {
@@ -110,21 +108,6 @@ public class CodeEditor extends Menu {
 			}).start();
 		} else if(element == back) {
 			this.parent.show();
-		} else {
-			SpecificationElement spec = this.instructionMeta.getSpecification().getElements().stream()
-				.filter(e -> e.getName().equals(element))
-				.findAny()
-				.orElseThrow(RuntimeException::new);
-			
-			if(spec instanceof Data) {
-				Menu menu = new TypeEditor(this.getAppManager(), this, (Data) spec);
-				menu.show();
-			} else if(spec instanceof Reference) {
-				Menu menu = new ReferenceEditor(this.getAppManager(), this, (Reference) spec);
-				menu.show();
-			} else {
-				throw new RuntimeException("Strange object found");
-			}
 		}
 	}
 	

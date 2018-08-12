@@ -28,16 +28,30 @@ import java.util.function.Consumer;
 import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.lang.CoreDataManager;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.TypeManager;
 
 public class IntegerTypeManager implements TypeManager {
+	
+	public static final String ZERO = "0" + SpecificationElement.ALIAS + "b0";
+	public static final String ONE = "1" + SpecificationElement.ALIAS + "b1";
+	public static final String MINUS_ONE = "-1" + SpecificationElement.ALIAS + "d-1";
+	public static final String TRUE = "True" + SpecificationElement.ALIAS + "b1";
+	public static final String FALSE = "False" + SpecificationElement.ALIAS + "b0";
+	public static final String ERROR = "Error" + SpecificationElement.ALIAS + "d-1";
+	public static final String MAX_INTEGER = "Max Integer" + SpecificationElement.ALIAS + "h7FFFFFFF";
+	public static final String MIN_INTEGER = "Min Integer" + SpecificationElement.ALIAS + "h-7FFFFFFF";
+	public static final String MAX_BYTE = "Max Byte" + SpecificationElement.ALIAS + "h7F";
+	public static final String MIN_BYTE = "Min Byte" + SpecificationElement.ALIAS + "h-7F";
+	public static final String MAX_SHORT = "Max Short" + SpecificationElement.ALIAS + "h7FFF";
+	public static final String MIN_SHORT = "Min Short" + SpecificationElement.ALIAS + "h-7FFF";
 	
 	private static final String decimal = "Decimal";
 	private static final String binary = "Binary";
 	private static final String hexadecimal = "Hexadecimal";
 	
 	public List<String> getSuggestions(CoreDataManager cdm) {
-		return Arrays.asList("0$$$b0", "1$$$b1", "-1$$$d-1", "False$$$b0", "True$$$b1", "Error$$$d-1", "Max Byte$$$hFF", "Max Short$$$FFFF", "Max Integer$$$h7FFFFFFF", "Min Integer$$$h-7FFFFFFF");
+		return Arrays.asList(MIN_SHORT, MAX_SHORT, MIN_BYTE, MAX_BYTE, MIN_INTEGER, MAX_INTEGER, ERROR, FALSE, TRUE, MINUS_ONE, ONE, ZERO);
 	}
 
 	public List<String> getActionLabels() {

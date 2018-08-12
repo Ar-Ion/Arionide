@@ -62,19 +62,19 @@ public class NativeInstructionSet extends InstructionSet {
 					this.getProject().getDataManager().allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.TEXT),
-					new Data("local", "0$$$b0", NativeTypes.INTEGER)));
+					new Data("local", IntegerTypeManager.FALSE, NativeTypes.INTEGER)));
 			
 			this.install("defineInteger", 30, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.INTEGER),
-					new Data("local", "0$$$b0", NativeTypes.INTEGER)));
+					new Data("local", IntegerTypeManager.FALSE, NativeTypes.INTEGER)));
 			
 			this.install("defineStructure", 32, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.STRUCTURE),
-					new Data("local", "0$$$b0", NativeTypes.INTEGER)));
+					new Data("local", IntegerTypeManager.FALSE, NativeTypes.INTEGER)));
 			
 			this.install("redo", 40, parents, new Specification(
 					this.getProject().getDataManager().allocSpecification(),

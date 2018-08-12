@@ -32,7 +32,6 @@ public class Label extends Component {
 	private String label;
 	private int rgb = 0xCAFE;
 	private int alpha = 0xFF;
-	private int yCorrection = 0;
 	
 	protected Point2D textRenderPosition;
 
@@ -64,11 +63,6 @@ public class Label extends Component {
 		this.alpha = alpha;
 		return this;
 	}
-	
-	public Label setYCorrection(int correction) {
-		this.yCorrection = correction;
-		return this;
-	}
 
 	public void drawSurface(AppDrawingContext context) {
 		if(this.alpha > 0) {
@@ -88,7 +82,7 @@ public class Label extends Component {
 	}
 	
 	protected void drawComponent(AppDrawingContext context) {
-		this.textRenderPosition = context.getPrimitives().drawText(context, this.label, this.getBounds(), this.yCorrection);
+		this.textRenderPosition = context.getPrimitives().drawText(this.label, this.getBounds());
 	}
 	
 	private void postDraw() {

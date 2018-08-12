@@ -22,11 +22,8 @@ package org.azentreprise.arionide.ui;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
-import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +31,6 @@ import java.util.List;
 import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.Workspace;
-import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.ActionType;
 import org.azentreprise.arionide.events.Event;
@@ -89,10 +85,9 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	
 	private DrawingThread thread;
 	private OpenGLCoreRenderer core;
+	private Resources resources;
 	
 	private GL4 gl;
-
-	private FontAdapter adapter;
 	
 	private int alpha = 0;
 		
@@ -123,16 +118,10 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	}
 
 	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
-		try {
-			Font font = Font.createFont(Font.TRUETYPE_FONT, resources.getResource("font"));
-			this.adapter = new FontAdapter(font);
-		} catch (FontFormatException | IOException exception) {
-			Debug.exception(exception);
-		}
-		
 		assert renderer instanceof OpenGLCoreRenderer;
 		
 		this.core = (OpenGLCoreRenderer) renderer;
+		this.resources = resources;
 		
 		this.window.setVisible(true);
 		this.animator.start();
@@ -155,7 +144,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	public void init(GLAutoDrawable arg0) {
 		this.gl = this.window.getGL().getGL4();
 				
-		this.primitives.init(this.gl);
+		this.primitives.init(this);
 		
 		this.clearColor.put(0, 0.0f).put(1, 0.0f).put(2, 0.0f).put(3, 1.0f);
 		this.clearDepth.put(0, 1.0f);
@@ -173,7 +162,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	        
 	        performanceNext("3D Core");
 	        
-	        this.primitives.beginUI(this.gl);
+	        this.primitives.beginUI();
 	        	        
 	        performanceNext("2D Begin");
 	        
@@ -185,7 +174,7 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	        
 	        performanceNext("2D Core Extra");
 	        
-			this.primitives.endUI(this.gl);
+			this.primitives.endUI();
 			
 	        performanceNext("2D End");
 		}
@@ -226,7 +215,11 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	public GL4 getRenderer() {
 		return this.gl;
 	}
-
+	
+	public Resources getResources() {
+		return this.resources;
+	}
+	
 	public void draw() {
 		this.thread = (DrawingThread) Thread.currentThread();
 
@@ -245,10 +238,6 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 
 	public IPrimitives getPrimitives() {
 		return this.primitives;
-	}
-
-	public FontAdapter getFontAdapter() {
-		return this.adapter;
 	}
 
 	public void setColor(int rgb) {

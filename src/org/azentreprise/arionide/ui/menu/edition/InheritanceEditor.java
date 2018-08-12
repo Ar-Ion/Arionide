@@ -29,7 +29,7 @@ import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
 public class InheritanceEditor extends Menu {
 
-	private static final String remove = "Remove from inheritance";
+	private static final String remove = "Desinherit";
 	private static final String close = "Close";
 	
 	private final SpecificMenu parent;

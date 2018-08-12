@@ -46,7 +46,7 @@ public interface Arionide {
 	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher);
 
 	@IAm("loading the system resources")
-	public Resources loadResources(Workspace workspace, AppDrawingContext context);
+	public Resources loadResources(Workspace workspace);
 	
 	@IAm("loading the core renderer")
 	public CoreRenderer loadCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher, Resources resources);

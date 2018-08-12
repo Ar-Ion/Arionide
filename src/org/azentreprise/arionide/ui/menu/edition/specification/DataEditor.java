@@ -26,6 +26,7 @@ import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.TypeManager;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 import org.azentreprise.arionide.ui.menu.code.TypeEditor;
 
@@ -64,7 +65,8 @@ public class DataEditor extends SpecificationElementEditor {
 				selector.show();
 				break;
 			case setDefault:
-				TypeEditor editor = new TypeEditor(this.getAppManager(), this, (Data) this.getElement());
+				TypeEditor editor = MainMenus.getTypeEditor();
+				editor.setTarget((Data) this.getElement());
 				editor.show();
 				break;
 			default: 

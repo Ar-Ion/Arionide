@@ -46,7 +46,7 @@ public class CoreDataManager {
 		List<String> variables = new ArrayList<>();
 		
 		for(SpecificationElement element : this.storage.getStructureMeta().get(id).getSpecification().getElements()) {
-			variables.add(element.getName() + "$$$var@" + element.getName());
+			variables.add(element.getName());
 		}
 		
 		for(HierarchyElement element : this.storage.getHierarchy()) {
@@ -109,9 +109,7 @@ public class CoreDataManager {
 			for(SpecificationElement specElement : meta.getSpecification().getElements()) {
 				String value = specElement.getRawValue();
 				
-				if(value != null && value.startsWith("var@")) {
-					value = value.substring(4) + "$$$" + value;
-						
+				if(value != null && value.startsWith(SpecificationElement.VAR)) {						
 					if(!variables.contains(value)) {
 						variables.add(value);
 					}

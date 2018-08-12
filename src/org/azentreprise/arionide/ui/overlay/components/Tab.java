@@ -141,7 +141,7 @@ public class Tab extends MultiComponent implements EventHandler {
 		
 		this.design.enterDesignContext(this.getAppManager(), new Point2D.Double(this.shadow, bounds.getCenterY()), this.shadingRadius);
 
-		context.getPrimitives().drawRoundRect(context, bounds);
+		context.getPrimitives().drawRoundRect(bounds);
 
 		int i = 0;
 		
@@ -157,7 +157,7 @@ public class Tab extends MultiComponent implements EventHandler {
 						Rectangle2D next = this.rectangles.get(i);
 							
 						if(next.getWidth() > 0 && this.renderSeparators) {
-							context.getPrimitives().drawLine(context, next.getX(), next.getY(), next.getX(), next.getY() + next.getHeight());
+							context.getPrimitives().drawLine(next.getX(), next.getY(), next.getX(), next.getY() + next.getHeight());
 						}
 					} catch(Exception e) {
 						break;

@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu.code;
 
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
@@ -36,20 +38,26 @@ import org.azentreprise.arionide.ui.menu.Menu;
 public class TypeEditor extends Menu {
 
 	private final Menu parent;
-	private final SpecificationElement element;
-	private final TypeManager typeManager;
-	private final Validator validator;
-	private final int separator;
 	
+	private SpecificationElement element;
+	private TypeManager typeManager;
+	private Validator validator;
+	private int separator;
 	private boolean eventAborted = false;
 	
-	public TypeEditor(AppManager manager, Menu parent, Data element) {
+	public TypeEditor(AppManager manager, Menu parent) {
 		super(manager);
-		
 		this.parent = parent;
+	}
+	
+	public void setTarget(Data element) {
 		this.element = element;
 		
-		Language lang = manager.getWorkspace().getCurrentProject().getLanguage();
+		List<String> elements = this.getElements();
+		
+		elements.clear();
+		
+		Language lang = this.getAppManager().getWorkspace().getCurrentProject().getLanguage();
 		
 		CoreDataManager cdm = lang.getCoreDataManager();
 		
@@ -57,12 +65,12 @@ public class TypeEditor extends Menu {
 		this.validator = lang.getTypes().getValidator(element.getType());
 
 		if(this.typeManager != null) {
-			this.getElements().addAll(cdm.getVariables(element.getType(), element.getName()));
-			this.getElements().addAll(this.typeManager.getSuggestions(cdm));
+			elements.addAll(cdm.getVariables(element.getType(), element.getName()));
+			elements.addAll(this.typeManager.getSuggestions(cdm));
 			this.separator = this.getElements().size();
-			this.getElements().add("Back");
-			this.getElements().add("New variable");
-			this.getElements().addAll(this.typeManager.getActionLabels());
+			elements.add("Back");
+			elements.add("New variable");
+			elements.addAll(this.typeManager.getActionLabels());
 						
 			if(this.separator > 0) {
 				this.setMenuCursor(this.separator - 1);
@@ -70,7 +78,7 @@ public class TypeEditor extends Menu {
 				this.setMenuCursor(1);
 			}
 		} else {
-			this.getElements().add("Back");
+			elements.add("Back");
 			this.separator = 0;
 		}
 	}
@@ -92,7 +100,7 @@ public class TypeEditor extends Menu {
 				String name = JOptionPane.showInputDialog(null, "Please enter the name of the variable", "New variable", JOptionPane.PLAIN_MESSAGE);
 				
 				if(name != null) {
-					this.validateAction("var@" + name);
+					this.validateAction(SpecificationElement.VAR + name);
 				}
 			}).start();
 		} else {

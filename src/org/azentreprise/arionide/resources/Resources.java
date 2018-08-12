@@ -31,19 +31,21 @@ import java.util.List;
 import org.azentreprise.arionide.Workspace;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.debugging.IAm;
-import org.azentreprise.arionide.ui.AppDrawingContext;
 
 public class Resources {
 	
 	private final Workspace workspace;
-	
 	private final List<String> resources = new ArrayList<>();
 	
-	public Resources(Workspace workspace, AppDrawingContext context) {
+	private boolean installed = false;
+	
+	public Resources(Workspace workspace) {
 		this.workspace = workspace;
 		
-		this.resources.add("font");
-	
+		this.resources.add("font-bitmap");
+		this.resources.add("font-meta");
+		this.resources.add("round-rect");
+		
 		this.installResources();
 	}
 	
@@ -60,10 +62,20 @@ public class Resources {
 				Debug.exception(exception);
 			}
 		}
+		
+		this.installed = true;
+	}
+	
+	private void checkInstalled() {
+		if(!this.installed) {
+			throw new IllegalStateException("Resources have not been installed");
+		}
 	}
 	
 	@IAm("getting a resource")
 	public File getResource(String name) {
+		this.checkInstalled();
+		
 		if(this.resources.contains(name)) {
 			return this.getFile(name);
 		} else {

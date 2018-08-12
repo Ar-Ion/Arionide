@@ -36,12 +36,12 @@ import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.core.opengl.WorldElement;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
-import org.azentreprise.arionide.ui.menu.edition.specification.reference.ReferenceEditor;
+import org.azentreprise.arionide.ui.menu.edition.specification.reference.SpecificationReferenceEditor;
 
 public class SpecificationEditor extends SpecificMenu {
 		
 	private final DataEditor dataEditor;
-	private final ReferenceEditor referenceEditor;
+	private final SpecificationReferenceEditor specificationReferenceEditor;
 	
 	private Specification specification;
 	
@@ -49,7 +49,7 @@ public class SpecificationEditor extends SpecificMenu {
 		super(manager);
 		
 		this.dataEditor = new DataEditor(manager, this);
-		this.referenceEditor = new ReferenceEditor(manager, this);
+		this.specificationReferenceEditor = new SpecificationReferenceEditor(manager, this);
 	}
 
 	public void setCurrent(WorldElement element) {
@@ -78,8 +78,8 @@ public class SpecificationEditor extends SpecificMenu {
 				this.dataEditor.setTarget(this.specification, id);
 				this.dataEditor.show();	
 			} else if(element instanceof Reference) {
-				this.referenceEditor.setTarget(this.specification, id);
-				this.referenceEditor.show();
+				this.specificationReferenceEditor.setTarget(this.specification, id);
+				this.specificationReferenceEditor.show();
 			} else {
 				throw new RuntimeException("Strange object found");
 			}

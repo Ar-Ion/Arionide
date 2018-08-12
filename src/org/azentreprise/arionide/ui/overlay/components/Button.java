@@ -37,6 +37,7 @@ import org.azentreprise.arionide.events.ValidateEvent;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
+import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
 
 public class Button extends Label implements EventHandler {
@@ -106,7 +107,7 @@ public class Button extends Label implements EventHandler {
 		super.drawComponent(context);
 		
 		if(this.hasBorders) {
-			context.getPrimitives().drawRoundRect(context, this.getBounds());
+			context.getPrimitives().drawRoundRect(this.getBounds());
 		}
 	}
 	
@@ -190,5 +191,9 @@ public class Button extends Label implements EventHandler {
 
 	public List<Class<? extends Event>> getHandleableEvents() {
 		return Arrays.asList(MoveEvent.class, ActionEvent.class, FocusGainedEvent.class, FocusLostEvent.class, ValidateEvent.class);
+	}
+
+	public Component setYCorrection(int i) {
+		return this;
 	}
 }

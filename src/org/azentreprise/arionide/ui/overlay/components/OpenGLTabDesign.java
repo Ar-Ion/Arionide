@@ -20,23 +20,16 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay.components;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Paint;
-import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
 
 import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.overlay.AlphaLayer;
-import org.azentreprise.arionide.ui.primitives.GLTextRenderer;
 import org.azentreprise.arionide.ui.primitives.IPrimitives;
 import org.azentreprise.arionide.ui.primitives.OpenGLPrimitives;
 
 public class OpenGLTabDesign implements TabDesign {
-	
-	private Paint restore;
-	
+		
 	public void enterDesignContext(AppManager manager, Point2D center, double radius) {
 		if(radius > 0) {
 			IPrimitives primitives = manager.getDrawingContext().getPrimitives();
@@ -50,18 +43,7 @@ public class OpenGLTabDesign implements TabDesign {
 			int preAlpha = (int) (255.0d * glPrimitives.getAlpha());
 			manager.getAlphaLayering().push(AlphaLayer.COMPONENT, Utils.fakeDivision(255 * initialAlpha, preAlpha, 255));
 			
-			glPrimitives.enableLight(manager.getDrawingContext(), center, radius, preAlpha / 255.0d);
-			
-			GLTextRenderer renderer = glPrimitives.getTextRenderer();
-			Dimension viewport = renderer.getViewport();
-			
-			center.setLocation(center.getX() * viewport.getWidth() / 2.0d, center.getY() * viewport.getHeight() / 2.0d);
-			
-			Color normalColor = new Color(glPrimitives.getRed(), glPrimitives.getGreen(), glPrimitives.getBlue(), glPrimitives.getAlpha());
-						
-			Color lightColor = new Color((preAlpha << 24) | normalColor.getRGB(), true);
-			
-			this.restore = renderer.setPaint(new RadialGradientPaint(center, (int) (radius * renderer.getViewport().getWidth() / 2.0d), new float[] {0.0f, 1.0f}, new Color[] {lightColor, normalColor}));
+			glPrimitives.enableLight(center, radius, preAlpha / 255.0d);
 		}
 	}
 
@@ -71,8 +53,6 @@ public class OpenGLTabDesign implements TabDesign {
 		assert primitives instanceof OpenGLPrimitives;
 		
 		OpenGLPrimitives glPrimitives = (OpenGLPrimitives) primitives;
-		
 		glPrimitives.disableLight(manager.getDrawingContext());
-		glPrimitives.getTextRenderer().setPaint(this.restore);
 	}
 }

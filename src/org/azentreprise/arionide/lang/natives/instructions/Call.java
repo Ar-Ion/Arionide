@@ -52,7 +52,7 @@ public class Call implements NativeInstruction {
 			for(SpecificationElement element : this.reference.getSpecificationParameters()) {
 				String value = element.getValue();
 												
-				if(value.startsWith("var@")) {
+				if(value.startsWith(SpecificationElement.VAR)) {
 					SpecificationElement specElement = communicator.getVariable(value.substring(4)).clone();
 					specElement.setName(element.getName());
 					specVars.add(specElement);
@@ -65,7 +65,7 @@ public class Call implements NativeInstruction {
 				String value = element.getValue();
 					
 				if(value != null) {
-					if(value.startsWith("var@")) {
+					if(value.startsWith(SpecificationElement.VAR)) {
 						SpecificationElement specElement = communicator.getVariable(value.substring(4)).clone();
 						specElement.setName(element.getName());
 						specVars.add(specElement);
@@ -97,7 +97,7 @@ public class Call implements NativeInstruction {
 			for(SpecificationElement newVar : newVars) {
 				for(SpecificationElement original : this.reference.getSpecificationParameters()) { // Rename variable according to the parent's context					
 					if(original.getName().equals(newVar.getName())) {
-						if(original.getValue().contains("var@")) {
+						if(original.getValue().contains(SpecificationElement.VAR)) {
 							newVar.setName(original.getValue().substring(4));
 						}
 						

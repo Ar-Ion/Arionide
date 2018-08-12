@@ -57,13 +57,19 @@ import org.azentreprise.arionide.events.MoveEvent;
 import org.azentreprise.arionide.events.PressureEvent;
 import org.azentreprise.arionide.events.WheelEvent;
 import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
+import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.Reference;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.project.Project;
+import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.OpenGLDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
 import org.azentreprise.arionide.ui.menu.MainMenus;
-import org.azentreprise.arionide.ui.menu.code.Code;
+import org.azentreprise.arionide.ui.menu.code.CodeEditor;
+import org.azentreprise.arionide.ui.menu.code.ReferenceEditor;
+import org.azentreprise.arionide.ui.menu.code.TypeEditor;
 import org.azentreprise.arionide.ui.primitives.GLCoordinates;
 import org.azentreprise.arionide.ui.shaders.Shaders;
 import org.joml.Matrix4d;
@@ -81,8 +87,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
 	private static final int spaceSphereQuality = 3;
 	
-	private static final int structureRenderingQuality = 4;
-	private static final boolean crystalMode = true;
+	private static final int structureRenderingQuality = 32;
+	private static final boolean crystalMode = false;
 	private static final int crystalQuality = 2;
 	
 	private static final int forward = KeyEvent.VK_W;
@@ -170,6 +176,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private Rectangle bounds;
 	private boolean isInWorld = false;
 	private boolean isControlDown = false;
+	private boolean isFastBindingMode = false;
 	
 	private List<WorldElement> inside = Collections.synchronizedList(new ArrayList<>());
 	private List<WorldElement> buffer = new ArrayList<>();
@@ -594,8 +601,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 					this.loadMatrix(new Matrix4d(), this.modelData);
 					gl.glUniformMatrix4dv(this.structModel, 1, false, this.modelData);
 					gl.glDisable(GL4.GL_DEPTH_TEST);
-					gl.glEnable(GL4.GL_BLEND);
-					gl.glBlendFunc(GL4.GL_SRC_COLOR, GL4.GL_ONE_MINUS_SRC_COLOR);
 					gl.glUniform4f(this.color, 1.0f, 1.0f, 1.0f, 1.0f);
 					gl.glBindVertexArray(this.connectionVAO);
 										
@@ -615,14 +620,14 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 						gl.glUniform4f(this.color, connectionColor.x, connectionColor.y, connectionColor.z, connectionColor.w);
 						
 						if(this.selected != element && this.selected != second) {
-							gl.glUniform1f(this.ambientFactor, 0.5f);
+							gl.glUniform1f(this.ambientFactor, 0.0f);
 						} else {
 							gl.glUniform1f(this.ambientFactor, 1.0f);
 						}
 						
 						this.connect(gl, first, second.getCenter());
 					} catch(NumberFormatException e) {
-						if(component.startsWith("var@")) {
+						if(component.startsWith(SpecificationElement.VAR)) {
 							/* Resolved to a variable reference */
 							
 							List<WorldElement> list = references.get(component);
@@ -643,7 +648,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 									if(this.selected != null && this.selected.getDescription() != null && this.selected.getDescription().contentEquals(component)) {
 										gl.glUniform1f(this.ambientFactor, 1.0f);
 									} else {
-										gl.glUniform1f(this.ambientFactor, 0.5f);
+										gl.glUniform1f(this.ambientFactor, 0.0f);
 									}
 									
 									this.connect(gl, first, second.getCenter());
@@ -659,7 +664,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 					
 					gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 					gl.glEnable(GL4.GL_DEPTH_TEST);
-					gl.glDisable(GL4.GL_BLEND);
 				}
 			}
 		}
@@ -667,15 +671,14 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
 	private void renderConnections(GL4 gl, List<Connection> connections) {
 		synchronized(connections) {
-			
+						
 			connections.sort((a, b) -> Double.compare(a.getFirstElement().getCenter().distance(this.player), b.getFirstElement().getCenter().distance(this.player)));
 			
 			this.loadMatrix(new Matrix4d(), this.modelData);
 			gl.glUniformMatrix4dv(this.structModel, 1, false, this.modelData);
-			gl.glEnable(GL4.GL_BLEND);
 			gl.glDepthFunc(GL4.GL_LEQUAL);
-			gl.glBlendFunc(GL4.GL_SRC_COLOR, GL4.GL_ONE_MINUS_SRC_COLOR);
 			gl.glUniform4f(this.color, 1.0f, 1.0f, 1.0f, 1.0f);
+			gl.glUniform1f(this.ambientFactor, 1.0f);
 			gl.glBindVertexArray(this.connectionVAO);
 
 			for(Connection connection : connections) {
@@ -684,8 +687,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				
 				this.connect(gl, first.getCenter(), second.getCenter());
 			}
-			
-			gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 		}
 	}
 	
@@ -796,7 +797,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				}
 								
 				if(renderSub && element.getDescription() != null && !element.getDescription().contentEquals("?")) {
-					String description = element.getDescription().replace("var@", "");
+					String description = element.getDescription().replace(SpecificationElement.VAR, "");
 										
 					Vector2d screenAnchor = this.getHVCFrom3D(subSpaceAnchor, proj).mul(1.0d, -1.0d).add(0.75d, 1.0d);
 
@@ -816,7 +817,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			
 			if(screenAnchor.x + dimensions.x > 0  && screenAnchor.y + dimensions.y > 0 && screenAnchor.x < 2.0 && screenAnchor.y < 2.0) {
 				context.setColor(color);
-				context.getPrimitives().drawText(this.context, label, new Rectangle2D.Double(screenAnchor.x, screenAnchor.y, dimensions.x, dimensions.y));
+				context.getPrimitives().drawText(label, new Rectangle2D.Double(screenAnchor.x, screenAnchor.y, dimensions.x, dimensions.y));
 			}
 		}
 	}
@@ -1067,13 +1068,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			this.codeGeometry.buildGeometry(this.project, teleportElement);
 			List<WorldElement> code = this.codeGeometry.getElements();
 			
-			synchronized(world) {
+			synchronized(code) {
 				int i = 0;
 				
 				for(WorldElement obj : code) {
 					if(obj.getID() == lookAt) {
 						lookAtElement = obj;
-						lookAt = i; // Changes lookAt variable !!!
+						lookAt = i; // Changes lookAt variable (reuse) !!!
 						break;
 					}
 					
@@ -1092,8 +1093,10 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			
 			this.needMenuUpdate = false;
 			
-			Code menu = MainMenus.getCode();
-			menu.setCurrent(teleportElement);
+			CodeEditor menu = MainMenus.getCodeEditor();
+			
+			menu.setTargetInstruction(lookAt);
+			
 			menu.show();
 			menu.select(lookAt);
 		} catch(NumberFormatException e) {
@@ -1293,6 +1296,49 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private void onLeftClick() {
+		if(this.lookingAt != null) {
+			List<WorldElement> elements = this.codeGeometry.getElements();
+			
+			synchronized(elements) {
+				if(elements.contains(this.lookingAt) && (this.lookingAt.getID() & 0xFF000000) != 0) {
+					if(this.isFastBindingMode) {
+						MainMenus.getStructureList().show();
+						
+						Map<Integer, StructureMeta> meta = this.project.getStorage().getStructureMeta();
+						
+						StructureMeta sourceMeta = meta.get(this.selected.getID() & 0xFFFFFF);
+						StructureMeta targetMeta = meta.get(this.lookingAt.getID() & 0xFFFFFF);
+						
+						if(sourceMeta != null && targetMeta != null) {
+							SpecificationElement sourceParam = sourceMeta.getSpecification().getElements().get((this.selected.getID() >>> 24) - 1);
+							SpecificationElement targetParam = targetMeta.getSpecification().getElements().get((this.lookingAt.getID() >>> 24) - 1);
+
+							sourceParam.setValue(targetParam.getValue());
+							
+							this.project.getStorage().saveStructureMeta();
+							
+							System.out.println(targetParam);
+							
+							this.dispatcher.fire(new MessageEvent("Parameter successfully bound", MessageType.SUCCESS));
+							
+							this.codeGeometry.buildGeometry(this.project, this.current);
+						} else {
+							this.dispatcher.fire(new MessageEvent("A problem occured during fast binding", MessageType.ERROR));
+						}
+					} else {
+						this.selected = this.lookingAt;
+						this.dispatcher.fire(new MessageEvent("Fast binding: left-click on the target", MessageType.SUCCESS));	
+					}
+					
+					this.isFastBindingMode = !this.isFastBindingMode;
+					
+					return;
+				}
+			}
+		} else {
+			this.isFastBindingMode = false;
+		}
+		
 		this.dispatcher.fire(new ClickEvent(null, "menuScroll"));
 	}
 	
@@ -1311,12 +1357,42 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		if(this.selected != null) {
 			List<WorldElement> elements = this.codeGeometry.getElements();
 			
-			synchronized(elements) {
+			synchronized(elements) {				
 				if(elements.contains(this.selected)) {
-					Code code = MainMenus.getCode();
-					code.setCurrent(this.current);
-					code.show();
-					code.select(elements.indexOf(this.selected));
+					int id = this.selected.getID();
+					
+					if((id & 0xFF000000) == 0) {
+						int index = elements.indexOf(this.selected);
+						
+						if(index >= 0) {
+							CodeEditor menu = MainMenus.getCodeEditor();
+							menu.setTargetInstruction(index);
+							menu.show();
+						}
+					} else {
+						int instructionID = this.selected.getID() & 0xFFFFFF;
+						int paramID = (this.selected.getID() >>> 24) - 1;
+						
+						StructureMeta instructionMeta = this.project.getStorage().getStructureMeta().get(instructionID);
+				
+						if(instructionMeta != null) {							
+							SpecificationElement spec = instructionMeta.getSpecification().getElements().get(paramID);
+						
+							if(spec != null) {
+								if(spec instanceof Data) {
+									TypeEditor menu = MainMenus.getTypeEditor();
+									menu.setTarget((Data) spec);
+									menu.show();
+								} else if(spec instanceof Reference) {
+									ReferenceEditor menu = MainMenus.getReferenceEditor();
+									menu.setTarget((Reference) spec);
+									menu.show();
+								} else {
+									throw new RuntimeException("Strange object found");
+								}		
+							}
+						}
+					}
 				} else {
 					this.worldGeometry.select(this.selected);
 					

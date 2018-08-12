@@ -76,8 +76,8 @@ public class ArionideImpl implements Arionide {
 		return new OpenGLDrawingContext(this, dispatcher, 1080, 720);
 	}
 
-	public Resources loadResources(Workspace workspace, AppDrawingContext context) {
-		return new Resources(workspace, context);
+	public Resources loadResources(Workspace workspace) {
+		return new Resources(workspace);
 	}
 
 	public CoreRenderer loadCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher, Resources resources) {

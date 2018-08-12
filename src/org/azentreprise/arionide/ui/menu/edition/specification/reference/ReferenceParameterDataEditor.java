@@ -31,6 +31,7 @@ import org.azentreprise.arionide.lang.TypeManager;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.menu.Confirm;
+import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.Menu;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 import org.azentreprise.arionide.ui.menu.code.TypeEditor;
@@ -106,7 +107,8 @@ public class ReferenceParameterDataEditor extends SpecificMenu {
 				selector.show();
 				break;
 			case setDefault:
-				TypeEditor editor = new TypeEditor(this.getAppManager(), this, this.data);
+				TypeEditor editor = MainMenus.getTypeEditor();
+				editor.setTarget(this.data);
 				editor.show();
 				break;
 			default: 

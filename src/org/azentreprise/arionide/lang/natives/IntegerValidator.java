@@ -23,6 +23,7 @@ package org.azentreprise.arionide.lang.natives;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.Validator;
 
 public class IntegerValidator implements Validator {
@@ -36,10 +37,10 @@ public class IntegerValidator implements Validator {
 	}
 	
 	public boolean validate(String data) {
-		if(data.startsWith("var@")) {
+		if(data.startsWith(SpecificationElement.VAR)) {
 			return true;
 		} else if(data != null && data.length() > 0) {
-			int index = data.indexOf("$$$");
+			int index = data.indexOf(SpecificationElement.ALIAS);
 			
 			if(index > -1) {
 				data = data.substring(index + 3);

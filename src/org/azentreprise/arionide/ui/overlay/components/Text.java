@@ -21,7 +21,6 @@
 package org.azentreprise.arionide.ui.overlay.components;
 
 import java.awt.Cursor;
-import java.awt.FontMetrics;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -36,6 +35,9 @@ import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 import org.azentreprise.arionide.ui.overlay.View;
+import org.azentreprise.arionide.ui.primitives.font.FontRenderer;
+import org.azentreprise.arionide.ui.primitives.font.Metrics;
+import org.azentreprise.arionide.ui.primitives.font.TextTessellator;
 
 public class Text extends Button implements EventHandler {	
 	
@@ -90,28 +92,29 @@ public class Text extends Button implements EventHandler {
 	public void drawSurface(AppDrawingContext context) {
 		super.drawSurface(context);
 		
-		if(this.hasFocus && this.text.length() > 0) {
-			FontMetrics metrics = context.getFontAdapter().getLastMetrics();
-			
+		if(this.hasFocus && this.text.length() > 0) {			
 			double[] scdsp = new double[] {1.0d, 1.0d, 0.0d, 0.0d};
  			
 			if(context instanceof OpenGLDrawingContext) {
 				scdsp = OpenGLTextMetricsTransform.getScalarsAndDisplacements((OpenGLDrawingContext) context);
 			}
 
-			double x = this.textRenderPosition.getX() + scdsp[0] * metrics.charsWidth(this.text.toString().toCharArray(), 0, this.cursorPosition) + scdsp[2];
+			TextTessellator tessellator = context.getPrimitives().getFontRenderer().getTessellator();
+			Metrics metrics = tessellator.getMetrics();
+			
+			double x = this.textRenderPosition.getX() + scdsp[0] * tessellator.getWidth(this.text.substring(0, this.cursorPosition) + scdsp[2]);
 			double y = this.getBounds().getY() + this.getBounds().getHeight() / 2 + scdsp[3];
 			this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.cursorAlpha);
 			context.setColor(0xFFFFFF);
-			context.getPrimitives().fillRoundRect(context, new Rectangle2D.Double(x, y - scdsp[1] * metrics.getAscent() / 2, scdsp[0] * 2, scdsp[1] * metrics.getAscent()));
+			context.getPrimitives().fillRoundRect(new Rectangle2D.Double(x, y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * 2, scdsp[1] * metrics.getLineHeight()));
 			this.getAppManager().getAlphaLayering().pop(AlphaLayer.COMPONENT);
 
 			if(this.highlighted) {
 				this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, 0x42);
 				
-				Rectangle2D selection = new Rectangle2D.Double(this.textRenderPosition.getX() + scdsp[2], y - scdsp[1] * metrics.getAscent() / 2, scdsp[0] * metrics.stringWidth(this.text.toString()), scdsp[1] * metrics.getAscent());
+				Rectangle2D selection = new Rectangle2D.Double(this.textRenderPosition.getX() + scdsp[2], y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * tessellator.getWidth(this.text.toString()), scdsp[1] * metrics.getLineHeight());
 				context.setColor(0xC0FFEE);
-				context.getPrimitives().fillRect(context, selection);
+				context.getPrimitives().fillRect(selection);
 				
 				this.getAppManager().getAlphaLayering().pop(AlphaLayer.COMPONENT);
 			}
@@ -165,7 +168,7 @@ public class Text extends Button implements EventHandler {
 			this.dispatchDeletion(code, modifiers > 0);
 		} else if(seek) {
 			this.dispatchSeek(code);
-		} else if(this.getAppManager().getDrawingContext().getFontAdapter().getLastMetrics().getFont().canDisplay(ch)) {
+		} else if(FontRenderer.CHARSET.indexOf(ch) >= 0) {
 			this.text.insert(this.cursorPosition, ch);
 			this.cursorPosition++;
 		} else {

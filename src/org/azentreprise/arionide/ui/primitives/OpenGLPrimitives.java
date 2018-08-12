@@ -20,24 +20,34 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.primitives;
 
-import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.IntBuffer;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.FontResources;
 import org.azentreprise.arionide.ui.OpenGLDrawingContext;
+import org.azentreprise.arionide.ui.primitives.font.FontRenderer;
 import org.azentreprise.arionide.ui.shaders.Shaders;
+import org.xml.sax.SAXException;
 
 import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
 
 public class OpenGLPrimitives implements IPrimitives {
 	
-	private final GLTextRenderer textRenderer = new GLTextRenderer();
+	private OpenGLDrawingContext context;
+	private GL4 gl;
+	
+	private FontRenderer fontRenderer;
 	
 	private VAOManager manager;
 	
@@ -64,73 +74,87 @@ public class OpenGLPrimitives implements IPrimitives {
 	private float b;
 	private float a;
 	
-	public void init(GL4 gl) {
+	public void init(AppDrawingContext context) {
+		assert context instanceof OpenGLDrawingContext;
+		this.context = (OpenGLDrawingContext) context;
+		this.gl = this.context.getRenderer();
+		
 		try {
-			int basicVert = Shaders.loadShader(gl, "basic.vert", GL4.GL_VERTEX_SHADER);
-			int basicFrag = Shaders.loadShader(gl, "basic.frag", GL4.GL_FRAGMENT_SHADER);
+			FontResources resources = new FontResources(context.getResources());
+			this.fontRenderer = new FontRenderer(resources);
 			
-			int guiFrag = Shaders.loadShader(gl, "gui.frag", GL4.GL_FRAGMENT_SHADER);
-			int guiGeom = Shaders.loadShader(gl, "gui.geom", GL4.GL_GEOMETRY_SHADER);
+			int basicVert = Shaders.loadShader(this.gl, "basic.vert", GL4.GL_VERTEX_SHADER);
+			int basicFrag = Shaders.loadShader(this.gl, "basic.frag", GL4.GL_FRAGMENT_SHADER);
 			
-			int textVert = Shaders.loadShader(gl, "text.vert", GL4.GL_VERTEX_SHADER);
-			int textFrag = Shaders.loadShader(gl, "text.frag", GL4.GL_FRAGMENT_SHADER);
+			int guiFrag = Shaders.loadShader(this.gl, "gui.frag", GL4.GL_FRAGMENT_SHADER);
+			int guiGeom = Shaders.loadShader(this.gl, "gui.geom", GL4.GL_GEOMETRY_SHADER);
 			
-			this.basicShader = gl.glCreateProgram();
+			int textVert = Shaders.loadShader(this.gl, "text.vert", GL4.GL_VERTEX_SHADER);
+			int textFrag = Shaders.loadShader(this.gl, "text.frag", GL4.GL_FRAGMENT_SHADER);
 			
-			gl.glAttachShader(this.basicShader, basicVert);
-			gl.glAttachShader(this.basicShader, basicFrag);
+			this.basicShader = this.gl.glCreateProgram();
 			
-			gl.glBindFragDataLocation(this.basicShader, 0, "color");
+			this.gl.glAttachShader(this.basicShader, basicVert);
+			this.gl.glAttachShader(this.basicShader, basicFrag);
+			
+			this.gl.glBindFragDataLocation(this.basicShader, 0, "color");
 
-			gl.glLinkProgram(this.basicShader);
+			this.gl.glLinkProgram(this.basicShader);
 						
-			this.rgb1 = gl.glGetUniformLocation(this.basicShader, "rgb");
-			this.alpha1 = gl.glGetUniformLocation(this.basicShader, "alpha");
+			this.rgb1 = this.gl.glGetUniformLocation(this.basicShader, "rgb");
+			this.alpha1 = this.gl.glGetUniformLocation(this.basicShader, "alpha");
 						
-			this.uiShader = gl.glCreateProgram();
+			this.uiShader = this.gl.glCreateProgram();
 									
-			gl.glAttachShader(this.uiShader, basicVert);
-			gl.glAttachShader(this.uiShader, guiGeom);
-			gl.glAttachShader(this.uiShader, guiFrag);
+			this.gl.glAttachShader(this.uiShader, basicVert);
+			this.gl.glAttachShader(this.uiShader, guiGeom);
+			this.gl.glAttachShader(this.uiShader, guiFrag);
 			
-			gl.glBindFragDataLocation(this.uiShader, 0, "color");
+			this.gl.glBindFragDataLocation(this.uiShader, 0, "color");
 			
-			gl.glLinkProgram(this.uiShader);
+			this.gl.glLinkProgram(this.uiShader);
 
-			this.rgb2 = gl.glGetUniformLocation(this.uiShader, "rgb");
-			this.alpha2 = gl.glGetUniformLocation(this.uiShader, "alpha");
-			this.pixelSize = gl.glGetUniformLocation(this.uiShader, "pixelSize");
-			this.lightCenter = gl.glGetUniformLocation(this.uiShader, "lightCenter");
-			this.lightRadius = gl.glGetUniformLocation(this.uiShader, "lightRadius");
-			this.lightStrength = gl.glGetUniformLocation(this.uiShader, "lightStrength");
+			this.rgb2 = this.gl.glGetUniformLocation(this.uiShader, "rgb");
+			this.alpha2 = this.gl.glGetUniformLocation(this.uiShader, "alpha");
+			this.pixelSize = this.gl.glGetUniformLocation(this.uiShader, "pixelSize");
+			this.lightCenter = this.gl.glGetUniformLocation(this.uiShader, "lightCenter");
+			this.lightRadius = this.gl.glGetUniformLocation(this.uiShader, "lightRadius");
+			this.lightStrength = this.gl.glGetUniformLocation(this.uiShader, "lightStrength");
 
 			IntBuffer buffer = IntBuffer.allocate(2);
-			gl.glGenTextures(2, buffer);
-			int texture = buffer.get(0);
+			this.gl.glGenTextures(2, buffer);
 			
-			gl.glActiveTexture(GL4.GL_TEXTURE0);
-			gl.glBindTexture(GL4.GL_TEXTURE_2D, texture);
-			TextureData data = TextureIO.newTextureData(GLProfile.get(GLProfile.GL4), this.getClass().getResourceAsStream("texture.png"), false, TextureIO.PNG);
-			gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, 32, 32, 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, data.getBuffer());
+			int roundRect = buffer.get(0);
+			int fontBitmap = buffer.get(1);
 			
-			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
-			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
-			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_NEAREST);
-			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_NEAREST);
+			this.gl.glActiveTexture(GL4.GL_TEXTURE0);
+			this.gl.glBindTexture(GL4.GL_TEXTURE_2D, roundRect);
+			
+			InputStream stream = new FileInputStream(this.context.getResources().getResource("round-rect"));
+			TextureData data = TextureIO.newTextureData(GLProfile.get(GLProfile.GL4), stream, false, TextureIO.PNG);
+			
+			this.gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, 32, 32, 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, data.getBuffer());
+			
+			this.gl.glGenerateMipmap(GL4.GL_TEXTURE_2D);
+			
+			this.gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
+			this.gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
+			this.gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR_MIPMAP_NEAREST);
+			this.gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_NEAREST);
 						
-			this.manager = new VAOManager(gl, this.uiShader);
+			this.manager = new VAOManager(this.gl, this.uiShader);
 
-			this.textShader = gl.glCreateProgram();
+			this.textShader = this.gl.glCreateProgram();
 			
-			gl.glAttachShader(this.textShader, textVert);
-			gl.glAttachShader(this.textShader, textFrag);
+			this.gl.glAttachShader(this.textShader, textVert);
+			this.gl.glAttachShader(this.textShader, textFrag);
 			
-			gl.glBindFragDataLocation(this.textShader, 0, "color");
+			this.gl.glBindFragDataLocation(this.textShader, 0, "color");
 			
-			gl.glLinkProgram(this.textShader);
+			this.gl.glLinkProgram(this.textShader);
 			
-			this.textRenderer.initVAO(gl, this.textShader, buffer.get(1));
-		} catch (IOException e) {
+			this.fontRenderer.initRenderer(this.gl, this.textShader, fontBitmap);
+		} catch (IOException | GLException | ParserConfigurationException | SAXException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -139,116 +163,107 @@ public class OpenGLPrimitives implements IPrimitives {
 		this.pixelWidth = 2.0d / width;
 		this.pixelHeight = 2.0d / height;
 		
-		this.textRenderer.stateChanged(new Dimension(width, height));
+		this.fontRenderer.windowRatioChanged((float) width / height);
 	}
 	
-	public void beginUI(GL4 gl) {
-		gl.glEnable(GL4.GL_BLEND);
+	public void beginUI() {
+		this.gl.glEnable(GL4.GL_BLEND);
 				
-		this.drawCursor(gl);
+		this.drawCursor();
 		
-		gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
+		this.gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 		
-		this.use(gl, this.uiShader);
+		this.use(this.uiShader);
 		
-		this.disableLight(gl);
+		this.disableLight(this.gl);
 	}
 	
-	public void endUI(GL4 gl) {
-		this.use(gl, this.textShader);
-		
-		this.textRenderer.uploadToGPU(gl);
-		
-		gl.glDisable(GL4.GL_BLEND);
+	public void endUI() {
+		this.use(this.textShader);
+				
+		this.gl.glDisable(GL4.GL_BLEND);
 	}
 		
-	public void drawRect(AppDrawingContext context, Rectangle2D bounds) {		
-		GL4 gl = this.getGL(context);
+	public void drawRect(Rectangle2D bounds) {		
 		GLCoordinates coords = new GLCoordinates(bounds);
 				
 		this.manager.loadVAO(coords.getUUID(), () -> coords.allocDataBuffer(8).putBoundingPoints().getDataBuffer(), (nil, id) -> {
-			gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
+			this.gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
 		}, "position");
 
-		this.use(gl, this.basicShader);
+		this.use(this.basicShader);
 
-		gl.glDrawArrays(GL4.GL_LINE_LOOP, 0, 4);
+		this.gl.glDrawArrays(GL4.GL_LINE_LOOP, 0, 4);
 	}
 
-	public void fillRect(AppDrawingContext context, Rectangle2D bounds) {	
-		GL4 gl = this.getGL(context);
+	public void fillRect(Rectangle2D bounds) {	
 		GLCoordinates coords = new GLCoordinates(bounds);
 		
 		this.manager.loadVAO(coords.getUUID(), () -> coords.allocDataBuffer(8).putSouth().putNorth().getDataBuffer(), (nil, id) -> {
-			gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
+			this.gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
 		}, "position");
 
-		this.use(gl, this.basicShader);
+		this.use(this.basicShader);
 		
-		gl.glDrawArrays(GL4.GL_TRIANGLE_STRIP, 0, 4);
+		this.gl.glDrawArrays(GL4.GL_TRIANGLE_STRIP, 0, 4);
 	}
 
-	public void drawRoundRect(AppDrawingContext context, Rectangle2D bounds) {	
-		GL4 gl = this.getGL(context);
-		GLCoordinates coords = new GLCoordinates(bounds);
+	public void drawRoundRect(Rectangle2D bounds) {	
+		this.drawRect(bounds);
+		/*GLCoordinates coords = new GLCoordinates(bounds);
 		
 		this.manager.loadVAO(coords.getUUID(), () -> coords.allocDataBuffer(8).putBoundingPoints().getDataBuffer(), (nil, id) -> {
-			gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
+			this.gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
 		}, "position");
 
-		this.use(gl, this.uiShader);
+		this.use(this.uiShader);
 		
-		gl.glDrawArrays(GL4.GL_LINES_ADJACENCY, 0, 4);
+		this.gl.glDrawArrays(GL4.GL_LINES_ADJACENCY, 0, 4);*/
 	}
 
-	public void fillRoundRect(AppDrawingContext context, Rectangle2D bounds) {
-		this.fillRect(context, bounds);
+	public void fillRoundRect(Rectangle2D bounds) {
+		this.fillRect(bounds);
 	}
 
 	// Not checked
-	public void drawLine(AppDrawingContext context, double x1, double y1, double x2, double y2) {
-		GL4 gl = this.getGL(context);
+	public void drawLine(double x1, double y1, double x2, double y2) {
 		GLCoordinates coords = new GLCoordinates(new Rectangle2D.Double(x1, y1, x1 + x2, y1 + y2));
 				
 		this.manager.loadVAO(coords.getUUID(), () -> coords.allocDataBuffer(4).putNW().putSE().getDataBuffer(), (nil, id) -> {
-			gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
+			this.gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
 		}, "position");
 
-		this.use(gl, this.basicShader);
+		this.use(this.basicShader);
 
-		gl.glDrawArrays(GL4.GL_LINE, 0, 2);
+		this.gl.glDrawArrays(GL4.GL_LINE, 0, 2);
 	}
 	
-	public void drawCursor(GL4 gl) {		
+	public void drawCursor() {		
 		GLCoordinates coords = new GLCoordinates(new Rectangle2D.Double(1.0d, 1.0d, 1.0d, 1.0d));
 				
 		this.manager.loadVAO(coords.getUUID(), () -> coords.allocDataBuffer(2).putX1().getDataBuffer(), (nil, id) -> {
-			gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
+			this.gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
 		}, "position");
 
-		this.use(gl, this.basicShader);
+		this.use(this.basicShader);
 		
-		this.setColor(gl, 1.0f, 1.0f, 1.0f);
+		this.setColor(this.gl, 1.0f, 1.0f, 1.0f);
 		
-		gl.glBlendFunc(GL4.GL_ONE_MINUS_DST_COLOR, GL4.GL_ONE_MINUS_SRC_COLOR);
+		this.gl.glBlendFunc(GL4.GL_ONE_MINUS_DST_COLOR, GL4.GL_ONE_MINUS_SRC_COLOR);
 
-		gl.glPointSize(3.0f);
-		gl.glDrawArrays(GL4.GL_POINTS, 0, 1);
-		gl.glPointSize(1.0f);
+		this.gl.glPointSize(3.0f);
+		this.gl.glDrawArrays(GL4.GL_POINTS, 0, 1);
+		this.gl.glPointSize(1.0f);
 	}
 
 
-	public Point2D drawText(AppDrawingContext context, String text, Rectangle2D bounds) {
-		return this.drawText(context, text, bounds, 0);
-	}
-
-	public Point2D drawText(AppDrawingContext context, String text, Rectangle2D bounds, int yCorrection) {	
-		return this.textRenderer.drawString(bounds, text, context.getFontAdapter());
+	public Point2D drawText(String text, Rectangle2D bounds) {
+		return this.fontRenderer.renderString(this.gl, text, bounds);
 	}
 	
 	public void setColor(GL4 gl, float r, float g, float b) {
 		if(this.r != r || this.g != g || this.b != b) {
-			this.textRenderer.setColor(r, g, b);
+			this.fontRenderer.setColor(r, g, b);
 			
 			gl.glUniform3f(this.currentShader != this.uiShader ? this.rgb1 : this.rgb2, r, g, b);
 		
@@ -260,7 +275,7 @@ public class OpenGLPrimitives implements IPrimitives {
 	
 	public void setAlpha(GL4 gl, float alpha) {
 		if(this.a != alpha) {
-			this.textRenderer.setAlpha(alpha);
+			this.fontRenderer.setAlpha(alpha);
 			
 			gl.glUniform1f(this.currentShader != this.uiShader ? this.alpha1 : this.alpha2, a);
 			
@@ -283,54 +298,39 @@ public class OpenGLPrimitives implements IPrimitives {
 	public float getAlpha() {
 		return this.a;
 	}
-	
-	public GLTextRenderer getTextRenderer() {
-		return this.textRenderer;
-	}
-	
-	public void enableLight(AppDrawingContext context, Point2D center, double radius, double strength) {
-		GL4 gl = this.getGL(context);
-		
-		this.use(gl, this.uiShader);
 
-		this.enableLight(gl, center, radius, strength);
+	public void enableLight(Point2D center, double radius, double strength) {		
+		this.use(this.uiShader);
+		this.gl.glUniform2d(this.lightCenter, center.getX() - 1.0d, 1.0d - center.getY());
+		this.gl.glUniform1d(this.lightRadius, radius);
+		this.gl.glUniform1d(this.lightStrength, strength);
 	}
 	
-	public void disableLight(AppDrawingContext context) {
-		GL4 gl = this.getGL(context);
-		
-		this.use(gl, this.uiShader);
-
-		this.disableLight(gl);
-	}
-	
-	private void enableLight(GL4 gl, Point2D center, double radius, double strength) { // Ensure that the UI Shader is active before calling this method
-		gl.glUniform2d(this.lightCenter, center.getX() - 1.0d, 1.0d - center.getY());
-		gl.glUniform1d(this.lightRadius, radius);
-		gl.glUniform1d(this.lightStrength, strength);
+	public void disableLight(AppDrawingContext context) {		
+		this.use(this.uiShader);
+		this.disableLight(this.gl);
 	}
 	
 	private void disableLight(GL4 gl) { // Ensure that the UI Shader is active before calling this method
 		gl.glUniform1d(this.lightRadius, -1.0d);
 	}
 	
-	public void use(GL4 gl, int shader) {
-		gl.glUseProgram(shader);
+	public void use(int shader) {
+		this.gl.glUseProgram(shader);
 		
 		if(shader != this.textShader) {
-			gl.glUniform3f(shader != this.uiShader ? this.rgb1 : this.rgb2, this.r, this.g, this.b);
-			gl.glUniform1f(shader != this.uiShader ? this.alpha1 : this.alpha2, this.a);
+			this.gl.glUniform3f(shader != this.uiShader ? this.rgb1 : this.rgb2, this.r, this.g, this.b);
+			this.gl.glUniform1f(shader != this.uiShader ? this.alpha1 : this.alpha2, this.a);
 		}
 
 		if(shader == this.uiShader) {
-			gl.glUniform2d(this.pixelSize, this.pixelWidth, this.pixelHeight);
+			this.gl.glUniform2d(this.pixelSize, this.pixelWidth, this.pixelHeight);
 		}
 		
 		this.currentShader = shader;
 	}
 	
-	private GL4 getGL(AppDrawingContext context) {
-		assert context instanceof OpenGLDrawingContext;
-		return ((OpenGLDrawingContext) context).getRenderer();
+	public FontRenderer getFontRenderer() {
+		return this.fontRenderer;
 	}
 }

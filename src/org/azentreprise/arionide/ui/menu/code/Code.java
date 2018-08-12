@@ -30,6 +30,7 @@ import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 
+@Deprecated
 public class Code extends SpecificMenu {
 	
 	private final CodeEditor editor;

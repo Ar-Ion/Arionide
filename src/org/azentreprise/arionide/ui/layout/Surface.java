@@ -51,7 +51,7 @@ public abstract class Surface implements Drawable {
 			if(this.backgroundAlpha > 0) {
 				context.setColor(this.background);
 				context.setAlpha(this.backgroundAlpha);
-				context.getPrimitives().fillRect(context, this.bounds);
+				context.getPrimitives().fillRect(this.bounds);
 			}
 			
 			this.drawSurface(context);

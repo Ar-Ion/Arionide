@@ -23,6 +23,7 @@ package org.azentreprise.arionide.lang.natives.instructions;
 import java.util.List;
 
 import org.azentreprise.arionide.lang.Data;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
 import org.azentreprise.arionide.lang.natives.NativeTypes;
 
@@ -39,17 +40,17 @@ public class Merge implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(this.destination.getValue().startsWith("var@")) {
+		if(this.destination.getValue().startsWith(SpecificationElement.VAR)) {
 			String destVar = this.destination.getValue().substring(4);
 			
 			String value1 = this.source1.getValue();
 			String value2 = this.source2.getValue();
 
-			if(value1.startsWith("var@")) {
+			if(value1.startsWith(SpecificationElement.VAR)) {
 				value1 = communicator.getVariable(value1).getValue();
 			}
 			
-			if(value2.startsWith("var@")) {
+			if(value2.startsWith(SpecificationElement.VAR)) {
 				value2 = communicator.getVariable(value2).getValue();
 			}
 			

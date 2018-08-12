@@ -18,36 +18,45 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.shaders;
+package org.azentreprise.arionide.ui;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.IntBuffer;
-import java.nio.charset.Charset;
 
-import com.jogamp.opengl.GL4;
-import com.jogamp.opengl.util.glsl.ShaderUtil;
+import javax.xml.parsers.ParserConfigurationException;
 
-public class Shaders {
-	public static int loadShader(GL4 gl, String name, int type) throws IOException {
-		InputStream input = Shaders.class.getResourceAsStream(name);
-		
-		byte[] buffer = new byte[128];
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		int count = 0;
-		
-		while((count = input.read(buffer)) != -1) {
-			baos.write(buffer, 0, count);
-		}
-		
-		String code = new String(baos.toByteArray(), Charset.forName("utf8"));
+import org.azentreprise.arionide.resources.Resources;
+import org.azentreprise.arionide.ui.primitives.font.Metrics;
+import org.xml.sax.SAXException;
 
-		IntBuffer shaderID = IntBuffer.allocate(1);
+import com.jogamp.opengl.GLException;
+import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.util.texture.TextureData;
+import com.jogamp.opengl.util.texture.TextureIO;
+
+public class FontResources {
+	
+	private final Metrics metrics;
+	private final TextureData fontData;
+	
+	public FontResources(Resources resources) throws GLException, IOException, ParserConfigurationException, SAXException {
+		File meta = resources.getResource("font-meta");
+		File bitmap = resources.getResource("font-bitmap");
 		
-		System.out.println(name);
-		ShaderUtil.createAndCompileShader(gl, shaderID, type, new String[][] {{ code }}, System.err);
+		InputStream metaStream = new FileInputStream(meta);
+		InputStream bitmapStream = new FileInputStream(bitmap);
 		
-		return shaderID.get(0);
+		this.metrics = new Metrics(metaStream);
+		this.fontData = TextureIO.newTextureData(GLProfile.get(GLProfile.GL4), bitmapStream, false, TextureIO.PNG);
+	}
+	
+	public Metrics getMetrics() {
+		return this.metrics;
+	}
+	
+	public TextureData getFontData() {
+		return this.fontData;
 	}
 }

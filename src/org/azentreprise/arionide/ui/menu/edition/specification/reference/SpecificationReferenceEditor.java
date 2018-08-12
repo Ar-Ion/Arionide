@@ -31,12 +31,12 @@ import org.azentreprise.arionide.ui.menu.Menu;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 import org.azentreprise.arionide.ui.menu.edition.specification.SpecificationElementEditor;
 
-public class ReferenceEditor extends SpecificationElementEditor {
+public class SpecificationReferenceEditor extends SpecificationElementEditor {
 	
 	private static final String callability = "Callability";
 	private static final String setParameters = "Parameters";
 	
-	public ReferenceEditor(AppManager manager, SpecificMenu parent) {
+	public SpecificationReferenceEditor(AppManager manager, SpecificMenu parent) {
 		super(manager, parent);
 		
 		this.getElements().add(callability);

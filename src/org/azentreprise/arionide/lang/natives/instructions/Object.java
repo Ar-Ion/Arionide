@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.Reference;
+import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.natives.NativeDataCommunicator;
 import org.azentreprise.arionide.lang.natives.NativeTypes;
 
@@ -40,12 +41,12 @@ public class Object implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(this.result.getValue().contains("var@")) {
+		if(this.result.getValue().contains(SpecificationElement.VAR)) {
 			String variable = this.result.getValue().substring(4);
 			
 			String structure = this.structure.getValue();
 			
-			if(structure.startsWith("var@")) {
+			if(structure.startsWith(SpecificationElement.VAR)) {
 				structure = communicator.getVariable(structure.substring(4)).getValue();
 			}
 			

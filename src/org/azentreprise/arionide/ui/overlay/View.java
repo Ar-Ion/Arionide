@@ -63,12 +63,12 @@ public abstract class View extends Surface {
 		return this.alphaAnimation;
 	}
 
-	public void drawSurface(AppDrawingContext context) {
+	public void drawSurface(AppDrawingContext context) {		
 		this.appManager.getAlphaLayering().push(AlphaLayer.VIEW, this.alpha);
 		
 		if(this.borderColor > 0) {
 			context.setColor(this.borderColor);
-			context.getPrimitives().drawRoundRect(context, this.getBounds());
+			context.getPrimitives().drawRoundRect(this.getBounds());
 		}
 		
 		for(Component component : this.components) {

@@ -22,8 +22,6 @@ package org.azentreprise.arionide.ui;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -40,14 +38,12 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.Workspace;
-import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.ActionType;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
@@ -78,7 +74,7 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 	
 	private Graphics2D theGraphics;
 	
-	private FontAdapter adapter;
+	private FontResources adapter;
 	
 	private int lastRGB = 0;
 	private int lastAlpha = 0;
@@ -124,13 +120,6 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 	
 	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
 		this.theFrame.setVisible(true);
-
-		try {
-			Font font = Font.createFont(Font.TRUETYPE_FONT, resources.getResource("font"));
-			this.adapter = new FontAdapter(font);
-		} catch (FontFormatException | IOException exception) {
-			Debug.exception(exception);
-		}
 		
 		this.theManager.loadUI(workspace, resources, renderer, manager);
 	}
@@ -166,7 +155,7 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 		return this.primitives;
 	}
 	
-	public FontAdapter getFontAdapter() {
+	public FontResources getFontAdapter() {
 		return this.adapter;
 	}
 	
@@ -260,5 +249,9 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 
 	public void keyReleased(KeyEvent event) {
 		this.dispatcher.fire(new PressureEvent(event.getKeyChar(), event.getKeyCode(), event.getModifiers(), false));
+	}
+
+	public Resources getResources() {
+		return this.theManager.getResources();
 	}
 }

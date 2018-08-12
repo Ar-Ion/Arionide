@@ -23,6 +23,10 @@ package org.azentreprise.arionide.lang;
 import java.io.Serializable;
 
 public abstract class SpecificationElement implements Serializable {
+
+	public static final String ALIAS = "$$$"; // Pseudo_name$$$Real_name
+	public static final String VAR = "var@"; // var@Var_name
+	
 	private static final long serialVersionUID = -2821188218676151203L;
 
 	private String name;
@@ -45,7 +49,7 @@ public abstract class SpecificationElement implements Serializable {
 		String realValue = this.value;
 		
 		if(realValue != null) {
-			int index = realValue.indexOf("$$$");
+			int index = realValue.indexOf(ALIAS);
 			if(index > -1) {
 				realValue = realValue.substring(index + 3);
 			}
@@ -67,12 +71,18 @@ public abstract class SpecificationElement implements Serializable {
 		
 		if(displayValue == null) {
 			displayValue = "undefined";
-		}
-		
-		int index = displayValue.indexOf("$$$");
+		}		
+				
+		int index = displayValue.indexOf(ALIAS);
 		
 		if(index > -1) {
 			displayValue = displayValue.substring(0, index);
+		}
+		
+		index = displayValue.indexOf(VAR);
+		
+		if(index > -1) {
+			displayValue = displayValue.substring(index + 4);
 		}
 		
 		return this.name + ": " + displayValue;

@@ -42,13 +42,13 @@ public class Write implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(this.object.getValue().startsWith("var@")) {
+		if(this.object.getValue().startsWith(SpecificationElement.VAR)) {
 			SpecificationElement element = communicator.getVariable(this.object.getValue().substring(4));
 			
 			if(element != null) {
 				String file = this.path.getValue();
 				
-				if(file.startsWith("var@")) {
+				if(file.startsWith(SpecificationElement.VAR)) {
 					file = communicator.getVariable(file.substring(4)).getValue();
 				}
 				
