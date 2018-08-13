@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.primitives.font;
+package org.azentreprise.arionide.ui.render.font;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -18,31 +18,20 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui;
+package org.azentreprise.arionide.ui.render;
 
-import java.awt.Cursor;
-import java.awt.Dimension;
-
-import org.azentreprise.arionide.Workspace;
-import org.azentreprise.arionide.resources.Resources;
-import org.azentreprise.arionide.threading.Purgeable;
-import org.azentreprise.arionide.ui.core.CoreRenderer;
-import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
-import org.azentreprise.arionide.ui.render.PrimitiveRenderingSystem;
-import org.azentreprise.arionide.ui.render.font.FontRenderer;
-
-public interface AppDrawingContext extends Purgeable {
+public abstract class Primitive implements Comparable<Primitive> {
 	
-	public static final double MOUSE_WHEEL_SENSIBILITY = 1.0d;
+	public abstract int getIdentificationFactor();
+	public abstract PrimitiveType getType();
+	public abstract void updateProperty(PrimitiveRenderer renderer, RenderingContext context, int identifier);
+	public abstract void render(PrimitiveRenderer renderer);
 	
-	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager);
-	public void draw();
-	public void update();
-	public Dimension getSize();
-	public FontRenderer getFontRenderer();
-	public PrimitiveRenderingSystem getRenderingSystem();
-	public PrimitiveRenderer getPrimitives();
-	public Resources getResources();
-	public void setCursor(Cursor cursor);
+	public int compareTo(Primitive other) {
+		if(this.getType() != other.getType()) {
+			return this.getType().compareTo(other.getType()); // For the consistency of the equivalence relation
+		} else {
+			return Integer.compare(this.getIdentificationFactor(), other.getIdentificationFactor());
+		}
+	}
 }

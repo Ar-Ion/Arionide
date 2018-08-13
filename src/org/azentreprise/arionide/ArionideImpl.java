@@ -36,7 +36,7 @@ import org.azentreprise.arionide.threading.UpdatingThread;
 import org.azentreprise.arionide.threading.UserHelpingThread;
 import org.azentreprise.arionide.threading.WorkingThread;
 import org.azentreprise.arionide.ui.AppDrawingContext;
-import org.azentreprise.arionide.ui.OpenGLDrawingContext;
+import org.azentreprise.arionide.ui.OpenGLContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
@@ -73,7 +73,7 @@ public class ArionideImpl implements Arionide {
 	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher) {
 		DragSystem.init(dispatcher);
 		
-		return new OpenGLDrawingContext(this, dispatcher, 1080, 720);
+		return new OpenGLContext(this, dispatcher, 1080, 720);
 	}
 
 	public Resources loadResources(Workspace workspace) {

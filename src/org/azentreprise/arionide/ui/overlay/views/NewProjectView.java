@@ -35,11 +35,11 @@ import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.overlay.Views;
 import org.azentreprise.arionide.ui.overlay.components.Button;
 import org.azentreprise.arionide.ui.overlay.components.Label;
-import org.azentreprise.arionide.ui.overlay.components.Text;
+import org.azentreprise.arionide.ui.overlay.components.Input;
 
 public class NewProjectView extends View implements EventHandler {
 	
-	private final Text projectName = new Text(this, "Project name");
+	private final Input projectName = new Input(this, "Project name");
 	
 	public NewProjectView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
@@ -71,16 +71,16 @@ public class NewProjectView extends View implements EventHandler {
 			if(click.isTargetting(this, "create")) {
 				Component text = this.get(1);
 				
-				assert text instanceof Text;
+				assert text instanceof Input;
 				
-				String name = ((Text) text).getText();
+				String name = ((Input) text).getText();
 				
 				if(!name.isEmpty()) {
 					try {
 						this.getAppManager().getWorkspace().createProject(name);
 						this.openView(Views.code);
 						
-						((Text) text).setText(""); // Reset field
+						((Input) text).setText(""); // Reset field
 					} catch(IOException exception) {
 						Debug.exception(exception);
 					}
@@ -90,9 +90,9 @@ public class NewProjectView extends View implements EventHandler {
 				
 				Component text = this.get(1);
 				
-				assert text instanceof Text;
+				assert text instanceof Input;
 				
-				((Text) text).setText(""); // Reset field
+				((Input) text).setText(""); // Reset field
 			}
 		}
 	}

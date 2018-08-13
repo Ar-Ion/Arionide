@@ -67,7 +67,7 @@ public abstract class View extends Surface {
 		this.appManager.getAlphaLayering().push(AlphaLayer.VIEW, this.alpha);
 		
 		if(this.borderColor > 0) {
-			context.setColor(this.borderColor);
+			//context.setColor(this.borderColor);
 			context.getPrimitives().drawRoundRect(this.getBounds());
 		}
 		

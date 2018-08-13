@@ -18,43 +18,10 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.primitives.font;
+package org.azentreprise.arionide.ui.render.font;
 
-import java.nio.Buffer;
-
-public class TessellationOutput {
-	
-	private final Buffer vertices;
-	private final Buffer uv;
-	private final float width;
-	private final float height;
-	private final int count; // number of chars
-	
-	protected TessellationOutput(Buffer vertices, Buffer uv, float width, float height, int count) {
-		this.vertices = vertices;
-		this.uv = uv;
-		this.width = width;
-		this.height = height;
-		this.count = count;
-	}
-	
-	public Buffer getVerticesBuffer() {
-		return this.vertices;
-	}
-	
-	public Buffer getUVBuffer() {
-		return this.uv;
-	}
-	
-	public float getWidth() {
-		return this.width;
-	}
-	
-	public float getHeight() {
-		return this.height;
-	}
-	
-	public int getCount() {
-		return this.count;
-	}
+public interface TextTessellator {
+	public int getWidth(String input);
+	public int getHeight(String input);
+	public Metrics getMetrics();
 }

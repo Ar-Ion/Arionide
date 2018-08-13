@@ -18,19 +18,43 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.primitives.font;
+package org.azentreprise.arionide.ui.render.font;
 
-import java.io.IOException;
+import java.nio.IntBuffer;
 
-public class XMLException extends IOException {
-
-	private static final long serialVersionUID = -1927500780185009009L;
-
-	public XMLException(Exception parent) {
-		super(parent);
+public class TextCacheEntry {
+	
+	private final float width;
+	private final float height;
+	private final int vao;
+	private final IntBuffer freeables;
+	private final int count; // number of chars
+	
+	protected TextCacheEntry(float width, float height, int vao, int[] freeables, int count) {
+		this.width = width;
+		this.height = height;
+		this.vao = vao;
+		this.freeables = IntBuffer.wrap(freeables);
+		this.count = count;
 	}
 	
-	public XMLException(String msg) {
-		super(msg);
+	protected float getWidth() {
+		return this.width;
+	}
+	
+	protected float getHeight() {
+		return this.height;
+	}
+	
+	protected int getVAO() {
+		return this.vao;
+	}
+	
+	protected IntBuffer getFreeableResources() {
+		return this.freeables;
+	}
+	
+	protected int getCount() {
+		return this.count;
 	}
 }

@@ -18,12 +18,12 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.primitives.font;
+package org.azentreprise.arionide.ui.render.font;
 
 import java.nio.FloatBuffer;
 import java.util.function.Function;
 
-public class TextTessellator {
+public class GLTextTessellator implements TextTessellator {
 	
 	private final Metrics metrics;
 	
@@ -32,7 +32,9 @@ public class TextTessellator {
 	private final Function<CharMeta, float[]> uv2;
 	private final Function<CharMeta, float[]> uv3;
 	
-	protected TextTessellator(Metrics metrics) {
+	private final int maxHeight;
+	
+	protected GLTextTessellator(Metrics metrics) {
 		this.metrics = metrics;
 		
 		float size = metrics.getTextureSize();
@@ -41,6 +43,8 @@ public class TextTessellator {
 		this.uv1 = meta -> new float[] {(meta.getX1() + 0.5f) / size, 1.0f - (meta.getY1() + 0.5f) / size};
 		this.uv2 = meta -> new float[] {(meta.getX2() - 0.5f) / size, 1.0f - (meta.getY2() - 0.5f) / size};
 		this.uv3 = meta -> new float[] {(meta.getX2() - 0.5f) / size, 1.0f - (meta.getY1() + 0.5f) / size};
+		
+		this.maxHeight = this.getHeight(FontRenderer.CHARSET);
 	}
 	
 	public int getWidth(String input) {
@@ -50,6 +54,15 @@ public class TextTessellator {
 		
 		return input.substring(0, input.length() - 1).chars().mapToObj(this.metrics::fetchMeta).mapToInt(CharMeta::getAdvance).sum() 
 			 + this.metrics.fetchMeta(input.charAt(input.length() - 1)).getWidth();
+	}
+	
+	public int getHeight(String input) {
+		return input.chars().mapToObj(this.metrics::fetchMeta).mapToInt(CharMeta::getAscent).max().orElse(0) 
+			+ input.chars().mapToObj(this.metrics::fetchMeta).mapToInt(CharMeta::getDescent).max().orElse(0);
+	}
+	
+	public int getMaxHeight() {
+		return this.maxHeight;
 	}
 	
 	public Metrics getMetrics() {
@@ -63,16 +76,16 @@ public class TextTessellator {
 		FloatBuffer textures = FloatBuffer.allocate(8 * data.length);
 
 		int width = this.getWidth(input);
-		int height = input.chars().mapToObj(this.metrics::fetchMeta).mapToInt(CharMeta::getAscent).max().orElse(0) + input.chars().mapToObj(this.metrics::fetchMeta).mapToInt(CharMeta::getDescent).max().orElse(0);
+		int height = this.getHeight(input);
 		
-		int line = input.chars().mapToObj(this.metrics::fetchMeta).mapToInt(CharMeta::getAscent).max().orElse(0) - input.chars().mapToObj(this.metrics::fetchMeta).mapToInt(CharMeta::getDescent).max().orElse(0);
+		int base = input.chars().mapToObj(this.metrics::fetchMeta).mapToInt(CharMeta::getAscent).max().orElse(0) - input.chars().mapToObj(this.metrics::fetchMeta).mapToInt(CharMeta::getDescent).max().orElse(0);
 		
 		int mainDimension = Math.max(width, height);
 		
 		float halfFactor = 1.0f / mainDimension;
 		float factor = 2.0f * halfFactor;
 		
-		this.tessellateString(data, factor, -width * halfFactor, -line * halfFactor, vertices, textures);
+		this.tessellateString(data, factor, -width * halfFactor, -base * halfFactor, vertices, textures);
 		
 		vertices.flip();
 		textures.flip();

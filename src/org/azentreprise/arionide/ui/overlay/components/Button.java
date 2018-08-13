@@ -21,6 +21,7 @@
 package org.azentreprise.arionide.ui.overlay.components;
 
 import java.awt.Cursor;
+import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,6 +40,8 @@ import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
+import org.azentreprise.arionide.ui.render.Rectangle;
+import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
 
 public class Button extends Label implements EventHandler {
 	
@@ -47,6 +50,7 @@ public class Button extends Label implements EventHandler {
 	private static final int ANIMATION_TIME = 200;
 	private static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
 	
+	private final Rectangle borders;
 	protected final Animation animation;
 	
 	protected boolean hasFocus;
@@ -64,12 +68,17 @@ public class Button extends Label implements EventHandler {
 	public Button(View parent, String label) {
 		super(parent, label);
 		
-		this.setColor(this.colorKeepRef);
-		this.setAlpha(DEFAULT_ALPHA);
-		
 		this.animation = new FieldModifierAnimation(this.getAppManager(), "alpha", Label.class, this);
 		
+		this.setAlpha(DEFAULT_ALPHA);
+		this.borders = PrimitiveFactory.instance().newRectangle(null, this.colorKeepRef, DEFAULT_ALPHA);
+		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
+	}
+	
+	public void setBounds(Rectangle2D bounds) {
+		super.setBounds(bounds);
+		this.borders.updateBounds(bounds);
 	}
 	
 	public Button setSignal(String signal, Object... data) {
@@ -107,7 +116,8 @@ public class Button extends Label implements EventHandler {
 		super.drawComponent(context);
 		
 		if(this.hasBorders) {
-			context.getPrimitives().drawRoundRect(this.getBounds());
+			this.borders.updateAlpha(this.getAppManager().getAlphaLayering().getCurrentAlpha());
+			context.getRenderingSystem().renderLater(this.borders);
 		}
 	}
 	

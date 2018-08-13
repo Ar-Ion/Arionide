@@ -57,29 +57,29 @@ import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.primitives.AWTPrimitives;
-import org.azentreprise.arionide.ui.primitives.IPrimitives;
+import org.azentreprise.arionide.ui.render.AWTPrimitiveRenderer;
+import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
+import org.azentreprise.arionide.ui.render.PrimitiveRenderingSystem;
+import org.azentreprise.arionide.ui.render.font.FontRenderer;
 
-public class AWTDrawingContext extends Canvas implements AppDrawingContext, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
+public class AWTContext extends Canvas implements AppDrawingContext, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
 	private static final long serialVersionUID = 1171699360872561984L;
 	
 	private final Map<RenderingHints.Key, Object> renderingHints = new HashMap<>();
 		
-	private final IPrimitives primitives = new AWTPrimitives();
+	private final PrimitiveRenderer primitives = new AWTPrimitiveRenderer();
 		
 	private final IEventDispatcher dispatcher;
 	private final AppManager theManager;
 	private final Frame theFrame;
 	
 	private Graphics2D theGraphics;
-	
-	private FontResources adapter;
-	
+		
 	private int lastRGB = 0;
 	private int lastAlpha = 0;
 		
-	public AWTDrawingContext(Arionide theInstance, IEventDispatcher dispatcher, int width, int height) {
+	public AWTContext(Arionide theInstance, IEventDispatcher dispatcher, int width, int height) {
 		
 		System.setProperty("sun.awt.noerasebackground", "true");
 		System.setProperty("sun.awt.erasebackgroundonresize", "false");
@@ -151,12 +151,20 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 		return this.theGraphics;
 	}
 	
-	public IPrimitives getPrimitives() {
+	public PrimitiveRenderer getPrimitives() {
 		return this.primitives;
 	}
+
+	public Resources getResources() {
+		return this.theManager.getResources();
+	}
 	
-	public FontResources getFontAdapter() {
-		return this.adapter;
+	public FontRenderer getFontRenderer() {
+		return null;
+	}
+	
+	public PrimitiveRenderingSystem getRenderingSystem() {
+		return null;
 	}
 	
 	public void setColor(int rgb) {
@@ -249,9 +257,5 @@ public class AWTDrawingContext extends Canvas implements AppDrawingContext, Mous
 
 	public void keyReleased(KeyEvent event) {
 		this.dispatcher.fire(new PressureEvent(event.getKeyChar(), event.getKeyCode(), event.getModifiers(), false));
-	}
-
-	public Resources getResources() {
-		return this.theManager.getResources();
 	}
 }

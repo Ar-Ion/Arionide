@@ -18,35 +18,85 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.primitives.font;
+package org.azentreprise.arionide.ui.render.font;
 
-public class TextCacheEntry {
+public class CharMeta {
 	
-	private final float width;
-	private final float height;
-	private final int vao;
-	private final int count; // number of chars
+	private final int charID;
+	private final int base;
+	private final int x;
+	private final int y;
+	private final int width;
+	private final int height;
+	private final int xOffset;
+	private final int yOffset;
+	private final int advance;
 	
-	protected TextCacheEntry(float width, float height, int vao, int count) {
+	protected CharMeta(int id, int base, int x, int y, int width, int height, int xOffset, int yOffset, int advance) {
+		this.charID = id;
+		this.base = base;
+		this.x = x;
+		this.y = y;
 		this.width = width;
 		this.height = height;
-		this.vao = vao;
-		this.count = count;
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
+		this.advance = advance;
+	}
+
+	public int getCharID() {
+		return this.charID;
 	}
 	
-	protected float getWidth() {
+	public int getX() {
+		return this.x;
+	}
+
+	public int getY() {
+		return this.y;
+	}
+
+	public int getWidth() {
 		return this.width;
 	}
-	
-	protected float getHeight() {
+
+	public int getHeight() {
 		return this.height;
 	}
 	
-	protected int getVAO() {
-		return this.vao;
+	public int getXOffset() {
+		return this.xOffset;
+	}
+
+	public int getYOffset() {
+		return this.yOffset;
 	}
 	
-	protected int getCount() {
-		return this.count;
+	public int getAscent() {
+		return this.base - this.yOffset;
+	}
+	
+	public int getDescent() {
+		return this.yOffset + this.height - this.base;
+	}
+	
+	public int getX1() {
+		return this.x;
+	}
+
+	public int getY1() {
+		return this.y;
+	}
+	
+	public int getX2() {
+		return this.x + this.width;
+	}
+
+	public int getY2() {
+		return this.y + this.height;
+	}
+	
+	public int getAdvance() {
+		return this.advance;
 	}
 }

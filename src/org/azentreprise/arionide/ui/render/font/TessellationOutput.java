@@ -18,31 +18,43 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui;
+package org.azentreprise.arionide.ui.render.font;
 
-import java.awt.Cursor;
-import java.awt.Dimension;
+import java.nio.Buffer;
 
-import org.azentreprise.arionide.Workspace;
-import org.azentreprise.arionide.resources.Resources;
-import org.azentreprise.arionide.threading.Purgeable;
-import org.azentreprise.arionide.ui.core.CoreRenderer;
-import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
-import org.azentreprise.arionide.ui.render.PrimitiveRenderingSystem;
-import org.azentreprise.arionide.ui.render.font.FontRenderer;
-
-public interface AppDrawingContext extends Purgeable {
+public class TessellationOutput {
 	
-	public static final double MOUSE_WHEEL_SENSIBILITY = 1.0d;
+	private final Buffer vertices;
+	private final Buffer uv;
+	private final float width;
+	private final float height;
+	private final int count; // number of chars
 	
-	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager);
-	public void draw();
-	public void update();
-	public Dimension getSize();
-	public FontRenderer getFontRenderer();
-	public PrimitiveRenderingSystem getRenderingSystem();
-	public PrimitiveRenderer getPrimitives();
-	public Resources getResources();
-	public void setCursor(Cursor cursor);
+	protected TessellationOutput(Buffer vertices, Buffer uv, float width, float height, int count) {
+		this.vertices = vertices;
+		this.uv = uv;
+		this.width = width;
+		this.height = height;
+		this.count = count;
+	}
+	
+	public Buffer getVerticesBuffer() {
+		return this.vertices;
+	}
+	
+	public Buffer getUVBuffer() {
+		return this.uv;
+	}
+	
+	public float getWidth() {
+		return this.width;
+	}
+	
+	public float getHeight() {
+		return this.height;
+	}
+	
+	public int getCount() {
+		return this.count;
+	}
 }

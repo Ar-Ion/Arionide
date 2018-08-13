@@ -34,7 +34,7 @@ public abstract class Surface implements Drawable {
 	
 	private boolean hidden = true;
 		
-	public void setLayoutBounds(Rectangle2D bounds) {
+	public void setBounds(Rectangle2D bounds) {
 		this.bounds = bounds;
 	}
 	
@@ -49,8 +49,8 @@ public abstract class Surface implements Drawable {
 	public final void draw(AppDrawingContext context) {
 		if(!this.hidden && this.bounds != null) {
 			if(this.backgroundAlpha > 0) {
-				context.setColor(this.background);
-				context.setAlpha(this.backgroundAlpha);
+				//context.setColor(this.background);
+				//context.setAlpha(this.backgroundAlpha);
 				context.getPrimitives().fillRect(this.bounds);
 			}
 			

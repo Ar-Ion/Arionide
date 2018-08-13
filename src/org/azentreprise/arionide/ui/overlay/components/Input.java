@@ -30,16 +30,16 @@ import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.WriteEvent;
 import org.azentreprise.arionide.ui.AppDrawingContext;
-import org.azentreprise.arionide.ui.OpenGLDrawingContext;
+import org.azentreprise.arionide.ui.OpenGLContext;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 import org.azentreprise.arionide.ui.overlay.View;
-import org.azentreprise.arionide.ui.primitives.font.FontRenderer;
-import org.azentreprise.arionide.ui.primitives.font.Metrics;
-import org.azentreprise.arionide.ui.primitives.font.TextTessellator;
+import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
+import org.azentreprise.arionide.ui.render.font.Metrics;
+import org.azentreprise.arionide.ui.render.font.TextTessellator;
 
-public class Text extends Button implements EventHandler {	
+public class Input extends Button implements EventHandler {	
 	
 	private static final int CURSOR_BLINKING_PERIOD = 500;
 	
@@ -54,16 +54,16 @@ public class Text extends Button implements EventHandler {
 	private long counter = 0L;
 	protected boolean highlighted = false;
 	
-	public Text(View parent, String placeholder) {
+	public Input(View parent, String placeholder) {
 		super(parent, placeholder);
 		
 		this.placeholder = placeholder;
-		this.animation = new FieldModifierAnimation(parent.getAppManager(), "cursorAlpha", Text.class, this);
+		this.animation = new FieldModifierAnimation(parent.getAppManager(), "cursorAlpha", Input.class, this);
 		
 		this.setOverCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 	}
 	
-	public Text setPlaceholder(String placeholder) {
+	public Input setPlaceholder(String placeholder) {
 		this.placeholder = placeholder;
 		
 		this.updateText();
@@ -71,7 +71,7 @@ public class Text extends Button implements EventHandler {
 		return this;
 	}
 	
-	public Text setText(String text) {
+	public Input setText(String text) {
 		this.text = new StringBuilder(text);
 		
 		this.cursorPosition = this.text.length();
@@ -95,25 +95,24 @@ public class Text extends Button implements EventHandler {
 		if(this.hasFocus && this.text.length() > 0) {			
 			double[] scdsp = new double[] {1.0d, 1.0d, 0.0d, 0.0d};
  			
-			if(context instanceof OpenGLDrawingContext) {
-				scdsp = OpenGLTextMetricsTransform.getScalarsAndDisplacements((OpenGLDrawingContext) context);
+			if(context instanceof OpenGLContext) {
+				scdsp = OpenGLTextMetricsTransform.getScalarsAndDisplacements((OpenGLContext) context);
 			}
 
-			TextTessellator tessellator = context.getPrimitives().getFontRenderer().getTessellator();
+			TextTessellator tessellator = context.getFontRenderer().getTessellator();
 			Metrics metrics = tessellator.getMetrics();
 			
-			double x = this.textRenderPosition.getX() + scdsp[0] * tessellator.getWidth(this.text.substring(0, this.cursorPosition) + scdsp[2]);
+			double x = this.getPrimitive().getRenderPosition().getX() + scdsp[0] * tessellator.getWidth(this.text.substring(0, this.cursorPosition) + scdsp[2]);
 			double y = this.getBounds().getY() + this.getBounds().getHeight() / 2 + scdsp[3];
 			this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.cursorAlpha);
-			context.setColor(0xFFFFFF);
 			context.getPrimitives().fillRoundRect(new Rectangle2D.Double(x, y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * 2, scdsp[1] * metrics.getLineHeight()));
 			this.getAppManager().getAlphaLayering().pop(AlphaLayer.COMPONENT);
 
 			if(this.highlighted) {
 				this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, 0x42);
 				
-				Rectangle2D selection = new Rectangle2D.Double(this.textRenderPosition.getX() + scdsp[2], y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * tessellator.getWidth(this.text.toString()), scdsp[1] * metrics.getLineHeight());
-				context.setColor(0xC0FFEE);
+				Rectangle2D selection = new Rectangle2D.Double(this.getPrimitive().getRenderPosition().getX() + scdsp[2], y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * tessellator.getWidth(this.text.toString()), scdsp[1] * metrics.getLineHeight());
+				//context.setColor(0xC0FFEE);
 				context.getPrimitives().fillRect(selection);
 				
 				this.getAppManager().getAlphaLayering().pop(AlphaLayer.COMPONENT);
@@ -168,7 +167,7 @@ public class Text extends Button implements EventHandler {
 			this.dispatchDeletion(code, modifiers > 0);
 		} else if(seek) {
 			this.dispatchSeek(code);
-		} else if(FontRenderer.CHARSET.indexOf(ch) >= 0) {
+		} else if(GLFontRenderer.CHARSET.indexOf(ch) >= 0) {
 			this.text.insert(this.cursorPosition, ch);
 			this.cursorPosition++;
 		} else {

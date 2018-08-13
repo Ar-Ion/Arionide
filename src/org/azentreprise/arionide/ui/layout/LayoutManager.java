@@ -91,7 +91,7 @@ public class LayoutManager implements EventHandler {
 			double x2 = config.x2 * this.frameWidth;
 			double y2 = config.y2 * this.frameHeight;
 
-			surface.setLayoutBounds(new Rectangle2D.Double(x1, y1, x2 - x1, y2 - y1));
+			surface.setBounds(new Rectangle2D.Double(x1, y1, x2 - x1, y2 - y1));
 		});
 	}
 

@@ -34,9 +34,9 @@ import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
-import org.azentreprise.arionide.ui.AWTDrawingContext;
+import org.azentreprise.arionide.ui.AWTContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
-import org.azentreprise.arionide.ui.OpenGLDrawingContext;
+import org.azentreprise.arionide.ui.OpenGLContext;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.AlphaLayer;
@@ -69,9 +69,9 @@ public class Tab extends MultiComponent implements EventHandler {
 		
 		AppDrawingContext context = parent.getAppManager().getDrawingContext();
 		
-		if(context instanceof AWTDrawingContext) {
+		if(context instanceof AWTContext) {
 			this.design = new AWTTabDesign();
-		} else if(context instanceof OpenGLDrawingContext) {
+		} else if(context instanceof OpenGLContext) {
 			this.design = new OpenGLTabDesign();
 		} else {
 			this.design = null;
@@ -137,7 +137,7 @@ public class Tab extends MultiComponent implements EventHandler {
 		
 		this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.alpha);
 		
-		context.setColor(this.rgb);
+		//context.setColor(this.rgb);
 		
 		this.design.enterDesignContext(this.getAppManager(), new Point2D.Double(this.shadow, bounds.getCenterY()), this.shadingRadius);
 
@@ -150,7 +150,7 @@ public class Tab extends MultiComponent implements EventHandler {
 				Rectangle2D rect = this.rectangles.get(i++);
 					
 				if(rect.getWidth() > 0) {
-					component.setLayoutBounds(rect);				
+					component.setBounds(rect);				
 					component.drawSurface(context);
 						
 					try {

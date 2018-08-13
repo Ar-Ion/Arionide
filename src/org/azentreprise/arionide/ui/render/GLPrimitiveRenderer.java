@@ -18,33 +18,24 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.primitives;
+package org.azentreprise.arionide.ui.render;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.IntBuffer;
 
-import javax.xml.parsers.ParserConfigurationException;
-
+import org.azentreprise.Debug;
 import org.azentreprise.arionide.ui.AppDrawingContext;
-import org.azentreprise.arionide.ui.FontResources;
-import org.azentreprise.arionide.ui.OpenGLDrawingContext;
-import org.azentreprise.arionide.ui.primitives.font.FontRenderer;
+import org.azentreprise.arionide.ui.OpenGLContext;
+import org.azentreprise.arionide.ui.render.font.FontRenderer;
 import org.azentreprise.arionide.ui.shaders.Shaders;
-import org.xml.sax.SAXException;
 
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLException;
-import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.util.texture.TextureData;
-import com.jogamp.opengl.util.texture.TextureIO;
 
-public class OpenGLPrimitives implements IPrimitives {
+public class GLPrimitiveRenderer implements PrimitiveRenderer {
 	
-	private OpenGLDrawingContext context;
+	private OpenGLContext context;
 	private GL4 gl;
 	
 	private FontRenderer fontRenderer;
@@ -75,22 +66,17 @@ public class OpenGLPrimitives implements IPrimitives {
 	private float a;
 	
 	public void init(AppDrawingContext context) {
-		assert context instanceof OpenGLDrawingContext;
-		this.context = (OpenGLDrawingContext) context;
+		assert context instanceof OpenGLContext;
+		this.context = (OpenGLContext) context;
 		this.gl = this.context.getRenderer();
+		this.fontRenderer = this.context.getFontRenderer();
 		
 		try {
-			FontResources resources = new FontResources(context.getResources());
-			this.fontRenderer = new FontRenderer(resources);
-			
 			int basicVert = Shaders.loadShader(this.gl, "basic.vert", GL4.GL_VERTEX_SHADER);
 			int basicFrag = Shaders.loadShader(this.gl, "basic.frag", GL4.GL_FRAGMENT_SHADER);
 			
 			int guiFrag = Shaders.loadShader(this.gl, "gui.frag", GL4.GL_FRAGMENT_SHADER);
 			int guiGeom = Shaders.loadShader(this.gl, "gui.geom", GL4.GL_GEOMETRY_SHADER);
-			
-			int textVert = Shaders.loadShader(this.gl, "text.vert", GL4.GL_VERTEX_SHADER);
-			int textFrag = Shaders.loadShader(this.gl, "text.frag", GL4.GL_FRAGMENT_SHADER);
 			
 			this.basicShader = this.gl.glCreateProgram();
 			
@@ -121,11 +107,10 @@ public class OpenGLPrimitives implements IPrimitives {
 			this.lightRadius = this.gl.glGetUniformLocation(this.uiShader, "lightRadius");
 			this.lightStrength = this.gl.glGetUniformLocation(this.uiShader, "lightStrength");
 
-			IntBuffer buffer = IntBuffer.allocate(2);
-			this.gl.glGenTextures(2, buffer);
+			/*IntBuffer buffer = IntBuffer.allocate(1);
+			this.gl.glGenTextures(1, buffer);
 			
 			int roundRect = buffer.get(0);
-			int fontBitmap = buffer.get(1);
 			
 			this.gl.glActiveTexture(GL4.GL_TEXTURE0);
 			this.gl.glBindTexture(GL4.GL_TEXTURE_2D, roundRect);
@@ -140,30 +125,17 @@ public class OpenGLPrimitives implements IPrimitives {
 			this.gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
 			this.gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
 			this.gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR_MIPMAP_NEAREST);
-			this.gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_NEAREST);
+			this.gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_NEAREST);*/
 						
 			this.manager = new VAOManager(this.gl, this.uiShader);
-
-			this.textShader = this.gl.glCreateProgram();
-			
-			this.gl.glAttachShader(this.textShader, textVert);
-			this.gl.glAttachShader(this.textShader, textFrag);
-			
-			this.gl.glBindFragDataLocation(this.textShader, 0, "color");
-			
-			this.gl.glLinkProgram(this.textShader);
-			
-			this.fontRenderer.initRenderer(this.gl, this.textShader, fontBitmap);
-		} catch (IOException | GLException | ParserConfigurationException | SAXException e) {
-			throw new RuntimeException(e);
+		} catch (IOException | GLException exception) {
+			Debug.exception(exception);
 		}
 	}
 	
 	public void viewportChanged(int width, int height) {
 		this.pixelWidth = 2.0d / width;
 		this.pixelHeight = 2.0d / height;
-		
-		this.fontRenderer.windowRatioChanged((float) width / height);
 	}
 	
 	public void beginUI() {
@@ -191,8 +163,6 @@ public class OpenGLPrimitives implements IPrimitives {
 			this.gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
 		}, "position");
 
-		this.use(this.basicShader);
-
 		this.gl.glDrawArrays(GL4.GL_LINE_LOOP, 0, 4);
 	}
 
@@ -209,7 +179,7 @@ public class OpenGLPrimitives implements IPrimitives {
 	}
 
 	public void drawRoundRect(Rectangle2D bounds) {	
-		this.drawRect(bounds);
+		//this.drawRect(bounds);
 		/*GLCoordinates coords = new GLCoordinates(bounds);
 		
 		this.manager.loadVAO(coords.getUUID(), () -> coords.allocDataBuffer(8).putBoundingPoints().getDataBuffer(), (nil, id) -> {
@@ -263,7 +233,6 @@ public class OpenGLPrimitives implements IPrimitives {
 	
 	public void setColor(GL4 gl, float r, float g, float b) {
 		if(this.r != r || this.g != g || this.b != b) {
-			this.fontRenderer.setColor(r, g, b);
 			
 			gl.glUniform3f(this.currentShader != this.uiShader ? this.rgb1 : this.rgb2, r, g, b);
 		
@@ -275,7 +244,6 @@ public class OpenGLPrimitives implements IPrimitives {
 	
 	public void setAlpha(GL4 gl, float alpha) {
 		if(this.a != alpha) {
-			this.fontRenderer.setAlpha(alpha);
 			
 			gl.glUniform1f(this.currentShader != this.uiShader ? this.alpha1 : this.alpha2, a);
 			
@@ -330,7 +298,7 @@ public class OpenGLPrimitives implements IPrimitives {
 		this.currentShader = shader;
 	}
 	
-	public FontRenderer getFontRenderer() {
-		return this.fontRenderer;
+	public GL4 getGL() {
+		return this.gl;
 	}
 }

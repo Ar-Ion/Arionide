@@ -62,7 +62,7 @@ public class AppManager implements Purgeable {
 		this.dispatcher = dispatcher;
 		this.focusManager = new FocusManager(dispatcher);
 		this.systemTimer = new Timer(dispatcher);
-		this.alphaLayering = new AlphaLayeringSystem(drawingContext);
+		this.alphaLayering = new AlphaLayeringSystem();
 		
 		MainMenus.init(this);
 	}

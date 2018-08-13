@@ -24,13 +24,17 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.Workspace;
+import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.ActionType;
 import org.azentreprise.arionide.events.Event;
@@ -49,8 +53,16 @@ import org.azentreprise.arionide.threading.DrawingThread;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.primitives.IPrimitives;
-import org.azentreprise.arionide.ui.primitives.OpenGLPrimitives;
+import org.azentreprise.arionide.ui.render.GLPrimitiveRenderer;
+import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
+import org.azentreprise.arionide.ui.render.PrimitiveRenderingSystem;
+import org.azentreprise.arionide.ui.render.PrimitiveType;
+import org.azentreprise.arionide.ui.render.font.FontRenderer;
+import org.azentreprise.arionide.ui.render.font.FontResources;
+import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
+import org.azentreprise.arionide.ui.render.gl.GLRectangleRenderingContext;
+import org.azentreprise.arionide.ui.render.gl.GLTextRenderingContext;
+import org.xml.sax.SAXException;
 
 import com.jogamp.common.util.InterruptSource.Thread;
 import com.jogamp.newt.event.KeyEvent;
@@ -64,10 +76,11 @@ import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.FPSAnimator;
 
-public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener, KeyListener, MouseListener, EventHandler {
+public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyListener, MouseListener, EventHandler {
 	
 	private final IEventDispatcher dispatcher;
 	private final AppManager theManager;
@@ -78,7 +91,8 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	
 	private final FPSAnimator animator;
 	
-	private final OpenGLPrimitives primitives = new OpenGLPrimitives();
+	private final GLPrimitiveRenderer primitives = new GLPrimitiveRenderer();
+	private final PrimitiveRenderingSystem system = new PrimitiveRenderingSystem(this.primitives);
 	
 	private final FloatBuffer clearColor = FloatBuffer.allocate(4);
 	private final FloatBuffer clearDepth = FloatBuffer.allocate(1);
@@ -86,12 +100,13 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 	private DrawingThread thread;
 	private OpenGLCoreRenderer core;
 	private Resources resources;
+	private GLFontRenderer fontRenderer;
 	
 	private GL4 gl;
 	
 	private int alpha = 0;
 		
-	public OpenGLDrawingContext(Arionide theInstance, IEventDispatcher dispatcher, int width, int height) {		
+	public OpenGLContext(Arionide theInstance, IEventDispatcher dispatcher, int width, int height) {		
 		this.dispatcher = dispatcher;
 		this.theManager = new AppManager(theInstance, this, dispatcher);
 		this.caps.setDoubleBuffered(true);
@@ -123,6 +138,12 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 		this.core = (OpenGLCoreRenderer) renderer;
 		this.resources = resources;
 		
+		try {
+			this.fontRenderer = new GLFontRenderer(new FontResources(this.resources));
+		} catch (GLException | IOException | ParserConfigurationException | SAXException exception) {
+			Debug.exception(exception);
+		}
+		
 		this.window.setVisible(true);
 		this.animator.start();
 		
@@ -133,81 +154,50 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 		return new Dimension(2, 2);
 	}
 
-	public void setupRenderingProperties() {
-		
-	}
-
 	public void setCursor(Cursor cursor) {
 		this.window.setPointerVisible(cursor != null);
 	}
 
 	public void init(GLAutoDrawable arg0) {
 		this.gl = this.window.getGL().getGL4();
-				
+		
 		this.primitives.init(this);
+		this.core.init(this.gl);
+		
+		this.system.registerGenericPrimitive(PrimitiveType.RECT, new GLRectangleRenderingContext());
+		this.system.registerGenericPrimitive(PrimitiveType.TEXT, new GLTextRenderingContext(this.fontRenderer));
 		
 		this.clearColor.put(0, 0.0f).put(1, 0.0f).put(2, 0.0f).put(3, 1.0f);
 		this.clearDepth.put(0, 1.0f);
-		
-		this.core.init(this.gl);
 	}
 	
 	public void display(GLAutoDrawable arg0) {
 		if(this.thread != null) {
 			this.thread.incrementTicks();
-	        			
-			performanceBegin();
+	        
+			this.gl.glClearBufferfv(GL4.GL_COLOR, 0, this.clearColor);
+	        this.gl.glClearBufferfv(GL4.GL_DEPTH, 0, this.clearDepth);
 			
 	        this.core.render3D(this);
-	        
-	        performanceNext("3D Core");
-	        
-	        this.primitives.beginUI();
 	        	        
-	        performanceNext("2D Begin");
-	        
+	        this.primitives.beginUI();
+	        	        	        
 			this.theManager.draw();
 			
-	        performanceNext("2D Draw");
-
 	        this.core.render2D(this);
-	        
-	        performanceNext("2D Core Extra");
+			this.system.processRenderingQueue();
 	        
 			this.primitives.endUI();
-			
-	        performanceNext("2D End");
 		}
 	}
-	
-	/* Just some ugly debugging */
-	long time1;
-	
-	private void performanceBegin() {
-		
-		time1 = System.nanoTime();
-		
-		if(time1 % 200 != 0) { // ca. 200 frames interval between samples
-			time1 = -1;
-		} else {
-			System.out.println("**** Performance Debugger Sample ****");
-		}
-	}
-	
-	private void performanceNext(String label) {
-		if(time1 >= 0) {
-			long time2 = System.nanoTime();
-			System.out.println(label + ": " + (time2 - time1));
-			time1 = time2;
-		}
-	}
-
 	public void dispose(GLAutoDrawable arg0) {
 		this.window.destroy();
 	}
 
 	public void reshape(GLAutoDrawable drawble, int x, int y, int width, int height) {
 		this.gl.glViewport(x, y, width, height);
+		
+		this.fontRenderer.windowRatioChanged((float) width / height);
 		this.primitives.viewportChanged(width, height);
 		this.core.update(new Rectangle(this.window.getX(), this.window.getY(), width, height));
 	}
@@ -236,8 +226,16 @@ public class OpenGLDrawingContext implements AppDrawingContext, GLEventListener,
 		this.theManager.update();
 	}
 
-	public IPrimitives getPrimitives() {
+	public PrimitiveRenderer getPrimitives() {
 		return this.primitives;
+	}
+	
+	public FontRenderer getFontRenderer() {
+		return this.fontRenderer;
+	}
+	
+	public PrimitiveRenderingSystem getRenderingSystem() {
+		return this.system;
 	}
 
 	public void setColor(int rgb) {

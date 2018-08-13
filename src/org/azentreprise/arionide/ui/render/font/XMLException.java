@@ -18,31 +18,19 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui;
+package org.azentreprise.arionide.ui.render.font;
 
-import java.awt.Cursor;
-import java.awt.Dimension;
+import java.io.IOException;
 
-import org.azentreprise.arionide.Workspace;
-import org.azentreprise.arionide.resources.Resources;
-import org.azentreprise.arionide.threading.Purgeable;
-import org.azentreprise.arionide.ui.core.CoreRenderer;
-import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
-import org.azentreprise.arionide.ui.render.PrimitiveRenderingSystem;
-import org.azentreprise.arionide.ui.render.font.FontRenderer;
+public class XMLException extends IOException {
 
-public interface AppDrawingContext extends Purgeable {
+	private static final long serialVersionUID = -1927500780185009009L;
+
+	public XMLException(Exception parent) {
+		super(parent);
+	}
 	
-	public static final double MOUSE_WHEEL_SENSIBILITY = 1.0d;
-	
-	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager);
-	public void draw();
-	public void update();
-	public Dimension getSize();
-	public FontRenderer getFontRenderer();
-	public PrimitiveRenderingSystem getRenderingSystem();
-	public PrimitiveRenderer getPrimitives();
-	public Resources getResources();
-	public void setCursor(Cursor cursor);
+	public XMLException(String msg) {
+		super(msg);
+	}
 }

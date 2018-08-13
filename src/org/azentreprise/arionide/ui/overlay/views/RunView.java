@@ -103,7 +103,7 @@ public class RunView extends View implements EventHandler {
 			} else if(click.isTargetting(this, "console")) {
 				int row = (int) click.getData()[0];
 				
-				String data = this.console[row].getLabel();
+				String data = this.console[row].toString();
 				
 				int start = data.indexOf('(');
 				

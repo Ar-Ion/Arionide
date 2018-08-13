@@ -18,58 +18,60 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.primitives.font;
+package org.azentreprise.arionide.ui.render.font;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.nio.Buffer;
 import java.nio.IntBuffer;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-
-import org.azentreprise.arionide.ui.FontResources;
 
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.util.texture.TextureData;
 
-public class FontRenderer {
+public class GLFontRenderer implements FontRenderer {
 	
-	public static final String CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!№;%:?*()_+-=.,/|\\\"'@#$^&{}[]°§<>≤≥";
+	private static final int CACHE_CAPACITY = 1024;
 	
-	private static final float bboxFitting = 0.5f;
-	private static final int maxChars = 256;
+	private final List<TextCacheEntry> trash = new ArrayList<>();
 	
-	private final Map<String, TextCacheEntry> cache = new HashMap<>();
-	private final TextTessellator tessellator;
+	private final Map<String, TextCacheEntry> cache = new LinkedHashMap<String, TextCacheEntry>() {
+		private static final long serialVersionUID = 1L;
+
+		protected boolean removeEldestEntry(Map.Entry<String, TextCacheEntry> eldest) {
+			if(this.size() > CACHE_CAPACITY) {
+				return trash.add(eldest.getValue());
+			} else {
+				return false;
+			}
+		}
+	};
+	
+	private final GLTextTessellator tessellator;
 	private final TextureData fontData;
 	
 	private boolean initialized = false;
 	private int indices;
 	private int shader;
-	private int samplerUniform;
 	private int translationUniform;
 	private int scaleUniform;
-	private int rgbUniform;
-	private int alphaUniform;
-	
-	private float r;
-	private float g;
-	private float b;
-	private float alpha;
-	
+
 	private float ratio = 1.0f;
 		
-	public FontRenderer(FontResources resources) {
-		this.tessellator = new TextTessellator(resources.getMetrics());
+	public GLFontRenderer(FontResources resources) {
+		this.tessellator = new GLTextTessellator(resources.getMetrics());
 		this.fontData = resources.getFontData();
 	}
 
-	public void initRenderer(GL4 gl, int shader, int textureID) {
+	public void initRenderer(GL4 gl, int shader, int textureID, int translationUniform, int scaleUniform) {		
 		gl.glActiveTexture(GL4.GL_TEXTURE1);
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, textureID);
-		
+
 		int size = (int) Math.sqrt(this.fontData.getBuffer().limit() / 4); // assume it is a square texture
-		
+				
 		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, size, size, 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, this.fontData.getBuffer());
 		
 		gl.glGenerateMipmap(GL4.GL_TEXTURE_2D);
@@ -83,18 +85,15 @@ public class FontRenderer {
 		gl.glGenBuffers(1, buffer);
 		this.indices = buffer.get(0);
 		
-		IntBuffer data = IntBuffer.allocate(6 * maxChars);
-		this.generateIndices(maxChars, data);
+		IntBuffer data = IntBuffer.allocate(6 * FontRenderer.MAX_CHARS);
+		this.generateIndices(FontRenderer.MAX_CHARS, data);
 		
 		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, this.indices);
 		gl.glBufferData(GL4.GL_ELEMENT_ARRAY_BUFFER, data.capacity() * Integer.BYTES, data.flip(), GL4.GL_STATIC_DRAW);
 		
 		this.shader = shader;
-		this.samplerUniform = gl.glGetUniformLocation(shader, "bitmap");
-		this.translationUniform = gl.glGetUniformLocation(shader, "translation");
-		this.scaleUniform = gl.glGetUniformLocation(shader, "scale");
-		this.rgbUniform = gl.glGetUniformLocation(shader, "rgb");
-		this.alphaUniform = gl.glGetUniformLocation(shader, "alpha");
+		this.translationUniform = translationUniform;
+		this.scaleUniform = scaleUniform;
 		
 		this.initialized = true;
 	}
@@ -116,7 +115,7 @@ public class FontRenderer {
 		}
 	}
 	
-	public TextCacheEntry prepareString(GL4 gl, String str) {
+	public TextCacheEntry alloc(GL4 gl, String str) {
 		this.checkInitialized();
 		
 		TessellationOutput output = this.tessellator.tessellateString(str);
@@ -125,7 +124,7 @@ public class FontRenderer {
 		Buffer uvBuffer = output.getUVBuffer();
 
 		IntBuffer vao = IntBuffer.allocate(1);
-		IntBuffer buffers = IntBuffer.allocate(3);
+		IntBuffer buffers = IntBuffer.allocate(2);
 		
 		gl.glGenVertexArrays(1, vao);
 		
@@ -133,10 +132,13 @@ public class FontRenderer {
 		
 		gl.glBindVertexArray(vaoID);
 		
-		gl.glGenBuffers(3, buffers);
+		gl.glGenBuffers(2, buffers);
+		
+		int verticesBufferID = buffers.get(0);
+		int uvBufferID = buffers.get(1);
 		
 		// Vertices
-		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, buffers.get(0));
+		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, verticesBufferID);
 		gl.glBufferData(GL4.GL_ARRAY_BUFFER, verticesBuffer.capacity() * Float.BYTES, verticesBuffer, GL4.GL_STATIC_DRAW);
 		
 		int position = gl.glGetAttribLocation(this.shader, "position");
@@ -144,7 +146,7 @@ public class FontRenderer {
 		gl.glEnableVertexAttribArray(position);
 		
 		// UVs
-		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, buffers.get(1));
+		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, uvBufferID);
 		gl.glBufferData(GL4.GL_ARRAY_BUFFER, uvBuffer.capacity() * Float.BYTES, uvBuffer, GL4.GL_STATIC_DRAW);
 		
 		int uv = gl.glGetAttribLocation(this.shader, "uv");
@@ -154,21 +156,33 @@ public class FontRenderer {
 		// Indices
 		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, this.indices);
 		
-		TextCacheEntry entry = new TextCacheEntry(output.getWidth(), output.getHeight(), vaoID, output.getCount());
+		TextCacheEntry entry = new TextCacheEntry(output.getWidth(), output.getHeight(), vaoID, new int[] {verticesBufferID, uvBufferID}, output.getCount());
 		
 		this.cache.put(str, entry);
+
+		for(TextCacheEntry garbage : this.trash) {
+			this.free(gl, garbage);
+		}
+		
+		this.trash.clear();
 		
 		return entry;
 	}
 	
-	public void setColor(float r, float g, float b) {
-		this.r = r;
-		this.g = g;
-		this.b = b;
+	public void free(GL4 gl, String str) {		
+		TextCacheEntry entry = this.cache.get(str);
+		
+		if(entry != null) {
+			this.free(gl, entry);
+		}
 	}
 	
-	public void setAlpha(float alpha) {
-		this.alpha = alpha;
+	public void free(GL4 gl, TextCacheEntry entry) {
+		this.checkInitialized();
+		
+		IntBuffer freeables = entry.getFreeableResources();
+		gl.glDeleteBuffers(freeables.capacity(), freeables);
+		gl.glDeleteVertexArrays(1, IntBuffer.wrap(new int[] {entry.getVAO()}));
 	}
 	
 	public void windowRatioChanged(float newRatio) {
@@ -176,15 +190,14 @@ public class FontRenderer {
 	}
 	
 	public Point2D renderString(GL4 gl, String str, Rectangle2D bounds) {
-		if(str.length() > maxChars) {
-			str = str.substring(0, maxChars - 1);
+		if(str.length() > FontRenderer.MAX_CHARS) {
+			str = str.substring(0, FontRenderer.MAX_CHARS - 1);
 		}
 		
 		TextCacheEntry entry = this.cache.get(str);
 		
 		if(entry == null) {
-			// Dynamic string rendering: performance loss and GPU memory leak (TODO cache clearing system) --> use with care!
-			entry = this.prepareString(gl, str);
+			entry = this.alloc(gl, str);
 		}
 		
 		return this.renderString(gl, entry, bounds);
@@ -197,20 +210,15 @@ public class FontRenderer {
 		float halfScaleX = (float) bounds.getWidth() / entry.getWidth() * this.ratio;
 		float halfScaleY = (float) bounds.getHeight() / entry.getHeight() / this.ratio;
 		
-		float halfMainScale = bboxFitting * Math.min(halfScaleX, halfScaleY);
+		float halfMainScale = FontRenderer.BBOX_FITTING * Math.min(halfScaleX, halfScaleY);
 		
 		float translateX = (float) bounds.getCenterX() - 1.0f;
 		float translateY = (float) -bounds.getCenterY() + 1.0f;
 		
 		boolean horizontalLead = halfScaleX > halfScaleY;
 
-		gl.glUseProgram(this.shader);
-		
-		gl.glUniform1i(this.samplerUniform, 1);
 		gl.glUniform2f(this.translationUniform, translateX, translateY);
 		gl.glUniform2f(this.scaleUniform, halfMainScale / (horizontalLead ? 1.0f : this.ratio), halfMainScale * (horizontalLead ? this.ratio : 1.0f));
-		gl.glUniform3f(this.rgbUniform, this.r, this.g, this.b);
-		gl.glUniform1f(this.alphaUniform, this.alpha);
 				
 		gl.glBindVertexArray(entry.getVAO());
 
@@ -219,7 +227,7 @@ public class FontRenderer {
 		return new Point2D.Float(translateX, translateY);
 	}
 	
-	public TextTessellator getTessellator() {
+	public GLTextTessellator getTessellator() {
 		return this.tessellator;
 	}
 }

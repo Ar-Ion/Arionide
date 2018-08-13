@@ -24,14 +24,14 @@ import java.awt.Rectangle;
 import java.util.List;
 
 import org.azentreprise.arionide.project.Project;
-import org.azentreprise.arionide.ui.AWTDrawingContext;
+import org.azentreprise.arionide.ui.AWTContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
 
 public class AWTCoreRenderer implements CoreRenderer {
 	public void render3D(AppDrawingContext context) {
-		assert context instanceof AWTDrawingContext;
+		assert context instanceof AWTContext;
 	}
 
 	@Override

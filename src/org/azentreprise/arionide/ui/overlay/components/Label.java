@@ -20,34 +20,38 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay.components;
 
-import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
+import org.azentreprise.arionide.ui.render.Text;
+import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
 
 public class Label extends Component {
 	
-	private String label;
-	private int rgb = 0xCAFE;
-	private int alpha = 0xFF;
+	public static final int DEFAULT_RGB = 0xCAFE;
+	public static final int DEFAULT_ALPHA = 0xFF;
 	
-	protected Point2D textRenderPosition;
+	private final Text text;
 
+	private int alpha = DEFAULT_ALPHA;
+	
 	public Label(View parent, String label) {
 		super(parent);
-		this.label = label;
+		
+		this.text = PrimitiveFactory.instance().newText(null, label, DEFAULT_RGB, DEFAULT_ALPHA);
+	}
+	
+	public void setBounds(Rectangle2D bounds) {
+		super.setBounds(bounds);
+		this.text.updateBounds(bounds);
 	}
 	
 	public Label setLabel(String label) {
-		this.label = label;
+		this.text.updateText(label);
 		return this;
-	}
-	
-
-	public String getLabel() {
-		return this.label;
 	}
 	
 	public Label setColor(int rgb) {
@@ -55,13 +59,18 @@ public class Label extends Component {
 			throw new IllegalArgumentException("Alpha values are not allowed");
 		}
 		
-		this.rgb = rgb;
+		this.text.updateRGB(rgb);
+
 		return this;
 	}
 	
 	public Label setAlpha(int alpha) {
 		this.alpha = alpha;
 		return this;
+	}
+	
+	public Text getPrimitive() {
+		return this.text;
 	}
 
 	public void drawSurface(AppDrawingContext context) {
@@ -78,11 +87,11 @@ public class Label extends Component {
 	
 	private void preDraw(AppDrawingContext context) {
 		this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.alpha);
-		context.setColor(this.rgb);
 	}
 	
 	protected void drawComponent(AppDrawingContext context) {
-		this.textRenderPosition = context.getPrimitives().drawText(this.label, this.getBounds());
+		this.text.updateAlpha(this.getAppManager().getAlphaLayering().getCurrentAlpha());
+		context.getRenderingSystem().renderLater(this.text);
 	}
 	
 	private void postDraw() {
@@ -90,7 +99,7 @@ public class Label extends Component {
 	}
 	
 	public String toString() {
-		return this.label;
+		return this.text.toString();
 	}
 	
 	public boolean isFocusable() {

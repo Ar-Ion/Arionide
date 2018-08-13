@@ -18,28 +18,11 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.primitives.font;
+package org.azentreprise.arionide.ui.render;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-public class XMLUtils {
-	protected static Node fetchNode(NodeList parent, String name) throws XMLException {
-		int length = parent.getLength();
-		
-		for(int i = 0; i < length; i++) {
-			Node potential = parent.item(i);
-
-			if(potential.getNodeName().equalsIgnoreCase(name)) {
-				return potential;
-			}
-		}
-		
-		throw new XMLException("Node " + name + " not found in structure " + parent);
-	}
-	
-	protected static String fetchAttribute(Node node, String name) throws XMLException {
-		return ((Element) node).getAttribute(name);
-	}
+public interface RenderingContext {
+	public void load(PrimitiveRenderer renderer);
+	public void enter(PrimitiveRenderer renderer);
+	public void exit(PrimitiveRenderer renderer);
+	public int[] getIdentificationScheme();
 }

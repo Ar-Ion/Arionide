@@ -22,16 +22,13 @@ package org.azentreprise.arionide.ui.overlay;
 
 import java.util.Stack;
 
-import org.azentreprise.arionide.ui.AppDrawingContext;
-
 public class AlphaLayeringSystem {
 	
-	private final AppDrawingContext context;
 	private final Object[] layers = new Object[AlphaLayer.values().length];
 
-	public AlphaLayeringSystem(AppDrawingContext context) {
-		this.context = context;
-		
+	private int currentAlpha;
+	
+	public AlphaLayeringSystem() {		
 		for(int i = 0; i < this.layers.length; i++) {
 			Stack<Integer> layer = new Stack<>();
 			layer.push(0xFF);
@@ -61,9 +58,11 @@ public class AlphaLayeringSystem {
 			alpha *= ((Stack<Integer>) this.layers[i]).lastElement();
 			alpha /= 255;
 		}
-		
-		this.context.setAlpha(alpha);
-		
-		return alpha;
+				
+		return this.currentAlpha = alpha;
+	}
+	
+	public int getCurrentAlpha() {
+		return this.currentAlpha;
 	}
 }

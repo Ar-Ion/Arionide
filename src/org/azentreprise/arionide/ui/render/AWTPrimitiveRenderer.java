@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.primitives;
+package org.azentreprise.arionide.ui.render;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -26,17 +26,17 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import org.azentreprise.arionide.ui.AWTDrawingContext;
+import org.azentreprise.arionide.ui.AWTContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
-import org.azentreprise.arionide.ui.primitives.font.FontRenderer;
+import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
 
-public class AWTPrimitives implements IPrimitives {
+public class AWTPrimitiveRenderer implements PrimitiveRenderer {
 	
-	private AWTDrawingContext context;
+	private AWTContext context;
 	
 	public void init(AppDrawingContext context) {
-		assert context instanceof AWTDrawingContext;
-		this.context = (AWTDrawingContext) context;
+		assert context instanceof AWTContext;
+		this.context = (AWTContext) context;
 	}
 	
 	public void drawRect(Rectangle2D bounds) {
@@ -84,7 +84,7 @@ public class AWTPrimitives implements IPrimitives {
 		// Not implemented
 	}
 
-	public FontRenderer getFontRenderer() {
+	public GLFontRenderer getFontRenderer() {
 		return null;
 	}
 }

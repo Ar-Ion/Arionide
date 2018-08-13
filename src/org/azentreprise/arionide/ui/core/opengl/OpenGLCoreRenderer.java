@@ -63,14 +63,14 @@ import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppDrawingContext;
-import org.azentreprise.arionide.ui.OpenGLDrawingContext;
+import org.azentreprise.arionide.ui.OpenGLContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.code.CodeEditor;
 import org.azentreprise.arionide.ui.menu.code.ReferenceEditor;
 import org.azentreprise.arionide.ui.menu.code.TypeEditor;
-import org.azentreprise.arionide.ui.primitives.GLCoordinates;
+import org.azentreprise.arionide.ui.render.GLCoordinates;
 import org.azentreprise.arionide.ui.shaders.Shaders;
 import org.joml.Matrix4d;
 import org.joml.Vector2d;
@@ -110,7 +110,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private static final double timeResolution = 0.00000005d;
 	
 			
-	private final OpenGLDrawingContext context;
+	private final OpenGLContext context;
 	private final IEventDispatcher dispatcher;
 	private final WorldGeometry worldGeometry;
 	private final CodeGeometry codeGeometry;
@@ -200,7 +200,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private long lastPositionUpdate = System.nanoTime();
 	
 	public OpenGLCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher) {
-		this.context = (OpenGLDrawingContext) context;
+		this.context = (OpenGLContext) context;
 		this.dispatcher = dispatcher;
 		this.worldGeometry = new WorldGeometry(dispatcher);
 		this.codeGeometry = new CodeGeometry();
@@ -470,9 +470,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	public void render3D(AppDrawingContext context) {
-		assert context instanceof OpenGLDrawingContext;
+		assert context instanceof OpenGLContext;
 		
-		OpenGLDrawingContext glContext = (OpenGLDrawingContext) context;
+		OpenGLContext glContext = (OpenGLContext) context;
 		GL4 gl = glContext.getRenderer();
 		
 		this.renderUniverse(gl);
@@ -737,9 +737,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private void postProcess(GL4 gl) {		
 		gl.glBindFramebuffer(GL4.GL_FRAMEBUFFER, 0);
 		
-		gl.glClearBufferfv(GL4.GL_COLOR, 0, this.clearColor);
-        gl.glClearBufferfv(GL4.GL_DEPTH, 0, this.clearDepth);
-		
 		gl.glBindVertexArray(this.fxVAO);
 		gl.glDrawArrays(GL4.GL_TRIANGLE_STRIP, 0, 4);
 	}
@@ -764,12 +761,12 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 					}
 					
 					if(element.getCenter().distance(enclosing.getCenter()) > 2 * enclosing.getSize()) {
-						context.setAlpha(0x1F);
+						//context.setAlpha(0x1F);
 					} else {
-						context.setAlpha(0xFF);
+						//context.setAlpha(0xFF);
 					}
 				} else {
-					context.setAlpha(0xFF);
+					//context.setAlpha(0xFF);
 				}
 				
 				
@@ -816,7 +813,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			Vector2d dimensions = new Vector2d(0.5d, height);
 			
 			if(screenAnchor.x + dimensions.x > 0  && screenAnchor.y + dimensions.y > 0 && screenAnchor.x < 2.0 && screenAnchor.y < 2.0) {
-				context.setColor(color);
+				// context.setColor(color);
 				context.getPrimitives().drawText(label, new Rectangle2D.Double(screenAnchor.x, screenAnchor.y, dimensions.x, dimensions.y));
 			}
 		}

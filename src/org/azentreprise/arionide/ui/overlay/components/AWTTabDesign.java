@@ -27,7 +27,7 @@ import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
 
 import org.azentreprise.arionide.Utils;
-import org.azentreprise.arionide.ui.AWTDrawingContext;
+import org.azentreprise.arionide.ui.AWTContext;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 
@@ -40,9 +40,9 @@ public class AWTTabDesign implements TabDesign {
 	private Paint restore;
 	
 	public void enterDesignContext(AppManager manager, Point2D center, double radius) {
-		assert manager.getDrawingContext() instanceof AWTDrawingContext;
+		assert manager.getDrawingContext() instanceof AWTContext;
 		
-		Graphics2D g2d = ((AWTDrawingContext) manager.getDrawingContext()).getRenderer();
+		Graphics2D g2d = ((AWTContext) manager.getDrawingContext()).getRenderer();
 		
 		this.restore = g2d.getPaint();
 		
@@ -63,13 +63,13 @@ public class AWTTabDesign implements TabDesign {
 	}
 	
 	public void exitDesignContext(AppManager manager) {
-		assert manager.getDrawingContext() instanceof AWTDrawingContext;
+		assert manager.getDrawingContext() instanceof AWTContext;
 		
 		if(this.restore == null) {
 			throw new IllegalStateException("Exiting a non-entered context");
 		}
 		
-		((AWTDrawingContext) manager.getDrawingContext()).getRenderer().setPaint(this.restore);
+		((AWTContext) manager.getDrawingContext()).getRenderer().setPaint(this.restore);
 		
 		this.restore = null;
 	}

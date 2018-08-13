@@ -25,18 +25,18 @@ import java.awt.geom.Point2D;
 import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.overlay.AlphaLayer;
-import org.azentreprise.arionide.ui.primitives.IPrimitives;
-import org.azentreprise.arionide.ui.primitives.OpenGLPrimitives;
+import org.azentreprise.arionide.ui.render.GLPrimitiveRenderer;
+import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 
 public class OpenGLTabDesign implements TabDesign {
 		
 	public void enterDesignContext(AppManager manager, Point2D center, double radius) {
 		if(radius > 0) {
-			IPrimitives primitives = manager.getDrawingContext().getPrimitives();
+			PrimitiveRenderer primitives = manager.getDrawingContext().getPrimitives();
 			
-			assert primitives instanceof OpenGLPrimitives;
+			assert primitives instanceof GLPrimitiveRenderer;
 			
-			OpenGLPrimitives glPrimitives = (OpenGLPrimitives) primitives;
+			GLPrimitiveRenderer glPrimitives = (GLPrimitiveRenderer) primitives;
 					
 			int initialAlpha = (int) (255.0d * glPrimitives.getAlpha());
 			manager.getAlphaLayering().pop(AlphaLayer.COMPONENT);
@@ -48,11 +48,11 @@ public class OpenGLTabDesign implements TabDesign {
 	}
 
 	public void exitDesignContext(AppManager manager) {
-		IPrimitives primitives = manager.getDrawingContext().getPrimitives();
+		PrimitiveRenderer primitives = manager.getDrawingContext().getPrimitives();
 		
-		assert primitives instanceof OpenGLPrimitives;
+		assert primitives instanceof GLPrimitiveRenderer;
 		
-		OpenGLPrimitives glPrimitives = (OpenGLPrimitives) primitives;
+		GLPrimitiveRenderer glPrimitives = (GLPrimitiveRenderer) primitives;
 		glPrimitives.disableLight(manager.getDrawingContext());
 	}
 }

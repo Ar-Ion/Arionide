@@ -18,15 +18,14 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.primitives;
+package org.azentreprise.arionide.ui.render;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.azentreprise.arionide.ui.AppDrawingContext;
-import org.azentreprise.arionide.ui.primitives.font.FontRenderer;
 
-public interface IPrimitives {
+public interface PrimitiveRenderer {
 	public void init(AppDrawingContext context);
 	public void drawRect(Rectangle2D bounds);
 	public void fillRect(Rectangle2D bounds);
@@ -35,5 +34,4 @@ public interface IPrimitives {
 	public void drawLine(double x1, double y1, double x2, double y2);
 	public Point2D drawText(String text, Rectangle2D bounds);
 	public void drawCursor();
-	public FontRenderer getFontRenderer();
 }
