@@ -35,8 +35,28 @@ public class PrimitiveFactory {
 		return singleton;
 	}
 	
+	public Text newText() {
+		return this.newText(new String());
+	}
+	
+	public Text newText(String text) {
+		return this.newText(text, 0, 0);
+	}
+	
+	public Text newText(String text, int rgb, int alpha) {
+		return this.newText(null, text, rgb, alpha);
+	}
+	
 	public Text newText(Rectangle2D bounds, String text, int rgb, int alpha) {
 		return new GLText(bounds, text, rgb, alpha);
+	}
+	
+	public Rectangle newRectangle() {
+		return this.newRectangle(0, 0);
+	}
+	
+	public Rectangle newRectangle(int rgb, int alpha) {
+		return this.newRectangle(null, rgb, alpha);
 	}
 	
 	public Rectangle newRectangle(Rectangle2D bounds, int rgb, int alpha) {

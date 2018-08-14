@@ -72,7 +72,7 @@ public class Tab extends MultiComponent implements EventHandler {
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 		
-		this.borders = PrimitiveFactory.instance().newRectangle(null, ApplicationTints.MAIN_COLOR, ApplicationTints.INACTIVE_ALPHA);
+		this.borders = PrimitiveFactory.instance().newRectangle(ApplicationTints.MAIN_COLOR, ApplicationTints.INACTIVE_ALPHA);
 	}
 	
 	public Tab setBounds(Rectangle2D bounds) {
@@ -107,8 +107,9 @@ public class Tab extends MultiComponent implements EventHandler {
 		
 		for(Component component : this.getComponents()) {
 			if(component instanceof Enlightenable) {
-				UILighting primitive = ((Enlightenable) component).getEnlightenablePrimitive();
-				primitive.updateLightRadius(radius);
+				for(UILighting primitive : ((Enlightenable) component).getEnlightenablePrimitives()) {
+					primitive.updateLightRadius(radius);
+				}
 			}
 		}
 		
@@ -162,9 +163,10 @@ public class Tab extends MultiComponent implements EventHandler {
 					component.setBounds(rect);
 					
 					if(component instanceof Enlightenable) {
-						UILighting primitive = ((Enlightenable) component).getEnlightenablePrimitive();
-						primitive.updateLightStrength(lightStrength);
-						primitive.updateLightCenter((float) this.shadow, (float) bounds.getCenterY());
+						for(UILighting primitive : ((Enlightenable) component).getEnlightenablePrimitives()) {
+							primitive.updateLightStrength(lightStrength);
+							primitive.updateLightCenter((float) this.shadow, (float) bounds.getCenterY());
+						}
 					}
 					
 					component.drawSurface(context);

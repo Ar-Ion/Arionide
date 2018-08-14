@@ -20,6 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
-public abstract class Rectangle extends Primitive implements Shape {
+public abstract class Rectangle extends Primitive implements UILighting, AffineTransformable, UIMutableBounds {
 
 }

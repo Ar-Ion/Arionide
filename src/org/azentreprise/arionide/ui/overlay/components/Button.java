@@ -24,6 +24,8 @@ import java.awt.Cursor;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.azentreprise.arionide.events.ActionEvent;
 import org.azentreprise.arionide.events.ActionType;
@@ -39,12 +41,13 @@ import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.ApplicationTints;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
-import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
+import org.azentreprise.arionide.ui.render.AffineTransformable;
 import org.azentreprise.arionide.ui.render.Rectangle;
+import org.azentreprise.arionide.ui.render.UILighting;
 import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
 
-public class Button extends Label implements EventHandler {
+public class Button extends Label implements EventHandler, Deformable {
 		
 	private static final int ANIMATION_TIME = 200;
 	private static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
@@ -60,7 +63,7 @@ public class Button extends Label implements EventHandler {
 	private boolean mouseOver = false;
 	private Cursor overCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 	
-	private int colorKeepRef = 0x42CAFE;
+	private int color = ApplicationTints.MAIN_COLOR;
 	
 	private ClickEvent event;
 	
@@ -70,7 +73,7 @@ public class Button extends Label implements EventHandler {
 		this.animation = new FieldModifierAnimation(this.getAppManager(), "alpha", Label.class, this);
 		
 		this.setAlpha(ApplicationTints.INACTIVE_ALPHA);
-		this.borders = PrimitiveFactory.instance().newRectangle(null, this.colorKeepRef, ApplicationTints.INACTIVE_ALPHA);
+		this.borders = PrimitiveFactory.instance().newRectangle(ApplicationTints.MAIN_COLOR, ApplicationTints.INACTIVE_ALPHA);
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
@@ -78,6 +81,11 @@ public class Button extends Label implements EventHandler {
 	public Button setBounds(Rectangle2D bounds) {
 		super.setBounds(bounds);
 		this.borders.updateBounds(bounds);
+		return this;
+	}
+	
+	public Button setColor(int rgb) {
+		super.setColor(this.color = rgb);
 		return this;
 	}
 	
@@ -90,14 +98,14 @@ public class Button extends Label implements EventHandler {
 		this.disabled = disabled;
 		
 		if(this.disabled) {
-			this.setColor(ApplicationTints.DISABLED_COLOR);
+			super.setColor(ApplicationTints.DISABLED_COLOR);
 			this.setAlpha(ApplicationTints.INACTIVE_ALPHA);
 			
 			if(this.hasFocus) {
 				this.getAppManager().getFocusManager().next();
 			}
 		} else {
-			this.setColor(this.colorKeepRef);
+			super.setColor(this.color);
 		}
 				
 		return this;
@@ -203,7 +211,11 @@ public class Button extends Label implements EventHandler {
 		return Arrays.asList(MoveEvent.class, ActionEvent.class, FocusGainedEvent.class, FocusLostEvent.class, ValidateEvent.class);
 	}
 
-	public Component setYCorrection(int i) {
-		return this;
+	public List<UILighting> getEnlightenablePrimitives() {
+		return Stream.concat(super.getEnlightenablePrimitives().stream(), Stream.of(this.borders)).collect(Collectors.toList());
+	}
+	
+	public List<AffineTransformable> getDeformablePrimitives() {
+		return Arrays.asList(this.borders);
 	}
 }

@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay;
 
+import java.util.List;
+
 import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.layout.Surface;
@@ -31,6 +33,11 @@ public abstract class Component extends Surface {
 	@IAm("initializing a component")
 	public Component(View parent) {
 		this.parent = parent;
+	}
+	
+	public Component enclose(List<Component> container) {
+		container.add(this);
+		return this;
 	}
 		
 	public View getParentView() {

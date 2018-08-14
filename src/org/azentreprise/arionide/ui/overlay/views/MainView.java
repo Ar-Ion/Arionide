@@ -23,6 +23,7 @@ package org.azentreprise.arionide.ui.overlay.views;
 import java.awt.Desktop;
 import java.awt.geom.Rectangle2D;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -40,10 +41,15 @@ import org.azentreprise.arionide.ui.ApplicationTints;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
+import org.azentreprise.arionide.ui.overlay.AlphaLayer;
+import org.azentreprise.arionide.ui.overlay.AlphaLayeringSystem;
+import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.overlay.Views;
 import org.azentreprise.arionide.ui.overlay.components.Button;
+import org.azentreprise.arionide.ui.overlay.components.Deformable;
 import org.azentreprise.arionide.ui.overlay.components.Label;
+import org.azentreprise.arionide.ui.render.AffineTransformable;
 
 public class MainView extends View implements EventHandler {
 
@@ -52,42 +58,50 @@ public class MainView extends View implements EventHandler {
 		RIGHT
 	}
 	
-	private int page = 0;
-	
-	private Rectangle2D animationAnchor = null;
+	private final List<Component> body = new ArrayList<>();
+	private final List<Component> page = new ArrayList<>();;
+	private final List<Component> commons = new ArrayList<>();;
+
 	private final Animation transformWidthAnimation;
-	private double transformWidth = 1.0d; // mod 2
+	private final Animation bodyAlphaAnimation;
+	private final Button prev;
+	private final Button next;
 	
-	private int componentsAlpha = ApplicationTints.INACTIVE_ALPHA;
-	private final Animation componentsAlphaAnimation;
+	private int pageID = 0;
+		
+	private float transformWidth = 1.0f;
+	private int bodyAlpha = 0xFF;
 	
 	public MainView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
 		this.transformWidthAnimation = new FieldModifierAnimation(this.getAppManager(), "transformWidth", MainView.class, this);
-		this.componentsAlphaAnimation = new FieldModifierAnimation(this.getAppManager(), "componentsAlpha", MainView.class, this);
+		this.bodyAlphaAnimation = new FieldModifierAnimation(this.getAppManager(), "bodyAlpha", MainView.class, this);
 		
 		layoutManager.register(this, null, 0.1f, 0.1f, 0.9f, 0.9f);
 		
 		this.setBorderColor(ApplicationTints.MAIN_COLOR);
 		
-		this.add(new Label(this, "Home"), 0.0f, 0.05f, 1.0f, 0.2f);
+		this.add(new Label(this, "Home").enclose(this.commons), 0.0f, 0.05f, 1.0f, 0.2f);
 		
-		this.add(new Button(this, "Undefined"), 0.1f, 0.23f, 0.9f, 0.33f);
-		this.add(new Button(this, "Undefined"), 0.1f, 0.38f, 0.9f, 0.48f);
-		this.add(new Button(this, "Undefined"), 0.1f, 0.53f, 0.9f, 0.63f);
-		this.add(new Button(this, "Undefined"), 0.1f, 0.68f, 0.9f, 0.78f);
+		this.add(new Button(this, "Undefined").enclose(this.body).enclose(this.page), 0.1f, 0.23f, 0.9f, 0.33f);
+		this.add(new Button(this, "Undefined").enclose(this.body).enclose(this.page), 0.1f, 0.38f, 0.9f, 0.48f);
+		this.add(new Button(this, "Undefined").enclose(this.body).enclose(this.page), 0.1f, 0.53f, 0.9f, 0.63f);
+		this.add(new Button(this, "Undefined").enclose(this.body).enclose(this.page), 0.1f, 0.68f, 0.9f, 0.78f);
 
-		this.add(new Button(this, "New project").setSignal("new"), 0.1f, 0.83f, 0.33f, 0.92f);
-		this.add(new Button(this, "Collaborate").setSignal("connect"), 0.38f, 0.83f, 0.61f, 0.92f);
-		this.add(new Button(this, "Import").setSignal("import"), 0.66f, 0.83f, 0.90f, 0.92f);
+		this.add(new Button(this, "New project").setSignal("new").enclose(this.commons), 0.1f, 0.83f, 0.33f, 0.92f);
+		this.add(new Button(this, "Collaborate").setSignal("connect").enclose(this.commons), 0.38f, 0.83f, 0.61f, 0.92f);
+		this.add(new Button(this, "Import").setSignal("import").enclose(this.commons), 0.66f, 0.83f, 0.90f, 0.92f);
 		
-		this.add(new Button(this, "<").setSignal("prev").setYCorrection(8), 0.2f / 7.0f, 0.43f, 0.5f / 7.0f, 0.58f);
-		this.add(new Button(this, ">").setSignal("next").setYCorrection(8), 6.5f / 7.0f, 0.43f, 6.8f / 7.0f, 0.58f);
+		this.add(this.prev = new Button(this, "<").setSignal("prev"), 0.2f / 7.0f, 0.43f, 0.5f / 7.0f, 0.58f);
+		this.add(this.next = new Button(this, ">").setSignal("next"), 6.5f / 7.0f, 0.43f, 6.8f / 7.0f, 0.58f);
+		
+		this.prev.enclose(this.body);
+		this.next.enclose(this.body);
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 
-		this.page = this.getMaxPage();
+		this.pageID = this.getMaxPage();
 	}
 	
 	private void loadWorkspace() {
@@ -97,48 +111,49 @@ public class MainView extends View implements EventHandler {
 		
 		List<? super Project> projects = theWorkspace.getProjectList();
 		
-		if(this.page > this.getMaxPage()) {
-			this.page = this.getMaxPage();
+		if(this.pageID > this.getMaxPage()) {
+			this.pageID = this.getMaxPage();
 		}
 		
-		// prev button
-		if(this.page <= 0) {
-			((Button) this.get(8)).hide();
+		if(this.pageID <= 0) {
+			this.prev.hide();
 		} else {
-			((Button) this.get(8)).show();
+			this.prev.show();
 		}
 		
-		// next button
-		if(this.page >= this.getMaxPage()) {
-			((Button) this.get(9)).hide();
+		if(this.pageID >= this.getMaxPage()) {
+			this.next.hide();
 		} else {
-			((Button) this.get(9)).show();
+			this.next.show();
 		}
 		
-		if(this.page > 0) {
-			int selector = 4 * (this.page - 1);
+		if(this.pageID > 0) {
+			int scalar = 4 * (this.pageID - 1);
+			int displacement = 0;
 			
-			for(int i = 0; i < 4; i++) {
-				Button button = ((Button) this.get(i + 1));
+			for(Component component : this.page) {
+				Button button = (Button) component;
 				
-				if(selector + i < projects.size()) {
-					Project project = (Project) projects.get(selector + i);
+				if(scalar + displacement < projects.size()) {
+					Project project = (Project) projects.get(scalar + displacement);
 					button.setSignal("open", project).setLabel("Open " + project.getName()).show();
 				} else {
 					button.hide();
 				}
+				
+				displacement++;
 			}
 		} else {
-			((Button) this.get(1)).setSignal("browse", "https://azentreprise.org").setLabel("AZEntreprise.org").show();
-			((Button) this.get(2)).setSignal("browse", "https://azentreprise.org/Arionide/bugreport.php").setLabel("Arionide bug report").show();
-			((Button) this.get(3)).setSignal("browse", "https://azentreprise.org/Arionide/tutorials.php").setLabel("Arionide tutorials").show();
-			((Button) this.get(4)).setSignal("browse", "https://azentreprise.org/Arionide").setLabel("Arionide community").show();
+			((Button) this.page.get(0)).setSignal("browse", "https://azentreprise.org").setLabel("AZEntreprise.org").show();
+			((Button) this.page.get(1)).setSignal("browse", "https://azentreprise.org/Arionide/bugreport.php").setLabel("Arionide bug report").show();
+			((Button) this.page.get(2)).setSignal("browse", "https://azentreprise.org/Arionide/tutorials.php").setLabel("Arionide tutorials").show();
+			((Button) this.page.get(3)).setSignal("browse", "https://azentreprise.org/Arionide").setLabel("Arionide community").show();
 		}
 	}
 	
 	private void setupFocus() {
-		if(this.page > 0) {
-			if(this.page == this.getMaxPage()) {
+		if(this.pageID > 0) {
+			if(this.pageID == this.getMaxPage()) {
 				this.getAppManager().getFocusManager().request(this.getAppManager().getWorkspace().getProjectList().size() % 4);
 			} else {
 				this.getAppManager().getFocusManager().request(1);
@@ -163,55 +178,64 @@ public class MainView extends View implements EventHandler {
 		this.loadWorkspace();
 	}
 	
-	public void drawSurface(AppDrawingContext context) {
-		if(this.animationAnchor != null) {
-			for(int i = 1; i < 5; i++) {
-				Rectangle2D buttonBounds = this.get(i).getBounds();
-				
-				if(buttonBounds != null) {
-	
-					((Button) this.get(i)).setAlpha(Math.abs(this.componentsAlpha));
-	
-					if(this.transformWidth < 0.0f) {
-						double delta = this.animationAnchor.getWidth() * (this.transformWidth + 1.0d);
-						buttonBounds.setRect(this.animationAnchor.getX() + delta, buttonBounds.getY(), this.animationAnchor.getWidth() - delta, buttonBounds.getHeight());
-					} else {
-						buttonBounds.setRect(this.animationAnchor.getX(), buttonBounds.getY(), this.transformWidth * this.animationAnchor.getWidth(), buttonBounds.getHeight());
+	public void drawSurface(AppDrawingContext context) {		
+		for(Component component : this.page) {
+			Rectangle2D bounds = component.getBounds();
+			
+			if(bounds != null) {
+				float leftToOrigin = Math.abs((float) bounds.getX() - 1.0f);
+				float rightToOrigin = Math.abs((float) bounds.getX() + (float) bounds.getWidth() - 1.0f);
+			
+				if(component instanceof Deformable) {
+					for(AffineTransformable primitive : ((Deformable) component).getDeformablePrimitives()) {
+						if(this.transformWidth < 0.0d) {
+							primitive.updateScale(-this.transformWidth, 1.0f);
+							primitive.updateTranslation(rightToOrigin * (this.transformWidth + 1.0f), 0.0f);
+						} else {
+							primitive.updateScale(this.transformWidth, 1.0f);
+							primitive.updateTranslation(leftToOrigin * (this.transformWidth - 1.0f), 0.0f);
+						}	
 					}
 				}
-			}
-			
-			for(int i = 8; i < 10; i++) {
-				((Button) this.get(i)).setAlpha(Math.abs(this.componentsAlpha));
 			}
 		}
 		
 		super.drawSurface(context);
 	}
 	
-	private void makeHorizontalSwipe(SwipeDirection direction, Consumer<Void> completionHandler) {
-
-		if(this.animationAnchor != null) {
-			return;
+	public void drawComponents(AppDrawingContext context) {
+		AlphaLayeringSystem layering = this.getAppManager().getAlphaLayering();
+		
+		layering.push(AlphaLayer.CONTAINER, Math.abs(this.bodyAlpha));
+		
+		for(Component component : this.body) {
+			component.draw(context);
 		}
-
-		this.getAppManager().getFocusManager().request(-1);
 		
-		this.animationAnchor = (Rectangle2D) this.get(1).getBounds().clone(); // any of the buttons since they all have the same x-pos and width
-
-		double sign = direction.equals(SwipeDirection.LEFT) ? 1.0d : -1.0d;
+		layering.pop(AlphaLayer.CONTAINER);
 		
-		this.transformWidth *= sign;
-		
-		this.transformWidthAnimation.startAnimation(500, after -> {
-			this.animationAnchor = null;
-			this.transformWidth = 1.0d;
-		}, -sign);
-		
-		this.componentsAlphaAnimation.startAnimation(500, after -> {
-			this.componentsAlpha = ApplicationTints.INACTIVE_ALPHA;
-			completionHandler.accept(null);
-		}, -ApplicationTints.INACTIVE_ALPHA);
+		for(Component component : this.commons) {
+			component.draw(context);
+		}
+	}
+	
+	private void makeHorizontalSwipe(SwipeDirection direction, Consumer<Void> completionHandler) {
+		if(this.transformWidth == 1.0d) {
+				this.getAppManager().getFocusManager().request(-1);
+						
+				float sign = direction.equals(SwipeDirection.LEFT) ? 1.0f : -1.0f;
+				
+				this.transformWidth *= sign;
+				
+				this.transformWidthAnimation.startAnimation(500, after -> {
+					this.transformWidth = 1.0f;
+				}, -sign);
+				
+				this.bodyAlphaAnimation.startAnimation(500, after -> {
+					completionHandler.accept(null);
+					this.bodyAlpha = 0xFF;
+				}, -0xFF);
+		}
 	}
 
 	public <T extends Event> void handleEvent(T event) {
@@ -245,11 +269,11 @@ public class MainView extends View implements EventHandler {
 			} else if(click.isTargetting(this, "prev")) {
 				this.makeHorizontalSwipe(SwipeDirection.RIGHT, nil -> this.setupFocus());
 				this.getAppManager().getSystemTimer().schedule(this, 250L);
-				this.page--;
+				this.pageID--;
 			} else if(click.isTargetting(this, "next")) {
 				this.makeHorizontalSwipe(SwipeDirection.LEFT, nil -> this.setupFocus());
 				this.getAppManager().getSystemTimer().schedule(this, 250L);
-				this.page++;
+				this.pageID++;
 			}
 		} else if(event instanceof TimerEvent) {
 			if(((TimerEvent) event).isTargetting(this)) {

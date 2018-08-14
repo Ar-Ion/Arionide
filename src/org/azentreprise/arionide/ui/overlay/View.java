@@ -22,6 +22,7 @@ package org.azentreprise.arionide.ui.overlay;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.azentreprise.arionide.debugging.IAm;
@@ -42,7 +43,7 @@ public abstract class View extends Surface {
 	private final List<Component> components = new ArrayList<>();
 	
 	private final Animation alphaAnimation;
-	private final Rectangle borders = PrimitiveFactory.instance().newRectangle(null, 0, 0);
+	private final Rectangle borders = PrimitiveFactory.instance().newRectangle();
 	
 	private final int focusViewUID;
 	
@@ -80,11 +81,15 @@ public abstract class View extends Surface {
 			context.getRenderingSystem().renderLater(this.borders);
 		}
 		
+		this.drawComponents(context);
+		
+		this.appManager.getAlphaLayering().pop(AlphaLayer.VIEW);
+	}
+	
+	public void drawComponents(AppDrawingContext context) {
 		for(Component component : this.components) {
 			component.draw(context);
 		}
-		
-		this.appManager.getAlphaLayering().pop(AlphaLayer.VIEW);
 	}
 	
 	public void update() {
@@ -99,8 +104,8 @@ public abstract class View extends Surface {
 		this.getAppManager().getFocusManager().registerComponent(component);
 	}
 	
-	protected Component get(int componentID) {
-		return this.components.get(componentID);
+	protected List<Component> getComponents() {
+		return Collections.unmodifiableList(this.components);
 	}
 	
 	protected void setupFocusCycle(int... elements) {

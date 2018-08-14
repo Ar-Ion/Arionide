@@ -21,6 +21,8 @@
 package org.azentreprise.arionide.ui.overlay.components;
 
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
+import java.util.List;
 
 import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.ui.AppDrawingContext;
@@ -41,7 +43,7 @@ public class Label extends Component implements Enlightenable {
 	public Label(View parent, String label) {
 		super(parent);
 		
-		this.text = PrimitiveFactory.instance().newText(null, label, ApplicationTints.MAIN_COLOR, ApplicationTints.ACTIVE_ALPHA);
+		this.text = PrimitiveFactory.instance().newText(label, ApplicationTints.MAIN_COLOR, ApplicationTints.ACTIVE_ALPHA);
 	}
 	
 	public Label setBounds(Rectangle2D bounds) {
@@ -66,8 +68,12 @@ public class Label extends Component implements Enlightenable {
 		return this;
 	}
 	
-	public UILighting getEnlightenablePrimitive() {
-		return this.text;
+	public void requestAlphaUpdate(int alpha) {
+		this.setAlpha(alpha);
+	}
+	
+	public List<UILighting> getEnlightenablePrimitives() {
+		return Arrays.asList(this.text);
 	}
 	
 	public Text getText() {
@@ -87,11 +93,10 @@ public class Label extends Component implements Enlightenable {
 	}
 	
 	private void preDraw(AppDrawingContext context) {
-		this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.alpha);
+		this.text.updateAlpha(this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.alpha));
 	}
 	
 	protected void drawComponent(AppDrawingContext context) {
-		this.text.updateAlpha(this.getAppManager().getAlphaLayering().getCurrentAlpha());		
 		context.getRenderingSystem().renderLater(this.text);
 	}
 	

@@ -37,6 +37,10 @@ import com.jogamp.opengl.GL4;
 public class GLText extends Text {
 
 	private Rectangle2D bounds;
+	private float translateX;
+	private float translateY;
+	private float scaleX = 1.0f;
+	private float scaleY = 1.0f;
 	private String text;
 	private int rgb;
 	private int alpha;
@@ -55,6 +59,16 @@ public class GLText extends Text {
 	
 	public void updateBounds(Rectangle2D newBounds) {
 		this.bounds = newBounds;
+	}
+	
+	public void updateScale(float newScaleX, float newScaleY) {
+		this.scaleX = newScaleX;
+		this.scaleY = newScaleY;
+	}
+
+	public void updateTranslation(float newTranslateX, float newTranslateY) {
+		this.translateX = newTranslateX;
+		this.translateY = newTranslateY;
 	}
 	
 	public void updateRGB(int newRGB) {
@@ -129,7 +143,12 @@ public class GLText extends Text {
 		assert renderer instanceof GLPrimitiveRenderer;
 		
 		if(this.bounds != null) {
-			this.renderPosition = ((GLPrimitiveRenderer) renderer).drawText(this.text, this.bounds);
+			double x = (this.bounds.getX() - 1.0d) * this.scaleX + 1.0d + this.translateX;
+			double y = (this.bounds.getY() - 1.0d) * this.scaleY + 1.0d + this.translateY;
+			double width = this.bounds.getWidth() * this.scaleX;
+			double height = this.bounds.getHeight();
+
+			this.renderPosition = ((GLPrimitiveRenderer) renderer).drawText(this.text, new Rectangle2D.Double(x, y, width, height));
 		}
 	}
 	

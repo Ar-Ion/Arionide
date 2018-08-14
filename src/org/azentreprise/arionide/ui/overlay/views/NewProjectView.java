@@ -70,30 +70,21 @@ public class NewProjectView extends View implements EventHandler {
 			ClickEvent click = (ClickEvent) event;
 			
 			if(click.isTargetting(this, "create")) {
-				Component text = this.get(1);
-				
-				assert text instanceof Input;
-				
-				String name = text.toString();
+				String name = this.projectName.toString();
 				
 				if(!name.isEmpty()) {
 					try {
 						this.getAppManager().getWorkspace().createProject(name);
 						this.openView(Views.code);
 						
-						((Input) text).setText(""); // Reset field
+						this.projectName.setText(new String()); // Reset field
 					} catch(IOException exception) {
 						Debug.exception(exception);
 					}
 				}
 			} else if(click.isTargetting(this, "cancel")) {
 				this.openView(Views.main);
-				
-				Component text = this.get(1);
-				
-				assert text instanceof Input;
-				
-				((Input) text).setText(""); // Reset field
+				this.projectName.setText(new String()); // Reset field
 			}
 		}
 	}

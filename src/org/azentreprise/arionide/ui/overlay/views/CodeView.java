@@ -72,7 +72,7 @@ public class CodeView extends View implements EventHandler {
 		
 		this.add(new Tab(this, "Inheritance", "Hierarchy", "Call graph").setSignal("sceneChanged").setActiveComponent(1), 0.3f, 0.05f, 0.7f, 0.1f);
 	
-		this.add(new Button(this, "<").setSignal("back").setYCorrection(4), 0.05f, 0.05f, 0.15f, 0.1f);
+		this.add(new Button(this, "<").setSignal("back"), 0.05f, 0.05f, 0.15f, 0.1f);
 		this.add(new Button(this, "Run").setSignal("run"), 0.85f, 0.05f, 0.95f, 0.1f);
 		
 		this.add(new Button(this, "+").setSignal("add"), 0.05f, 0.86f, 0.15f, 0.94f);
