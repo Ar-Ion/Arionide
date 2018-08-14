@@ -100,7 +100,10 @@ public class Input extends Button implements EventHandler {
 			
 			double x = this.getText().getRenderPosition().getX() + scdsp[0] * tessellator.getWidth(this.text.substring(0, this.cursorPosition) + scdsp[2]);
 			double y = this.getBounds().getY() + this.getBounds().getHeight() / 2 + scdsp[3];
-			this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.cursorAlpha);
+			
+			System.out.println(x + "; " + y);
+
+			this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, 0xFF);
 			context.getPrimitives().fillRoundRect(new Rectangle2D.Double(x, y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * 2, scdsp[1] * metrics.getLineHeight()));
 			this.getAppManager().getAlphaLayering().pop(AlphaLayer.COMPONENT);
 

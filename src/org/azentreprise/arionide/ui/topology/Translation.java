@@ -18,13 +18,47 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.overlay.components;
+package org.azentreprise.arionide.ui.topology;
 
-import java.util.List;
+public class Translation extends Application {
 
-import org.azentreprise.arionide.ui.render.UILighting;
-
-public interface Enlightenable {
-	public void requestAlphaUpdate(int alpha);
-	public List<UILighting> getEnlightenablePrimitives();
+	private float translateX;
+	private float translateY;
+	
+	public Translation() {
+		this(0.0f, 0.0f);
+	}
+	
+	public Translation(float translateX, float translateY) {
+		this.translateX = translateX;
+		this.translateY = translateY;
+	}
+	
+	public void setTranslateX(float translateX) {
+		this.translateX = translateX;
+	}
+	
+	public void setTranslateY(float translateY) {
+		this.translateY = translateY;
+	}
+	
+	public void setTranslation(float translateX, float translateY) {
+		this.translateX = translateX;
+		this.translateY = translateY;
+	}
+	
+	public float getTranslateX() {
+		return this.translateX;
+	}
+	
+	public float getTranslateY() {
+		return this.translateY;
+	}
+	
+	public void apply(Set input) {
+		for(Point point : input.getPoints()) {
+			point.setX(point.getX() + this.translateX);
+			point.setY(point.getY() + this.translateY);
+		}
+	}
 }

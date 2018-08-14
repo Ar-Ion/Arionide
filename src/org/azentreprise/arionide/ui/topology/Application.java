@@ -18,13 +18,18 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.overlay.components;
+package org.azentreprise.arionide.ui.topology;
 
-import java.util.List;
+public abstract class Application {	
 
-import org.azentreprise.arionide.ui.render.UILighting;
-
-public interface Enlightenable {
-	public void requestAlphaUpdate(int alpha);
-	public List<UILighting> getEnlightenablePrimitives();
+	public abstract void apply(Set input);
+	
+	public Application compose(Application other) {
+		return new Application() {
+			public void apply(Set input) {
+				other.apply(input);
+				Application.this.apply(input);
+			}
+		};
+	}
 }

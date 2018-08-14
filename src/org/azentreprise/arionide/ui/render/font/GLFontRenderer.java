@@ -223,10 +223,10 @@ public class GLFontRenderer implements FontRenderer {
 		gl.glBindVertexArray(entry.getVAO());
 
 		gl.glDrawElements(GL4.GL_TRIANGLES, entry.getCount() * 6, GL4.GL_UNSIGNED_INT, 0);
-
-		return new Point2D.Float(translateX, translateY);
+		
+		return new Point2D.Float(0, 0);
 	}
-	
+		
 	public GLTextTessellator getTessellator() {
 		return this.tessellator;
 	}
