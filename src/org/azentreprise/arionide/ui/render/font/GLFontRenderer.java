@@ -206,19 +206,19 @@ public class GLFontRenderer implements FontRenderer {
 	// returns the origin of the rendered string
 	public Point2D renderString(GL4 gl, TextCacheEntry entry, Rectangle2D bounds) {
 		this.checkInitialized();
-				
-		float halfScaleX = (float) bounds.getWidth() / entry.getWidth() * this.ratio;
-		float halfScaleY = (float) bounds.getHeight() / entry.getHeight() / this.ratio;
-		
-		float halfMainScale = FontRenderer.BBOX_FITTING * Math.min(halfScaleX, halfScaleY);
-		
+						
 		float translateX = (float) bounds.getCenterX() - 1.0f;
-		float translateY = (float) -bounds.getCenterY() + 1.0f;
-		
-		boolean horizontalLead = halfScaleX > halfScaleY;
+		float translateY = 1.0f - (float) bounds.getCenterY();
+		float scaleX = FontRenderer.BBOX_FIT_X * (float) bounds.getWidth() / entry.getWidth();
+		float scaleY = FontRenderer.BBOX_FIT_Y * (float) bounds.getHeight() / entry.getHeight();
 
+		if(scaleY > scaleX * this.ratio) {
+			gl.glUniform2f(this.scaleUniform, scaleX, scaleX * this.ratio);
+		} else {
+			gl.glUniform2f(this.scaleUniform, scaleY / this.ratio, scaleY);
+		}
+		
 		gl.glUniform2f(this.translationUniform, translateX, translateY);
-		gl.glUniform2f(this.scaleUniform, halfMainScale / (horizontalLead ? 1.0f : this.ratio), halfMainScale * (horizontalLead ? this.ratio : 1.0f));
 
 		gl.glBindVertexArray(entry.getVAO());
 

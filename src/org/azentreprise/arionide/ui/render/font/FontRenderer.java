@@ -29,7 +29,8 @@ public interface FontRenderer {
 	
 	public static final String CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!№;%:?*()_+-=.,/|\\\"'@#$^&{}[]°§<>≤≥";
 	
-	public static final float BBOX_FITTING = 0.5f;
+	public static final float BBOX_FIT_X = 0.9f;
+	public static final float BBOX_FIT_Y = 0.5f;
 	public static final int MAX_CHARS = 256;
 	
 	public void windowRatioChanged(float newRatio);

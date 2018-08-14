@@ -31,12 +31,11 @@ import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.ApplicationTints;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.overlay.Views;
 import org.azentreprise.arionide.ui.overlay.components.Button;
-import org.azentreprise.arionide.ui.overlay.components.Label;
 import org.azentreprise.arionide.ui.overlay.components.Input;
+import org.azentreprise.arionide.ui.overlay.components.Label;
 
 public class NewProjectView extends View implements EventHandler {
 	
