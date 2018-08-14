@@ -36,6 +36,7 @@ import org.azentreprise.arionide.events.TimerEvent;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.ApplicationTints;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
@@ -57,7 +58,7 @@ public class MainView extends View implements EventHandler {
 	private final Animation transformWidthAnimation;
 	private double transformWidth = 1.0d; // mod 2
 	
-	private int componentsAlpha = Button.DEFAULT_ALPHA;
+	private int componentsAlpha = ApplicationTints.INACTIVE_ALPHA;
 	private final Animation componentsAlphaAnimation;
 	
 	public MainView(AppManager appManager, LayoutManager layoutManager) {
@@ -68,7 +69,7 @@ public class MainView extends View implements EventHandler {
 		
 		layoutManager.register(this, null, 0.1f, 0.1f, 0.9f, 0.9f);
 		
-		this.setBorderColor(0xCAFE);
+		this.setBorderColor(ApplicationTints.MAIN_COLOR);
 		
 		this.add(new Label(this, "Home"), 0.0f, 0.05f, 1.0f, 0.2f);
 		
@@ -208,9 +209,9 @@ public class MainView extends View implements EventHandler {
 		}, -sign);
 		
 		this.componentsAlphaAnimation.startAnimation(500, after -> {
-			this.componentsAlpha = Button.DEFAULT_ALPHA;
+			this.componentsAlpha = ApplicationTints.INACTIVE_ALPHA;
 			completionHandler.accept(null);
-		}, -Button.DEFAULT_ALPHA);
+		}, -ApplicationTints.INACTIVE_ALPHA);
 	}
 
 	public <T extends Event> void handleEvent(T event) {

@@ -26,34 +26,17 @@ import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.Drawable;
 
 public abstract class Surface implements Drawable {
-	
+		
 	private Rectangle2D bounds;
-	
-	private int background = 0;
-	private int backgroundAlpha = 0;
-	
 	private boolean hidden = true;
 		
-	public void setBounds(Rectangle2D bounds) {
+	public Surface setBounds(Rectangle2D bounds) {
 		this.bounds = bounds;
-	}
-	
-	public void setBackgroundColor(int rgb) {
-		this.background = rgb;
-	}
-	
-	public void setBackgroundAlpha(int alpha) {
-		this.backgroundAlpha = alpha;
+		return this;
 	}
 	
 	public final void draw(AppDrawingContext context) {
 		if(!this.hidden && this.bounds != null) {
-			if(this.backgroundAlpha > 0) {
-				//context.setColor(this.background);
-				//context.setAlpha(this.backgroundAlpha);
-				context.getPrimitives().fillRect(this.bounds);
-			}
-			
 			this.drawSurface(context);
 		}
 	}

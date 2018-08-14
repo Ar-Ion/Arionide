@@ -20,10 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
-import java.awt.geom.Rectangle2D;
+public abstract class Rectangle extends Primitive implements Shape {
 
-public abstract class Rectangle extends Primitive {
-	public abstract void updateBounds(Rectangle2D newBounds);
-	public abstract void updateRGB(int newRGB);
-	public abstract void updateAlpha(int newAlpha);
 }

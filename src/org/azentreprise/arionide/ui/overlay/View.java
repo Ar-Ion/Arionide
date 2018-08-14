@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay;
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,8 @@ import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.layout.Surface;
+import org.azentreprise.arionide.ui.render.Rectangle;
+import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
 
 public abstract class View extends Surface {
 	
@@ -39,11 +42,11 @@ public abstract class View extends Surface {
 	private final List<Component> components = new ArrayList<>();
 	
 	private final Animation alphaAnimation;
+	private final Rectangle borders = PrimitiveFactory.instance().newRectangle(null, 0, 0);
 	
 	private final int focusViewUID;
 	
-	private int borderColor = -1;
-	
+	private boolean hasBorders;
 	private int alpha = 0;
 	
 	public View(AppManager appManager, LayoutManager layoutManager) {
@@ -55,8 +58,15 @@ public abstract class View extends Surface {
 		this.focusViewUID = this.getAppManager().getFocusManager().requestViewUID();
 	}
 	
+	public View setBounds(Rectangle2D bounds) {
+		super.setBounds(bounds);
+		this.borders.updateBounds(bounds);
+		return this;
+	}
+	
 	public void setBorderColor(int rgb) {
-		this.borderColor = rgb;
+		this.borders.updateRGB(rgb);
+		this.hasBorders = rgb != -1;
 	}
 	
 	public Animation getAlphaAnimation() {
@@ -64,11 +74,10 @@ public abstract class View extends Surface {
 	}
 
 	public void drawSurface(AppDrawingContext context) {		
-		this.appManager.getAlphaLayering().push(AlphaLayer.VIEW, this.alpha);
+		this.borders.updateAlpha(this.appManager.getAlphaLayering().push(AlphaLayer.VIEW, this.alpha));
 		
-		if(this.borderColor > 0) {
-			//context.setColor(this.borderColor);
-			context.getPrimitives().drawRoundRect(this.getBounds());
+		if(this.hasBorders) {
+			context.getRenderingSystem().renderLater(this.borders);
 		}
 		
 		for(Component component : this.components) {

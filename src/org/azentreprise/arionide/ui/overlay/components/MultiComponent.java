@@ -28,7 +28,7 @@ import org.azentreprise.arionide.ui.overlay.View;
 
 public abstract class MultiComponent extends Component {
 	
-	private final Function<String, Component> componentSupplier;
+	private final Function<String, Component> componentGenerator;
 	private List<Component> components;
 	
 	public MultiComponent(View parent, List<Component> components) {
@@ -36,7 +36,7 @@ public abstract class MultiComponent extends Component {
 		
 		assert components.size() > 0;
 		
-		this.componentSupplier = (str) -> new Label(parent, str.contains("$$$") ? str.substring(0, str.indexOf("$$$")) : str);
+		this.componentGenerator = (str) -> new Label(parent, str.contains("$$$") ? str.substring(0, str.indexOf("$$$")) : str);
 		this.components = components;
 	}
 	
@@ -48,7 +48,7 @@ public abstract class MultiComponent extends Component {
 		this.components = components;
 	}
 	
-	public Function<String, Component> getMapper() {
-		return this.componentSupplier;
+	public Function<String, Component> getGenerator() {
+		return this.componentGenerator;
 	}
 }

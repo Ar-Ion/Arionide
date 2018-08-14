@@ -21,5 +21,5 @@
 package org.azentreprise.arionide.ui.overlay;
 
 public enum AlphaLayer {
-	VIEW, COMPONENT
+	VIEW, CONTAINER, COMPONENT
 }

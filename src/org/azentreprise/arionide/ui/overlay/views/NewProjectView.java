@@ -29,6 +29,7 @@ import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.ApplicationTints;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
@@ -46,7 +47,7 @@ public class NewProjectView extends View implements EventHandler {
 		
 		layoutManager.register(this, null, 0.1f, 0.1f, 0.9f, 0.9f);
 		
-		this.setBorderColor(0xCAFE);
+		this.setBorderColor(ApplicationTints.MAIN_COLOR);
 				
 		this.add(new Label(this, "New project"), 0, 0.05f, 1.0f, 0.3f);
 		
@@ -73,7 +74,7 @@ public class NewProjectView extends View implements EventHandler {
 				
 				assert text instanceof Input;
 				
-				String name = ((Input) text).getText();
+				String name = text.toString();
 				
 				if(!name.isEmpty()) {
 					try {

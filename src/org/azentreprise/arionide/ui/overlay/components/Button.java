@@ -36,6 +36,7 @@ import org.azentreprise.arionide.events.FocusLostEvent;
 import org.azentreprise.arionide.events.MoveEvent;
 import org.azentreprise.arionide.events.ValidateEvent;
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.ApplicationTints;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.Component;
@@ -44,9 +45,7 @@ import org.azentreprise.arionide.ui.render.Rectangle;
 import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
 
 public class Button extends Label implements EventHandler {
-	
-	public static final int DEFAULT_ALPHA = 0x60;
-	
+		
 	private static final int ANIMATION_TIME = 200;
 	private static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
 	
@@ -70,15 +69,16 @@ public class Button extends Label implements EventHandler {
 		
 		this.animation = new FieldModifierAnimation(this.getAppManager(), "alpha", Label.class, this);
 		
-		this.setAlpha(DEFAULT_ALPHA);
-		this.borders = PrimitiveFactory.instance().newRectangle(null, this.colorKeepRef, DEFAULT_ALPHA);
+		this.setAlpha(ApplicationTints.INACTIVE_ALPHA);
+		this.borders = PrimitiveFactory.instance().newRectangle(null, this.colorKeepRef, ApplicationTints.INACTIVE_ALPHA);
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
 	
-	public void setBounds(Rectangle2D bounds) {
+	public Button setBounds(Rectangle2D bounds) {
 		super.setBounds(bounds);
 		this.borders.updateBounds(bounds);
+		return this;
 	}
 	
 	public Button setSignal(String signal, Object... data) {
@@ -90,8 +90,8 @@ public class Button extends Label implements EventHandler {
 		this.disabled = disabled;
 		
 		if(this.disabled) {
-			this.setColor(0xFF0000);
-			this.setAlpha(DEFAULT_ALPHA);
+			this.setColor(ApplicationTints.DISABLED_COLOR);
+			this.setAlpha(ApplicationTints.INACTIVE_ALPHA);
 			
 			if(this.hasFocus) {
 				this.getAppManager().getFocusManager().next();
@@ -150,7 +150,7 @@ public class Button extends Label implements EventHandler {
 					this.getAppManager().getDrawingContext().setCursor(DEFAULT_CURSOR);
 
 					if(!this.hasFocus) {
-						this.animation.startAnimation(ANIMATION_TIME, DEFAULT_ALPHA);
+						this.animation.startAnimation(ANIMATION_TIME, ApplicationTints.INACTIVE_ALPHA);
 					}
 				}
 			}
@@ -190,7 +190,7 @@ public class Button extends Label implements EventHandler {
 	
 	protected void onFocusLost() {
 		this.hasFocus = false;
-		this.animation.startAnimation(ANIMATION_TIME, DEFAULT_ALPHA);
+		this.animation.startAnimation(ANIMATION_TIME, ApplicationTints.INACTIVE_ALPHA);
 	}
 	
 	public void hide() {

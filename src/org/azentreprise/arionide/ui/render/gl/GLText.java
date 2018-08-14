@@ -22,9 +22,11 @@ package org.azentreprise.arionide.ui.render.gl;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.math.BigInteger;
 
 import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.ui.render.GLPrimitiveRenderer;
+import org.azentreprise.arionide.ui.render.Identification;
 import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
 import org.azentreprise.arionide.ui.render.RenderingContext;
@@ -34,10 +36,14 @@ import com.jogamp.opengl.GL4;
 
 public class GLText extends Text {
 
+	private Rectangle2D bounds;
 	private String text;
 	private int rgb;
 	private int alpha;
-	private Rectangle2D bounds;
+	private float lightCenterX;
+	private float lightCenterY;
+	private float lightRadius = -2.0f;
+	private float lightStrength = 1.0f;
 	private Point2D renderPosition = new Point2D.Double();
 	
 	public GLText(Rectangle2D bounds, String text, int rgb, int alpha) {
@@ -62,13 +68,31 @@ public class GLText extends Text {
 	public void updateText(String newText) {
 		this.text = newText;
 	}
+
+	public void updateLightCenter(float newCenterX, float newCenterY) {
+		this.lightCenterX = newCenterX - 1.0f;
+		this.lightCenterY = 1.0f - newCenterY;
+	}
+
+	public void updateLightRadius(float newRadius) {
+		this.lightRadius = newRadius;
+	}
+
+	public void updateLightStrength(float newStrength) {
+		this.lightStrength = newStrength;
+	}
 	
 	public Point2D getRenderPosition() {
 		return this.renderPosition;
 	}
 	
-	public int getIdentificationFactor() {
-		return (this.alpha << 24) | this.rgb;
+	public BigInteger getFingerprint() {
+		return Identification.generateFingerprint(
+				this.rgb, 
+				this.alpha, 
+				Float.floatToIntBits(this.lightStrength), 
+				Float.floatToIntBits(this.lightRadius), 
+				Float.floatToIntBits(this.lightCenterX) ^ Float.floatToIntBits(this.lightCenterY));
 	}
 
 	public PrimitiveType getType() {
@@ -81,13 +105,22 @@ public class GLText extends Text {
 		
 		GLTextRenderingContext textContext = (GLTextRenderingContext) context;
 		GL4 gl = ((GLPrimitiveRenderer) renderer).getGL();
-		
+				
 		switch(identifier) {
-			case GLTextRenderingContext.ALPHA_CHANNEL_IDENTIFIER:
+			case GLTextRenderingContext.RGB_IDENTIFIER:
+				gl.glUniform3f(textContext.getRGBUniform(), Utils.getRed(this.rgb) / 255.0f, Utils.getGreen(this.rgb) / 255.0f, Utils.getBlue(this.rgb) / 255.0f);
+				break;
+			case GLTextRenderingContext.ALPHA_IDENTIFIER:
 				gl.glUniform1f(textContext.getAlphaUniform(), this.alpha / 255.0f);
 				break;
-			case GLTextRenderingContext.RGB_CHANNEL_IDENTIFIER:
-				gl.glUniform3f(textContext.getRGBUniform(), Utils.getRed(this.rgb) / 255.0f, Utils.getGreen(this.rgb) / 255.0f, Utils.getBlue(this.rgb) / 255.0f);
+			case GLTextRenderingContext.LIGHT_CENTER_IDENTIFIER:
+				gl.glUniform2f(textContext.getLightCenterUniform(), this.lightCenterX, this.lightCenterY);
+				break;
+			case GLTextRenderingContext.LIGHT_RADIUS_IDENTIFIER:
+				gl.glUniform1f(textContext.getLightRadiusUniform(), this.lightRadius);
+				break;
+			case GLTextRenderingContext.LIGHT_STRENGTH_IDENTIFIER:
+				gl.glUniform1f(textContext.getLightStrengthUniform(), this.lightStrength);
 				break;
 		}
 	}

@@ -20,9 +20,11 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
+import java.math.BigInteger;
+
 public abstract class Primitive implements Comparable<Primitive> {
 	
-	public abstract int getIdentificationFactor();
+	public abstract BigInteger getFingerprint();
 	public abstract PrimitiveType getType();
 	public abstract void updateProperty(PrimitiveRenderer renderer, RenderingContext context, int identifier);
 	public abstract void render(PrimitiveRenderer renderer);
@@ -31,7 +33,7 @@ public abstract class Primitive implements Comparable<Primitive> {
 		if(this.getType() != other.getType()) {
 			return this.getType().compareTo(other.getType()); // For the consistency of the equivalence relation
 		} else {
-			return Integer.compare(this.getIdentificationFactor(), other.getIdentificationFactor());
+			return this.getFingerprint().compareTo(other.getFingerprint());
 		}
 	}
 }

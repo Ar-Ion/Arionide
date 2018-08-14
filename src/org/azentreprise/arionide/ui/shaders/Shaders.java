@@ -21,6 +21,7 @@
 package org.azentreprise.arionide.ui.shaders;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.IntBuffer;
@@ -37,6 +38,10 @@ public class Shaders {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		int count = 0;
 		
+		if(input == null) {
+			throw new FileNotFoundException("Couldn't retrieve shader " + name);
+		}
+		
 		while((count = input.read(buffer)) != -1) {
 			baos.write(buffer, 0, count);
 		}
@@ -45,7 +50,7 @@ public class Shaders {
 
 		IntBuffer shaderID = IntBuffer.allocate(1);
 		
-		System.out.println(name);
+		System.out.println("Compiling shader " + name + "...");
 		ShaderUtil.createAndCompileShader(gl, shaderID, type, new String[][] {{ code }}, System.err);
 		
 		return shaderID.get(0);

@@ -177,7 +177,7 @@ public class CodeView extends View implements EventHandler {
 			List<String> elements = new ArrayList<>(this.currentMenu.getMenuElements());
 			
 			synchronized(elements) {
-				this.menu.setComponents(elements.stream().map(this.menu.getMapper()).collect(Collectors.toList()));
+				this.menu.setComponents(elements.stream().map(this.menu.getGenerator()).collect(Collectors.toList()));
 			}
 			
 			this.currentInfo.setLabel(this.currentMenu.getDescription());

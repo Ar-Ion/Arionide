@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -53,28 +54,30 @@ public class PrimitiveRenderingSystem {
 	
 	public void processRenderingQueue() {
 		Primitive lastPrimitive = null;
-		
+				
 		while(!this.renderingQueue.isEmpty()) {
 			Primitive primitive = this.renderingQueue.poll();
 			RenderingContext context = this.genericPrimitives.get(primitive.getType());
-			
+						
 			boolean typeUpdate = lastPrimitive == null || primitive.getType() != lastPrimitive.getType();
-			
-			int diff = 0xFFFFFFFF;
-			
+						
 			if(typeUpdate) {
 				if(lastPrimitive != null) {
 					this.genericPrimitives.get(lastPrimitive.getType()).exit(this.renderer);
 				}
 
 				context.enter(this.renderer);
+								
+				for(BigInteger identifier : context.getIdentificationScheme()) {
+					primitive.updateProperty(this.renderer, context, identifier.getLowestSetBit() / Identification.PARTITION_SIZE);
+				}
 			} else {
-				diff = lastPrimitive.getIdentificationFactor() ^ primitive.getIdentificationFactor();
-			}
-			
-			for(int identifier : context.getIdentificationScheme()) {
-				if((diff & identifier) != 0) {
-					primitive.updateProperty(this.renderer, context, identifier);
+				BigInteger diff = lastPrimitive.getFingerprint().xor(primitive.getFingerprint());
+								
+				for(BigInteger identifier : context.getIdentificationScheme()) {
+					if(!diff.and(identifier).equals(BigInteger.ZERO)) {
+						primitive.updateProperty(this.renderer, context, context.getIdentificationScheme().length - 1 - identifier.getLowestSetBit() / Identification.PARTITION_SIZE);
+					}
 				}
 			}
 			

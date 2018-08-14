@@ -21,12 +21,8 @@
 package org.azentreprise.arionide.ui.render;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
-public abstract class Text extends Primitive {
-	public abstract void updateBounds(Rectangle2D newBounds);
-	public abstract void updateRGB(int newRGB);
-	public abstract void updateAlpha(int newAlpha);
+public abstract class Text extends Primitive implements UIMutableBounds, UILighting {
 	public abstract void updateText(String newText);
 	public abstract Point2D getRenderPosition();
 }

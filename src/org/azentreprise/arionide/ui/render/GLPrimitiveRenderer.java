@@ -72,10 +72,10 @@ public class GLPrimitiveRenderer implements PrimitiveRenderer {
 		this.fontRenderer = this.context.getFontRenderer();
 		
 		try {
-			int basicVert = Shaders.loadShader(this.gl, "basic.vert", GL4.GL_VERTEX_SHADER);
-			int basicFrag = Shaders.loadShader(this.gl, "basic.frag", GL4.GL_FRAGMENT_SHADER);
+			int basicVert = Shaders.loadShader(this.gl, "shape.vert", GL4.GL_VERTEX_SHADER);
+			int basicFrag = Shaders.loadShader(this.gl, "shape.frag", GL4.GL_FRAGMENT_SHADER);
 			
-			int guiFrag = Shaders.loadShader(this.gl, "gui.frag", GL4.GL_FRAGMENT_SHADER);
+			int guiFrag = Shaders.loadShader(this.gl, "shape.frag", GL4.GL_FRAGMENT_SHADER);
 			int guiGeom = Shaders.loadShader(this.gl, "gui.geom", GL4.GL_GEOMETRY_SHADER);
 			
 			this.basicShader = this.gl.glCreateProgram();

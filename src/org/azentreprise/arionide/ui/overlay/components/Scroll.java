@@ -103,8 +103,8 @@ public class Scroll extends Tab {
 		super.updateAll();
 		
 		if(this.getBounds().getWidth() > 0) {
-			this.shadow = this.getBounds().getCenterX();
-			this.setShadowRadius(this.getBounds().getWidth() / 2);
+			this.shadow = (float) this.getBounds().getCenterX();
+			this.setShadowRadius((float) this.getBounds().getWidth() / 2);
 		}
 	}
 	

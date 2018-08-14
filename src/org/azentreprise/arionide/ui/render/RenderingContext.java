@@ -20,9 +20,11 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
+import java.math.BigInteger;
+
 public interface RenderingContext {
 	public void load(PrimitiveRenderer renderer);
 	public void enter(PrimitiveRenderer renderer);
 	public void exit(PrimitiveRenderer renderer);
-	public int[] getIdentificationScheme();
+	public BigInteger[] getIdentificationScheme();
 }

@@ -21,9 +21,11 @@
 package org.azentreprise.arionide.ui.render.gl;
 
 import java.awt.geom.Rectangle2D;
+import java.math.BigInteger;
 
 import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.ui.render.GLPrimitiveRenderer;
+import org.azentreprise.arionide.ui.render.Identification;
 import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
 import org.azentreprise.arionide.ui.render.Rectangle;
@@ -33,10 +35,18 @@ import com.jogamp.opengl.GL4;
 
 public class GLRectangle extends Rectangle {
 	
+	private Rectangle2D bounds;
 	private int rgb;
 	private int alpha;
-	private Rectangle2D bounds;
-
+	private float lightCenterX;
+	private float lightCenterY;
+	private float lightRadius = -2.0f;
+	private float lightStrength = 1.0f;
+	private float scaleX = 1.0f;
+	private float scaleY = 1.0f;
+	private float translateX;
+	private float translateY;
+		
 	public GLRectangle(Rectangle2D bounds, int rgb, int alpha) {
 		this.bounds = bounds;
 		this.rgb = rgb;
@@ -54,9 +64,39 @@ public class GLRectangle extends Rectangle {
 	public void updateAlpha(int newAlpha) {
 		this.alpha = newAlpha;
 	}
+
+	public void updateLightCenter(float newCenterX, float newCenterY) {
+		this.lightCenterX = newCenterX - 1.0f;
+		this.lightCenterY = 1.0f - newCenterY;
+	}
+
+	public void updateLightRadius(float newRadius) {
+		this.lightRadius = newRadius;
+	}
+
+	public void updateLightStrength(float newStrength) {
+		this.lightStrength = newStrength;
+	}
+
+	public void updateScale(float newScaleX, float newScaleY) {
+		this.scaleX = newScaleX;
+		this.scaleY = newScaleY;
+	}
+
+	public void updateTranslation(float newTranslateX, float newTranslateY) {
+		this.translateX = newTranslateX;
+		this.translateY = newTranslateY;
+	}
 	
-	public int getIdentificationFactor() {
-		return (this.alpha << 24) | this.rgb;
+	public BigInteger getFingerprint() {
+		return Identification.generateFingerprint(
+				this.rgb, 
+				Float.floatToIntBits(this.scaleX) ^ Float.floatToIntBits(this.scaleY), 
+				Float.floatToIntBits(this.translateX) ^ Float.floatToIntBits(this.translateY), 
+				this.alpha,
+				Float.floatToIntBits(this.lightStrength), 
+				Float.floatToIntBits(this.lightRadius),	  
+				Float.floatToIntBits(this.lightCenterX) ^ Float.floatToIntBits(this.lightCenterY));
 	}
 
 	public PrimitiveType getType() {
@@ -67,15 +107,30 @@ public class GLRectangle extends Rectangle {
 		assert renderer instanceof GLPrimitiveRenderer;
 		assert context instanceof GLRectangleRenderingContext;
 		
-		GLRectangleRenderingContext textContext = (GLRectangleRenderingContext) context;
+		GLRectangleRenderingContext rectangleContext = (GLRectangleRenderingContext) context;
 		GL4 gl = ((GLPrimitiveRenderer) renderer).getGL();
 		
 		switch(identifier) {
-			case GLTextRenderingContext.ALPHA_CHANNEL_IDENTIFIER:
-				gl.glUniform1f(textContext.getAlphaUniform(), this.alpha / 255.0f);
+			case GLRectangleRenderingContext.RGB_IDENTIFIER:
+				gl.glUniform3f(rectangleContext.getRGBUniform(), Utils.getRed(this.rgb) / 255.0f, Utils.getGreen(this.rgb) / 255.0f, Utils.getBlue(this.rgb) / 255.0f);
 				break;
-			case GLTextRenderingContext.RGB_CHANNEL_IDENTIFIER:
-				gl.glUniform3f(textContext.getRGBUniform(), Utils.getRed(this.rgb) / 255.0f, Utils.getGreen(this.rgb) / 255.0f, Utils.getBlue(this.rgb) / 255.0f);
+			case GLRectangleRenderingContext.ALPHA_IDENTIFIER:
+				gl.glUniform1f(rectangleContext.getAlphaUniform(), this.alpha / 255.0f);
+				break;
+			case GLRectangleRenderingContext.LIGHT_CENTER_IDENTIFIER:
+				gl.glUniform2f(rectangleContext.getLightCenterUniform(), this.lightCenterX, this.lightCenterY);
+				break;
+			case GLRectangleRenderingContext.LIGHT_RADIUS_IDENTIFIER:
+				gl.glUniform1f(rectangleContext.getLightRadiusUniform(), this.lightRadius);
+				break;
+			case GLRectangleRenderingContext.LIGHT_STRENGTH_IDENTIFIER:
+				gl.glUniform1f(rectangleContext.getLightStrengthUniform(), this.lightStrength);
+				break;
+			case GLRectangleRenderingContext.SCALE_IDENTIFIER:
+				gl.glUniform2f(rectangleContext.getScaleUniform(), this.scaleX, this.scaleY);
+				break;
+			case GLRectangleRenderingContext.TRANSLATION_IDENTIFIER:
+				gl.glUniform2f(rectangleContext.getTranslationUniform(), this.translateX, this.translateY);
 				break;
 		}
 	}

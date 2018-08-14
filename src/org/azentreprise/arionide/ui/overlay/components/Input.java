@@ -80,11 +80,7 @@ public class Input extends Button implements EventHandler {
 		
 		return this;
 	}
-	
-	public String getText() {
-		return this.text.toString();
-	}
-	
+
 	public String getPlaceholder() {
 		return this.placeholder;
 	}
@@ -102,7 +98,7 @@ public class Input extends Button implements EventHandler {
 			TextTessellator tessellator = context.getFontRenderer().getTessellator();
 			Metrics metrics = tessellator.getMetrics();
 			
-			double x = this.getPrimitive().getRenderPosition().getX() + scdsp[0] * tessellator.getWidth(this.text.substring(0, this.cursorPosition) + scdsp[2]);
+			double x = this.getText().getRenderPosition().getX() + scdsp[0] * tessellator.getWidth(this.text.substring(0, this.cursorPosition) + scdsp[2]);
 			double y = this.getBounds().getY() + this.getBounds().getHeight() / 2 + scdsp[3];
 			this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.cursorAlpha);
 			context.getPrimitives().fillRoundRect(new Rectangle2D.Double(x, y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * 2, scdsp[1] * metrics.getLineHeight()));
@@ -111,7 +107,7 @@ public class Input extends Button implements EventHandler {
 			if(this.highlighted) {
 				this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, 0x42);
 				
-				Rectangle2D selection = new Rectangle2D.Double(this.getPrimitive().getRenderPosition().getX() + scdsp[2], y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * tessellator.getWidth(this.text.toString()), scdsp[1] * metrics.getLineHeight());
+				Rectangle2D selection = new Rectangle2D.Double(this.getText().getRenderPosition().getX() + scdsp[2], y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * tessellator.getWidth(this.text.toString()), scdsp[1] * metrics.getLineHeight());
 				//context.setColor(0xC0FFEE);
 				context.getPrimitives().fillRect(selection);
 				
@@ -240,5 +236,9 @@ public class Input extends Button implements EventHandler {
 		theList.add(WriteEvent.class);
 		
 		return theList;
+	}
+	
+	public String toString() {
+		return this.text.toString();
 	}
 }

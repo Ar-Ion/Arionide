@@ -219,7 +219,7 @@ public class GLFontRenderer implements FontRenderer {
 
 		gl.glUniform2f(this.translationUniform, translateX, translateY);
 		gl.glUniform2f(this.scaleUniform, halfMainScale / (horizontalLead ? 1.0f : this.ratio), halfMainScale * (horizontalLead ? this.ratio : 1.0f));
-				
+
 		gl.glBindVertexArray(entry.getVAO());
 
 		gl.glDrawElements(GL4.GL_TRIANGLES, entry.getCount() * 6, GL4.GL_UNSIGNED_INT, 0);

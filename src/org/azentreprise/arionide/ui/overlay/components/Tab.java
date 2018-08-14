@@ -34,31 +34,32 @@ import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
-import org.azentreprise.arionide.ui.AWTContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
-import org.azentreprise.arionide.ui.OpenGLContext;
+import org.azentreprise.arionide.ui.ApplicationTints;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.AlphaLayer;
+import org.azentreprise.arionide.ui.overlay.AlphaLayeringSystem;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
+import org.azentreprise.arionide.ui.render.Rectangle;
+import org.azentreprise.arionide.ui.render.UILighting;
+import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
 
 public class Tab extends MultiComponent implements EventHandler {
 		
 	private static final int ANIMATION_TIME = 500;
-	
-	protected final TabDesign design;
-	
+		
 	private final Animation animation;
+	private final Rectangle borders;
+	
 	protected final List<Rectangle2D> rectangles = Collections.synchronizedList(new ArrayList<>());
 	
-	protected double shadow = 0;
+	protected float shadow = 0.0f;
 	protected int activeComponent = 0;
-	private int rgb = 0xCAFE;
-	private int alpha = Button.DEFAULT_ALPHA;
 	private boolean renderSeparators;
 	private String signal;
-	private double shadingRadius;
+	private int alpha = ApplicationTints.INACTIVE_ALPHA;
 	
 	public Tab(View parent, String... tabs) {
 		this(parent, makeLabels(parent, tabs));
@@ -66,24 +67,22 @@ public class Tab extends MultiComponent implements EventHandler {
 	
 	public Tab(View parent, List<Component> components) {
 		super(parent, components);
-		
-		AppDrawingContext context = parent.getAppManager().getDrawingContext();
-		
-		if(context instanceof AWTContext) {
-			this.design = new AWTTabDesign();
-		} else if(context instanceof OpenGLContext) {
-			this.design = new OpenGLTabDesign();
-		} else {
-			this.design = null;
-		}
 				
 		this.animation = new FieldModifierAnimation(parent.getAppManager(), "shadow", Tab.class, this);
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
+		
+		this.borders = PrimitiveFactory.instance().newRectangle(null, ApplicationTints.MAIN_COLOR, ApplicationTints.INACTIVE_ALPHA);
+	}
+	
+	public Tab setBounds(Rectangle2D bounds) {
+		super.setBounds(bounds);
+		this.borders.updateBounds(bounds);
+		return this;
 	}
 	
 	public Tab setColor(int rgb) {
-		this.rgb = rgb;
+		this.borders.updateRGB(rgb);
 		return this;
 	}
 
@@ -103,8 +102,16 @@ public class Tab extends MultiComponent implements EventHandler {
 		return this;
 	}
 	
-	public Tab setShadowRadius(double radius) {
-		this.shadingRadius = radius;
+	public Tab setShadowRadius(float radius) {
+		this.borders.updateLightRadius(radius);
+		
+		for(Component component : this.getComponents()) {
+			if(component instanceof Enlightenable) {
+				UILighting primitive = ((Enlightenable) component).getEnlightenablePrimitive();
+				primitive.updateLightRadius(radius);
+			}
+		}
+		
 		return this;
 	}
 	
@@ -135,13 +142,15 @@ public class Tab extends MultiComponent implements EventHandler {
 		List<Component> components = this.getComponents();
 		Rectangle2D bounds = this.getBounds();
 		
-		this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.alpha);
+		AlphaLayeringSystem layering = this.getAppManager().getAlphaLayering();
 		
-		//context.setColor(this.rgb);
+		float lightStrength = layering.getCurrentAlpha() / 255.0f;
 		
-		this.design.enterDesignContext(this.getAppManager(), new Point2D.Double(this.shadow, bounds.getCenterY()), this.shadingRadius);
-
-		context.getPrimitives().drawRoundRect(bounds);
+		this.borders.updateLightStrength(lightStrength);
+		this.borders.updateAlpha(layering.push(AlphaLayer.CONTAINER, this.alpha));
+		this.borders.updateLightCenter((float) this.shadow, (float) bounds.getCenterY());
+		
+		context.getRenderingSystem().renderLater(this.borders);
 
 		int i = 0;
 		
@@ -150,9 +159,16 @@ public class Tab extends MultiComponent implements EventHandler {
 				Rectangle2D rect = this.rectangles.get(i++);
 					
 				if(rect.getWidth() > 0) {
-					component.setBounds(rect);				
+					component.setBounds(rect);
+					
+					if(component instanceof Enlightenable) {
+						UILighting primitive = ((Enlightenable) component).getEnlightenablePrimitive();
+						primitive.updateLightStrength(lightStrength);
+						primitive.updateLightCenter((float) this.shadow, (float) bounds.getCenterY());
+					}
+					
 					component.drawSurface(context);
-						
+					
 					try {
 						Rectangle2D next = this.rectangles.get(i);
 							
@@ -166,8 +182,7 @@ public class Tab extends MultiComponent implements EventHandler {
 			}
 		}
 		
-		this.design.exitDesignContext(this.getAppManager());
-		this.getAppManager().getAlphaLayering().pop(AlphaLayer.COMPONENT);
+		this.getAppManager().getAlphaLayering().pop(AlphaLayer.CONTAINER);
 	}
 	
 	public void update() {
@@ -212,7 +227,7 @@ public class Tab extends MultiComponent implements EventHandler {
 				if(target != -666) {
 					this.activeComponent = target;
 					
-					double center = this.rectangles.get(this.activeComponent).getCenterX();
+					float center = (float) this.rectangles.get(this.activeComponent).getCenterX();
 					
 					if(this.shadow != center) {
 						this.animation.startAnimation(ANIMATION_TIME, center);
@@ -233,10 +248,10 @@ public class Tab extends MultiComponent implements EventHandler {
 
 		if(this.rectangles.size() > 0) {
 			Rectangle2D rect = this.rectangles.get(this.activeComponent);
-			this.shadow = rect.getCenterX();
+			this.shadow = (float) rect.getCenterX();
 			
 			if(rect.getWidth() > 0) {
-				this.shadingRadius = rect.getWidth();
+				this.setShadowRadius((float) rect.getWidth());
 			}
 		}
 	}
@@ -270,7 +285,7 @@ public class Tab extends MultiComponent implements EventHandler {
 		
 		for(String tab : tabs) {
 			if(tab != null) {
-				labels.add(new Label(parent, tab).setAlpha(0)); // Let the TabDesign handle the color
+				labels.add(new Label(parent, tab));
 			}
 		}
 				

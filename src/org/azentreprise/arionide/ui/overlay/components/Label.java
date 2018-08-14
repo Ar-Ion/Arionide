@@ -22,31 +22,32 @@ package org.azentreprise.arionide.ui.overlay.components;
 
 import java.awt.geom.Rectangle2D;
 
+import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.ApplicationTints;
 import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.render.Text;
+import org.azentreprise.arionide.ui.render.UILighting;
 import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
 
-public class Label extends Component {
-	
-	public static final int DEFAULT_RGB = 0xCAFE;
-	public static final int DEFAULT_ALPHA = 0xFF;
+public class Label extends Component implements Enlightenable {
 	
 	private final Text text;
 
-	private int alpha = DEFAULT_ALPHA;
+	private int alpha = ApplicationTints.ACTIVE_ALPHA;
 	
 	public Label(View parent, String label) {
 		super(parent);
 		
-		this.text = PrimitiveFactory.instance().newText(null, label, DEFAULT_RGB, DEFAULT_ALPHA);
+		this.text = PrimitiveFactory.instance().newText(null, label, ApplicationTints.MAIN_COLOR, ApplicationTints.ACTIVE_ALPHA);
 	}
 	
-	public void setBounds(Rectangle2D bounds) {
+	public Label setBounds(Rectangle2D bounds) {
 		super.setBounds(bounds);
 		this.text.updateBounds(bounds);
+		return this;
 	}
 	
 	public Label setLabel(String label) {
@@ -55,21 +56,21 @@ public class Label extends Component {
 	}
 	
 	public Label setColor(int rgb) {
-		if(rgb > 0xFFFFFF) {
-			throw new IllegalArgumentException("Alpha values are not allowed");
-		}
-		
 		this.text.updateRGB(rgb);
-
 		return this;
 	}
 	
 	public Label setAlpha(int alpha) {
+		Utils.checkColorRange("Alpha", alpha);
 		this.alpha = alpha;
 		return this;
 	}
 	
-	public Text getPrimitive() {
+	public UILighting getEnlightenablePrimitive() {
+		return this.text;
+	}
+	
+	public Text getText() {
 		return this.text;
 	}
 
@@ -90,7 +91,7 @@ public class Label extends Component {
 	}
 	
 	protected void drawComponent(AppDrawingContext context) {
-		this.text.updateAlpha(this.getAppManager().getAlphaLayering().getCurrentAlpha());
+		this.text.updateAlpha(this.getAppManager().getAlphaLayering().getCurrentAlpha());		
 		context.getRenderingSystem().renderLater(this.text);
 	}
 	

@@ -21,8 +21,10 @@
 package org.azentreprise.arionide.ui.render.gl;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 import org.azentreprise.arionide.debugging.Debug;
+import org.azentreprise.arionide.ui.render.Identification;
 import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.shaders.Shaders;
 
@@ -30,21 +32,31 @@ import com.jogamp.opengl.GL4;
 
 public class GLRectangleRenderingContext extends GLRenderingContext {
 	
-	public static final int ALPHA_CHANNEL_IDENTIFIER = 0xFF000000;
-	public static final int RGB_CHANNEL_IDENTIFIER = 0x00FFFFFF;
-	
-	private static final int[] scheme = new int[] {ALPHA_CHANNEL_IDENTIFIER, RGB_CHANNEL_IDENTIFIER};
+	public static final int RGB_IDENTIFIER = 0;
+	public static final int SCALE_IDENTIFIER = 1;
+	public static final int TRANSLATION_IDENTIFIER = 2;
+	public static final int ALPHA_IDENTIFIER = 3;
+	public static final int LIGHT_STRENGTH_IDENTIFIER = 4;
+	public static final int LIGHT_RADIUS_IDENTIFIER = 5;
+	public static final int LIGHT_CENTER_IDENTIFIER = 6;
+
+	private static final BigInteger[] scheme = Identification.makeScheme(7);
 		
 	private int shader;
 	private int rgb;
 	private int alpha;
+	private int lightCenter;
+	private int lightRadius;
+	private int lightStrength;
+	private int scale;
+	private int translation;
 	
 	public void load(PrimitiveRenderer renderer) {
 		GL4 gl = this.getGL(renderer);
 		
 		try {
-			int vert = Shaders.loadShader(gl, "basic.vert", GL4.GL_VERTEX_SHADER);
-			int frag = Shaders.loadShader(gl, "basic.frag", GL4.GL_FRAGMENT_SHADER);
+			int vert = Shaders.loadShader(gl, "shape.vert", GL4.GL_VERTEX_SHADER);
+			int frag = Shaders.loadShader(gl, "shape.frag", GL4.GL_FRAGMENT_SHADER);
 			
 			this.shader = gl.glCreateProgram();
 			
@@ -57,6 +69,11 @@ public class GLRectangleRenderingContext extends GLRenderingContext {
 			
 			this.rgb = gl.glGetUniformLocation(this.shader, "rgb");
 			this.alpha = gl.glGetUniformLocation(this.shader, "alpha");
+			this.lightCenter = gl.glGetUniformLocation(this.shader, "lightCenter");
+			this.lightRadius = gl.glGetUniformLocation(this.shader, "lightRadius");
+			this.lightStrength = gl.glGetUniformLocation(this.shader, "lightStrength");
+			this.scale = gl.glGetUniformLocation(this.shader, "scale");
+			this.translation = gl.glGetUniformLocation(this.shader, "translation");
 		} catch (IOException exception) {
 			Debug.exception(exception);
 		}
@@ -70,7 +87,7 @@ public class GLRectangleRenderingContext extends GLRenderingContext {
 		return;
 	}
 
-	public int[] getIdentificationScheme() {
+	public BigInteger[] getIdentificationScheme() {
 		return scheme;
 	}
 	
@@ -80,5 +97,25 @@ public class GLRectangleRenderingContext extends GLRenderingContext {
 	
 	public int getAlphaUniform() {
 		return this.alpha;
+	}
+	
+	public int getLightCenterUniform() {
+		return this.lightCenter;
+	}
+	
+	public int getLightRadiusUniform() {
+		return this.lightRadius;
+	}
+	
+	public int getLightStrengthUniform() {
+		return this.lightStrength;
+	}
+	
+	public int getScaleUniform() {
+		return this.scale;
+	}
+	
+	public int getTranslationUniform() {
+		return this.translation;
 	}
 }
