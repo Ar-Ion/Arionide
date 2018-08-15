@@ -21,7 +21,6 @@
 package org.azentreprise.arionide.ui.overlay.views;
 
 import java.awt.Desktop;
-import java.awt.geom.Rectangle2D;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +49,7 @@ import org.azentreprise.arionide.ui.overlay.components.Button;
 import org.azentreprise.arionide.ui.overlay.components.Deformable;
 import org.azentreprise.arionide.ui.overlay.components.Label;
 import org.azentreprise.arionide.ui.render.AffineTransformable;
+import org.azentreprise.arionide.ui.topology.Bounds;
 
 public class MainView extends View implements EventHandler {
 
@@ -180,7 +180,7 @@ public class MainView extends View implements EventHandler {
 	
 	public void drawSurface(AppDrawingContext context) {		
 		for(Component component : this.page) {
-			Rectangle2D bounds = component.getBounds();
+			Bounds bounds = component.getBounds();
 			
 			if(bounds != null) {
 				float leftToOrigin = Math.abs((float) bounds.getX() - 1.0f);

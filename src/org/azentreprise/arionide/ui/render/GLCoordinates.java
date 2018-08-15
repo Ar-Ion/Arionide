@@ -20,33 +20,39 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 import java.nio.DoubleBuffer;
 
+import org.azentreprise.arionide.Utils;
+import org.azentreprise.arionide.ui.topology.Affine;
+import org.azentreprise.arionide.ui.topology.Application;
+import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.topology.Point;
+import org.azentreprise.arionide.ui.topology.Size;
+
 public class GLCoordinates {
+	
+	private static final Application glTransform = new Affine(1.0f, -1.0f, -1.0f, 1.0f);
 	
 	private DoubleBuffer buffer;
 	private int counter;
 	
-	private final double x1;
-	private final double y1;
-	private final double x2;
-	private final double y2;
+	private final float x1;
+	private final float y1;
+	private final float x2;
+	private final float y2;
 	
 	private final long uuid;
 	
-	public GLCoordinates(Rectangle2D bounds) {
+	public GLCoordinates(Bounds bounds) {
 		this(bounds, true);
 	}
 	
-	public GLCoordinates(Rectangle2D bounds, boolean normalize) {
+	public GLCoordinates(Bounds bounds, boolean normalize) {
 		
-		bounds = (Rectangle2D) bounds.clone(); // We don't want to mutate the original
+		bounds = bounds.copy(); // We don't want to mutate the original
 		
 		if(normalize) {
-			this.normalizeGL(bounds);
+			glTransform.apply(bounds);
 		}
 		
 		this.x1 = bounds.getX();
@@ -54,42 +60,28 @@ public class GLCoordinates {
 		this.x2 = bounds.getWidth() + this.x1;
 		this.y2 = bounds.getHeight() + this.y1;
 
-		this.uuid = (this.getUUID(this.x1) << 48) | (this.getUUID(this.y1) << 32) | (this.getUUID(this.x2) << 16) | this.getUUID(this.y2);
+		this.uuid = (this.getUID(this.x1) << 48) | (this.getUID(this.y1) << 32) | (this.getUID(this.x2) << 16) | this.getUID(this.y2);
 	}
 	
-	private void normalizeGL(Rectangle2D in) {
-		in.setRect(in.getX() - 1.0d, 1.0d - in.getY(), in.getWidth(), -in.getHeight());
-	}
-	
-	private void normalizeAWT(Rectangle2D in) {
-		in.setRect(in.getX() / 2.0d + 0.5d, 0.5d - in.getY() / 2.0d, in.getWidth() / 2.0d, -in.getHeight() / 2.0d);
-	}
-	
-	private void applyOrtho(Rectangle2D bounds, Dimension viewport) {
-		bounds.setRect(bounds.getX() * viewport.getWidth(), bounds.getY() * viewport.getHeight(), bounds.getWidth() * viewport.getWidth(), bounds.getHeight() * viewport.getHeight());
+	private void normalizeAWT(Bounds in) {
+		in.setFrame(in.getX() / 2.0f + 0.5f, 0.5f - in.getY() / 2.0f, in.getWidth() / 2.0f, -in.getHeight() / 2.0f);
 	}
 		
-	public Rectangle getAWTBoundings(Dimension viewport) {
-		Rectangle2D bounds = new Rectangle2D.Double(this.x1, this.y1, this.x2 - this.x1, this.y2 - this.y1);
+	public Bounds getAWTBoundings(Size viewport) {
+		Bounds bounds = new Bounds(new Point(this.x1, this.y1), new Point(this.x2, this.y2));
 		
 		this.normalizeAWT(bounds);
 
-		this.applyOrtho(bounds, viewport);
+		viewport.apply(bounds);
 
-		return bounds.getBounds();
+		return bounds;
 	}
 	
-	private long getUUID(double component) {
-		/* Old version:
-	
-		assert Math.abs(component) <= 1.0d;
-		return (long) (component * Short.MAX_VALUE) + Short.MAX_VALUE; 
-		
-		*/
-		
-		return Double.doubleToRawLongBits(component);
+	private long getUID(float component) {
+		assert Math.abs(component) <= 1.0f;
+		return Utils.convertToUnsignedLong((int) (component * 65535)); 
 	}
-	
+		
 	public long getUUID() {
 		return this.uuid;
 	}

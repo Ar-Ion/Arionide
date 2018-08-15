@@ -20,12 +20,11 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render.font;
 
-import java.awt.geom.Rectangle2D;
-
 import org.azentreprise.arionide.ui.render.Rectangle;
 import org.azentreprise.arionide.ui.render.Text;
 import org.azentreprise.arionide.ui.render.gl.GLRectangle;
 import org.azentreprise.arionide.ui.render.gl.GLText;
+import org.azentreprise.arionide.ui.topology.Bounds;
 
 public class PrimitiveFactory {
 	
@@ -47,7 +46,7 @@ public class PrimitiveFactory {
 		return this.newText(null, text, rgb, alpha);
 	}
 	
-	public Text newText(Rectangle2D bounds, String text, int rgb, int alpha) {
+	public Text newText(Bounds bounds, String text, int rgb, int alpha) {
 		return new GLText(bounds, text, rgb, alpha);
 	}
 	
@@ -59,7 +58,7 @@ public class PrimitiveFactory {
 		return this.newRectangle(null, rgb, alpha);
 	}
 	
-	public Rectangle newRectangle(Rectangle2D bounds, int rgb, int alpha) {
+	public Rectangle newRectangle(Bounds bounds, int rgb, int alpha) {
 		return new GLRectangle(bounds, rgb, alpha);
 	}
 }

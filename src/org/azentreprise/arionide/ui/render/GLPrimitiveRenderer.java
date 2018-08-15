@@ -21,7 +21,6 @@
 package org.azentreprise.arionide.ui.render;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
 import org.azentreprise.Debug;
@@ -29,6 +28,8 @@ import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.OpenGLContext;
 import org.azentreprise.arionide.ui.render.font.FontRenderer;
 import org.azentreprise.arionide.ui.shaders.Shaders;
+import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.topology.Point;
 
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLException;
@@ -156,7 +157,7 @@ public class GLPrimitiveRenderer implements PrimitiveRenderer {
 		this.gl.glDisable(GL4.GL_BLEND);
 	}
 		
-	public void drawRect(Rectangle2D bounds) {		
+	public void drawRect(Bounds bounds) {		
 		GLCoordinates coords = new GLCoordinates(bounds);
 				
 		this.manager.loadVAO(coords.getUUID(), () -> coords.allocDataBuffer(8).putBoundingPoints().getDataBuffer(), (nil, id) -> {
@@ -166,7 +167,7 @@ public class GLPrimitiveRenderer implements PrimitiveRenderer {
 		this.gl.glDrawArrays(GL4.GL_LINE_LOOP, 0, 4);
 	}
 
-	public void fillRect(Rectangle2D bounds) {	
+	public void fillRect(Bounds bounds) {	
 		GLCoordinates coords = new GLCoordinates(bounds);
 		
 		this.manager.loadVAO(coords.getUUID(), () -> coords.allocDataBuffer(8).putSouth().putNorth().getDataBuffer(), (nil, id) -> {
@@ -178,7 +179,7 @@ public class GLPrimitiveRenderer implements PrimitiveRenderer {
 		this.gl.glDrawArrays(GL4.GL_TRIANGLE_STRIP, 0, 4);
 	}
 
-	public void drawRoundRect(Rectangle2D bounds) {	
+	public void drawRoundRect(Bounds bounds) {	
 		//this.drawRect(bounds);
 		/*GLCoordinates coords = new GLCoordinates(bounds);
 		
@@ -191,13 +192,13 @@ public class GLPrimitiveRenderer implements PrimitiveRenderer {
 		this.gl.glDrawArrays(GL4.GL_LINES_ADJACENCY, 0, 4);*/
 	}
 
-	public void fillRoundRect(Rectangle2D bounds) {
+	public void fillRoundRect(Bounds bounds) {
 		this.fillRect(bounds);
 	}
 
 	// Not checked
-	public void drawLine(double x1, double y1, double x2, double y2) {
-		GLCoordinates coords = new GLCoordinates(new Rectangle2D.Double(x1, y1, x1 + x2, y1 + y2));
+	public void drawLine(float x1, float y1, float x2, float y2) {
+		GLCoordinates coords = new GLCoordinates(new Bounds(x1, y1, x1 + x2, y1 + y2));
 				
 		this.manager.loadVAO(coords.getUUID(), () -> coords.allocDataBuffer(4).putNW().putSE().getDataBuffer(), (nil, id) -> {
 			this.gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
@@ -209,7 +210,7 @@ public class GLPrimitiveRenderer implements PrimitiveRenderer {
 	}
 	
 	public void drawCursor() {		
-		GLCoordinates coords = new GLCoordinates(new Rectangle2D.Double(1.0d, 1.0d, 1.0d, 1.0d));
+		GLCoordinates coords = new GLCoordinates(new Bounds(1.0f, 1.0f, 1.0f, 1.0f));
 				
 		this.manager.loadVAO(coords.getUUID(), () -> coords.allocDataBuffer(2).putX1().getDataBuffer(), (nil, id) -> {
 			this.gl.glVertexAttribPointer(id, 2, GL4.GL_DOUBLE, false, 0, 0);
@@ -227,7 +228,7 @@ public class GLPrimitiveRenderer implements PrimitiveRenderer {
 	}
 
 
-	public Point2D drawText(String text, Rectangle2D bounds) {
+	public Point drawText(String text, Bounds bounds) {
 		return this.fontRenderer.renderString(this.gl, text, bounds);
 	}
 	

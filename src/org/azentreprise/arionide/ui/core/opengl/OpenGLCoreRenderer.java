@@ -22,10 +22,7 @@ package org.azentreprise.arionide.ui.core.opengl;
 
 import java.awt.AWTException;
 import java.awt.Cursor;
-import java.awt.Rectangle;
 import java.awt.Robot;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.DoubleBuffer;
@@ -72,6 +69,8 @@ import org.azentreprise.arionide.ui.menu.code.ReferenceEditor;
 import org.azentreprise.arionide.ui.menu.code.TypeEditor;
 import org.azentreprise.arionide.ui.render.GLCoordinates;
 import org.azentreprise.arionide.ui.shaders.Shaders;
+import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.topology.Point;
 import org.joml.Matrix4d;
 import org.joml.Vector2d;
 import org.joml.Vector3d;
@@ -173,7 +172,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 
 	private Project project;
 
-	private Rectangle bounds;
+	private Bounds bounds;
 	private boolean isInWorld = false;
 	private boolean isControlDown = false;
 	private boolean isFastBindingMode = false;
@@ -244,7 +243,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.initBufferObject(gl, this.spaceEBO = buffers.get(1), GL4.GL_ELEMENT_ARRAY_BUFFER, spaceSphereQuality, this::createStructureIndicesData);
 		
 		/* FX */
-		GLCoordinates coords = new GLCoordinates(new Rectangle2D.Double(0.0d, 0.0d, 2.0d, 2.0d));		
+		GLCoordinates coords = new GLCoordinates(new Bounds(0, 0, 2, 2));		
 		this.fxVAO = vertexArrays.get(1);
 		
 		gl.glBindVertexArray(this.fxVAO);
@@ -508,7 +507,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glUniform3d(this.spaceLightPosition, this.sun.x, this.sun.y, this.sun.z);
 		
 		if(this.bounds != null) {
-			gl.glUniform2i(this.windowDimensions, this.bounds.width, this.bounds.height);
+			gl.glUniform2i(this.windowDimensions, this.bounds.getWidthAsInt(), this.bounds.getHeightAsInt());
 		}
 	}
 	
@@ -725,7 +724,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glUniform1f(this.exposure, 0.001f);
 		
 		if(this.bounds != null) {
-			gl.glUniform2f(this.pixelSize, 1.0f / this.bounds.width, 1.0f / this.bounds.height);
+			gl.glUniform2f(this.pixelSize, 1 / this.bounds.getWidth(), 1 / this.bounds.getHeight());
 		}
 		
 		this.loadMatrix(this.previousViewProjectionMatrix.mul(new Matrix4d(this.projectionMatrix).mul(this.viewMatrix).invert()), this.currentToPreviousViewportData);
@@ -814,7 +813,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			
 			if(screenAnchor.x + dimensions.x > 0  && screenAnchor.y + dimensions.y > 0 && screenAnchor.x < 2.0 && screenAnchor.y < 2.0) {
 				// context.setColor(color);
-				context.getPrimitives().drawText(label, new Rectangle2D.Double(screenAnchor.x, screenAnchor.y, dimensions.x, dimensions.y));
+				context.getPrimitives().drawText(label, new Bounds((float) screenAnchor.x, (float) screenAnchor.y, (float) dimensions.x, (float) dimensions.y));
 			}
 		}
 	}
@@ -1157,7 +1156,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		}
 	}
 
-	public void update(Rectangle bounds) {
+	public void update(Bounds bounds) {
 		this.bounds = bounds;
 
 		this.updatePerspective();
@@ -1169,11 +1168,11 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		 */
 		gl.glActiveTexture(GL4.GL_TEXTURE2);
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, this.fxColorTexture);
-		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGB, bounds.width, bounds.height, 0, GL4.GL_RGB, GL4.GL_UNSIGNED_BYTE, null);
+		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGB, bounds.getWidthAsInt(), bounds.getHeightAsInt(), 0, GL4.GL_RGB, GL4.GL_UNSIGNED_BYTE, null);
 		
 		gl.glActiveTexture(GL4.GL_TEXTURE3);
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, this.fxDepthTexture);
-		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_DEPTH_COMPONENT32, bounds.width, bounds.height, 0, GL4.GL_DEPTH_COMPONENT, GL4.GL_FLOAT, null);
+		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_DEPTH_COMPONENT32, bounds.getWidthAsInt(), bounds.getHeightAsInt(), 0, GL4.GL_DEPTH_COMPONENT, GL4.GL_FLOAT, null);
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, 0);
 	}
 	
@@ -1190,7 +1189,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 		if(event instanceof MoveEvent) {
 			if(this.isInWorld) {
-				Point2D position = ((MoveEvent) event).getPoint();
+				Point position = ((MoveEvent) event).getPoint();
 				this.updateMouse(position);
 				event.abortDispatching();
 			}
@@ -1263,7 +1262,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		}
 	}
 	
-	private void updateMouse(Point2D position) {
+	private void updateMouse(Point position) {
 		this.yaw += (position.getX() - 1.0d) * 0.1d;
 		this.pitch -= (position.getY() - 1.0d) * 0.1d;
 		
@@ -1280,7 +1279,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		if(this.robot != null) {
 			this.robot.setAutoDelay(0);
 			this.robot.setAutoWaitForIdle(false);
-			this.robot.mouseMove(this.bounds.x + this.bounds.width / 2, this.bounds.y + this.bounds.height / 2);
+			this.robot.mouseMove(this.bounds.getXAsInt() + this.bounds.getWidthAsInt() / 2, this.bounds.getYAsInt() + this.bounds.getHeightAsInt() / 2);
 		}
 	}
 	

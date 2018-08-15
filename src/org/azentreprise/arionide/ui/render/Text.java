@@ -20,9 +20,9 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
-import java.awt.geom.Point2D;
+import org.azentreprise.arionide.ui.topology.Point;
 
 public abstract class Text extends Primitive implements UIMutableBounds, UILighting, AffineTransformable {
 	public abstract void updateText(String newText);
-	public abstract Point2D getRenderPosition();
+	public abstract Point getRenderPosition();
 }

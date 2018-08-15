@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render.gl;
 
-import java.awt.geom.Rectangle2D;
 import java.math.BigInteger;
 
 import org.azentreprise.arionide.Utils;
@@ -30,12 +29,13 @@ import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
 import org.azentreprise.arionide.ui.render.Rectangle;
 import org.azentreprise.arionide.ui.render.RenderingContext;
+import org.azentreprise.arionide.ui.topology.Bounds;
 
 import com.jogamp.opengl.GL4;
 
 public class GLRectangle extends Rectangle {
 	
-	private Rectangle2D bounds;
+	private Bounds bounds;
 	private int rgb;
 	private int alpha;
 	private float lightCenterX;
@@ -47,13 +47,13 @@ public class GLRectangle extends Rectangle {
 	private float translateX;
 	private float translateY;
 		
-	public GLRectangle(Rectangle2D bounds, int rgb, int alpha) {
+	public GLRectangle(Bounds bounds, int rgb, int alpha) {
 		this.bounds = bounds;
 		this.rgb = rgb;
 		this.alpha = alpha;
 	}
 	
-	public void updateBounds(Rectangle2D newBounds) {
+	public void updateBounds(Bounds newBounds) {
 		this.bounds = newBounds;
 	}
 	

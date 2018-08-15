@@ -20,18 +20,17 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.topology.Point;
 
 public interface PrimitiveRenderer {
 	public void init(AppDrawingContext context);
-	public void drawRect(Rectangle2D bounds);
-	public void fillRect(Rectangle2D bounds);
-	public void drawRoundRect(Rectangle2D bounds);
-	public void fillRoundRect(Rectangle2D bounds);
-	public void drawLine(double x1, double y1, double x2, double y2);
-	public Point2D drawText(String text, Rectangle2D bounds);
+	public void drawRect(Bounds bounds);
+	public void fillRect(Bounds bounds);
+	public void drawRoundRect(Bounds bounds);
+	public void fillRoundRect(Bounds bounds);
+	public void drawLine(float x1, float y1, float x2, float y2);
+	public Point drawText(String text, Bounds bounds);
 	public void drawCursor();
 }

@@ -24,6 +24,8 @@ import java.math.BigInteger;
 import java.util.function.BinaryOperator;
 import java.util.stream.IntStream;
 
+import org.azentreprise.arionide.Utils;
+
 public class Identification {
 	
 	public static final int PARTITION_SIZE = 32;
@@ -42,14 +44,6 @@ public class Identification {
 	}
 	
 	public static BigInteger generateFingerprint(int... fields) {
-		return IntStream.of(fields).mapToLong(Identification::convert).mapToObj(BigInteger::valueOf).reduce(shor).orElse(BigInteger.ZERO);
-	}
-	
-	private static long convert(int in) {
-		if(in < 0) {
-			return 0b10000000000000000000000000000000l | -in;
-		} else {
-			return in;
-		}
+		return IntStream.of(fields).mapToLong(Utils::convertToUnsignedLong).mapToObj(BigInteger::valueOf).reduce(shor).orElse(BigInteger.ZERO);
 	}
 }

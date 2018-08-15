@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +33,7 @@ import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.layout.Surface;
 import org.azentreprise.arionide.ui.render.Rectangle;
 import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
+import org.azentreprise.arionide.ui.topology.Bounds;
 
 public abstract class View extends Surface {
 	
@@ -59,7 +59,7 @@ public abstract class View extends Surface {
 		this.focusViewUID = this.getAppManager().getFocusManager().requestViewUID();
 	}
 	
-	public View setBounds(Rectangle2D bounds) {
+	public View setBounds(Bounds bounds) {
 		super.setBounds(bounds);
 		this.borders.updateBounds(bounds);
 		return this;
@@ -98,7 +98,7 @@ public abstract class View extends Surface {
 		}
 	}
 	
-	protected void add(Component component, double x1, double y1, double x2, double y2) {
+	protected void add(Component component, float x1, float y1, float x2, float y2) {
 		this.components.add(component);
 		this.getLayoutManager().register(component, this, x1, y1, x2, y2);
 		this.getAppManager().getFocusManager().registerComponent(component);

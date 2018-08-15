@@ -20,8 +20,8 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
-import java.awt.geom.Rectangle2D;
+import org.azentreprise.arionide.ui.topology.Bounds;
 
 public interface UIMutableBounds {
-	public void updateBounds(Rectangle2D newBounds);
+	public void updateBounds(Bounds bounds);
 }

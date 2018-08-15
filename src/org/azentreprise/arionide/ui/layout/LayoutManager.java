@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.layout;
 
-import java.awt.Dimension;
-import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +31,9 @@ import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.InvalidateLayoutEvent;
 import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.topology.Point;
+import org.azentreprise.arionide.ui.topology.Size;
 
 public class LayoutManager implements EventHandler {
 	
@@ -46,13 +47,13 @@ public class LayoutManager implements EventHandler {
 	public LayoutManager(AppDrawingContext drawingContext, IEventDispatcher dispatcher) {
 		this.drawingContext = drawingContext;
 		
-		this.frameWidth = drawingContext.getSize().width;
-		this.frameHeight = drawingContext.getSize().height;
+		this.frameWidth = drawingContext.getWindowSize().getWidthAsInt();
+		this.frameHeight = drawingContext.getWindowSize().getHeightAsInt();
 		
 		dispatcher.registerHandler(this);
 	}
 	
-	public synchronized void register(Surface surface, Surface parent, double x1, double y1, double x2, double y2) {
+	public synchronized void register(Surface surface, Surface parent, float x1, float y1, float x2, float y2) {
 		if(parent == null || this.surfaces.containsKey(parent)) {
 			this.surfaces.put(surface, new LayoutConfiguration(parent, x1, y1, x2, y2));
 		} else {
@@ -86,21 +87,21 @@ public class LayoutManager implements EventHandler {
 	@IAm("applying the layout")
 	public synchronized void apply() {
 		this.surfaces.forEach((surface, config) -> {
-			double x1 = config.x1 * this.frameWidth;
-			double y1 = config.y1 * this.frameHeight;
-			double x2 = config.x2 * this.frameWidth;
-			double y2 = config.y2 * this.frameHeight;
-
-			surface.setBounds(new Rectangle2D.Double(x1, y1, x2 - x1, y2 - y1));
+			float x1 = config.x1 * this.frameWidth;
+			float y1 = config.y1 * this.frameHeight;
+			float x2 = config.x2 * this.frameWidth;
+			float y2 = config.y2 * this.frameHeight;
+			
+			surface.setBounds(new Bounds(new Point(x1, y1), new Point(x2, y2)));
 		});
 	}
 
 	public <T extends Event> void handleEvent(T event) {
 		if(event instanceof InvalidateLayoutEvent) {
-			Dimension size = this.drawingContext.getSize();
+			Size size = this.drawingContext.getWindowSize();
 			
-			this.frameWidth = size.width;
-			this.frameHeight = size.height;
+			this.frameWidth = size.getWidthAsInt();
+			this.frameHeight = size.getHeightAsInt();
 			
 			this.apply();
 		}
@@ -113,12 +114,12 @@ public class LayoutManager implements EventHandler {
 	private final class LayoutConfiguration {
 		
 		private Surface parent;
-		private double x1;
-		private double y1;
-		private double x2;
-		private double y2;
+		private float x1;
+		private float y1;
+		private float x2;
+		private float y2;
 		
-		private LayoutConfiguration(Surface parent, double x1, double y1, double x2, double y2) {
+		private LayoutConfiguration(Surface parent, float x1, float y1, float x2, float y2) {
 			this.parent = parent;
 			this.x1 = x1;
 			this.y1 = y1;

@@ -20,19 +20,19 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events;
 
-import java.awt.geom.Point2D;
+import org.azentreprise.arionide.ui.topology.Point;
 
 public class WheelEvent extends Event {
 	
-	private final Point2D point;
+	private final Point point;
 	private final double delta;
 	
-	public WheelEvent(Point2D point2d, double delta) {
-		this.point = point2d;
+	public WheelEvent(Point point, double delta) {
+		this.point = point;
 		this.delta = delta;
 	}
 	
-	public Point2D getPoint() {
+	public Point getPoint() {
 		return this.point;
 	}
 	

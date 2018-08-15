@@ -20,8 +20,8 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render.font;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.topology.Point;
 
 import com.jogamp.opengl.GL4;
 
@@ -34,6 +34,6 @@ public interface FontRenderer {
 	public static final int MAX_CHARS = 256;
 	
 	public void windowRatioChanged(float newRatio);
-	public Point2D renderString(GL4 gl, String str, Rectangle2D bounds);
+	public Point renderString(GL4 gl, String str, Bounds bounds);
 	public TextTessellator getTessellator();
 }

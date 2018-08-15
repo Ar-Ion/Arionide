@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay.components;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +33,7 @@ import org.azentreprise.arionide.events.ScrollEvent;
 import org.azentreprise.arionide.events.WheelEvent;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
+import org.azentreprise.arionide.ui.topology.Bounds;
 
 public class Scroll extends Tab {
 	
@@ -74,27 +74,27 @@ public class Scroll extends Tab {
 		synchronized(this.rectangles) {
 			this.rectangles.clear();
 			
-			Rectangle2D bounds = this.getBounds();
+			Bounds bounds = this.getBounds();
 			int count = this.getComponents().size();
 			
-			double initial = bounds.getWidth() / 3;
-			double initialHeight = bounds.getHeight();
+			float initial = bounds.getWidth() / 3;
+			float initialHeight = bounds.getHeight();
 			
 			for(int i = -this.activeComponent; i < 1; i++) {
-				double power = Math.pow(2, i);
-				double width = initial * power;
-				double height = initialHeight * power;
+				float power = (float) Math.pow(2, i);
+				float width = initial * power;
+				float height = initialHeight * power;
 				
-				this.rectangles.add(new Rectangle2D.Double(bounds.getX() + width, bounds.getCenterY() - height / 2, width, height));
+				this.rectangles.add(new Bounds(bounds.getX() + width, bounds.getCenter().getY() - height / 2, width, height));
 			}
 						
 			for(int i = 1; i < count; i++) {
-				double power = Math.pow(2, -i);
-				double x = initial * (1 - power) * 2;
-				double width = initial * power;
-				double height = initialHeight * power;
+				float power = (float) Math.pow(2, -i);
+				float x = initial * (1 - power) * 2;
+				float width = initial * power;
+				float height = initialHeight * power;
 	
-				this.rectangles.add(new Rectangle2D.Double(bounds.getX() + initial + x, bounds.getCenterY() - height / 2, width, height));
+				this.rectangles.add(new Bounds(bounds.getX() + initial + x, bounds.getCenter().getY() - height / 2, width, height));
 			}
 		}
 	}
@@ -103,8 +103,8 @@ public class Scroll extends Tab {
 		super.updateAll();
 		
 		if(this.getBounds().getWidth() > 0) {
-			this.shadow = (float) this.getBounds().getCenterX();
-			this.setShadowRadius((float) this.getBounds().getWidth() / 2);
+			this.shadow = this.getBounds().getCenter().getX();
+			this.setShadowRadius(this.getBounds().getWidth() / 2);
 		}
 	}
 	

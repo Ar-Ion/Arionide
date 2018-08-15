@@ -20,17 +20,16 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.layout;
 
-import java.awt.geom.Rectangle2D;
-
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.Drawable;
+import org.azentreprise.arionide.ui.topology.Bounds;
 
 public abstract class Surface implements Drawable {
 		
-	private Rectangle2D bounds;
+	private Bounds bounds;
 	private boolean hidden = true;
 		
-	public Surface setBounds(Rectangle2D bounds) {
+	public Surface setBounds(Bounds bounds) {
 		this.bounds = bounds;
 		return this;
 	}
@@ -53,7 +52,7 @@ public abstract class Surface implements Drawable {
 		this.hidden = true;
 	}
 	
-	public Rectangle2D getBounds() {
+	public Bounds getBounds() {
 		return this.bounds;
 	}
 	

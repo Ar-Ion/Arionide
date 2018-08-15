@@ -93,4 +93,13 @@ public class Utils {
 	public static boolean checkUnsignedByteOverflow(int value) {
 		return value < 0 || value > 255;
 	}
+	
+	
+	public static long convertToUnsignedLong(int in) {
+		if(in < 0) {
+			return (1 << 32) | -in;
+		} else {
+			return in;
+		}
+	}
 }

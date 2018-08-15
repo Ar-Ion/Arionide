@@ -23,13 +23,18 @@ package org.azentreprise.arionide.ui.topology;
 import java.util.Arrays;
 import java.util.List;
 
-public class Point implements Set {
+public class Point implements Set, Comparable<Point> {
 
 	private float x;
 	private float y;
 	
 	public Point() {
 		this(0.0f, 0.0f);
+	}
+	
+	public Point(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 	
 	public Point(float x, float y) {
@@ -58,11 +63,33 @@ public class Point implements Set {
 		return this.y;
 	}
 	
+	public int getXAsInt() {
+		return (int) this.x;
+	}
+	
+	public int getYAsInt() {
+		return (int) this.y;
+	}
+	
 	public List<Point> getPoints() {
 		return Arrays.asList(this);
 	}
 	
 	public Point copy() {
 		return new Point(this.x, this.y);
+	}
+
+	public int compareTo(Point other) {
+		if(this.x < other.x && this.y < other.y) {
+			return -1;
+		} else if(this.x > other.x && this.y > other.y) {
+			return 1;
+		}
+		
+		return 0;
+	}
+	
+	public String toString() {
+		return "(" + this.x + "; " + this.y + ")";
 	}
 }

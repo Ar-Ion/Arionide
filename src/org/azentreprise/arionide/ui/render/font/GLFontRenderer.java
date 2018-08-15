@@ -20,14 +20,15 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render.font;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.nio.Buffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.topology.Point;
 
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.util.texture.TextureData;
@@ -189,11 +190,11 @@ public class GLFontRenderer implements FontRenderer {
 		this.ratio = newRatio;
 	}
 	
-	public Point2D renderString(GL4 gl, String str, Rectangle2D bounds) {
+	public Point renderString(GL4 gl, String str, Bounds bounds) {
 		if(str.length() > FontRenderer.MAX_CHARS) {
 			str = str.substring(0, FontRenderer.MAX_CHARS - 1);
 		}
-		
+				
 		TextCacheEntry entry = this.cache.get(str);
 		
 		if(entry == null) {
@@ -204,16 +205,18 @@ public class GLFontRenderer implements FontRenderer {
 	}
 	
 	// returns the origin of the rendered string
-	public Point2D renderString(GL4 gl, TextCacheEntry entry, Rectangle2D bounds) {
+	public Point renderString(GL4 gl, TextCacheEntry entry, Bounds bounds) {
 		this.checkInitialized();
+		
+		Point center = bounds.getCenter();
 						
-		float translateX = (float) bounds.getCenterX() - 1.0f;
-		float translateY = 1.0f - (float) bounds.getCenterY();
-		float scaleX = FontRenderer.BBOX_FIT_X * (float) bounds.getWidth() / entry.getWidth();
+		float translateX = center.getX() - 1.0f;
+		float translateY = 1.0f - center.getY();
+		float scaleX = FontRenderer.BBOX_FIT_X * (float) bounds.getWidth() / entry.getWidth() * this.ratio;
 		float scaleY = FontRenderer.BBOX_FIT_Y * (float) bounds.getHeight() / entry.getHeight();
 
-		if(scaleY > scaleX * this.ratio) {
-			gl.glUniform2f(this.scaleUniform, scaleX, scaleX * this.ratio);
+		if(scaleY > scaleX) {
+			gl.glUniform2f(this.scaleUniform, scaleX / this.ratio, scaleX);
 		} else {
 			gl.glUniform2f(this.scaleUniform, scaleY / this.ratio, scaleY);
 		}
@@ -224,7 +227,7 @@ public class GLFontRenderer implements FontRenderer {
 
 		gl.glDrawElements(GL4.GL_TRIANGLES, entry.getCount() * 6, GL4.GL_UNSIGNED_INT, 0);
 		
-		return new Point2D.Float(0, 0);
+		return new Point(0, 0);
 	}
 		
 	public GLTextTessellator getTessellator() {

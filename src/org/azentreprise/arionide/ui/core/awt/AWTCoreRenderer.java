@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.core.awt;
 
-import java.awt.Rectangle;
 import java.util.List;
 
 import org.azentreprise.arionide.project.Project;
@@ -28,6 +27,7 @@ import org.azentreprise.arionide.ui.AWTContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
+import org.azentreprise.arionide.ui.topology.Bounds;
 
 public class AWTCoreRenderer implements CoreRenderer {
 	public void render3D(AppDrawingContext context) {
@@ -47,7 +47,7 @@ public class AWTCoreRenderer implements CoreRenderer {
 	}
 
 	@Override
-	public void update(Rectangle bounds) {
+	public void update(Bounds bounds) {
 		// TODO Auto-generated method stub
 		
 	}

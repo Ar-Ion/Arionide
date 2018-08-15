@@ -20,24 +20,24 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events;
 
-import java.awt.geom.Point2D;
+import org.azentreprise.arionide.ui.topology.Point;
 
 public class ActionEvent extends Event {
 	
 	public static final int BUTTON_LEFT = 1;
 	public static final int BUTTON_RIGHT = 3;
 	
-	private final Point2D point;
+	private final Point point;
 	private final int button;
 	private final ActionType type;
 	
-	public ActionEvent(Point2D point2d, int button, ActionType type) {
-		this.point = point2d;
+	public ActionEvent(Point point, int button, ActionType type) {
+		this.point = point;
 		this.button = button;
 		this.type = type;
 	}
 	
-	public Point2D getPoint() {
+	public Point getPoint() {
 		return this.point;
 	}
 	

@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay.components;
 
-import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,6 +32,7 @@ import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.render.Text;
 import org.azentreprise.arionide.ui.render.UILighting;
 import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
+import org.azentreprise.arionide.ui.topology.Bounds;
 
 public class Label extends Component implements Enlightenable {
 	
@@ -46,7 +46,7 @@ public class Label extends Component implements Enlightenable {
 		this.text = PrimitiveFactory.instance().newText(label, ApplicationTints.MAIN_COLOR, ApplicationTints.ACTIVE_ALPHA);
 	}
 	
-	public Label setBounds(Rectangle2D bounds) {
+	public Label setBounds(Bounds bounds) {
 		super.setBounds(bounds);
 		this.text.updateBounds(bounds);
 		return this;

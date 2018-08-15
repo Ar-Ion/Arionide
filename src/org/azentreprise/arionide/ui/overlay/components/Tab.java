@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.overlay.components;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,6 +43,11 @@ import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.render.Rectangle;
 import org.azentreprise.arionide.ui.render.UILighting;
 import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
+import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.topology.Point;
+import org.azentreprise.arionide.ui.topology.Scalar;
+import org.azentreprise.arionide.ui.topology.Size;
+import org.azentreprise.arionide.ui.topology.Translation;
 
 public class Tab extends MultiComponent implements EventHandler {
 		
@@ -53,7 +56,7 @@ public class Tab extends MultiComponent implements EventHandler {
 	private final Animation animation;
 	private final Rectangle borders;
 	
-	protected final List<Rectangle2D> rectangles = Collections.synchronizedList(new ArrayList<>());
+	protected final List<Bounds> rectangles = Collections.synchronizedList(new ArrayList<>());
 	
 	protected float shadow = 0.0f;
 	protected int activeComponent = 0;
@@ -75,7 +78,7 @@ public class Tab extends MultiComponent implements EventHandler {
 		this.borders = PrimitiveFactory.instance().newRectangle(ApplicationTints.MAIN_COLOR, ApplicationTints.INACTIVE_ALPHA);
 	}
 	
-	public Tab setBounds(Rectangle2D bounds) {
+	public Tab setBounds(Bounds bounds) {
 		super.setBounds(bounds);
 		this.borders.updateBounds(bounds);
 		return this;
@@ -141,15 +144,16 @@ public class Tab extends MultiComponent implements EventHandler {
 
 	public void drawSurface(AppDrawingContext context) {
 		List<Component> components = this.getComponents();
-		Rectangle2D bounds = this.getBounds();
+		Bounds bounds = this.getBounds();
 		
 		AlphaLayeringSystem layering = this.getAppManager().getAlphaLayering();
 		
 		float lightStrength = layering.getCurrentAlpha() / 255.0f;
+		float y = bounds.getCenter().getY();
 		
 		this.borders.updateLightStrength(lightStrength);
 		this.borders.updateAlpha(layering.push(AlphaLayer.CONTAINER, this.alpha));
-		this.borders.updateLightCenter((float) this.shadow, (float) bounds.getCenterY());
+		this.borders.updateLightCenter(this.shadow, y);
 		
 		context.getRenderingSystem().renderLater(this.borders);
 
@@ -157,7 +161,7 @@ public class Tab extends MultiComponent implements EventHandler {
 		
 		synchronized(this.rectangles) {
 			for(Component component : components) {
-				Rectangle2D rect = this.rectangles.get(i++);
+				Bounds rect = this.rectangles.get(i++);
 					
 				if(rect.getWidth() > 0) {
 					component.setBounds(rect);
@@ -165,14 +169,14 @@ public class Tab extends MultiComponent implements EventHandler {
 					if(component instanceof Enlightenable) {
 						for(UILighting primitive : ((Enlightenable) component).getEnlightenablePrimitives()) {
 							primitive.updateLightStrength(lightStrength);
-							primitive.updateLightCenter((float) this.shadow, (float) bounds.getCenterY());
+							primitive.updateLightCenter((float) this.shadow, y);
 						}
 					}
 					
 					component.drawSurface(context);
 					
 					try {
-						Rectangle2D next = this.rectangles.get(i);
+						Bounds next = this.rectangles.get(i);
 							
 						if(next.getWidth() > 0 && this.renderSeparators) {
 							context.getPrimitives().drawLine(next.getX(), next.getY(), next.getX(), next.getY() + next.getHeight());
@@ -198,17 +202,20 @@ public class Tab extends MultiComponent implements EventHandler {
 	protected void compute() {
 		synchronized(this.rectangles) {
 			this.rectangles.clear();
-						
+			
 			int count = this.getComponents().size();
 			
-			double x = this.getBounds().getX();
-			double y = this.getBounds().getY();
-			double width = this.getBounds().getWidth() / this.getComponents().size();
-			double height = this.getBounds().getHeight();
+			Size size = this.getBounds().getSize();
+			Scalar scalar = new Scalar(1.0f / this.getComponents().size(), 1.0f);
+			scalar.apply(size);
+			
+			Bounds bounds = new Bounds(this.getBounds().getOrigin(), size);
+			
+			Translation translation = new Translation(size.getWidth(), 0.0f);
 			
 			for(int i = 0; i < count; i++) {
-				this.rectangles.add(new Rectangle2D.Double(x, y, width, height));
-				x += width;
+				this.rectangles.add(bounds.copy());
+				translation.apply(bounds);
 			}
 		}
 	}
@@ -229,7 +236,7 @@ public class Tab extends MultiComponent implements EventHandler {
 				if(target != -666) {
 					this.activeComponent = target;
 					
-					float center = (float) this.rectangles.get(this.activeComponent).getCenterX();
+					float center = this.rectangles.get(this.activeComponent).getCenter().getX();
 					
 					if(this.shadow != center) {
 						this.animation.startAnimation(ANIMATION_TIME, center);
@@ -249,23 +256,23 @@ public class Tab extends MultiComponent implements EventHandler {
 		this.compute();
 
 		if(this.rectangles.size() > 0) {
-			Rectangle2D rect = this.rectangles.get(this.activeComponent);
-			this.shadow = (float) rect.getCenterX();
+			Bounds rect = this.rectangles.get(this.activeComponent);
+			this.shadow = rect.getCenter().getX();
 			
 			if(rect.getWidth() > 0) {
-				this.setShadowRadius((float) rect.getWidth());
+				this.setShadowRadius(rect.getWidth());
 			}
 		}
 	}
 	
 	// Dichotomy algorithm
-	private int getTarget(Point2D point, int index, int size, List<Rectangle2D> rectangles) {
+	private int getTarget(Point point, int index, int size, List<Bounds> rectangles) {
 		int middle = (index + size) / 2;
-		Rectangle2D middleRect = rectangles.get(middle);
+		Bounds middleRect = rectangles.get(middle);
 		
 		if(middleRect.contains(point)) {
 			return middle;
-		} else if(point.getX() - middleRect.getCenterX() > 0.0D) {
+		} else if(point.getX() - middleRect.getCenter().getX() > 0.0D) {
 			if(middle < size) {
 				return this.getTarget(point, middle + 1, size, rectangles);
 			}

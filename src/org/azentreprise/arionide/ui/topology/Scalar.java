@@ -26,7 +26,7 @@ public class Scalar extends Application {
 	private float scaleY;
 	
 	public Scalar() {
-		this(0.0f, 0.0f);
+		this(1.0f, 1.0f);
 	}
 	
 	public Scalar(float scaleX, float scaleY) {

@@ -21,7 +21,6 @@
 package org.azentreprise.arionide.ui;
 
 import java.awt.Cursor;
-import java.awt.Dimension;
 
 import org.azentreprise.arionide.Workspace;
 import org.azentreprise.arionide.resources.Resources;
@@ -31,6 +30,7 @@ import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.PrimitiveRenderingSystem;
 import org.azentreprise.arionide.ui.render.font.FontRenderer;
+import org.azentreprise.arionide.ui.topology.Size;
 
 public interface AppDrawingContext extends Purgeable {
 	
@@ -39,7 +39,7 @@ public interface AppDrawingContext extends Purgeable {
 	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager);
 	public void draw();
 	public void update();
-	public Dimension getSize();
+	public Size getWindowSize();
 	public FontRenderer getFontRenderer();
 	public PrimitiveRenderingSystem getRenderingSystem();
 	public PrimitiveRenderer getPrimitives();

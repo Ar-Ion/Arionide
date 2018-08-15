@@ -29,6 +29,8 @@ import java.awt.geom.Rectangle2D;
 import org.azentreprise.arionide.ui.AWTContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
+import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.topology.Point;
 
 public class AWTPrimitiveRenderer implements PrimitiveRenderer {
 	
@@ -38,53 +40,48 @@ public class AWTPrimitiveRenderer implements PrimitiveRenderer {
 		assert context instanceof AWTContext;
 		this.context = (AWTContext) context;
 	}
-	
-	public void drawRect(Rectangle2D bounds) {
-		this.context.getRenderer().draw(bounds);
-	}
-	
-	public void fillRect(Rectangle2D bounds) {
-		this.context.getRenderer().fill(bounds);
-	}
-	
-	public void drawRoundRect(Rectangle2D bounds) {
-		Rectangle integerRect = bounds.getBounds();
-		this.context.getRenderer().drawRoundRect(integerRect.x, integerRect.y, integerRect.width, integerRect.height, 32, 32);
+
+	@Override
+	public void drawRect(Bounds bounds) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void fillRoundRect(Rectangle2D bounds) {
-		Rectangle integerRect = bounds.getBounds();
-		this.context.getRenderer().fillRoundRect(integerRect.x, integerRect.y, integerRect.width, integerRect.height, 32, 32);
+	@Override
+	public void fillRect(Bounds bounds) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void drawLine(double x1, double y1, double x2, double y2) {
-		this.context.getRenderer().drawLine((int) x1, (int) y1, (int) x2, (int) y2);
-	}
-	
-	public Point2D drawText(String text, Rectangle2D bounds) {			
-		Graphics2D g2d = this.context.getRenderer();
+	@Override
+	public void drawRoundRect(Bounds bounds) {
+		// TODO Auto-generated method stub
 		
-		/*Font font = context.getFontAdapter().adapt(text, bounds.getWidth(), bounds.getHeight());
-		
-		if(g2d.getFont() != font) {
-			g2d.setFont(font);
-		}*/
-		
-		FontMetrics metrics = g2d.getFontMetrics();
-				
-		double x = bounds.getX() + (bounds.getWidth() - metrics.stringWidth(text)) / 2;
-		double y = bounds.getY() + (bounds.getHeight() - metrics.getMaxDescent() + metrics.getMaxAscent() + 1) / 2;
-		
-		g2d.drawString(text, (int) x, (int) y);
-		
-		return new Point2D.Double(x, y);
 	}
 
-	public void drawCursor() {
-		// Not implemented
+	@Override
+	public void fillRoundRect(Bounds bounds) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public GLFontRenderer getFontRenderer() {
+	@Override
+	public void drawLine(float x1, float y1, float x2, float y2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Point drawText(String text, Bounds bounds) {
+		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void drawCursor() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
 }

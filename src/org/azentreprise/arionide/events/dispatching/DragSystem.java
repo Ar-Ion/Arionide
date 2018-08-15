@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events.dispatching;
 
-import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,12 +30,13 @@ import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.MoveEvent;
 import org.azentreprise.arionide.events.MoveType;
+import org.azentreprise.arionide.ui.topology.Point;
 
 public class DragSystem implements EventHandler {
 	
 	private final IEventDispatcher dispatcher;
 	
-	private Point2D anchor;
+	private Point anchor;
 	
 	private DragSystem(IEventDispatcher dispatcher) {
 		this.dispatcher = dispatcher;

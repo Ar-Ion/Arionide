@@ -20,19 +20,19 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events;
 
-import java.awt.geom.Point2D;
+import org.azentreprise.arionide.ui.topology.Point;
 
 public class MoveEvent extends Event {
 	
-	private final Point2D point;
+	private final Point point;
 	private final MoveType type;
 	
-	public MoveEvent(Point2D point2d, MoveType type) {
-		this.point = point2d;
+	public MoveEvent(Point point, MoveType type) {
+		this.point = point;
 		this.type = type;
 	}
 	
-	public Point2D getPoint() {
+	public Point getPoint() {
 		return this.point;
 	}
 	

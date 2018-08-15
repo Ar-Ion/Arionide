@@ -24,7 +24,6 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -61,6 +60,8 @@ import org.azentreprise.arionide.ui.render.AWTPrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.PrimitiveRenderingSystem;
 import org.azentreprise.arionide.ui.render.font.FontRenderer;
+import org.azentreprise.arionide.ui.topology.Point;
+import org.azentreprise.arionide.ui.topology.Size;
 
 public class AWTContext extends Canvas implements AppDrawingContext, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
@@ -167,6 +168,10 @@ public class AWTContext extends Canvas implements AppDrawingContext, MouseListen
 		return null;
 	}
 	
+	public Size getWindowSize() {
+		return new Size(this.getWidth(), this.getHeight());
+	}
+	
 	public void setColor(int rgb) {
 		if(rgb > 0xFFFFFF) {
 			throw new IllegalArgumentException("Alpha values are not allowed");
@@ -196,42 +201,42 @@ public class AWTContext extends Canvas implements AppDrawingContext, MouseListen
 	}
 	
 	public void mouseClicked(MouseEvent event) {
-		Point point = event.getPoint();
+		Point point = new Point(event.getX(), event.getY());
 		this.dispatcher.fire(new ActionEvent(point, event.getButton(), ActionType.CLICK));
 	}
 
 	public void mousePressed(MouseEvent event) {
-		Point point = event.getPoint();
+		Point point = new Point(event.getX(), event.getY());
 		this.dispatcher.fire(new ActionEvent(point, event.getButton(), ActionType.PRESS));
 	}
 
 	public void mouseReleased(MouseEvent event) {
-		Point point = event.getPoint();
+		Point point = new Point(event.getX(), event.getY());
 		this.dispatcher.fire(new ActionEvent(point, event.getButton(), ActionType.RELEASE));
 	}
 
 	public void mouseEntered(MouseEvent event) {
-		Point point = event.getPoint();
+		Point point = new Point(event.getX(), event.getY());
 		this.dispatcher.fire(new MoveEvent(point, MoveType.ENTER));
 	}
 
 	public void mouseExited(MouseEvent event) {
-		Point point = event.getPoint();
+		Point point = new Point(event.getX(), event.getY());
 		this.dispatcher.fire(new MoveEvent(point, MoveType.EXIT));
 	}
 
 	public void mouseDragged(MouseEvent event) {
-		Point point = event.getPoint();
+		Point point = new Point(event.getX(), event.getY());
 		this.dispatcher.fire(new MoveEvent(point, MoveType.DRAG));
 	}
 
 	public void mouseMoved(MouseEvent event) {
-		Point point = event.getPoint();
+		Point point = new Point(event.getX(), event.getY());
 		this.dispatcher.fire(new MoveEvent(point, MoveType.MOVE));
 	}
 	
 	public void mouseWheelMoved(MouseWheelEvent event) {
-		Point point = event.getPoint();
+		Point point = new Point(event.getX(), event.getY());
 		this.dispatcher.fire(new WheelEvent(point, event.getWheelRotation()));
 	}
 

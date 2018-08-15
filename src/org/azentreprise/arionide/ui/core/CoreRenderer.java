@@ -20,17 +20,17 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.core;
 
-import java.awt.Rectangle;
 import java.util.List;
 
 import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.topology.Bounds;
 
 public interface CoreRenderer {
 	
 	@IAm("updating the core scene")
-	public void update(Rectangle bounds);
+	public void update(Bounds bounds);
 	
 	@IAm("rendering the core scene")
 	public void render3D(AppDrawingContext context);

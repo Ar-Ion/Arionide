@@ -21,7 +21,6 @@
 package org.azentreprise.arionide.ui.overlay.components;
 
 import java.awt.Cursor;
-import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,6 +45,7 @@ import org.azentreprise.arionide.ui.render.AffineTransformable;
 import org.azentreprise.arionide.ui.render.Rectangle;
 import org.azentreprise.arionide.ui.render.UILighting;
 import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
+import org.azentreprise.arionide.ui.topology.Bounds;
 
 public class Button extends Label implements EventHandler, Deformable {
 		
@@ -78,7 +78,7 @@ public class Button extends Label implements EventHandler, Deformable {
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
 	
-	public Button setBounds(Rectangle2D bounds) {
+	public Button setBounds(Bounds bounds) {
 		super.setBounds(bounds);
 		this.borders.updateBounds(bounds);
 		return this;

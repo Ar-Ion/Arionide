@@ -20,21 +20,21 @@
  *******************************************************************************/
 package org.azentreprise.arionide.events;
 
-import java.awt.geom.Point2D;
+import org.azentreprise.arionide.ui.topology.Point;
 
 public class DragEvent extends Event {
 	
-	private final Point2D anchor;
+	private final Point anchor;
 	private final double dx;
 	private final double dy;
 	
-	public DragEvent(Point2D anchor, double dx, double dy) {
+	public DragEvent(Point anchor, double dx, double dy) {
 		this.anchor = anchor;
 		this.dx = dx;
 		this.dy = dy;
 	}
 	
-	public Point2D getAnchor() {
+	public Point getAnchor() {
 		return this.anchor;
 	}
 	

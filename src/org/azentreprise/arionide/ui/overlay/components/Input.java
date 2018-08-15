@@ -22,7 +22,6 @@ package org.azentreprise.arionide.ui.overlay.components;
 
 import java.awt.Cursor;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,15 +103,15 @@ public class Input extends Button implements EventHandler {
 			System.out.println(x + "; " + y);
 
 			this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, 0xFF);
-			context.getPrimitives().fillRoundRect(new Rectangle2D.Double(x, y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * 2, scdsp[1] * metrics.getLineHeight()));
+			//context.getPrimitives().fillRoundRect(new Bounds(x, y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * 2, scdsp[1] * metrics.getLineHeight()));
 			this.getAppManager().getAlphaLayering().pop(AlphaLayer.COMPONENT);
 
 			if(this.highlighted) {
 				this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, 0x42);
 				
-				Rectangle2D selection = new Rectangle2D.Double(this.getText().getRenderPosition().getX() + scdsp[2], y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * tessellator.getWidth(this.text.toString()), scdsp[1] * metrics.getLineHeight());
+				//Bounds selection = new Bounds(this.getText().getRenderPosition().getX() + scdsp[2], y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * tessellator.getWidth(this.text.toString()), scdsp[1] * metrics.getLineHeight());
 				//context.setColor(0xC0FFEE);
-				context.getPrimitives().fillRect(selection);
+				// context.getPrimitives().fillRect(selection);
 				
 				this.getAppManager().getAlphaLayering().pop(AlphaLayer.COMPONENT);
 			}

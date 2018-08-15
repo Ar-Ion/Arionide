@@ -21,9 +21,6 @@
 package org.azentreprise.arionide.ui;
 
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
@@ -62,6 +59,9 @@ import org.azentreprise.arionide.ui.render.font.FontResources;
 import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
 import org.azentreprise.arionide.ui.render.gl.GLRectangleRenderingContext;
 import org.azentreprise.arionide.ui.render.gl.GLTextRenderingContext;
+import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.topology.Point;
+import org.azentreprise.arionide.ui.topology.Size;
 import org.xml.sax.SAXException;
 
 import com.jogamp.common.util.InterruptSource.Thread;
@@ -150,8 +150,8 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		this.theManager.loadUI(workspace, resources, renderer, manager);
 	}
 
-	public Dimension getSize() {
-		return new Dimension(2, 2);
+	public Size getWindowSize() {
+		return new Size(2.0f, 2.0f);
 	}
 
 	public void setCursor(Cursor cursor) {
@@ -185,7 +185,8 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 			this.theManager.draw();
 			
 	        this.core.render2D(this);
-			this.system.processRenderingQueue();
+			
+	        this.system.processRenderingQueue();
 	        
 			this.primitives.endUI();
 		}
@@ -199,7 +200,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		
 		this.fontRenderer.windowRatioChanged((float) width / height);
 		this.primitives.viewportChanged(width, height);
-		this.core.update(new Rectangle(this.window.getX(), this.window.getY(), width, height));
+		this.core.update(new Bounds(this.window.getX(), this.window.getY(), width, height));
 	}
 	
 	public GL4 getRenderer() {
@@ -271,31 +272,31 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	}
 	
 	public void mouseClicked(MouseEvent event) {
-		this.dispatcher.fire(new ActionEvent(this.getPoint(event), event.getButton(), ActionType.CLICK));
+		this.dispatcher.fire(new ActionEvent(this.getEventOrigin(event), event.getButton(), ActionType.CLICK));
 	}
 
 	public void mousePressed(MouseEvent event) {
-		this.dispatcher.fire(new ActionEvent(this.getPoint(event), event.getButton(), ActionType.PRESS));
+		this.dispatcher.fire(new ActionEvent(this.getEventOrigin(event), event.getButton(), ActionType.PRESS));
 	}
 
 	public void mouseReleased(MouseEvent event) {
-		this.dispatcher.fire(new ActionEvent(this.getPoint(event), event.getButton(), ActionType.RELEASE));
+		this.dispatcher.fire(new ActionEvent(this.getEventOrigin(event), event.getButton(), ActionType.RELEASE));
 	}
 
 	public void mouseEntered(MouseEvent event) {
-		this.dispatcher.fire(new MoveEvent(this.getPoint(event), MoveType.ENTER));
+		this.dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.ENTER));
 	}
 
 	public void mouseExited(MouseEvent event) {
-		this.dispatcher.fire(new MoveEvent(this.getPoint(event), MoveType.EXIT));
+		this.dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.EXIT));
 	}
 
 	public void mouseDragged(MouseEvent event) {
-		this.dispatcher.fire(new MoveEvent(this.getPoint(event), MoveType.DRAG));
+		this.dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.DRAG));
 	}
 
 	public void mouseMoved(MouseEvent event) {
-		this.dispatcher.fire(new MoveEvent(this.getPoint(event), MoveType.MOVE));
+		this.dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.MOVE));
 	}
 	
 	public void mouseWheelMoved(MouseEvent event) {
@@ -303,11 +304,11 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		
 		rotation += Math.signum(rotation) * 0.5d;
 		
-		this.dispatcher.fire(new WheelEvent(this.getPoint(event), rotation * AppDrawingContext.MOUSE_WHEEL_SENSIBILITY));
+		this.dispatcher.fire(new WheelEvent(this.getEventOrigin(event), rotation * AppDrawingContext.MOUSE_WHEEL_SENSIBILITY));
 	}
 	
-	private Point2D getPoint(MouseEvent event) {
-		return new Point2D.Double(2.0d * event.getX() / this.window.getWidth(), 2.0d * event.getY() / this.window.getHeight());
+	private Point getEventOrigin(MouseEvent event) {
+		return new Point(2.0f * event.getX() / this.window.getWidth(), 2.0f * event.getY() / this.window.getHeight());
 	}
 
 	public void keyTyped(KeyEvent e) {

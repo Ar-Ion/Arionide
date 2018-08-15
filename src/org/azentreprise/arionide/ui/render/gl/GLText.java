@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render.gl;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.math.BigInteger;
 
 import org.azentreprise.arionide.Utils;
@@ -31,12 +29,14 @@ import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
 import org.azentreprise.arionide.ui.render.RenderingContext;
 import org.azentreprise.arionide.ui.render.Text;
+import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.topology.Point;
 
 import com.jogamp.opengl.GL4;
 
 public class GLText extends Text {
 
-	private Rectangle2D bounds;
+	private Bounds bounds;
 	private float translateX;
 	private float translateY;
 	private float scaleX = 1.0f;
@@ -48,16 +48,16 @@ public class GLText extends Text {
 	private float lightCenterY;
 	private float lightRadius = -2.0f;
 	private float lightStrength = 1.0f;
-	private Point2D renderPosition = new Point2D.Double();
+	private Point renderPosition = new Point();
 	
-	public GLText(Rectangle2D bounds, String text, int rgb, int alpha) {
+	public GLText(Bounds bounds, String text, int rgb, int alpha) {
 		this.bounds = bounds;
 		this.text = text;
 		this.rgb = rgb;
 		this.alpha = alpha;
 	}
 	
-	public void updateBounds(Rectangle2D newBounds) {
+	public void updateBounds(Bounds newBounds) {
 		this.bounds = newBounds;
 	}
 	
@@ -96,7 +96,7 @@ public class GLText extends Text {
 		this.lightStrength = newStrength;
 	}
 	
-	public Point2D getRenderPosition() {
+	public Point getRenderPosition() {
 		return this.renderPosition;
 	}
 	
@@ -141,14 +141,14 @@ public class GLText extends Text {
 
 	public void render(PrimitiveRenderer renderer) {
 		assert renderer instanceof GLPrimitiveRenderer;
-		
+				
 		if(this.bounds != null) {
-			double x = (this.bounds.getX() - 1.0d) * this.scaleX + 1.0d + this.translateX;
-			double y = (this.bounds.getY() - 1.0d) * this.scaleY + 1.0d + this.translateY;
-			double width = this.bounds.getWidth() * this.scaleX;
-			double height = this.bounds.getHeight();
-
-			this.renderPosition = ((GLPrimitiveRenderer) renderer).drawText(this.text, new Rectangle2D.Double(x, y, width, height));
+			float x = (this.bounds.getX() - 1.0f) * this.scaleX + 1.0f + this.translateX;
+			float y = (this.bounds.getY() - 1.0f) * this.scaleY + 1.0f + this.translateY;
+			float width = this.bounds.getWidth() * this.scaleX;
+			float height = this.bounds.getHeight();
+						
+			this.renderPosition = ((GLPrimitiveRenderer) renderer).drawText(this.text, new Bounds(x, y, width, height));
 		}
 	}
 	
