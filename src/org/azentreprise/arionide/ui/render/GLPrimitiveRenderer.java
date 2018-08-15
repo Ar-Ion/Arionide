@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
-import java.awt.geom.Point2D;
 import java.io.IOException;
 
 import org.azentreprise.Debug;
@@ -145,10 +144,6 @@ public class GLPrimitiveRenderer implements PrimitiveRenderer {
 		this.drawCursor();
 		
 		this.gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
-		
-		this.use(this.uiShader);
-		
-		this.disableLight(this.gl);
 	}
 	
 	public void endUI() {
@@ -268,22 +263,6 @@ public class GLPrimitiveRenderer implements PrimitiveRenderer {
 		return this.a;
 	}
 
-	public void enableLight(Point2D center, double radius, double strength) {		
-		this.use(this.uiShader);
-		this.gl.glUniform2d(this.lightCenter, center.getX() - 1.0d, 1.0d - center.getY());
-		this.gl.glUniform1d(this.lightRadius, radius);
-		this.gl.glUniform1d(this.lightStrength, strength);
-	}
-	
-	public void disableLight(AppDrawingContext context) {		
-		this.use(this.uiShader);
-		this.disableLight(this.gl);
-	}
-	
-	private void disableLight(GL4 gl) { // Ensure that the UI Shader is active before calling this method
-		gl.glUniform1d(this.lightRadius, -1.0d);
-	}
-	
 	public void use(int shader) {
 		this.gl.glUseProgram(shader);
 		

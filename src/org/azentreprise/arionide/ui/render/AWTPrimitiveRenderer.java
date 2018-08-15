@@ -20,25 +20,15 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import org.azentreprise.arionide.ui.AWTContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
-import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
 import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
 
 public class AWTPrimitiveRenderer implements PrimitiveRenderer {
-	
-	private AWTContext context;
-	
+		
 	public void init(AppDrawingContext context) {
 		assert context instanceof AWTContext;
-		this.context = (AWTContext) context;
 	}
 
 	@Override
