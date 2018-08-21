@@ -23,19 +23,27 @@ package org.azentreprise.arionide.ui.render.gl;
 import java.math.BigInteger;
 
 import org.azentreprise.arionide.Utils;
-import org.azentreprise.arionide.ui.render.GLPrimitiveRenderer;
+import org.azentreprise.arionide.ui.render.GLBounds;
 import org.azentreprise.arionide.ui.render.Identification;
-import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
 import org.azentreprise.arionide.ui.render.Rectangle;
 import org.azentreprise.arionide.ui.render.RenderingContext;
+import org.azentreprise.arionide.ui.render.gl.vao.Attribute;
+import org.azentreprise.arionide.ui.render.gl.vao.VertexArray;
+import org.azentreprise.arionide.ui.render.gl.vao.VertexArrayCache;
+import org.azentreprise.arionide.ui.render.gl.vao.VertexBuffer;
 import org.azentreprise.arionide.ui.topology.Bounds;
 
 import com.jogamp.opengl.GL4;
 
 public class GLRectangle extends Rectangle {
 	
-	private Bounds bounds;
+	private static GLRectangleRenderingContext context;
+	
+	private final VertexBuffer positionBuffer;
+	private final VertexArray vao;
+	
+	protected GLBounds bounds;
 	private int rgb;
 	private int alpha;
 	private float lightCenterX;
@@ -48,13 +56,28 @@ public class GLRectangle extends Rectangle {
 	private float translateY;
 		
 	public GLRectangle(Bounds bounds, int rgb, int alpha) {
-		this.bounds = bounds;
+		assert context != null;
+		
 		this.rgb = rgb;
 		this.alpha = alpha;
+		this.positionBuffer = new VertexBuffer(Double.BYTES, new Attribute(context.getPositionAttribute(), 2, GL4.GL_DOUBLE));
+		this.vao = new VertexArray(this.positionBuffer);
+		
+		this.updateBounds(bounds);
+	}
+	
+	public void load() {
+		if(this.bounds != null) {
+			VertexArrayCache.load(this.bounds, context.getGL(), this.vao);
+		}
 	}
 	
 	public void updateBounds(Bounds newBounds) {
-		this.bounds = newBounds;
+		if(newBounds != null) {
+			this.bounds = new GLBounds(newBounds);
+			this.positionBuffer.updateDataSupplier(() -> this.bounds.allocDataBuffer(8).putBoundingPoints().getDataBuffer().flip());
+			this.vao.unload(); // Invalidate VAO
+		}
 	}
 	
 	public void updateRGB(int newRGB) {
@@ -90,6 +113,7 @@ public class GLRectangle extends Rectangle {
 	
 	public BigInteger getFingerprint() {
 		return Identification.generateFingerprint(
+				this.bounds.hashCode(),
 				this.rgb, 
 				Float.floatToIntBits(this.scaleX) ^ Float.floatToIntBits(this.scaleY), 
 				Float.floatToIntBits(this.translateX) ^ Float.floatToIntBits(this.translateY), 
@@ -103,43 +127,45 @@ public class GLRectangle extends Rectangle {
 		return PrimitiveType.RECT;
 	}
 
-	public void updateProperty(PrimitiveRenderer renderer, RenderingContext context, int identifier) {
-		assert renderer instanceof GLPrimitiveRenderer;
-		assert context instanceof GLRectangleRenderingContext;
-		
-		GLRectangleRenderingContext rectangleContext = (GLRectangleRenderingContext) context;
-		GL4 gl = ((GLPrimitiveRenderer) renderer).getGL();
+	public void updateProperty(int identifier) {
+		GL4 gl = context.getGL();
 		
 		switch(identifier) {
+			case GLRectangleRenderingContext.BOUNDS_IDENTIFIER:
+				this.load();
+				break;
 			case GLRectangleRenderingContext.RGB_IDENTIFIER:
-				gl.glUniform3f(rectangleContext.getRGBUniform(), Utils.getRed(this.rgb) / 255.0f, Utils.getGreen(this.rgb) / 255.0f, Utils.getBlue(this.rgb) / 255.0f);
+				gl.glUniform3f(context.getRGBUniform(), Utils.getRed(this.rgb) / 255.0f, Utils.getGreen(this.rgb) / 255.0f, Utils.getBlue(this.rgb) / 255.0f);
 				break;
 			case GLRectangleRenderingContext.ALPHA_IDENTIFIER:
-				gl.glUniform1f(rectangleContext.getAlphaUniform(), this.alpha / 255.0f);
+				gl.glUniform1f(context.getAlphaUniform(), this.alpha / 255.0f);
 				break;
 			case GLRectangleRenderingContext.LIGHT_CENTER_IDENTIFIER:
-				gl.glUniform2f(rectangleContext.getLightCenterUniform(), this.lightCenterX, this.lightCenterY);
+				gl.glUniform2f(context.getLightCenterUniform(), this.lightCenterX, this.lightCenterY);
 				break;
 			case GLRectangleRenderingContext.LIGHT_RADIUS_IDENTIFIER:
-				gl.glUniform1f(rectangleContext.getLightRadiusUniform(), this.lightRadius);
+				gl.glUniform1f(context.getLightRadiusUniform(), this.lightRadius);
 				break;
 			case GLRectangleRenderingContext.LIGHT_STRENGTH_IDENTIFIER:
-				gl.glUniform1f(rectangleContext.getLightStrengthUniform(), this.lightStrength);
+				gl.glUniform1f(context.getLightStrengthUniform(), this.lightStrength);
 				break;
 			case GLRectangleRenderingContext.SCALE_IDENTIFIER:
-				gl.glUniform2f(rectangleContext.getScaleUniform(), this.scaleX, this.scaleY);
+				gl.glUniform2f(context.getScaleUniform(), this.scaleX, this.scaleY);
 				break;
 			case GLRectangleRenderingContext.TRANSLATION_IDENTIFIER:
-				gl.glUniform2f(rectangleContext.getTranslationUniform(), this.translateX, this.translateY);
+				gl.glUniform2f(context.getTranslationUniform(), this.translateX, this.translateY);
 				break;
 		}
 	}
 
-	public void render(PrimitiveRenderer renderer) {
-		assert renderer instanceof GLPrimitiveRenderer;
-				
-		if(this.bounds != null) {
-			((GLPrimitiveRenderer) renderer).drawRect(this.bounds);
-		}
+	public void render() {
+		GL4 gl = context.getGL();
+
+		this.vao.bind(gl);
+		gl.glDrawArrays(GL4.GL_LINE_LOOP, 0, 4);
+	}
+	
+	public static RenderingContext setupContext(GLRectangleRenderingContext context) {
+		return GLRectangle.context = context;
 	}
 }

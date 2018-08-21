@@ -23,12 +23,11 @@ package org.azentreprise.arionide.ui.render.gl;
 import java.math.BigInteger;
 
 import org.azentreprise.arionide.Utils;
-import org.azentreprise.arionide.ui.render.GLPrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.Identification;
-import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
 import org.azentreprise.arionide.ui.render.RenderingContext;
 import org.azentreprise.arionide.ui.render.Text;
+import org.azentreprise.arionide.ui.render.font.TextCacheEntry;
 import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
 
@@ -36,12 +35,15 @@ import com.jogamp.opengl.GL4;
 
 public class GLText extends Text {
 
+	private static GLTextRenderingContext context;
+	
 	private Bounds bounds;
 	private float translateX;
 	private float translateY;
 	private float scaleX = 1.0f;
 	private float scaleY = 1.0f;
 	private String text;
+	private TextCacheEntry entry;
 	private int rgb;
 	private int alpha;
 	private float lightCenterX;
@@ -55,6 +57,10 @@ public class GLText extends Text {
 		this.text = text;
 		this.rgb = rgb;
 		this.alpha = alpha;
+	}
+
+	public void load() {
+		this.entry = context.getFontRenderer().fetch(context.getGL(), this.text);
 	}
 	
 	public void updateBounds(Bounds newBounds) {
@@ -102,6 +108,7 @@ public class GLText extends Text {
 	
 	public BigInteger getFingerprint() {
 		return Identification.generateFingerprint(
+				this.text.hashCode(),
 				this.rgb, 
 				this.alpha, 
 				Float.floatToIntBits(this.lightStrength), 
@@ -113,46 +120,47 @@ public class GLText extends Text {
 		return PrimitiveType.TEXT;
 	}
 
-	public void updateProperty(PrimitiveRenderer renderer, RenderingContext context, int identifier) {
-		assert renderer instanceof GLPrimitiveRenderer;
-		assert context instanceof GLTextRenderingContext;
-		
-		GLTextRenderingContext textContext = (GLTextRenderingContext) context;
-		GL4 gl = ((GLPrimitiveRenderer) renderer).getGL();
+	public void updateProperty(int identifier) {		
+		GL4 gl = context.getGL();
 				
 		switch(identifier) {
+			case GLTextRenderingContext.TEXT_IDENTIFIER:
+				this.entry = context.getFontRenderer().fetch(context.getGL(), this.text);
+				break;
 			case GLTextRenderingContext.RGB_IDENTIFIER:
-				gl.glUniform3f(textContext.getRGBUniform(), Utils.getRed(this.rgb) / 255.0f, Utils.getGreen(this.rgb) / 255.0f, Utils.getBlue(this.rgb) / 255.0f);
+				gl.glUniform3f(context.getRGBUniform(), Utils.getRed(this.rgb) / 255.0f, Utils.getGreen(this.rgb) / 255.0f, Utils.getBlue(this.rgb) / 255.0f);
 				break;
 			case GLTextRenderingContext.ALPHA_IDENTIFIER:
-				gl.glUniform1f(textContext.getAlphaUniform(), this.alpha / 255.0f);
+				gl.glUniform1f(context.getAlphaUniform(), this.alpha / 255.0f);
 				break;
 			case GLTextRenderingContext.LIGHT_CENTER_IDENTIFIER:
-				gl.glUniform2f(textContext.getLightCenterUniform(), this.lightCenterX, this.lightCenterY);
+				gl.glUniform2f(context.getLightCenterUniform(), this.lightCenterX, this.lightCenterY);
 				break;
 			case GLTextRenderingContext.LIGHT_RADIUS_IDENTIFIER:
-				gl.glUniform1f(textContext.getLightRadiusUniform(), this.lightRadius);
+				gl.glUniform1f(context.getLightRadiusUniform(), this.lightRadius);
 				break;
 			case GLTextRenderingContext.LIGHT_STRENGTH_IDENTIFIER:
-				gl.glUniform1f(textContext.getLightStrengthUniform(), this.lightStrength);
+				gl.glUniform1f(context.getLightStrengthUniform(), this.lightStrength);
 				break;
 		}
 	}
 
-	public void render(PrimitiveRenderer renderer) {
-		assert renderer instanceof GLPrimitiveRenderer;
-				
+	public void render() {
 		if(this.bounds != null) {
 			float x = (this.bounds.getX() - 1.0f) * this.scaleX + 1.0f + this.translateX;
 			float y = (this.bounds.getY() - 1.0f) * this.scaleY + 1.0f + this.translateY;
 			float width = this.bounds.getWidth() * this.scaleX;
 			float height = this.bounds.getHeight();
-						
-			this.renderPosition = ((GLPrimitiveRenderer) renderer).drawText(this.text, new Bounds(x, y, width, height));
+
+			this.renderPosition = context.getFontRenderer().renderString(context.getGL(), this.entry, new Bounds(x, y, width, height));
 		}
 	}
 	
 	public String toString() {
 		return this.text;
+	}
+	
+	public static RenderingContext setupContext(GLTextRenderingContext context) {
+		return GLText.context = context;
 	}
 }

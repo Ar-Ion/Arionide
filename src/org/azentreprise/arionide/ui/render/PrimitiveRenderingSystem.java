@@ -30,11 +30,6 @@ public class PrimitiveRenderingSystem {
 	
 	private final Map<PrimitiveType, RenderingContext> genericPrimitives = new HashMap<>();
 	private final Queue<Primitive> renderingQueue = new PriorityQueue<>();
-	private final PrimitiveRenderer renderer;
-	
-	public PrimitiveRenderingSystem(PrimitiveRenderer renderer) {
-		this.renderer = renderer;
-	}
 	
 	public void registerGenericPrimitive(PrimitiveType type, RenderingContext context) {
 		assert type != null;
@@ -42,7 +37,7 @@ public class PrimitiveRenderingSystem {
 		
 		this.genericPrimitives.put(type, context);
 		
-		context.load(this.renderer);
+		context.load();
 	}
 	
 	public void renderLater(Primitive primitive) {
@@ -63,31 +58,37 @@ public class PrimitiveRenderingSystem {
 						
 			if(typeUpdate) {
 				if(lastPrimitive != null) {
-					this.genericPrimitives.get(lastPrimitive.getType()).exit(this.renderer);
+					this.genericPrimitives.get(lastPrimitive.getType()).exit();
 				}
 
-				context.enter(this.renderer);
+				context.enter();
 								
 				for(BigInteger identifier : context.getIdentificationScheme()) {
-					primitive.updateProperty(this.renderer, context, identifier.getLowestSetBit() / Identification.PARTITION_SIZE);
+					primitive.updateProperty(identifier.getLowestSetBit() / Identification.PARTITION_SIZE);
 				}
 			} else {
 				BigInteger diff = lastPrimitive.getFingerprint().xor(primitive.getFingerprint());
 								
 				for(BigInteger identifier : context.getIdentificationScheme()) {
 					if(!diff.and(identifier).equals(BigInteger.ZERO)) {
-						primitive.updateProperty(this.renderer, context, context.getIdentificationScheme().length - 1 - identifier.getLowestSetBit() / Identification.PARTITION_SIZE);
+						primitive.updateProperty(context.getIdentificationScheme().length - 1 - identifier.getLowestSetBit() / Identification.PARTITION_SIZE);
 					}
 				}
 			}
 			
-			primitive.render(this.renderer);
+			primitive.render();
 			
 			lastPrimitive = primitive;
 		}
 		
 		if(lastPrimitive != null) {
-			this.genericPrimitives.get(lastPrimitive.getType()).exit(this.renderer);
+			this.genericPrimitives.get(lastPrimitive.getType()).exit();
+		}
+	}
+
+	public void updateAspectRatio(float newRatio) {
+		for(RenderingContext context : this.genericPrimitives.values()) {
+			context.onAspectRatioUpdate(newRatio);
 		}
 	}
 }

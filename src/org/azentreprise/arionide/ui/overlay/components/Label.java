@@ -29,9 +29,9 @@ import org.azentreprise.arionide.ui.ApplicationTints;
 import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
+import org.azentreprise.arionide.ui.render.PrimitiveFactory;
 import org.azentreprise.arionide.ui.render.Text;
 import org.azentreprise.arionide.ui.render.UILighting;
-import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
 import org.azentreprise.arionide.ui.topology.Bounds;
 
 public class Label extends Component implements Enlightenable {
@@ -44,6 +44,10 @@ public class Label extends Component implements Enlightenable {
 		super(parent);
 		
 		this.text = PrimitiveFactory.instance().newText(label, ApplicationTints.MAIN_COLOR, ApplicationTints.ACTIVE_ALPHA);
+	}
+	
+	public void load() {
+		this.text.load();
 	}
 	
 	public Label setBounds(Bounds bounds) {

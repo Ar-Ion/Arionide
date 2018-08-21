@@ -20,21 +20,19 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render.font;
 
-import java.nio.IntBuffer;
-
 public class TextCacheEntry {
 	
 	private final float width;
 	private final float height;
 	private final int vao;
-	private final IntBuffer freeables;
+	private final int[] freeables;
 	private final int count; // number of chars
 	
 	protected TextCacheEntry(float width, float height, int vao, int[] freeables, int count) {
 		this.width = width;
 		this.height = height;
 		this.vao = vao;
-		this.freeables = IntBuffer.wrap(freeables);
+		this.freeables = freeables;
 		this.count = count;
 	}
 	
@@ -50,7 +48,7 @@ public class TextCacheEntry {
 		return this.vao;
 	}
 	
-	protected IntBuffer getFreeableResources() {
+	protected int[] getFreeableResources() {
 		return this.freeables;
 	}
 	

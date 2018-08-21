@@ -26,7 +26,6 @@ import java.nio.IntBuffer;
 
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.ui.render.Identification;
-import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
 import org.azentreprise.arionide.ui.shaders.Shaders;
 
@@ -34,13 +33,14 @@ import com.jogamp.opengl.GL4;
 
 public class GLTextRenderingContext extends GLRenderingContext {
 
-	public static final int RGB_IDENTIFIER = 0;
-	public static final int ALPHA_IDENTIFIER = 1;
-	public static final int LIGHT_STRENGTH_IDENTIFIER = 2;
-	public static final int LIGHT_RADIUS_IDENTIFIER = 3;
-	public static final int LIGHT_CENTER_IDENTIFIER = 4;
+	public static final int TEXT_IDENTIFIER = 0;
+	public static final int RGB_IDENTIFIER = 1;
+	public static final int ALPHA_IDENTIFIER = 2;
+	public static final int LIGHT_STRENGTH_IDENTIFIER = 3;
+	public static final int LIGHT_RADIUS_IDENTIFIER = 4;
+	public static final int LIGHT_CENTER_IDENTIFIER = 5;
 	
-	private static final BigInteger[] scheme = Identification.makeScheme(5);
+	private static final BigInteger[] scheme = Identification.makeScheme(6);
 	
 	private final GLFontRenderer fontRenderer;
 	
@@ -52,12 +52,13 @@ public class GLTextRenderingContext extends GLRenderingContext {
 	private int lightRadius;
 	private int lightStrength;
 
-	public GLTextRenderingContext(GLFontRenderer fontRenderer) {
+	public GLTextRenderingContext(GL4 gl, GLFontRenderer fontRenderer) {
+		super(gl);
 		this.fontRenderer = fontRenderer;
 	}
 	
-	public void load(PrimitiveRenderer renderer) {
-		GL4 gl = this.getGL(renderer);
+	public void load() {
+		GL4 gl = this.getGL();
 		
 		try {
 			int vert = Shaders.loadShader(gl, "text.vert", GL4.GL_VERTEX_SHADER);
@@ -91,19 +92,31 @@ public class GLTextRenderingContext extends GLRenderingContext {
 		}
 	}
 	
-	public void enter(PrimitiveRenderer renderer) {
-		GL4 gl = this.getGL(renderer);
+	public void enter() {
+		GL4 gl = this.getGL();
 		
 		gl.glUseProgram(this.shader);
 		gl.glUniform1i(this.sampler, 1);
 	}
 
-	public void exit(PrimitiveRenderer renderer) {
+	public void exit() {
 		return;
+	}
+	
+	public void onAspectRatioUpdate(float newRatio) {
+		this.fontRenderer.windowRatioChanged(newRatio);
 	}
 
 	public BigInteger[] getIdentificationScheme() {
 		return scheme;
+	}
+	
+	public int getShaderID() {
+		return this.shader;
+	}
+	
+	public GLFontRenderer getFontRenderer() {
+		return this.fontRenderer;
 	}
 	
 	public int getRGBUniform() {

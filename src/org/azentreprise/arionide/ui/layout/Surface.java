@@ -56,5 +56,6 @@ public abstract class Surface implements Drawable {
 		return this.bounds;
 	}
 	
+	public abstract void load();
 	public abstract void drawSurface(AppDrawingContext context);
 }

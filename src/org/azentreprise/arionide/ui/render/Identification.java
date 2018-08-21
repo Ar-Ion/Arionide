@@ -44,6 +44,10 @@ public class Identification {
 	}
 	
 	public static BigInteger generateFingerprint(int... fields) {
-		return IntStream.of(fields).mapToLong(Utils::convertToUnsignedLong).mapToObj(BigInteger::valueOf).reduce(shor).orElse(BigInteger.ZERO);
+		return generateFingerprint(BigInteger.ZERO, fields);
+	}
+	
+	public static BigInteger generateFingerprint(BigInteger parent, int... fields) {
+		return shor.apply(parent, IntStream.of(fields).mapToLong(Utils::convertToUnsignedLong).mapToObj(BigInteger::valueOf).reduce(shor).orElse(BigInteger.ZERO));
 	}
 }

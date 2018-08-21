@@ -24,10 +24,11 @@ import java.math.BigInteger;
 
 public abstract class Primitive implements Comparable<Primitive> {
 	
+	public abstract void load();
 	public abstract BigInteger getFingerprint();
 	public abstract PrimitiveType getType();
-	public abstract void updateProperty(PrimitiveRenderer renderer, RenderingContext context, int identifier);
-	public abstract void render(PrimitiveRenderer renderer);
+	public abstract void updateProperty(int identifier);
+	public abstract void render();
 	
 	public int compareTo(Primitive other) {
 		if(this.getType() != other.getType()) {

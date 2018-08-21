@@ -23,46 +23,42 @@ package org.azentreprise.arionide.ui.topology;
 import java.util.Arrays;
 import java.util.List;
 
-public class Bounds implements Set {
+public class Line implements Set {
 
 	private Point p1;
 	private Point p2;
 	
-	public Bounds() {
+	public Line() {
 		this(0.0f, 0.0f, 0.0f, 0.0f);
 	}
 	
-	public Bounds(Point origin, Size size) {
-		this(origin.getX(), origin.getY(), size.getWidth(), size.getHeight());
+	public Line(int x1, int y1, int x2, int y2) {
+		this(new Point(x1, y1), new Point(x2, y2));
 	}
 	
-	public Bounds(int x, int y, int width, int height) {
-		this(new Point(x, y), new Point(x + width, y + height));
+	public Line(float x1, float y1, float x2, float y2) {
+		this(new Point(x1, y1), new Point(x2, y2));
 	}
 	
-	public Bounds(float x, float y, float width, float height) {
-		this(new Point(x, y), new Point(x + width, y + height));
-	}
-	
-	public Bounds(Point p1, Point p2) {
+	public Line(Point p1, Point p2) {
 		this.p1 = p1.copy();
 		this.p2 = p2.copy();
 	}
 
-	public void setX(float x) {
-		this.p1.setX(x);
+	public void setX1(float x1) {
+		this.p1.setX(x1);
 	}
 	
-	public void setY(float y) {
-		this.p1.setY(y);
+	public void setY1(float y1) {
+		this.p1.setY(y1);
 	}
 	
-	public void setWidth(float width) {
-		this.p2.setX(this.getX() + width);
+	public void setX2(float x2) {
+		this.p2.setX(x2);
 	}
 	
-	public void setHeight(float height) {
-		this.p2.setY(this.getY() + height);
+	public void setY2(float y2) {
+		this.p2.setY(y2);
 	}
 	
 	public void setFirstPoint(float x1, float y1) {
@@ -81,72 +77,41 @@ public class Bounds implements Set {
 		this.p2 = p2.copy();
 	}
 	
-	public void setOrigin(Point origin) {
-		this.p1 = origin.copy();
+	public void setLine(float x1, float y1, float x2, float y2) {
+		this.setFirstPoint(x1, y1);
+		this.setSecondPoint(x2, y2);
 	}
 	
-	public void setOrigin(float x, float y) {
-		this.setX(x);
-		this.setY(y);
-	}
-	
-	public void setSize(Size size) {
-		this.setSize(size.getWidth(), size.getHeight());
-	}
-	
-	public void setSize(float width, float height) {
-		this.setWidth(width);
-		this.setHeight(height);
-	}
-	
-	public void setFrame(Point origin, Size size) {
-		this.setOrigin(origin);
-		this.setSize(size);
-	}
-	
-	public void setFrame(float x, float y, float width, float height) {
-		this.setOrigin(x, y);
-		this.setSize(x, y);
-	}
-	
-	public float getX() {
+	public float getX1() {
 		return this.p1.getX();
 	}
 	
-	public float getY() {
+	public float getY1() {
 		return this.p1.getY();
 	}
 	
-	public Point getOrigin() {
-		return this.p1.copy();
+	public float getX2() {
+		return this.p2.getX();
 	}
 	
-	public float getWidth() {
-		return this.p2.getX() - this.getX();
+	public float getY2() {
+		return this.p2.getY();
 	}
-	
-	public float getHeight() {
-		return this.p2.getY() - this.getY();
-	}
-	
-	public Size getSize() {
-		return new Size(this.getWidth(), this.getHeight());
-	}
-	
-	public int getXAsInt() {
+
+	public int getX1AsInt() {
 		return (int) this.p1.getX();
 	}
 	
-	public int getYAsInt() {
+	public int getY1AsInt() {
 		return (int) this.p1.getY();
 	}
 	
-	public int getWidthAsInt() {
-		return (int) (this.p2.getX() - this.getX());
+	public int getX2AsInt() {
+		return (int) this.p2.getX();
 	}
 	
-	public int getHeightAsInt() {
-		return (int) (this.p2.getY() - this.getY());
+	public int getY2AsInt() {
+		return (int) this.p2.getY();
 	}
 	
 	public Point getFirstPoint() {
@@ -157,18 +122,10 @@ public class Bounds implements Set {
 		return this.p2.copy();
 	}
 	
-	public boolean contains(float x, float y) {
-		return this.contains(new Point(x, y));
+	public Bounds getSpan() {
+		return new Bounds(this.p1, this.p2);
 	}
-	
-	public boolean contains(Point point) {
-		return Math.abs(point.compareTo(this.p1) - point.compareTo(this.p2)) > 1;
-	}
-	
-	public Point getCenter() {
-		return new Point((this.p1.getX() + this.p2.getX()) / 2, (this.p1.getY() + this.p2.getY()) / 2);
-	}
-	
+
 	public List<Point> getPoints() {
 		return Arrays.asList(this.p1, this.p2);
 	}

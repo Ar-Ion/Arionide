@@ -18,23 +18,39 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.render.gl;
+package org.azentreprise.arionide.ui.render.gl.vao;
 
-import org.azentreprise.arionide.ui.render.RenderingContext;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.jogamp.opengl.GL4;
 
-public abstract class GLRenderingContext implements RenderingContext {
+public class VertexArrayCache {
 	
-	private final GL4 gl;
+	private static final int CACHE_CAPACITY = 2048;
 	
-	public GLRenderingContext(GL4 gl) {
-		this.gl = gl;
+	private static final Map<Object, VertexArray> cache = new LinkedHashMap<Object, VertexArray>(CACHE_CAPACITY, 0.75f, true) {
+		private static final long serialVersionUID = 1L;
+
+		protected boolean removeEldestEntry(Map.Entry<Object, VertexArray> eldest) {
+			return this.size() > CACHE_CAPACITY;
+		}
+	};
+
+	public static void load(Object identifier, GL4 gl, VertexArray vao) {
+		if(!vao.isLoaded()) {
+			VertexArray cacheEntry = cache.get(identifier);
+			
+			if(cacheEntry != null && !vao.equals(cacheEntry)) {
+				if(!cacheEntry.isLoaded()) {
+					cacheEntry.load(gl);
+				}
+				
+				vao.sync(cacheEntry);
+			} else {
+				vao.load(gl);
+				cache.put(identifier, vao);
+			}
+		}
 	}
-	
-	protected GL4 getGL() {
-		return this.gl;
-	}
-	
-	protected abstract int getShaderID();
 }

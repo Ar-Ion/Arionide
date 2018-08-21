@@ -27,7 +27,6 @@ import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.threading.Purgeable;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.PrimitiveRenderingSystem;
 import org.azentreprise.arionide.ui.render.font.FontRenderer;
 import org.azentreprise.arionide.ui.topology.Size;
@@ -42,7 +41,6 @@ public interface AppDrawingContext extends Purgeable {
 	public Size getWindowSize();
 	public FontRenderer getFontRenderer();
 	public PrimitiveRenderingSystem getRenderingSystem();
-	public PrimitiveRenderer getPrimitives();
 	public Resources getResources();
 	public void setCursor(Cursor cursor);
 }

@@ -42,9 +42,9 @@ import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.render.AffineTransformable;
+import org.azentreprise.arionide.ui.render.PrimitiveFactory;
 import org.azentreprise.arionide.ui.render.Rectangle;
 import org.azentreprise.arionide.ui.render.UILighting;
-import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
 import org.azentreprise.arionide.ui.topology.Bounds;
 
 public class Button extends Label implements EventHandler, Deformable {

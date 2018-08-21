@@ -18,23 +18,30 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.render.gl;
+package org.azentreprise.arionide.ui.gc;
 
-import org.azentreprise.arionide.ui.render.RenderingContext;
+import java.nio.IntBuffer;
 
 import com.jogamp.opengl.GL4;
 
-public abstract class GLRenderingContext implements RenderingContext {
+public class UnusedVAO implements Trashable {
+
+	private final IntBuffer vao;
+	private final IntBuffer buffers;
 	
-	private final GL4 gl;
-	
-	public GLRenderingContext(GL4 gl) {
-		this.gl = gl;
+	public UnusedVAO(int vao, int... buffers) {
+		this.vao = IntBuffer.wrap(new int[] {vao});
+		this.buffers = IntBuffer.wrap(buffers);
 	}
 	
-	protected GL4 getGL() {
-		return this.gl;
+	public void burn(TrashContext context) {
+		GL4 gl = ((GLTrashContext) context).getGL();
+		
+		gl.glDeleteBuffers(this.buffers.limit(), this.buffers);
+		gl.glDeleteVertexArrays(1, this.vao);
 	}
-	
-	protected abstract int getShaderID();
+
+	public boolean checkContextCompatibility(TrashContext context) {
+		return context instanceof GLTrashContext;
+	}
 }

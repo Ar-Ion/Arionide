@@ -18,47 +18,52 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.render.font;
+package org.azentreprise.arionide.ui.gc;
 
-import org.azentreprise.arionide.ui.render.Rectangle;
-import org.azentreprise.arionide.ui.render.Text;
-import org.azentreprise.arionide.ui.render.gl.GLRectangle;
-import org.azentreprise.arionide.ui.render.gl.GLText;
-import org.azentreprise.arionide.ui.topology.Bounds;
+import java.util.Stack;
 
-public class PrimitiveFactory {
+public class Trash {
 	
-	private static final PrimitiveFactory singleton = new PrimitiveFactory();
+	private static Trash instance;
 	
-	public static PrimitiveFactory instance() {
-		return singleton;
+	private final TrashContext context;
+	private final Stack<Trashable> trash = new Stack<>();
+	
+	private Trash(TrashContext context) {
+		this.context = context;
 	}
 	
-	public Text newText() {
-		return this.newText(new String());
+	public boolean throwAway(Trashable garbage) {
+		if(garbage != null) {
+			return this.trash.add(garbage);
+		} else {
+			return false;
+		}
 	}
 	
-	public Text newText(String text) {
-		return this.newText(text, 0, 0);
+	public void burnGarbage() {
+		synchronized(this.trash) {
+			while(!this.trash.isEmpty()) {
+				Trashable garbage = this.trash.pop();
+			
+				if(garbage.checkContextCompatibility(this.context)) {
+					garbage.burn(this.context);
+				} else {
+					System.err.println("Application tried to burn an object incompatible with the current trash context.");
+				}
+			}
+		}
 	}
 	
-	public Text newText(String text, int rgb, int alpha) {
-		return this.newText(null, text, rgb, alpha);
+	public static void init(TrashContext context) {
+		instance = new Trash(context);
 	}
 	
-	public Text newText(Bounds bounds, String text, int rgb, int alpha) {
-		return new GLText(bounds, text, rgb, alpha);
-	}
-	
-	public Rectangle newRectangle() {
-		return this.newRectangle(0, 0);
-	}
-	
-	public Rectangle newRectangle(int rgb, int alpha) {
-		return this.newRectangle(null, rgb, alpha);
-	}
-	
-	public Rectangle newRectangle(Bounds bounds, int rgb, int alpha) {
-		return new GLRectangle(bounds, rgb, alpha);
+	public static Trash instance() {
+		if(instance != null) {
+			return instance;
+		} else {
+			throw new IllegalStateException("Trash not initialized");
+		}
 	}
 }

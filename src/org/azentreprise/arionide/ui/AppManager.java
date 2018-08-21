@@ -53,6 +53,7 @@ public class AppManager implements Purgeable {
 	private Workspace workspace;
 	private Resources resources;
 	private CoreRenderer renderer;
+	private LayoutManager layout;
 	
 	private boolean initialized = false;
 	
@@ -95,17 +96,22 @@ public class AppManager implements Purgeable {
 		}
 	}
 	
-	public void loadUI(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+	public void initUI(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
 		this.workspace = workspace;
 		this.resources = resources;
 		this.renderer = renderer;
+		this.layout = manager;
 		
-		Views.init(this, manager);
 		this.initialized = true;
-		
-		manager.compute();
+	}
+	
+	public void loadUI() {
 		this.getEventDispatcher().fire(new InvalidateLayoutEvent());
 		
+		Views.init(this, this.layout);
+		this.layout.compute();
+		
+		Views.load();
 		Views.main.show(true);
 	}
 	

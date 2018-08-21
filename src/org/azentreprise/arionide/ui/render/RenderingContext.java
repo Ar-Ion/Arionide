@@ -23,8 +23,9 @@ package org.azentreprise.arionide.ui.render;
 import java.math.BigInteger;
 
 public interface RenderingContext {
-	public void load(PrimitiveRenderer renderer);
-	public void enter(PrimitiveRenderer renderer);
-	public void exit(PrimitiveRenderer renderer);
+	public void load();
+	public void enter();
+	public void exit();
+	public void onAspectRatioUpdate(float newRatio);
 	public BigInteger[] getIdentificationScheme();
 }

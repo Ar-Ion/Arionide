@@ -47,4 +47,12 @@ public class Views {
 		Views.all.add(Views.code = new CodeView(appManager, layoutManager));
 		Views.all.add(Views.run = new RunView(appManager, layoutManager));
 	}
+	
+	public static void load() {
+		assert !Views.all.isEmpty();
+
+		for(View view : all) {
+			view.load();
+		}
+	}
 }

@@ -40,9 +40,9 @@ import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 import org.azentreprise.arionide.ui.overlay.AlphaLayeringSystem;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
+import org.azentreprise.arionide.ui.render.PrimitiveFactory;
 import org.azentreprise.arionide.ui.render.Rectangle;
 import org.azentreprise.arionide.ui.render.UILighting;
-import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
 import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
 import org.azentreprise.arionide.ui.topology.Scalar;
@@ -76,6 +76,14 @@ public class Tab extends MultiComponent implements EventHandler {
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 		
 		this.borders = PrimitiveFactory.instance().newRectangle(ApplicationTints.MAIN_COLOR, ApplicationTints.INACTIVE_ALPHA);
+	}
+	
+	public void load() {
+		this.borders.load();
+		
+		for(Component component : this.getComponents()) {
+			component.load();
+		}
 	}
 	
 	public Tab setBounds(Bounds bounds) {
@@ -179,7 +187,8 @@ public class Tab extends MultiComponent implements EventHandler {
 						Bounds next = this.rectangles.get(i);
 							
 						if(next.getWidth() > 0 && this.renderSeparators) {
-							context.getPrimitives().drawLine(next.getX(), next.getY(), next.getX(), next.getY() + next.getHeight());
+							// TODO
+							// context.getPrimitives().drawLine(new Line(next.getX(), next.getY(), next.getX(), next.getY() + next.getHeight()));
 						}
 					} catch(Exception e) {
 						break;

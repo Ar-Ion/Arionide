@@ -18,23 +18,34 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.render.gl;
-
-import org.azentreprise.arionide.ui.render.RenderingContext;
+package org.azentreprise.arionide.ui.render.gl.vao;
 
 import com.jogamp.opengl.GL4;
 
-public abstract class GLRenderingContext implements RenderingContext {
+public class Attribute {
 	
-	private final GL4 gl;
+	private final int id;
+	private final int size;
+	private final int type;
+	private final boolean normalize;
 	
-	public GLRenderingContext(GL4 gl) {
-		this.gl = gl;
+	public Attribute(int id, int size, int type) {
+		this(id, size, type, false);
 	}
 	
-	protected GL4 getGL() {
-		return this.gl;
+	public Attribute(int id, int size, int type, boolean normalize) {
+		this.id = id;
+		this.size = size;
+		this.type = type;
+		this.normalize = normalize;
 	}
 	
-	protected abstract int getShaderID();
+	protected int getSize() {
+		return this.size;
+	}
+	
+	protected void load(GL4 gl, int stride, int pointer) {
+		gl.glEnableVertexAttribArray(this.id);
+		gl.glVertexAttribPointer(this.id, this.size, this.type, this.normalize, stride, pointer);
+	}
 }

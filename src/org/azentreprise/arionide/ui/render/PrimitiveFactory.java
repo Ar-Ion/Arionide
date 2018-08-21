@@ -18,23 +18,45 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.render.gl;
+package org.azentreprise.arionide.ui.render;
 
-import org.azentreprise.arionide.ui.render.RenderingContext;
+import org.azentreprise.arionide.ui.render.gl.GLRectangle;
+import org.azentreprise.arionide.ui.render.gl.GLText;
+import org.azentreprise.arionide.ui.topology.Bounds;
 
-import com.jogamp.opengl.GL4;
-
-public abstract class GLRenderingContext implements RenderingContext {
+public class PrimitiveFactory {
 	
-	private final GL4 gl;
+	private static final PrimitiveFactory singleton = new PrimitiveFactory();
 	
-	public GLRenderingContext(GL4 gl) {
-		this.gl = gl;
+	public static PrimitiveFactory instance() {
+		return singleton;
 	}
 	
-	protected GL4 getGL() {
-		return this.gl;
+	public Text newText() {
+		return this.newText(new String());
 	}
 	
-	protected abstract int getShaderID();
+	public Text newText(String text) {
+		return this.newText(text, 0, 0);
+	}
+	
+	public Text newText(String text, int rgb, int alpha) {
+		return this.newText(null, text, rgb, alpha);
+	}
+	
+	public Text newText(Bounds bounds, String text, int rgb, int alpha) {
+		return new GLText(bounds, text, rgb, alpha);
+	}
+	
+	public Rectangle newRectangle() {
+		return this.newRectangle(0, 0);
+	}
+	
+	public Rectangle newRectangle(int rgb, int alpha) {
+		return this.newRectangle(null, rgb, alpha);
+	}
+	
+	public Rectangle newRectangle(Bounds bounds, int rgb, int alpha) {
+		return new GLRectangle(bounds, rgb, alpha);
+	}
 }

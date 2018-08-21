@@ -67,7 +67,7 @@ import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.code.CodeEditor;
 import org.azentreprise.arionide.ui.menu.code.ReferenceEditor;
 import org.azentreprise.arionide.ui.menu.code.TypeEditor;
-import org.azentreprise.arionide.ui.render.GLCoordinates;
+import org.azentreprise.arionide.ui.render.GLBounds;
 import org.azentreprise.arionide.ui.shaders.Shaders;
 import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
@@ -243,13 +243,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.initBufferObject(gl, this.spaceEBO = buffers.get(1), GL4.GL_ELEMENT_ARRAY_BUFFER, spaceSphereQuality, this::createStructureIndicesData);
 		
 		/* FX */
-		GLCoordinates coords = new GLCoordinates(new Bounds(0, 0, 2, 2));		
+		GLBounds coords = new GLBounds(new Bounds(0, 0, 2, 2));		
 		this.fxVAO = vertexArrays.get(1);
 		
 		gl.glBindVertexArray(this.fxVAO);
 
 		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, buffers.get(2));
-		gl.glBufferData(GL4.GL_ARRAY_BUFFER, 8 * Double.BYTES, coords.allocDataBuffer(8).putNorth().putSouth().getDataBuffer(), GL4.GL_STATIC_DRAW);
+		gl.glBufferData(GL4.GL_ARRAY_BUFFER, 8 * Double.BYTES, coords.allocDataBuffer(8).putNorth().putSouth().getDataBuffer().flip(), GL4.GL_STATIC_DRAW);
 		gl.glEnableVertexAttribArray(fxPositionAttribute);
 		gl.glVertexAttribPointer(fxPositionAttribute, 2, GL4.GL_DOUBLE, false, 0, 0);
 		
@@ -513,7 +513,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
 	private void renderSpace(GL4 gl) {
 		gl.glDepthFunc(GL4.GL_ALWAYS);
-
+		
 		gl.glBindVertexArray(this.spaceVAO);
 		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, this.spaceEBO);
 		gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * spaceSphereQuality * (spaceSphereQuality - 1), GL4.GL_UNSIGNED_INT, 0);
@@ -812,8 +812,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			Vector2d dimensions = new Vector2d(0.5d, height);
 			
 			if(screenAnchor.x + dimensions.x > 0  && screenAnchor.y + dimensions.y > 0 && screenAnchor.x < 2.0 && screenAnchor.y < 2.0) {
+				// TODO
 				// context.setColor(color);
-				context.getPrimitives().drawText(label, new Bounds((float) screenAnchor.x, (float) screenAnchor.y, (float) dimensions.x, (float) dimensions.y));
+				// context.getPrimitives().drawText(label, new Bounds((float) screenAnchor.x, (float) screenAnchor.y, (float) dimensions.x, (float) dimensions.y));
 			}
 		}
 	}

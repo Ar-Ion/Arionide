@@ -25,22 +25,24 @@ import java.math.BigInteger;
 
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.ui.render.Identification;
-import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.shaders.Shaders;
 
 import com.jogamp.opengl.GL4;
 
 public class GLRectangleRenderingContext extends GLRenderingContext {
 	
-	public static final int RGB_IDENTIFIER = 0;
-	public static final int SCALE_IDENTIFIER = 1;
-	public static final int TRANSLATION_IDENTIFIER = 2;
-	public static final int ALPHA_IDENTIFIER = 3;
-	public static final int LIGHT_STRENGTH_IDENTIFIER = 4;
-	public static final int LIGHT_RADIUS_IDENTIFIER = 5;
-	public static final int LIGHT_CENTER_IDENTIFIER = 6;
+	protected static final int SCHEME_SIZE = 8;
+	
+	public static final int BOUNDS_IDENTIFIER = 0;
+	public static final int RGB_IDENTIFIER = 1;
+	public static final int SCALE_IDENTIFIER = 2;
+	public static final int TRANSLATION_IDENTIFIER = 3;
+	public static final int ALPHA_IDENTIFIER = 4;
+	public static final int LIGHT_STRENGTH_IDENTIFIER = 5;
+	public static final int LIGHT_RADIUS_IDENTIFIER = 6;
+	public static final int LIGHT_CENTER_IDENTIFIER = 7;
 
-	private static final BigInteger[] scheme = Identification.makeScheme(7);
+	private static final BigInteger[] scheme = Identification.makeScheme(SCHEME_SIZE);
 		
 	private int shader;
 	private int rgb;
@@ -51,12 +53,22 @@ public class GLRectangleRenderingContext extends GLRenderingContext {
 	private int scale;
 	private int translation;
 	
-	public void load(PrimitiveRenderer renderer) {
-		GL4 gl = this.getGL(renderer);
+	private int position;
+	
+	public GLRectangleRenderingContext(GL4 gl) {
+		super(gl);
+	}
+
+	public void load() {
+		this.load("shape.vert", "shape.frag");
+	}
+	
+	protected void load(String vertexShader, String fragmentShader) {
+		GL4 gl = this.getGL();
 		
 		try {
-			int vert = Shaders.loadShader(gl, "shape.vert", GL4.GL_VERTEX_SHADER);
-			int frag = Shaders.loadShader(gl, "shape.frag", GL4.GL_FRAGMENT_SHADER);
+			int vert = Shaders.loadShader(gl, vertexShader, GL4.GL_VERTEX_SHADER);
+			int frag = Shaders.loadShader(gl, fragmentShader, GL4.GL_FRAGMENT_SHADER);
 			
 			this.shader = gl.glCreateProgram();
 			
@@ -67,6 +79,8 @@ public class GLRectangleRenderingContext extends GLRenderingContext {
 			
 			gl.glLinkProgram(this.shader);
 			
+			this.position = gl.glGetAttribLocation(this.shader, "position");
+
 			this.rgb = gl.glGetUniformLocation(this.shader, "rgb");
 			this.alpha = gl.glGetUniformLocation(this.shader, "alpha");
 			this.lightCenter = gl.glGetUniformLocation(this.shader, "lightCenter");
@@ -79,16 +93,28 @@ public class GLRectangleRenderingContext extends GLRenderingContext {
 		}
 	}
 	
-	public void enter(PrimitiveRenderer renderer) {
-		this.getGL(renderer).glUseProgram(this.shader);
+	public void enter() {
+		this.getGL().glUseProgram(this.shader);
 	}
 
-	public void exit(PrimitiveRenderer renderer) {
+	public void exit() {
+		return;
+	}
+	
+	public void onAspectRatioUpdate(float newRatio) {
 		return;
 	}
 
 	public BigInteger[] getIdentificationScheme() {
 		return scheme;
+	}
+	
+	public int getShaderID() {
+		return this.shader;
+	}
+	
+	public int getPositionAttribute() {
+		return this.position;
 	}
 	
 	public int getRGBUniform() {

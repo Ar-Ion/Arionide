@@ -31,8 +31,8 @@ import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.layout.Surface;
+import org.azentreprise.arionide.ui.render.PrimitiveFactory;
 import org.azentreprise.arionide.ui.render.Rectangle;
-import org.azentreprise.arionide.ui.render.font.PrimitiveFactory;
 import org.azentreprise.arionide.ui.topology.Bounds;
 
 public abstract class View extends Surface {
@@ -70,8 +70,14 @@ public abstract class View extends Surface {
 		this.hasBorders = rgb != -1;
 	}
 	
-	public Animation getAlphaAnimation() {
-		return this.alphaAnimation;
+	public void load() {
+		for(Component component : this.components) {
+			component.load();
+		}
+	}
+	
+	public AppManager getAppManager() {
+		return this.appManager;
 	}
 
 	public void drawSurface(AppDrawingContext context) {		
@@ -86,7 +92,7 @@ public abstract class View extends Surface {
 		this.appManager.getAlphaLayering().pop(AlphaLayer.VIEW);
 	}
 	
-	public void drawComponents(AppDrawingContext context) {
+	protected void drawComponents(AppDrawingContext context) {
 		for(Component component : this.components) {
 			component.draw(context);
 		}
@@ -100,7 +106,7 @@ public abstract class View extends Surface {
 	
 	protected void add(Component component, float x1, float y1, float x2, float y2) {
 		this.components.add(component);
-		this.getLayoutManager().register(component, this, x1, y1, x2, y2);
+		this.layoutManager.register(component, this, x1, y1, x2, y2);
 		this.getAppManager().getFocusManager().registerComponent(component);
 	}
 	
@@ -152,7 +158,7 @@ public abstract class View extends Surface {
 		this.show();
 		
 		if(transition) {
-			this.getAlphaAnimation().startAnimation(500, 255);
+			this.alphaAnimation.startAnimation(500, 255);
 		} else {
 			this.alpha = 255;
 		}
@@ -162,7 +168,7 @@ public abstract class View extends Surface {
 		if(transition) {
 			this.getAppManager().getEventDispatcher().pause();
 			
-			this.getAlphaAnimation().startAnimation(500, after -> {
+			this.alphaAnimation.startAnimation(500, after -> {
 				this.hide();
 				this.getAppManager().getEventDispatcher().resume();
 			}, 0);
@@ -170,13 +176,5 @@ public abstract class View extends Surface {
 			this.alpha = 0;
 			this.hide();
 		}
-	}
-	
-	public AppManager getAppManager() {
-		return this.appManager;
-	}
-	
-	public LayoutManager getLayoutManager() {
-		return this.layoutManager;
 	}
 }

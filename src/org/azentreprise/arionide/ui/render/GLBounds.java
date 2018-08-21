@@ -22,32 +22,28 @@ package org.azentreprise.arionide.ui.render;
 
 import java.nio.DoubleBuffer;
 
-import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.ui.topology.Affine;
 import org.azentreprise.arionide.ui.topology.Application;
 import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
 import org.azentreprise.arionide.ui.topology.Size;
 
-public class GLCoordinates {
+public class GLBounds {
 	
 	private static final Application glTransform = new Affine(1.0f, -1.0f, -1.0f, 1.0f);
 	
 	private DoubleBuffer buffer;
-	private int counter;
 	
 	private final float x1;
 	private final float y1;
 	private final float x2;
 	private final float y2;
-	
-	private final long uuid;
-	
-	public GLCoordinates(Bounds bounds) {
+		
+	public GLBounds(Bounds bounds) {
 		this(bounds, true);
 	}
 	
-	public GLCoordinates(Bounds bounds, boolean normalize) {
+	public GLBounds(Bounds bounds, boolean normalize) {
 		
 		bounds = bounds.copy(); // We don't want to mutate the original
 		
@@ -59,8 +55,6 @@ public class GLCoordinates {
 		this.y1 = bounds.getY();
 		this.x2 = bounds.getWidth() + this.x1;
 		this.y2 = bounds.getHeight() + this.y1;
-
-		this.uuid = (this.getUID(this.x1) << 48) | (this.getUID(this.y1) << 32) | (this.getUID(this.x2) << 16) | this.getUID(this.y2);
 	}
 	
 	private void normalizeAWT(Bounds in) {
@@ -76,103 +70,113 @@ public class GLCoordinates {
 
 		return bounds;
 	}
-	
-	private long getUID(float component) {
-		assert Math.abs(component) <= 1.0f;
-		return Utils.convertToUnsignedLong((int) (component * 65535)); 
-	}
-		
-	public long getUUID() {
-		return this.uuid;
-	}
-	
-	public GLCoordinates allocDataBuffer(int capacity) {
+
+	public GLBounds allocDataBuffer(int capacity) {
 		this.buffer = DoubleBuffer.allocate(capacity);
-		this.counter = 0;
 		return this;
 	}
 	
 	public DoubleBuffer getDataBuffer() {
 		return this.buffer;
 	}
-	
-	public int getDataBufferCount() {
-		return this.counter;
-	}
 		
-	public GLCoordinates putX1() {
-		this.buffer.put(this.counter++, this.x1);
+	public GLBounds putX1() {
+		this.buffer.put(this.x1);
 		return this;
 	}
 	
-	public GLCoordinates putY1() {
-		this.buffer.put(this.counter++, this.y1);
+	public GLBounds putY1() {
+		this.buffer.put(this.y1);
 		return this;
 	}
 	
-	public GLCoordinates putX2() {
-		this.buffer.put(this.counter++, this.x2);
+	public GLBounds putX2() {
+		this.buffer.put(this.x2);
 		return this;
 	}
 	
-	public GLCoordinates putY2() {
-		this.buffer.put(this.counter++, this.y2);
+	public GLBounds putY2() {
+		this.buffer.put(this.y2);
 		return this;
 	}
 	
-	public GLCoordinates putNW() {
+	public GLBounds putNW() {
 		this.putX1();
 		this.putY1();
 		return this;
 	}
 	
-	public GLCoordinates putNE() {
+	public GLBounds putNE() {
 		this.putX2();
 		this.putY1();
 		return this;
 	}
 	
-	public GLCoordinates putSW() {
+	public GLBounds putSW() {
 		this.putX1();
 		this.putY2();
 		return this;
 	}
 	
-	public GLCoordinates putSE() {
+	public GLBounds putSE() {
 		this.putX2();
 		this.putY2();
 		return this;
 	}
 	
-	public GLCoordinates putNorth() {
+	public GLBounds putNorth() {
 		this.putNW();
 		this.putNE();
 		return this;
 	}
 	
-	public GLCoordinates putSouth() {
+	public GLBounds putSouth() {
 		this.putSW();
 		this.putSE();
 		return this;
 	}
 	
-	public GLCoordinates putWest() {
+	public GLBounds putWest() {
 		this.putNW();
 		this.putSW();
 		return this;
 	}
 	
-	public GLCoordinates putEast() {
+	public GLBounds putEast() {
 		this.putNE();
 		this.putSE();
 		return this;
 	}
 	
-	public GLCoordinates putBoundingPoints() {
+	public GLBounds putBoundingPoints() {
 		this.putNW();
 		this.putNE();
 		this.putSE();
 		this.putSW();
 		return this;
 	}
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(this.x1);
+		result = prime * result + Float.floatToIntBits(this.x2);
+		result = prime * result + Float.floatToIntBits(this.y1);
+		result = prime * result + Float.floatToIntBits(this.y2);
+		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		} else {
+			GLBounds other = (GLBounds) obj;
+			
+			return Float.floatToIntBits(this.x1) == Float.floatToIntBits(other.x1)
+				&& Float.floatToIntBits(this.x2) == Float.floatToIntBits(other.x2)
+				&& Float.floatToIntBits(this.y1) == Float.floatToIntBits(other.y1)
+				&& Float.floatToIntBits(this.y2) == Float.floatToIntBits(other.y2);
+		}
+	}
+
 }

@@ -22,11 +22,12 @@ package org.azentreprise.arionide.ui.render.font;
 
 import java.nio.Buffer;
 import java.nio.IntBuffer;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
+import org.azentreprise.arionide.ui.gc.Trash;
+import org.azentreprise.arionide.ui.gc.Trashable;
+import org.azentreprise.arionide.ui.gc.UnusedVAO;
 import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
 
@@ -37,14 +38,14 @@ public class GLFontRenderer implements FontRenderer {
 	
 	private static final int CACHE_CAPACITY = 1024;
 	
-	private final List<TextCacheEntry> trash = new ArrayList<>();
 	
-	private final Map<String, TextCacheEntry> cache = new LinkedHashMap<String, TextCacheEntry>() {
+	private final Map<String, TextCacheEntry> cache = new LinkedHashMap<String, TextCacheEntry>(CACHE_CAPACITY, 0.75f, true) {
 		private static final long serialVersionUID = 1L;
 
 		protected boolean removeEldestEntry(Map.Entry<String, TextCacheEntry> eldest) {
 			if(this.size() > CACHE_CAPACITY) {
-				return trash.add(eldest.getValue());
+				Trash.instance().throwAway(GLFontRenderer.this.getTrashable(eldest.getValue()));
+				return true;
 			} else {
 				return false;
 			}
@@ -126,7 +127,7 @@ public class GLFontRenderer implements FontRenderer {
 
 		IntBuffer vao = IntBuffer.allocate(1);
 		IntBuffer buffers = IntBuffer.allocate(2);
-		
+
 		gl.glGenVertexArrays(1, vao);
 		
 		int vaoID = vao.get(0);
@@ -160,37 +161,11 @@ public class GLFontRenderer implements FontRenderer {
 		TextCacheEntry entry = new TextCacheEntry(output.getWidth(), output.getHeight(), vaoID, new int[] {verticesBufferID, uvBufferID}, output.getCount());
 		
 		this.cache.put(str, entry);
-
-		for(TextCacheEntry garbage : this.trash) {
-			this.free(gl, garbage);
-		}
-		
-		this.trash.clear();
 		
 		return entry;
 	}
 	
-	public void free(GL4 gl, String str) {		
-		TextCacheEntry entry = this.cache.get(str);
-		
-		if(entry != null) {
-			this.free(gl, entry);
-		}
-	}
-	
-	public void free(GL4 gl, TextCacheEntry entry) {
-		this.checkInitialized();
-		
-		IntBuffer freeables = entry.getFreeableResources();
-		gl.glDeleteBuffers(freeables.capacity(), freeables);
-		gl.glDeleteVertexArrays(1, IntBuffer.wrap(new int[] {entry.getVAO()}));
-	}
-	
-	public void windowRatioChanged(float newRatio) {
-		this.ratio = newRatio;
-	}
-	
-	public Point renderString(GL4 gl, String str, Bounds bounds) {
+	public TextCacheEntry fetch(GL4 gl, String str) {
 		if(str.length() > FontRenderer.MAX_CHARS) {
 			str = str.substring(0, FontRenderer.MAX_CHARS - 1);
 		}
@@ -199,9 +174,33 @@ public class GLFontRenderer implements FontRenderer {
 		
 		if(entry == null) {
 			entry = this.alloc(gl, str);
+		} else {
+			this.cache.put(str, entry); // Touch
 		}
 		
-		return this.renderString(gl, entry, bounds);
+		return entry;
+	}
+	
+	public Trashable getTrashable(String str) {		
+		TextCacheEntry entry = this.cache.get(str);
+		
+		if(entry != null) {
+			return this.getTrashable(entry);
+		} else {
+			return null;
+		}
+	}
+	
+	public Trashable getTrashable(TextCacheEntry entry) {		
+		return new UnusedVAO(entry.getVAO(), entry.getFreeableResources());
+	}
+	
+	public void windowRatioChanged(float newRatio) {
+		this.ratio = newRatio;
+	}
+	
+	public Point renderString(GL4 gl, String str, Bounds bounds) {
+		return this.renderString(gl, this.fetch(gl, str), bounds);
 	}
 	
 	// returns the origin of the rendered string

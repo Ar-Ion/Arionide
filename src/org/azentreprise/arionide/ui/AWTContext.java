@@ -56,8 +56,6 @@ import org.azentreprise.arionide.events.dispatching.IEventDispatcher;
 import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.render.AWTPrimitiveRenderer;
-import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.PrimitiveRenderingSystem;
 import org.azentreprise.arionide.ui.render.font.FontRenderer;
 import org.azentreprise.arionide.ui.topology.Point;
@@ -68,9 +66,7 @@ public class AWTContext extends Canvas implements AppDrawingContext, MouseListen
 	private static final long serialVersionUID = 1171699360872561984L;
 	
 	private final Map<RenderingHints.Key, Object> renderingHints = new HashMap<>();
-		
-	private final PrimitiveRenderer primitives = new AWTPrimitiveRenderer();
-		
+				
 	private final IEventDispatcher dispatcher;
 	private final AppManager theManager;
 	private final Frame theFrame;
@@ -122,7 +118,7 @@ public class AWTContext extends Canvas implements AppDrawingContext, MouseListen
 	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
 		this.theFrame.setVisible(true);
 		
-		this.theManager.loadUI(workspace, resources, renderer, manager);
+		this.theManager.initUI(workspace, resources, renderer, manager);
 	}
 
 	public void draw() {		
@@ -152,10 +148,6 @@ public class AWTContext extends Canvas implements AppDrawingContext, MouseListen
 		return this.theGraphics;
 	}
 	
-	public PrimitiveRenderer getPrimitives() {
-		return this.primitives;
-	}
-
 	public Resources getResources() {
 		return this.theManager.getResources();
 	}

@@ -20,21 +20,44 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render.gl;
 
-import org.azentreprise.arionide.ui.render.RenderingContext;
+import java.math.BigInteger;
+
+import org.azentreprise.arionide.ui.render.Identification;
 
 import com.jogamp.opengl.GL4;
 
-public abstract class GLRenderingContext implements RenderingContext {
+public class GLUnedgedRectangleRenderingContext extends GLRectangleRenderingContext {
+
+	public static final int UNEDGING_RADIUS_IDENTIFIER = GLRectangleRenderingContext.SCHEME_SIZE + 0;
+
+	private static final BigInteger[] scheme = Identification.makeScheme(GLRectangleRenderingContext.SCHEME_SIZE + 1);
+		
+	private int unedgingRadius;
 	
-	private final GL4 gl;
-	
-	public GLRenderingContext(GL4 gl) {
-		this.gl = gl;
+	private float ratio = 1.0f;
+
+	public GLUnedgedRectangleRenderingContext(GL4 gl) {
+		super(gl);
 	}
 	
-	protected GL4 getGL() {
-		return this.gl;
+	public void load() {
+		super.load("unedged_shape.vert", "shape.frag");
+		this.unedgingRadius = this.getGL().glGetUniformLocation(this.getShaderID(), "radius");
 	}
 	
-	protected abstract int getShaderID();
+	public void onAspectRatioUpdate(float newRatio) {
+		this.ratio = newRatio;
+	}
+	
+	public float getAspectRatio() {
+		return this.ratio;
+	}
+
+	public BigInteger[] getIdentificationScheme() {
+		return scheme;
+	}
+	
+	public int getUnedgingRadiusUniform() {
+		return this.unedgingRadius;
+	}
 }

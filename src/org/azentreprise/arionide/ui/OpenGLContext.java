@@ -29,7 +29,6 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.azentreprise.arionide.Arionide;
-import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.Workspace;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.events.ActionEvent;
@@ -49,16 +48,20 @@ import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.threading.DrawingThread;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
+import org.azentreprise.arionide.ui.gc.GLTrashContext;
+import org.azentreprise.arionide.ui.gc.Trash;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
-import org.azentreprise.arionide.ui.render.GLPrimitiveRenderer;
-import org.azentreprise.arionide.ui.render.PrimitiveRenderer;
 import org.azentreprise.arionide.ui.render.PrimitiveRenderingSystem;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
 import org.azentreprise.arionide.ui.render.font.FontRenderer;
 import org.azentreprise.arionide.ui.render.font.FontResources;
 import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
+import org.azentreprise.arionide.ui.render.gl.GLRectangle;
 import org.azentreprise.arionide.ui.render.gl.GLRectangleRenderingContext;
+import org.azentreprise.arionide.ui.render.gl.GLText;
 import org.azentreprise.arionide.ui.render.gl.GLTextRenderingContext;
+import org.azentreprise.arionide.ui.render.gl.GLUnedgedRectangle;
+import org.azentreprise.arionide.ui.render.gl.GLUnedgedRectangleRenderingContext;
 import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
 import org.azentreprise.arionide.ui.topology.Size;
@@ -91,8 +94,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	
 	private final FPSAnimator animator;
 	
-	private final GLPrimitiveRenderer primitives = new GLPrimitiveRenderer();
-	private final PrimitiveRenderingSystem system = new PrimitiveRenderingSystem(this.primitives);
+	private final PrimitiveRenderingSystem system = new PrimitiveRenderingSystem();
 	
 	private final FloatBuffer clearColor = FloatBuffer.allocate(4);
 	private final FloatBuffer clearDepth = FloatBuffer.allocate(1);
@@ -103,9 +105,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	private GLFontRenderer fontRenderer;
 	
 	private GL4 gl;
-	
-	private int alpha = 0;
-		
+			
 	public OpenGLContext(Arionide theInstance, IEventDispatcher dispatcher, int width, int height) {		
 		this.dispatcher = dispatcher;
 		this.theManager = new AppManager(theInstance, this, dispatcher);
@@ -144,10 +144,10 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 			Debug.exception(exception);
 		}
 		
+		this.theManager.initUI(workspace, resources, renderer, manager);
+	
 		this.window.setVisible(true);
 		this.animator.start();
-		
-		this.theManager.loadUI(workspace, resources, renderer, manager);
 	}
 
 	public Size getWindowSize() {
@@ -161,14 +161,18 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	public void init(GLAutoDrawable arg0) {
 		this.gl = this.window.getGL().getGL4();
 		
-		this.primitives.init(this);
+		Trash.init(new GLTrashContext(this.gl));
+		
 		this.core.init(this.gl);
 		
-		this.system.registerGenericPrimitive(PrimitiveType.RECT, new GLRectangleRenderingContext());
-		this.system.registerGenericPrimitive(PrimitiveType.TEXT, new GLTextRenderingContext(this.fontRenderer));
+		this.system.registerGenericPrimitive(PrimitiveType.UNEDGED_RECT, GLUnedgedRectangle.setupContext(new GLUnedgedRectangleRenderingContext(this.gl)));
+		this.system.registerGenericPrimitive(PrimitiveType.RECT, GLRectangle.setupContext(new GLRectangleRenderingContext(this.gl)));
+		this.system.registerGenericPrimitive(PrimitiveType.TEXT, GLText.setupContext(new GLTextRenderingContext(this.gl, this.fontRenderer)));
 		
 		this.clearColor.put(0, 0.0f).put(1, 0.0f).put(2, 0.0f).put(3, 1.0f);
 		this.clearDepth.put(0, 1.0f);
+		
+		this.theManager.loadUI();
 	}
 	
 	public void display(GLAutoDrawable arg0) {
@@ -180,15 +184,16 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 			
 	        this.core.render3D(this);
 	        	        
-	        this.primitives.beginUI();
-	        	        	        
-			this.theManager.draw();
-			
+	        this.gl.glEnable(GL4.GL_BLEND);
+	        this.gl.glBlendFunc(GL4.GL_SRC_ALPHA,  GL4.GL_ONE_MINUS_SRC_ALPHA);
+	        
+	        this.theManager.draw();
 	        this.core.render2D(this);
-			
 	        this.system.processRenderingQueue();
 	        
-			this.primitives.endUI();
+			this.gl.glDisable(GL4.GL_BLEND);
+			
+			Trash.instance().burnGarbage();
 		}
 	}
 	public void dispose(GLAutoDrawable arg0) {
@@ -198,8 +203,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	public void reshape(GLAutoDrawable drawble, int x, int y, int width, int height) {
 		this.gl.glViewport(x, y, width, height);
 		
-		this.fontRenderer.windowRatioChanged((float) width / height);
-		this.primitives.viewportChanged(width, height);
+		this.system.updateAspectRatio((float) width / height);
 		this.core.update(new Bounds(this.window.getX(), this.window.getY(), width, height));
 	}
 	
@@ -226,10 +230,6 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	public void update() {
 		this.theManager.update();
 	}
-
-	public PrimitiveRenderer getPrimitives() {
-		return this.primitives;
-	}
 	
 	public FontRenderer getFontRenderer() {
 		return this.fontRenderer;
@@ -239,30 +239,6 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		return this.system;
 	}
 
-	public void setColor(int rgb) {
-		if(rgb > 0xFFFFFF) {
-			throw new IllegalArgumentException("Alpha values are not allowed");
-		}		
-				
-		float r = Utils.getRed(rgb) / 255.0f;
-		float g = Utils.getGreen(rgb) / 255.0f;
-		float b = Utils.getBlue(rgb) / 255.0f;
-		
-		this.primitives.setColor(this.gl, r, g, b);
-	}
-	
-	public void setAlpha(int alpha) {
-		Utils.checkColorRange("Alpha", alpha);
-		
-		if(alpha != this.alpha) {			
-			this.alpha = alpha;
-			
-			float a = alpha / 255.0f;
-			
-			this.primitives.setAlpha(this.gl, a);
-		}
-	}
-	
 	public void toggleFullscreen() {
 		this.window.setFullscreen(!this.window.isFullscreen());
 	}
