@@ -20,9 +20,9 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
-import org.azentreprise.arionide.ui.topology.Point;
+import org.azentreprise.arionide.ui.topology.Affine;
 
 public abstract class Text extends Primitive implements UIMutableBounds, UILighting, AffineTransformable {
 	public abstract void updateText(String newText);
-	public abstract Point getRenderPosition();
+	public abstract Affine getRenderTransformation();
 }

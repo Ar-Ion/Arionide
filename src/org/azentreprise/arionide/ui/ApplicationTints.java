@@ -25,4 +25,5 @@ public class ApplicationTints {
 	public static final int DISABLED_COLOR = 0xFF0000;
 	public static final int ACTIVE_ALPHA = 0xFF;
 	public static final int INACTIVE_ALPHA = 0x60;
+	public static final int WHITE = 0xFFFFFF;
 }

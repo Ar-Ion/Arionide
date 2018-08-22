@@ -27,9 +27,9 @@ import org.azentreprise.arionide.ui.render.Identification;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
 import org.azentreprise.arionide.ui.render.RenderingContext;
 import org.azentreprise.arionide.ui.render.Text;
-import org.azentreprise.arionide.ui.render.font.TextCacheEntry;
+import org.azentreprise.arionide.ui.render.font.GLTextCacheEntry;
+import org.azentreprise.arionide.ui.topology.Affine;
 import org.azentreprise.arionide.ui.topology.Bounds;
-import org.azentreprise.arionide.ui.topology.Point;
 
 import com.jogamp.opengl.GL4;
 
@@ -43,14 +43,15 @@ public class GLText extends Text {
 	private float scaleX = 1.0f;
 	private float scaleY = 1.0f;
 	private String text;
-	private TextCacheEntry entry;
+	private GLTextCacheEntry entry;
 	private int rgb;
 	private int alpha;
 	private float lightCenterX;
 	private float lightCenterY;
 	private float lightRadius = -2.0f;
 	private float lightStrength = 1.0f;
-	private Point renderPosition = new Point();
+	
+	private Affine renderTransformation = new Affine();
 	
 	public GLText(Bounds bounds, String text, int rgb, int alpha) {
 		this.bounds = bounds;
@@ -102,8 +103,8 @@ public class GLText extends Text {
 		this.lightStrength = newStrength;
 	}
 	
-	public Point getRenderPosition() {
-		return this.renderPosition;
+	public Affine getRenderTransformation() {
+		return this.renderTransformation;
 	}
 	
 	public BigInteger getFingerprint() {
@@ -152,7 +153,7 @@ public class GLText extends Text {
 			float width = this.bounds.getWidth() * this.scaleX;
 			float height = this.bounds.getHeight();
 
-			this.renderPosition = context.getFontRenderer().renderString(context.getGL(), this.entry, new Bounds(x, y, width, height));
+			this.renderTransformation = context.getFontRenderer().renderString(context.getGL(), this.entry, new Bounds(x, y, width, height));
 		}
 	}
 	

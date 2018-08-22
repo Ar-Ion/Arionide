@@ -18,52 +18,24 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.topology;
+package org.azentreprise.arionide.ui.render.font;
 
-public class Scalar extends Application {
-
-	private float scaleX;
-	private float scaleY;
+public class GLTextCacheEntry extends TextCacheEntry {
 	
-	public Scalar() {
-		this(1.0f, 1.0f);
+	private final int vao;
+	private final int[] freeables;
+	
+	protected GLTextCacheEntry(float width, float height, int count, int vao, int[] freeables) {
+		super(width, height, count);
+		this.vao = vao;
+		this.freeables = freeables;
 	}
 	
-	public Scalar(float scaleX, float scaleY) {
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
+	protected int getVAO() {
+		return this.vao;
 	}
 	
-	public void setScaleX(float scaleX) {
-		this.scaleX = scaleX;
-	}
-	
-	public void setScaleY(float scaleY) {
-		this.scaleY = scaleY;
-	}
-	
-	public void setScalar(float scaleX, float scaleY) {
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
-	}
-	
-	public float getScaleX() {
-		return this.scaleX;
-	}
-	
-	public float getScaleY() {
-		return this.scaleY;
-	}
-	
-	public void invert() {
-		this.scaleX = 1.0f / this.scaleX;
-		this.scaleY = 1.0f / this.scaleY;
-	}
-	
-	public void apply(Set input) {
-		for(Point point : input.getPoints()) {
-			point.setX(point.getX() * this.scaleX);
-			point.setY(point.getY() * this.scaleY);
-		}
+	protected int[] getFreeableResources() {
+		return this.freeables;
 	}
 }

@@ -18,52 +18,38 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.topology;
+package org.azentreprise.arionide.ui.render.gl;
 
-public class Scalar extends Application {
+import org.azentreprise.arionide.ui.render.GLBounds;
+import org.azentreprise.arionide.ui.render.RenderingContext;
+import org.azentreprise.arionide.ui.topology.Bounds;
 
-	private float scaleX;
-	private float scaleY;
+import com.jogamp.opengl.GL4;
+
+public class GLLine extends GLRectangle {
+
+	private static GLRectangleRenderingContext context;
 	
-	public Scalar() {
-		this(1.0f, 1.0f);
+	public GLLine(Bounds bounds, int rgb, int alpha) {
+		super(bounds, rgb, alpha);
 	}
 	
-	public Scalar(float scaleX, float scaleY) {
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
-	}
-	
-	public void setScaleX(float scaleX) {
-		this.scaleX = scaleX;
-	}
-	
-	public void setScaleY(float scaleY) {
-		this.scaleY = scaleY;
-	}
-	
-	public void setScalar(float scaleX, float scaleY) {
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
-	}
-	
-	public float getScaleX() {
-		return this.scaleX;
-	}
-	
-	public float getScaleY() {
-		return this.scaleY;
-	}
-	
-	public void invert() {
-		this.scaleX = 1.0f / this.scaleX;
-		this.scaleY = 1.0f / this.scaleY;
-	}
-	
-	public void apply(Set input) {
-		for(Point point : input.getPoints()) {
-			point.setX(point.getX() * this.scaleX);
-			point.setY(point.getY() * this.scaleY);
+	public void updateBounds(Bounds newBounds) {
+		if(newBounds != null) {
+			this.bounds = new GLBounds(newBounds);
+			this.positionBuffer.updateDataSupplier(() -> this.bounds.allocDataBuffer(4).putSW().putNE().getDataBuffer().flip());
+			this.vao.unload(); // Invalidate VAO
 		}
+	}
+	
+	public void render() {
+		GL4 gl = context.getGL();
+
+		this.vao.bind(gl);
+		gl.glDrawArrays(GL4.GL_LINES, 0, 2);
+	}
+	
+	public static RenderingContext setupContext(GLRectangleRenderingContext context) {
+		return GLLine.context = context;
 	}
 }

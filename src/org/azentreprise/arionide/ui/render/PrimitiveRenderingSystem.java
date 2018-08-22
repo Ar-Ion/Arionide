@@ -47,6 +47,20 @@ public class PrimitiveRenderingSystem {
 		this.renderingQueue.add(primitive);
 	}
 	
+	public void renderDirect(Primitive primitive) {
+		RenderingContext context = this.genericPrimitives.get(primitive.getType());
+		
+		context.enter();
+		
+		for(BigInteger identifier : context.getIdentificationScheme()) {
+			primitive.updateProperty(identifier.getLowestSetBit() / Identification.PARTITION_SIZE);
+		}
+		
+		primitive.render();
+		
+		context.exit();
+	}
+	
 	public void processRenderingQueue() {
 		Primitive lastPrimitive = null;
 				

@@ -28,8 +28,11 @@ import java.util.Map;
 import org.azentreprise.arionide.ui.gc.Trash;
 import org.azentreprise.arionide.ui.gc.Trashable;
 import org.azentreprise.arionide.ui.gc.UnusedVAO;
+import org.azentreprise.arionide.ui.topology.Affine;
 import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
+import org.azentreprise.arionide.ui.topology.Scalar;
+import org.azentreprise.arionide.ui.topology.Translation;
 
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.util.texture.TextureData;
@@ -39,10 +42,10 @@ public class GLFontRenderer implements FontRenderer {
 	private static final int CACHE_CAPACITY = 1024;
 	
 	
-	private final Map<String, TextCacheEntry> cache = new LinkedHashMap<String, TextCacheEntry>(CACHE_CAPACITY, 0.75f, true) {
+	private final Map<String, GLTextCacheEntry> cache = new LinkedHashMap<String, GLTextCacheEntry>(CACHE_CAPACITY, 0.75f, true) {
 		private static final long serialVersionUID = 1L;
 
-		protected boolean removeEldestEntry(Map.Entry<String, TextCacheEntry> eldest) {
+		protected boolean removeEldestEntry(Map.Entry<String, GLTextCacheEntry> eldest) {
 			if(this.size() > CACHE_CAPACITY) {
 				Trash.instance().throwAway(GLFontRenderer.this.getTrashable(eldest.getValue()));
 				return true;
@@ -117,7 +120,7 @@ public class GLFontRenderer implements FontRenderer {
 		}
 	}
 	
-	public TextCacheEntry alloc(GL4 gl, String str) {
+	public GLTextCacheEntry alloc(GL4 gl, String str) {
 		this.checkInitialized();
 		
 		TessellationOutput output = this.tessellator.tessellateString(str);
@@ -158,19 +161,15 @@ public class GLFontRenderer implements FontRenderer {
 		// Indices
 		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, this.indices);
 		
-		TextCacheEntry entry = new TextCacheEntry(output.getWidth(), output.getHeight(), vaoID, new int[] {verticesBufferID, uvBufferID}, output.getCount());
+		GLTextCacheEntry entry = new GLTextCacheEntry(output.getWidth(), output.getHeight(), output.getCount(), vaoID, new int[] {verticesBufferID, uvBufferID});
 		
 		this.cache.put(str, entry);
 		
 		return entry;
 	}
 	
-	public TextCacheEntry fetch(GL4 gl, String str) {
-		if(str.length() > FontRenderer.MAX_CHARS) {
-			str = str.substring(0, FontRenderer.MAX_CHARS - 1);
-		}
-				
-		TextCacheEntry entry = this.cache.get(str);
+	public GLTextCacheEntry fetch(GL4 gl, String str) {
+		GLTextCacheEntry entry = this.getCacheEntry(str);
 		
 		if(entry == null) {
 			entry = this.alloc(gl, str);
@@ -181,8 +180,16 @@ public class GLFontRenderer implements FontRenderer {
 		return entry;
 	}
 	
+	public GLTextCacheEntry getCacheEntry(String str) {
+		if(str.length() > FontRenderer.MAX_CHARS) {
+			str = str.substring(0, FontRenderer.MAX_CHARS - 1);
+		}
+		
+		return this.cache.get(str);
+	}
+		
 	public Trashable getTrashable(String str) {		
-		TextCacheEntry entry = this.cache.get(str);
+		GLTextCacheEntry entry = this.cache.get(str);
 		
 		if(entry != null) {
 			return this.getTrashable(entry);
@@ -191,7 +198,7 @@ public class GLFontRenderer implements FontRenderer {
 		}
 	}
 	
-	public Trashable getTrashable(TextCacheEntry entry) {		
+	public Trashable getTrashable(GLTextCacheEntry entry) {		
 		return new UnusedVAO(entry.getVAO(), entry.getFreeableResources());
 	}
 	
@@ -199,12 +206,12 @@ public class GLFontRenderer implements FontRenderer {
 		this.ratio = newRatio;
 	}
 	
-	public Point renderString(GL4 gl, String str, Bounds bounds) {
+	public Affine renderString(GL4 gl, String str, Bounds bounds) {
 		return this.renderString(gl, this.fetch(gl, str), bounds);
 	}
 	
-	// returns the origin of the rendered string
-	public Point renderString(GL4 gl, TextCacheEntry entry, Bounds bounds) {
+	// Returns the affine transformation used by the bbox fitting system.
+	public Affine renderString(GL4 gl, GLTextCacheEntry entry, Bounds bounds) {
 		this.checkInitialized();
 		
 		Point center = bounds.getCenter();
@@ -214,19 +221,24 @@ public class GLFontRenderer implements FontRenderer {
 		float scaleX = FontRenderer.BBOX_FIT_X * (float) bounds.getWidth() / entry.getWidth() * this.ratio;
 		float scaleY = FontRenderer.BBOX_FIT_Y * (float) bounds.getHeight() / entry.getHeight();
 
+		Scalar scalar = new Scalar();
+		Translation translation = new Translation(translateX / entry.getWidth(), translateY / entry.getHeight());
+		
 		if(scaleY > scaleX) {
 			gl.glUniform2f(this.scaleUniform, scaleX / this.ratio, scaleX);
+			scalar.setScalar(scaleX / this.ratio, scaleX);
 		} else {
 			gl.glUniform2f(this.scaleUniform, scaleY / this.ratio, scaleY);
+			scalar.setScalar(scaleY / this.ratio, scaleY);
 		}
-		
+				
 		gl.glUniform2f(this.translationUniform, translateX, translateY);
 
 		gl.glBindVertexArray(entry.getVAO());
 
 		gl.glDrawElements(GL4.GL_TRIANGLES, entry.getCount() * 6, GL4.GL_UNSIGNED_INT, 0);
 		
-		return new Point(0, 0);
+		return new Affine(scalar, translation);
 	}
 		
 	public GLTextTessellator getTessellator() {

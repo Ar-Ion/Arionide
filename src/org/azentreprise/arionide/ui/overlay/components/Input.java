@@ -29,19 +29,32 @@ import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
 import org.azentreprise.arionide.events.WriteEvent;
 import org.azentreprise.arionide.ui.AppDrawingContext;
-import org.azentreprise.arionide.ui.OpenGLContext;
+import org.azentreprise.arionide.ui.ApplicationTints;
+import org.azentreprise.arionide.ui.Viewport;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.AlphaLayer;
+import org.azentreprise.arionide.ui.overlay.AlphaLayeringSystem;
 import org.azentreprise.arionide.ui.overlay.View;
+import org.azentreprise.arionide.ui.render.PrimitiveFactory;
+import org.azentreprise.arionide.ui.render.Rectangle;
 import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
-import org.azentreprise.arionide.ui.render.font.Metrics;
+import org.azentreprise.arionide.ui.render.font.TextCacheEntry;
 import org.azentreprise.arionide.ui.render.font.TextTessellator;
+import org.azentreprise.arionide.ui.topology.Affine;
+import org.azentreprise.arionide.ui.topology.Application;
+import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.topology.Point;
+import org.azentreprise.arionide.ui.topology.Size;
+import org.azentreprise.arionide.ui.topology.Translation;
 
 public class Input extends Button implements EventHandler {	
 	
-	private static final int CURSOR_BLINKING_PERIOD = 500;
-	
+	private static final int cursorAdvance = 15;
+	private static final int cursorBlinkingPeriod = 500;
+	private static final Application minusOne = new Translation(-1, -1);
+
+	private final Rectangle cursor = PrimitiveFactory.instance().newLine(new Bounds(1, 1, 0, 2), ApplicationTints.WHITE, ApplicationTints.ACTIVE_ALPHA);
 	private final Animation animation;
 	
 	protected String placeholder;
@@ -52,6 +65,8 @@ public class Input extends Button implements EventHandler {
 	
 	private long counter = 0L;
 	protected boolean highlighted = false;
+	
+	private int textWidth = 0;
 	
 	public Input(View parent, String placeholder) {
 		super(parent, placeholder);
@@ -87,24 +102,30 @@ public class Input extends Button implements EventHandler {
 	public void drawSurface(AppDrawingContext context) {
 		super.drawSurface(context);
 		
-		if(this.hasFocus && this.text.length() > 0) {			
-			double[] scdsp = new double[] {1.0d, 1.0d, 0.0d, 0.0d};
- 			
-			if(context instanceof OpenGLContext) {
-				scdsp = OpenGLTextMetricsTransform.getScalarsAndDisplacements((OpenGLContext) context);
-			}
-
+		if(this.hasFocus && this.text.length() > 0) {
+			Size symbolicSize = context.getWindowSize();
+			
 			TextTessellator tessellator = context.getFontRenderer().getTessellator();
-			Metrics metrics = tessellator.getMetrics();
+						
+			Affine affine = this.getText().getRenderTransformation();
 			
-			double x = this.getText().getRenderPosition().getX() + scdsp[0] * tessellator.getWidth(this.text.substring(0, this.cursorPosition) + scdsp[2]);
-			double y = this.getBounds().getY() + this.getBounds().getHeight() / 2 + scdsp[3];
+			TextCacheEntry entry = context.getFontRenderer().getCacheEntry(this.text.toString());
+			Point center = this.getBounds().getCenter();
+			minusOne.apply(center);
 			
-			System.out.println(x + "; " + y);
-
-			this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, 0xFF);
-			//context.getPrimitives().fillRoundRect(new Bounds(x, y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * 2, scdsp[1] * metrics.getLineHeight()));
-			this.getAppManager().getAlphaLayering().pop(AlphaLayer.COMPONENT);
+			Size pixelSize = Viewport.getPixelSize(context);
+						
+			float cursorDisplacement = affine.getScalar().getScaleX() * tessellator.getWidth(this.text.substring(0, this.cursorPosition)) / this.textWidth;
+			
+			this.cursor.updateTranslation(center.getX() + cursorDisplacement + cursorAdvance * pixelSize.getWidth(), center.getY() - entry.getHeight() * affine.getScalar().getScaleY() * 0.5f);
+			this.cursor.updateScale(1.0f, -affine.getScalar().getScaleY() / symbolicSize.getHeight() * entry.getHeight());
+			
+			AlphaLayeringSystem layering = this.getAppManager().getAlphaLayering();
+			
+			layering.push(AlphaLayer.COMPONENT, this.cursorAlpha);
+			this.cursor.updateAlpha(this.cursorAlpha);
+			context.getRenderingSystem().renderLater(this.cursor);
+			layering.pop(AlphaLayer.COMPONENT);
 
 			if(this.highlighted) {
 				this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, 0x42);
@@ -118,12 +139,17 @@ public class Input extends Button implements EventHandler {
 		}
 	}
 	
+	public void drawComponent(AppDrawingContext context) {
+		context.getRenderingSystem().renderDirect(this.getText());
+		this.drawBorders(context);
+	}
+	
 	private void cursorAnimationOpacityIncrease() {
-		this.animation.startAnimation(CURSOR_BLINKING_PERIOD, useless -> this.cursorAnimationOpacityDecrease(), 255);
+		this.animation.startAnimation(cursorBlinkingPeriod, nil -> this.cursorAnimationOpacityDecrease(), 255);
 	}
 	
 	private void cursorAnimationOpacityDecrease() {
-		this.animation.startAnimation(CURSOR_BLINKING_PERIOD, useless -> this.cursorAnimationOpacityIncrease(), 0);
+		this.animation.startAnimation(cursorBlinkingPeriod, nil -> this.cursorAnimationOpacityIncrease(), 0);
 	}
 	
 	public <T extends Event> void handleEvent(T event) {
@@ -139,6 +165,8 @@ public class Input extends Button implements EventHandler {
 			int code = writeEvent.getKeycode();
 			
 			boolean noSeek = code != KeyEvent.VK_LEFT && code != KeyEvent.VK_RIGHT;
+			
+			System.out.println(writeEvent.getKeycode());
 			
 			if(this.highlighted && noSeek) {
 				this.text = new StringBuilder();
@@ -211,8 +239,13 @@ public class Input extends Button implements EventHandler {
 		}
 	}
 	
-	protected void updateText() {
-		this.setLabel(this.text.length() > 0 ? this.text.toString() : this.placeholder);
+	protected void updateText() {		
+		if(this.text.length() > 0) {
+			this.textWidth = this.getAppManager().getDrawingContext().getFontRenderer().getTessellator().getWidth(this.text.toString());
+			this.setLabel(this.text.toString());
+		} else {
+			this.setLabel(this.placeholder);
+		}
 	}
 	
 	protected void onFocusGained() {

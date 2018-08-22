@@ -18,18 +18,36 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.overlay.components;
+package org.azentreprise.arionide.ui;
 
 import java.nio.IntBuffer;
 
-import org.azentreprise.arionide.ui.OpenGLContext;
+import org.azentreprise.arionide.ui.topology.Inverse;
+import org.azentreprise.arionide.ui.topology.Scalar;
+import org.azentreprise.arionide.ui.topology.Size;
 
 import com.jogamp.opengl.GL4;
 
-public class OpenGLTextMetricsTransform {
-	protected static double[] getScalarsAndDisplacements(OpenGLContext context) {
-		IntBuffer viewport = IntBuffer.allocate(4);
-		context.getRenderer().glGetIntegerv(GL4.GL_VIEWPORT, viewport);
-		return new double[] {2.0d / viewport.get(2), 2.0d / viewport.get(3), 1.0d, 0.0d};
+public class Viewport {
+	public static Size getWindowSize(AppDrawingContext context) {
+		Size size = context.getWindowSize();
+		
+		if(context instanceof OpenGLContext) {
+			GL4 gl = ((OpenGLContext) context).getRenderer();
+			
+			IntBuffer viewport = IntBuffer.allocate(4);
+			gl.glGetIntegerv(GL4.GL_VIEWPORT, viewport);
+			
+			Scalar scalar = new Scalar(viewport.get(2), viewport.get(3));
+			scalar.apply(size);
+		}
+		
+		return size;
+	}
+	
+	public static Size getPixelSize(AppDrawingContext context) {
+		Size windowSize = getWindowSize(context);
+		Inverse.instance.apply(windowSize);
+		return windowSize;
 	}
 }

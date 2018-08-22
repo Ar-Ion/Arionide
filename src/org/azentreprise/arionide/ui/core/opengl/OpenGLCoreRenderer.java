@@ -20,9 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.core.opengl;
 
-import java.awt.AWTException;
 import java.awt.Cursor;
-import java.awt.Robot;
 import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.DoubleBuffer;
@@ -113,7 +111,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private final IEventDispatcher dispatcher;
 	private final WorldGeometry worldGeometry;
 	private final CodeGeometry codeGeometry;
-	private final Robot robot;
 	
 	private final DoubleBuffer modelData = DoubleBuffer.allocate(16);
 	private final DoubleBuffer viewData = DoubleBuffer.allocate(16);
@@ -205,16 +202,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.codeGeometry = new CodeGeometry();
 						
 		dispatcher.registerHandler(this);
-		
-		Robot robot = null;
-		
-		try {
-			robot = new Robot();
-		} catch (AWTException e) {
-			; // What can we do...
-		} finally {
-			this.robot = robot;
-		}
 	}
 	
 	public void init(GL4 gl) {
@@ -1277,11 +1264,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 		this.yaw %= 4.0d * halfPI;
 		
-		if(this.robot != null) {
-			this.robot.setAutoDelay(0);
-			this.robot.setAutoWaitForIdle(false);
-			this.robot.mouseMove(this.bounds.getXAsInt() + this.bounds.getWidthAsInt() / 2, this.bounds.getYAsInt() + this.bounds.getHeightAsInt() / 2);
-		}
+		this.context.moveCursor(this.bounds.getXAsInt() + this.bounds.getWidthAsInt() / 2, this.bounds.getYAsInt() + this.bounds.getHeightAsInt() / 2);
 	}
 	
 	private void updateAcceleration(double wheelDelta) {
@@ -1313,9 +1296,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 							sourceParam.setValue(targetParam.getValue());
 							
 							this.project.getStorage().saveStructureMeta();
-							
-							System.out.println(targetParam);
-							
+														
 							this.dispatcher.fire(new MessageEvent("Parameter successfully bound", MessageType.SUCCESS));
 							
 							this.codeGeometry.buildGeometry(this.project, this.current);

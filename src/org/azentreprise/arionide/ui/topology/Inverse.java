@@ -20,50 +20,14 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.topology;
 
-public class Scalar extends Application {
+public class Inverse extends Application {
 
-	private float scaleX;
-	private float scaleY;
-	
-	public Scalar() {
-		this(1.0f, 1.0f);
-	}
-	
-	public Scalar(float scaleX, float scaleY) {
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
-	}
-	
-	public void setScaleX(float scaleX) {
-		this.scaleX = scaleX;
-	}
-	
-	public void setScaleY(float scaleY) {
-		this.scaleY = scaleY;
-	}
-	
-	public void setScalar(float scaleX, float scaleY) {
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
-	}
-	
-	public float getScaleX() {
-		return this.scaleX;
-	}
-	
-	public float getScaleY() {
-		return this.scaleY;
-	}
-	
-	public void invert() {
-		this.scaleX = 1.0f / this.scaleX;
-		this.scaleY = 1.0f / this.scaleY;
-	}
+	public static final Application instance = new Inverse();
 	
 	public void apply(Set input) {
 		for(Point point : input.getPoints()) {
-			point.setX(point.getX() * this.scaleX);
-			point.setY(point.getY() * this.scaleY);
+			point.setX(1.0f / point.getX());
+			point.setY(1.0f / point.getY());
 		}
 	}
 }

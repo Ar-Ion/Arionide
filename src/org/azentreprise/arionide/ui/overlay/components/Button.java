@@ -52,7 +52,7 @@ public class Button extends Label implements EventHandler, Deformable {
 	private static final int ANIMATION_TIME = 200;
 	private static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
 	
-	private final Rectangle borders;
+	private final Rectangle borders = PrimitiveFactory.instance().newRectangle(ApplicationTints.MAIN_COLOR, ApplicationTints.INACTIVE_ALPHA);
 	protected final Animation animation;
 	
 	protected boolean hasFocus;
@@ -71,9 +71,7 @@ public class Button extends Label implements EventHandler, Deformable {
 		super(parent, label);
 		
 		this.animation = new FieldModifierAnimation(this.getAppManager(), "alpha", Label.class, this);
-		
 		this.setAlpha(ApplicationTints.INACTIVE_ALPHA);
-		this.borders = PrimitiveFactory.instance().newRectangle(ApplicationTints.MAIN_COLOR, ApplicationTints.INACTIVE_ALPHA);
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
@@ -122,7 +120,10 @@ public class Button extends Label implements EventHandler, Deformable {
 		
 	public void drawComponent(AppDrawingContext context) {
 		super.drawComponent(context);
-		
+		this.drawBorders(context);
+	}
+	
+	protected void drawBorders(AppDrawingContext context) {
 		if(this.hasBorders) {
 			this.borders.updateAlpha(this.getAppManager().getAlphaLayering().getCurrentAlpha());
 			context.getRenderingSystem().renderLater(this.borders);

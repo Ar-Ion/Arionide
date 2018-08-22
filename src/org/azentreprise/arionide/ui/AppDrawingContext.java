@@ -43,4 +43,5 @@ public interface AppDrawingContext extends Purgeable {
 	public PrimitiveRenderingSystem getRenderingSystem();
 	public Resources getResources();
 	public void setCursor(Cursor cursor);
+	public void moveCursor(int x, int y);
 }

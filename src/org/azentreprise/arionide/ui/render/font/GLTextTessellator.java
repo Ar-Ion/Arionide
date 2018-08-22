@@ -51,7 +51,7 @@ public class GLTextTessellator implements TextTessellator {
 		if(input.isEmpty()) {
 			return 0;
 		}
-		
+				
 		return input.substring(0, input.length() - 1).chars().mapToObj(this.metrics::fetchMeta).mapToInt(CharMeta::getAdvance).sum() 
 			 + this.metrics.fetchMeta(input.charAt(input.length() - 1)).getWidth();
 	}

@@ -40,8 +40,8 @@ public class GLRectangle extends Rectangle {
 	
 	private static GLRectangleRenderingContext context;
 	
-	private final VertexBuffer positionBuffer;
-	private final VertexArray vao;
+	protected final VertexBuffer positionBuffer;
+	protected final VertexArray vao;
 	
 	protected GLBounds bounds;
 	private int rgb;

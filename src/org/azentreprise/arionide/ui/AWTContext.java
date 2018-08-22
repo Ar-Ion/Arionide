@@ -255,4 +255,10 @@ public class AWTContext extends Canvas implements AppDrawingContext, MouseListen
 	public void keyReleased(KeyEvent event) {
 		this.dispatcher.fire(new PressureEvent(event.getKeyChar(), event.getKeyCode(), event.getModifiers(), false));
 	}
+
+	@Override
+	public void moveCursor(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
 }

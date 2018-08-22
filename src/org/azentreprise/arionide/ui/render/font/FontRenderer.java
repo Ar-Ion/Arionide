@@ -20,8 +20,8 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render.font;
 
+import org.azentreprise.arionide.ui.topology.Affine;
 import org.azentreprise.arionide.ui.topology.Bounds;
-import org.azentreprise.arionide.ui.topology.Point;
 
 import com.jogamp.opengl.GL4;
 
@@ -34,6 +34,7 @@ public interface FontRenderer {
 	public static final int MAX_CHARS = 256;
 	
 	public void windowRatioChanged(float newRatio);
-	public Point renderString(GL4 gl, String str, Bounds bounds);
+	public TextCacheEntry getCacheEntry(String str);
+	public Affine renderString(GL4 gl, String str, Bounds bounds);
 	public TextTessellator getTessellator();
 }

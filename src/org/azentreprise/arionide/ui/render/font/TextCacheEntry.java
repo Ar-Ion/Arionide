@@ -24,35 +24,23 @@ public class TextCacheEntry {
 	
 	private final float width;
 	private final float height;
-	private final int vao;
-	private final int[] freeables;
 	private final int count; // number of chars
 	
-	protected TextCacheEntry(float width, float height, int vao, int[] freeables, int count) {
+	protected TextCacheEntry(float width, float height, int count) {
 		this.width = width;
 		this.height = height;
-		this.vao = vao;
-		this.freeables = freeables;
 		this.count = count;
 	}
 	
-	protected float getWidth() {
+	public float getWidth() {
 		return this.width;
 	}
 	
-	protected float getHeight() {
+	public float getHeight() {
 		return this.height;
 	}
 	
-	protected int getVAO() {
-		return this.vao;
-	}
-	
-	protected int[] getFreeableResources() {
-		return this.freeables;
-	}
-	
-	protected int getCount() {
+	public int getCount() {
 		return this.count;
 	}
 }

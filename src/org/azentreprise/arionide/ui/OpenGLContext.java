@@ -56,6 +56,7 @@ import org.azentreprise.arionide.ui.render.PrimitiveType;
 import org.azentreprise.arionide.ui.render.font.FontRenderer;
 import org.azentreprise.arionide.ui.render.font.FontResources;
 import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
+import org.azentreprise.arionide.ui.render.gl.GLLine;
 import org.azentreprise.arionide.ui.render.gl.GLRectangle;
 import org.azentreprise.arionide.ui.render.gl.GLRectangleRenderingContext;
 import org.azentreprise.arionide.ui.render.gl.GLText;
@@ -168,7 +169,8 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		this.system.registerGenericPrimitive(PrimitiveType.UNEDGED_RECT, GLUnedgedRectangle.setupContext(new GLUnedgedRectangleRenderingContext(this.gl)));
 		this.system.registerGenericPrimitive(PrimitiveType.RECT, GLRectangle.setupContext(new GLRectangleRenderingContext(this.gl)));
 		this.system.registerGenericPrimitive(PrimitiveType.TEXT, GLText.setupContext(new GLTextRenderingContext(this.gl, this.fontRenderer)));
-		
+		this.system.registerGenericPrimitive(PrimitiveType.LINE, GLLine.setupContext(new GLRectangleRenderingContext(this.gl)));
+
 		this.clearColor.put(0, 0.0f).put(1, 0.0f).put(2, 0.0f).put(3, 1.0f);
 		this.clearDepth.put(0, 1.0f);
 		
@@ -245,6 +247,10 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 
 	public void purge() {
 		this.theManager.purge();
+	}
+	
+	public void moveCursor(int x, int y) {
+		this.window.warpPointer(x, y);
 	}
 	
 	public void mouseClicked(MouseEvent event) {
