@@ -31,7 +31,6 @@ import org.azentreprise.arionide.Workspace;
 import org.azentreprise.arionide.events.ClickEvent;
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.EventHandler;
-import org.azentreprise.arionide.events.InvalidateLayoutEvent;
 import org.azentreprise.arionide.events.TimerEvent;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppDrawingContext;
@@ -151,18 +150,12 @@ public class MainView extends View implements EventHandler {
 		}
 	}
 	
-	private void setupFocus() {
+	private void setupFocus() {		
 		if(this.pageID > 0) {
-			if(this.pageID == this.getMaxPage()) {
-				this.getAppManager().getFocusManager().request(this.getAppManager().getWorkspace().getProjectList().size() % 4);
-			} else {
-				this.getAppManager().getFocusManager().request(1);
-			}
+			this.getAppManager().getFocusManager().request(this.getAppManager().getWorkspace().getProjectList().size() % 4);
 		} else {
 			this.getAppManager().getFocusManager().request(5);
 		}
-		
-		this.getAppManager().getEventDispatcher().fire(new InvalidateLayoutEvent());
 	}
 	
 	private int getMaxPage() {
@@ -172,10 +165,10 @@ public class MainView extends View implements EventHandler {
 	public void show() {
 		super.show();
 		
+		this.loadWorkspace();
+
 		this.setupFocusCycle();
 		this.setupFocus();
-		
-		this.loadWorkspace();
 	}
 	
 	public void drawSurface(AppDrawingContext context) {		

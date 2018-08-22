@@ -35,7 +35,7 @@ public class FocusManager {
 	private final List<Component> components = new ArrayList<>();
 	private final IEventDispatcher dispatcher;
 	
-	private List<Integer> cycle = null; // This array represents the values of a bijective function in a modular N+/N+ euclidian space.
+	private List<Integer> cycle = null; // This array represents the values of a bijection of a modular Z/nZ space with itself.
 	
 	private int focus = FocusManager.NOT_INITIALIZED;
 	
@@ -75,9 +75,8 @@ public class FocusManager {
 		this.loseFocus();
 
 		this.focus = id;
-		
 		Component current = this.accessModular();
-		
+				
 		if(current.isFocusable()) {
 			this.dispatcher.fire(new FocusGainedEvent(current));
 		} else if(id != -1) {

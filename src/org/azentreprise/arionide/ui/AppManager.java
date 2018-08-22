@@ -105,11 +105,11 @@ public class AppManager implements Purgeable {
 		this.initialized = true;
 	}
 	
-	public void loadUI() {
-		this.getEventDispatcher().fire(new InvalidateLayoutEvent());
-		
+	public void loadUI() {		
 		Views.init(this, this.layout);
+		
 		this.layout.compute();
+		this.getEventDispatcher().fire(new InvalidateLayoutEvent());
 		
 		Views.load();
 		Views.main.show(true);

@@ -134,7 +134,7 @@ public class Button extends Label implements EventHandler, Deformable {
 		return !this.disabled && !this.isHidden();
 	}
 
-	public <T extends Event> void handleEvent(T event) {
+	public <T extends Event> void handleEvent(T event) {	
 		if(this.disabled || this.isHidden() || this.getBounds() == null) {
 			return;
 		}

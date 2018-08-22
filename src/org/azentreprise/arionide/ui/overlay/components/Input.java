@@ -140,7 +140,19 @@ public class Input extends Button implements EventHandler {
 	}
 	
 	public void drawComponent(AppDrawingContext context) {
-		context.getRenderingSystem().renderDirect(this.getText());
+		if(this.text.length() != 0) {
+			context.getRenderingSystem().renderDirect(this.getText());
+		} else {
+			AlphaLayeringSystem layering = this.getAppManager().getAlphaLayering();
+			
+			layering.push(AlphaLayer.COMPONENT, ApplicationTints.PLACEHOLDER_ALPHA);
+			
+			this.getText().updateAlpha(layering.getCurrentAlpha());
+			context.getRenderingSystem().renderDirect(this.getText());
+			
+			layering.pop(AlphaLayer.COMPONENT);
+		}
+		
 		this.drawBorders(context);
 	}
 	
@@ -274,6 +286,6 @@ public class Input extends Button implements EventHandler {
 	}
 	
 	public String toString() {
-		return this.text.toString();
+		return this.text != null ? this.text.toString() : "<Uninitialized Input Component>";
 	}
 }

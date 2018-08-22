@@ -28,4 +28,5 @@ public interface IEventDispatcher {
 	public void registerHandler(EventHandler handler);
 	public void pause();
 	public void resume();
+	public void flush() throws InterruptedException;
 }
