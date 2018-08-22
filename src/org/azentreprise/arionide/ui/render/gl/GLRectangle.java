@@ -60,7 +60,7 @@ public class GLRectangle extends Rectangle {
 		
 		this.rgb = rgb;
 		this.alpha = alpha;
-		this.positionBuffer = new VertexBuffer(Double.BYTES, new Attribute(context.getPositionAttribute(), 2, GL4.GL_DOUBLE));
+		this.positionBuffer = new VertexBuffer(Float.BYTES, new Attribute(context.getPositionAttribute(), 2, GL4.GL_FLOAT));
 		this.vao = new VertexArray(this.positionBuffer);
 		
 		this.updateBounds(bounds);

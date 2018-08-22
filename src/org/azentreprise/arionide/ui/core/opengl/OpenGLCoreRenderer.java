@@ -236,9 +236,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glBindVertexArray(this.fxVAO);
 
 		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, buffers.get(2));
-		gl.glBufferData(GL4.GL_ARRAY_BUFFER, 8 * Double.BYTES, coords.allocDataBuffer(8).putNorth().putSouth().getDataBuffer().flip(), GL4.GL_STATIC_DRAW);
+		gl.glBufferData(GL4.GL_ARRAY_BUFFER, 8 * Float.BYTES, coords.allocDataBuffer(8).putNorth().putSouth().getDataBuffer().flip(), GL4.GL_STATIC_DRAW);
 		gl.glEnableVertexAttribArray(fxPositionAttribute);
-		gl.glVertexAttribPointer(fxPositionAttribute, 2, GL4.GL_DOUBLE, false, 0, 0);
+		gl.glVertexAttribPointer(fxPositionAttribute, 2, GL4.GL_FLOAT, false, 0, 0);
 		
 		/* Connections */
 		this.connectionVAO = vertexArrays.get(2);

@@ -54,6 +54,8 @@ public class GLText extends Text {
 	private Affine renderTransformation = new Affine();
 	
 	public GLText(Bounds bounds, String text, int rgb, int alpha) {
+		assert context != null;
+		
 		this.bounds = bounds;
 		this.text = text;
 		this.rgb = rgb;

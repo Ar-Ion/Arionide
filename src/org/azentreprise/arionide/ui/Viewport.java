@@ -50,4 +50,16 @@ public class Viewport {
 		Inverse.instance.apply(windowSize);
 		return windowSize;
 	}
+	
+	public static Size glGetPixelSize(GL4 gl) {
+		Size size = new Size(1, 1);
+		
+		IntBuffer viewport = IntBuffer.allocate(4);
+		gl.glGetIntegerv(GL4.GL_VIEWPORT, viewport);
+		
+		Scalar scalar = new Scalar(viewport.get(2), viewport.get(3));		
+		Inverse.instance.compose(scalar).apply(size);
+		
+		return size;
+	}
 }

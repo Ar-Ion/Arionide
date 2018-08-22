@@ -32,29 +32,28 @@ public class GLUnedgedRectangleRenderingContext extends GLRectangleRenderingCont
 
 	private static final BigInteger[] scheme = Identification.makeScheme(GLRectangleRenderingContext.SCHEME_SIZE + 1);
 		
+	private int unedgingFactor;
 	private int unedgingRadius;
 	
-	private float ratio = 1.0f;
-
 	public GLUnedgedRectangleRenderingContext(GL4 gl) {
 		super(gl);
 	}
 	
 	public void load() {
 		super.load("unedged_shape.vert", "shape.frag");
-		this.unedgingRadius = this.getGL().glGetUniformLocation(this.getShaderID(), "radius");
-	}
-	
-	public void onAspectRatioUpdate(float newRatio) {
-		this.ratio = newRatio;
-	}
-	
-	public float getAspectRatio() {
-		return this.ratio;
+		
+		GL4 gl = this.getGL();
+		
+		this.unedgingFactor = gl.glGetAttribLocation(this.getShaderID(), "unedgingFactor");
+		this.unedgingRadius = gl.glGetUniformLocation(this.getShaderID(), "radius");
 	}
 
 	public BigInteger[] getIdentificationScheme() {
 		return scheme;
+	}
+	
+	public int getUnedgingFactorAttribute() {
+		return this.unedgingFactor;
 	}
 	
 	public int getUnedgingRadiusUniform() {

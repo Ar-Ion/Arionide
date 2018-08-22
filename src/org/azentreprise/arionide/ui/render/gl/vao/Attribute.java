@@ -27,16 +27,23 @@ public class Attribute {
 	private final int id;
 	private final int size;
 	private final int type;
+	private final int divisor;
 	private final boolean normalize;
 	
 	public Attribute(int id, int size, int type) {
-		this(id, size, type, false);
+		this(id, size, type, 0);
 	}
 	
-	public Attribute(int id, int size, int type, boolean normalize) {
+	
+	public Attribute(int id, int size, int type, int divisor) {
+		this(id, size, type, divisor, false);
+	}
+	
+	public Attribute(int id, int size, int type, int divisor, boolean normalize) {
 		this.id = id;
 		this.size = size;
 		this.type = type;
+		this.divisor = divisor;
 		this.normalize = normalize;
 	}
 	
@@ -47,5 +54,6 @@ public class Attribute {
 	protected void load(GL4 gl, int stride, int pointer) {
 		gl.glEnableVertexAttribArray(this.id);
 		gl.glVertexAttribPointer(this.id, this.size, this.type, this.normalize, stride, pointer);
+		gl.glVertexAttribDivisor(this.id, this.divisor);
 	}
 }

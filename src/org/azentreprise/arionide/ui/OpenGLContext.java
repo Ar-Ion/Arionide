@@ -56,6 +56,8 @@ import org.azentreprise.arionide.ui.render.PrimitiveType;
 import org.azentreprise.arionide.ui.render.font.FontRenderer;
 import org.azentreprise.arionide.ui.render.font.FontResources;
 import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
+import org.azentreprise.arionide.ui.render.gl.GLEdge;
+import org.azentreprise.arionide.ui.render.gl.GLEdgeRenderingContext;
 import org.azentreprise.arionide.ui.render.gl.GLLine;
 import org.azentreprise.arionide.ui.render.gl.GLRectangle;
 import org.azentreprise.arionide.ui.render.gl.GLRectangleRenderingContext;
@@ -166,10 +168,11 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		
 		this.core.init(this.gl);
 		
-		this.system.registerGenericPrimitive(PrimitiveType.UNEDGED_RECT, GLUnedgedRectangle.setupContext(new GLUnedgedRectangleRenderingContext(this.gl)));
 		this.system.registerGenericPrimitive(PrimitiveType.RECT, GLRectangle.setupContext(new GLRectangleRenderingContext(this.gl)));
-		this.system.registerGenericPrimitive(PrimitiveType.TEXT, GLText.setupContext(new GLTextRenderingContext(this.gl, this.fontRenderer)));
 		this.system.registerGenericPrimitive(PrimitiveType.LINE, GLLine.setupContext(new GLRectangleRenderingContext(this.gl)));
+		this.system.registerGenericPrimitive(PrimitiveType.UNEDGED_RECT, GLUnedgedRectangle.setupContext(new GLUnedgedRectangleRenderingContext(this.gl)));
+		this.system.registerGenericPrimitive(PrimitiveType.EDGE, GLEdge.setupContext(new GLEdgeRenderingContext(this.gl, this.resources)));
+		this.system.registerGenericPrimitive(PrimitiveType.TEXT, GLText.setupContext(new GLTextRenderingContext(this.gl, this.fontRenderer)));
 
 		this.clearColor.put(0, 0.0f).put(1, 0.0f).put(2, 0.0f).put(3, 1.0f);
 		this.clearDepth.put(0, 1.0f);

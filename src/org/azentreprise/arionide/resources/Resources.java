@@ -44,7 +44,7 @@ public class Resources {
 		
 		this.resources.add("font-bitmap");
 		this.resources.add("font-meta");
-		this.resources.add("round-rect");
+		this.resources.add("edge");
 		
 		this.installResources();
 	}

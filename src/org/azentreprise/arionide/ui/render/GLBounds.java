@@ -20,7 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
-import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
 
 import org.azentreprise.arionide.ui.topology.Affine;
 import org.azentreprise.arionide.ui.topology.Application;
@@ -32,7 +32,7 @@ public class GLBounds {
 	
 	private static final Application glTransform = new Affine(1.0f, -1.0f, -1.0f, 1.0f);
 	
-	private DoubleBuffer buffer;
+	private FloatBuffer buffer;
 	
 	private final float x1;
 	private final float y1;
@@ -72,11 +72,11 @@ public class GLBounds {
 	}
 
 	public GLBounds allocDataBuffer(int capacity) {
-		this.buffer = DoubleBuffer.allocate(capacity);
+		this.buffer = FloatBuffer.allocate(capacity);
 		return this;
 	}
 	
-	public DoubleBuffer getDataBuffer() {
+	public FloatBuffer getDataBuffer() {
 		return this.buffer;
 	}
 		

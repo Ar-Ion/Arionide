@@ -3,10 +3,10 @@
 uniform vec2 scale;
 uniform vec2 translation;
 
-in vec2 position;
-in ivec2 unedgingFactor;
-
 uniform vec2 radius;
+
+in vec2 position;
+in vec2 unedgingFactor;
 
 out vec2 coords;
 

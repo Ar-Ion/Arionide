@@ -20,8 +20,8 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
+import org.azentreprise.arionide.ui.render.gl.GLEdge;
 import org.azentreprise.arionide.ui.render.gl.GLLine;
-import org.azentreprise.arionide.ui.render.gl.GLRectangle;
 import org.azentreprise.arionide.ui.render.gl.GLText;
 import org.azentreprise.arionide.ui.topology.Bounds;
 
@@ -58,7 +58,7 @@ public class PrimitiveFactory {
 	}
 	
 	public Rectangle newRectangle(Bounds bounds, int rgb, int alpha) {
-		return new GLRectangle(bounds, rgb, alpha);
+		return new GLEdge(bounds, rgb, alpha, 16);
 	}
 	
 	public Rectangle newLine() {
