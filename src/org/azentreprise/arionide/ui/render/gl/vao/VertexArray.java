@@ -30,14 +30,19 @@ import com.jogamp.opengl.GL4;
 
 public class VertexArray {
 	
-	private final VertexBuffer[] buffers;
-	private final int[] bufferIDs;
+	private VertexBuffer[] buffers;
+	private int[] bufferIDs;
 
 	private boolean loaded = false;
 	private int id;
 	private Trashable trashable;
 	
 	public VertexArray(VertexBuffer... buffers) {
+		this.setBuffers(buffers);
+	}
+	
+	public void setBuffers(VertexBuffer... buffers) {
+		this.unload();
 		this.buffers = buffers;
 		this.bufferIDs = new int[buffers.length];
 	}

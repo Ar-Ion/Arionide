@@ -23,86 +23,92 @@ package org.azentreprise.arionide.ui.render;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.function.BiConsumer;
 
 public class PrimitiveRenderingSystem {
 	
-	private final Map<PrimitiveType, RenderingContext> genericPrimitives = new HashMap<>();
-	private final Queue<Primitive> renderingQueue = new PriorityQueue<>();
+	private final Map<PrimitiveType, RenderingQueue> queues = new HashMap<>();
 	
-	public void registerGenericPrimitive(PrimitiveType type, RenderingContext context) {
+	public void registerPrimitive(PrimitiveType type, RenderingContext context) {
 		assert type != null;
 		assert context != null;
 		
-		this.genericPrimitives.put(type, context);
+		this.queues.put(type, new RenderingQueue(context));
 		
 		context.load();
 	}
 	
-	public void renderLater(Primitive primitive) {
-		assert primitive != null;
-		assert primitive.getType() != null;
-		
-		this.renderingQueue.add(primitive);
+	public void renderLater(Object object) {
+		this.dispatch(object, this::enqueue);
 	}
 	
-	public void renderDirect(Primitive primitive) {
-		RenderingContext context = this.genericPrimitives.get(primitive.getType());
+	public void renderDirect(Object object) {
+		this.dispatch(object, this::render);
+	}
+	
+	private void dispatch(Object object, BiConsumer<Primitive, RenderingQueue> action) {
+		assert object != null;
 		
+		if(object instanceof Primitive) {
+			Primitive primitive = (Primitive) object;
+			RenderingQueue queue = this.queues.get(primitive.getType());
+			
+			if(queue != null) {
+				action.accept(primitive, queue);
+			} else {
+				throw new IllegalArgumentException("Passed primitive has no matching rendering queue: " + object.getClass().getCanonicalName());
+			}
+		} else if(object instanceof PrimitiveMulticaster) {
+			PrimitiveMulticaster multicaster = (PrimitiveMulticaster) object;
+			
+			for(Primitive primitive : multicaster.getPrimitives()) {
+				this.dispatch(primitive, action);
+			}
+		} else {
+			throw new IllegalArgumentException("Passed object neither a primitive nor a primitive multicaster: " + object.getClass().getCanonicalName());
+		}
+	}
+	
+	private void enqueue(Primitive primitive, RenderingQueue queue) {
+		queue.add(primitive);
+	}
+	
+	private void render(Primitive primitive, RenderingQueue queue) {
+		RenderingContext context = queue.getContext();
+		BigInteger difference = queue.getAndUpdateStateDifference(primitive);
+				
 		context.enter();
 		
 		for(BigInteger identifier : context.getIdentificationScheme()) {
-			primitive.updateProperty(identifier.getLowestSetBit() / Identification.PARTITION_SIZE);
+			if(!difference.and(identifier).equals(BigInteger.ZERO)) {
+				primitive.updateProperty(context.getIdentificationScheme().length - 1 - identifier.getLowestSetBit() / Identification.PARTITION_SIZE);
+			}
+		}
+		
+		int actions = primitive.getRequestedActions();
+		
+		for(int mask = 1; mask < 1 << 30; mask <<= 1) {
+			if((actions & mask) != 0) {
+				primitive.processAction(mask);
+			}
 		}
 		
 		primitive.render();
-		
+	
 		context.exit();
 	}
 	
-	public void processRenderingQueue() {
-		Primitive lastPrimitive = null;
-				
-		while(!this.renderingQueue.isEmpty()) {
-			Primitive primitive = this.renderingQueue.poll();
-			RenderingContext context = this.genericPrimitives.get(primitive.getType());
-						
-			boolean typeUpdate = lastPrimitive == null || primitive.getType() != lastPrimitive.getType();
-						
-			if(typeUpdate) {
-				if(lastPrimitive != null) {
-					this.genericPrimitives.get(lastPrimitive.getType()).exit();
-				}
-
-				context.enter();
-								
-				for(BigInteger identifier : context.getIdentificationScheme()) {
-					primitive.updateProperty(identifier.getLowestSetBit() / Identification.PARTITION_SIZE);
-				}
-			} else {
-				BigInteger diff = lastPrimitive.getFingerprint().xor(primitive.getFingerprint());
-								
-				for(BigInteger identifier : context.getIdentificationScheme()) {
-					if(!diff.and(identifier).equals(BigInteger.ZERO)) {
-						primitive.updateProperty(context.getIdentificationScheme().length - 1 - identifier.getLowestSetBit() / Identification.PARTITION_SIZE);
-					}
-				}
+	public void processRenderingQueue() {		
+		for(RenderingQueue queue : this.queues.values()) {
+			while(!queue.isEmpty()) {
+				this.render(queue.poll(), queue);
 			}
-			
-			primitive.render();
-			
-			lastPrimitive = primitive;
-		}
-		
-		if(lastPrimitive != null) {
-			this.genericPrimitives.get(lastPrimitive.getType()).exit();
 		}
 	}
 
 	public void updateAspectRatio(float newRatio) {
-		for(RenderingContext context : this.genericPrimitives.values()) {
-			context.onAspectRatioUpdate(newRatio);
+		for(RenderingQueue queue : this.queues.values()) {
+			queue.getContext().onAspectRatioUpdate(newRatio);
 		}
 	}
 }

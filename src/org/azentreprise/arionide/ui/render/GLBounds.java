@@ -22,16 +22,13 @@ package org.azentreprise.arionide.ui.render;
 
 import java.nio.FloatBuffer;
 
-import org.azentreprise.arionide.ui.topology.Affine;
-import org.azentreprise.arionide.ui.topology.Application;
+import org.azentreprise.arionide.Utils;
 import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
 import org.azentreprise.arionide.ui.topology.Size;
 
 public class GLBounds {
-	
-	private static final Application glTransform = new Affine(1.0f, -1.0f, -1.0f, 1.0f);
-	
+		
 	private FloatBuffer buffer;
 	
 	private final float x1;
@@ -48,7 +45,7 @@ public class GLBounds {
 		bounds = bounds.copy(); // We don't want to mutate the original
 		
 		if(normalize) {
-			glTransform.apply(bounds);
+			Utils.getLayout2GL().apply(bounds);
 		}
 		
 		this.x1 = bounds.getX();
@@ -167,15 +164,15 @@ public class GLBounds {
 	}
 
 	public boolean equals(Object obj) {
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		} else {
+		if(obj instanceof GLBounds) {
 			GLBounds other = (GLBounds) obj;
 			
 			return Float.floatToIntBits(this.x1) == Float.floatToIntBits(other.x1)
 				&& Float.floatToIntBits(this.x2) == Float.floatToIntBits(other.x2)
 				&& Float.floatToIntBits(this.y1) == Float.floatToIntBits(other.y1)
 				&& Float.floatToIntBits(this.y2) == Float.floatToIntBits(other.y2);
+		} else {
+			return false;
 		}
 	}
 

@@ -90,4 +90,8 @@ public class Size extends Application implements Set {
 	public Size copy() {
 		return new Size(this.size.getX(), this.size.getY());
 	}
+	
+	public String toString() {
+		return this.size.toString(); 
+	}
 }

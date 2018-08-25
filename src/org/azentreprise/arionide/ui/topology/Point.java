@@ -32,9 +32,17 @@ public class Point implements Set, Comparable<Point> {
 		this(0.0f, 0.0f);
 	}
 	
+	public Point(int xy) {
+		this(xy, xy);
+	}
+	
 	public Point(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public Point(float xy) {
+		this(xy, xy);
 	}
 	
 	public Point(float x, float y) {
@@ -87,6 +95,23 @@ public class Point implements Set, Comparable<Point> {
 		}
 		
 		return 0;
+	}
+	
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(this.x);
+		result = prime * result + Float.floatToIntBits(this.y);
+		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if(obj instanceof Point) {
+			Point other = (Point) obj;
+			return this.x == other.x && this.y == other.y;
+		} else {
+			return false;
+		}
 	}
 	
 	public String toString() {

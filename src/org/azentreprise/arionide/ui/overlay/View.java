@@ -32,7 +32,7 @@ import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.layout.Surface;
 import org.azentreprise.arionide.ui.render.PrimitiveFactory;
-import org.azentreprise.arionide.ui.render.Rectangle;
+import org.azentreprise.arionide.ui.render.Shape;
 import org.azentreprise.arionide.ui.topology.Bounds;
 
 public abstract class View extends Surface {
@@ -43,7 +43,7 @@ public abstract class View extends Surface {
 	private final List<Component> components = new ArrayList<>();
 	
 	private final Animation alphaAnimation;
-	private final Rectangle borders = PrimitiveFactory.instance().newRectangle();
+	private final Shape borders = PrimitiveFactory.instance().newRectangle();
 	
 	private final int focusViewUID;
 	

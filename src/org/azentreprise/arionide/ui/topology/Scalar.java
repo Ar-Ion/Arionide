@@ -66,4 +66,21 @@ public class Scalar extends Application {
 			point.setY(point.getY() * this.scaleY);
 		}
 	}
+	
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(this.scaleX);
+		result = prime * result + Float.floatToIntBits(this.scaleY);
+		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if(obj instanceof Scalar) {
+			Scalar other = (Scalar) obj;
+			return this.scaleX == other.scaleX && this.scaleY == other.scaleY;
+		} else {
+			return false;
+		}
+	}
 }

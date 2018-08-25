@@ -20,6 +20,35 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
-public interface Rectangle extends Shape {
+import java.math.BigInteger;
+import java.util.PriorityQueue;
 
+public class RenderingQueue extends PriorityQueue<Primitive> {
+	
+	private static final long serialVersionUID = -4699975414525922255L;
+
+	private final RenderingContext context;
+	private BigInteger trace = BigInteger.ZERO;
+	
+	protected RenderingQueue(RenderingContext context) {
+		this.context = context;
+	}
+	
+	protected BigInteger getStateDifference(Primitive other) {
+		return this.trace.xor(other.getStateFingerprint());
+	}
+	
+	protected void updateState(Primitive other) {
+		this.trace = other.getStateFingerprint();
+	}
+	
+	protected BigInteger getAndUpdateStateDifference(Primitive other) {
+		BigInteger difference = this.getStateDifference(other);
+		this.updateState(other);
+		return difference;
+	}
+	
+	protected RenderingContext getContext() {
+		return this.context;
+	}
 }

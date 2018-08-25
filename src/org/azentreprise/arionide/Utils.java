@@ -20,11 +20,16 @@
  *******************************************************************************/
 package org.azentreprise.arionide;
 
+import org.azentreprise.arionide.ui.topology.Affine;
+import org.azentreprise.arionide.ui.topology.Application;
+
 public class Utils {
+	
+	private static final Application glTransform = new Affine(1.0f, -1.0f, -1.0f, 1.0f);
+	
 	public static double fakeComplexPower(double x, double power) {
 		return Math.signum(x) * Math.pow(Math.abs(x), power);
 	}
-	
 	
 	public static int fakeDivision(int dividend, int divisor, int infinity) {
 		if(divisor != 0) {
@@ -101,5 +106,9 @@ public class Utils {
 		} else {
 			return in;
 		}
+	}
+	
+	public static Application getLayout2GL() {
+		return glTransform;
 	}
 }

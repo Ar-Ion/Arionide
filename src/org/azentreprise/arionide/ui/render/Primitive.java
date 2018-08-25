@@ -22,19 +22,20 @@ package org.azentreprise.arionide.ui.render;
 
 import java.math.BigInteger;
 
-public abstract class Primitive implements Comparable<Primitive> {
+public abstract class Primitive implements Comparable<Primitive>, Preparable {
 	
-	public abstract void load();
-	protected abstract BigInteger getFingerprint();
+	protected abstract BigInteger getStateFingerprint();
 	protected abstract PrimitiveType getType();
+	protected abstract int getRequestedActions();
 	protected abstract void updateProperty(int identifier);
+	protected abstract void processAction(int identifier);
 	protected abstract void render();
 	
 	public int compareTo(Primitive other) {
 		if(this.getType() != other.getType()) {
 			return this.getType().compareTo(other.getType()); // For the consistency of the equivalence relation
 		} else {
-			return this.getFingerprint().compareTo(other.getFingerprint());
+			return this.getStateFingerprint().compareTo(other.getStateFingerprint());
 		}
 	}
 }

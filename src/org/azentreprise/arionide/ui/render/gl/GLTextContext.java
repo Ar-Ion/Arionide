@@ -18,8 +18,56 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.render;
+package org.azentreprise.arionide.ui.render.gl;
 
-public interface Rectangle extends Shape {
+import java.nio.IntBuffer;
 
+import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
+
+import com.jogamp.opengl.GL4;
+
+public class GLTextContext extends GLShapeContext {
+		
+	private final GLFontRenderer fontRenderer;
+	
+	private int sampler;
+
+	public GLTextContext(GL4 gl, GLFontRenderer fontRenderer) {
+		super(gl);
+		this.fontRenderer = fontRenderer;
+	}
+	
+	public void load() {
+		super.load();
+		
+		GL4 gl = this.getGL();
+		
+		this.sampler = gl.glGetUniformLocation(this.getShaderID(), "bitmap");
+		
+		IntBuffer texture = IntBuffer.allocate(1);
+		gl.glGenTextures(1, texture);
+		
+		this.fontRenderer.initRenderer(gl, this.getShaderID(), texture.get(0), this.getTranslationUniform(), this.getScaleUniform());
+	}
+	
+	public void enter() {
+		super.enter();
+		this.getGL().glUniform1i(this.sampler, 1);
+	}
+	
+	public void onAspectRatioUpdate(float newRatio) {
+		this.fontRenderer.windowRatioChanged(newRatio);
+	}
+
+	public String getVertexShader() {
+		return "text.vert";
+	}
+
+	public String getFragmentShader() {
+		return "text.frag";
+	}
+	
+	public GLFontRenderer getFontRenderer() {
+		return this.fontRenderer;
+	}
 }

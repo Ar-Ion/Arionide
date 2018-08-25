@@ -21,14 +21,11 @@
 package org.azentreprise.arionide.ui.render.gl;
 
 import org.azentreprise.arionide.ui.render.GLBounds;
-import org.azentreprise.arionide.ui.render.RenderingContext;
 import org.azentreprise.arionide.ui.topology.Bounds;
 
 import com.jogamp.opengl.GL4;
 
 public class GLLine extends GLRectangle {
-
-	private static GLRectangleRenderingContext context;
 	
 	public GLLine(Bounds bounds, int rgb, int alpha) {
 		super(bounds, rgb, alpha);
@@ -39,17 +36,16 @@ public class GLLine extends GLRectangle {
 			this.bounds = new GLBounds(newBounds);
 			this.positionBuffer.updateDataSupplier(() -> this.bounds.allocDataBuffer(4).putSW().putNE().getDataBuffer().flip());
 			this.vao.unload(); // Invalidate VAO
+			this.prepare();
 		}
 	}
 	
 	public void render() {
-		GL4 gl = context.getGL();
-
-		this.vao.bind(gl);
-		gl.glDrawArrays(GL4.GL_LINES, 0, 2);
-	}
+		if(this.bounds != null) {
+			GL4 gl = this.getContext().getGL();
 	
-	public static RenderingContext setupContext(GLRectangleRenderingContext context) {
-		return GLLine.context = context;
+			this.vao.bind(gl);
+			gl.glDrawArrays(GL4.GL_LINES, 0, 2);
+		}
 	}
 }

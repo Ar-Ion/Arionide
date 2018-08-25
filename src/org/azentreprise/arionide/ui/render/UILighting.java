@@ -20,10 +20,16 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
+import org.azentreprise.arionide.ui.topology.Point;
+
 public interface UILighting {
+	
+	public static final float NO_LIGHT = 0.0f;
+	public static final float DEFAULT_STRENGTH = 1.0f;
+	
 	public void updateRGB(int newRGB);
 	public void updateAlpha(int newAlpha);
-	public void updateLightCenter(float newCenterX, float newCenterY);
+	public void updateLightCenter(Point center);
 	public void updateLightRadius(float newRadius);
 	public void updateLightStrength(float newStrength);
 }

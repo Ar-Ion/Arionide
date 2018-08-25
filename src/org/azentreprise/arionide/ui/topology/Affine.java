@@ -63,4 +63,21 @@ public class Affine extends Application {
 		this.scalar.apply(input);
 		this.translation.apply(input);
 	}
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + this.scalar.hashCode();
+		result = prime * result + this.translation.hashCode();
+		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if(obj instanceof Affine) {
+			Affine other = (Affine) obj;
+			return this.scalar.equals(other.scalar) && this.translation.equals(other.translation);
+		} else {
+			return false;
+		}
+	}
 }

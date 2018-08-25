@@ -45,6 +45,7 @@ import org.azentreprise.arionide.ui.topology.Affine;
 import org.azentreprise.arionide.ui.topology.Application;
 import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
+import org.azentreprise.arionide.ui.topology.Scalar;
 import org.azentreprise.arionide.ui.topology.Size;
 import org.azentreprise.arionide.ui.topology.Translation;
 
@@ -117,8 +118,10 @@ public class Input extends Button implements EventHandler {
 						
 			float cursorDisplacement = affine.getScalar().getScaleX() * tessellator.getWidth(this.text.substring(0, this.cursorPosition)) / this.textWidth;
 			
-			this.cursor.updateTranslation(center.getX() + cursorDisplacement + cursorAdvance * pixelSize.getWidth(), center.getY() - entry.getHeight() * affine.getScalar().getScaleY() * 0.5f);
-			this.cursor.updateScale(1.0f, -affine.getScalar().getScaleY() / symbolicSize.getHeight() * entry.getHeight());
+			Scalar scalar = new Scalar(1.0f, -affine.getScalar().getScaleY() / symbolicSize.getHeight() * entry.getHeight());
+			Translation translation = new Translation(center.getX() + cursorDisplacement + cursorAdvance * pixelSize.getWidth(), center.getY() - entry.getHeight() * affine.getScalar().getScaleY() * 0.5f);
+
+			this.cursor.updateAffine(new Affine(scalar, translation));
 			
 			AlphaLayeringSystem layering = this.getAppManager().getAlphaLayering();
 			

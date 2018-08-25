@@ -22,47 +22,50 @@ package org.azentreprise.arionide.ui.render.gl;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.IntBuffer;
 
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.ui.render.Identification;
-import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
 import org.azentreprise.arionide.ui.shaders.Shaders;
 
 import com.jogamp.opengl.GL4;
 
-public class GLTextRenderingContext extends GLRenderingContext {
+public abstract class GLShapeContext extends GLRenderingContext {
 
-	public static final int TEXT_IDENTIFIER = 0;
-	public static final int RGB_IDENTIFIER = 1;
-	public static final int ALPHA_IDENTIFIER = 2;
-	public static final int LIGHT_STRENGTH_IDENTIFIER = 3;
-	public static final int LIGHT_RADIUS_IDENTIFIER = 4;
-	public static final int LIGHT_CENTER_IDENTIFIER = 5;
+	protected static final int SCHEME_SIZE = 7;
 	
-	private static final BigInteger[] scheme = Identification.makeScheme(6);
+	public static final int RGB_IDENTIFIER = 0;
+	public static final int SCALE_IDENTIFIER = 1;
+	public static final int TRANSLATION_IDENTIFIER = 2;
+	public static final int ALPHA_IDENTIFIER = 3;
+	public static final int LIGHT_STRENGTH_IDENTIFIER = 4;
+	public static final int LIGHT_RADIUS_IDENTIFIER = 5;
+	public static final int LIGHT_CENTER_IDENTIFIER = 6;
 	
-	private final GLFontRenderer fontRenderer;
-	
+	public static final int PREPARE_ACTION_IDENTIFIER = 0x1;
+
+	private static final BigInteger[] scheme = Identification.makeScheme(SCHEME_SIZE);
+		
 	private int shader;
-	private int sampler;
 	private int rgb;
 	private int alpha;
 	private int lightCenter;
 	private int lightRadius;
 	private int lightStrength;
+	private int scale;
+	private int translation;
+	
+	private int position;
 
-	public GLTextRenderingContext(GL4 gl, GLFontRenderer fontRenderer) {
+	protected GLShapeContext(GL4 gl) {
 		super(gl);
-		this.fontRenderer = fontRenderer;
 	}
 	
 	public void load() {
 		GL4 gl = this.getGL();
 		
 		try {
-			int vert = Shaders.loadShader(gl, "text.vert", GL4.GL_VERTEX_SHADER);
-			int frag = Shaders.loadShader(gl, "text.frag", GL4.GL_FRAGMENT_SHADER);
+			int vert = Shaders.loadShader(gl, this.getVertexShader(), GL4.GL_VERTEX_SHADER);
+			int frag = Shaders.loadShader(gl, this.getFragmentShader(), GL4.GL_FRAGMENT_SHADER);
 			
 			this.shader = gl.glCreateProgram();
 			
@@ -73,30 +76,22 @@ public class GLTextRenderingContext extends GLRenderingContext {
 			
 			gl.glLinkProgram(this.shader);
 			
-			this.sampler = gl.glGetUniformLocation(this.shader, "bitmap");
+			this.position = gl.glGetAttribLocation(this.shader, "position");
+
 			this.rgb = gl.glGetUniformLocation(this.shader, "rgb");
 			this.alpha = gl.glGetUniformLocation(this.shader, "alpha");
 			this.lightCenter = gl.glGetUniformLocation(this.shader, "lightCenter");
 			this.lightRadius = gl.glGetUniformLocation(this.shader, "lightRadius");
 			this.lightStrength = gl.glGetUniformLocation(this.shader, "lightStrength");
-			
-			int translation = gl.glGetUniformLocation(this.shader, "translation");
-			int scale = gl.glGetUniformLocation(this.shader, "scale");
-			
-			IntBuffer texture = IntBuffer.allocate(1);
-			gl.glGenTextures(1, texture);
-			
-			this.fontRenderer.initRenderer(gl, this.shader, texture.get(0), translation, scale);
+			this.scale = gl.glGetUniformLocation(this.shader, "scale");
+			this.translation = gl.glGetUniformLocation(this.shader, "translation");
 		} catch (IOException exception) {
 			Debug.exception(exception);
 		}
 	}
 	
 	public void enter() {
-		GL4 gl = this.getGL();
-		
-		gl.glUseProgram(this.shader);
-		gl.glUniform1i(this.sampler, 1);
+		this.getGL().glUseProgram(this.shader);
 	}
 
 	public void exit() {
@@ -104,7 +99,7 @@ public class GLTextRenderingContext extends GLRenderingContext {
 	}
 	
 	public void onAspectRatioUpdate(float newRatio) {
-		this.fontRenderer.windowRatioChanged(newRatio);
+		return;
 	}
 
 	public BigInteger[] getIdentificationScheme() {
@@ -115,8 +110,8 @@ public class GLTextRenderingContext extends GLRenderingContext {
 		return this.shader;
 	}
 	
-	public GLFontRenderer getFontRenderer() {
-		return this.fontRenderer;
+	public int getPositionAttribute() {
+		return this.position;
 	}
 	
 	public int getRGBUniform() {
@@ -138,4 +133,15 @@ public class GLTextRenderingContext extends GLRenderingContext {
 	public int getLightStrengthUniform() {
 		return this.lightStrength;
 	}
+	
+	public int getScaleUniform() {
+		return this.scale;
+	}
+	
+	public int getTranslationUniform() {
+		return this.translation;
+	}
+	
+	public abstract String getVertexShader();
+	public abstract String getFragmentShader();
 }

@@ -41,7 +41,7 @@ import org.azentreprise.arionide.ui.overlay.AlphaLayeringSystem;
 import org.azentreprise.arionide.ui.overlay.Component;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.render.PrimitiveFactory;
-import org.azentreprise.arionide.ui.render.Rectangle;
+import org.azentreprise.arionide.ui.render.Shape;
 import org.azentreprise.arionide.ui.render.UILighting;
 import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
@@ -54,7 +54,7 @@ public class Tab extends MultiComponent implements EventHandler {
 	private static final int ANIMATION_TIME = 500;
 		
 	private final Animation animation;
-	private final Rectangle borders;
+	private final Shape borders;
 	
 	protected final List<Bounds> rectangles = Collections.synchronizedList(new ArrayList<>());
 	
@@ -79,7 +79,7 @@ public class Tab extends MultiComponent implements EventHandler {
 	}
 	
 	public void load() {
-		this.borders.load();
+		this.borders.prepare();
 		
 		for(Component component : this.getComponents()) {
 			component.load();
@@ -159,9 +159,11 @@ public class Tab extends MultiComponent implements EventHandler {
 		float lightStrength = layering.getCurrentAlpha() / 255.0f;
 		float y = bounds.getCenter().getY();
 		
+		layering.push(AlphaLayer.CONTAINER, this.alpha);
+		
 		this.borders.updateLightStrength(lightStrength);
-		this.borders.updateAlpha(layering.push(AlphaLayer.CONTAINER, this.alpha));
-		this.borders.updateLightCenter(this.shadow, y);
+		this.borders.updateAlpha(layering.getCurrentAlpha());
+		this.borders.updateLightCenter(new Point(this.shadow, y));
 		
 		context.getRenderingSystem().renderLater(this.borders);
 
@@ -177,7 +179,7 @@ public class Tab extends MultiComponent implements EventHandler {
 					if(component instanceof Enlightenable) {
 						for(UILighting primitive : ((Enlightenable) component).getEnlightenablePrimitives()) {
 							primitive.updateLightStrength(lightStrength);
-							primitive.updateLightCenter((float) this.shadow, y);
+							primitive.updateLightCenter(new Point(this.shadow, y));
 						}
 					}
 					

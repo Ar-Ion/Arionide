@@ -43,7 +43,7 @@ import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.render.AffineTransformable;
 import org.azentreprise.arionide.ui.render.PrimitiveFactory;
-import org.azentreprise.arionide.ui.render.Rectangle;
+import org.azentreprise.arionide.ui.render.Shape;
 import org.azentreprise.arionide.ui.render.UILighting;
 import org.azentreprise.arionide.ui.topology.Bounds;
 
@@ -52,7 +52,7 @@ public class Button extends Label implements EventHandler, Deformable {
 	private static final int ANIMATION_TIME = 200;
 	private static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
 	
-	private final Rectangle borders = PrimitiveFactory.instance().newRectangle(ApplicationTints.MAIN_COLOR, ApplicationTints.INACTIVE_ALPHA);
+	private final Shape borders = PrimitiveFactory.instance().newRectangle(ApplicationTints.MAIN_COLOR, ApplicationTints.INACTIVE_ALPHA);
 	protected final Animation animation;
 	
 	protected boolean hasFocus;

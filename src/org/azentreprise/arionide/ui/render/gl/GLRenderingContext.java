@@ -20,15 +20,22 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render.gl;
 
+import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.ui.render.RenderingContext;
+import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
 
 import com.jogamp.opengl.GL4;
 
 public abstract class GLRenderingContext implements RenderingContext {
 	
+	public static GLRectangleContext rectangle;
+	public static GLUnedgedRectangleContext unedgedRectangle;
+	public static GLEdgeContext edge;
+	public static GLTextContext text;
+	
 	private final GL4 gl;
 	
-	public GLRenderingContext(GL4 gl) {
+	protected GLRenderingContext(GL4 gl) {
 		this.gl = gl;
 	}
 	
@@ -37,4 +44,11 @@ public abstract class GLRenderingContext implements RenderingContext {
 	}
 	
 	protected abstract int getShaderID();
+	
+	public static void init(GL4 gl, Resources resources, GLFontRenderer fontRenderer) {
+		rectangle = new GLRectangleContext(gl);
+		unedgedRectangle = new GLUnedgedRectangleContext(gl);
+		edge = new GLEdgeContext(gl, resources);
+		text = new GLTextContext(gl, fontRenderer);
+	}
 }

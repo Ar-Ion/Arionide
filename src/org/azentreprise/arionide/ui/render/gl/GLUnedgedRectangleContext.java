@@ -18,8 +18,49 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.render;
+package org.azentreprise.arionide.ui.render.gl;
 
-public interface Rectangle extends Shape {
+import java.math.BigInteger;
 
+import org.azentreprise.arionide.ui.render.Identification;
+
+import com.jogamp.opengl.GL4;
+
+public class GLUnedgedRectangleContext extends GLRectangleContext {
+
+	public static final int UNEDGING_RADIUS_IDENTIFIER = SCHEME_SIZE + 0;
+
+	private static final BigInteger[] scheme = Identification.makeScheme(SCHEME_SIZE + 1);
+		
+	private int unedgingFactor;
+	private int unedgingRadius;
+	
+	public GLUnedgedRectangleContext(GL4 gl) {
+		super(gl);
+	}
+	
+	public void load() {
+		super.load();
+		
+		GL4 gl = this.getGL();
+		
+		this.unedgingFactor = gl.glGetAttribLocation(this.getShaderID(), "unedgingFactor");
+		this.unedgingRadius = gl.glGetUniformLocation(this.getShaderID(), "radius");
+	}
+
+	public BigInteger[] getIdentificationScheme() {
+		return scheme;
+	}
+	
+	public int getUnedgingFactorAttribute() {
+		return this.unedgingFactor;
+	}
+	
+	public int getUnedgingRadiusUniform() {
+		return this.unedgingRadius;
+	}
+	
+	public String getVertexShader() {
+		return "unedged_shape.vert";
+	}
 }

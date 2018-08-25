@@ -22,7 +22,9 @@ package org.azentreprise.arionide.ui.render;
 
 import org.azentreprise.arionide.ui.render.gl.GLEdge;
 import org.azentreprise.arionide.ui.render.gl.GLLine;
+import org.azentreprise.arionide.ui.render.gl.GLShape;
 import org.azentreprise.arionide.ui.render.gl.GLText;
+import org.azentreprise.arionide.ui.render.gl.GLUnedgedRectangle;
 import org.azentreprise.arionide.ui.topology.Bounds;
 
 public class PrimitiveFactory {
@@ -46,19 +48,22 @@ public class PrimitiveFactory {
 	}
 	
 	public Text newText(Bounds bounds, String text, int rgb, int alpha) {
-		return new GLText(bounds, text, rgb, alpha);
+		return new GLText(text, rgb, alpha);
 	}
 	
-	public Rectangle newRectangle() {
+	public Shape newRectangle() {
 		return this.newRectangle(0, 0);
 	}
 	
-	public Rectangle newRectangle(int rgb, int alpha) {
+	public Shape newRectangle(int rgb, int alpha) {
 		return this.newRectangle(null, rgb, alpha);
 	}
 	
-	public Rectangle newRectangle(Bounds bounds, int rgb, int alpha) {
-		return new GLEdge(bounds, rgb, alpha, 16);
+	public Shape newRectangle(Bounds bounds, int rgb, int alpha) {
+		GLShape rect = new GLUnedgedRectangle(bounds, rgb, alpha, 32.0f);
+		GLShape edge = new GLEdge(bounds, rgb, alpha, 32.0f);
+		
+		return PrimitiveMulticaster.create(Shape.class, rect, edge);
 	}
 	
 	public Rectangle newLine() {

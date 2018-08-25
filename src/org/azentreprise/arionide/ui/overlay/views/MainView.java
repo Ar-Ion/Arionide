@@ -48,6 +48,7 @@ import org.azentreprise.arionide.ui.overlay.components.Button;
 import org.azentreprise.arionide.ui.overlay.components.Deformable;
 import org.azentreprise.arionide.ui.overlay.components.Label;
 import org.azentreprise.arionide.ui.render.AffineTransformable;
+import org.azentreprise.arionide.ui.topology.Affine;
 import org.azentreprise.arionide.ui.topology.Bounds;
 
 public class MainView extends View implements EventHandler {
@@ -182,11 +183,9 @@ public class MainView extends View implements EventHandler {
 				if(component instanceof Deformable) {
 					for(AffineTransformable primitive : ((Deformable) component).getDeformablePrimitives()) {
 						if(this.transformWidth < 0.0d) {
-							primitive.updateScale(-this.transformWidth, 1.0f);
-							primitive.updateTranslation(rightToOrigin * (this.transformWidth + 1.0f), 0.0f);
+							primitive.updateAffine(new Affine(-this.transformWidth, 1.0f, rightToOrigin * (this.transformWidth + 1.0f), 0.0f));
 						} else {
-							primitive.updateScale(this.transformWidth, 1.0f);
-							primitive.updateTranslation(leftToOrigin * (this.transformWidth - 1.0f), 0.0f);
+							primitive.updateAffine(new Affine(this.transformWidth, 1.0f, leftToOrigin * (this.transformWidth - 1.0f), 0.0f));
 						}	
 					}
 				}

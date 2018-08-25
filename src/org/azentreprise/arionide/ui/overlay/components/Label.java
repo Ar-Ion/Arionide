@@ -47,7 +47,7 @@ public class Label extends Component implements Enlightenable {
 	}
 	
 	public void load() {
-		this.text.load();
+		this.text.prepare();
 	}
 	
 	public Label setBounds(Bounds bounds) {

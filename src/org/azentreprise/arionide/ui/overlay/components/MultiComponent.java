@@ -28,15 +28,13 @@ import org.azentreprise.arionide.ui.overlay.View;
 
 public abstract class MultiComponent extends Component {
 	
-	private final Function<String, Component> componentGenerator;
 	private List<Component> components;
 	
 	public MultiComponent(View parent, List<Component> components) {
 		super(parent);
 		
 		assert components.size() > 0;
-		
-		this.componentGenerator = (str) -> new Label(parent, str.contains("$$$") ? str.substring(0, str.indexOf("$$$")) : str);
+
 		this.components = components;
 	}
 	
@@ -48,7 +46,13 @@ public abstract class MultiComponent extends Component {
 		this.components = components;
 	}
 	
+	private Label generate(String str) {
+		Label label = new Label(this.getParentView(), str.contains("$$$") ? str.substring(0, str.indexOf("$$$")) : str);
+		label.load();
+		return label;
+	}
+	
 	public Function<String, Component> getGenerator() {
-		return this.componentGenerator;
+		return this::generate;
 	}
 }

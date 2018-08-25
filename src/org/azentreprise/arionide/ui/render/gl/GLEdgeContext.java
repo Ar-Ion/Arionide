@@ -37,33 +37,30 @@ import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.texture.TextureIO;
 
-public class GLEdgeRenderingContext extends GLRectangleRenderingContext {
+public class GLEdgeContext extends GLRectangleContext {
 
-	public static final int EDGE_RADIUS_IDENTIFIER = GLRectangleRenderingContext.SCHEME_SIZE + 0;
+	public static final int EDGE_RADIUS_IDENTIFIER = SCHEME_SIZE + 0;
 
-	private static final BigInteger[] scheme = Identification.makeScheme(GLRectangleRenderingContext.SCHEME_SIZE + 1);
+	private static final BigInteger[] scheme = Identification.makeScheme(SCHEME_SIZE + 1);
 	
 	private final File edgeFile;
 	
 	private int edgeFactor;
-	
-	private int sampler;
 	private int edgeRadius;
 	
-	public GLEdgeRenderingContext(GL4 gl, Resources resources) {
+	public GLEdgeContext(GL4 gl, Resources resources) {
 		super(gl);
-		
 		this.edgeFile = resources.getResource("edge");
 	}
 	
 	public void load() {
-		super.load("edge.vert", "edge.frag");
+		super.load();
 		
 		GL4 gl = this.getGL();
 		
 		this.edgeFactor = gl.glGetAttribLocation(this.getShaderID(), "edgeFactor");
 		
-		this.sampler = gl.glGetUniformLocation(this.getShaderID(), "edgeTexture");
+		int sampler = gl.glGetUniformLocation(this.getShaderID(), "edgeTexture");
 		this.edgeRadius = gl.glGetUniformLocation(this.getShaderID(), "radius");
 				
 		try {
@@ -79,21 +76,16 @@ public class GLEdgeRenderingContext extends GLRectangleRenderingContext {
 			int size = (int) Math.sqrt(buffer.limit() / 4); // assume it is a square texture
 					
 			gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, size, size, 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, buffer);
-			
-			gl.glGenerateMipmap(GL4.GL_TEXTURE_2D);
-			
-			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
-			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
-			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_NEAREST_MIPMAP_LINEAR);
+						
+			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_EDGE);
+			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_EDGE);
+			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_NEAREST);
 			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_NEAREST);
+			
+			gl.glUniform1i(sampler, 1);
 		} catch (GLException | IOException exception) {
 			Debug.exception(exception);
 		}
-	}
-	
-	public void enter() {
-		super.enter();
-		this.getGL().glUniform1i(this.sampler, 0);
 	}
 	
 	public BigInteger[] getIdentificationScheme() {
@@ -106,5 +98,13 @@ public class GLEdgeRenderingContext extends GLRectangleRenderingContext {
 	
 	public int getEdgeRadiusUniform() {
 		return this.edgeRadius;
+	}
+	
+	public String getVertexShader() {
+		return "edge.vert";
+	}
+	
+	public String getFragmentShader() {
+		return "edge.frag";
 	}
 }

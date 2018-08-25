@@ -134,6 +134,23 @@ public class Line implements Set {
 		return new Bounds(this.p1.copy(), this.p2.copy());
 	}
 	
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + this.p1.hashCode();
+		result = prime * result + this.p2.hashCode();
+		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if(obj instanceof Line) {
+			Line other = (Line) obj;
+			return this.p1.equals(other.p1) && this.p2.equals(other.p2);
+		} else {
+			return false;
+		}
+	}
+	
 	public String toString() {
 		return this.p1 + "; " + this.p2;
 	}

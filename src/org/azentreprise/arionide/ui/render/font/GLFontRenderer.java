@@ -173,8 +173,6 @@ public class GLFontRenderer implements FontRenderer {
 		
 		if(entry == null) {
 			entry = this.alloc(gl, str);
-		} else {
-			this.cache.put(str, entry); // Touch
 		}
 		
 		return entry;

@@ -18,8 +18,32 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.render;
+package org.azentreprise.arionide.ui.render.gl;
 
-public interface Rectangle extends Shape {
+import com.jogamp.opengl.GL4;
 
+public class GLRectangleContext extends GLShapeContext {
+
+	private int position;
+	
+	public GLRectangleContext(GL4 gl) {
+		super(gl);
+	}
+	
+	public void load() {
+		super.load();
+		this.position = this.getGL().glGetAttribLocation(this.getShaderID(), "position");
+	}
+	
+	public int getPositionAttribute() {
+		return this.position;
+	}
+
+	public String getVertexShader() {
+		return "shape.vert";
+	}
+
+	public String getFragmentShader() {
+		return "shape.frag";
+	}
 }

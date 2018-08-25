@@ -27,96 +27,97 @@ import org.azentreprise.arionide.ui.Viewport;
 import org.azentreprise.arionide.ui.render.GLBounds;
 import org.azentreprise.arionide.ui.render.Identification;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
-import org.azentreprise.arionide.ui.render.RenderingContext;
 import org.azentreprise.arionide.ui.render.gl.vao.Attribute;
+import org.azentreprise.arionide.ui.render.gl.vao.UID;
 import org.azentreprise.arionide.ui.render.gl.vao.VertexArray;
 import org.azentreprise.arionide.ui.render.gl.vao.VertexArrayCache;
 import org.azentreprise.arionide.ui.render.gl.vao.VertexBuffer;
 import org.azentreprise.arionide.ui.topology.Bounds;
-import org.azentreprise.arionide.ui.topology.Size;
+import org.azentreprise.arionide.ui.topology.Point;
 
 import com.jogamp.opengl.GL4;
 
 public class GLEdge extends GLRectangle {
 	
-	private static GLEdgeRenderingContext context;
-	
 	private final VertexBuffer positionBuffer;
 	private final VertexBuffer edgeFactorBuffer;
 	private final VertexArray vao;
-	
-	private int edgeRadius;
-	
-	private float radiusX;
-	private float radiusY;
-	
-	public GLEdge(Bounds bounds, int rgb, int alpha, int edgeRadius) {
-		super(bounds, rgb, alpha);
 		
-		assert context != null;
+	private float edgeRadius;
+	
+	private Point radius = new Point();
+	
+	public GLEdge(Bounds bounds, int rgb, int alpha, float edgeRadius) {
+		super(bounds, rgb, alpha);
 		
 		this.edgeRadius = edgeRadius;
 		
-		this.positionBuffer = new VertexBuffer(Float.BYTES, new Attribute(context.getPositionAttribute(), 2, GL4.GL_FLOAT, 1));
-		this.edgeFactorBuffer = new VertexBuffer(Float.BYTES, new Attribute(context.getEdgeFactorAttribute(), 2, GL4.GL_FLOAT));
+		this.positionBuffer = new VertexBuffer(Float.BYTES, new Attribute(this.getContext().getPositionAttribute(), 2, GL4.GL_FLOAT, 1));
+		this.edgeFactorBuffer = new VertexBuffer(Float.BYTES, new Attribute(this.getContext().getEdgeFactorAttribute(), 2, GL4.GL_FLOAT));
 		this.vao = new VertexArray(this.positionBuffer, this.edgeFactorBuffer);
 		
-		this.edgeFactorBuffer.updateDataSupplier(() -> FloatBuffer.allocate(8).put(0).put(-1)
+		float f = 1.0f + 0.625f / edgeRadius;
+		
+		this.edgeFactorBuffer.updateDataSupplier(() -> FloatBuffer.allocate(8).put(0).put(-f)
 																			  .put(0).put(0)
 																			  .put(1).put(-1)
-																			  .put(1).put(0).flip());
+																			  .put(f).put(0).flip());
 	}
 	
-	public void load() {
+	protected void prepareGL() {
 		if(this.bounds != null) {
-			VertexArrayCache.load(this.bounds, context.getGL(), this.vao);
+			VertexArrayCache.load(new UID(this.bounds, PrimitiveType.EDGE), this.getContext().getGL(), this.vao);
 		}
 	}
 	
 	public void updateBounds(Bounds newBounds) {
 		if(newBounds != null) {
+			newBounds = newBounds.copy();
+						
 			this.bounds = new GLBounds(newBounds);
 			this.positionBuffer.updateDataSupplier(() -> this.bounds.allocDataBuffer(8).putBoundingPoints().getDataBuffer().flip());
 			this.vao.unload(); // Invalidate VAO
+			this.prepare();
 		}
 	}
 	
-	public BigInteger getFingerprint() {
-		return Identification.generateFingerprint(super.getFingerprint(),
-				Float.floatToIntBits(this.radiusX) ^ Float.floatToIntBits(this.radiusY));
+	public BigInteger getStateFingerprint() {
+		return Identification.generateFingerprint(super.getStateFingerprint(),
+				this.radius.hashCode());
 	}
 	
 	public PrimitiveType getType() {
 		return PrimitiveType.EDGE;
 	}
 	
-	public void updateProperty(int identifier) {
-		super.updateProperty(identifier);
-						
+	public void updateProperty(int identifier) {		
 		switch(identifier) {
-			case GLEdgeRenderingContext.EDGE_RADIUS_IDENTIFIER:
-				context.getGL().glUniform2f(context.getEdgeRadiusUniform(), this.radiusX, this.radiusY);
+			case GLEdgeContext.EDGE_RADIUS_IDENTIFIER:
+				this.getContext().getGL().glUniform2f(this.getContext().getEdgeRadiusUniform(), this.radius.getX(), this.radius.getY());
 				break;
+			default:
+				super.updateProperty(identifier);
 		}
 	}
 
 	private void updateRadius(GL4 gl) {
-		Size pixelSize = Viewport.glGetPixelSize(context.getGL());
-		
-		this.radiusX = this.edgeRadius * pixelSize.getWidth();
-		this.radiusY = this.edgeRadius * pixelSize.getHeight();
+		Viewport.glGetPixelSize(gl).apply(this.radius);;
 	}
 	
 	public void render() {
-		GL4 gl = context.getGL();
-		
-		this.updateRadius(gl);
-		
-		this.vao.bind(gl);
-		gl.glDrawArraysInstanced(GL4.GL_TRIANGLE_STRIP, 0, 4, 4);
+		if(this.bounds != null) {
+			GL4 gl = this.getContext().getGL();
+			
+			this.radius = new Point(this.edgeRadius);
+			
+			this.updateRadius(gl);
+			
+			this.vao.bind(gl);
+			gl.glDrawArraysInstanced(GL4.GL_TRIANGLE_STRIP, 0, 4, 4);
+		}
 	}
 	
-	public static RenderingContext setupContext(GLEdgeRenderingContext context) {
-		return GLEdge.context = context;
+	protected GLEdgeContext getContext() {
+		return GLRenderingContext.edge;
 	}
 }

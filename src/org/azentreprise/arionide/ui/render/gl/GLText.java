@@ -20,150 +20,83 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render.gl;
 
-import java.math.BigInteger;
-
-import org.azentreprise.arionide.Utils;
-import org.azentreprise.arionide.ui.render.Identification;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
-import org.azentreprise.arionide.ui.render.RenderingContext;
 import org.azentreprise.arionide.ui.render.Text;
 import org.azentreprise.arionide.ui.render.font.GLTextCacheEntry;
 import org.azentreprise.arionide.ui.topology.Affine;
 import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.topology.Scalar;
+import org.azentreprise.arionide.ui.topology.Translation;
 
-import com.jogamp.opengl.GL4;
-
-public class GLText extends Text {
-
-	private static GLTextRenderingContext context;
+public class GLText extends GLShape implements Text {
 	
-	private Bounds bounds;
-	private float translateX;
-	private float translateY;
-	private float scaleX = 1.0f;
-	private float scaleY = 1.0f;
-	private String text;
-	private GLTextCacheEntry entry;
-	private int rgb;
-	private int alpha;
-	private float lightCenterX;
-	private float lightCenterY;
-	private float lightRadius = -2.0f;
-	private float lightStrength = 1.0f;
+	private Bounds bounds = null;
+	private Affine affine = new Affine();
+	private String text = new String();
+	private GLTextCacheEntry entry = null;
 	
 	private Affine renderTransformation = new Affine();
 	
-	public GLText(Bounds bounds, String text, int rgb, int alpha) {
-		assert context != null;
-		
-		this.bounds = bounds;
+	public GLText(String text, int rgb, int alpha) {
+		super(rgb, alpha);
 		this.text = text;
-		this.rgb = rgb;
-		this.alpha = alpha;
 	}
 
-	public void load() {
-		this.entry = context.getFontRenderer().fetch(context.getGL(), this.text);
+	protected void prepareGL() {
+		this.entry = this.getContext().getFontRenderer().fetch(this.getContext().getGL(), this.text);
 	}
 	
 	public void updateBounds(Bounds newBounds) {
 		this.bounds = newBounds;
 	}
 	
-	public void updateScale(float newScaleX, float newScaleY) {
-		this.scaleX = newScaleX;
-		this.scaleY = newScaleY;
-	}
-
-	public void updateTranslation(float newTranslateX, float newTranslateY) {
-		this.translateX = newTranslateX;
-		this.translateY = newTranslateY;
-	}
-	
-	public void updateRGB(int newRGB) {
-		this.rgb = newRGB;
-	}
-	
-	public void updateAlpha(int newAlpha) {
-		this.alpha = newAlpha;
-	}
-	
 	public void updateText(String newText) {
 		this.text = newText;
+		this.prepare();
 	}
-
-	public void updateLightCenter(float newCenterX, float newCenterY) {
-		this.lightCenterX = newCenterX - 1.0f;
-		this.lightCenterY = 1.0f - newCenterY;
-	}
-
-	public void updateLightRadius(float newRadius) {
-		this.lightRadius = newRadius;
-	}
-
-	public void updateLightStrength(float newStrength) {
-		this.lightStrength = newStrength;
+	
+	public void updateAffine(Affine affine) {
+		this.affine = affine;
 	}
 	
 	public Affine getRenderTransformation() {
 		return this.renderTransformation;
-	}
-	
-	public BigInteger getFingerprint() {
-		return Identification.generateFingerprint(
-				this.text.hashCode(),
-				this.rgb, 
-				this.alpha, 
-				Float.floatToIntBits(this.lightStrength), 
-				Float.floatToIntBits(this.lightRadius), 
-				Float.floatToIntBits(this.lightCenterX) ^ Float.floatToIntBits(this.lightCenterY));
 	}
 
 	public PrimitiveType getType() {
 		return PrimitiveType.TEXT;
 	}
 
-	public void updateProperty(int identifier) {		
-		GL4 gl = context.getGL();
-				
+	public void updateProperty(int identifier) {
 		switch(identifier) {
-			case GLTextRenderingContext.TEXT_IDENTIFIER:
-				this.entry = context.getFontRenderer().fetch(context.getGL(), this.text);
+			case GLShapeContext.SCALE_IDENTIFIER:
 				break;
-			case GLTextRenderingContext.RGB_IDENTIFIER:
-				gl.glUniform3f(context.getRGBUniform(), Utils.getRed(this.rgb) / 255.0f, Utils.getGreen(this.rgb) / 255.0f, Utils.getBlue(this.rgb) / 255.0f);
+			case GLShapeContext.TRANSLATION_IDENTIFIER:
 				break;
-			case GLTextRenderingContext.ALPHA_IDENTIFIER:
-				gl.glUniform1f(context.getAlphaUniform(), this.alpha / 255.0f);
-				break;
-			case GLTextRenderingContext.LIGHT_CENTER_IDENTIFIER:
-				gl.glUniform2f(context.getLightCenterUniform(), this.lightCenterX, this.lightCenterY);
-				break;
-			case GLTextRenderingContext.LIGHT_RADIUS_IDENTIFIER:
-				gl.glUniform1f(context.getLightRadiusUniform(), this.lightRadius);
-				break;
-			case GLTextRenderingContext.LIGHT_STRENGTH_IDENTIFIER:
-				gl.glUniform1f(context.getLightStrengthUniform(), this.lightStrength);
-				break;
+			default:
+				super.updateProperty(identifier);
 		}
 	}
-
+	
 	public void render() {
-		if(this.bounds != null) {
-			float x = (this.bounds.getX() - 1.0f) * this.scaleX + 1.0f + this.translateX;
-			float y = (this.bounds.getY() - 1.0f) * this.scaleY + 1.0f + this.translateY;
-			float width = this.bounds.getWidth() * this.scaleX;
+		if(this.bounds != null && this.entry != null) {
+			Scalar scalar = this.affine.getScalar();
+			Translation translation = this.affine.getTranslation();
+			
+			float x = (this.bounds.getX() - 1.0f) * scalar.getScaleX() + 1.0f + translation.getTranslateX();
+			float y = (this.bounds.getY() - 1.0f) * scalar.getScaleY() + 1.0f + translation.getTranslateY();
+			float width = this.bounds.getWidth() * scalar.getScaleX();
 			float height = this.bounds.getHeight();
 
-			this.renderTransformation = context.getFontRenderer().renderString(context.getGL(), this.entry, new Bounds(x, y, width, height));
+			this.renderTransformation = this.getContext().getFontRenderer().renderString(this.getContext().getGL(), this.entry, new Bounds(x, y, width, height));
 		}
+	}
+	
+	protected GLTextContext getContext() {
+		return GLRenderingContext.text;
 	}
 	
 	public String toString() {
 		return this.text;
-	}
-	
-	public static RenderingContext setupContext(GLTextRenderingContext context) {
-		return GLText.context = context;
 	}
 }

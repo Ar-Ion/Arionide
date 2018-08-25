@@ -20,7 +20,8 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
+import org.azentreprise.arionide.ui.topology.Affine;
+
 public interface AffineTransformable {
-	public void updateScale(float newScaleX, float newScaleY);
-	public void updateTranslation(float newTranslateX, float newTranslateY);
+	public void updateAffine(Affine affine);
 }

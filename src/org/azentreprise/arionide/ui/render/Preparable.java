@@ -20,6 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
-public interface Rectangle extends Shape {
-
+public interface Preparable {
+	public void prepare();
 }

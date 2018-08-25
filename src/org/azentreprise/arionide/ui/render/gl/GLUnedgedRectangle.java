@@ -27,52 +27,43 @@ import org.azentreprise.arionide.ui.Viewport;
 import org.azentreprise.arionide.ui.render.GLBounds;
 import org.azentreprise.arionide.ui.render.Identification;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
-import org.azentreprise.arionide.ui.render.RenderingContext;
 import org.azentreprise.arionide.ui.render.gl.vao.Attribute;
-import org.azentreprise.arionide.ui.render.gl.vao.VertexArray;
+import org.azentreprise.arionide.ui.render.gl.vao.UID;
 import org.azentreprise.arionide.ui.render.gl.vao.VertexArrayCache;
 import org.azentreprise.arionide.ui.render.gl.vao.VertexBuffer;
 import org.azentreprise.arionide.ui.topology.Bounds;
-import org.azentreprise.arionide.ui.topology.Size;
+import org.azentreprise.arionide.ui.topology.Point;
 
 import com.jogamp.opengl.GL4;
 
 public class GLUnedgedRectangle extends GLRectangle {
-
-	private static GLUnedgedRectangleRenderingContext context;
 	
-	private final VertexBuffer positionBuffer;
-	private final VertexBuffer unedgingFactorBuffer;
-	private final VertexArray vao;
+	private final VertexBuffer unedgingFactorBuffer = new VertexBuffer(Float.BYTES, new Attribute(this.getContext().getUnedgingFactorAttribute(), 2, GL4.GL_FLOAT));;
 	
-	private int unedgingRadius;
+	private float unedgingRadius;
+	private Point radius = new Point();
 	
-	private float radiusX;
-	private float radiusY;
-	
-	public GLUnedgedRectangle(Bounds bounds, int rgb, int alpha, int unedgingRadius) {
+	public GLUnedgedRectangle(Bounds bounds, int rgb, int alpha, float unedgingRadius) {
 		super(bounds, rgb, alpha);
 		
-		assert context != null;
-		
 		this.unedgingRadius = unedgingRadius;
-		this.positionBuffer = new VertexBuffer(Float.BYTES, new Attribute(context.getPositionAttribute(), 2, GL4.GL_FLOAT));
-		this.unedgingFactorBuffer = new VertexBuffer(Float.BYTES, new Attribute(context.getUnedgingFactorAttribute(), 2, GL4.GL_FLOAT));
-		this.vao = new VertexArray(this.positionBuffer, this.unedgingFactorBuffer);
+		this.vao.setBuffers(this.positionBuffer, this.unedgingFactorBuffer);
 		
-		this.unedgingFactorBuffer.updateDataSupplier(() -> FloatBuffer.allocate(16).put(1).put(0)
-																				 .put(-1).put(0)
-																				 .put(0).put(-1)
-																				 .put(0).put(1)
-																				 .put(1).put(0)
-																				 .put(-1).put(0)
-																				 .put(0).put(-1)
-																				 .put(0).put(1).flip());
+		float m = 1.0f / unedgingRadius;
+
+		this.unedgingFactorBuffer.updateDataSupplier(() -> FloatBuffer.allocate(16).put(1.0f + 1.375f*m).put(-m)
+																				 .put(-1.0f).put(-m)
+																				 .put(-m).put(-1.0f)
+																				 .put(-m).put(1.0f - m)
+																				 .put(1.0f + 1.5f*m).put(m)
+																				 .put(-1.0f).put(m)
+																				 .put(m).put(-1.0f - m)
+																				 .put(m).put(1.0f - m).flip());
 	}
 	
-	public void load() {
+	protected void prepareGL() {
 		if(this.bounds != null) {
-			VertexArrayCache.load(this.bounds, context.getGL(), this.vao);
+			VertexArrayCache.load(new UID(this.bounds, PrimitiveType.UNEDGED_RECT), this.getContext().getGL(), this.vao);
 		}
 	}
 	
@@ -81,12 +72,13 @@ public class GLUnedgedRectangle extends GLRectangle {
 			this.bounds = new GLBounds(newBounds);
 			this.positionBuffer.updateDataSupplier(() -> this.bounds.allocDataBuffer(16).putNorth().putEast().putSouth().putWest().getDataBuffer().flip());
 			this.vao.unload(); // Invalidate VAO
+			this.prepare();
 		}
 	}
 
-	public BigInteger getFingerprint() {
-		return Identification.generateFingerprint(super.getFingerprint(),
-				Float.floatToIntBits(this.radiusX) ^ Float.floatToIntBits(this.radiusY));
+	public BigInteger getStateFingerprint() {
+		return Identification.generateFingerprint(super.getStateFingerprint(),
+				this.radius.hashCode());
 	}
 	
 	public PrimitiveType getType() {
@@ -94,32 +86,34 @@ public class GLUnedgedRectangle extends GLRectangle {
 	}
 	
 	public void updateProperty(int identifier) {
-		super.updateProperty(identifier);
-						
 		switch(identifier) {
-			case GLUnedgedRectangleRenderingContext.UNEDGING_RADIUS_IDENTIFIER:
-				context.getGL().glUniform2f(context.getUnedgingRadiusUniform(), this.radiusX, this.radiusY);
+			case GLUnedgedRectangleContext.UNEDGING_RADIUS_IDENTIFIER:
+				this.getContext().getGL().glUniform2f(this.getContext().getUnedgingRadiusUniform(), this.radius.getX(), this.radius.getY());
 				break;
+			default:
+				super.updateProperty(identifier);
 		}
 	}
 	
 	private void updateRadius(GL4 gl) {
-		Size pixelSize = Viewport.glGetPixelSize(context.getGL());
-		
-		this.radiusX = this.unedgingRadius * pixelSize.getWidth();
-		this.radiusY = this.unedgingRadius * pixelSize.getHeight();
+		Viewport.glGetPixelSize(gl).apply(this.radius);
 	}
 
-	public void render() {				
-		GL4 gl = context.getGL();
-
-		this.updateRadius(gl);
-		
-		this.vao.bind(gl);
-		gl.glDrawArrays(GL4.GL_LINES, 0, 8);
+	public void render() {
+		if(this.bounds != null) {
+			GL4 gl = this.getContext().getGL();
+			
+			this.radius = new Point(this.unedgingRadius);
+			
+			this.updateRadius(gl);
+			
+			this.vao.bind(gl);
+			gl.glDrawArrays(GL4.GL_LINES, 0, 8);
+		}
 	}
 	
-	public static RenderingContext setupContext(GLUnedgedRectangleRenderingContext context) {
-		return GLUnedgedRectangle.context = context;
+	
+	protected GLUnedgedRectangleContext getContext() {
+		return GLRenderingContext.unedgedRectangle;
 	}
 }

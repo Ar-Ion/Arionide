@@ -18,8 +18,38 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.render;
+package org.azentreprise.arionide.ui.render.gl.vao;
 
-public interface Rectangle extends Shape {
+import org.azentreprise.arionide.ui.render.GLBounds;
+import org.azentreprise.arionide.ui.render.PrimitiveType;
 
+public class UID {
+	
+	private final GLBounds bounds;
+	private final PrimitiveType type;
+	
+	public UID(GLBounds bounds, PrimitiveType type) {
+		assert bounds != null;
+		assert type != null;
+		
+		this.bounds = bounds;
+		this.type = type;
+	}
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + this.bounds.hashCode();
+		result = prime * result + this.type.hashCode();
+		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if(obj instanceof UID) {
+			UID other = (UID) obj;
+			return other.bounds.equals(this.bounds) && other.type.equals(this.type);
+		} else {
+			return false;
+		}
+	}
 }
