@@ -21,12 +21,9 @@
 package org.azentreprise.arionide.ui;
 
 import java.awt.Cursor;
-import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.azentreprise.arionide.Arionide;
 import org.azentreprise.arionide.Workspace;
@@ -60,7 +57,6 @@ import org.azentreprise.arionide.ui.render.gl.GLRenderingContext;
 import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
 import org.azentreprise.arionide.ui.topology.Size;
-import org.xml.sax.SAXException;
 
 import com.jogamp.common.util.InterruptSource.Thread;
 import com.jogamp.newt.event.KeyEvent;
@@ -74,7 +70,6 @@ import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
-import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.FPSAnimator;
 
@@ -135,7 +130,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		
 		try {
 			this.fontRenderer = new GLFontRenderer(new FontResources(this.resources));
-		} catch (GLException | IOException | ParserConfigurationException | SAXException exception) {
+		} catch (Exception exception) {
 			Debug.exception(exception);
 		}
 		
@@ -156,6 +151,8 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	public void init(GLAutoDrawable arg0) {
 		this.gl = this.window.getGL().getGL4();
 		
+		this.gl.glHint(GL4.GL_GENERATE_MIPMAP_HINT, GL4.GL_NICEST);
+		
 		Trash.init(new GLTrashContext(this.gl));
 		
 		this.core.init(this.gl);
@@ -174,7 +171,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	}
 	
 	public void display(GLAutoDrawable arg0) {
-		if(this.thread != null) {
+		if(this.thread != null) {			
 			this.thread.incrementTicks();
 	        
 			this.gl.glClearBufferfv(GL4.GL_COLOR, 0, this.clearColor);

@@ -39,9 +39,8 @@ public class GLRectangle extends GLShape implements Rectangle {
 	
 	protected GLBounds bounds;
 	
-	public GLRectangle(Bounds bounds, int rgb, int alpha) {
+	public GLRectangle(int rgb, int alpha) {
 		super(rgb, alpha);		
-		this.updateBounds(bounds);
 	} 
 	
 	protected void prepareGL() {

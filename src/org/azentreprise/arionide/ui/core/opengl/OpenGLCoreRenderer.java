@@ -66,6 +66,8 @@ import org.azentreprise.arionide.ui.menu.code.CodeEditor;
 import org.azentreprise.arionide.ui.menu.code.ReferenceEditor;
 import org.azentreprise.arionide.ui.menu.code.TypeEditor;
 import org.azentreprise.arionide.ui.render.GLBounds;
+import org.azentreprise.arionide.ui.render.PrimitiveFactory;
+import org.azentreprise.arionide.ui.render.Text;
 import org.azentreprise.arionide.ui.shaders.Shaders;
 import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
@@ -98,7 +100,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private static final int spawnKey = KeyEvent.VK_C;
 
 	private static final double initialAcceleration = 0.005d;
-	private static final double spaceFriction = 0.05d;
+	private static final double spaceFriction = 0.075d;
 
 	private static final double fov = Math.toRadians(60.0d);
 	
@@ -127,10 +129,10 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private int fxFBO;
 	private int fxColorTexture;
 	private int fxDepthTexture;
+	private boolean fxEnabled = true;
 	
 	private final List<ScaledRenderingInfo> structures = new ArrayList<>();
 	private int spaceVAO;
-	private int spaceEBO;
 	private int connectionVAO;
 	private int connectionVBO;
 	private int fxVAO;
@@ -227,7 +229,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.initBufferObject(gl, buffers.get(0), GL4.GL_ARRAY_BUFFER, spaceSphereQuality, this::createStructureShapeData);
 		this.endUsingVertexArray(gl, spacePositionAttribute);
 
-		this.initBufferObject(gl, this.spaceEBO = buffers.get(1), GL4.GL_ELEMENT_ARRAY_BUFFER, spaceSphereQuality, this::createStructureIndicesData);
+		this.initBufferObject(gl, buffers.get(1), GL4.GL_ELEMENT_ARRAY_BUFFER, spaceSphereQuality, this::createStructureIndicesData);
 		
 		/* FX */
 		GLBounds coords = new GLBounds(new Bounds(0, 0, 2, 2));		
@@ -424,8 +426,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private void initBufferObject(GL4 gl, int bufferID, int bufferType, int param, Function<Integer, Buffer> shapeDataSupplier) {
 		Buffer buffer = shapeDataSupplier.apply(param);
 		
-		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, bufferID);
-		gl.glBufferData(GL4.GL_ARRAY_BUFFER, buffer.capacity() * Double.BYTES, buffer.flip(), GL4.GL_STATIC_DRAW);
+		gl.glBindBuffer(bufferType, bufferID);
+		gl.glBufferData(bufferType, buffer.capacity() * Double.BYTES, buffer.flip(), GL4.GL_STATIC_DRAW);
 	}
 
 	private Buffer createStructureShapeData(int layers) {
@@ -466,7 +468,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private void renderUniverse(GL4 gl) {
-		gl.glBindFramebuffer(GL4.GL_FRAMEBUFFER, this.fxFBO);
+		if(this.fxEnabled) {
+			gl.glBindFramebuffer(GL4.GL_FRAMEBUFFER, this.fxFBO);
+		}
 		
 		gl.glClearBufferfv(GL4.GL_COLOR, 0, this.clearColor);
         gl.glClearBufferfv(GL4.GL_DEPTH, 0, this.clearDepth);
@@ -479,8 +483,10 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			this.renderStructures(gl);
 		}
 		
-		this.setupFX(gl);
-		this.postProcess(gl);
+		if(this.fxEnabled) {
+			this.setupFX(gl);
+			this.postProcess(gl);
+		}
 	}
 	
 	private void setupSpace(GL4 gl) {
@@ -502,7 +508,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glDepthFunc(GL4.GL_ALWAYS);
 		
 		gl.glBindVertexArray(this.spaceVAO);
-		gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, this.spaceEBO);
 		gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * spaceSphereQuality * (spaceSphereQuality - 1), GL4.GL_UNSIGNED_INT, 0);
 	}
 	
@@ -538,7 +543,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private void renderStructures0(GL4 gl, List<WorldElement> elements, boolean specialResolve) {		
 		synchronized(elements) {
 			elements.sort((a, b) -> Double.compare(b.getCenter().distance(this.player) - b.getSize(), a.getCenter().distance(this.player) - a.getSize()));
-			
 			Map<String, List<WorldElement>> references = new HashMap<>();
 			
 			for(WorldElement element : elements) {
@@ -739,6 +743,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 
 			for(WorldElement element : elements) {
 				/* Context initialization */
+				
+				int alpha = 0xFF;
+				
 				if(!this.inside.isEmpty()) {
 					WorldElement enclosing = this.inside.get(0);
 					
@@ -747,21 +754,11 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 					}
 					
 					if(element.getCenter().distance(enclosing.getCenter()) > 2 * enclosing.getSize()) {
-						//context.setAlpha(0x1F);
-					} else {
-						//context.setAlpha(0xFF);
+						alpha = 0x1F;
 					}
-				} else {
-					//context.setAlpha(0xFF);
 				}
 				
-				
-				/* Might be useful after rework of GLTextRenderer;
-				
-				GL4 gl = (GL4) GLContext.getCurrentGL();
-				gl.glBlendFunc(GL4.GL_ONE_MINUS_DST_COLOR, GL4.GL_ONE_MINUS_SRC_COLOR);
-				
-				 */
+				GL4 gl = ((OpenGLContext) context).getRenderer();
 				
 				/* World ==> Screen-space calculation */
 				Vector3d mainSpaceAnchor = element.getCenter().add(0.0d, 2.0d * element.getSize(), 0.0d);
@@ -776,7 +773,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 					Vector2d screenAnchor = this.getHVCFrom3D(mainSpaceAnchor, proj).mul(1.0d, -1.0d).add(0.75d, 1.0d);
 					height = 1.0d - this.getHVCFrom3D(element.getCenter().add(0.0d, element.getSize(), 0.0d), proj).mul(1.0d).add(screenAnchor).y;
 
-					this.renderLabel(context, element.getName(), 0xFFFFFF, screenAnchor, height);
+					this.renderLabel(context, element.getName(), 0xFFFFFF, alpha, screenAnchor, height);
 				}
 								
 				if(renderSub && element.getDescription() != null && !element.getDescription().contentEquals("?")) {
@@ -788,20 +785,23 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 						height = 1.0d - this.getHVCFrom3D(element.getCenter().add(0.0d, element.getSize(), 0.0d), proj).mul(1.0d).add(screenAnchor).y;
 					}
 					
-					this.renderLabel(context, description, 0x888888, screenAnchor, height);
+					this.renderLabel(context, description, 0x888888, alpha, screenAnchor, height);
 				}
+				
+				gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 			}
 		}
 	}
 	
-	private void renderLabel(AppDrawingContext context, String label, int color, Vector2d screenAnchor, double height) {
+	private void renderLabel(AppDrawingContext context, String label, int color, int alpha, Vector2d screenAnchor, double height) {
 		if(height > 0.01d) {
 			Vector2d dimensions = new Vector2d(0.5d, height);
-			
+
 			if(screenAnchor.x + dimensions.x > 0  && screenAnchor.y + dimensions.y > 0 && screenAnchor.x < 2.0 && screenAnchor.y < 2.0) {
-				// TODO
-				// context.setColor(color);
-				// context.getPrimitives().drawText(label, new Bounds((float) screenAnchor.x, (float) screenAnchor.y, (float) dimensions.x, (float) dimensions.y));
+				Text text = PrimitiveFactory.instance().newText(label, color, alpha);
+				text.updateBounds(new Bounds((float) screenAnchor.x, (float) screenAnchor.y, (float) dimensions.x, (float) dimensions.y));
+				text.prepare(); // Although updating the bounds already toggles the "reprepare" bit, this may be useful for further implementations...
+				context.getRenderingSystem().renderDirect(text);
 			}
 		}
 	}
@@ -828,15 +828,17 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private void updatePlayer() {
-		this.velocity.x += -Math.cos(Math.PI / 2 + this.yaw) * this.acceleration.x - Math.cos(this.yaw) * this.acceleration.z;
-		this.velocity.y += this.acceleration.y;
-		this.velocity.z += -Math.sin(Math.PI / 2 + this.yaw) * this.acceleration.x - Math.sin(this.yaw) * this.acceleration.z;
-		
-		this.velocity.mul(1.0f - spaceFriction);
-		
 		long deltaTime = System.nanoTime() - this.lastPositionUpdate;
 		this.lastPositionUpdate += deltaTime;
 		
+		Vector3d acceleration = new Vector3d(this.acceleration).mul(deltaTime * timeResolution);
+		
+		this.velocity.x += -Math.cos(Math.PI / 2 + this.yaw) * acceleration.x - Math.cos(this.yaw) * acceleration.z;
+		this.velocity.y += acceleration.y;
+		this.velocity.z += -Math.sin(Math.PI / 2 + this.yaw) * acceleration.x - Math.sin(this.yaw) * acceleration.z;
+		
+		this.velocity.mul(1.0f - spaceFriction * deltaTime * timeResolution);
+	
 		this.player.add(new Vector3d(this.velocity).mul(deltaTime * timeResolution));
 	}
 	
@@ -1264,7 +1266,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 		this.yaw %= 4.0d * halfPI;
 		
-		this.context.moveCursor(this.bounds.getXAsInt() + this.bounds.getWidthAsInt() / 2, this.bounds.getYAsInt() + this.bounds.getHeightAsInt() / 2);
+		this.context.moveCursor(this.bounds.getWidthAsInt() / 2, this.bounds.getHeightAsInt() / 2);
 	}
 	
 	private void updateAcceleration(double wheelDelta) {

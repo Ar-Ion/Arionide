@@ -43,8 +43,8 @@ public class GLUnedgedRectangle extends GLRectangle {
 	private float unedgingRadius;
 	private Point radius = new Point();
 	
-	public GLUnedgedRectangle(Bounds bounds, int rgb, int alpha, float unedgingRadius) {
-		super(bounds, rgb, alpha);
+	public GLUnedgedRectangle(int rgb, int alpha, float unedgingRadius) {
+		super(rgb, alpha);
 		
 		this.unedgingRadius = unedgingRadius;
 		this.vao.setBuffers(this.positionBuffer, this.unedgingFactorBuffer);

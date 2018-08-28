@@ -52,7 +52,7 @@ public abstract class GLShape extends Primitive implements Shape {
 	}
 	
 	public void prepare() { // Avoid SIGSEGV by dispatching the preparation from the GL thread.
-		this.requestAction(GLShapeContext.PREPARE_ACTION_IDENTIFIER);
+		this.requestAction(GLShapeContext.PREPARE_ACTION_IDENTIFIER); // Toggle bit in the action field and let it be executed from the PrimitiveRenderingSystem through processAction(int)
 	}
 
 	public void updateRGB(int newRGB) {

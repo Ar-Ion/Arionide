@@ -21,7 +21,6 @@
 package org.azentreprise.arionide.ui.overlay.components;
 
 import java.awt.Cursor;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +36,8 @@ import org.azentreprise.arionide.ui.overlay.AlphaLayer;
 import org.azentreprise.arionide.ui.overlay.AlphaLayeringSystem;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.render.PrimitiveFactory;
-import org.azentreprise.arionide.ui.render.Rectangle;
-import org.azentreprise.arionide.ui.render.font.GLFontRenderer;
+import org.azentreprise.arionide.ui.render.Shape;
+import org.azentreprise.arionide.ui.render.font.FontRenderer;
 import org.azentreprise.arionide.ui.render.font.TextCacheEntry;
 import org.azentreprise.arionide.ui.render.font.TextTessellator;
 import org.azentreprise.arionide.ui.topology.Affine;
@@ -49,13 +48,16 @@ import org.azentreprise.arionide.ui.topology.Scalar;
 import org.azentreprise.arionide.ui.topology.Size;
 import org.azentreprise.arionide.ui.topology.Translation;
 
+import com.jogamp.newt.event.KeyEvent;
+
 public class Input extends Button implements EventHandler {	
 	
 	private static final int cursorAdvance = 15;
 	private static final int cursorBlinkingPeriod = 500;
 	private static final Application minusOne = new Translation(-1, -1);
 
-	private final Rectangle cursor = PrimitiveFactory.instance().newLine(new Bounds(1, 1, 0, 2), ApplicationTints.WHITE, ApplicationTints.ACTIVE_ALPHA);
+	private final Shape cursor = PrimitiveFactory.instance().newLine(ApplicationTints.WHITE, ApplicationTints.ACTIVE_ALPHA);
+	private final Shape selection = PrimitiveFactory.instance().newRectangle(ApplicationTints.WHITE, ApplicationTints.INACTIVE_ALPHA);
 	private final Animation animation;
 	
 	protected String placeholder;
@@ -76,6 +78,16 @@ public class Input extends Button implements EventHandler {
 		this.animation = new FieldModifierAnimation(parent.getAppManager(), "cursorAlpha", Input.class, this);
 		
 		this.setOverCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+	}
+	
+	public void load() {
+		super.load();
+		
+		this.cursor.updateBounds(new Bounds(1, 1, 0, 2));
+		this.selection.updateBounds(new Bounds(0, 0, 2, 2));
+		
+		this.cursor.prepare();    // Updating the bounds already toggles the "reprepare" bit though. 
+		this.selection.prepare(); // Might be useful for further implementations...
 	}
 	
 	public Input setPlaceholder(String placeholder) {
@@ -111,33 +123,40 @@ public class Input extends Button implements EventHandler {
 			Affine affine = this.getText().getRenderTransformation();
 			
 			TextCacheEntry entry = context.getFontRenderer().getCacheEntry(this.text.toString());
-			Point center = this.getBounds().getCenter();
-			minusOne.apply(center);
+			// This entry is not granted to be non-null because of deferred rendering. Thus, the following code might introduce a frame bubble.
 			
-			Size pixelSize = Viewport.getPixelSize(context);
-						
-			float cursorDisplacement = affine.getScalar().getScaleX() * tessellator.getWidth(this.text.substring(0, this.cursorPosition)) / this.textWidth;
-			
-			Scalar scalar = new Scalar(1.0f, -affine.getScalar().getScaleY() / symbolicSize.getHeight() * entry.getHeight());
-			Translation translation = new Translation(center.getX() + cursorDisplacement + cursorAdvance * pixelSize.getWidth(), center.getY() - entry.getHeight() * affine.getScalar().getScaleY() * 0.5f);
-
-			this.cursor.updateAffine(new Affine(scalar, translation));
-			
-			AlphaLayeringSystem layering = this.getAppManager().getAlphaLayering();
-			
-			layering.push(AlphaLayer.COMPONENT, this.cursorAlpha);
-			this.cursor.updateAlpha(this.cursorAlpha);
-			context.getRenderingSystem().renderLater(this.cursor);
-			layering.pop(AlphaLayer.COMPONENT);
-
-			if(this.highlighted) {
-				this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, 0x42);
+			if(entry != null) {
+				Point center = this.getBounds().getCenter();
+				minusOne.apply(center);
 				
-				//Bounds selection = new Bounds(this.getText().getRenderPosition().getX() + scdsp[2], y - scdsp[1] * metrics.getLineHeight() / 2, scdsp[0] * tessellator.getWidth(this.text.toString()), scdsp[1] * metrics.getLineHeight());
-				//context.setColor(0xC0FFEE);
-				// context.getPrimitives().fillRect(selection);
+				Size pixelSize = Viewport.getPixelSize(context);
 				
-				this.getAppManager().getAlphaLayering().pop(AlphaLayer.COMPONENT);
+				float cursorDisplacement = entry.getWidth() * affine.getScalar().getScaleX() * tessellator.getWidth(this.text.substring(0, this.cursorPosition)) / this.textWidth;
+							
+				if(this.cursorPosition > 0) {
+					cursorDisplacement += cursorAdvance * pixelSize.getWidth();
+				} else {
+					cursorDisplacement = -cursorAdvance * pixelSize.getWidth();
+				}
+				
+				Scalar scalar = new Scalar(1.0f, -affine.getScalar().getScaleY() / symbolicSize.getHeight() * entry.getHeight());
+				Translation translation = new Translation(center.getX() + cursorDisplacement - entry.getWidth() * affine.getScalar().getScaleX() * 0.5f, center.getY() - entry.getHeight() * affine.getScalar().getScaleY() * 0.5f);
+	
+				this.cursor.updateAffine(new Affine(scalar, translation));
+				
+				AlphaLayeringSystem layering = this.getAppManager().getAlphaLayering();
+				
+				layering.push(AlphaLayer.COMPONENT, this.cursorAlpha);
+				this.cursor.updateAlpha(this.cursorAlpha);
+				context.getRenderingSystem().renderLater(this.cursor);
+				layering.pop(AlphaLayer.COMPONENT);
+	
+				if(this.highlighted) {
+					layering.push(AlphaLayer.COMPONENT, 0x42);
+					this.selection.updateAlpha(layering.getCurrentAlpha());
+					this.selection.updateAffine(new Affine(scalar, new Translation(center.getX(), center.getY())));
+					layering.pop(AlphaLayer.COMPONENT);
+				}
 			}
 		}
 	}
@@ -180,9 +199,7 @@ public class Input extends Button implements EventHandler {
 			int code = writeEvent.getKeycode();
 			
 			boolean noSeek = code != KeyEvent.VK_LEFT && code != KeyEvent.VK_RIGHT;
-			
-			System.out.println(writeEvent.getKeycode());
-			
+						
 			if(this.highlighted && noSeek) {
 				this.text = new StringBuilder();
 				this.cursorPosition = 0;
@@ -208,7 +225,7 @@ public class Input extends Button implements EventHandler {
 			this.dispatchDeletion(code, modifiers > 0);
 		} else if(seek) {
 			this.dispatchSeek(code);
-		} else if(GLFontRenderer.CHARSET.indexOf(ch) >= 0) {
+		} else if(FontRenderer.CHARSET.indexOf(ch) >= 0) {
 			this.text.insert(this.cursorPosition, ch);
 			this.cursorPosition++;
 		} else {

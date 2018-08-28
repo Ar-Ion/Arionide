@@ -76,6 +76,11 @@ public class Button extends Label implements EventHandler, Deformable {
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
 	
+	public void load() {
+		super.load();
+		this.borders.prepare();
+	}
+	
 	public Button setBounds(Bounds bounds) {
 		super.setBounds(bounds);
 		this.borders.updateBounds(bounds);

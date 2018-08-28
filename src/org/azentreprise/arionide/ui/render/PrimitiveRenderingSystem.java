@@ -94,7 +94,7 @@ public class PrimitiveRenderingSystem {
 		}
 		
 		primitive.render();
-	
+			
 		context.exit();
 	}
 	

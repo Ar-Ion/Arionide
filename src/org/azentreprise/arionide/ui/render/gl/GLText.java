@@ -60,7 +60,11 @@ public class GLText extends GLShape implements Text {
 	}
 	
 	public Affine getRenderTransformation() {
-		return this.renderTransformation;
+		if(this.renderTransformation != null) {
+			return this.renderTransformation;
+		} else {
+			throw new IllegalStateException("Requesting the affine transformation of a GLText without having been rendered.");
+		}
 	}
 
 	public PrimitiveType getType() {

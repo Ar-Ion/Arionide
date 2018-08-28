@@ -85,27 +85,14 @@ public class Label extends Component implements Enlightenable {
 	}
 
 	public void drawSurface(AppDrawingContext context) {
-		if(this.alpha > 0) {
-			this.preDraw(context);
-		}
-		
+		this.text.updateAlpha(this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.alpha));
 		this.drawComponent(context);
-		
-		if(this.alpha > 0) {
-			this.postDraw();
-		}
+		this.getAppManager().getAlphaLayering().pop(AlphaLayer.COMPONENT);
 	}
 	
-	private void preDraw(AppDrawingContext context) {
-		this.text.updateAlpha(this.getAppManager().getAlphaLayering().push(AlphaLayer.COMPONENT, this.alpha));
-	}
 	
 	protected void drawComponent(AppDrawingContext context) {
-		context.getRenderingSystem().renderLater(this.text);
-	}
-	
-	private void postDraw() {
-		this.getAppManager().getAlphaLayering().pop(AlphaLayer.COMPONENT);
+		context.getRenderingSystem().renderLater(this.text);	
 	}
 	
 	public String toString() {

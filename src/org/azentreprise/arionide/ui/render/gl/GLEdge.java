@@ -39,22 +39,18 @@ import com.jogamp.opengl.GL4;
 
 public class GLEdge extends GLRectangle {
 	
-	private final VertexBuffer positionBuffer;
-	private final VertexBuffer edgeFactorBuffer;
-	private final VertexArray vao;
+	private final VertexBuffer positionBuffer = new VertexBuffer(Float.BYTES, new Attribute(this.getContext().getPositionAttribute(), 2, GL4.GL_FLOAT, 1));
+	private final VertexBuffer edgeFactorBuffer = new VertexBuffer(Float.BYTES, new Attribute(this.getContext().getEdgeFactorAttribute(), 2, GL4.GL_FLOAT));
+	private final VertexArray vao = new VertexArray(this.positionBuffer, this.edgeFactorBuffer);
 		
 	private float edgeRadius;
 	
 	private Point radius = new Point();
 	
-	public GLEdge(Bounds bounds, int rgb, int alpha, float edgeRadius) {
-		super(bounds, rgb, alpha);
+	public GLEdge(int rgb, int alpha, float edgeRadius) {
+		super(rgb, alpha);
 		
 		this.edgeRadius = edgeRadius;
-		
-		this.positionBuffer = new VertexBuffer(Float.BYTES, new Attribute(this.getContext().getPositionAttribute(), 2, GL4.GL_FLOAT, 1));
-		this.edgeFactorBuffer = new VertexBuffer(Float.BYTES, new Attribute(this.getContext().getEdgeFactorAttribute(), 2, GL4.GL_FLOAT));
-		this.vao = new VertexArray(this.positionBuffer, this.edgeFactorBuffer);
 		
 		float f = 1.0f + 0.625f / edgeRadius;
 		
@@ -73,7 +69,7 @@ public class GLEdge extends GLRectangle {
 	public void updateBounds(Bounds newBounds) {
 		if(newBounds != null) {
 			newBounds = newBounds.copy();
-						
+
 			this.bounds = new GLBounds(newBounds);
 			this.positionBuffer.updateDataSupplier(() -> this.bounds.allocDataBuffer(8).putBoundingPoints().getDataBuffer().flip());
 			this.vao.unload(); // Invalidate VAO

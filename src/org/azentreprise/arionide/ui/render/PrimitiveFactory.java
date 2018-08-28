@@ -25,7 +25,6 @@ import org.azentreprise.arionide.ui.render.gl.GLLine;
 import org.azentreprise.arionide.ui.render.gl.GLShape;
 import org.azentreprise.arionide.ui.render.gl.GLText;
 import org.azentreprise.arionide.ui.render.gl.GLUnedgedRectangle;
-import org.azentreprise.arionide.ui.topology.Bounds;
 
 public class PrimitiveFactory {
 	
@@ -42,12 +41,8 @@ public class PrimitiveFactory {
 	public Text newText(String text) {
 		return this.newText(text, 0, 0);
 	}
-	
-	public Text newText(String text, int rgb, int alpha) {
-		return this.newText(null, text, rgb, alpha);
-	}
-	
-	public Text newText(Bounds bounds, String text, int rgb, int alpha) {
+
+	public Text newText(String text, int rgb, int alpha) {		
 		return new GLText(text, rgb, alpha);
 	}
 	
@@ -56,25 +51,17 @@ public class PrimitiveFactory {
 	}
 	
 	public Shape newRectangle(int rgb, int alpha) {
-		return this.newRectangle(null, rgb, alpha);
-	}
-	
-	public Shape newRectangle(Bounds bounds, int rgb, int alpha) {
-		GLShape rect = new GLUnedgedRectangle(bounds, rgb, alpha, 32.0f);
-		GLShape edge = new GLEdge(bounds, rgb, alpha, 32.0f);
+		GLShape rect = new GLUnedgedRectangle(rgb, alpha, 32.0f);
+		GLShape edge = new GLEdge(rgb, alpha, 32.0f);
 		
 		return PrimitiveMulticaster.create(Shape.class, rect, edge);
 	}
 	
-	public Rectangle newLine() {
+	public Shape newLine() {
 		return this.newLine(0, 0);
 	}
 	
-	public Rectangle newLine(int rgb, int alpha) {
-		return this.newLine(null, rgb, alpha);
-	}
-	
-	public Rectangle newLine(Bounds bounds, int rgb, int alpha) {
-		return new GLLine(bounds, rgb, alpha);
+	public Shape newLine(int rgb, int alpha) {
+		return new GLLine(rgb, alpha);
 	}
 }

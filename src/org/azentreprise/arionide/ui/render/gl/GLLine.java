@@ -27,8 +27,8 @@ import com.jogamp.opengl.GL4;
 
 public class GLLine extends GLRectangle {
 	
-	public GLLine(Bounds bounds, int rgb, int alpha) {
-		super(bounds, rgb, alpha);
+	public GLLine(int rgb, int alpha) {
+		super(rgb, alpha);
 	}
 	
 	public void updateBounds(Bounds newBounds) {

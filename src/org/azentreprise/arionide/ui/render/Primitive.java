@@ -32,10 +32,6 @@ public abstract class Primitive implements Comparable<Primitive>, Preparable {
 	protected abstract void render();
 	
 	public int compareTo(Primitive other) {
-		if(this.getType() != other.getType()) {
-			return this.getType().compareTo(other.getType()); // For the consistency of the equivalence relation
-		} else {
-			return this.getStateFingerprint().compareTo(other.getStateFingerprint());
-		}
+		return this.getStateFingerprint().compareTo(other.getStateFingerprint());
 	}
 }
