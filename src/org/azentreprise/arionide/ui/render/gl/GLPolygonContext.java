@@ -22,11 +22,11 @@ package org.azentreprise.arionide.ui.render.gl;
 
 import com.jogamp.opengl.GL4;
 
-public class GLRectangleContext extends GLShapeContext {
+public class GLPolygonContext extends GLShapeContext {
 
 	private int position;
 	
-	public GLRectangleContext(GL4 gl) {
+	public GLPolygonContext(GL4 gl) {
 		super(gl);
 	}
 	

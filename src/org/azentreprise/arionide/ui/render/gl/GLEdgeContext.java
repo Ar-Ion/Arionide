@@ -37,7 +37,7 @@ import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.texture.TextureIO;
 
-public class GLEdgeContext extends GLRectangleContext {
+public class GLEdgeContext extends GLPolygonContext {
 
 	public static final int EDGE_RADIUS_IDENTIFIER = SCHEME_SIZE + 0;
 

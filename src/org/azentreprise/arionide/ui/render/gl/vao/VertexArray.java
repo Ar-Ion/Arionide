@@ -43,8 +43,23 @@ public class VertexArray {
 	
 	public void setBuffers(VertexBuffer... buffers) {
 		this.unload();
+
 		this.buffers = buffers;
 		this.bufferIDs = new int[buffers.length];
+	}
+	
+	public void addBuffers(VertexBuffer... more) {		
+		this.unload();
+
+		int newLength = this.buffers.length + more.length;
+		
+		VertexBuffer[] buffersRealloc = new VertexBuffer[newLength];
+		
+		System.arraycopy(this.buffers, 0, buffersRealloc, 0, this.buffers.length);
+		System.arraycopy(more, 0, buffersRealloc, this.buffers.length, more.length);
+
+		this.buffers = buffersRealloc;
+		this.bufferIDs = new int[newLength];
 	}
 	
 	public void load(GL4 gl) {		

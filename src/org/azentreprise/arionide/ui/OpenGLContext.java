@@ -159,7 +159,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		
 		GLRenderingContext.init(this.gl, this.resources, this.fontRenderer);
 		
-		this.system.registerPrimitive(PrimitiveType.RECT, GLRenderingContext.rectangle);
+		this.system.registerPrimitive(PrimitiveType.POLYGON, GLRenderingContext.polygon);
 		this.system.registerPrimitive(PrimitiveType.UNEDGED_RECT, GLRenderingContext.unedgedRectangle);
 		this.system.registerPrimitive(PrimitiveType.EDGE, GLRenderingContext.edge);
 		this.system.registerPrimitive(PrimitiveType.TEXT, GLRenderingContext.text);

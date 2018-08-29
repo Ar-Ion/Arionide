@@ -28,7 +28,7 @@ import com.jogamp.opengl.GL4;
 
 public abstract class GLRenderingContext implements RenderingContext {
 	
-	public static GLRectangleContext rectangle;
+	public static GLPolygonContext polygon;
 	public static GLUnedgedRectangleContext unedgedRectangle;
 	public static GLEdgeContext edge;
 	public static GLTextContext text;
@@ -46,7 +46,7 @@ public abstract class GLRenderingContext implements RenderingContext {
 	protected abstract int getShaderID();
 	
 	public static void init(GL4 gl, Resources resources, GLFontRenderer fontRenderer) {
-		rectangle = new GLRectangleContext(gl);
+		polygon = new GLPolygonContext(gl);
 		unedgedRectangle = new GLUnedgedRectangleContext(gl);
 		edge = new GLEdgeContext(gl, resources);
 		text = new GLTextContext(gl, fontRenderer);

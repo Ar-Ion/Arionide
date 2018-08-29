@@ -26,7 +26,7 @@ import org.azentreprise.arionide.ui.render.Identification;
 
 import com.jogamp.opengl.GL4;
 
-public class GLUnedgedRectangleContext extends GLRectangleContext {
+public class GLUnedgedRectangleContext extends GLPolygonContext {
 
 	public static final int UNEDGING_RADIUS_IDENTIFIER = SCHEME_SIZE + 0;
 

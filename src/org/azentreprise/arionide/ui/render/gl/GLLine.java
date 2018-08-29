@@ -20,32 +20,21 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render.gl;
 
-import org.azentreprise.arionide.ui.render.GLBounds;
-import org.azentreprise.arionide.ui.topology.Bounds;
+import org.azentreprise.arionide.ui.render.gl.vao.VertexBuffer;
 
 import com.jogamp.opengl.GL4;
 
-public class GLLine extends GLRectangle {
+public class GLLine extends GLPolygon {
 	
 	public GLLine(int rgb, int alpha) {
 		super(rgb, alpha);
 	}
 	
-	public void updateBounds(Bounds newBounds) {
-		if(newBounds != null) {
-			this.bounds = new GLBounds(newBounds);
-			this.positionBuffer.updateDataSupplier(() -> this.bounds.allocDataBuffer(4).putSW().putNE().getDataBuffer().flip());
-			this.vao.unload(); // Invalidate VAO
-			this.prepare();
-		}
+	protected void updateBuffers(VertexBuffer mainPositionBuffer) {
+		mainPositionBuffer.updateDataSupplier(() -> this.bounds.allocDataBuffer(4).putSW().putNE().getDataBuffer().flip());
 	}
 	
-	public void render() {
-		if(this.bounds != null) {
-			GL4 gl = this.getContext().getGL();
-	
-			this.vao.bind(gl);
-			gl.glDrawArrays(GL4.GL_LINES, 0, 2);
-		}
+	public void renderPolygon() {
+		this.getContext().getGL().glDrawArrays(GL4.GL_LINES, 0, 2);
 	}
 }

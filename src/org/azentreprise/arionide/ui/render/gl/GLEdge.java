@@ -24,24 +24,17 @@ import java.math.BigInteger;
 import java.nio.FloatBuffer;
 
 import org.azentreprise.arionide.ui.Viewport;
-import org.azentreprise.arionide.ui.render.GLBounds;
 import org.azentreprise.arionide.ui.render.Identification;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
 import org.azentreprise.arionide.ui.render.gl.vao.Attribute;
-import org.azentreprise.arionide.ui.render.gl.vao.UID;
-import org.azentreprise.arionide.ui.render.gl.vao.VertexArray;
-import org.azentreprise.arionide.ui.render.gl.vao.VertexArrayCache;
 import org.azentreprise.arionide.ui.render.gl.vao.VertexBuffer;
-import org.azentreprise.arionide.ui.topology.Bounds;
 import org.azentreprise.arionide.ui.topology.Point;
 
 import com.jogamp.opengl.GL4;
 
-public class GLEdge extends GLRectangle {
+public class GLEdge extends GLPolygon {
 	
-	private final VertexBuffer positionBuffer = new VertexBuffer(Float.BYTES, new Attribute(this.getContext().getPositionAttribute(), 2, GL4.GL_FLOAT, 1));
 	private final VertexBuffer edgeFactorBuffer = new VertexBuffer(Float.BYTES, new Attribute(this.getContext().getEdgeFactorAttribute(), 2, GL4.GL_FLOAT));
-	private final VertexArray vao = new VertexArray(this.positionBuffer, this.edgeFactorBuffer);
 		
 	private float edgeRadius;
 	
@@ -51,35 +44,22 @@ public class GLEdge extends GLRectangle {
 		super(rgb, alpha);
 		
 		this.edgeRadius = edgeRadius;
-		
-		float f = 1.0f + 0.625f / edgeRadius;
-		
+		this.vao.addBuffers(this.edgeFactorBuffer);
+
+		float f = 1.0f + 0.625f / edgeRadius;		
 		this.edgeFactorBuffer.updateDataSupplier(() -> FloatBuffer.allocate(8).put(0).put(-f)
 																			  .put(0).put(0)
 																			  .put(1).put(-1)
 																			  .put(f).put(0).flip());
 	}
 	
-	protected void prepareGL() {
-		if(this.bounds != null) {
-			VertexArrayCache.load(new UID(this.bounds, PrimitiveType.EDGE), this.getContext().getGL(), this.vao);
-		}
-	}
-	
-	public void updateBounds(Bounds newBounds) {
-		if(newBounds != null) {
-			newBounds = newBounds.copy();
-
-			this.bounds = new GLBounds(newBounds);
-			this.positionBuffer.updateDataSupplier(() -> this.bounds.allocDataBuffer(8).putBoundingPoints().getDataBuffer().flip());
-			this.vao.unload(); // Invalidate VAO
-			this.prepare();
-		}
-	}
-	
 	public BigInteger getStateFingerprint() {
 		return Identification.generateFingerprint(super.getStateFingerprint(),
 				this.radius.hashCode());
+	}
+	
+	protected int getPositionAttributeDivisor() {
+		return 1;
 	}
 	
 	public PrimitiveType getType() {
@@ -96,21 +76,18 @@ public class GLEdge extends GLRectangle {
 		}
 	}
 
-	private void updateRadius(GL4 gl) {
-		Viewport.glGetPixelSize(gl).apply(this.radius);;
+	protected void updateBuffers(VertexBuffer mainPositionBuffer) {
+		mainPositionBuffer.updateDataSupplier(() -> this.bounds.allocDataBuffer(8).putBoundingPoints().getDataBuffer().flip());
 	}
 	
 	public void render() {
-		if(this.bounds != null) {
-			GL4 gl = this.getContext().getGL();
-			
-			this.radius = new Point(this.edgeRadius);
-			
-			this.updateRadius(gl);
-			
-			this.vao.bind(gl);
-			gl.glDrawArraysInstanced(GL4.GL_TRIANGLE_STRIP, 0, 4, 4);
-		}
+		this.radius = new Point(this.edgeRadius);
+		Viewport.glGetPixelSize(this.getContext().getGL()).apply(this.radius); // TODO optimize
+		super.render();
+	}
+	
+	public void renderPolygon() {
+		this.getContext().getGL().glDrawArraysInstanced(GL4.GL_TRIANGLE_STRIP, 0, 4, 4);
 	}
 	
 	protected GLEdgeContext getContext() {
