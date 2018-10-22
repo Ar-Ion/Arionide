@@ -22,15 +22,8 @@ package org.azentreprise.arionide.events;
 
 import org.azentreprise.arionide.project.Project;
 
-public class ProjectOpenEvent extends Event {
-	
-	private final Project project;
-	
+public class ProjectOpenEvent extends ProjectEvent {
 	public ProjectOpenEvent(Project project) {
-		this.project = project;
-	}
-	
-	public Project getProject() {
-		return this.project;
+		super(project);
 	}
 }

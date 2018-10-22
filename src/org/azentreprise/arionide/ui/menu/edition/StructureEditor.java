@@ -71,16 +71,18 @@ public class StructureEditor extends SpecificMenu {
 		
 		this.setMenuCursor(3);
 		
+		AppManager manager = this.getAppManager();
+		
 		switch(element) {
 			case language:
-				Project theProject = this.getAppManager().getWorkspace().getCurrentProject();
+				Project theProject = manager.getWorkspace().getCurrentProject();
 				
 				if(theProject != null) {
 					if(theProject.getStorage().getHierarchy().contains(new HierarchyElement(this.getCurrent().getID(), null))) {
 						this.languageSelection.setCurrent(this.getCurrent());
 						this.languageSelection.show();
 					} else {
-						this.getAppManager().getEventDispatcher().fire(new MessageEvent("This structure isn't directly in the space", MessageType.ERROR));
+						manager.getEventDispatcher().fire(new MessageEvent("This structure isn't directly in the space", MessageType.ERROR));
 					}
 				}
 				break;
@@ -100,10 +102,10 @@ public class StructureEditor extends SpecificMenu {
 					String name = JOptionPane.showInputDialog(null, "Please enter the new name of the structure", "New name", JOptionPane.PLAIN_MESSAGE);
 					
 					if(name != null) {
-						Project project = this.getAppManager().getWorkspace().getCurrentProject();
+						Project project = manager.getWorkspace().getCurrentProject();
 						MessageEvent message = project.getDataManager().setName(this.getCurrent().getID(), name);
-						this.getAppManager().getCoreRenderer().loadProject(this.getAppManager().getWorkspace().getCurrentProject());
-						this.getAppManager().getEventDispatcher().fire(message);
+						manager.getEventDispatcher().fire(message);
+						manager.getCoreRenderer().getStructuresGeometry().requestReconstruction();
 					}
 				}).start();
 				break;
@@ -121,10 +123,13 @@ public class StructureEditor extends SpecificMenu {
 	}
 	
 	private void delete() {
-		Project project = this.getAppManager().getWorkspace().getCurrentProject();
-		MessageEvent message = project.getDataManager().deleteStructure(this.getCurrent().getID(), this.getAppManager().getCoreRenderer().getInside());
-		this.getAppManager().getCoreRenderer().loadProject(project);
-		this.getAppManager().getEventDispatcher().fire(message);
+		AppManager manager = this.getAppManager();
+		Project project = manager.getWorkspace().getCurrentProject();
+		
+		MessageEvent message = project.getDataManager().deleteStructure(this.getCurrent().getID());
+		
+		manager.getCoreRenderer().getStructuresGeometry().requestReconstruction();
+		manager.getEventDispatcher().fire(message);
 	}
 	
 	private void go() {

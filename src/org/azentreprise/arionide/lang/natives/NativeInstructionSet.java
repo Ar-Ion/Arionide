@@ -23,7 +23,6 @@ package org.azentreprise.arionide.lang.natives;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.azentreprise.arionide.coders.Coder;
@@ -32,6 +31,7 @@ import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.InstructionSet;
 import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.Specification;
+import org.azentreprise.arionide.project.DataManager;
 import org.azentreprise.arionide.project.Project;
 
 public class NativeInstructionSet extends InstructionSet {
@@ -43,110 +43,115 @@ public class NativeInstructionSet extends InstructionSet {
 	}
 	
 	public void install() {
-		int structID = this.getProject().getProperty("structureGen", Coder.integerDecoder).intValue();
+		Project project = this.getProject();
+		DataManager manager = project.getDataManager();
 		
-		if(this.getProject().getDataManager().newStructure("natives", Arrays.asList()).getMessageType().equals(MessageType.SUCCESS)) {
-			List<Integer> parents = Arrays.asList(structID);
+		int structID = project.getProperty("structureGen", Coder.integerDecoder).intValue();
 
-			this.install("init", 0, parents, new Specification(this.getProject().getDataManager().allocSpecification()));
+		if(manager.newStructure("natives").getMessageType().equals(MessageType.SUCCESS)) {
 			
-			this.install("print", 10, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(), 
+			manager.getHostStack().push(structID);
+			
+			this.add("init", 0, new Specification(manager.allocSpecification()));
+			
+			this.add("print", 10, new Specification(
+					manager.allocSpecification(), 
 					new Data("message", "debug", NativeTypes.TEXT)));
 			
-			this.install("call", 20, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(),
+			this.add("call", 20, new Specification(
+					manager.allocSpecification(),
 					new Reference("reference", null, new ArrayList<>(), new ArrayList<>())));
 		
-			this.install("defineText", 28, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(),
+			this.add("defineText", 28, new Specification(
+					manager.allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.TEXT),
 					new Data("local", IntegerTypeManager.FALSE, NativeTypes.INTEGER)));
 			
-			this.install("defineInteger", 30, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(),
+			this.add("defineInteger", 30, new Specification(
+					manager.allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.INTEGER),
 					new Data("local", IntegerTypeManager.FALSE, NativeTypes.INTEGER)));
 			
-			this.install("defineStructure", 32, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(),
+			this.add("defineStructure", 32, new Specification(
+					manager.allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.STRUCTURE),
 					new Data("local", IntegerTypeManager.FALSE, NativeTypes.INTEGER)));
 			
-			this.install("redo", 40, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(),
+			this.add("redo", 40, new Specification(
+					manager.allocSpecification(),
 					new Reference("predicate", null, new ArrayList<>(Arrays.asList(new Data("condition", null, NativeTypes.INTEGER))), new ArrayList<>())));
 		
-			this.install("if", 50, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(),
+			this.add("if", 50, new Specification(
+					manager.allocSpecification(),
 					new Reference("predicate", null, new ArrayList<>(Arrays.asList(new Data("condition", null, NativeTypes.INTEGER))), new ArrayList<>()),
 					new Reference("true", null, new ArrayList<>(), new ArrayList<>()),
 					new Reference("false", null, new ArrayList<>(), new ArrayList<>())));
 			
-			this.install("compareText", 58, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(),
+			this.add("compareText", 58, new Specification(
+					manager.allocSpecification(),
 					new Data("first", null, NativeTypes.TEXT),
 					new Data("second", null, NativeTypes.TEXT),
 					new Data("result", null, NativeTypes.INTEGER)));
 			
-			this.install("compareInteger", 60, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(),
+			this.add("compareInteger", 60, new Specification(
+					manager.allocSpecification(),
 					new Data("first", null, NativeTypes.INTEGER),
 					new Data("second", null, NativeTypes.INTEGER),
 					new Data("result", null, NativeTypes.INTEGER)));
 			
-			this.install("compareStructure", 62, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(),
+			this.add("compareStructure", 62, new Specification(
+					manager.allocSpecification(),
 					new Data("first", null, NativeTypes.STRUCTURE),
 					new Data("second", null, NativeTypes.STRUCTURE),
 					new Data("result", null, NativeTypes.INTEGER)));
 			
-			this.install("object", 70, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(),
+			this.add("object", 70, new Specification(
+					manager.allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("structure", null, NativeTypes.STRUCTURE),
 					new Reference("constructor", null, new ArrayList<>(), new ArrayList<>())));
 			
 			
-			this.install("addInteger", 79, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(), 
+			this.add("addInteger", 79, new Specification(
+					manager.allocSpecification(), 
 					new Data("data", null, NativeTypes.INTEGER)));
 			
-			this.install("addComplex", 81, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(), 
+			this.add("addComplex", 81, new Specification(
+					manager.allocSpecification(), 
 					new Data("data", null, NativeTypes.TEXT)));
 			
-			this.install("write", 90, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(), 
+			this.add("write", 90, new Specification(
+					manager.allocSpecification(), 
 					new Data("object", null, NativeTypes.TEXT),
 					new Data("path", null, NativeTypes.TEXT)));
 			
-			this.install("iterate", 100, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(), 
+			this.add("iterate", 100, new Specification(
+					manager.allocSpecification(), 
 					new Data("object", null, NativeTypes.TEXT),
 					new Data("selector", null, NativeTypes.TEXT),
 					new Reference("updater", null, new ArrayList<>(Arrays.asList(new Data("value", null, NativeTypes.TEXT), new Data("index", null, NativeTypes.INTEGER))), new ArrayList<>()),
 					new Data("layers", "b0", NativeTypes.INTEGER)));
 			
-			this.install("size", 110, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(),
+			this.add("size", 110, new Specification(
+					manager.allocSpecification(),
 					new Data("object", null, NativeTypes.TEXT),
 					new Data("result", null, NativeTypes.TEXT)));
 			
-			this.install("merge", 120, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(),
+			this.add("merge", 120, new Specification(
+					manager.allocSpecification(),
 					new Data("source1", null, NativeTypes.TEXT),
 					new Data("source2", null, NativeTypes.TEXT),
 					new Data("destination", null, NativeTypes.TEXT)));
 			
-			this.install("load", 130, parents, new Specification(
-					this.getProject().getDataManager().allocSpecification(),
+			this.add("load", 130, new Specification(
+					manager.allocSpecification(),
 					new Data("source", null, NativeTypes.INTEGER),
 					new Data("target", null, NativeTypes.TEXT)));
 			
+			manager.getHostStack().pop();
 		} else {
 			this.retrieve("init");
 			this.retrieve("print");
@@ -170,12 +175,12 @@ public class NativeInstructionSet extends InstructionSet {
 		}
 	}
 	
-	private void install(String name, int color, List<Integer> parents, Specification specification) {
-		this.instructionSet.put(name, this.installInstruction(name, color, parents, specification));
+	private void add(String name, int color, Specification specification) {
+		this.instructionSet.put(name, this.addInstructionDefinition(name, color, specification));
 	}
 	
 	private void retrieve(String name) {
-		this.instructionSet.put(name, this.retrieveInstruction(name));
+		this.instructionSet.put(name, this.retrieveInstructionDefinition(name));
 	}
 
 	public int getInstructionID(String name) {

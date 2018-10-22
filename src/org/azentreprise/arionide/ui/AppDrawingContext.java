@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
-import java.awt.Cursor;
-
 import org.azentreprise.arionide.Workspace;
 import org.azentreprise.arionide.resources.Resources;
 import org.azentreprise.arionide.threading.Purgeable;
@@ -42,6 +40,6 @@ public interface AppDrawingContext extends Purgeable {
 	public FontRenderer getFontRenderer();
 	public PrimitiveRenderingSystem getRenderingSystem();
 	public Resources getResources();
-	public void setCursor(Cursor cursor);
+	public void setCursorVisible(boolean visible);
 	public void moveCursor(int x, int y);
 }

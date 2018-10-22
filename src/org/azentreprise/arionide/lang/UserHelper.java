@@ -32,28 +32,26 @@ import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.project.StructureMeta;
 
-public class CoreDataManager {
+public class UserHelper {
 
 	private final Storage storage;
 	
-	public CoreDataManager(Storage storage) {
+	public UserHelper(Storage storage) {
 		this.storage = storage;
 	}
 	
-	public List<String> getVariables(int type, String name) {
-		int id = this.storage.getCurrentDataID();
-		
+	public List<String> getVariables(int currentStructure, int type, String nameStartingWith) {
 		List<String> variables = new ArrayList<>();
 		
-		for(SpecificationElement element : this.storage.getStructureMeta().get(id).getSpecification().getElements()) {
+		for(SpecificationElement element : this.storage.getStructureMeta().get(currentStructure).getSpecification().getElements()) {
 			variables.add(element.getName());
 		}
 		
 		for(HierarchyElement element : this.storage.getHierarchy()) {
-			this.browseHierarchy(element, id, variables);
+			this.browseHierarchy(element, currentStructure, variables);
 		}
 		
-		this.browseInheritance(id, variables);
+		this.browseInheritance(currentStructure, variables);
 		
 		Collections.reverse(variables);
 		
@@ -63,15 +61,13 @@ public class CoreDataManager {
 		while(iterator.hasNext()) {
 			String var = iterator.next();
 			
-			if(var.startsWith(name)) {
+			if(var.startsWith(nameStartingWith)) {
 				priority.add(var);
 				iterator.remove();
 			}
 		}
 		
 		variables.addAll(priority);
-				
-		this.storage.loadData(id); // Restore initial state
 		
 		return variables;
 	}
@@ -101,9 +97,9 @@ public class CoreDataManager {
 	}
 	
 	private void loadVars(int id, List<String> variables) {
-		this.storage.loadData(id);
+		List<HierarchyElement> elements = this.storage.getData().get(id);
 				
-		for(HierarchyElement element : this.storage.getCurrentData()) {
+		for(HierarchyElement element : elements) {
 			StructureMeta meta = this.storage.getStructureMeta().get(element.getID());
 			
 			for(SpecificationElement specElement : meta.getSpecification().getElements()) {

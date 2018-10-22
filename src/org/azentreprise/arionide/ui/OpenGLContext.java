@@ -20,7 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui;
 
-import java.awt.Cursor;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
 import java.util.List;
@@ -48,6 +47,8 @@ import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
 import org.azentreprise.arionide.ui.gc.GLTrashContext;
 import org.azentreprise.arionide.ui.gc.Trash;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
+import org.azentreprise.arionide.ui.render.Cursor;
+import org.azentreprise.arionide.ui.render.PrimitiveFactory;
 import org.azentreprise.arionide.ui.render.PrimitiveRenderingSystem;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
 import org.azentreprise.arionide.ui.render.font.FontRenderer;
@@ -95,6 +96,8 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	private GLFontRenderer fontRenderer;
 	
 	private GL4 gl;
+	
+	private Cursor theCursor;
 			
 	public OpenGLContext(Arionide theInstance, IEventDispatcher dispatcher, int width, int height) {		
 		this.dispatcher = dispatcher;
@@ -144,8 +147,8 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		return new Size(2.0f, 2.0f);
 	}
 
-	public void setCursor(Cursor cursor) {
-		this.window.setPointerVisible(cursor != null);
+	public void setCursorVisible(boolean visible) {
+		this.window.setPointerVisible(visible);
 	}
 
 	public void init(GLAutoDrawable arg0) {
@@ -162,8 +165,13 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		this.system.registerPrimitive(PrimitiveType.POLYGON, GLRenderingContext.polygon);
 		this.system.registerPrimitive(PrimitiveType.UNEDGED_RECT, GLRenderingContext.unedgedRectangle);
 		this.system.registerPrimitive(PrimitiveType.EDGE, GLRenderingContext.edge);
+		this.system.registerPrimitive(PrimitiveType.CURSOR, GLRenderingContext.cursor);
 		this.system.registerPrimitive(PrimitiveType.TEXT, GLRenderingContext.text);
 
+		this.theCursor = PrimitiveFactory.instance().newCursor(3.0f);
+		this.theCursor.updateBounds(new Bounds(-1.0f, -1.0f, 2.0f, 2.0f));
+		this.theCursor.prepare();
+		
 		this.clearColor.put(0, 0.0f).put(1, 0.0f).put(2, 0.0f).put(3, 1.0f);
 		this.clearDepth.put(0, 1.0f);
 		
@@ -184,6 +192,8 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	        
 	        this.theManager.draw();
 	        this.core.render2D(this);
+			this.system.renderLater(this.theCursor);
+	        
 	        this.system.processRenderingQueue();
 	        
 			this.gl.glDisable(GL4.GL_BLEND);

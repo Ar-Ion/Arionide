@@ -36,7 +36,7 @@ import org.azentreprise.arionide.coders.Decoder;
 import org.azentreprise.arionide.coders.Encoder;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.debugging.IAm;
-import org.azentreprise.arionide.lang.CoreDataManager;
+import org.azentreprise.arionide.lang.UserHelper;
 import org.azentreprise.arionide.lang.Language;
 import org.azentreprise.arionide.lang.natives.NativeInstructionSet;
 import org.azentreprise.arionide.lang.natives.NativeRuntime;
@@ -44,7 +44,7 @@ import org.azentreprise.arionide.lang.natives.NativeTypes;
 
 public class LocalProject implements Project {
 
-	public static final long versionUID = 176L;
+	public static final long versionUID = 213L;
 	
 	private static final Map<String, byte[]> projectProtocolMapping = new LinkedHashMap<>();
 	
@@ -117,7 +117,7 @@ public class LocalProject implements Project {
 			
 			this.verifyProtocol();
 						
-			this.language = new Language(new CoreDataManager(this.storage), new NativeTypes(), new NativeInstructionSet(this), new NativeRuntime(this));
+			this.language = new Language(new UserHelper(this.storage), new NativeTypes(), new NativeInstructionSet(this), new NativeRuntime(this));
 			this.language.postInit();
 		} catch (Exception exception) {
 			Debug.exception(exception);

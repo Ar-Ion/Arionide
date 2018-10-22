@@ -20,9 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render.gl;
 
-import java.nio.Buffer;
-import java.util.function.Supplier;
-
 import org.azentreprise.arionide.ui.render.GLBounds;
 import org.azentreprise.arionide.ui.render.Polygon;
 import org.azentreprise.arionide.ui.render.PrimitiveType;

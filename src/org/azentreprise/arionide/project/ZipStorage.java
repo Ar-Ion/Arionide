@@ -34,6 +34,7 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -60,10 +61,8 @@ public class ZipStorage extends Storage {
 	private Path callGraphPath;
 	private Path historyPath;
 	private Path structureMetaPath;
-	private Path currentDataPath;
-	
-	private int currentDataID;
-	
+	private Path dataPath;
+		
 	@IAm("initializing the project storage")
 	public ZipStorage(File path) {
 		this.location = path;
@@ -91,6 +90,7 @@ public class ZipStorage extends Storage {
 			this.callGraphPath = this.init(ArrayList<HierarchyElement>::new, e -> this.callGraph = e, "struct", "callgraph");
 			this.structureMetaPath = this.init(HashMap<Integer, StructureMeta>::new, e -> this.structMeta = e, "meta", "structures");
 			this.historyPath = this.init(ArrayList<HistoryElement>::new, e -> this.history = e, "history");
+			this.dataPath = this.init(HashMap<Integer, List<HierarchyElement>>::new, e -> this.data = e, "data");
 		} catch (IOException exception) {
 			Debug.exception(exception);
 		}
@@ -191,23 +191,12 @@ public class ZipStorage extends Storage {
 		this.save(this.historyPath, this.history);
 	}
 	
-	public void loadData(int id) {
-		try {
-			this.currentDataPath = this.init(ArrayList<HierarchyElement>::new, e -> this.currentData = e, "data", String.valueOf(id));
-		} catch (IOException exception) {
-			Debug.exception(exception);
-		}
-		
-		this.currentDataID = id;
-		this.currentData = this.load(this.currentDataPath);
+	public void loadData() {
+		this.data = this.load(this.dataPath);
 	}
 	
 	public void saveData() {
-		if(this.currentDataPath != null) {
-			this.save(this.currentDataPath, this.currentData);
-		} else {
-			throw new IllegalStateException("No data to be saved");
-		}
+		this.save(this.dataPath, this.data);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -228,9 +217,5 @@ public class ZipStorage extends Storage {
 		} catch (IOException exception) {
 			Debug.exception(exception);
 		}
-	}
-	
-	public int getCurrentDataID() {
-		return this.currentDataID;
 	}
 }

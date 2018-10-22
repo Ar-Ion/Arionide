@@ -1,19 +1,24 @@
 #version 400
 
-precision highp double;
-precision highp float;
+precision mediump float;
 
 in vec3 position;
 
-out vec4 fragVertex;
+out vec4 ambientColor;
 out vec3 fragNormal;
 
-uniform dmat4 model;
-uniform dmat4 view;
-uniform dmat4 projection;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+uniform vec4 color;
+uniform float ambientFactor;
 
 void main() {
-    fragVertex = vec4(model * dvec4(position, 1.0));
-    fragNormal = inverse(transpose(mat3(model))) * position;
-    gl_Position = vec4(projection * view * model * dvec4(position, 1.0));
+    mat3 simplified = mat3(model);
+    vec3 fragVertex = simplified * position;
+    
+    fragNormal = normalize(fragVertex - simplified * vec3(0.0));
+    ambientColor = ambientFactor * color;
+    
+    gl_Position = projection * view * model * vec4(position, 1.0);
 }

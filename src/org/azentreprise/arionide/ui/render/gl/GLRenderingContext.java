@@ -31,6 +31,7 @@ public abstract class GLRenderingContext implements RenderingContext {
 	public static GLPolygonContext polygon;
 	public static GLUnedgedRectangleContext unedgedRectangle;
 	public static GLEdgeContext edge;
+	public static GLCursorContext cursor;
 	public static GLTextContext text;
 	
 	private final GL4 gl;
@@ -49,6 +50,7 @@ public abstract class GLRenderingContext implements RenderingContext {
 		polygon = new GLPolygonContext(gl);
 		unedgedRectangle = new GLUnedgedRectangleContext(gl);
 		edge = new GLEdgeContext(gl, resources);
+		cursor = new GLCursorContext(gl);
 		text = new GLTextContext(gl, fontRenderer);
 	}
 }

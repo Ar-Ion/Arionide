@@ -151,7 +151,7 @@ public class Button extends Label implements EventHandler, Deformable {
 				if(!this.mouseOver) {
 					this.mouseOver = true;
 					
-					this.getAppManager().getDrawingContext().setCursor(this.overCursor);
+					// this.getAppManager().getDrawingContext().setCursorVisible(this.overCursor);
 
 					if(!this.hasFocus) {
 						this.animation.startAnimation(ANIMATION_TIME, 0xFF);
@@ -161,7 +161,7 @@ public class Button extends Label implements EventHandler, Deformable {
 				if(this.mouseOver) {
 					this.mouseOver = false;
 					
-					this.getAppManager().getDrawingContext().setCursor(DEFAULT_CURSOR);
+					// this.getAppManager().getDrawingContext().setCursorVisible(DEFAULT_CURSOR);
 
 					if(!this.hasFocus) {
 						this.animation.startAnimation(ANIMATION_TIME, ApplicationTints.INACTIVE_ALPHA);
@@ -209,7 +209,7 @@ public class Button extends Label implements EventHandler, Deformable {
 	
 	public void hide() {
 		super.hide();
-		this.getAppManager().getDrawingContext().setCursor(DEFAULT_CURSOR);
+		// this.getAppManager().getDrawingContext().setCursorVisible(DEFAULT_CURSOR);
 		this.onFocusLost();
 	}
 

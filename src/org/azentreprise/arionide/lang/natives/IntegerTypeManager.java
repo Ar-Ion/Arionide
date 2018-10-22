@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 
 import javax.swing.JOptionPane;
 
-import org.azentreprise.arionide.lang.CoreDataManager;
+import org.azentreprise.arionide.lang.UserHelper;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.TypeManager;
 
@@ -50,7 +50,7 @@ public class IntegerTypeManager implements TypeManager {
 	private static final String binary = "Binary";
 	private static final String hexadecimal = "Hexadecimal";
 	
-	public List<String> getSuggestions(CoreDataManager cdm) {
+	public List<String> getSuggestions(UserHelper cdm) {
 		return Arrays.asList(MIN_SHORT, MAX_SHORT, MIN_BYTE, MAX_BYTE, MIN_INTEGER, MAX_INTEGER, ERROR, FALSE, TRUE, MINUS_ONE, ONE, ZERO);
 	}
 

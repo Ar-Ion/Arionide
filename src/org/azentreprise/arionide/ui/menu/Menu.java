@@ -27,8 +27,10 @@ import java.util.List;
 
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.MenuEvent;
+import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.core.HostStructureStack;
 
 public abstract class Menu {
 	
@@ -110,12 +112,12 @@ public abstract class Menu {
 	}
 	
 	public String getDescription() {
-		List<Integer> list = this.manager.getCoreRenderer().getInside();
+		Project project = this.manager.getWorkspace().getCurrentProject();
+		HostStructureStack stack = project.getDataManager().getHostStack();
 		
-		if(list.size() > 0) {
+		if(!stack.isEmpty()) {
 			try {
-				int id = list.get(list.size() - 1);
-				StructureMeta meta = this.manager.getWorkspace().getCurrentProject().getStorage().getStructureMeta().get(id);
+				StructureMeta meta = project.getStorage().getStructureMeta().get(stack.getCurrent());
 				return "The " + meta.getName() + (meta.getComment().equals("?") ? "" : " (" + meta.getComment() + ")");
 			} catch(Exception e) {
 				return "Unknown";

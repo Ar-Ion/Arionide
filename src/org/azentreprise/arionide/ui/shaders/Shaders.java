@@ -20,38 +20,56 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.shaders;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.IntBuffer;
-import java.nio.charset.Charset;
+
+import org.azentreprise.arionide.Utils;
+import org.azentreprise.arionide.ui.shaders.preprocessor.PreprocessorException;
+import org.azentreprise.arionide.ui.shaders.preprocessor.ShaderPreprocessor;
+import org.azentreprise.arionide.ui.shaders.preprocessor.ShaderSettings;
 
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.util.glsl.ShaderUtil;
 
 public class Shaders {
-	public static int loadShader(GL4 gl, String name, int type) throws IOException {
+	public static int loadShader(GL4 gl, String name, ShaderSettings settings) throws IOException {
 		InputStream input = Shaders.class.getResourceAsStream(name);
-		
-		byte[] buffer = new byte[128];
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		int count = 0;
-		
-		if(input == null) {
-			throw new FileNotFoundException("Couldn't retrieve shader " + name);
-		}
-		
-		while((count = input.read(buffer)) != -1) {
-			baos.write(buffer, 0, count);
-		}
-		
-		String code = new String(baos.toByteArray(), Charset.forName("utf8"));
+		ShaderPreprocessor preprocessor = new ShaderPreprocessor(settings);
+		String code = Utils.read(input);
 
 		IntBuffer shaderID = IntBuffer.allocate(1);
 		
 		System.out.println("Compiling shader " + name + "...");
-		ShaderUtil.createAndCompileShader(gl, shaderID, type, new String[][] {{ code }}, System.err);
+		
+		String[] lines = code.split(System.lineSeparator());
+		code = new String();
+		
+		int lineID = 1;
+		for(String line : lines) {
+			if(line.startsWith("@")) {
+				int openingBracket = line.indexOf('(');
+				int closingBracket = line.lastIndexOf(')');
+				
+				if(openingBracket + closingBracket < -1) { // Void commands
+					code += preprocessor.processCommand(line.substring(1), new String[0]);
+				} else if(openingBracket > -1 && openingBracket < closingBracket) { // Non-void commands
+					String command = line.substring(1, openingBracket);
+					String[] args = line.substring(openingBracket, closingBracket).split(",");
+				
+					code += preprocessor.processCommand(command, args);
+				} else {
+					throw new PreprocessorException("Syntax error at line " + lineID);
+				}
+			} else {
+				code += line;
+			}
+			
+			lineID += 1;
+			code += System.lineSeparator();
+		}
+		
+		ShaderUtil.createAndCompileShader(gl, shaderID, settings.getType(), new String[][] {{ code }}, System.err);
 		
 		return shaderID.get(0);
 	}

@@ -63,8 +63,10 @@ public class CodeEditor extends Menu {
 		Project project = this.getAppManager().getWorkspace().getCurrentProject();
 
 		if(project != null) {
+			int hostStructureID = this.getAppManager().getHostStructure().getCurrent();
+			
 			this.instructionID = id;
-			this.instruction = project.getStorage().getCurrentData().get(id);
+			this.instruction = project.getStorage().getData().get(hostStructureID).get(id);
 			this.instructionMeta = project.getStorage().getStructureMeta().get(this.instruction.getID());
 						
 			assert this.instructionMeta != null;
@@ -81,20 +83,21 @@ public class CodeEditor extends Menu {
 	}
 		
 	public void onClick(String element) {
-		Project project = this.getAppManager().getWorkspace().getCurrentProject();
-
+		AppManager manager = this.getAppManager();
+		Project project = manager.getWorkspace().getCurrentProject();
+		
 		if(element == append) {
 			this.appender.setAppenderPosition(this.instructionID);
 			this.appender.show();
 		} else if(element == delete) {
 			if(this.instructionID > 0) {
 				MessageEvent message = project.getDataManager().deleteCode(this.instructionID);
-				this.getAppManager().getEventDispatcher().fire(message);
-				this.getAppManager().getCoreRenderer().loadProject(project);
+				manager.getEventDispatcher().fire(message);
+				manager.getCoreRenderer().getCodeGeometry().requestReconstruction();
 				this.parent.select(this.instructionID - 1);
 				this.parent.show();
 			} else {
-				this.getAppManager().getEventDispatcher().fire(new MessageEvent("You can't delete the entry instruction", MessageType.ERROR));
+				manager.getEventDispatcher().fire(new MessageEvent("You can't delete the entry instruction", MessageType.ERROR));
 			}
 		} else if(element == description) {
 			new Thread(() -> {
@@ -102,8 +105,8 @@ public class CodeEditor extends Menu {
 				
 				if(name != null) {
 					MessageEvent message = project.getDataManager().setName(this.instruction.getID(), name);
-					this.getAppManager().getEventDispatcher().fire(message);
-					this.getAppManager().getCoreRenderer().loadProject(project);
+					manager.getEventDispatcher().fire(message);
+					manager.getCoreRenderer().getCodeGeometry().requestReconstruction();
 				}
 			}).start();
 		} else if(element == back) {

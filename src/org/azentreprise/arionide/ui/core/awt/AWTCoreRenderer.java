@@ -20,13 +20,12 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.core.awt;
 
-import java.util.List;
-
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AWTContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
+import org.azentreprise.arionide.ui.core.geom.Geometry;
 import org.azentreprise.arionide.ui.topology.Bounds;
 
 public class AWTCoreRenderer implements CoreRenderer {
@@ -53,12 +52,6 @@ public class AWTCoreRenderer implements CoreRenderer {
 	}
 
 	@Override
-	public List<Integer> getInside() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void selectInstruction(int id) {
 		// TODO Auto-generated method stub
 		
@@ -74,5 +67,17 @@ public class AWTCoreRenderer implements CoreRenderer {
 	public void render2D(AppDrawingContext context) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Geometry getStructuresGeometry() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Geometry getCodeGeometry() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

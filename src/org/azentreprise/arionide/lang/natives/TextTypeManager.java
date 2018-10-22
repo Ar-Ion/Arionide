@@ -27,12 +27,12 @@ import java.util.function.Consumer;
 
 import javax.swing.JOptionPane;
 
-import org.azentreprise.arionide.lang.CoreDataManager;
+import org.azentreprise.arionide.lang.UserHelper;
 import org.azentreprise.arionide.lang.TypeManager;
 
 public class TextTypeManager implements TypeManager {
 
-	public List<String> getSuggestions(CoreDataManager cdm) {
+	public List<String> getSuggestions(UserHelper cdm) {
 		return Arrays.asList();
 	}
 

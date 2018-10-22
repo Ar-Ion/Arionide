@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package org.azentreprise.arionide.ui.core.opengl;
+package org.azentreprise.arionide.ui.core.geom;
 
 public class Connection {
 	

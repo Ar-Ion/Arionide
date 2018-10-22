@@ -22,15 +22,15 @@ package org.azentreprise.arionide.lang;
 
 public class Language {
 
-	private final CoreDataManager cdm;
+	private final UserHelper userHelper;
 	private final Types types;
 	private final InstructionSet instructionSet;
 	private final Runtime runtime;
 	
 	private boolean ready = false;
 	
-	public Language(CoreDataManager cdm, Types types, InstructionSet set, Runtime runtime) {
-		this.cdm = cdm;
+	public Language(UserHelper userHelper, Types types, InstructionSet set, Runtime runtime) {
+		this.userHelper = userHelper;
 		this.types = types;
 		this.instructionSet = set;
 		this.runtime = runtime;
@@ -45,8 +45,8 @@ public class Language {
 		return this.ready;
 	}
 	
-	public CoreDataManager getCoreDataManager() {
-		return this.cdm;
+	public UserHelper getUserHelper() {
+		return this.userHelper;
 	}
 	
 	public Types getTypes() {

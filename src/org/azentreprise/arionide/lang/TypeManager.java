@@ -25,7 +25,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public interface TypeManager {
-	public List<String> getSuggestions(CoreDataManager cdm);
+	public List<String> getSuggestions(UserHelper cdm);
 	public List<String> getActionLabels();
 	public List<BiConsumer<String, Consumer<String>>> getActions();
 }

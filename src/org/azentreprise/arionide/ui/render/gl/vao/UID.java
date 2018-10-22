@@ -20,26 +20,25 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render.gl.vao;
 
-import org.azentreprise.arionide.ui.render.GLBounds;
 import org.azentreprise.arionide.ui.render.PrimitiveType;
 
 public class UID {
 	
-	private final GLBounds bounds;
+	private final Object core;
 	private final PrimitiveType type;
 	
-	public UID(GLBounds bounds, PrimitiveType type) {
-		assert bounds != null;
+	public UID(Object core, PrimitiveType type) {
+		assert core != null;
 		assert type != null;
 		
-		this.bounds = bounds;
+		this.core = core;
 		this.type = type;
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + this.bounds.hashCode();
+		result = prime * result + this.core.hashCode();
 		result = prime * result + this.type.hashCode();
 		return result;
 	}
@@ -47,7 +46,7 @@ public class UID {
 	public boolean equals(Object obj) {
 		if(obj instanceof UID) {
 			UID other = (UID) obj;
-			return other.bounds.equals(this.bounds) && other.type.equals(this.type);
+			return other.core.equals(this.core) && other.type.equals(this.type);
 		} else {
 			return false;
 		}

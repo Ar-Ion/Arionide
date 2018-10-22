@@ -40,6 +40,7 @@ import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.AppManager;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
+import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.menu.Menu;
@@ -92,7 +93,6 @@ public class CodeView extends View implements EventHandler {
 		this.currentProject = this.getAppManager().getWorkspace().getCurrentProject();
 		this.getAppManager().getEventDispatcher().fire(new MessageEvent("'" + this.currentProject.getName() + "' has been successfully loaded", MessageType.SUCCESS));
 		this.getAppManager().getCoreRenderer().loadProject(this.currentProject);
-		this.getAppManager().getCoreRenderer().setScene(RenderingScene.HIERARCHY);
 	}
 	
 	public void drawSurface(AppDrawingContext context) {
@@ -102,23 +102,25 @@ public class CodeView extends View implements EventHandler {
 	public <T extends Event> void handleEvent(T event) {
 		if(event instanceof ClickEvent) {
 			ClickEvent click = (ClickEvent) event;
+			AppManager manager = this.getAppManager();
+			CoreRenderer renderer = manager.getCoreRenderer();
 			
 			if(click.isTargetting(this, "back")) {
-				this.getAppManager().getWorkspace().closeProject(this.currentProject);
-				this.getAppManager().getCoreRenderer().loadProject(null);
+				manager.getWorkspace().closeProject(this.currentProject);
+				manager.getCoreRenderer().loadProject(null);
 				this.openView(Views.main);
 			} else if(click.isTargetting(this, "sceneChanged")) {
 				int tabID = (int) click.getData()[0];
 				
 				switch(tabID) {
 					case 0:
-						this.getAppManager().getCoreRenderer().setScene(RenderingScene.INHERITANCE);
+						renderer.setScene(RenderingScene.INHERITANCE);
 						break;
 					case 1:
-						this.getAppManager().getCoreRenderer().setScene(RenderingScene.HIERARCHY);
+						renderer.setScene(RenderingScene.HIERARCHY);
 						break;
 					case 2:
-						this.getAppManager().getCoreRenderer().setScene(RenderingScene.CALLGRAPH);
+						renderer.setScene(RenderingScene.CALLGRAPH);
 						break;
 					default:
 						throw new RuntimeException("Invalid scene id");
@@ -130,20 +132,17 @@ public class CodeView extends View implements EventHandler {
 					String name = JOptionPane.showInputDialog(null, "Please enter the name of the new structure", "New structure", JOptionPane.PLAIN_MESSAGE);
 					
 					if(name != null) {
-						MessageEvent message = this.currentProject.getDataManager().newStructure(name, this.getAppManager().getCoreRenderer().getInside());
-						this.getAppManager().getEventDispatcher().fire(message);
+						MessageEvent message = this.currentProject.getDataManager().newStructure(name);
+						manager.getEventDispatcher().fire(message);
 						
 						if(message.getMessageType() != MessageType.ERROR) {
-							this.getAppManager().getCoreRenderer().loadProject(this.currentProject);
-							
 							Storage storage = this.currentProject.getStorage();
 							
 							int structID = storage.getCallGraph().get(storage.getCallGraph().size() - 1).getID();
+							int instructionID = storage.getData().get(structID).get(0).getID();
 							
-							storage.loadData(structID);
-							int instructionID = this.currentProject.getStorage().getCurrentData().get(0).getID();
-							
-							this.getAppManager().getCoreRenderer().teleport(structID + ":" + instructionID);
+							renderer.getStructuresGeometry().requestReconstruction();
+							renderer.teleport(structID + ":" + instructionID);
 						}
 					}
 				}).start();

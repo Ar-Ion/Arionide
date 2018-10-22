@@ -21,7 +21,7 @@
 package org.azentreprise.arionide.ui.menu;
 
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.core.opengl.WorldElement;
+import org.azentreprise.arionide.ui.core.geom.WorldElement;
 
 public class SpecificMenu extends Menu {
 	

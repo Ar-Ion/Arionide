@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.azentreprise.arionide.lang;
 
-import java.util.List;
-
 import org.azentreprise.arionide.project.Project;
 
 public abstract class InstructionSet {
@@ -32,12 +30,12 @@ public abstract class InstructionSet {
 		this.project = project;
 	}
 	
-	protected int installInstruction(String name, int color, List<Integer> parents, Specification specification) {
-		return this.project.getDataManager().installInstruction(name, color, parents, specification);
+	protected int addInstructionDefinition(String name, int color, Specification specification) {
+		return this.project.getDataManager().addInstructionDefinition(name, color, specification);
 	}
 	
-	protected int retrieveInstruction(String name) {
-		return this.project.getDataManager().retrieveInstruction(name);
+	protected int retrieveInstructionDefinition(String name) {
+		return this.project.getDataManager().retrieveInstructionDefinition(name);
 	}
 	
 	protected Project getProject() {

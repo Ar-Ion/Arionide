@@ -21,6 +21,7 @@
 package org.azentreprise.arionide.project;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
@@ -32,43 +33,52 @@ import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
+import org.azentreprise.arionide.ui.core.HostStructureStack;
 import org.azentreprise.arionide.ui.menu.edition.Coloring;
 
 public class DataManager {
 	
 	private final Project project;
 	private final Storage storage;
+	private final HostStructureStack hostStack;
 	
 	public DataManager(Project project) {
 		this.project = project;
 		this.storage = this.project.getStorage();
+		this.hostStack = new HostStructureStack();
 	}
 	
 	public int allocSpecification() {
-		int specificationID = this.project.getProperty("specificationGen", Coder.integerDecoder).intValue();
-		this.project.setProperty("specificationGen", (long) specificationID + 1, Coder.integerEncoder); // Increment generator
-		this.project.save();
-		
-		return specificationID;
+		return this.alloc("specificationGen");
 	}
 	
-	public MessageEvent newStructure(String name, List<Integer> parents) {
+	public int allocStructure() {
+		return this.alloc("structureGen");
+	}
+	
+	private int alloc(String object) {
+		int id = this.project.getProperty(object, Coder.integerDecoder).intValue();
+		this.project.setProperty(object, (long) id + 1, Coder.integerEncoder); // Increment generator
+		this.project.save();
+		
+		return id;
+	}
+	
+	public MessageEvent newStructure(String name) {
 		if(this.storage.getStructureMeta().values().stream().filter(meta -> meta.getName().equals(name)).count() > 0) {
 			return new MessageEvent("This structure name is already used", MessageType.ERROR);
 		} else {
-			int structureID = this.project.getProperty("structureGen", Coder.integerDecoder).intValue();
-			this.project.setProperty("structureGen", (long) structureID + 1, Coder.integerEncoder); // Increment generator
-			this.project.save();
-					
+			int structureID = this.allocStructure();
+			
 			HierarchyElement structure = new HierarchyElement(structureID, new ArrayList<>());
 			
-			List<HierarchyElement> brothers = this.getBrothers(this.storage.hierarchy, parents);
+			List<HierarchyElement> generation = this.getCurrentGeneration(this.storage.hierarchy);
 			
-			if(brothers == null) {
+			if(generation == null) {
 				return new MessageEvent("Invalid parent hierarchy", MessageType.ERROR);
 			}
 			
-			brothers.add(structure);
+			generation.add(structure);
 			this.storage.saveHierarchy();
 
 			this.storage.inheritance.put(structureID, new InheritanceElement());
@@ -83,41 +93,39 @@ public class DataManager {
 			
 			if(message.getMessageType() != MessageType.SUCCESS) {
 				return message;
-			} else if(this.project.getLanguage().isReady()) {
-				this.project.getStorage().loadData(structureID); // Push
-
-				if(this.insertCode(0, this.retrieveInstruction("init")).getMessageType() != MessageType.ERROR) {
-					if(parents.size() > 0) {
-						this.project.getStorage().loadData(parents.get(parents.size() - 1)); // Pop
-					}
-															
-					return new MessageEvent("Structure created", MessageType.SUCCESS);
+			} 
+				
+			if(this.project.getLanguage().isReady()) {
+				this.hostStack.push(structureID);
+				
+				message = this.insertCode(0, this.retrieveInstructionDefinition("init"));
+				
+				if(message.getMessageType() != MessageType.ERROR) {
+					this.hostStack.pop();								
 				} else {
-					return new MessageEvent("Couldn't initialize structure", MessageType.ERROR);
+					return message;
 				}
-			} else {
-				return new MessageEvent("Structure created", MessageType.SUCCESS);
 			}
+			
+			return new MessageEvent("Structure created", MessageType.SUCCESS);
 		}
 	}
 	
-	public int installInstruction(String name, int color, List<Integer> parents, Specification specification) {
+	public int addInstructionDefinition(String name, int color, Specification specification) {
 		if(this.storage.getStructureMeta().values().stream().filter(meta -> meta.getName().equals(name)).count() > 0) {
 			return -1;
 		} else {
-			int structureID = this.project.getProperty("structureGen", Coder.integerDecoder).intValue();
-			this.project.setProperty("structureGen", (long) structureID + 1, Coder.integerEncoder); // Increment generator
-			this.project.save();
+			int structureID = this.allocStructure();
 					
 			HierarchyElement structure = new HierarchyElement(structureID, new ArrayList<>());
 			
-			List<HierarchyElement> brothers = this.getBrothers(this.storage.hierarchy, parents);
+			List<HierarchyElement> generation = this.getCurrentGeneration(this.storage.hierarchy);
 			
-			if(brothers == null) {
+			if(generation == null) {
 				return -1;
 			}
 			
-			brothers.add(structure);
+			generation.add(structure);
 			this.storage.saveHierarchy();
 			
 			StructureMeta meta = new StructureMeta(this.allocSpecification());
@@ -133,12 +141,12 @@ public class DataManager {
 		}
 	}
 	
-	public int retrieveInstruction(String name) {
+	public int retrieveInstructionDefinition(String name) {
 		return this.storage.getStructureMeta().entrySet().stream().filter(meta -> meta.getValue().getName().equals(name)).findAny().get().getKey();
 	}
 	
-	public MessageEvent deleteStructure(int id, List<Integer> parents) {
-		Iterator<HierarchyElement> iterator = this.getBrothers(this.storage.hierarchy, parents).iterator();
+	public MessageEvent deleteStructure(int id) {
+		Iterator<HierarchyElement> iterator = this.getCurrentGeneration(this.storage.hierarchy).iterator();
 		
 		while(iterator.hasNext()) {
 			HierarchyElement element = iterator.next();
@@ -203,9 +211,9 @@ public class DataManager {
 		return true;
 	}
 	
-	public MessageEvent desinherit(Integer parent, Integer id) {
-		this.storage.getInheritance().get(parent).children.remove(id);
-		this.storage.getInheritance().get(id).parents.remove(parent);
+	public MessageEvent desinherit(Integer parent, Integer child) {
+		this.storage.getInheritance().get(parent).children.remove(child);
+		this.storage.getInheritance().get(child).parents.remove(parent);
 		
 		this.storage.saveInheritance();
 		
@@ -213,9 +221,7 @@ public class DataManager {
 	}
 	
 	public MessageEvent insertCode(int index, int instructionID) {
-		int structureID = this.project.getProperty("structureGen", Coder.integerDecoder).intValue();
-		this.project.setProperty("structureGen", (long) structureID + 1, Coder.integerEncoder); // Increment generator
-		this.project.save();
+		int structureID = this.allocStructure();
 		
 		StructureMeta meta = new StructureMeta(-1);
 		meta.setComment("code@" + instructionID);
@@ -225,14 +231,14 @@ public class DataManager {
 		this.storage.structMeta.put(structureID, meta);
 		this.storage.saveStructureMeta();
 		
-		this.storage.currentData.add(index, new HierarchyElement(structureID, new ArrayList<>()));
+		this.getCurrentCode().add(index, new HierarchyElement(structureID, new ArrayList<>()));
 		this.storage.saveData();
 			
 		return new MessageEvent("Added an instruction to the code", MessageType.SUCCESS);
 	}
 
 	public MessageEvent deleteCode(int id) {
-		HierarchyElement element = this.storage.currentData.remove(id);
+		HierarchyElement element = this.getCurrentCode().remove(id);
 		this.storage.saveData();
 		
 		if(element != null) {
@@ -353,7 +359,17 @@ public class DataManager {
 		}
 	}
 	
-	private List<HierarchyElement> getBrothers(List<HierarchyElement> root, List<Integer> parents) {
+	public HostStructureStack getHostStack() {
+		return this.hostStack;
+	}
+	
+	public List<HierarchyElement> getCurrentCode() {
+		return this.storage.getData().get(this.hostStack.getCurrent());
+	}
+	
+	public List<HierarchyElement> getCurrentGeneration(List<HierarchyElement> root) {
+		Collection<Integer> parents = this.hostStack.getStack();
+		
 		for(Integer id : parents) {
 			boolean found = false;
 			

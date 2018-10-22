@@ -24,14 +24,27 @@ import java.math.BigInteger;
 
 public abstract class Primitive implements Comparable<Primitive>, Preparable {
 	
-	protected abstract BigInteger getStateFingerprint();
-	protected abstract PrimitiveType getType();
-	protected abstract int getRequestedActions();
-	protected abstract void updateProperty(int identifier);
-	protected abstract void processAction(int identifier);
-	protected abstract void render();
+	private int requestedActions = 0x0;
 	
 	public int compareTo(Primitive other) {
 		return this.getStateFingerprint().compareTo(other.getStateFingerprint());
 	}
+	
+	protected void requestAction(int identifier) {
+		this.requestedActions |= identifier;
+	}
+	
+	protected void clearAction(int identifier) {
+		this.requestedActions &= ~identifier;
+	}
+	
+	protected int getRequestedActions() {
+		return this.requestedActions;
+	}
+	
+	protected abstract BigInteger getStateFingerprint();
+	protected abstract PrimitiveType getType();
+	protected abstract void updateProperty(int identifier);
+	protected abstract void processAction(int identifier);
+	protected abstract void render();
 }

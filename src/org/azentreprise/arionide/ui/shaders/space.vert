@@ -1,14 +1,15 @@
 #version 400
 
 in vec3 position;
+in vec3 color;
 
-out vec4 fragPosition;
+out vec4 fragColor;
 
-uniform dmat4 model;
-uniform dmat4 view;
-uniform dmat4 projection;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
 
 void main() {
-	fragPosition = vec4(position, 1.0);
-    gl_Position = vec4(projection * view * model * dvec4(position, 1.0));
+	fragColor = vec4(color, 1.0);
+    gl_Position = vec4(projection * view * model * vec4(position, 1.0));
 }

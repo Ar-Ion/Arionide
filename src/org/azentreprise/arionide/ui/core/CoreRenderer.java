@@ -20,11 +20,10 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.core;
 
-import java.util.List;
-
 import org.azentreprise.arionide.debugging.IAm;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppDrawingContext;
+import org.azentreprise.arionide.ui.core.geom.Geometry;
 import org.azentreprise.arionide.ui.topology.Bounds;
 
 public interface CoreRenderer {
@@ -46,10 +45,10 @@ public interface CoreRenderer {
 	
 	@IAm("setting up the current project")
 	public void loadProject(Project project);
-	
+		
 	@IAm("teleporting to an element")
 	public void teleport(String identifier);
 	
-	/* The IDs in which the user is. */
-	public List<Integer> getInside();
+	public Geometry getStructuresGeometry();
+	public Geometry getCodeGeometry();
 }

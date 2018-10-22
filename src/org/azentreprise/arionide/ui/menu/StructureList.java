@@ -20,36 +20,88 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.azentreprise.arionide.events.Event;
+import org.azentreprise.arionide.events.EventHandler;
+import org.azentreprise.arionide.events.ProjectCloseEvent;
+import org.azentreprise.arionide.events.ProjectEvent;
+import org.azentreprise.arionide.events.ProjectOpenEvent;
+import org.azentreprise.arionide.project.HierarchyElement;
+import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.core.opengl.WorldElement;
+import org.azentreprise.arionide.ui.core.HostStructureChangeObserver;
+import org.azentreprise.arionide.ui.core.HostStructureStack;
+import org.azentreprise.arionide.ui.core.geom.Geometry;
+import org.azentreprise.arionide.ui.core.geom.WorldElement;
 
-public class StructureList extends Menu {
+public class StructureList extends Menu implements EventHandler, HostStructureChangeObserver {
 	
-	private List<WorldElement> elements;
-		
+	private Project project;
+	
 	public StructureList(AppManager manager) {
 		super(manager);
-	}
-	
-	public void set(List<WorldElement> elements) {
-		this.elements = elements;
-
-		this.getElements().clear();
 				
-		if(elements.size() > 0) {
-			this.getElements().addAll(elements.stream().map((e) -> e.toString()).collect(Collectors.toList()));
-		} else {
-			this.getElements().add("No children");
-		}
+		manager.getEventDispatcher().registerHandler(this);
 	}
 	
 	protected void onClick(int id) {
-		if(this.elements.size() > 0) {
-			MainMenus.getStructureEditor().setCurrent(this.elements.get(id));
+		WorldElement element = this.getAppManager().getCoreRenderer().getStructuresGeometry().getElementByID(id);
+		
+		if(element != null) {
+			MainMenus.getStructureEditor().setCurrent(element);
 			MainMenus.getStructureEditor().show();
+		}
+	}
+
+	public <T extends Event> void handleEvent(T event) {
+		if(event instanceof ProjectEvent) {
+			Project project = ((ProjectEvent) event).getProject();
+			
+			assert project != null;
+			
+			HostStructureStack stack = project.getDataManager().getHostStack();
+			
+			if(event instanceof ProjectOpenEvent) {
+				this.project = project;
+				stack.registerObserver(this);
+				
+				this.onHostStructureChanged(-1);
+				/*
+				 *  The open event might be firstly dispatched to the CoreRenderer, 
+				 *  and thus the host stack could have been updated before this handler is registered.
+				 */
+			} else if(event instanceof ProjectCloseEvent) {
+				this.project = null;
+				stack.unregisterObserver(this);
+			}
+		}
+	}
+
+	public List<Class<? extends Event>> getHandleableEvents() {
+		return Arrays.asList(ProjectOpenEvent.class, ProjectCloseEvent.class);
+	}
+
+	public void onHostStructureChanged(int newStruct) {
+		List<HierarchyElement> generation = this.project.getDataManager().getCurrentGeneration(this.project.getStorage().getHierarchy());
+		List<String> strings = this.getElements();
+		Geometry geometry = this.getAppManager().getCoreRenderer().getStructuresGeometry();
+		
+		strings.clear();
+		
+		for(HierarchyElement struct : generation) {
+			WorldElement element = geometry.getElementByID(struct.getID());
+			
+			if(element != null) {
+				strings.add(element.toString());
+			}
+		}
+		
+		if(strings.isEmpty()) {
+			strings.add("<No children>");
+		} else {
+			strings.sort(null);
 		}
 	}
 }

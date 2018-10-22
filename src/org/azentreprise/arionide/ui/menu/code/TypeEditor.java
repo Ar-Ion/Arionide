@@ -26,13 +26,15 @@ import javax.swing.JOptionPane;
 
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
-import org.azentreprise.arionide.lang.CoreDataManager;
 import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.Language;
 import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.TypeManager;
+import org.azentreprise.arionide.lang.UserHelper;
 import org.azentreprise.arionide.lang.Validator;
+import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.core.HostStructureStack;
 import org.azentreprise.arionide.ui.menu.Menu;
 
 public class TypeEditor extends Menu {
@@ -57,17 +59,22 @@ public class TypeEditor extends Menu {
 		
 		elements.clear();
 		
-		Language lang = this.getAppManager().getWorkspace().getCurrentProject().getLanguage();
-		
-		CoreDataManager cdm = lang.getCoreDataManager();
+		Project project = this.getAppManager().getWorkspace().getCurrentProject();
+		HostStructureStack stack = project.getDataManager().getHostStack();
+		Language lang = project.getLanguage();
+		UserHelper helper = lang.getUserHelper();
 		
 		this.typeManager = lang.getTypes().getTypeManager(element.getType());
 		this.validator = lang.getTypes().getValidator(element.getType());
 
 		if(this.typeManager != null) {
-			elements.addAll(cdm.getVariables(element.getType(), element.getName()));
-			elements.addAll(this.typeManager.getSuggestions(cdm));
+			if(!stack.isEmpty()) {
+				elements.addAll(helper.getVariables(stack.getCurrent(), element.getType(), element.getName()));
+				elements.addAll(this.typeManager.getSuggestions(helper));
+			}
+			
 			this.separator = this.getElements().size();
+			
 			elements.add("Back");
 			elements.add("New variable");
 			elements.addAll(this.typeManager.getActionLabels());

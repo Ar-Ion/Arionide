@@ -144,7 +144,7 @@ public class LocalWorkspace implements Workspace {
 	public void closeProject(Project project) {
 		if(this.current == project) {
 			this.current = null;
-			this.dispatcher.fire(new ProjectCloseEvent());
+			this.dispatcher.fire(new ProjectCloseEvent(project));
 		}
 	}
 

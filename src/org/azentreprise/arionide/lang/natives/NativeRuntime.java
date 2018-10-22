@@ -111,10 +111,8 @@ public class NativeRuntime extends Runtime {
 		return true;
 	}
 	
-	private boolean compile(int realID, String name, Storage storage) {				
-		storage.loadData(realID);
-				
-		List<HierarchyElement> elements = storage.getCurrentData();
+	private boolean compile(int realID, String name, Storage storage) {								
+		List<HierarchyElement> elements = storage.getData().get(realID);
 		Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
 		List<NativeInstruction> structure = new ArrayList<>();
 		List<Integer> nextElements = new ArrayList<>();
@@ -255,10 +253,8 @@ public class NativeRuntime extends Runtime {
 	
 	protected List<Entry<String, Specification>> getCode(int objectID) {
 		Storage storage = this.getProject().getStorage();
-		
-		storage.loadData(objectID);
-		
-		List<HierarchyElement> elements = storage.getCurrentData();
+				
+		List<HierarchyElement> elements = storage.getData().get(objectID);
 		Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
 		List<Entry<String, Specification>> code = new ArrayList<>();
 		

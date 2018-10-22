@@ -36,9 +36,7 @@ import org.azentreprise.arionide.ui.topology.Translation;
 import com.jogamp.opengl.GL4;
 
 public abstract class GLShape extends Primitive implements Shape {
-	
-	private int requestedActions = 0x0;
-	
+		
 	private int rgb = ApplicationTints.MAIN_COLOR;
 	private int alpha = ApplicationTints.INACTIVE_ALPHA;
 	private Point lightCenter = new Point();
@@ -92,10 +90,6 @@ public abstract class GLShape extends Primitive implements Shape {
 			this.lightCenter.hashCode());
 	}
 	
-	public int getRequestedActions() {
-		return this.requestedActions;
-	}
-	
 	public void updateProperty(int identifier) {
 		GLShapeContext context = this.getContext();
 		GL4 gl = context.getGL();
@@ -137,14 +131,6 @@ public abstract class GLShape extends Primitive implements Shape {
 		}
 		
 		this.clearAction(identifier);
-	}
-	
-	protected void requestAction(int identifier) {
-		this.requestedActions |= identifier;
-	}
-	
-	protected void clearAction(int identifier) {
-		this.requestedActions &= ~identifier;
 	}
 	
 	protected abstract void prepareGL();

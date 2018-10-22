@@ -27,7 +27,7 @@ import java.util.Map.Entry;
 
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
-import org.azentreprise.arionide.lang.CoreDataManager;
+import org.azentreprise.arionide.lang.UserHelper;
 import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.ui.AppManager;
@@ -45,7 +45,7 @@ class ReferenceSelector extends Menu {
 		this.parent = parent;
 		this.element = element;
 		
-		CoreDataManager cdm = manager.getWorkspace().getCurrentProject().getLanguage().getCoreDataManager();
+		UserHelper cdm = manager.getWorkspace().getCurrentProject().getLanguage().getUserHelper();
 		
 		List<String> suggestions = new ArrayList<>();
 		

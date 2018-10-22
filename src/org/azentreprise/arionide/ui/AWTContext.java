@@ -261,4 +261,10 @@ public class AWTContext extends Canvas implements AppDrawingContext, MouseListen
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void setCursorVisible(boolean visible) {
+		// TODO Auto-generated method stub
+		
+	}
 }

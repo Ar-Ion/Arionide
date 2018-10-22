@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.render;
 
+import org.azentreprise.arionide.ui.render.gl.GLCursor;
 import org.azentreprise.arionide.ui.render.gl.GLEdge;
 import org.azentreprise.arionide.ui.render.gl.GLLine;
 import org.azentreprise.arionide.ui.render.gl.GLShape;
@@ -32,6 +33,10 @@ public class PrimitiveFactory {
 	
 	public static PrimitiveFactory instance() {
 		return singleton;
+	}
+	
+	private PrimitiveFactory() {
+		;
 	}
 	
 	public Text newText() {
@@ -63,5 +68,9 @@ public class PrimitiveFactory {
 	
 	public Shape newLine(int rgb, int alpha) {
 		return new GLLine(rgb, alpha);
+	}
+	
+	public Cursor newCursor(float size) {
+		return new GLCursor(size);
 	}
 }

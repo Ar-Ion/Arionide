@@ -20,6 +20,13 @@
  *******************************************************************************/
 package org.azentreprise.arionide;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.List;
+
 import org.azentreprise.arionide.ui.topology.Affine;
 import org.azentreprise.arionide.ui.topology.Application;
 
@@ -110,5 +117,25 @@ public class Utils {
 	
 	public static Application getLayout2GL() {
 		return glTransform;
+	}
+	
+	public static String read(InputStream input) throws IOException {
+		if(input == null) {
+			throw new FileNotFoundException("Failed to read resource");
+		}
+		
+		byte[] buffer = new byte[128];
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		int count = 0;
+		
+		while((count = input.read(buffer)) != -1) {
+			baos.write(buffer, 0, count);
+		}
+		
+		return new String(baos.toByteArray(), Charset.forName("utf8"));
+	}
+	
+	public <T> T getLast(List<T> list) {
+		return list.get(list.size() - 1);
 	}
 }

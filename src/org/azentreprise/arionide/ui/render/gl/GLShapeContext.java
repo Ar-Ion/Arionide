@@ -26,6 +26,7 @@ import java.math.BigInteger;
 import org.azentreprise.arionide.debugging.Debug;
 import org.azentreprise.arionide.ui.render.Identification;
 import org.azentreprise.arionide.ui.shaders.Shaders;
+import org.azentreprise.arionide.ui.shaders.preprocessor.DummySettings;
 
 import com.jogamp.opengl.GL4;
 
@@ -44,7 +45,7 @@ public abstract class GLShapeContext extends GLRenderingContext {
 	public static final int PREPARE_ACTION_IDENTIFIER = 0x1;
 
 	private static final BigInteger[] scheme = Identification.makeScheme(SCHEME_SIZE);
-		
+	
 	private int shader;
 	private int rgb;
 	private int alpha;
@@ -64,8 +65,8 @@ public abstract class GLShapeContext extends GLRenderingContext {
 		GL4 gl = this.getGL();
 		
 		try {
-			int vert = Shaders.loadShader(gl, this.getVertexShader(), GL4.GL_VERTEX_SHADER);
-			int frag = Shaders.loadShader(gl, this.getFragmentShader(), GL4.GL_FRAGMENT_SHADER);
+			int vert = Shaders.loadShader(gl, this.getVertexShader(), DummySettings.VERTEX);
+			int frag = Shaders.loadShader(gl, this.getFragmentShader(), DummySettings.FRAGMENT);
 			
 			this.shader = gl.glCreateProgram();
 			

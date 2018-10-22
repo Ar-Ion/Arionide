@@ -30,7 +30,7 @@ import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.core.opengl.WorldElement;
+import org.azentreprise.arionide.ui.core.geom.WorldElement;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 import org.joml.Vector3f;

@@ -21,5 +21,5 @@
 package org.azentreprise.arionide.ui.render;
 
 public enum PrimitiveType {
-	POLYGON, FILLED_POLYGON, UNEDGED_RECT, EDGE, TEXT
+	POLYGON, FILLED_POLYGON, UNEDGED_RECT, EDGE, CURSOR, TEXT
 }

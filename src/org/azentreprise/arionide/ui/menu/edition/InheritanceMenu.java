@@ -28,7 +28,7 @@ import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.project.InheritanceElement;
 import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.core.opengl.WorldElement;
+import org.azentreprise.arionide.ui.core.geom.WorldElement;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
 import org.azentreprise.arionide.ui.menu.StructureSelection;

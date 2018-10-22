@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.azentreprise.arionide.ui.menu.code;
 
+import java.util.List;
 import java.util.Map;
 
 import org.azentreprise.arionide.events.MessageEvent;
@@ -28,32 +29,36 @@ import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.menu.SpecificMenu;
+import org.azentreprise.arionide.ui.core.HostStructureStack;
+import org.azentreprise.arionide.ui.menu.Menu;
 
 @Deprecated
-public class Code extends SpecificMenu {
+public class Code extends Menu {
 	
 	private final CodeEditor editor;
+	private final Project project;
 	
 	private int selected = -1;
 	
 	public Code(AppManager manager) {
 		super(manager);
 		this.editor = new CodeEditor(manager, this);
+		this.project = manager.getWorkspace().getCurrentProject();
 	}
 
 	public void show() {
 		super.show();
 		
-		if(this.getCurrent() != null) {
-			Project project = this.getAppManager().getWorkspace().getCurrentProject();
-			
+		HostStructureStack stack = this.project.getDataManager().getHostStack();
+		
+		if(!stack.isEmpty()) {			
 			if(project != null) {
-				Map<Integer, StructureMeta> meta = project.getStorage().getStructureMeta();
+				Map<Integer, StructureMeta> meta = this.project.getStorage().getStructureMeta();
+				List<HierarchyElement> elements = this.project.getStorage().getData().get(this.retrieveCurrentID());
 				
 				this.getElements().clear();
 				
-				for(HierarchyElement object : project.getStorage().getCurrentData()) {
+				for(HierarchyElement object : elements) {
 					StructureMeta objectMeta = meta.get(object.getID());
 					
 					String name = objectMeta.getName();
@@ -69,20 +74,16 @@ public class Code extends SpecificMenu {
 	}
 
 	public void onSelect(int id) {
-		Project project = this.getAppManager().getWorkspace().getCurrentProject();
-
 		if(project != null) {
-			HierarchyElement element = project.getStorage().getCurrentData().get(id);
+			HierarchyElement element = this.project.getStorage().getData().get(this.retrieveCurrentID()).get(id);
 			this.selected = element.getID();
 			this.getAppManager().getCoreRenderer().selectInstruction(this.selected);
 			this.getAppManager().getEventDispatcher().fire(new MessageEvent(this.getDescription(), MessageType.INFO));
 		}
 	}
 	
-	public void onClick(int id) {
-		Project project = this.getAppManager().getWorkspace().getCurrentProject();
-		
-		if(project != null && id < this.getElements().size()) {
+	public void onClick(int id) {		
+		if(this.project != null && id < this.getElements().size()) {
 			this.editor.setTargetInstruction(id);
 			this.editor.show();
 		}
@@ -99,5 +100,9 @@ public class Code extends SpecificMenu {
 		}
 		
 		return "No code is available";
+	}
+	
+	private int retrieveCurrentID() {
+		return this.project.getDataManager().getHostStack().getCurrent();
 	}
 }

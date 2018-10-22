@@ -53,10 +53,8 @@ public class CodeAppender extends Menu {
 		if(project != null) {
 			elements.clear();
 			this.instructions.clear();
-			
-			List<Integer> inside = this.getAppManager().getCoreRenderer().getInside();
-			
-			int parent = inside.get(inside.size() - 1);
+						
+			int parent = project.getDataManager().getHostStack().getCurrent();
 			
 			StructureMeta parentMeta = project.getStorage().getStructureMeta().get(parent);
 			
@@ -79,11 +77,13 @@ public class CodeAppender extends Menu {
 		
 	public void onClick(int id) {
 		if(id < this.getElements().size() - 1) {
-			Project project = this.getAppManager().getWorkspace().getCurrentProject();
+			AppManager manager = this.getAppManager();
+			
+			Project project = manager.getWorkspace().getCurrentProject();
 			MessageEvent event = project.getDataManager().insertCode(this.position, this.instructions.get(id));
 			
-			this.getAppManager().getEventDispatcher().fire(event);
-			this.getAppManager().getCoreRenderer().loadProject(project);
+			manager.getEventDispatcher().fire(event);
+			manager.getCoreRenderer().getCodeGeometry().requestReconstruction();
 			
 			this.parent.show();
 			this.parent.select(this.position);
