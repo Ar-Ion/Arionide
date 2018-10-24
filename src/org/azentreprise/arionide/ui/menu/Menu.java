@@ -27,10 +27,10 @@ import java.util.List;
 
 import org.azentreprise.arionide.events.Event;
 import org.azentreprise.arionide.events.MenuEvent;
+import org.azentreprise.arionide.project.HostStructureStack;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.core.HostStructureStack;
 
 public abstract class Menu {
 	

@@ -90,7 +90,7 @@ public class ZipStorage extends Storage {
 			this.callGraphPath = this.init(ArrayList<HierarchyElement>::new, e -> this.callGraph = e, "struct", "callgraph");
 			this.structureMetaPath = this.init(HashMap<Integer, StructureMeta>::new, e -> this.structMeta = e, "meta", "structures");
 			this.historyPath = this.init(ArrayList<HistoryElement>::new, e -> this.history = e, "history");
-			this.dataPath = this.init(HashMap<Integer, List<HierarchyElement>>::new, e -> this.data = e, "data");
+			this.dataPath = this.init(HashMap<Integer, List<HierarchyElement>>::new, e -> this.code = e, "data");
 		} catch (IOException exception) {
 			Debug.exception(exception);
 		}
@@ -191,12 +191,12 @@ public class ZipStorage extends Storage {
 		this.save(this.historyPath, this.history);
 	}
 	
-	public void loadData() {
-		this.data = this.load(this.dataPath);
+	public void loadCode() {
+		this.code = this.load(this.dataPath);
 	}
 	
-	public void saveData() {
-		this.save(this.dataPath, this.data);
+	public void saveCode() {
+		this.save(this.dataPath, this.code);
 	}
 	
 	@SuppressWarnings("unchecked")

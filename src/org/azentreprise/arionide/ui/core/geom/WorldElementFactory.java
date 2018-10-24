@@ -9,24 +9,30 @@ import org.joml.Vector4f;
 
 public class WorldElementFactory {	
 	
+	private final long seed;
 	private final Random random;
 	
 	private Supplier<Vector3f> axisGenerator;
 	private Function<Vector3f, Vector3f> baseGenerator;
 
 	protected WorldElementFactory() {
-		this(new Random());
+		this(System.nanoTime());
 	}
 	
 	protected WorldElementFactory(long seed) {
-		this(new Random(seed));
+		this(seed, new Random(seed));
 	}
 	
-	protected WorldElementFactory(Random random) {
-		this(random, getDefaultBaseGenerator(random), getDefaultAxisGenerator(random));
+	protected WorldElementFactory(long seed, Function<Vector3f, Vector3f> baseGenerator, Supplier<Vector3f> axisGenerator) {
+		this(seed, new Random(seed), baseGenerator, axisGenerator);
 	}
 	
-	protected WorldElementFactory(Random random, Function<Vector3f, Vector3f> baseGenerator, Supplier<Vector3f> axisGenerator) {
+	private WorldElementFactory(long seed, Random random) {
+		this(seed, random, getDefaultBaseGenerator(random), getDefaultAxisGenerator(random));
+	}
+	
+	private WorldElementFactory(long seed, Random random, Function<Vector3f, Vector3f> baseGenerator, Supplier<Vector3f> axisGenerator) {
+		this.seed = seed;
 		this.random = random;
 		this.baseGenerator = baseGenerator;
 		this.axisGenerator = axisGenerator;
@@ -50,6 +56,12 @@ public class WorldElementFactory {
 	
 	protected Random getRandom() {
 		return this.random;
+	}
+
+	protected void reset() {
+		this.random.setSeed(this.seed);
+		this.baseGenerator = getDefaultBaseGenerator(random);
+		this.axisGenerator = getDefaultAxisGenerator(random);
 	}
 	
 	protected WorldElement makeRandomTrivial() {

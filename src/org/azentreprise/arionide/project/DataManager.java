@@ -21,7 +21,9 @@
 package org.azentreprise.arionide.project;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
@@ -33,7 +35,6 @@ import org.azentreprise.arionide.lang.Data;
 import org.azentreprise.arionide.lang.Reference;
 import org.azentreprise.arionide.lang.Specification;
 import org.azentreprise.arionide.lang.SpecificationElement;
-import org.azentreprise.arionide.ui.core.HostStructureStack;
 import org.azentreprise.arionide.ui.menu.edition.Coloring;
 
 public class DataManager {
@@ -89,6 +90,8 @@ public class DataManager {
 			
 			this.storage.structMeta.put(structureID, new StructureMeta(this.allocSpecification()));
 			
+			this.storage.code.put(structureID, new ArrayList<>());
+			
 			MessageEvent message = this.setName(structureID, name);
 			
 			if(message.getMessageType() != MessageType.SUCCESS) {
@@ -100,9 +103,9 @@ public class DataManager {
 				
 				message = this.insertCode(0, this.retrieveInstructionDefinition("init"));
 				
-				if(message.getMessageType() != MessageType.ERROR) {
-					this.hostStack.pop();								
-				} else {
+				this.hostStack.pop();								
+				
+				if(message.getMessageType() == MessageType.ERROR) {
 					return message;
 				}
 			}
@@ -232,14 +235,14 @@ public class DataManager {
 		this.storage.saveStructureMeta();
 		
 		this.getCurrentCode().add(index, new HierarchyElement(structureID, new ArrayList<>()));
-		this.storage.saveData();
+		this.storage.saveCode();
 			
 		return new MessageEvent("Added an instruction to the code", MessageType.SUCCESS);
 	}
 
 	public MessageEvent deleteCode(int id) {
 		HierarchyElement element = this.getCurrentCode().remove(id);
-		this.storage.saveData();
+		this.storage.saveCode();
 		
 		if(element != null) {
 			this.storage.structMeta.remove(element.getID());
@@ -364,7 +367,7 @@ public class DataManager {
 	}
 	
 	public List<HierarchyElement> getCurrentCode() {
-		return this.storage.getData().get(this.hostStack.getCurrent());
+		return this.storage.getCode().get(this.hostStack.getCurrent());
 	}
 	
 	public List<HierarchyElement> getCurrentGeneration(List<HierarchyElement> root) {
@@ -382,7 +385,7 @@ public class DataManager {
 			}
 			
 			if(!found) {
-				return null;
+				return new ArrayList<>();
 			}
 		}
 		

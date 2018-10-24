@@ -27,8 +27,7 @@ import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.core.CoreRenderer;
-import org.azentreprise.arionide.ui.core.opengl.OpenGLCoreRenderer;
+import org.azentreprise.arionide.ui.core.TeleportInfo;
 import org.azentreprise.arionide.ui.menu.Confirm;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.menu.SpecificMenu;
@@ -133,13 +132,8 @@ public class StructureEditor extends SpecificMenu {
 	}
 	
 	private void go() {
-		CoreRenderer renderer = this.getAppManager().getCoreRenderer();
-		
-		if(renderer instanceof OpenGLCoreRenderer) {
-			((OpenGLCoreRenderer) renderer).teleport(this.getCurrent().getCenter());
-		} else {
-			this.getAppManager().getEventDispatcher().fire(new MessageEvent("This GUI implementation doesn't support teleporting.", MessageType.ERROR));
-		}
+		this.getAppManager().getCoreRenderer().teleport(new TeleportInfo(this.getCurrent().getID(), -1));
+
 	}
 	
 	public String getDescription() {

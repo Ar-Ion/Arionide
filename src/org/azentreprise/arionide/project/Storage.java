@@ -33,7 +33,7 @@ public abstract class Storage {
 	protected List<HierarchyElement> callGraph;
 	protected Map<Integer, StructureMeta> structMeta;
 	protected List<HistoryElement> history;
-	protected Map<Integer, List<HierarchyElement>> data;
+	protected Map<Integer, List<HierarchyElement>> code;
 	
 	public List<HierarchyElement> getHierarchy() {
 		return Collections.unmodifiableList(this.hierarchy);
@@ -55,8 +55,8 @@ public abstract class Storage {
 		return Collections.unmodifiableList(this.history);
 	}
 	
-	public Map<Integer, List<HierarchyElement>> getData() {
-		return Collections.unmodifiableMap(this.data);
+	public Map<Integer, List<HierarchyElement>> getCode() {
+		return Collections.unmodifiableMap(this.code);
 	}
 
 	@IAm("loading the hierarchy")
@@ -85,7 +85,7 @@ public abstract class Storage {
 	public abstract void saveStructureMeta();
 	
 	@IAm("loading data")
-	public abstract void loadData();
+	public abstract void loadCode();
 	@IAm("saving data")
-	public abstract void saveData();
+	public abstract void saveCode();
 }

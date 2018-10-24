@@ -59,8 +59,8 @@ import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.OpenGLContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
-import org.azentreprise.arionide.ui.core.HostStructureStack;
 import org.azentreprise.arionide.ui.core.RenderingScene;
+import org.azentreprise.arionide.ui.core.TeleportInfo;
 import org.azentreprise.arionide.ui.core.geom.CodeGeometry;
 import org.azentreprise.arionide.ui.core.geom.Connection;
 import org.azentreprise.arionide.ui.core.geom.CoreGeometry;
@@ -124,7 +124,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private final IEventDispatcher dispatcher;
 	private final Geometry mainGeometry;
 	private final CurrentCodeGeometry mainCodeGeometry;
-	private final List<Geometry> codeGeometries;
+	private List<CodeGeometry> codeGeometries;
 	//private final Geometry inheritanceGeometry;
 		
 	private final FloatBuffer modelData = FloatBuffer.allocate(16);
@@ -190,8 +190,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private boolean isControlDown = false;
 	private boolean isFastBindingMode = false;
 	
-	private List<WorldElement> inside = Collections.synchronizedList(new ArrayList<>());
-	private List<WorldElement> buffer = new ArrayList<>();
+	private final List<WorldElement> inside = Collections.synchronizedList(new ArrayList<>());
+	private final List<WorldElement> buffer = new ArrayList<>();
 	private WorldElement current;
 	private WorldElement lookingAt;
 	private WorldElement selected;
@@ -208,6 +208,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private Vector3f velocity = new Vector3f();
 	private Vector3f acceleration = new Vector3f();
 	private float generalAcceleration = initialAcceleration;
+	private TeleportInfo teleport;
 	
 	private long lastPositionUpdate = System.nanoTime();
 	
@@ -510,8 +511,59 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		OpenGLContext glContext = (OpenGLContext) context;
 		GL4 gl = glContext.getRenderer();
 		
+		this.loadGeometry();
 		this.renderUniverse(gl);
 		this.update();
+	}
+	
+	private void loadGeometry() {
+		if(this.project != null) {
+			try {
+				this.mainGeometry.processEventQueue();
+							
+				this.prepareCodeGeometry();
+				
+				for(Geometry geometry : this.codeGeometries) {					
+					geometry.processEventQueue();
+				}
+			} catch (GeometryException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void prepareCodeGeometry() {		
+		List<CodeGeometry> buffer = new ArrayList<>();
+		List<WorldElement> geometry = this.mainGeometry.getElements();
+		
+		int parentGeneration = this.project.getDataManager().getHostStack().getGeneration() - 1;
+		int childrenGeneration = parentGeneration + 2;
+		
+		float maxDistance = this.mainGeometry.getSize(parentGeneration) * 3.0f;
+		float minSize = this.mainGeometry.getSize(childrenGeneration) * 0.99f;
+		
+		for(WorldElement element : geometry) {
+			if(element.getCenter().distance(this.player) < maxDistance 				// Under a certain distance
+			&& element.getSize() > minSize  										// Bigger than a certain threshold
+			&& this.project.getStorage().getCode().containsKey(element.getID())) {  // Possessing code				
+				CodeGeometry code = this.codeGeometries.stream().filter(geom -> geom.getContainer().equals(element)).findAny().orElseGet(() -> this.generateCodeGeometry(element));
+				
+				buffer.add(code);
+				
+				if(element.equals(this.current)) {
+					this.mainCodeGeometry.updateCodeGeometry(code);
+				}
+			}
+		}
+		
+		this.codeGeometries = buffer;
+	}
+	
+	private CodeGeometry generateCodeGeometry(WorldElement container) {
+		CodeGeometry code = new CodeGeometry(container);
+		code.setProject(this.project);
+		code.requestReconstruction();
+		return code;
 	}
 	
 	private void renderUniverse(GL4 gl) {
@@ -581,139 +633,127 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		gl.glEnable(GL4.GL_BLEND);
 		
 		gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
-		
-		try {
-			this.mainGeometry.processEventQueue();
-			
-			for(Geometry geometry : this.codeGeometries) {
-				geometry.processEventQueue();
-			}
-		} catch (GeometryException e) {
-			e.printStackTrace();
-		}
-		
-		this.mainGeometry.sort(this.player);
-				
-		this.renderStructures0(gl, this.mainGeometry.getElements(), false);
-		this.renderConnections(gl, this.mainGeometry.getConnections());
-
-		if(this.scene != RenderingScene.INHERITANCE) {
+						
+		if(this.scene != RenderingScene.INHERITANCE) {			
 			for(Geometry geometry : this.codeGeometries) {
 				this.renderStructures0(gl, geometry.getElements(), true);
 				this.renderConnections(gl, geometry.getConnections());
 			}
 		}
+				
+		this.mainGeometry.sort(this.player);
+
+		this.renderStructures0(gl, this.mainGeometry.getElements(), false);
+		this.renderConnections(gl, this.mainGeometry.getConnections());
 		
 		gl.glDisable(GL4.GL_BLEND);
 		gl.glDisable(GL4.GL_DEPTH_TEST);
 	}
 	
 	private void renderStructures0(GL4 gl, List<WorldElement> elements, boolean specialResolve) {		
-		synchronized(elements) {
-			Map<String, List<WorldElement>> references = new HashMap<>();
+		Map<String, List<WorldElement>> references = new HashMap<>();
+		
+		for(WorldElement element : elements) {
+			Vector3f unitVector = new Vector3f(0.0f, 1.0f, 0.0f);
+			Vector3f delta = new Vector3f(this.player).sub(element.getCenter());
 			
-			for(WorldElement element : elements) {
-				Vector3f unitVector = new Vector3f(0.0f, 1.0f, 0.0f);
-				Vector3f delta = new Vector3f(this.player).sub(element.getCenter());
-				
-				float angle = Geometry.PI + delta.angle(unitVector);
-				Vector3f axis = unitVector.cross(delta).normalize();
-								
-				this.loadMatrix(new Matrix4f().translate(element.getCenter()).rotate(angle, axis).scale(element.getSize()), this.modelData); // For sorting
-				gl.glUniformMatrix4fv(this.structModel, 1, false, this.modelData);
-				
-				if(element != this.selected) {
-					gl.glUniform1f(this.ambientFactor, 0.5f);
-				} else {
-					gl.glUniform1f(this.ambientFactor, 1.0f);
-				}
-				
-				Vector4f color = element.getColor();
-				Vector3f spot = element.getSpotColor();
-								
-				if(this.inside.contains(element)) {
-					gl.glUniform4f(this.color, color.x, color.y, color.z, color.w / 2);
-				} else {
-					gl.glUniform4f(this.color, color.x, color.y, color.z, color.w);
-				}
-				
-				gl.glUniform3f(this.specularColor, spot.x, spot.y, spot.z);
-				
-				double viewHeight = 2.0d * Math.atan(fov / 2.0d) * this.player.distance(element.getCenter());
-				int quality = (int) (this.structures.size() * Math.min(1.0f - 10E-5f, 2 * element.getSize() / viewHeight));
-				
-				ScaledRenderingInfo info = this.structures.get(quality);
-				
-				gl.glBindVertexArray(info.getVAO());
-				gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, info.getEBO());
-				gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * info.getLayers() * (info.getLayers() - 1), GL4.GL_UNSIGNED_INT, 0);
-				
-				/* X-Resolve: Dynamic references rendering */
-				String component = element.getDescription();
+			float angle = Geometry.PI + delta.angle(unitVector);
+			Vector3f axis = unitVector.cross(delta).normalize();
+							
+			this.loadMatrix(new Matrix4f().translate(element.getCenter()).rotate(angle, axis).scale(element.getSize()), this.modelData); // For sorting
+			gl.glUniformMatrix4fv(this.structModel, 1, false, this.modelData);
+			
+			if(element != this.selected) {
+				gl.glUniform1f(this.ambientFactor, 0.5f);
+			} else {
+				gl.glUniform1f(this.ambientFactor, 1.0f);
+			}
+			
+			Vector4f color = element.getColor();
+			Vector3f spot = element.getSpotColor();
+							
+			if(this.inside.contains(element)) {
+				gl.glUniform4f(this.color, color.x, color.y, color.z, color.w / 2);
+			} else {
+				gl.glUniform4f(this.color, color.x, color.y, color.z, color.w);
+			}
+			
+			gl.glUniform3f(this.specularColor, spot.x, spot.y, spot.z);
+			
+			double viewHeight = 2.0d * Math.atan(fov / 2.0d) * this.player.distance(element.getCenter());
+			int quality = (int) (this.structures.size() * Math.min(1.0f - 10E-5f, 2 * element.getSize() / viewHeight));
+			
+			ScaledRenderingInfo info = this.structures.get(quality);
+			
+			gl.glBindVertexArray(info.getVAO());
+			gl.glBindBuffer(GL4.GL_ELEMENT_ARRAY_BUFFER, info.getEBO());
+			gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * info.getLayers() * (info.getLayers() - 1), GL4.GL_UNSIGNED_INT, 0);
+			
+			/* X-Resolve: Dynamic references rendering */
+			String component = element.getDescription();
 
-				if(specialResolve && component != null) {					
-					Vector3f first = element.getCenter();
-										
-					this.loadMatrix(new Matrix4f(), this.modelData);
-					gl.glUniformMatrix4fv(this.structModel, 1, false, this.modelData);
-					gl.glDisable(GL4.GL_DEPTH_TEST);
-					gl.glUniform4f(this.color, 1.0f, 1.0f, 1.0f, 1.0f);
-					gl.glBindVertexArray(this.connectionVAO);
-										
-					try {
-						int structRef = Integer.parseInt(component);
-						WorldElement second = this.mainGeometry.getElementByID(structRef);
+			if(specialResolve && component != null) {					
+				Vector3f first = element.getCenter();
+									
+				this.loadMatrix(new Matrix4f(), this.modelData);
+				gl.glUniformMatrix4fv(this.structModel, 1, false, this.modelData);
+				gl.glDisable(GL4.GL_DEPTH_TEST);
+				gl.glUniform4f(this.color, 1.0f, 1.0f, 1.0f, 1.0f);
+				gl.glBindVertexArray(this.connectionVAO);
+									
+				try {
+					int structRef = Integer.parseInt(component);
+					WorldElement second = this.mainGeometry.getElementByID(structRef);
+					
+					Vector4f connectionColor = second.getColor();
+					
+					gl.glUniform4f(this.color, connectionColor.x, connectionColor.y, connectionColor.z, connectionColor.w);
+					
+					if(this.selected != element && this.selected != second) {
+						gl.glUniform1f(this.ambientFactor, 0.5f);
+					} else {
+						gl.glUniform1f(this.ambientFactor, 1.0f);
+					}
+					
+					this.connect(gl, first, second.getCenter());
+				} catch(NumberFormatException e) {
+					if(component.startsWith(SpecificationElement.VAR)) {
+						/* Resolved to a variable reference */
 						
-						Vector4f connectionColor = second.getColor();
+						List<WorldElement> list = references.get(component);
+						
+						Random colorGenerator = new Random(component.hashCode());
+						
+						/* High contrast colors */
+						int red = 0x80 + colorGenerator.nextInt(0x80);
+						int green = 0x80 + colorGenerator.nextInt(0x80);
+						int blue = 0x80 + colorGenerator.nextInt(0x80);
+
+						Vector4f connectionColor = new Vector4f(red / 255.0f, green / 255.0f, blue / 255.0f, 1.0f);
 						
 						gl.glUniform4f(this.color, connectionColor.x, connectionColor.y, connectionColor.z, connectionColor.w);
 						
-						if(this.selected != element && this.selected != second) {
-							gl.glUniform1f(this.ambientFactor, 0.5f);
+						if(list != null) {
+							for(WorldElement second : list) {
+								if(this.selected != null && this.selected.getDescription() != null && this.selected.getDescription().contentEquals(component)) {
+									gl.glUniform1f(this.ambientFactor, 1.0f);
+								} else {
+									gl.glUniform1f(this.ambientFactor, 0.0f);
+								}
+								
+								this.connect(gl, first, second.getCenter());
+							}
 						} else {
-							gl.glUniform1f(this.ambientFactor, 1.0f);
+							list = new ArrayList<>();
+							references.put(component, list);
 						}
 						
-						this.connect(gl, first, second.getCenter());
-					} catch(NumberFormatException e) {
-						if(component.startsWith(SpecificationElement.VAR)) {
-							/* Resolved to a variable reference */
-							
-							List<WorldElement> list = references.get(component);
-							
-							Random colorGenerator = new Random(component.hashCode());
-							
-							/* High contrast colors */
-							int red = 0x80 + colorGenerator.nextInt(0x80);
-							int green = 0x80 + colorGenerator.nextInt(0x80);
-							int blue = 0x80 + colorGenerator.nextInt(0x80);
-
-							Vector4f connectionColor = new Vector4f(red / 255.0f, green / 255.0f, blue / 255.0f, 1.0f);
-							
-							gl.glUniform4f(this.color, connectionColor.x, connectionColor.y, connectionColor.z, connectionColor.w);
-							
-							if(list != null) {
-								for(WorldElement second : list) {
-									if(this.selected != null && this.selected.getDescription() != null && this.selected.getDescription().contentEquals(component)) {
-										gl.glUniform1f(this.ambientFactor, 1.0f);
-									} else {
-										gl.glUniform1f(this.ambientFactor, 0.0f);
-									}
-									
-									this.connect(gl, first, second.getCenter());
-								}
-							} else {
-								list = new ArrayList<>();
-								references.put(component, list);
-							}
-							
-							list.add(element);
-						}
+						list.add(element);
 					}
-					
-					gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
-					gl.glEnable(GL4.GL_DEPTH_TEST);
 				}
+				
+				gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glEnable(GL4.GL_DEPTH_TEST);
 			}
 		}
 	}
@@ -796,60 +836,58 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private void renderLabels(AppDrawingContext context, List<WorldElement> elements) {
-		synchronized(elements) {
-			synchronized(this.inside) {
-				// Construct a new perspective with a null near plane (I don't know why it has to be null ?!)
-				Matrix4f proj = new Matrix4f().perspective(fov, this.bounds.getWidth() / this.bounds.getHeight(), 0.0f, 1.0f);
-	
-				for(WorldElement element : elements) {
-					/* Context initialization */
+		synchronized(this.inside) {
+			// Construct a new perspective with a null near plane (I don't know why it has to be null ?!)
+			Matrix4f proj = new Matrix4f().perspective(fov, this.bounds.getWidth() / this.bounds.getHeight(), 0.0f, 1.0f);
+
+			for(WorldElement element : elements) {
+				/* Context initialization */
+				
+				int alpha = 0xFF;
+				
+				if(!this.inside.isEmpty()) {
+					WorldElement enclosing = this.inside.get(0);
 					
-					int alpha = 0xFF;
-					
-					if(!this.inside.isEmpty()) {
-						WorldElement enclosing = this.inside.get(0);
-						
-						if(enclosing == element) {
-							continue;
-						}
-						
-						if(element.getCenter().distance(enclosing.getCenter()) > 2 * enclosing.getSize()) {
-							alpha = 0x1F;
-						}
+					if(enclosing == element) {
+						continue;
 					}
 					
-					GL4 gl = ((OpenGLContext) context).getRenderer();
-					
-					/* World ==> Screen-space calculation */
-					Vector3f mainSpaceAnchor = element.getCenter().add(0.0f, 2.0f * element.getSize(), 0.0f);
-					Vector3f subSpaceAnchor = element.getCenter().sub(0.0f, element.getSize(), 0.0f);
-	
-					boolean renderMain = this.checkRenderability(mainSpaceAnchor);
-					boolean renderSub = this.checkRenderability(subSpaceAnchor);
-					
-					float height = -1.0f;
-					
-					if(renderMain && element.getName() != null) {
-						Vector2f screenAnchor = this.getHVCFrom3D(mainSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
-						height = 1.0f - this.getHVCFrom3D(element.getCenter().add(0.0f, element.getSize(), 0.0f), proj).mul(1.0f).add(screenAnchor).y;
-						
-						this.renderLabel(context, element.getName(), 0xFFFFFF, alpha, screenAnchor, height);
+					if(element.getCenter().distance(enclosing.getCenter()) > 2 * enclosing.getSize()) {
+						alpha = 0x1F;
 					}
-									
-					if(renderSub && element.getDescription() != null && !element.getDescription().contentEquals("?")) {
-						String description = element.getDescription().replace(SpecificationElement.VAR, "");
-											
-						Vector2f screenAnchor = this.getHVCFrom3D(subSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
-	
-						if(height < 0.0f) { // Avoid double calculation (considering both heights approximately the same: lim(dist(player, object) -> infty) {dh -> 0})
-							height = 1.0f - this.getHVCFrom3D(element.getCenter().add(0.0f, element.getSize(), 0.0f), proj).mul(1.0f).add(screenAnchor).y;
-						}
-						
-						this.renderLabel(context, description, 0x888888, alpha, screenAnchor, height);
-					}
-					
-					gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 				}
+				
+				GL4 gl = ((OpenGLContext) context).getRenderer();
+				
+				/* World ==> Screen-space calculation */
+				Vector3f mainSpaceAnchor = element.getCenter().add(0.0f, 2.0f * element.getSize(), 0.0f);
+				Vector3f subSpaceAnchor = element.getCenter().sub(0.0f, element.getSize(), 0.0f);
+
+				boolean renderMain = this.checkRenderability(mainSpaceAnchor);
+				boolean renderSub = this.checkRenderability(subSpaceAnchor);
+				
+				float height = -1.0f;
+				
+				if(renderMain && element.getName() != null) {
+					Vector2f screenAnchor = this.getHVCFrom3D(mainSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
+					height = 1.0f - this.getHVCFrom3D(element.getCenter().add(0.0f, element.getSize(), 0.0f), proj).mul(1.0f).add(screenAnchor).y;
+					
+					this.renderLabel(context, element.getName(), 0xFFFFFF, alpha, screenAnchor, height);
+				}
+								
+				if(renderSub && element.getDescription() != null && !element.getDescription().contentEquals("?")) {
+					String description = element.getDescription().replace(SpecificationElement.VAR, "");
+										
+					Vector2f screenAnchor = this.getHVCFrom3D(subSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
+
+					if(height < 0.0f) { // Avoid double calculation (considering both heights approximately the same: lim(dist(player, object) -> infty) {dh -> 0})
+						height = 1.0f - this.getHVCFrom3D(element.getCenter().add(0.0f, element.getSize(), 0.0f), proj).mul(1.0f).add(screenAnchor).y;
+					}
+					
+					this.renderLabel(context, description, 0x888888, alpha, screenAnchor, height);
+				}
+				
+				gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 			}
 		}
 	}
@@ -876,7 +914,9 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		return new Vector2f(point.x / point.z, point.y / point.z);
 	}
 
-	private void update() {	
+	private void update() {
+		this.processTeleportation();
+		
 		this.updatePlayer();
 		this.updateCamera();
 
@@ -936,7 +976,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	private void updateSpatialState() {
 		List<WorldElement> worldElements = this.mainGeometry.getCollisions(this.player);
 		worldElements.addAll(this.mainCodeGeometry.getCollisions(this.player));
-		
+						
 		synchronized(this.inside) {
 			for(WorldElement element : worldElements) {
 				if(!this.inside.remove(element)) {
@@ -951,8 +991,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			this.inside.stream().filter(((Predicate<WorldElement>) this::exitElement).negate()).forEach(this.buffer::add);
 			
 			this.inside.clear();
-			this.inside.addAll(this.buffer); // Swap buffers
-			this.buffer.clear();
+			this.inside.addAll(buffer);
+			buffer.clear();
 		}
 	}
 
@@ -978,7 +1018,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 				}
 			}
 		}
-		
+				
 		for(WorldElement element : this.mainCodeGeometry.getElements()) {
 			float currentDistance = this.player.distance(element.getCenter());
 			if(currentDistance < distance) {
@@ -1001,7 +1041,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			this.current = element;
 			this.needMenuUpdate = true;
 			this.project.getDataManager().getHostStack().push(element.getID());
-			this.buildCodeGeometry();
+			this.prepareCodeGeometry();
 			return true;
 		} else {
 			this.repulseFrom(element.getCenter());
@@ -1013,7 +1053,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.current = this.buffer.stream().reduce((a, b) -> a.getSize() < b.getSize() ? a : b).orElse(null);
 		this.needMenuUpdate = true;
 		this.project.getDataManager().getHostStack().pop();
-		this.buildCodeGeometry();
+		this.prepareCodeGeometry();
 		return true;
 	}
 	
@@ -1029,37 +1069,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			this.selected = null;
 			this.needMenuUpdate = false;
 		}
-	}
-	
-	private void buildCodeGeometry() {		
-		List<Geometry> updatedList = new ArrayList<>(this.codeGeometries);
-		
-		List<WorldElement> geometry = this.mainGeometry.getElements();
-		HostStructureStack stack = this.project.getDataManager().getHostStack();
-		
-		int parentGeneration = stack.isEmpty() ? 0 : stack.getGeneration() - 1;
-		int childrenGeneration = parentGeneration + 2;
-		
-		float maxDistance = this.mainGeometry.getSize(parentGeneration) * 1.01f;
-		float minSize = this.mainGeometry.getSize(childrenGeneration) * 0.99f;
-		
-		for(WorldElement element : geometry) {
-			if(element.getCenter().distance(this.player) < maxDistance && element.getSize() > minSize) {
-				Geometry code = new CodeGeometry(element);
-				
-				if(!this.codeGeometries.contains(code)) {
-					this.codeGeometries.add(code);
-					updatedList.add(code);
-					code.requestReconstruction();
-				}
-				
-				if(element.equals(this.current)) {
-					this.mainCodeGeometry.updateCodeGeometry(code);
-				}
-			}
-		}
-		
-		this.codeGeometries.retainAll(updatedList);
 	}
 	
 	private String getElementName(WorldElement element) {
@@ -1101,8 +1110,56 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			this.velocity.reflect(normal).normalize(this.generalAcceleration * 32.0f);
 		}
  	}
+	
+ 	public void teleport(TeleportInfo info) {
+ 		this.teleport = info;
+ 		info.updateLifeTime(500L);
+ 		System.out.println(this.project.getStorage().getCode());
+ 	}
+ 	
+	private void processTeleportation() {
+		if(this.teleport != null && this.teleport.isAlive()) {
+			WorldElement teleportElement = this.mainGeometry.getElementByID(this.teleport.getDestination());
+			WorldElement lookAtElement = this.mainCodeGeometry.getElementByID(this.teleport.getFocus());
+	
+			if(teleportElement != null) {
+				this.processTeleportation(teleportElement.getCenter().add(0.0f, teleportElement.getSize() * 0.8f, 0.0f));
+				this.teleport.updateDestination(-1);
+			}
 
-	public void teleport(Vector3f position) {
+			if(lookAtElement != null) {
+				int instructionID = -1;
+						
+				List<HierarchyElement> code = this.project.getDataManager().getCurrentCode();
+				
+				for(int i = 0; i < code.size(); i++) {
+					if(code.get(i).getID() == this.teleport.getFocus()) {
+						instructionID = i;
+					}
+				}
+							
+				if(instructionID >= 0) {
+					CodeEditor menu = MainMenus.getCodeEditor();
+	
+					menu.setTargetInstruction(instructionID);
+					
+					menu.show();
+					menu.select(instructionID);
+				}
+					
+				Vector3f lookAtVector = lookAtElement.getCenter().sub(this.player).normalize();
+				
+				this.yaw = Geometry.PI - (float) Math.atan2(lookAtVector.x, lookAtVector.z);
+				this.pitch = (float) Math.asin(lookAtVector.y);
+				
+				this.selected = lookAtElement;
+				
+				this.teleport.updateFocus(-1);
+			}
+		}
+	}
+
+	private void processTeleportation(Vector3f position) {
 		this.updatePerspective();
 		this.player.set(position);
 		
@@ -1110,88 +1167,38 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.ajustAcceleration();
 	}
 	
-	public void teleport(String identifier) {
-		String[] elements = identifier.split(":");
-		
-		assert elements.length == 2;
-				
-		try {
-			int target = Integer.parseInt(elements[0]);
-			WorldElement teleportElement = this.mainGeometry.getElementByID(target);
-			
-			this.teleport(teleportElement.getCenter().add(0.0f, teleportElement.getSize() * 0.8f, 0.0f));
-			
-			this.updateSpatialState(); // Reconstructs the code geometry as well
-			
-			int lookAt = Integer.parseInt(elements[1]);
-			WorldElement lookAtElement = this.mainCodeGeometry.getElementByID(lookAt);
-			
-			int instructionID = -1;
-					
-			List<HierarchyElement> code = this.project.getDataManager().getCurrentCode();
-			
-			for(int i = 0; i < code.size(); i++) {
-				if(code.get(i).getID() == lookAtElement.getID()) {
-					instructionID = i;
-				}
-			}
-						
-			if(instructionID >= 0) {
-				CodeEditor menu = MainMenus.getCodeEditor();
-
-				menu.setTargetInstruction(instructionID);
-				
-				menu.show();
-				menu.select(instructionID);
-			}
-				
-			if(lookAtElement != null) {
-				Vector3f lookAtVector = lookAtElement.getCenter().sub(this.player).normalize();
-				
-				this.yaw = Geometry.PI - (float) Math.atan2(lookAtVector.x, lookAtVector.z);
-				this.pitch = (float) Math.asin(lookAtVector.y);
-				
-				this.selected = lookAtElement;
-			}
-			
-			this.needMenuUpdate = false;
-		} catch(NumberFormatException e) {
-			;
-		}
-	}
-
 	public void setScene(RenderingScene scene) {
 		this.scene = scene;
-		//this.worldGeometry.loadScene(scene);
+		
+		synchronized(this.inside) {
+			this.inside.clear();
+		}
+		
+		this.codeGeometries.clear();
+		
+		long seed = project.getProperty("seed", Coder.integerDecoder);
+		
+		this.mainGeometry.updateSeed(seed);
+		
+		this.mainCodeGeometry.setProject(project);
+		this.mainGeometry.setProject(project);
+		
+		this.mainGeometry.requestReconstruction();
 		
 		if(scene != RenderingScene.HIERARCHY) {
-			this.teleport(new Vector3f(0.0f, 0.0f, 5.0f));
+			this.processTeleportation(new Vector3f(0.0f, 0.0f, 5.0f));
 			
 			this.yaw = 0.0f;
 			this.pitch = 0.0f;
 		} else {
 			CameraInfo info = this.project.getProperty("player", Coder.cameraDecoder);
 			
-			this.teleport(new Vector3f(info.getX(), info.getY(), info.getZ()));
+			this.processTeleportation(new Vector3f(info.getX(), info.getY(), info.getZ()));
 			
 			this.yaw = info.getYaw();
 			this.pitch = info.getPitch();
 		}
-				
-		synchronized(this.inside) {
-			this.inside.clear();
-		}
-		
-		this.updateSpatialState();
-		
-		long seed = project.getProperty("seed", Coder.integerDecoder);
-		
-		this.mainGeometry.updateSeed(seed);
-		// this.codeGeometry.setGenerationSeed(seed);
-		
-		this.mainGeometry.setProject(project);
-		this.mainGeometry.requestReconstruction();
-		
+
 		this.ajustAcceleration();
 	}
 	
@@ -1203,7 +1210,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.project = project;
 
 		if(project != null) {
-			this.needMenuUpdate = this.selected == null;
+			this.needMenuUpdate = this.selected == null;			
 			this.setScene(RenderingScene.HIERARCHY);
 		} else {
 			this.isInWorld = false;
@@ -1281,7 +1288,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 						break;
 					case spawnKey:
 						if(this.isControlDown && pressure.isDown()) {
-							this.teleport(new Vector3f(0.0f, 0.0f, 0.0f));
+							this.processTeleportation(new Vector3f(0.0f, 0.0f, 0.0f));
 						}
 						
 						break;

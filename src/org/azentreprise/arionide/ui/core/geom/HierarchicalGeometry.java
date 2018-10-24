@@ -57,6 +57,8 @@ public abstract class HierarchicalGeometry extends Geometry {
 	@IAm("constructing a hierarchical geometry")
 	protected void construct(List<WorldElement> elements, List<Connection> connections) throws GeometryException {
 		Storage storage = this.getProject().getStorage();
+		
+		this.factory.reset();
 
 		Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
 		

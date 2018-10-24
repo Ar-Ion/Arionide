@@ -47,7 +47,7 @@ public interface CoreRenderer {
 	public void loadProject(Project project);
 		
 	@IAm("teleporting to an element")
-	public void teleport(String identifier);
+	public void teleport(TeleportInfo info);
 	
 	public Geometry getStructuresGeometry();
 	public Geometry getCodeGeometry();

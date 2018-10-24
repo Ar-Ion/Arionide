@@ -1,4 +1,4 @@
-package org.azentreprise.arionide.ui.core;
+package org.azentreprise.arionide.project;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -14,22 +14,22 @@ public class HostStructureStack {
 	private final Deque<Integer> structIDs = new ConcurrentLinkedDeque<Integer>();
 	
 	private int generation = 0;
-	
+
 	public synchronized void push(int structID) {
 		this.structIDs.push(structID);
 		this.generation++;
-
+		
 		this.notifyObservers();
 	}
 	
 	public synchronized void pop() {
 		this.structIDs.pop();
 		this.generation--;
-		
+				
 		this.notifyObservers();
 	}
 	
-	public int getCurrent() {
+	public int getCurrent() {		
 		if(this.isEmpty()) {
 			return -1;
 		} else {
@@ -71,7 +71,7 @@ public class HostStructureStack {
 		synchronized(this.observers) {
 			copy = new HashSet<>(this.observers);
 		}
-				
+
 		for(HostStructureChangeObserver observer : copy) {
 			observer.onHostStructureChanged(this.getCurrent());
 		}

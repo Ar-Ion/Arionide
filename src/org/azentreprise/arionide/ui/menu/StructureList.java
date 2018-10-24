@@ -29,16 +29,17 @@ import org.azentreprise.arionide.events.ProjectCloseEvent;
 import org.azentreprise.arionide.events.ProjectEvent;
 import org.azentreprise.arionide.events.ProjectOpenEvent;
 import org.azentreprise.arionide.project.HierarchyElement;
+import org.azentreprise.arionide.project.HostStructureChangeObserver;
+import org.azentreprise.arionide.project.HostStructureStack;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.core.HostStructureChangeObserver;
-import org.azentreprise.arionide.ui.core.HostStructureStack;
 import org.azentreprise.arionide.ui.core.geom.Geometry;
 import org.azentreprise.arionide.ui.core.geom.WorldElement;
 
 public class StructureList extends Menu implements EventHandler, HostStructureChangeObserver {
 	
 	private Project project;
+	private List<HierarchyElement> generation;
 	
 	public StructureList(AppManager manager) {
 		super(manager);
@@ -47,11 +48,13 @@ public class StructureList extends Menu implements EventHandler, HostStructureCh
 	}
 	
 	protected void onClick(int id) {
-		WorldElement element = this.getAppManager().getCoreRenderer().getStructuresGeometry().getElementByID(id);
-		
-		if(element != null) {
-			MainMenus.getStructureEditor().setCurrent(element);
-			MainMenus.getStructureEditor().show();
+		if(this.generation != null && !this.generation.isEmpty()) {
+			WorldElement element = this.getAppManager().getCoreRenderer().getStructuresGeometry().getElementByID(this.generation.get(id).getID());
+			
+			if(element != null) {
+				MainMenus.getStructureEditor().setCurrent(element);
+				MainMenus.getStructureEditor().show();
+			}
 		}
 	}
 
@@ -74,6 +77,8 @@ public class StructureList extends Menu implements EventHandler, HostStructureCh
 				 */
 			} else if(event instanceof ProjectCloseEvent) {
 				this.project = null;
+				this.generation = null;
+				
 				stack.unregisterObserver(this);
 			}
 		}
@@ -84,7 +89,8 @@ public class StructureList extends Menu implements EventHandler, HostStructureCh
 	}
 
 	public void onHostStructureChanged(int newStruct) {
-		List<HierarchyElement> generation = this.project.getDataManager().getCurrentGeneration(this.project.getStorage().getHierarchy());
+		this.generation = this.project.getDataManager().getCurrentGeneration(this.project.getStorage().getHierarchy());
+		
 		List<String> strings = this.getElements();
 		Geometry geometry = this.getAppManager().getCoreRenderer().getStructuresGeometry();
 		

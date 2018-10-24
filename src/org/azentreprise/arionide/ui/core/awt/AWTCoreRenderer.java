@@ -25,6 +25,7 @@ import org.azentreprise.arionide.ui.AWTContext;
 import org.azentreprise.arionide.ui.AppDrawingContext;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
+import org.azentreprise.arionide.ui.core.TeleportInfo;
 import org.azentreprise.arionide.ui.core.geom.Geometry;
 import org.azentreprise.arionide.ui.topology.Bounds;
 
@@ -58,7 +59,7 @@ public class AWTCoreRenderer implements CoreRenderer {
 	}
 
 	@Override
-	public void teleport(String identifier) {
+	public void teleport(TeleportInfo info) {
 		// TODO Auto-generated method stub
 		
 	}

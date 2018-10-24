@@ -97,7 +97,7 @@ public class UserHelper {
 	}
 	
 	private void loadVars(int id, List<String> variables) {
-		List<HierarchyElement> elements = this.storage.getData().get(id);
+		List<HierarchyElement> elements = this.storage.getCode().get(id);
 				
 		for(HierarchyElement element : elements) {
 			StructureMeta meta = this.storage.getStructureMeta().get(element.getID());

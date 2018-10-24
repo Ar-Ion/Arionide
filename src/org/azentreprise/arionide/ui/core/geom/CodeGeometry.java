@@ -59,12 +59,17 @@ public class CodeGeometry extends Geometry {
 	
 	@IAm("constructing the code geometry")
 	protected void construct(List<WorldElement> elements, List<Connection> connections) {		
+		System.out.println("Constructing code...");
+
+		this.factory.reset();
+		
 		Storage storage = this.getProject().getStorage();
-		
+				
 		List<WorldElement> specification = new ArrayList<>();
+		List<HierarchyElement> input = storage.getCode().get(this.container.getID());
 		
-		this.build(this.container, storage.getData().get(this.container.getID()), elements, specification, connections, storage.getStructureMeta(), this.container.getSize() * relativeSize);
-	
+		this.build(this.container, input, elements, specification, connections, storage.getStructureMeta(), this.container.getSize() * relativeSize);
+
 		elements.addAll(specification); // So that one can iterate through the code with the wheel having to pass through an instruction's specification.
 	}
 	
@@ -87,7 +92,9 @@ public class CodeGeometry extends Geometry {
 					/* Process instruction */
 					axis.normalize(parent.getSize() * relativeDistance);
 					
-					this.factory.updateAxisGenerator(() -> this.factory.getAxisGenerator().get().cross(axis));
+					Vector3f current = this.factory.getAxisGenerator().get();
+					
+					this.factory.updateAxisGenerator(() -> current.cross(axis));
 					WorldElement output = this.factory.make(element.getID(), resolved.getName(), resolved.getComment(), new Vector3f(position), color, spotColor, size, structMeta.isAccessAllowed());
 					outputElements.add(output);
 					
@@ -140,11 +147,19 @@ public class CodeGeometry extends Geometry {
 		throw new UnsupportedOperationException("Code instructions are atomic by definition");
 	}
 	
+	public WorldElement getContainer() {
+		return this.container;
+	}
+	
 	public int hashCode() {
 		return this.container.hashCode();
 	}
 	
 	public boolean equals(Object other) {
 		return other instanceof CodeGeometry && ((CodeGeometry) other).container.equals(this.container);
+	}
+	
+	public String toString() {
+		return "<CodeGeometry for " + this.container + " (" + this.container.getID() +")>";
 	}
 }

@@ -32,9 +32,9 @@ import org.azentreprise.arionide.lang.SpecificationElement;
 import org.azentreprise.arionide.lang.TypeManager;
 import org.azentreprise.arionide.lang.UserHelper;
 import org.azentreprise.arionide.lang.Validator;
+import org.azentreprise.arionide.project.HostStructureStack;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.core.HostStructureStack;
 import org.azentreprise.arionide.ui.menu.Menu;
 
 public class TypeEditor extends Menu {

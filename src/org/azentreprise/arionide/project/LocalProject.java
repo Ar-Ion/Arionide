@@ -82,6 +82,7 @@ public class LocalProject implements Project {
 		this.storage.loadCallGraph();
 		this.storage.loadStructureMeta();
 		this.storage.loadHistory();
+		this.storage.loadCode();
 	}
 	
 	private void closeFS() {

@@ -33,9 +33,9 @@ public abstract class Geometry {
 	
 	public static final float PI = 3.141592653589793f;
 	
-	private final Map<Integer, WorldElement> elementsByID = new HashMap<>();
-	private final List<WorldElement> elements = new ArrayList<>();
-	private final List<Connection> connections = new ArrayList<>();
+	private Map<Integer, WorldElement> elementsByID = new HashMap<>();
+	private List<WorldElement> elements = new ArrayList<>();
+	private List<Connection> connections = new ArrayList<>();
 	private Project project;
 	private boolean contructionRequested = false;
 	
@@ -88,20 +88,34 @@ public abstract class Geometry {
 		if(this.contructionRequested && this.project != null) {
 			this.contructionRequested = false;
 
-			this.elementsByID.clear();
-			this.elements.clear();
-			this.connections.clear();
+			this.clearAll();
 			
 			this.construct(this.elements, this.connections);
-						
-			for(WorldElement element : this.elements) {
-				if(element != null) {
-					this.elementsByID.put(element.getID(), element);
-				} else {
-					throw new GeometryException("Geometry implementation generated at least one invalid vertex");
-				}
+			
+			this.reconstructMapping();
+		}
+	}
+	
+	private void clearAll() {
+		this.elementsByID.clear();
+		this.elements.clear();
+		this.connections.clear();
+	}
+	
+	private void reconstructMapping() throws GeometryException {
+		for(WorldElement element : this.elements) {
+			if(element != null) {
+				this.elementsByID.put(element.getID(), element);
+			} else {
+				throw new GeometryException("Geometry implementation generated at least one invalid vertex");
 			}
 		}
+	}
+	
+	public void sync(Geometry other) throws GeometryException {
+		this.elementsByID = other.elementsByID;
+		this.elements = other.elements;
+		this.connections = other.connections;
 	}
 	
 	protected abstract void construct(List<WorldElement> elements, List<Connection> connections) throws GeometryException;

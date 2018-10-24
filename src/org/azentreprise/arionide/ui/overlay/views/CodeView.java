@@ -42,6 +42,7 @@ import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.animations.FieldModifierAnimation;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
 import org.azentreprise.arionide.ui.core.RenderingScene;
+import org.azentreprise.arionide.ui.core.TeleportInfo;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.menu.Menu;
 import org.azentreprise.arionide.ui.overlay.Component;
@@ -139,10 +140,10 @@ public class CodeView extends View implements EventHandler {
 							Storage storage = this.currentProject.getStorage();
 							
 							int structID = storage.getCallGraph().get(storage.getCallGraph().size() - 1).getID();
-							int instructionID = storage.getData().get(structID).get(0).getID();
+							int instructionID = storage.getCode().get(structID).get(0).getID();
 							
 							renderer.getStructuresGeometry().requestReconstruction();
-							renderer.teleport(structID + ":" + instructionID);
+							renderer.teleport(new TeleportInfo(structID, instructionID));
 						}
 					}
 				}).start();

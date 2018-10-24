@@ -35,6 +35,7 @@ import org.azentreprise.arionide.project.HierarchyElement;
 import org.azentreprise.arionide.project.Storage;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
+import org.azentreprise.arionide.ui.core.TeleportInfo;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.overlay.View;
 import org.azentreprise.arionide.ui.overlay.Views;
@@ -111,9 +112,15 @@ public class RunView extends View implements EventHandler {
 					int end = data.indexOf(')', start);
 					
 					if(end > start) {
-						String identifier = data.substring(start + 1, end);
-						this.openView(Views.code);
-						this.getAppManager().getCoreRenderer().teleport(identifier);
+						String[] identifiers = data.substring(start + 1, end).split(":");
+						
+						if(identifiers.length == 2) {
+							int structID = Integer.parseInt(identifiers[0]);
+							int instructionID = Integer.parseInt(identifiers[1]);
+							
+							this.openView(Views.code);
+							this.getAppManager().getCoreRenderer().teleport(new TeleportInfo(structID, instructionID));	
+						}
 					}
 				}
 			}

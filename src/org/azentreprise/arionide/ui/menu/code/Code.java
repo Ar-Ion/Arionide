@@ -26,10 +26,10 @@ import java.util.Map;
 import org.azentreprise.arionide.events.MessageEvent;
 import org.azentreprise.arionide.events.MessageType;
 import org.azentreprise.arionide.project.HierarchyElement;
+import org.azentreprise.arionide.project.HostStructureStack;
 import org.azentreprise.arionide.project.Project;
 import org.azentreprise.arionide.project.StructureMeta;
 import org.azentreprise.arionide.ui.AppManager;
-import org.azentreprise.arionide.ui.core.HostStructureStack;
 import org.azentreprise.arionide.ui.menu.Menu;
 
 @Deprecated
@@ -54,7 +54,7 @@ public class Code extends Menu {
 		if(!stack.isEmpty()) {			
 			if(project != null) {
 				Map<Integer, StructureMeta> meta = this.project.getStorage().getStructureMeta();
-				List<HierarchyElement> elements = this.project.getStorage().getData().get(this.retrieveCurrentID());
+				List<HierarchyElement> elements = this.project.getStorage().getCode().get(this.retrieveCurrentID());
 				
 				this.getElements().clear();
 				
@@ -75,7 +75,7 @@ public class Code extends Menu {
 
 	public void onSelect(int id) {
 		if(project != null) {
-			HierarchyElement element = this.project.getStorage().getData().get(this.retrieveCurrentID()).get(id);
+			HierarchyElement element = this.project.getStorage().getCode().get(this.retrieveCurrentID()).get(id);
 			this.selected = element.getID();
 			this.getAppManager().getCoreRenderer().selectInstruction(this.selected);
 			this.getAppManager().getEventDispatcher().fire(new MessageEvent(this.getDescription(), MessageType.INFO));

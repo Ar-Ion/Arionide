@@ -34,7 +34,6 @@ import org.azentreprise.arionide.threading.Purgeable;
 import org.azentreprise.arionide.threading.timing.Timer;
 import org.azentreprise.arionide.ui.animations.Animation;
 import org.azentreprise.arionide.ui.core.CoreRenderer;
-import org.azentreprise.arionide.ui.core.HostStructureStack;
 import org.azentreprise.arionide.ui.layout.LayoutManager;
 import org.azentreprise.arionide.ui.menu.MainMenus;
 import org.azentreprise.arionide.ui.overlay.AlphaLayeringSystem;
@@ -48,7 +47,6 @@ public class AppManager implements Purgeable {
 	private final FocusManager focusManager;
 	private final Timer systemTimer;
 	private final AlphaLayeringSystem alphaLayering;
-	private final HostStructureStack hostStructure;
 	
 	private final List<Animation> animations = Collections.synchronizedList(new ArrayList<>());
 	
@@ -66,7 +64,6 @@ public class AppManager implements Purgeable {
 		this.focusManager = new FocusManager(dispatcher);
 		this.systemTimer = new Timer(dispatcher);
 		this.alphaLayering = new AlphaLayeringSystem();
-		this.hostStructure = new HostStructureStack();
 		
 		MainMenus.init(this);
 	}
@@ -148,10 +145,6 @@ public class AppManager implements Purgeable {
 	
 	public CoreRenderer getCoreRenderer() {
 		return this.renderer;
-	}
-	
-	public HostStructureStack getHostStructure() {
-		return this.hostStructure;
 	}
 	
 	public void shutdown() {

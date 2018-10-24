@@ -61,14 +61,14 @@ public class CodeEditor extends Menu {
 	
 	public void setTargetInstruction(int id) {
 		Project project = this.getAppManager().getWorkspace().getCurrentProject();
-
+		
 		if(project != null) {
-			int hostStructureID = this.getAppManager().getHostStructure().getCurrent();
-			
-			this.instructionID = id;
-			this.instruction = project.getStorage().getData().get(hostStructureID).get(id);
-			this.instructionMeta = project.getStorage().getStructureMeta().get(this.instruction.getID());
+			int hostStructureID = project.getDataManager().getHostStack().getCurrent();
 						
+			this.instructionID = id;
+			this.instruction = project.getStorage().getCode().get(hostStructureID).get(id);
+			this.instructionMeta = project.getStorage().getStructureMeta().get(this.instruction.getID());
+									
 			assert this.instructionMeta != null;
 			
 			List<String> list = this.getElements().subList(4, this.getElements().size());
