@@ -26,8 +26,6 @@ import java.awt.Paint;
 import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
 
-import org.azentreprise.ui.render.ComplexProjectRenderer;
-
 public class Sphere {
 	
 	private static volatile float[] fractions;
@@ -44,7 +42,7 @@ public class Sphere {
 		colors = new Color[] { 
 			new Color(Color.HSBtoRGB(hue, saturation, 0.5f)),
 			new Color(Color.HSBtoRGB(hue, saturation, 0.7f)), 
-			ComplexProjectRenderer.glow,
+			new Color(Color.HSBtoRGB(0.6f, 0.75f, 0.75f)),
 			new Color(0, true)
 		};
 	}

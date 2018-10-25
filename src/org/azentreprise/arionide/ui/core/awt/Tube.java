@@ -28,8 +28,6 @@ import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
-import org.azentreprise.ui.render.ComplexProjectRenderer;
-
 public class Tube {
 	
 	private static volatile float[] fractions;
@@ -46,7 +44,7 @@ public class Tube {
 		colors = new Color[] {
 			new Color(Color.HSBtoRGB(hue, saturation, 0.7f)),
 			new Color(Color.HSBtoRGB(hue, saturation, 1.0f)),
-			ComplexProjectRenderer.glow,
+			new Color(Color.HSBtoRGB(0.6f, 0.75f, 0.75f)),
 			new Color(0, true),
 		};
 	}
