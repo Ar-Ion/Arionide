@@ -95,7 +95,7 @@ import com.jogamp.opengl.GLContext;
 public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		
 	private static final int structureRenderingQuality = 32;
-	private static final boolean crystalMode = true;
+	private static final boolean crystalMode = false;
 	private static final int crystalQuality = 2;
 	
 	private static final int smallStars = 2048;
@@ -920,8 +920,8 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.updatePlayer();
 		this.updateCamera();
 
-		this.updateSpatialState();
-		this.checkForTarget();
+		this.detectCollisions();
+		this.detectSightFocus();
 		
 		this.updateMenu();
 		
@@ -973,10 +973,13 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.updatePerspective();
 	}
 	
-	private void updateSpatialState() {
+	// Requires the geometries to be sorted
+	private void detectCollisions() {
 		List<WorldElement> worldElements = this.mainGeometry.getCollisions(this.player);
 		worldElements.addAll(this.mainCodeGeometry.getCollisions(this.player));
-						
+			
+		Collections.reverse(worldElements); // From furtherest to nearest
+		
 		synchronized(this.inside) {
 			for(WorldElement element : worldElements) {
 				if(!this.inside.remove(element)) {
@@ -990,13 +993,47 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 
 			this.inside.stream().filter(((Predicate<WorldElement>) this::exitElement).negate()).forEach(this.buffer::add);
 			
+			this.buffer.sort((a, b) -> Float.compare(Geometry.distance(this.player, b), Geometry.distance(this.player, a)));
+			
+			if(!this.buffer.isEmpty()) {
+				this.current = this.buffer.get(0);
+			}
+			
 			this.inside.clear();
-			this.inside.addAll(buffer);
-			buffer.clear();
+			this.inside.addAll(this.buffer);
+			this.buffer.clear();
 		}
 	}
-
-	private void checkForTarget() {
+	
+	private boolean enterElement(WorldElement element) {
+		if(element.isAccessAllowed()) {
+			this.current = element;
+			this.needMenuUpdate = true;
+			this.project.getDataManager().getHostStack().push(element.getID());
+			this.prepareCodeGeometry();
+			return true;
+		} else {
+			this.repulseFrom(element.getCenter());
+			return false;
+		}
+	}
+	
+	private boolean exitElement(WorldElement element) {
+		this.needMenuUpdate = true;
+		this.project.getDataManager().getHostStack().pop();
+		this.prepareCodeGeometry();
+		return true;
+	}
+	
+ 	private void repulseFrom(Vector3f position) {
+		Vector3f normal = new Vector3f(this.player).sub(position).normalize();
+		
+		if(new Vector3f(this.velocity).normalize().dot(normal) < 0.0d) {
+			this.velocity.reflect(normal).normalize(this.generalAcceleration * 32.0f);
+		}
+ 	}
+	
+	private void detectSightFocus() {
 		Vector3f cameraDirection = this.getDOF();
 		float size = this.mainGeometry.getSize(this.inside.size());
 		
@@ -1034,27 +1071,6 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 	
 	private Vector3f getDOF() {
 		return new Vector3f(-this.viewData.get(2), -this.viewData.get(6), -this.viewData.get(10));
-	}
-	
-	private boolean enterElement(WorldElement element) {
-		if(element.isAccessAllowed()) {
-			this.current = element;
-			this.needMenuUpdate = true;
-			this.project.getDataManager().getHostStack().push(element.getID());
-			this.prepareCodeGeometry();
-			return true;
-		} else {
-			this.repulseFrom(element.getCenter());
-			return false;
-		}
-	}
-	
-	private boolean exitElement(WorldElement element) {
-		this.current = this.buffer.stream().reduce((a, b) -> a.getSize() < b.getSize() ? a : b).orElse(null);
-		this.needMenuUpdate = true;
-		this.project.getDataManager().getHostStack().pop();
-		this.prepareCodeGeometry();
-		return true;
 	}
 	
 	private void updateMenu() {
@@ -1102,19 +1118,10 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		modelData.put(14, matrix.m32());
 		modelData.put(15, matrix.m33());
 	}
-	
- 	private void repulseFrom(Vector3f position) {
-		Vector3f normal = new Vector3f(this.player).sub(position).normalize();
-		
-		if(new Vector3f(this.velocity).normalize().dot(normal) < 0.0d) {
-			this.velocity.reflect(normal).normalize(this.generalAcceleration * 32.0f);
-		}
- 	}
-	
+
  	public void teleport(TeleportInfo info) {
  		this.teleport = info;
  		info.updateLifeTime(500L);
- 		System.out.println(this.project.getStorage().getCode());
  	}
  	
 	private void processTeleportation() {
@@ -1163,7 +1170,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 		this.updatePerspective();
 		this.player.set(position);
 		
-		this.updateSpatialState();
+		this.detectCollisions();
 		this.ajustAcceleration();
 	}
 	

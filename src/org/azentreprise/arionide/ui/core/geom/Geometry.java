@@ -122,11 +122,11 @@ public abstract class Geometry {
 	public abstract float getSize(int generation);
 	public abstract float getRelativeSize(int generation); // assert getRelativeSize(0) - 1.0f < Math.ulp(1.0f);
 
-	private static float distance(Vector3f camera, WorldElement element) {
+	public static float distance(Vector3f camera, WorldElement element) {
 		return element.getCenter().distance(camera) - element.getSize();
 	}
 	
-	private static float distance(Vector3f camera, Connection connection) {
+	public static float distance(Vector3f camera, Connection connection) {
 		return connection.getFirstElement().getCenter().add(connection.getSecondElement().getCenter()).mul(0.5f).distance(camera);
 	}
 }
