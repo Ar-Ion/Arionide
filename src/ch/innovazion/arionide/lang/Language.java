@@ -26,25 +26,16 @@ public class Language {
 	private final Types types;
 	private final InstructionSet instructionSet;
 	private final Runtime runtime;
-	
-	private boolean ready = false;
-	
+		
 	public Language(UserHelper userHelper, Types types, InstructionSet set, Runtime runtime) {
 		this.userHelper = userHelper;
 		this.types = types;
 		this.instructionSet = set;
 		this.runtime = runtime;
-	}
-	
-	public void postInit() {
+		
 		this.instructionSet.install();
-		this.ready = true;
 	}
-	
-	public boolean isReady() {
-		return this.ready;
-	}
-	
+
 	public UserHelper getUserHelper() {
 		return this.userHelper;
 	}

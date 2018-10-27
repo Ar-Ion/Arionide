@@ -140,7 +140,7 @@ public class CodeView extends View implements EventHandler {
 							Storage storage = this.currentProject.getStorage();
 							
 							int structID = storage.getCallGraph().get(storage.getCallGraph().size() - 1).getID();
-							int instructionID = storage.getCode().get(structID).get(0).getID();
+							int instructionID = storage.getCode().get(structID).getChain().get(0).getID();
 							
 							renderer.getStructuresGeometry().requestReconstruction();
 							renderer.teleport(new TeleportInfo(structID, instructionID));

@@ -26,6 +26,7 @@ import ch.innovazion.arionide.Resource;
 import ch.innovazion.arionide.Saveable;
 import ch.innovazion.arionide.debugging.IAm;
 import ch.innovazion.arionide.lang.Language;
+import ch.innovazion.arionide.project.managers.DataManager;
 
 public interface Project extends Resource, MappedStructure, Loadable, Saveable {
 	

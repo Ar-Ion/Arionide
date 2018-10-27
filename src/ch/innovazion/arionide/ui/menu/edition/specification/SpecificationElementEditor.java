@@ -88,7 +88,7 @@ public abstract class SpecificationElementEditor extends Menu {
 						Project project = this.getAppManager().getWorkspace().getCurrentProject();
 						
 						if(project != null) {
-							MessageEvent message = project.getDataManager().refactorSpecificationName(this.specification, this.id, name);
+							MessageEvent message = project.getDataManager().getSpecificationManager().refactorName(this.specification, this.id, name);
 							this.getAppManager().getEventDispatcher().fire(message);
 						}
 						

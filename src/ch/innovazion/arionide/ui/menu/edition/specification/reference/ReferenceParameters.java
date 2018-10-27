@@ -25,8 +25,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import ch.innovazion.arionide.events.MessageEvent;
-import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.Specification;
@@ -73,9 +71,7 @@ public class ReferenceParameters extends Menu {
 				
 				if(name != null) {
 					Data data = new Data(name, null, -1);
-					this.parameters.add(data);
-					this.getAppManager().getEventDispatcher().fire(new MessageEvent("Data parameter successfully added", MessageType.SUCCESS));
-					this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
+					this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().addParam(parameters, data);
 					
 					Menu selector = new ReferenceParameterDataTypeSelector(this.getAppManager(), this, this.spec, this.id, this.parameters.size() - 1);
 					selector.show();
@@ -87,9 +83,7 @@ public class ReferenceParameters extends Menu {
 				
 				if(name != null) {
 					Reference ref = new Reference(name, null, new ArrayList<>(), new ArrayList<>());
-					this.parameters.add(ref);
-					this.getAppManager().getEventDispatcher().fire(new MessageEvent("Reference parameter successfully added", MessageType.SUCCESS));
-					this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
+					this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().addParam(parameters, ref);
 
 					this.load();
 					this.show();

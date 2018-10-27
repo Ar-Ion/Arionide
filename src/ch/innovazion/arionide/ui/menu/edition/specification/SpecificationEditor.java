@@ -89,7 +89,7 @@ public class SpecificationEditor extends SpecificMenu {
 				
 				if(name != null) {
 					SpecificationElement element = new Data(name, null, -1);
-					MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().addSpecificationElement(this.specification, element);
+					MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().addElement(this.specification, element);
 					this.getAppManager().getEventDispatcher().fire(event);
 					
 					TypeSelector selector = new TypeSelector(this.getAppManager(), this, this.specification, this.specification.getElements().size() - 1);
@@ -102,7 +102,7 @@ public class SpecificationEditor extends SpecificMenu {
 				
 				if(name != null) {
 					SpecificationElement element = new Reference(name, null, new ArrayList<>(), new ArrayList<>());
-					MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().addSpecificationElement(this.specification, element);
+					MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().addElement(this.specification, element);
 					this.getAppManager().getEventDispatcher().fire(event);
 					
 					this.reload();

@@ -23,7 +23,6 @@ package ch.innovazion.arionide.ui.menu.code;
 import java.util.List;
 
 import ch.innovazion.arionide.events.MessageEvent;
-import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.menu.Menu;
@@ -50,10 +49,8 @@ public class ReferenceBinding extends Menu {
 	
 	public void onClick(int id) {
 		if(id != 0) {
-			this.possible.get(id - 1).setValue(SpecificationElement.VAR + this.element.getName());
-			this.element.setValue(null);
-			this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
-			this.getAppManager().getEventDispatcher().fire(new MessageEvent("Parameter successfully bound", MessageType.SUCCESS));
+			MessageEvent msg = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().bindParameter(this.element, this.possible.get(id - 1));
+			this.getAppManager().getEventDispatcher().fire(msg);
 		}
 		
 		this.parent.show();

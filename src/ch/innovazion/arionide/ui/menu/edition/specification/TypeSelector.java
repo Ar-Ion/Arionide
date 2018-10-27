@@ -58,7 +58,7 @@ public class TypeSelector extends Menu {
 	
 	public void onClick(int id) {
 		if(id < this.getElements().size() - 1) {
-			MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().refactorSpecificationType(this.specification, this.id, id);
+			MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().refactorType(this.specification, this.id, id);
 			this.getAppManager().getEventDispatcher().fire(event);
 			
 			if(this.parent instanceof SpecificMenu) {

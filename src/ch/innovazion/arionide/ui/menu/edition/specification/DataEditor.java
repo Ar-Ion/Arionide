@@ -78,7 +78,7 @@ public class DataEditor extends SpecificationElementEditor {
 		Project project = this.getAppManager().getWorkspace().getCurrentProject();
 		
 		if(project != null) {
-			MessageEvent message = project.getDataManager().deleteSpecificationElement(this.getSpecification(), this.getElementID());
+			MessageEvent message = project.getDataManager().getSpecificationManager().deleteElement(this.getSpecification(), this.getElementID());
 			this.getAppManager().getEventDispatcher().fire(message);
 			
 			this.getParent().reload();

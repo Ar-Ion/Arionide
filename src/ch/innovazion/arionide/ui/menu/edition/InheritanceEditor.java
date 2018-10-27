@@ -54,7 +54,7 @@ public class InheritanceEditor extends Menu {
 				
 				if(project != null) {
 
-					message = project.getDataManager().desinherit(this.target, this.parent.getCurrent().getID());
+					message = project.getDataManager().getInheritanceManager().disinherit(this.target, this.parent.getCurrent().getID());
 				} else {
 					message = new MessageEvent("No project is currently loaded", MessageType.ERROR);
 				}

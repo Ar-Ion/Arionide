@@ -40,6 +40,7 @@ import ch.innovazion.arionide.lang.UserHelper;
 import ch.innovazion.arionide.lang.natives.NativeInstructionSet;
 import ch.innovazion.arionide.lang.natives.NativeRuntime;
 import ch.innovazion.arionide.lang.natives.NativeTypes;
+import ch.innovazion.arionide.project.managers.DataManager;
 
 import java.util.Random;
 
@@ -78,12 +79,16 @@ public class LocalProject implements Project {
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(this::closeFS));
 		
-		this.storage.loadHierarchy();
-		this.storage.loadInheritance();
-		this.storage.loadCallGraph();
-		this.storage.loadStructureMeta();
-		this.storage.loadHistory();
-		this.storage.loadCode();
+		try {
+			this.storage.loadHierarchy();
+			this.storage.loadInheritance();
+			this.storage.loadCallGraph();
+			this.storage.loadStructureMeta();
+			this.storage.loadHistory();
+			this.storage.loadCode();
+		} catch (StorageException exception) {
+			Debug.exception(exception);
+		}
 	}
 	
 	private void closeFS() {
@@ -120,7 +125,6 @@ public class LocalProject implements Project {
 			this.verifyProtocol();
 						
 			this.language = new Language(new UserHelper(this.storage), new NativeTypes(), new NativeInstructionSet(this), new NativeRuntime(this));
-			this.language.postInit();
 		} catch (Exception exception) {
 			Debug.exception(exception);
 		}

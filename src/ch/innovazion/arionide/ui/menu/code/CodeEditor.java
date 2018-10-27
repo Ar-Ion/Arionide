@@ -66,7 +66,7 @@ public class CodeEditor extends Menu {
 			int hostStructureID = project.getDataManager().getHostStack().getCurrent();
 						
 			this.instructionID = id;
-			this.instruction = project.getStorage().getCode().get(hostStructureID).get(id);
+			this.instruction = project.getStorage().getCode().get(hostStructureID).getChain().get(id);
 			this.instructionMeta = project.getStorage().getStructureMeta().get(this.instruction.getID());
 									
 			assert this.instructionMeta != null;
@@ -91,7 +91,7 @@ public class CodeEditor extends Menu {
 			this.appender.show();
 		} else if(element == delete) {
 			if(this.instructionID > 0) {
-				MessageEvent message = project.getDataManager().deleteCode(this.instructionID);
+				MessageEvent message = project.getDataManager().getCodeManager().deleteCode(this.instructionID);
 				manager.getEventDispatcher().fire(message);
 				manager.getCoreRenderer().getCodeGeometry().requestReconstruction();
 				this.parent.select(this.instructionID - 1);

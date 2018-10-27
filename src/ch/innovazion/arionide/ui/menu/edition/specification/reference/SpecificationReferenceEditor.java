@@ -20,10 +20,6 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.menu.edition.specification.reference;
 
-import java.util.ArrayList;
-
-import ch.innovazion.arionide.events.MessageEvent;
-import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.ui.AppManager;
@@ -48,15 +44,7 @@ public class SpecificationReferenceEditor extends SpecificationElementEditor {
 
 		switch(element) {
 			case callability:				
-				if(reference.getSpecificationParameters() != null) {
-					reference.setSpecificationParameters(null);
-					this.getAppManager().getEventDispatcher().fire(new MessageEvent("This reference is not callable anymore", MessageType.SUCCESS));
-				} else {
-					reference.setSpecificationParameters(new ArrayList<>());
-					this.getAppManager().getEventDispatcher().fire(new MessageEvent("This reference is now callable", MessageType.SUCCESS));
-				}
-				
-				this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
+				this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().toggleCallability(reference);
 				
 				break;
 			case setParameters:
@@ -70,10 +58,7 @@ public class SpecificationReferenceEditor extends SpecificationElementEditor {
 	}
 	
 	public void delete() {
-		this.getSpecification().getElements().remove(this.getElement());
-		
-		this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
-		this.getAppManager().getEventDispatcher().fire(new MessageEvent("Reference sucessfully removed", MessageType.SUCCESS));
+		this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().remove(this.getSpecification(), this.getElement());
 		
 		this.getParent().reload();
 		this.getParent().show();

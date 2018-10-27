@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.function.Function;
 
 import ch.innovazion.arionide.ui.topology.Affine;
 import ch.innovazion.arionide.ui.topology.Application;
@@ -36,18 +37,6 @@ public class Utils {
 	
 	public static double fakeComplexPower(double x, double power) {
 		return Math.signum(x) * Math.pow(Math.abs(x), power);
-	}
-	
-	public static int fakeDivision(int dividend, int divisor, int infinity) {
-		if(divisor != 0) {
-			return dividend / divisor;
-		} else {
-			if(dividend == 0) {
-				return 1;
-			} else {
-				return infinity;
-			}
-		}
 	}
 	
 	public static int search(byte[] data, int start, int length, byte element) {
@@ -137,5 +126,15 @@ public class Utils {
 	
 	public <T> T getLast(List<T> list) {
 		return list.get(list.size() - 1);
+	}
+	
+	public static <T, K> boolean contains(List<T> list, K key, Function<T, K> extractor) {
+		for(T obj : list) {
+			if(extractor.apply(obj).equals(key)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

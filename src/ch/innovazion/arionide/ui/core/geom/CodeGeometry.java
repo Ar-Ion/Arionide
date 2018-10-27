@@ -67,14 +67,14 @@ public class CodeGeometry extends Geometry {
 		Storage storage = this.getProject().getStorage();
 				
 		List<WorldElement> specification = new ArrayList<>();
-		List<HierarchyElement> input = storage.getCode().get(this.container.getID());
+		List<? extends HierarchyElement> input = storage.getCode().get(this.container.getID()).getChain();
 		
 		this.build(this.container, input, elements, specification, connections, storage.getStructureMeta(), this.container.getSize() * relativeSize);
 
 		elements.addAll(specification); // So that one can iterate through the code with the wheel having to pass through an instruction's specification.
 	}
 	
-	private void build(WorldElement parent, List<HierarchyElement> input, List<WorldElement> outputElements, List<WorldElement> outputSpecification, List<Connection> outputConnections, Map<Integer, StructureMeta> meta, float size) {
+	private void build(WorldElement parent, List<? extends HierarchyElement> input, List<WorldElement> outputElements, List<WorldElement> outputSpecification, List<Connection> outputConnections, Map<Integer, StructureMeta> meta, float size) {
 		Vector3f axis = parent.getAxis();
 		Vector3f position = parent.getCenter();
 				

@@ -92,7 +92,7 @@ public class ReferenceParameterDataEditor extends SpecificMenu {
 						Project project = this.getAppManager().getWorkspace().getCurrentProject();
 						
 						if(project != null) {
-							MessageEvent message = project.getDataManager().refactorParameterName(this.spec, this.id, this.dataID, name);
+							MessageEvent message = project.getDataManager().getSpecificationManager().refactorParameterName(this.spec, this.id, this.dataID, name);
 							this.getAppManager().getEventDispatcher().fire(message);
 							
 							this.reload();

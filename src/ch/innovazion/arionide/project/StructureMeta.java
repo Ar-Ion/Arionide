@@ -23,80 +23,13 @@ package ch.innovazion.arionide.project;
 import java.io.Serializable;
 
 import ch.innovazion.arionide.lang.Specification;
-import ch.innovazion.arionide.ui.menu.edition.Coloring;
 
-public class StructureMeta implements Serializable {
-	private static final long serialVersionUID = 5582101421258702064L;
-	
-	private String name = new String("?");
-	private String comment = new String("?");
-	private int colorID = Coloring.WHITE;
-	private int spotColorID = Coloring.WHITE;
-	private boolean accessAllowed = true;
-	private Specification specification;
-	private int language = 0;
-
-	public StructureMeta(int specID) {
-		this.specification = new Specification(specID);
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-	
-	protected void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getComment() {
-		return this.comment;
-	}
-	
-	protected void setComment(String comment) {
-		this.comment = comment;
-	}
-	
-	public int getColorID() {
-		return this.colorID;
-	}
-	
-	protected void setColorID(int colorID) {
-		this.colorID = colorID;
-	}
-	
-	public int getSpotColorID() {
-		return this.spotColorID;
-	}
-	
-	protected void setSpotColorID(int spotColorID) {
-		this.spotColorID = spotColorID;
-	}
-	
-	public boolean isAccessAllowed() {
-		return this.accessAllowed;
-	}
-	
-	protected void setAccessAllowed(boolean allowed) {
-		this.accessAllowed = allowed;
-	}
-
-	public Specification getSpecification() {
-		return this.specification;
-	}
-	
-	protected void setSpecification(Specification specification) {
-		this.specification = specification;
-	}
-	
-	public int getLanguage() {
-		return this.language;
-	}
-
-	protected void setLanguage(int language) {
-		this.language = language;
-	}
-	
-	public String toString() {
-		return "[Name: " + this.name + "; Comment: " + this.comment + "; Specification: [" + this.specification + "]]";
-	}
+public interface StructureMeta extends Serializable {	
+	public String getName();
+	public String getComment();
+	public int getColorID();
+	public int getSpotColorID();
+	public boolean isAccessAllowed();
+	public Specification getSpecification();
+	public int getLanguage();
 }

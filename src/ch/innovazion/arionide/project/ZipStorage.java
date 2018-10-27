@@ -34,13 +34,17 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.debugging.IAm;
+import ch.innovazion.arionide.project.mutables.MutableCodeChain;
+import ch.innovazion.arionide.project.mutables.MutableHierarchyElement;
+import ch.innovazion.arionide.project.mutables.MutableHistoryElement;
+import ch.innovazion.arionide.project.mutables.MutableInheritanceElement;
+import ch.innovazion.arionide.project.mutables.MutableStructureMeta;
 
 public class ZipStorage extends Storage {
 
@@ -85,12 +89,12 @@ public class ZipStorage extends Storage {
 			this.initFS0();
 						
 			this.metaPath = this.init(null, null, "meta", "project");
-			this.hierarchyPath = this.init(ArrayList<HierarchyElement>::new, e -> this.hierarchy = e, "struct", "hierarchy");
-			this.inheritancePath = this.init(HashMap<Integer, InheritanceElement>::new, e -> this.inheritance = e, "struct", "inheritance");
-			this.callGraphPath = this.init(ArrayList<HierarchyElement>::new, e -> this.callGraph = e, "struct", "callgraph");
-			this.structureMetaPath = this.init(HashMap<Integer, StructureMeta>::new, e -> this.structMeta = e, "meta", "structures");
-			this.historyPath = this.init(ArrayList<HistoryElement>::new, e -> this.history = e, "history");
-			this.dataPath = this.init(HashMap<Integer, List<HierarchyElement>>::new, e -> this.code = e, "data");
+			this.hierarchyPath = this.init(ArrayList<MutableHierarchyElement>::new, e -> this.setMutableHierarchy(e), "struct", "hierarchy");
+			this.inheritancePath = this.init(HashMap<Integer, MutableInheritanceElement>::new, e -> this.setMutableInheritance(e), "struct", "inheritance");
+			this.callGraphPath = this.init(ArrayList<MutableHierarchyElement>::new, e -> this.setMutableCallGraph(e), "struct", "callgraph");
+			this.structureMetaPath = this.init(HashMap<Integer, MutableStructureMeta>::new, e -> this.setMutableStructureMeta(e), "meta", "structures");
+			this.historyPath = this.init(ArrayList<MutableHistoryElement>::new, e -> this.setMutableHistory(e), "history");
+			this.dataPath = this.init(HashMap<Integer, MutableCodeChain>::new, e -> this.setMutableCode(e), "data");
 		} catch (IOException exception) {
 			Debug.exception(exception);
 		}
@@ -151,71 +155,70 @@ public class ZipStorage extends Storage {
 		return this.metaPath;
 	}
 	
-	public void loadHierarchy() {	
-		this.hierarchy = this.load(this.hierarchyPath);
+	public void loadHierarchy() throws StorageException {	
+		this.setMutableHierarchy(this.load(this.hierarchyPath));
 	}
 	
-	public void saveHierarchy() {
-		this.save(this.hierarchyPath, this.hierarchy);
+	public void saveHierarchy() throws StorageException {
+		this.save(this.hierarchyPath, this.getMutableHierarchy());
 	}
 	
-	public void loadInheritance() {	
-		this.inheritance = this.load(this.inheritancePath);
+	public void loadInheritance() throws StorageException {	
+		this.setMutableInheritance(this.load(this.inheritancePath));
 	}
 	
-	public void saveInheritance() {
-		this.save(this.inheritancePath, this.inheritance);
+	public void saveInheritance() throws StorageException {
+		this.save(this.inheritancePath, this.getMutableInheritance());
 	}
 	
-	public void loadCallGraph() {	
-		this.callGraph = this.load(this.callGraphPath);
+	public void loadCallGraph() throws StorageException {	
+		this.setMutableCallGraph(this.load(this.callGraphPath));
 	}
 	
-	public void saveCallGraph() {
-		this.save(this.callGraphPath, this.callGraph);
+	public void saveCallGraph() throws StorageException {
+		this.save(this.callGraphPath, this.getMutableCallGraph());
 	}
 	
-	public void loadStructureMeta() {	
-		this.structMeta = this.load(this.structureMetaPath);
+	public void loadStructureMeta() throws StorageException {	
+		this.setMutableStructureMeta(this.load(this.structureMetaPath));
 	}
 	
-	public void saveStructureMeta() {
-		this.save(this.structureMetaPath, this.structMeta);
+	public void saveStructureMeta() throws StorageException {
+		this.save(this.structureMetaPath, this.getMutableStructureMeta());
 	}
 	
-	public void loadHistory() {	
-		this.history = this.load(this.historyPath);
+	public void loadHistory() throws StorageException {	
+		this.setMutableHistory(this.load(this.historyPath));
 	}
 	
-	public void saveHistory() {
-		this.save(this.historyPath, this.history);
+	public void saveHistory() throws StorageException {
+		this.save(this.historyPath, this.getMutableHistory());
 	}
 	
-	public void loadCode() {
-		this.code = this.load(this.dataPath);
+	public void loadCode() throws StorageException {
+		this.setMutableCode(this.load(this.dataPath));
 	}
 	
-	public void saveCode() {
-		this.save(this.dataPath, this.code);
+	public void saveCode() throws StorageException {
+		this.save(this.dataPath, this.getMutableCode());
 	}
 	
 	@SuppressWarnings("unchecked")
-	private synchronized <T extends Serializable> T load(Path path) {
+	private synchronized <T extends Serializable> T load(Path path) throws StorageException {
 		try(ObjectInputStream input = new ObjectInputStream(Files.newInputStream(path))) {
 			return (T) input.readObject();
 		} catch (IOException | ClassNotFoundException exception) {
-			Debug.exception(exception);
-			return null;
+			throw new StorageException("Unable to load resource", exception);
 		}
 	}
 	
-	private synchronized void save(Path path, Object object) {
+	private synchronized void save(Path path, Object object) throws StorageException {
 		assert object instanceof Serializable;
 
 		try(ObjectOutputStream output = new ObjectOutputStream(Files.newOutputStream(path, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING))) {
 			output.writeObject(object);
 		} catch (IOException exception) {
-			Debug.exception(exception);
+			throw new StorageException("Unable to save resource", exception);
 		}
 	}
 }

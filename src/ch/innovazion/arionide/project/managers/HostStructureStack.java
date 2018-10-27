@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.project;
+package ch.innovazion.arionide.project.managers;
 
 import java.util.Collection;
 import java.util.Collections;

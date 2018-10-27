@@ -1,0 +1,131 @@
+package ch.innovazion.arionide.project.managers;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.MessageType;
+import ch.innovazion.arionide.lang.Data;
+import ch.innovazion.arionide.lang.Reference;
+import ch.innovazion.arionide.lang.Specification;
+import ch.innovazion.arionide.lang.SpecificationElement;
+import ch.innovazion.arionide.project.Manager;
+import ch.innovazion.arionide.project.Storage;
+import ch.innovazion.arionide.project.StructureMeta;
+
+public class SpecificationManager extends Manager {
+		
+	protected SpecificationManager(Storage storage) {
+		super(storage);
+	}
+	
+	public MessageEvent addElement(Specification spec, SpecificationElement element) {
+		this.doForeachConnectedSpecification(spec, other -> other.getElements().add(element));
+	
+		this.saveMeta();
+		
+		return new MessageEvent("Specification successfully updated", MessageType.SUCCESS);
+	}
+	
+	public MessageEvent deleteElement(Specification spec, int id) {
+		this.doForeachConnectedSpecification(spec, l -> l.getElements().remove(id));
+
+		this.saveMeta();
+
+		return new MessageEvent("Specification element successfully deleted", MessageType.SUCCESS);
+	}
+	
+	public MessageEvent refactorName(Specification spec, int id, String newName) {
+		this.doForeachConnectedSpecification(spec, l -> l.getElements().get(id).setName(newName));
+
+		this.saveMeta();
+		
+		return new MessageEvent("Name successfully refactored", MessageType.SUCCESS);
+	}
+
+	public MessageEvent refactorType(Specification spec, int id, int newType) {
+		this.doForeachConnectedSpecification(spec, l -> ((Data) l.getElements().get(id)).setType(newType));
+		
+		this.saveMeta();
+		
+		return new MessageEvent("Type successfully refactored", MessageType.SUCCESS);
+	}
+	
+	public MessageEvent refactorParameterName(Specification spec, int id, int data, String newName) {
+		this.doForeachConnectedSpecification(spec, l -> ((Reference) l.getElements().get(id)).getNeededParameters().get(data).setName(newName));
+
+		this.saveMeta();
+		
+		return new MessageEvent("Name successfully refactored", MessageType.SUCCESS);
+	}
+	
+	public MessageEvent refactorParameterType(Specification spec, int id, int data, int newType) {
+		this.doForeachConnectedSpecification(spec, l -> ((Data) ((Reference) l.getElements().get(id)).getNeededParameters().get(data)).setType(newType));
+		
+		this.saveMeta();
+		
+		return new MessageEvent("Type successfully refactored", MessageType.SUCCESS);
+	}
+	
+	public MessageEvent bind(SpecificationElement sourceParam, SpecificationElement targetParam) {
+		sourceParam.setValue(targetParam.getValue());
+		
+		this.saveMeta();
+									
+		return new MessageEvent("Parameter successfully bound", MessageType.SUCCESS);
+	}
+	
+	public MessageEvent toggleCallability(Reference reference) {
+		if(reference.getSpecificationParameters() != null) {
+			reference.setSpecificationParameters(null);
+			this.saveMeta();
+			return new MessageEvent("This reference is not callable anymore", MessageType.SUCCESS);
+		} else {
+			reference.setSpecificationParameters(new ArrayList<>());
+			this.saveMeta();
+			return new MessageEvent("This reference is now callable", MessageType.SUCCESS);
+		}
+	}
+	
+	public MessageEvent remove(Specification spec, SpecificationElement element) {
+		if(spec.getElements().remove(element)) {
+			this.saveMeta();
+			return new MessageEvent("Reference sucessfully removed", MessageType.SUCCESS);
+		} else {
+			return new MessageEvent("Nothing to remove", MessageType.WARN);
+		}
+	}
+	
+	public MessageEvent addParam(List<SpecificationElement> parameters, SpecificationElement newParam) {
+		parameters.add(newParam);
+		
+		this.saveMeta();
+		
+		return new MessageEvent("Parameter successfully added", MessageType.SUCCESS);
+	}
+	
+	public MessageEvent setValue(SpecificationElement element, String value) {
+		element.setValue(value);
+
+		this.saveMeta();
+		
+		return new MessageEvent("Update successful", MessageType.SUCCESS);
+	}
+	
+	public MessageEvent bindParameter(SpecificationElement source, SpecificationElement target) {
+		target.setValue(SpecificationElement.VAR + source.getName());
+		source.setValue(null);
+		
+		this.saveMeta();
+		
+		return new MessageEvent("Parameter successfully bound", MessageType.SUCCESS);
+	}
+	
+	private void doForeachConnectedSpecification(Specification spec, Consumer<Specification> action) {
+		this.getMeta().values().stream()
+			.map(StructureMeta::getSpecification)
+			.filter(spec::hasSameOrigin)
+			.forEach(action);
+	}
+}

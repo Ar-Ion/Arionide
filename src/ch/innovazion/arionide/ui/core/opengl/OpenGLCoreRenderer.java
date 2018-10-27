@@ -1138,7 +1138,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 			if(lookAtElement != null) {
 				int instructionID = -1;
 						
-				List<HierarchyElement> code = this.project.getDataManager().getCurrentCode();
+				List<? extends HierarchyElement> code = this.project.getDataManager().getCodeManager().getCurrentCode();
 				
 				for(int i = 0; i < code.size(); i++) {
 					if(code.get(i).getID() == this.teleport.getFocus()) {
@@ -1368,11 +1368,7 @@ public class OpenGLCoreRenderer implements CoreRenderer, EventHandler {
 						SpecificationElement sourceParam = sourceMeta.getSpecification().getElements().get((this.selected.getID() >>> 24) - 1);
 						SpecificationElement targetParam = targetMeta.getSpecification().getElements().get((this.lookingAt.getID() >>> 24) - 1);
 
-						sourceParam.setValue(targetParam.getValue());
-						
-						this.project.getStorage().saveStructureMeta();
-													
-						this.dispatcher.fire(new MessageEvent("Parameter successfully bound", MessageType.SUCCESS));
+						this.dispatcher.fire(this.project.getDataManager().getSpecificationManager().bind(sourceParam, targetParam));
 						
 						this.mainCodeGeometry.requestReconstruction();
 					} else {

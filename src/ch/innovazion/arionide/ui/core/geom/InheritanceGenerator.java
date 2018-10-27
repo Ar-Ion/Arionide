@@ -43,17 +43,17 @@ public class InheritanceGenerator {
 		List<HierarchyElement> elements = new ArrayList<HierarchyElement>();
 		
 		this.processChildren(this.inheritance.get(id), elements);
-		elements.add(new HierarchyElement(-1, null));
+		elements.add(HierarchyElement.dummy);
 		this.processParents(this.inheritance.get(id), elements);
 						
-		this.completion.accept(Arrays.asList(new HierarchyElement(id, elements)));
+		this.completion.accept(Arrays.asList(new SymbolicHierarchyElement(id, elements)));
 	}
 	
 	private void processChildren(InheritanceElement src, List<HierarchyElement> dest) {		
 		if(src.getChildren() != null) {
 			for(int childID : src.getChildren()) {
 				List<HierarchyElement> next = new ArrayList<>();
-				dest.add(new HierarchyElement(childID, next));
+				dest.add(new SymbolicHierarchyElement(childID, next));
 				this.processChildren(this.inheritance.get(childID), next);
 			}
 		}
@@ -62,7 +62,7 @@ public class InheritanceGenerator {
 	private void processParents(InheritanceElement src, List<HierarchyElement> dest) {
 		for(int parentID : src.getParents()) {
 			List<HierarchyElement> next = new ArrayList<>();
-			dest.add(new HierarchyElement(parentID, next));
+			dest.add(new SymbolicHierarchyElement(parentID, next));
 			this.processParents(this.inheritance.get(parentID), next);
 		}
 	}

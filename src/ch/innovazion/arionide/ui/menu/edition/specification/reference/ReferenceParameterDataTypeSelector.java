@@ -61,7 +61,7 @@ public class ReferenceParameterDataTypeSelector extends Menu {
 	
 	public void onClick(int id) {
 		if(id < this.getElements().size() - 1) {
-			MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().refactorParameterType(this.specification, this.id, this.data, id);
+			MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().refactorParameterType(this.specification, this.id, this.data, id);
 			this.getAppManager().getEventDispatcher().fire(event);
 			
 			if(this.parent instanceof SpecificMenu) {

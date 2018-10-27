@@ -80,7 +80,7 @@ public class CodeAppender extends Menu {
 			AppManager manager = this.getAppManager();
 			
 			Project project = manager.getWorkspace().getCurrentProject();
-			MessageEvent event = project.getDataManager().insertCode(this.position, this.instructions.get(id));
+			MessageEvent event = project.getDataManager().getCodeManager().insertCode(this.position, this.instructions.get(id));
 			
 			manager.getEventDispatcher().fire(event);
 			manager.getCoreRenderer().getCodeGeometry().requestReconstruction();

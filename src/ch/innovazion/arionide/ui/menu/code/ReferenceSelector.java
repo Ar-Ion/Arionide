@@ -25,8 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 
-import ch.innovazion.arionide.events.MessageEvent;
-import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.UserHelper;
@@ -68,9 +66,7 @@ class ReferenceSelector extends Menu {
 	public void onClick(String element) {
 		if(element.equals(back)) {
 			this.parent.show();
-		} else {
-			this.element.setValue(element);
-			
+		} else {			
 			if(this.element.getSpecificationParameters() != null) {
 				int index = element.indexOf("$$$");
 				
@@ -82,8 +78,8 @@ class ReferenceSelector extends Menu {
 			}
 			
 			this.parent.show();
-			this.getAppManager().getEventDispatcher().fire(new MessageEvent("Reference successfully updated", MessageType.SUCCESS));
-			this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
+			
+			this.getAppManager().getEventDispatcher().fire(this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().setValue(this.element, element));
 		}
 	}
 	

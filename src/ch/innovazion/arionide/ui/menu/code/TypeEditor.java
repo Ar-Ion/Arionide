@@ -32,8 +32,8 @@ import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.TypeManager;
 import ch.innovazion.arionide.lang.UserHelper;
 import ch.innovazion.arionide.lang.Validator;
-import ch.innovazion.arionide.project.HostStructureStack;
 import ch.innovazion.arionide.project.Project;
+import ch.innovazion.arionide.project.managers.HostStructureStack;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.menu.Menu;
 
@@ -117,10 +117,8 @@ public class TypeEditor extends Menu {
 	
 	private void validateAction(String newValue) {
 		if(this.validator.validate(newValue)) {
-			this.element.setValue(newValue);
+			this.getAppManager().getEventDispatcher().fire(this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().setValue(this.element, newValue));
 			this.parent.show();
-			this.getAppManager().getEventDispatcher().fire(new MessageEvent("Value successfully updated", MessageType.SUCCESS));
-			this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
 		} else {
 			this.getAppManager().getEventDispatcher().fire(new MessageEvent("Unable to validate the input '" + newValue + "'", MessageType.ERROR));
 		}
@@ -128,10 +126,8 @@ public class TypeEditor extends Menu {
 	
 	public void onClick(String element) {
 		if(!this.eventAborted) {
-			this.element.setValue(element);
+			this.getAppManager().getEventDispatcher().fire(this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().setValue(this.element, element));
 			this.parent.show();
-			this.getAppManager().getEventDispatcher().fire(new MessageEvent("Value successfully updated", MessageType.SUCCESS));
-			this.getAppManager().getWorkspace().getCurrentProject().getStorage().saveStructureMeta();
 		}
 	}
 	

@@ -22,6 +22,7 @@ package ch.innovazion.arionide.ui.menu.edition;
 
 import javax.swing.JOptionPane;
 
+import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.project.HierarchyElement;
@@ -77,7 +78,7 @@ public class StructureEditor extends SpecificMenu {
 				Project theProject = manager.getWorkspace().getCurrentProject();
 				
 				if(theProject != null) {
-					if(theProject.getStorage().getHierarchy().contains(new HierarchyElement(this.getCurrent().getID(), null))) {
+					if(Utils.contains(theProject.getStorage().getHierarchy(), this.getCurrent().getID(), HierarchyElement::getID)) {
 						this.languageSelection.setCurrent(this.getCurrent());
 						this.languageSelection.show();
 					} else {

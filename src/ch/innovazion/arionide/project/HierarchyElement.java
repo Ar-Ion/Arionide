@@ -21,46 +21,23 @@
 package ch.innovazion.arionide.project;
 
 import java.io.Serializable;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class HierarchyElement implements Serializable {
-	private static final long serialVersionUID = -5901117492235888923L;
-
-	private final int id;
-	protected final List<HierarchyElement> children;
-
-	public HierarchyElement(int id, List<HierarchyElement> children) {
-		this.id = id;
-		this.children = children;
-	}
+public interface HierarchyElement extends Serializable {
 	
-	public List<HierarchyElement> getChildren() {
-		return Collections.unmodifiableList(this.children);
-	}
+	public static final HierarchyElement dummy = new HierarchyElement() {
+		private static final long serialVersionUID = 8351295595762871033L;
 
-	public int getID() {
-		return this.id;
-	}
-	
-	public boolean equals(Object other) {
-		if(other instanceof HierarchyElement) {
-			return this.id == ((HierarchyElement) other).id;
+		public int getID() {
+			return -1;
 		}
 		
-		return false;
-	}
-	
-	public int hashCode() {
-		return this.id;
-	}
-	
-	public String toString() {
-		if(this.children != null) {
-			return this.id + "{" + String.join(",", this.children.stream().map(HierarchyElement::toString).collect(Collectors.toList())) + "}";
-		} else {
-			return "null";
+		public List<HierarchyElement> getChildren() {
+			return Arrays.asList();
 		}
-	}
+	};
+	
+	public int getID();
+	public List<HierarchyElement> getChildren();
 }

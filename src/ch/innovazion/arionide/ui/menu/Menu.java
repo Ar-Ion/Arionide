@@ -27,9 +27,9 @@ import java.util.List;
 
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.MenuEvent;
-import ch.innovazion.arionide.project.HostStructureStack;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.StructureMeta;
+import ch.innovazion.arionide.project.managers.HostStructureStack;
 import ch.innovazion.arionide.ui.AppManager;
 
 public abstract class Menu {
