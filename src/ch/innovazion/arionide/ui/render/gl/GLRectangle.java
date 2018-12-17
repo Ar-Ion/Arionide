@@ -22,7 +22,7 @@ package ch.innovazion.arionide.ui.render.gl;
 
 import com.jogamp.opengl.GL4;
 
-import ch.innovazion.arionide.ui.render.gl.vao.VertexBuffer;
+import ch.innovazion.arionide.ui.render.gl.cache.VertexBuffer;
 
 public class GLRectangle extends GLPolygon {
 

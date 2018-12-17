@@ -28,8 +28,8 @@ import com.jogamp.opengl.GL4;
 import ch.innovazion.arionide.ui.Viewport;
 import ch.innovazion.arionide.ui.render.Identification;
 import ch.innovazion.arionide.ui.render.PrimitiveType;
-import ch.innovazion.arionide.ui.render.gl.vao.Attribute;
-import ch.innovazion.arionide.ui.render.gl.vao.VertexBuffer;
+import ch.innovazion.arionide.ui.render.gl.cache.Attribute;
+import ch.innovazion.arionide.ui.render.gl.cache.VertexBuffer;
 import ch.innovazion.arionide.ui.topology.Point;
 
 public class GLUnedgedRectangle extends GLPolygon {

@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.events;
 
-import ch.innovazion.arionide.ui.menu.Menu;
+import ch.innovazion.arionide.menu.Menu;
 
 public class MenuEvent extends Event {
 	

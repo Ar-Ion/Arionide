@@ -58,7 +58,7 @@ import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.resources.Resources;
 import ch.innovazion.arionide.threading.DrawingThread;
 import ch.innovazion.arionide.ui.core.CoreRenderer;
-import ch.innovazion.arionide.ui.core.opengl.OpenGLCoreRenderer;
+import ch.innovazion.arionide.ui.core.gl.GLRenderer;
 import ch.innovazion.arionide.ui.gc.GLTrashContext;
 import ch.innovazion.arionide.ui.gc.Trash;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
@@ -91,7 +91,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	private final FloatBuffer clearDepth = FloatBuffer.allocate(1);
 	
 	private DrawingThread thread;
-	private OpenGLCoreRenderer core;
+	private GLRenderer core;
 	private Resources resources;
 	private GLFontRenderer fontRenderer;
 	
@@ -126,9 +126,9 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	}
 
 	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
-		assert renderer instanceof OpenGLCoreRenderer;
+		assert renderer instanceof GLRenderer;
 		
-		this.core = (OpenGLCoreRenderer) renderer;
+		this.core = (GLRenderer) renderer;
 		this.resources = resources;
 		
 		try {

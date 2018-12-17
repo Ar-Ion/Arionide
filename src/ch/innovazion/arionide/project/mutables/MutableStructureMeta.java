@@ -21,8 +21,8 @@
 package ch.innovazion.arionide.project.mutables;
 
 import ch.innovazion.arionide.lang.Specification;
+import ch.innovazion.arionide.menu.edition.Coloring;
 import ch.innovazion.arionide.project.StructureMeta;
-import ch.innovazion.arionide.ui.menu.edition.Coloring;
 
 public class MutableStructureMeta implements StructureMeta {
 	private static final long serialVersionUID = 1259382903286126347L;

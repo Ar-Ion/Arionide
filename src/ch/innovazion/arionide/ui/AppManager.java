@@ -29,13 +29,13 @@ import ch.innovazion.arionide.Workspace;
 import ch.innovazion.arionide.debugging.IAm;
 import ch.innovazion.arionide.events.InvalidateLayoutEvent;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
+import ch.innovazion.arionide.menu.MainMenus;
 import ch.innovazion.arionide.resources.Resources;
 import ch.innovazion.arionide.threading.Purgeable;
 import ch.innovazion.arionide.threading.timing.Timer;
 import ch.innovazion.arionide.ui.animations.Animation;
 import ch.innovazion.arionide.ui.core.CoreRenderer;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
-import ch.innovazion.arionide.ui.menu.MainMenus;
 import ch.innovazion.arionide.ui.overlay.AlphaLayeringSystem;
 import ch.innovazion.arionide.ui.overlay.Views;
 

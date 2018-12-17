@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.function.Function;
@@ -136,5 +137,15 @@ public class Utils {
 		}
 		
 		return false;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T[] combine(Class<T> componentType, T[] scope, T... rest) {
+		T[] objects = (T[]) Array.newInstance(componentType, scope.length + rest.length);
+		
+		System.arraycopy(scope, 0, objects, 0, scope.length);
+		System.arraycopy(rest, 0, objects, scope.length, rest.length);
+		
+		return objects;
 	}
 }

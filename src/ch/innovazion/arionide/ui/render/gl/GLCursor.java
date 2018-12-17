@@ -29,11 +29,11 @@ import ch.innovazion.arionide.ui.render.Cursor;
 import ch.innovazion.arionide.ui.render.Identification;
 import ch.innovazion.arionide.ui.render.Primitive;
 import ch.innovazion.arionide.ui.render.PrimitiveType;
-import ch.innovazion.arionide.ui.render.gl.vao.Attribute;
-import ch.innovazion.arionide.ui.render.gl.vao.UID;
-import ch.innovazion.arionide.ui.render.gl.vao.VertexArray;
-import ch.innovazion.arionide.ui.render.gl.vao.VertexArrayCache;
-import ch.innovazion.arionide.ui.render.gl.vao.VertexBuffer;
+import ch.innovazion.arionide.ui.render.gl.cache.Attribute;
+import ch.innovazion.arionide.ui.render.gl.cache.UID;
+import ch.innovazion.arionide.ui.render.gl.cache.VertexArray;
+import ch.innovazion.arionide.ui.render.gl.cache.VertexArrayCache;
+import ch.innovazion.arionide.ui.render.gl.cache.VertexBuffer;
 import ch.innovazion.arionide.ui.topology.Bounds;
 import ch.innovazion.arionide.ui.topology.Point;
 

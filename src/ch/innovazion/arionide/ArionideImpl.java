@@ -38,7 +38,7 @@ import ch.innovazion.arionide.threading.WorkingThread;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.OpenGLContext;
 import ch.innovazion.arionide.ui.core.CoreRenderer;
-import ch.innovazion.arionide.ui.core.opengl.OpenGLCoreRenderer;
+import ch.innovazion.arionide.ui.core.gl.GLRenderer;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
 
 public class ArionideImpl implements Arionide {
@@ -81,7 +81,7 @@ public class ArionideImpl implements Arionide {
 	}
 
 	public CoreRenderer loadCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher, Resources resources) {
-		return new OpenGLCoreRenderer(context, dispatcher);
+		return new GLRenderer(context, dispatcher);
 	}
 
 	public LayoutManager setupLayoutManager(AppDrawingContext context, IEventDispatcher dispatcher) {

@@ -28,6 +28,7 @@ import java.util.List;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.Specification;
+import ch.innovazion.arionide.menu.edition.Coloring;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Manager;
 import ch.innovazion.arionide.project.Project;
@@ -35,7 +36,6 @@ import ch.innovazion.arionide.project.mutables.MutableCodeChain;
 import ch.innovazion.arionide.project.mutables.MutableHierarchyElement;
 import ch.innovazion.arionide.project.mutables.MutableInheritanceElement;
 import ch.innovazion.arionide.project.mutables.MutableStructureMeta;
-import ch.innovazion.arionide.ui.menu.edition.Coloring;
 
 public class DataManager extends Manager {
 	
