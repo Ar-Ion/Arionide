@@ -153,7 +153,7 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	private int fxFBO;
 	private int fxColorTexture;
 	private int fxDepthTexture;
-	private boolean fxEnabled = false;
+	private boolean fxEnabled = true;
 		
 	private int connectionVAO;
 	private int connectionVBO;

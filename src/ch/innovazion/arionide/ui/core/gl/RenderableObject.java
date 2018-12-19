@@ -40,7 +40,10 @@ public abstract class RenderableObject<C extends Context, S extends Settings> im
 		this.id = allocator.popVAO(this);
 		
 		gl.glBindVertexArray(id);
+		
 		setupData(context, allocator);
+		
+		gl.glBindVertexArray(0);
 	}
 	
 	protected void setupFloatAttribute(int attribute, int count, int stride, int disp) {
@@ -53,16 +56,16 @@ public abstract class RenderableObject<C extends Context, S extends Settings> im
 		gl.glVertexAttribPointer(attribute, count, dataType, false, stride * dataTypeSize, disp * dataTypeSize);
 	}
 	
-	protected void setupFloatBuffer(int type, int vbo, Buffer buffer, int drawMode) {
-		setupBuffer(type, vbo, buffer, drawMode, Float.BYTES);
+	protected void setupFloatBuffer(int type, int id, Buffer buffer, int drawMode) {
+		setupBuffer(type, id, buffer, drawMode, Float.BYTES);
 	}
 	
-	protected void setupBuffer(int type, int vbo, Buffer buffer, int drawMode, int dataTypeSize) {
+	protected void setupBuffer(int type, int id, Buffer buffer, int drawMode, int dataTypeSize) {
 		ensureInitialized();
-		gl.glBindBuffer(type, vbo);
+		gl.glBindBuffer(type, id);
 		gl.glBufferData(type, buffer.capacity() * dataTypeSize, buffer.flip(), drawMode);
 	}
-	
+
 	private void ensureInitialized() {
 		if(id < 0) {
 			throw new IllegalStateException();

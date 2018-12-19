@@ -35,7 +35,7 @@ public class Structure extends StaticObject<StructureContext, StructureSettings>
 	}
 
 	protected List<BufferGenerator> getGenerators() {
-		return Arrays.asList(this.indicesGenerator, this.tessellator);
+		return Arrays.asList(this.tessellator, this.indicesGenerator);
 	}
 
 	protected int getBufferCount() {

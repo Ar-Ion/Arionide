@@ -67,7 +67,7 @@ public class GLCursor extends Primitive implements Cursor {
 	}
 
 	protected BigInteger getStateFingerprint() {
-		return Identification.generateFingerprint(Float.floatToIntBits(this.size));
+		return Identification.generateFingerprint();
 	}
 
 	protected PrimitiveType getType() {
@@ -75,11 +75,7 @@ public class GLCursor extends Primitive implements Cursor {
 	}
 	
 	protected void updateProperty(int identifier) {
-		switch(identifier) {
-		case GLCursorContext.SIZE_IDENTIFIER:
-			this.getContext().getGL().glPointSize(this.size);
-			break;
-		}
+		return;
 	}
 
 	protected void processAction(int identifier) {		
@@ -103,6 +99,7 @@ public class GLCursor extends Primitive implements Cursor {
 			
 			this.vao.bind(gl);
 			
+			gl.glPointSize(this.size);
 			gl.glDrawArrays(GL4.GL_POINTS, 0, 1);
 			gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 		}		

@@ -1,8 +1,9 @@
 #version 400
 
 const bool MOTION_BLUR = false;
-const bool LIGHT_ADAPTATION = true;
+const bool LIGHT_ADAPTATION = false;
 const bool GOD_RAYS = true;
+const bool SUN = true;
 
 /* FXAA */
 const vec3 lumaVector = vec3(0.299, 0.587, 0.114);
@@ -23,6 +24,10 @@ const int godRaysSamples = 64;
 
 uniform float exposure;
 uniform vec2 lightPosition;
+
+/* Sun */
+const float concentration = 2.5;
+const float sunSize = 0.15;
 
 /* Common */
 uniform sampler2D colorTexture;
@@ -251,6 +256,19 @@ vec4 godRays() {
 	return color * exposure * factor;
 }
 
+void sun() {
+    float ratio = pixelSize.y / pixelSize.x;
+    
+    vec2 transformed = textureCoords - vec2(0.5, 0.5);
+    transformed.x *= ratio;
+    transformed += vec2(0.5, 0.5);
+    
+    float lightDistanceFromCenter = length(lightPosition - transformed);
+    float brightness = pow(lightDistanceFromCenter / sunSize, -concentration);
+    
+    fragColor += vec4(brightness);
+}
+
 void main() {
     if(MOTION_BLUR) {
         fragColor = motionBlur();
@@ -258,8 +276,12 @@ void main() {
         fragColor = fxaa(textureCoords);
     }
     
-    if(LIGHT_ADAPTATION) {
-        lightAdaptation();
+    if(SUN) {
+        sun();
+        
+        if(LIGHT_ADAPTATION) {
+            lightAdaptation();
+        }
     }
 
 	if(GOD_RAYS && exposure > 0.0) {

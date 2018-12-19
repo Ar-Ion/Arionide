@@ -48,9 +48,31 @@ public class NativeInstructionSet extends InstructionSet {
 		
 		int structID = manager.getResourceAllocator().nextStructure();
 		
+		boolean alreadyExists = !manager.newStructure("natives", false).getMessageType().equals(MessageType.SUCCESS);
+		
 		manager.getHostStack().push(structID);
 		
-		if(manager.newStructure("natives", false).getMessageType().equals(MessageType.SUCCESS)) {
+		if(alreadyExists) {
+			this.retrieve("init");
+			this.retrieve("print");
+			this.retrieve("call");
+			this.retrieve("defineText");
+			this.retrieve("defineInteger");
+			this.retrieve("defineStructure");
+			this.retrieve("redo");
+			this.retrieve("if");
+			this.retrieve("compareText");
+			this.retrieve("compareInteger");
+			this.retrieve("compareStructure");
+			this.retrieve("object");
+			this.retrieve("addInteger");
+			this.retrieve("addComplex");
+			this.retrieve("write");
+			this.retrieve("iterate");
+			this.retrieve("size");
+			this.retrieve("merge");
+			this.retrieve("load");
+		} else {
 			ResourceAllocator allocator = manager.getResourceAllocator();
 			
 			this.add("init", 0, new Specification(allocator.allocSpecification()));
@@ -151,26 +173,6 @@ public class NativeInstructionSet extends InstructionSet {
 					allocator.allocSpecification(),
 					new Data("source", null, NativeTypes.INTEGER),
 					new Data("target", null, NativeTypes.TEXT)));
-		} else {
-			this.retrieve("init");
-			this.retrieve("print");
-			this.retrieve("call");
-			this.retrieve("defineText");
-			this.retrieve("defineInteger");
-			this.retrieve("defineStructure");
-			this.retrieve("redo");
-			this.retrieve("if");
-			this.retrieve("compareText");
-			this.retrieve("compareInteger");
-			this.retrieve("compareStructure");
-			this.retrieve("object");
-			this.retrieve("addInteger");
-			this.retrieve("addComplex");
-			this.retrieve("write");
-			this.retrieve("iterate");
-			this.retrieve("size");
-			this.retrieve("merge");
-			this.retrieve("load");
 		}
 		
 		manager.getHostStack().pop();
