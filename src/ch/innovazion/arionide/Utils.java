@@ -25,9 +25,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Proxy;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import ch.innovazion.arionide.ui.topology.Affine;
 import ch.innovazion.arionide.ui.topology.Application;
@@ -147,5 +150,24 @@ public class Utils {
 		System.arraycopy(rest, 0, objects, scope.length, rest.length);
 		
 		return objects;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T bind(Class<T> bindingInterface, T... objects) {
+		return (T) Proxy.newProxyInstance(bindingInterface.getClassLoader(), new Class<?>[] { bindingInterface }, (nil, method, args) -> {
+			if(method.getReturnType().equals(Void.TYPE)) {
+				Stream.of(objects).forEach(t -> {
+					try {
+						method.invoke(t, args);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						e.printStackTrace();
+					}
+				});
+				
+				return null;
+			} else {
+				throw new IllegalArgumentException("Non-void non-primitive non-array methods unsupported");
+			}
+		});
 	}
 }

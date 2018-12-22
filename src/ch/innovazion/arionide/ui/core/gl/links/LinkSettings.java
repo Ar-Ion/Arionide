@@ -18,44 +18,40 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.project.managers;
+package ch.innovazion.arionide.ui.core.gl.links;
 
-import ch.innovazion.arionide.coders.Coder;
-import ch.innovazion.arionide.project.Project;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
-public class ResourceAllocator {
+import ch.innovazion.arionide.ui.core.gl.Abstract3DSettings;
+
+public class LinkSettings extends Abstract3DSettings {
 	
-	private final Project project;
+	private Vector3f camera;
+	private Vector4f color;
+	private float ambientFactor;
 	
-	protected ResourceAllocator(Project project) {
-		this.project = project;
+	public void setCamera(Vector3f camera) {
+		this.camera = camera;
 	}
 	
-	public int allocSpecification() {
-		return this.alloc("specificationGen");
+	public void setColor(Vector4f color) {
+		this.color = color;
 	}
 	
-	public int allocStructure() {
-		return this.alloc("structureGen");
+	public void setAmbientFactor(float factor) {
+		this.ambientFactor = factor;
 	}
 	
-	private int alloc(String object) {
-		int id = this.project.getProperty(object, Coder.integerDecoder).intValue();
-		this.project.setProperty(object, (long) id + 1, Coder.integerEncoder); // Increment generator
-		this.project.save();
-		
-		return id;
+	public Vector3f getCamera() {
+		return camera;
 	}
 	
-	public int nextSpecification() {
-		return this.next("specificationGen");
+	public Vector4f getColor() {
+		return color;
 	}
 	
-	public int nextStructure() {
-		return this.next("structureGen");
-	}
-	
-	private int next(String object) {
-		return this.project.getProperty(object, Coder.integerDecoder).intValue();
+	public float getAmbientFactor() {
+		return ambientFactor;
 	}
 }

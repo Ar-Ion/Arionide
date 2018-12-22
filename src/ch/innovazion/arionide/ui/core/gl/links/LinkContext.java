@@ -18,13 +18,13 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.ui.core.gl.structures;
+package ch.innovazion.arionide.ui.core.gl.links;
 
 import com.jogamp.opengl.GL4;
 
 import ch.innovazion.arionide.ui.core.gl.Context;
 
-public class StructureContext implements Context {
+public class LinkContext implements Context {
 	
 	private final int positionAttribute;
 	private final int modelUniform;
@@ -33,7 +33,7 @@ public class StructureContext implements Context {
 	private final int colorUniform;
 	private final int ambientFactorUniform;
 	
-	public StructureContext(GL4 gl, int shader) {
+	public LinkContext(GL4 gl, int shader) {
 		this.positionAttribute = gl.glGetAttribLocation(shader, "position");
 		this.modelUniform = gl.glGetUniformLocation(shader, "model");
 		this.viewUniform = gl.glGetUniformLocation(shader, "view");

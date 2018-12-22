@@ -18,44 +18,37 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.project.managers;
+package ch.innovazion.arionide.ui.core.gl;
 
-import ch.innovazion.arionide.coders.Coder;
-import ch.innovazion.arionide.project.Project;
+import java.nio.FloatBuffer;
 
-public class ResourceAllocator {
+public abstract class Abstract3DSettings implements General3DSettings {
 	
-	private final Project project;
+	private FloatBuffer model;
+	private FloatBuffer view;
+	private FloatBuffer projection;
 	
-	protected ResourceAllocator(Project project) {
-		this.project = project;
+	public void setModel(FloatBuffer model) {
+		this.model = model;
 	}
 	
-	public int allocSpecification() {
-		return this.alloc("specificationGen");
+	public void setView(FloatBuffer view) {
+		this.view = view;
 	}
 	
-	public int allocStructure() {
-		return this.alloc("structureGen");
+	public void setProjection(FloatBuffer projection) {
+		this.projection = projection;
 	}
 	
-	private int alloc(String object) {
-		int id = this.project.getProperty(object, Coder.integerDecoder).intValue();
-		this.project.setProperty(object, (long) id + 1, Coder.integerEncoder); // Increment generator
-		this.project.save();
-		
-		return id;
+	public FloatBuffer getModel() {
+		return model;
 	}
 	
-	public int nextSpecification() {
-		return this.next("specificationGen");
+	public FloatBuffer getView() {
+		return view;
 	}
 	
-	public int nextStructure() {
-		return this.next("structureGen");
-	}
-	
-	private int next(String object) {
-		return this.project.getProperty(object, Coder.integerDecoder).intValue();
+	public FloatBuffer getProjection() {
+		return projection;
 	}
 }

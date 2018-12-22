@@ -18,44 +18,12 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.project.managers;
+package ch.innovazion.arionide.ui.core.gl;
 
-import ch.innovazion.arionide.coders.Coder;
-import ch.innovazion.arionide.project.Project;
+import java.nio.FloatBuffer;
 
-public class ResourceAllocator {
-	
-	private final Project project;
-	
-	protected ResourceAllocator(Project project) {
-		this.project = project;
-	}
-	
-	public int allocSpecification() {
-		return this.alloc("specificationGen");
-	}
-	
-	public int allocStructure() {
-		return this.alloc("structureGen");
-	}
-	
-	private int alloc(String object) {
-		int id = this.project.getProperty(object, Coder.integerDecoder).intValue();
-		this.project.setProperty(object, (long) id + 1, Coder.integerEncoder); // Increment generator
-		this.project.save();
-		
-		return id;
-	}
-	
-	public int nextSpecification() {
-		return this.next("specificationGen");
-	}
-	
-	public int nextStructure() {
-		return this.next("structureGen");
-	}
-	
-	private int next(String object) {
-		return this.project.getProperty(object, Coder.integerDecoder).intValue();
-	}
+public interface General3DSettings extends Settings {
+	public void setModel(FloatBuffer model);
+	public void setView(FloatBuffer view);
+	public void setProjection(FloatBuffer projection);
 }

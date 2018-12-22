@@ -18,51 +18,47 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.ui.core.gl.stars;
+package ch.innovazion.arionide.ui.core.gl.links;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.joml.Vector4f;
 
 import com.jogamp.opengl.GL4;
 
 import ch.innovazion.arionide.ui.core.gl.BufferGenerator;
 import ch.innovazion.arionide.ui.core.gl.BufferObject;
 
-public class Stars extends BufferObject<StarsContext, StarsSettings> {
+public class Link extends BufferObject<LinkContext, LinkSettings> {
 
-	private final int count;
-	private final BufferGenerator generator;
+	private final LinkGenerator generator = new LinkGenerator();
 	
-	public Stars(int count, float size) {
-		super(new StarsSettings(size));
+	public Link() {
+		super(new LinkSettings());
 		
-		this.count = count;
-		this.generator = new StarsGenerator(count);
-		
-		this.setBufferInitializer(this.generator, this::setupAttributes);
+		setBufferInitializer(generator, (context) -> setupFloatAttribute(context.getPositionAttribute(), 3, 0, 0));
+		setBufferLabel(generator, "position");
 	}
 	
-	private void setupAttributes(StarsContext context) {
-		setupFloatAttribute(context.getPositionAttribute(), 3, 6, 0);
-		setupFloatAttribute(context.getColorAttribute(), 3, 6, 3);
-	}
-
-	protected void update(GL4 gl, StarsContext context, StarsSettings settings) {
-		gl.glPointSize(settings.getSize());
+	protected void update(GL4 gl, LinkContext context, LinkSettings settings) {
+		Vector4f color = settings.getColor();
 		
 		gl.glUniformMatrix4fv(context.getModelUniform(), 1, false, settings.getModel());
 		gl.glUniformMatrix4fv(context.getViewUniform(), 1, false, settings.getView());
 		gl.glUniformMatrix4fv(context.getProjectionUniform(), 1, false, settings.getProjection());
+		gl.glUniform4f(context.getColorUniform(), color.x, color.y, color.z, color.w);
+		gl.glUniform1f(context.getAmbientFactorUniform(), settings.getAmbientFactor());
 	}
 
 	protected void renderObject(GL4 gl) {
-		gl.glDrawArrays(GL4.GL_POINTS, 0, count);
+		gl.glDrawArrays(GL4.GL_LINES, 0, 2);
 	}
 
 	protected List<BufferGenerator> getGenerators() {
 		return Arrays.asList(generator);
 	}
-	
+
 	protected int getBufferCount() {
 		return 1;
 	}

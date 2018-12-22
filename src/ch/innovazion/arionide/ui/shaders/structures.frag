@@ -2,15 +2,18 @@
 
 precision lowp float;
 
+/*
 const vec3 lightColor = vec3(1.0, 1.0, 1.0);
 const float shininess = 16.0;
 const vec3 lightDirection = vec3(0.0, -1.0, 0.0);
+*/
 
 uniform vec4 color;
-uniform vec3 lightPosition;
-uniform float ambientFactor;
+
+/*
 uniform vec3 specularColor;
 uniform vec3 camera;
+*/
 
 in vec4 ambientColor;
 in vec3 fragNormal;
