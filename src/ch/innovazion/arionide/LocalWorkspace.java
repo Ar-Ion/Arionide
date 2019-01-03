@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +78,8 @@ public class LocalWorkspace implements Workspace {
 	public void load() {
 		try {		
 			File[] files = this.path.listFiles();
+			
+			Arrays.sort(files, (f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified()));
 			
 			for(File potential : files) {
 				if(potential.isFile() && potential.getName().endsWith(".proj")) {
@@ -164,7 +167,7 @@ public class LocalWorkspace implements Workspace {
 			this.current = project;
 			this.dispatcher.fire(new ProjectOpenEvent(project));
 		} else {
-			throw new IOException("This name can't be used.");
+			throw new IOException("This project name is already used.");
 		}
 	}
 

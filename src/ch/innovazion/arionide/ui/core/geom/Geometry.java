@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.joml.Vector3f;
 
@@ -39,13 +40,18 @@ public abstract class Geometry {
 	private List<Connection> connections = new ArrayList<>();
 	private Project project;
 	private boolean contructionRequested = false;
+	private long seed = System.nanoTime();
 	
 	public void setProject(Project project) {
 		this.project = project;
 	}
 	
 	public void updateSeed(long seed) {
-		return;
+		this.seed = seed;
+	}
+	
+	public long getSeed() {
+		return seed;
 	}
 	
 	protected Project getProject() {
@@ -70,15 +76,7 @@ public abstract class Geometry {
 	}
 	
 	public List<WorldElement> getCollisions(Vector3f camera) {
-		List<WorldElement> collisions = new ArrayList<>();
-		
-		for(WorldElement element : this.elements) {
-			if(element.collidesWith(camera)) {
-				collisions.add(element);
-			}
-		}
-		
-		return collisions;
+		return elements.stream().filter((e) -> e.collidesWith(camera)).collect(Collectors.toList());
 	}
 	
 	public void requestReconstruction() {

@@ -140,7 +140,7 @@ public class CodeView extends View implements EventHandler {
 							Storage storage = this.currentProject.getStorage();
 							
 							int structID = storage.getCallGraph().get(storage.getCallGraph().size() - 1).getID();
-							int instructionID = storage.getCode().get(structID).getChain().get(0).getID();
+							int instructionID = storage.getCode().get(structID).list().get(0).getID();
 							
 							renderer.getStructuresGeometry().requestReconstruction();
 							renderer.teleport(new TeleportInfo(structID, instructionID));
@@ -167,10 +167,6 @@ public class CodeView extends View implements EventHandler {
 				}
 			}
 		} else if(event instanceof MenuEvent) {
-			if(this.currentMenu != null) {
-				this.currentMenu.setActive(false);
-			}
-			
 			this.currentMenu = ((MenuEvent) event).getMenu();
 			this.menu.setActiveComponent(this.currentMenu.getMenuCursor());
 			
@@ -182,8 +178,6 @@ public class CodeView extends View implements EventHandler {
 			
 			this.currentInfo.setLabel(this.currentMenu.getDescription());
 			this.currentInfo.setColor(MessageType.INFO.getColor());
-
-			this.currentMenu.setActive(true);
 		} else if(event instanceof ScrollEvent) {
 			ScrollEvent scroll = (ScrollEvent) event;
 			

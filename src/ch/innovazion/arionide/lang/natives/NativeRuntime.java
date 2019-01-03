@@ -47,6 +47,7 @@ import ch.innovazion.arionide.lang.natives.instructions.Print;
 import ch.innovazion.arionide.lang.natives.instructions.Redo;
 import ch.innovazion.arionide.lang.natives.instructions.Size;
 import ch.innovazion.arionide.lang.natives.instructions.Write;
+import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.Storage;
@@ -112,7 +113,7 @@ public class NativeRuntime extends Runtime {
 	}
 	
 	private boolean compile(int realID, String name, Storage storage) {								
-		List<? extends HierarchyElement> elements = storage.getCode().get(realID).getChain();
+		CodeChain elements = storage.getCode().get(realID);
 		Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
 		List<NativeInstruction> structure = new ArrayList<>();
 		List<Integer> nextElements = new ArrayList<>();
@@ -131,45 +132,17 @@ public class NativeRuntime extends Runtime {
 				StructureMeta meta = metaData.get(element.getID());
 				
 				if(meta != null) {
-					String comment = meta.getComment();
-					Specification spec = meta.getSpecification();
+					Specification spec = meta.getSpecification();					
+					NativeInstruction compiled = this.compileInstruction(this.symbols.size(), meta.getName(), spec, nextElements);
 					
-					if(comment.contains("code@")) {
-						try {
-							int instructionID = Integer.parseInt(comment.replace("code@", ""));
-							
-							StructureMeta instructionMeta = metaData.get(instructionID);
-							
-							if(instructionMeta != null) {
-								Specification instructionSpec = instructionMeta.getSpecification();
-
-								if(spec.hasSameOrigin(instructionSpec) && spec.getElements().equals(instructionSpec.getElements())) {
-									NativeInstruction compiled = this.compileInstruction(this.symbols.size(), instructionMeta.getName(), spec, nextElements);
-									
-									if(compiled != null) {
-										structure.add(compiled);
-									} else {
-										this.info("Instruction compilation failed in " + name + " (" + realID + ":" + element.getID() + ")", 0xFF6000);
-										state = false;
-									}
-								} else {
-									this.info("Specification origin check failed in " + name +  " (" + realID + ":" + element.getID() + ")", 0xFF6000);
-									state = false;
-								}
-							} else {
-								this.info("Instruction ID " + instructionID + " was not properly installed", 0xFF6000);
-								state = false;
-							}
-						} catch(NumberFormatException e) {
-							this.info("Invalid instruction ID " + comment + " in " + name + " (" + realID + ":" + element.getID() + ")", 0xFF6000);
-							state = false;
-						}
+					if(compiled != null) {
+						structure.add(compiled);
 					} else {
-						this.info("Object in " + name + " (" + realID + ":" + element.getID() + ") is not an instruction", 0xFF6000);
+						this.info("Instruction compilation failed in " + name + " (" + realID + ":" + element.getID() + ")", 0xFF6000);
 						state = false;
 					}
 				} else {
-					this.info("Invalid structure ID in " + name + " (" + realID + ":" + element.getID() + ")", 0xFF6000);
+					this.info("Object in " + name + " (" + realID + ":" + element.getID() + ") is not an instruction", 0xFF6000);
 					state = false;
 				}
 			}
@@ -254,43 +227,13 @@ public class NativeRuntime extends Runtime {
 	protected List<Entry<String, Specification>> getCode(int objectID) {
 		Storage storage = this.getProject().getStorage();
 				
-		List<? extends HierarchyElement> elements = storage.getCode().get(objectID).getChain();
+		CodeChain elements = storage.getCode().get(objectID);
 		Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
 		List<Entry<String, Specification>> code = new ArrayList<>();
 		
 		for(HierarchyElement element : elements) {
-			StructureMeta meta = metaData.get(element.getID());
-						
-			if(meta != null) {
-				String comment = meta.getComment();
-				Specification spec = meta.getSpecification();
-				
-				if(comment.startsWith("code@")) {
-					try {
-						int instructionID = Integer.parseInt(comment.substring(5));
-						
-						StructureMeta instructionMeta = metaData.get(instructionID);
-						
-						if(instructionMeta != null) {
-							Specification instructionSpec = instructionMeta.getSpecification();
-
-							if(spec.hasSameOrigin(instructionSpec) && spec.getElements().equals(instructionSpec.getElements())) {
-								code.add(new SimpleEntry<String, Specification>(instructionMeta.getName(), spec));
-							} else {
-								this.info("Specification origin check failed in (" + objectID + ":" + element.getID() + ")", 0xFF6000);
-							}
-						} else {
-							this.info("Instruction ID " + instructionID + " was not properly installed", 0xFF6000);
-						}
-					} catch(NumberFormatException e) {
-						this.info("Invalid instruction ID " + comment + " in (" + objectID + ":" + element.getID() + ")", 0xFF6000);
-					}
-				} else {
-					this.info("Object in (" + objectID + ":" + element.getID() + ") is not an instruction", 0xFF6000);
-				}
-			} else {
-				this.info("Invalid structure ID in (" + objectID + ":" + element.getID() + ")", 0xFF6000);
-			}
+			StructureMeta meta = metaData.get(element.getID());	
+			code.add(new SimpleEntry<String, Specification>(meta.getName(), meta.getSpecification()));
 		}
 		
 		return code;

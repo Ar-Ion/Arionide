@@ -22,7 +22,7 @@ out vec4 outColor;
 
 void main() {
     float diffuseFactor = max(0.0, fragNormal.y);
-	outColor = diffuseFactor * color + ambientColor;
+	outColor = vec4(diffuseFactor * color.xyz + ambientColor.xyz, ambientColor.w);
     
     /*
     vec3 reflectionDirection = reflect(lightDirection, fragNormal);

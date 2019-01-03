@@ -20,14 +20,12 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.code;
 
-import java.util.List;
-
 import javax.swing.JOptionPane;
 
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.StructureMeta;
@@ -59,32 +57,42 @@ public class CodeEditor extends Menu {
 		this.getElements().add(append);
 	}
 	
-	public void setTargetInstruction(int id) {
-		Project project = this.getAppManager().getWorkspace().getCurrentProject();
-		
-		if(project != null) {
-			int hostStructureID = project.getDataManager().getHostStack().getCurrent();
-						
-			this.instructionID = id;
-			this.instruction = project.getStorage().getCode().get(hostStructureID).getChain().get(id);
-			this.instructionMeta = project.getStorage().getStructureMeta().get(this.instruction.getID());
-									
-			assert this.instructionMeta != null;
-			
-			List<String> list = this.getElements().subList(4, this.getElements().size());
-			list.clear();
-			
-			for(SpecificationElement element : this.instructionMeta.getSpecification().getElements()) {
-				list.add(element.getName());
-			}
-		}
+	public void setTargetByID(int id) {
+		Project project = getCurrentProject();
+		CodeChain chain = getCode(project);
+		setTargetByIndex(project, getCode(project), chain.indexOf(id));
+	}
+	
+	public void setTargetByIndex(int index) {
+		Project project = getCurrentProject();
+		setTargetByIndex(project, getCode(project), index);
+	}
+	
+	private void setTargetByIndex(Project project, CodeChain chain, int index) {
+		this.instructionID = index;
+		this.instruction = chain.list().get(instructionID);
+		this.instructionMeta = project.getStorage().getStructureMeta().get(instruction.getID());
 		
 		this.setMenuCursor(3);
 	}
+	
+	private Project getCurrentProject() {
+		Project project = this.getAppManager().getWorkspace().getCurrentProject();
 		
+		if(project != null) {
+			return project;
+		} else {
+			throw new IllegalStateException();
+		}
+	}
+	
+	private CodeChain getCode(Project project) {
+		return project.getDataManager().getCodeManager().getCurrentCode();
+	}
+	
 	public void onClick(String element) {
 		AppManager manager = this.getAppManager();
-		Project project = manager.getWorkspace().getCurrentProject();
+		Project project = getCurrentProject();
 		
 		if(element == append) {
 			this.appender.setAppenderPosition(this.instructionID);

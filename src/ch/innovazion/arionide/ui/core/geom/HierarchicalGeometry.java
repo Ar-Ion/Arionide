@@ -71,7 +71,7 @@ public abstract class HierarchicalGeometry extends Geometry {
 	private void construct0(WorldElement parent, List<HierarchyElement> input, List<WorldElement> output, Map<Integer, StructureMeta> metaData, float size) throws GeometryException {
 		if(input != null && input.size() > 0) {
 			Quaternionf quaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / (input.size() - (input.contains(HierarchyElement.dummy) ? 1 : 0)), parent.getAxis()));
-			Vector3f base = input.size() > 1 ? parent.getBaseVector() : new Vector3f();
+			Vector3f base = input.size() > 1 || parent.getID() != -1 ? parent.getBaseVector() : new Vector3f();
 			
 			for(HierarchyElement element : input) {
 				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(this.relativeDistance * size / this.relativeSize).add(parent.getCenter());

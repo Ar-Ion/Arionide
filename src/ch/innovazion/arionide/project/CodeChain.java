@@ -21,8 +21,20 @@
 package ch.innovazion.arionide.project;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 
-public interface CodeChain extends Serializable {
-	public List<? extends HierarchyElement> getChain();
+public abstract class CodeChain implements Iterable<HierarchyElement>, Serializable {
+	private static final long serialVersionUID = -5243535024202731258L;
+	
+	public Iterator<HierarchyElement> iterator() {
+		return (Iterator<HierarchyElement>) list().iterator();
+	}
+	
+	public String toString() {
+		return list().toString();
+	}
+	
+	public abstract List<HierarchyElement> list();
+	public abstract int indexOf(int id);
 }

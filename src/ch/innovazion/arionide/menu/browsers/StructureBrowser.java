@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu;
+package ch.innovazion.arionide.menu.browsers;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +28,8 @@ import ch.innovazion.arionide.events.EventHandler;
 import ch.innovazion.arionide.events.ProjectCloseEvent;
 import ch.innovazion.arionide.events.ProjectEvent;
 import ch.innovazion.arionide.events.ProjectOpenEvent;
+import ch.innovazion.arionide.menu.MainMenus;
+import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.managers.HostStructureChangeObserver;
@@ -36,12 +38,12 @@ import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.core.geom.Geometry;
 import ch.innovazion.arionide.ui.core.geom.WorldElement;
 
-public class StructureList extends Menu implements EventHandler, HostStructureChangeObserver {
+public class StructureBrowser extends Menu implements EventHandler, HostStructureChangeObserver {
 	
 	private Project project;
 	private List<HierarchyElement> generation;
 	
-	public StructureList(AppManager manager) {
+	public StructureBrowser(AppManager manager) {
 		super(manager);
 				
 		manager.getEventDispatcher().registerHandler(this);
@@ -68,6 +70,7 @@ public class StructureList extends Menu implements EventHandler, HostStructureCh
 			
 			if(event instanceof ProjectOpenEvent) {
 				this.project = project;
+				
 				stack.registerObserver(this);
 				
 				this.onHostStructureChanged(-1);
@@ -89,6 +92,8 @@ public class StructureList extends Menu implements EventHandler, HostStructureCh
 	}
 
 	public void onHostStructureChanged(int newStruct) {
+		System.out.println(project.getDataManager().getHostStack());
+		
 		this.generation = this.project.getDataManager().getCurrentGeneration(this.project.getStorage().getHierarchy());
 		
 		List<String> strings = this.getElements();
@@ -106,8 +111,6 @@ public class StructureList extends Menu implements EventHandler, HostStructureCh
 		
 		if(strings.isEmpty()) {
 			strings.add("<No children>");
-		} else {
-			strings.sort(null);
 		}
 	}
 }

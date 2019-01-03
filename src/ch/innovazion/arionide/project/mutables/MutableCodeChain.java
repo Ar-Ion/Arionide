@@ -23,17 +23,28 @@ package ch.innovazion.arionide.project.mutables;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.HierarchyElement;
 
-public class MutableCodeChain implements CodeChain {
+public class MutableCodeChain extends CodeChain {
 	private static final long serialVersionUID = -3058461639828251252L;
 
 	private final List<MutableHierarchyElement> code = new ArrayList<>();
 	
-	public List<? extends HierarchyElement> getChain() {
+	public List<HierarchyElement> list() {
 		return Collections.unmodifiableList(this.code);
+	}
+	
+	public int indexOf(int id) {
+		int chainID = code.indexOf(new MutableHierarchyElement(id, null));
+		
+		if(chainID < 0) {
+			throw new NoSuchElementException();
+		} else {
+			return chainID;
+		}
 	}
 	
 	public List<MutableHierarchyElement> getMutableChain() {

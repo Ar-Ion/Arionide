@@ -97,7 +97,7 @@ public class UserHelper {
 	}
 	
 	private void loadVars(int id, List<String> variables) {
-		List<? extends HierarchyElement> elements = this.storage.getCode().get(id).getChain();
+		List<? extends HierarchyElement> elements = this.storage.getCode().get(id).list();
 				
 		for(HierarchyElement element : elements) {
 			StructureMeta meta = this.storage.getStructureMeta().get(element.getID());

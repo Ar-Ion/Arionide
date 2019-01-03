@@ -75,10 +75,10 @@ public class ZipStorage extends Storage {
 	public void initFS() {
 		try {
 			try {
-				Path backup = new File(this.location.getParentFile(), this.location.getName() + ".bak").toPath();
-				
+				File backup = new File(this.location.getParentFile(), this.location.getName() + ".bak");
+								
 				if(this.location.exists()) {
-					Files.copy(this.location.toPath(), backup, StandardCopyOption.REPLACE_EXISTING);
+					Files.copy(this.location.toPath(), backup.toPath(), StandardCopyOption.REPLACE_EXISTING);
 				}
 				
 				this.uri = URI.create("jar:" + this.location.toURI());
@@ -220,5 +220,7 @@ public class ZipStorage extends Storage {
 		} catch (IOException exception) {
 			throw new StorageException("Unable to save resource", exception);
 		}
+		
+		location.setLastModified(System.currentTimeMillis());
 	}
 }

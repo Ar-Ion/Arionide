@@ -35,18 +35,37 @@ public class HostStructureStack {
 	
 	private int generation = 0;
 
-	public synchronized void push(int structID) {
+	public void push(int structID) {
+		push(structID, true);
+	}
+	
+	public int pop() {
+		return pop(true);
+	}
+	
+	public synchronized void push(int structID, boolean notifyObservers) {
 		this.structIDs.push(structID);
 		this.generation++;
 		
 		this.notifyObservers();
 	}
 	
-	public synchronized void pop() {
-		this.structIDs.pop();
+	public synchronized int pop(boolean notifyObservers) {
+		int pop = this.structIDs.pop();
 		this.generation--;
 				
 		this.notifyObservers();
+		
+		return pop;
+	}
+	
+	public synchronized void reset() {
+		structIDs.clear();
+		generation = 0;
+	}
+	
+	public boolean contains(int struct) {
+		return structIDs.contains(struct);
 	}
 	
 	public int getCurrent() {		
@@ -95,5 +114,9 @@ public class HostStructureStack {
 		for(HostStructureChangeObserver observer : copy) {
 			observer.onHostStructureChanged(this.getCurrent());
 		}
+	}
+	
+	public String toString() {
+		return structIDs.toString();
 	}
 }

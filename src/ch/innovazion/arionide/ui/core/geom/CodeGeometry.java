@@ -59,15 +59,13 @@ public class CodeGeometry extends Geometry {
 	}
 	
 	@IAm("constructing the code geometry")
-	protected void construct(List<WorldElement> elements, List<Connection> connections) {		
-		System.out.println("Constructing code...");
-
+	protected void construct(List<WorldElement> elements, List<Connection> connections) {
 		this.factory.reset();
 		
 		Storage storage = this.getProject().getStorage();
 				
 		List<WorldElement> specification = new ArrayList<>();
-		List<? extends HierarchyElement> input = storage.getCode().get(this.container.getID()).getChain();
+		List<? extends HierarchyElement> input = storage.getCode().get(this.container.getID()).list();
 		
 		this.build(this.container, input, elements, specification, connections, storage.getStructureMeta(), this.container.getSize() * relativeSize);
 
@@ -82,45 +80,39 @@ public class CodeGeometry extends Geometry {
 			StructureMeta structMeta = meta.get(element.getID());
 						
 			if(structMeta != null) {
-				int index = structMeta.getComment().indexOf("code@");
+				Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.5f);
+				Vector3f spotColor = new Vector3f(Coloring.getColorByID(structMeta.getSpotColorID()));
 				
-				if(index > -1) {					
-					StructureMeta resolved = meta.get(Integer.parseInt(structMeta.getComment().substring(index + 5)));
+				/* Process instruction */
+				axis.normalize(parent.getSize() * relativeDistance);
+				
+				Vector3f current = this.factory.getAxisGenerator().get();
+				
+				this.factory.updateAxisGenerator(() -> current.cross(axis));
+				WorldElement output = this.factory.make(element.getID(), structMeta.getName(), structMeta.getComment(), new Vector3f(position), color, spotColor, size, structMeta.isAccessAllowed());
+				outputElements.add(output);
+				
+				/* Process specification */					
+				List<SpecificationElement> specification = structMeta.getSpecification().getElements();
+									
+				Vector3f specPos = new Vector3f(axis).cross(0.0f, 1.0f, 0.0f).normalize(size * 1.5f);
+				
+				Quaternionf specQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / specification.size(), new Vector3f(axis).normalize()));
+				
+				for(int i = 0; i < specification.size(); i++) {
+					SpecificationElement specElement = specification.get(i);
+					WorldElement specObject = this.factory.make((((i + 1) & 0xFF) << 24) | element.getID(), specElement.getName(), specElement.getValue(), new Vector3f(specPos).add(position), color, spotColor, size / 5.0f, structMeta.isAccessAllowed());
 					
-					Vector4f color = new Vector4f(Coloring.getColorByID(resolved.getColorID()), 0.5f);
-					Vector3f spotColor = new Vector3f(Coloring.getColorByID(resolved.getSpotColorID()));
+					outputSpecification.add(specObject);
+					outputConnections.add(new Connection(output, specObject));
 					
-					/* Process instruction */
-					axis.normalize(parent.getSize() * relativeDistance);
-					
-					Vector3f current = this.factory.getAxisGenerator().get();
-					
-					this.factory.updateAxisGenerator(() -> current.cross(axis));
-					WorldElement output = this.factory.make(element.getID(), resolved.getName(), resolved.getComment(), new Vector3f(position), color, spotColor, size, structMeta.isAccessAllowed());
-					outputElements.add(output);
-					
-					/* Process specification */					
-					List<SpecificationElement> specification = structMeta.getSpecification().getElements();
-										
-					Vector3f specPos = new Vector3f(axis).cross(0.0f, 1.0f, 0.0f).normalize(size * 1.5f);
-					
-					Quaternionf specQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / specification.size(), new Vector3f(axis).normalize()));
-					
-					for(int i = 0; i < specification.size(); i++) {
-						SpecificationElement specElement = specification.get(i);
-						WorldElement specObject = this.factory.make((((i + 1) & 0xFF) << 24) | element.getID(), specElement.getName(), specElement.getValue(), new Vector3f(specPos).add(position), color, spotColor, size / 5.0f, structMeta.isAccessAllowed());
-						
-						outputSpecification.add(specObject);
-						outputConnections.add(new Connection(output, specObject));
-						
-						specPos.rotate(specQuaternion);
-					}
-					
-					/* Process children and apply transformation */
-					this.build(parent, element.getChildren(), outputElements, outputSpecification, outputConnections, meta, size);
-					position.add(axis);
-					this.applyDerivation(axis, new Vector3f(position).sub(parent.getCenter()).div(parent.getSize()).mul(2.0f));
+					specPos.rotate(specQuaternion);
 				}
+				
+				/* Process children and apply transformation */
+				this.build(parent, element.getChildren(), outputElements, outputSpecification, outputConnections, meta, size);
+				position.add(axis);
+				this.applyDerivation(axis, new Vector3f(position).sub(parent.getCenter()).div(parent.getSize()).mul(2.0f));
 			}
 		}
 	}

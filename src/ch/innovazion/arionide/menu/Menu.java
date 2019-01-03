@@ -35,9 +35,8 @@ import ch.innovazion.arionide.ui.AppManager;
 public abstract class Menu {
 	
 	private final AppManager manager;
-	private List<String> elements = new ArrayList<>();
+	private final List<String> elements = new ArrayList<>();
 	private int menuCursor;
-	private boolean active;
 	
 	protected Menu(AppManager manager, String... elements) {
 		this.manager = manager;
@@ -69,15 +68,11 @@ public abstract class Menu {
 	}
 	
 	public void setMenuCursor(int id) {
-		this.menuCursor = id;
-	}
-	
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-	
-	public boolean isActive() {
-		return this.active;
+		if(id < 0) {
+			this.menuCursor = elements.size() + id;
+		} else {
+			this.menuCursor = id;
+		}
 	}
 	
 	public void select(int id) {

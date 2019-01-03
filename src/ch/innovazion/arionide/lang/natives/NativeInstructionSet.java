@@ -43,9 +43,9 @@ public class NativeInstructionSet extends InstructionSet {
 	}
 	
 	public void install() {
-		Project project = this.getProject();
+		Project project = getProject();
 		DataManager manager = project.getDataManager();
-		
+				
 		int structID = manager.getResourceAllocator().nextStructure();
 		
 		boolean alreadyExists = !manager.newStructure("natives", false).getMessageType().equals(MessageType.SUCCESS);
@@ -53,123 +53,125 @@ public class NativeInstructionSet extends InstructionSet {
 		manager.getHostStack().push(structID);
 		
 		if(alreadyExists) {
-			this.retrieve("init");
-			this.retrieve("print");
-			this.retrieve("call");
-			this.retrieve("defineText");
-			this.retrieve("defineInteger");
-			this.retrieve("defineStructure");
-			this.retrieve("redo");
-			this.retrieve("if");
-			this.retrieve("compareText");
-			this.retrieve("compareInteger");
-			this.retrieve("compareStructure");
-			this.retrieve("object");
-			this.retrieve("addInteger");
-			this.retrieve("addComplex");
-			this.retrieve("write");
-			this.retrieve("iterate");
-			this.retrieve("size");
-			this.retrieve("merge");
-			this.retrieve("load");
+			retrieve("init");
+			retrieve("print");
+			retrieve("call");
+			retrieve("defineText");
+			retrieve("defineInteger");
+			retrieve("defineStructure");
+			retrieve("redo");
+			retrieve("if");
+			retrieve("compareText");
+			retrieve("compareInteger");
+			retrieve("compareStructure");
+			retrieve("object");
+			retrieve("addInteger");
+			retrieve("addComplex");
+			retrieve("write");
+			retrieve("iterate");
+			retrieve("size");
+			retrieve("merge");
+			retrieve("load");
 		} else {
+			manager.getCodeManager().resetCodeChain(-1);
+
 			ResourceAllocator allocator = manager.getResourceAllocator();
 			
-			this.add("init", 0, new Specification(allocator.allocSpecification()));
+			add("init", 0, new Specification(allocator.allocSpecification()));
 			
-			this.add("print", 10, new Specification(
+			add("print", 10, new Specification(
 					allocator.allocSpecification(), 
 					new Data("message", "debug", NativeTypes.TEXT)));
 			
-			this.add("call", 20, new Specification(
+			add("call", 20, new Specification(
 					allocator.allocSpecification(),
 					new Reference("reference", null, new ArrayList<>(), new ArrayList<>())));
 		
-			this.add("defineText", 28, new Specification(
+			add("defineText", 28, new Specification(
 					allocator.allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.TEXT),
 					new Data("local", IntegerTypeManager.FALSE, NativeTypes.INTEGER)));
 			
-			this.add("defineInteger", 30, new Specification(
+			add("defineInteger", 30, new Specification(
 					allocator.allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.INTEGER),
 					new Data("local", IntegerTypeManager.FALSE, NativeTypes.INTEGER)));
 			
-			this.add("defineStructure", 32, new Specification(
+			add("defineStructure", 32, new Specification(
 					allocator.allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("value", null, NativeTypes.STRUCTURE),
 					new Data("local", IntegerTypeManager.FALSE, NativeTypes.INTEGER)));
 			
-			this.add("redo", 40, new Specification(
+			add("redo", 40, new Specification(
 					allocator.allocSpecification(),
 					new Reference("predicate", null, new ArrayList<>(Arrays.asList(new Data("condition", null, NativeTypes.INTEGER))), new ArrayList<>())));
 		
-			this.add("if", 50, new Specification(
+			add("if", 50, new Specification(
 					allocator.allocSpecification(),
 					new Reference("predicate", null, new ArrayList<>(Arrays.asList(new Data("condition", null, NativeTypes.INTEGER))), new ArrayList<>()),
 					new Reference("true", null, new ArrayList<>(), new ArrayList<>()),
 					new Reference("false", null, new ArrayList<>(), new ArrayList<>())));
 			
-			this.add("compareText", 58, new Specification(
+			add("compareText", 58, new Specification(
 					allocator.allocSpecification(),
 					new Data("first", null, NativeTypes.TEXT),
 					new Data("second", null, NativeTypes.TEXT),
 					new Data("result", null, NativeTypes.INTEGER)));
 			
-			this.add("compareInteger", 60, new Specification(
+			add("compareInteger", 60, new Specification(
 					allocator.allocSpecification(),
 					new Data("first", null, NativeTypes.INTEGER),
 					new Data("second", null, NativeTypes.INTEGER),
 					new Data("result", null, NativeTypes.INTEGER)));
 			
-			this.add("compareStructure", 62, new Specification(
+			add("compareStructure", 62, new Specification(
 					allocator.allocSpecification(),
 					new Data("first", null, NativeTypes.STRUCTURE),
 					new Data("second", null, NativeTypes.STRUCTURE),
 					new Data("result", null, NativeTypes.INTEGER)));
 			
-			this.add("object", 70, new Specification(
+			add("object", 70, new Specification(
 					allocator.allocSpecification(),
 					new Data("name", null, NativeTypes.TEXT),
 					new Data("structure", null, NativeTypes.STRUCTURE),
 					new Reference("constructor", null, new ArrayList<>(), new ArrayList<>())));
 			
 			
-			this.add("addInteger", 79, new Specification(
+			add("addInteger", 79, new Specification(
 					allocator.allocSpecification(), 
 					new Data("data", null, NativeTypes.INTEGER)));
 			
-			this.add("addComplex", 81, new Specification(
+			add("addComplex", 81, new Specification(
 					allocator.allocSpecification(), 
 					new Data("data", null, NativeTypes.TEXT)));
 			
-			this.add("write", 90, new Specification(
+			add("write", 90, new Specification(
 					allocator.allocSpecification(), 
 					new Data("object", null, NativeTypes.TEXT),
 					new Data("path", null, NativeTypes.TEXT)));
 			
-			this.add("iterate", 100, new Specification(
+			add("iterate", 100, new Specification(
 					allocator.allocSpecification(), 
 					new Data("object", null, NativeTypes.TEXT),
 					new Data("selector", null, NativeTypes.TEXT),
 					new Reference("updater", null, new ArrayList<>(Arrays.asList(new Data("value", null, NativeTypes.TEXT), new Data("index", null, NativeTypes.INTEGER))), new ArrayList<>()),
 					new Data("layers", "b0", NativeTypes.INTEGER)));
 			
-			this.add("size", 110, new Specification(
+			add("size", 110, new Specification(
 					allocator.allocSpecification(),
 					new Data("object", null, NativeTypes.TEXT),
 					new Data("result", null, NativeTypes.TEXT)));
 			
-			this.add("merge", 120, new Specification(
+			add("merge", 120, new Specification(
 					allocator.allocSpecification(),
 					new Data("source1", null, NativeTypes.TEXT),
 					new Data("source2", null, NativeTypes.TEXT),
 					new Data("destination", null, NativeTypes.TEXT)));
 			
-			this.add("load", 130, new Specification(
+			add("load", 130, new Specification(
 					allocator.allocSpecification(),
 					new Data("source", null, NativeTypes.INTEGER),
 					new Data("target", null, NativeTypes.TEXT)));
@@ -179,14 +181,14 @@ public class NativeInstructionSet extends InstructionSet {
 	}
 	
 	private void add(String name, int color, Specification specification) {
-		this.instructionSet.put(name, this.addInstructionDefinition(name, color, specification));
+		instructionSet.put(name, addInstructionDefinition(name, color, specification));
 	}
 	
 	private void retrieve(String name) {
-		this.instructionSet.put(name, this.retrieveInstructionDefinition(name));
+		instructionSet.put(name, retrieveInstructionDefinition(name));
 	}
 
 	public int getInstructionID(String name) {
-		return this.instructionSet.get(name);
+		return instructionSet.get(name);
 	}
 }

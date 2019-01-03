@@ -20,6 +20,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.project.managers;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -56,7 +57,7 @@ public class DataManager extends Manager {
 	}
 	
 	public MessageEvent newStructure(String name) {
-		return this.newStructure(name, true);
+		return newStructure(name, true);
 	}
 
 	public MessageEvent newStructure(String name, boolean withCodeBase) {
@@ -93,8 +94,8 @@ public class DataManager extends Manager {
 			
 			if(withCodeBase) {
 				this.hostStack.push(structureID);
-				message = this.codeManager.insertCode(0, this.retrieveInstructionDefinition("init"));
-				this.hostStack.pop();								
+				message = this.codeManager.insertCode(0, retrieveInstructionDefinition("init"));
+				this.hostStack.pop();
 			}
 			
 			if(message.getMessageType() == MessageType.ERROR) {
@@ -135,7 +136,7 @@ public class DataManager extends Manager {
 	}
 	
 	public int retrieveInstructionDefinition(String name) {
-		return this.getMeta().entrySet().stream().filter(meta -> meta.getValue().getName().equals(name)).findAny().get().getKey();
+		return getMeta().entrySet().stream().filter(meta -> meta.getValue().getName().equals(name)).findAny().orElse(new SimpleEntry<Integer, MutableStructureMeta>(-1, null)).getKey();
 	}
 	
 	public MessageEvent deleteStructure(int id) {
@@ -210,7 +211,7 @@ public class DataManager extends Manager {
 				
 				this.saveMeta();
 				
-				return new MessageEvent("Color sucessfully changed", MessageType.SUCCESS);
+				return new MessageEvent("Color updated", MessageType.SUCCESS);
 			} else {
 				return new MessageEvent("Invalid structure id", MessageType.ERROR);
 			}

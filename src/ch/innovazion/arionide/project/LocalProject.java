@@ -56,7 +56,7 @@ public class LocalProject implements Project {
 		projectProtocolMapping.put("structureGen", Integer.toString(0).getBytes(Coder.charset));
 		projectProtocolMapping.put("specificationGen", Integer.toString(0).getBytes(Coder.charset));
 		projectProtocolMapping.put("seed", Long.toString(new Random().nextLong()).getBytes(Coder.charset));
-		projectProtocolMapping.put("player", new String("0.0|0.0|5.0|0.0|0.0").getBytes(Coder.charset));
+		projectProtocolMapping.put("player", new String("0.0|0.0|5.0E17|0.0|0.0").getBytes(Coder.charset));
 	}
 	
 	private final ZipStorage storage;

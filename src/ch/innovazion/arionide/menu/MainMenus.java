@@ -20,6 +20,9 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu;
 
+import ch.innovazion.arionide.menu.browsers.CodeBrowser;
+import ch.innovazion.arionide.menu.browsers.SpecificationBrowser;
+import ch.innovazion.arionide.menu.browsers.StructureBrowser;
 import ch.innovazion.arionide.menu.code.CodeEditor;
 import ch.innovazion.arionide.menu.code.ReferenceEditor;
 import ch.innovazion.arionide.menu.code.TypeEditor;
@@ -28,7 +31,10 @@ import ch.innovazion.arionide.ui.AppManager;
 
 public class MainMenus {
 	
-	private static StructureList structList;
+	private static StructureBrowser structBrowser;
+	private static CodeBrowser codeBrowser;
+	private static SpecificationBrowser specificationBrowser;
+	
 	private static StructureEditor structEditor;
 	private static CodeEditor codeEditor;
 	private static TypeEditor typeEditor;
@@ -39,15 +45,22 @@ public class MainMenus {
 	public static void init(AppManager manager) {
 		assert !initialized : "Already initialized";
 	
-		structList = new StructureList(manager);
+		structBrowser = new StructureBrowser(manager);
+		codeBrowser = new CodeBrowser(manager);
+		//specificationBrowser = new SpecificationBrowser(manager);
+
 		structEditor = new StructureEditor(manager);
-		codeEditor = new CodeEditor(manager, structList);
-		typeEditor = new TypeEditor(manager, structList);
-		referenceEditor = new ReferenceEditor(manager, structList);
+		codeEditor = new CodeEditor(manager, codeBrowser);
+		typeEditor = new TypeEditor(manager, codeBrowser);
+		referenceEditor = new ReferenceEditor(manager, codeBrowser);
 	}
 	
-	public static StructureList getStructureList() {
-		return structList;
+	public static StructureBrowser getStructureList() {
+		return structBrowser;
+	}
+	
+	public static CodeBrowser getCodeBrowser() {
+		return codeBrowser;
 	}
 	
 	public static StructureEditor getStructureEditor() {

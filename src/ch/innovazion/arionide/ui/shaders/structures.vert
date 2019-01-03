@@ -18,7 +18,7 @@ void main() {
     vec3 fragVertex = simplified * position;
     
     fragNormal = normalize(fragVertex - simplified * vec3(0.0));
-    ambientColor = ambientFactor * color;
+    ambientColor = vec4(ambientFactor * color.xyz, color.w);
     
     gl_Position = projection * view * model * vec4(position, 1.0);
 }
