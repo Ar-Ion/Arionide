@@ -99,6 +99,25 @@ public class Utils {
 		return value < 0 || value > 255;
 	}
 	
+	public static int brighter(int color, float factor) {
+		checkFactorRange(factor);
+		
+		int red = getRed(color);
+		int green = getGreen(color);
+		int blue = getBlue(color);
+		
+		red += (int) ((0xFF - red) * factor);
+		green += (int) ((0xFF - green) * factor);
+		blue += (int) ((0xFF - blue) * factor);
+
+		return packRGB(red, green, blue);
+	}
+	
+	private static void checkFactorRange(float factor) {
+		if(factor < 0.0f || factor > 1.0f) {
+			throw new IllegalArgumentException("Factor " + factor + " out of range (0 ≤ f ≤ 1)");
+		} 
+	}
 	
 	public static long convertToUnsignedLong(int in) {
 		if(in < 0) {

@@ -87,6 +87,12 @@ public class CodeManager extends Manager {
 	}
 	
 	private MutableCodeChain getCurrentCode0() {
-		return getCode().get(this.hostStack.getCurrent());
+		MutableCodeChain chain = getCode().get(this.hostStack.getCurrent());	
+		
+		if(chain != null) {
+			return chain;
+		} else {
+			throw new IllegalStateException("The hoststack is inconsistent or the code section has been corrupted.");
+		}
 	}
 }

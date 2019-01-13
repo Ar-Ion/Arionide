@@ -79,7 +79,7 @@ public abstract class HierarchicalGeometry extends Geometry {
 				StructureMeta structMeta = metaData.get(element.getID());
 
 				if(structMeta != null) {
-					Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.6f);
+					Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.3f);
 					Vector3f spotColor = new Vector3f(Coloring.getColorByID(structMeta.getSpotColorID()));
 					boolean access = structMeta.isAccessAllowed();
 					

@@ -35,6 +35,8 @@ import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.events.ScrollEvent;
 import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
+import ch.innovazion.arionide.menu.MenuDescription.DescriptionLine;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.ui.AppDrawingContext;
@@ -59,8 +61,8 @@ public class CodeView extends View implements EventHandler {
 	
 	private final Scroll menu = new Scroll(this, "<No menu loaded>");
 	
-	private final Label currentInfo = new Label(this, "");
-	private final Label currentMessage = new Label(this, "");
+	private final Label[] menuDescription = new Label[MenuDescription.MAX_LINES];
+	private final Label currentMessage = new Label(this, new String());
 	
 	private Project currentProject;
 	private Menu currentMenu;
@@ -83,7 +85,14 @@ public class CodeView extends View implements EventHandler {
 		this.add(new Button(this, "...").setSignal("more"), 0.85f, 0.86f, 0.95f, 0.94f);
 
 		this.add(this.currentMessage, 0.2f, 0.1f, 0.8f, 0.2f);
-		this.add(this.currentInfo, 0.0f, 0.75f, 1.0f, 0.85f);
+		
+		for(int i = 0; i < menuDescription.length; i++) {
+			menuDescription[i] = new Label(this, new String());
+			
+			float height = 0.35f / menuDescription.length;
+			
+			this.add(menuDescription[i], 0.0f, 0.85f - height * (i + 1), 1.0f, 0.85f - height * i);
+		}
 		
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
@@ -156,15 +165,11 @@ public class CodeView extends View implements EventHandler {
 		} else if(event instanceof MessageEvent) {
 			MessageEvent message = (MessageEvent) event;
 			
-			if(message.getMessageType() != MessageType.DEBUG) {
-				Label ref = message.getMessageType().equals(MessageType.INFO) ? this.currentInfo : this.currentMessage;
-							
-				ref.setLabel(message.getMessage());
-				ref.setColor(message.getMessageType().getColor());
+			if(message.getMessageType() != MessageType.DEBUG) {							
+				currentMessage.setLabel(message.getMessage());
+				currentMessage.setColor(message.getMessageType().getColor());
 				
-				if(ref == this.currentMessage) {
-					this.currentMessageAlphaAnimation.startAnimation(1000, (animation) -> animation.startAnimation(5000, 1), 0xFF);
-				}
+				currentMessageAlphaAnimation.startAnimation(1000, (animation) -> animation.startAnimation(5000, 1), 0xFF);
 			}
 		} else if(event instanceof MenuEvent) {
 			this.currentMenu = ((MenuEvent) event).getMenu();
@@ -176,14 +181,31 @@ public class CodeView extends View implements EventHandler {
 				this.menu.setComponents(elements.stream().map(this.menu.getGenerator()).collect(Collectors.toList()));
 			}
 			
-			this.currentInfo.setLabel(this.currentMenu.getDescription());
-			this.currentInfo.setColor(MessageType.INFO.getColor());
+			syncMenuDescription();
 		} else if(event instanceof ScrollEvent) {
 			ScrollEvent scroll = (ScrollEvent) event;
 			
 			if(scroll.isTargetting(this)) {
 				assert this.currentMenu != null;
 				this.currentMenu.select(scroll.getSubComponentID());
+				
+				syncMenuDescription();
+			}
+		}
+	}
+	
+	private void syncMenuDescription() {
+		DescriptionLine[] lines = currentMenu.getDescription().getDisplay();
+		
+		for(int i = 0; i < lines.length; i++) {
+			Label label = menuDescription[i];
+			DescriptionLine line = lines[i];
+			
+			if(line != null) {
+				label.setLabel(line.getText());
+				label.setColor(line.getColor());
+			} else {
+				label.setLabel(new String());
 			}
 		}
 	}

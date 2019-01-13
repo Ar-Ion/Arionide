@@ -26,99 +26,120 @@ import java.util.Collections;
 import java.util.List;
 
 import ch.innovazion.arionide.events.Event;
+import ch.innovazion.arionide.events.EventHandler;
 import ch.innovazion.arionide.events.MenuEvent;
+import ch.innovazion.arionide.events.ProjectCloseEvent;
+import ch.innovazion.arionide.events.ProjectOpenEvent;
 import ch.innovazion.arionide.project.Project;
-import ch.innovazion.arionide.project.StructureMeta;
-import ch.innovazion.arionide.project.managers.HostStructureStack;
 import ch.innovazion.arionide.ui.AppManager;
 
-public abstract class Menu {
+public abstract class Menu implements EventHandler {
 	
+	private final Menu parent;
 	private final AppManager manager;
 	private final List<String> elements = new ArrayList<>();
+	
+	private Project currentProject = null;
 	private int menuCursor;
 	
+	// Only for root menu
 	protected Menu(AppManager manager, String... elements) {
-		this.manager = manager;
+		this.parent = null;
+		this.manager = parent.getAppManager();
+		this.elements.addAll(Arrays.asList(elements));
+	}
+	
+	protected Menu(Menu parent, String... elements) {
+		this.parent = parent;
+		this.manager = parent.getAppManager();
 		this.elements.addAll(Arrays.asList(elements));
 	}
 	
 	public AppManager getAppManager() {
-		return this.manager;
+		return manager;
 	}
 	
 	protected List<String> getElements() {
-		return this.elements;
+		return elements;
 	}
 	
 	public List<String> getMenuElements() {
-		return Collections.unmodifiableList(this.elements);
+		return Collections.unmodifiableList(elements);
 	}
 	
 	protected void fire(Event event) {
-		this.manager.getEventDispatcher().fire(event);
+		manager.getEventDispatcher().fire(event);
 	}
 	
 	public void show() {
-		this.manager.getEventDispatcher().fire(new MenuEvent(this));
+		manager.getEventDispatcher().fire(new MenuEvent(this));
 	}
 	
 	public int getMenuCursor() {
-		return this.menuCursor;
+		return menuCursor;
 	}
 	
-	public void setMenuCursor(int id) {
-		if(id < 0) {
-			this.menuCursor = elements.size() + id;
+	public int setMenuCursor(int index) {
+		if(index < 0) {
+			return menuCursor = elements.size() + index;
 		} else {
-			this.menuCursor = id;
+			return menuCursor = index;
 		}
 	}
 	
-	public void select(int id) {
-		if(id >= 0 && id < this.elements.size()) {
-			this.setMenuCursor(id);
-			this.onSelect(id);
-			this.onSelect(this.elements.get(id));
+	public void select(int index) {
+		int realIndex = setMenuCursor(index);
+		
+		if(currentProject != null) {
+			onSelect(realIndex);
+			onSelect(elements.get(realIndex));
 		}
 	}
 	
 	public void click() {
-		if(this.menuCursor >= 0 && this.menuCursor < this.elements.size()) {
-			this.onClick(this.menuCursor);
-			this.onClick(this.elements.get(this.menuCursor));
+		if(currentProject != null && menuCursor >= 0 && menuCursor < elements.size()) {
+			onClick(menuCursor);
+			onClick(elements.get(menuCursor));
 		}
 	}
-		
+	
+	public void back() {
+		if(parent != null) {
+			parent.show();
+		}
+	}
+
 	protected void onClick(String element) {
-		;
+		return;
 	}
 	
-	protected void onClick(int id) {
-		;
+	protected void onClick(int index) {
+		return;
 	}
 	
 	protected void onSelect(String element) {
-		;
+		return;
 	}
 	
-	protected void onSelect(int id) {
-		;
+	protected void onSelect(int index) {
+		return;
 	}
 	
-	public String getDescription() {
-		Project project = this.manager.getWorkspace().getCurrentProject();
-		HostStructureStack stack = project.getDataManager().getHostStack();
-		
-		if(!stack.isEmpty()) {
-			try {
-				StructureMeta meta = project.getStorage().getStructureMeta().get(stack.getCurrent());
-				return "The " + meta.getName() + (meta.getComment().equals("?") ? "" : " (" + meta.getComment() + ")");
-			} catch(Exception e) {
-				return "Unknown";
-			}
-		} else {
-			return "The space";
+	protected Project getProject() {
+		return currentProject;
+	}
+	
+	public void handleEvent(Event event) {
+		if(event instanceof ProjectOpenEvent) {
+			currentProject = ((ProjectOpenEvent) event).getProject();
+		} else if(event instanceof ProjectCloseEvent) {
+			currentProject = null;
 		}
 	}
+	
+	public List<Class<? extends Event>> getHandleableEvents() {
+		return Arrays.asList(ProjectOpenEvent.class, ProjectCloseEvent.class);
+	}
+	
+	public abstract MenuDescription getDescription();
 }

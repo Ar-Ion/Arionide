@@ -47,6 +47,10 @@ public class MutableCodeChain extends CodeChain {
 		}
 	}
 	
+	public int getID(int index) {
+		return code.get(index).getID();
+	}
+	
 	public List<MutableHierarchyElement> getMutableChain() {
 		return this.code;
 	}

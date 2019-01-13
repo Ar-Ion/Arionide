@@ -50,6 +50,7 @@ public class CodeGeometry extends Geometry {
 	private WorldElementFactory factory = new WorldElementFactory();
 	
 	public CodeGeometry(WorldElement container) {
+		assert container != null;
 		this.container = container;
 	}
 	

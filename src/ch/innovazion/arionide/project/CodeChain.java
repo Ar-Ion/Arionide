@@ -37,4 +37,5 @@ public abstract class CodeChain implements Iterable<HierarchyElement>, Serializa
 	
 	public abstract List<HierarchyElement> list();
 	public abstract int indexOf(int id);
+	public abstract int getID(int index);
 }

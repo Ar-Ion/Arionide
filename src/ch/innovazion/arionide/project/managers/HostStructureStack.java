@@ -24,37 +24,36 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
-// Pointer to the identifier of the structure the user is in.
 public class HostStructureStack {
 	
 	private final Set<HostStructureChangeObserver> observers = Collections.synchronizedSet(new HashSet<>());
-	private final Deque<Integer> structIDs = new ConcurrentLinkedDeque<Integer>();
+	private final Deque<Integer> structIDs = new LinkedList<>();
 	
 	private int generation = 0;
 
-	public void push(int structID) {
+	public synchronized void push(int structID) {
 		push(structID, true);
 	}
 	
-	public int pop() {
+	public synchronized int pop() {
 		return pop(true);
 	}
 	
 	public synchronized void push(int structID, boolean notifyObservers) {
-		this.structIDs.push(structID);
-		this.generation++;
+		structIDs.push(structID);
+		generation++;
 		
-		this.notifyObservers();
+		notifyObservers();
 	}
 	
 	public synchronized int pop(boolean notifyObservers) {
-		int pop = this.structIDs.pop();
-		this.generation--;
+		int pop = structIDs.pop();
+		generation--;
 				
-		this.notifyObservers();
+		notifyObservers();
 		
 		return pop;
 	}
@@ -64,24 +63,24 @@ public class HostStructureStack {
 		generation = 0;
 	}
 	
-	public boolean contains(int struct) {
+	public synchronized boolean contains(int struct) {
 		return structIDs.contains(struct);
 	}
 	
-	public int getCurrent() {		
+	public synchronized int getCurrent() {		
 		if(this.isEmpty()) {
 			return -1;
 		} else {
-			return this.structIDs.peek();
+			return structIDs.peek();
 		}
 	}
 	
 	public int getGeneration() {
-		return this.generation;
+		return generation;
 	}
 	
 	public boolean isEmpty() {
-		return this.generation == 0;
+		return generation == 0;
 	}
 	
 	public Collection<Integer> getStack() {
@@ -91,28 +90,30 @@ public class HostStructureStack {
 	public void registerObserver(HostStructureChangeObserver observer) {
 		assert observer != null;
 		
-		synchronized(this.observers) {
-			this.observers.add(observer);
+		synchronized(observers) {
+			observers.add(observer);
 		}
 	}
 	
 	public void unregisterObserver(HostStructureChangeObserver observer) {
 		assert observer != null;
 		
-		synchronized(this.observers) {
-			this.observers.remove(observer);
+		synchronized(observers) {
+			observers.remove(observer);
 		}
 	}
 	
 	private void notifyObservers() {
 		Set<HostStructureChangeObserver> copy;
 		
-		synchronized(this.observers) {
-			copy = new HashSet<>(this.observers);
+		synchronized(observers) {
+			copy = new HashSet<>(observers);
 		}
+		
+		int current = getCurrent();
 
 		for(HostStructureChangeObserver observer : copy) {
-			observer.onHostStructureChanged(this.getCurrent());
+			observer.onHostStructureChanged(current);
 		}
 	}
 	

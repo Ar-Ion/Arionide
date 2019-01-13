@@ -46,7 +46,7 @@ import java.util.Random;
 
 public class LocalProject implements Project {
 
-	public static final long versionUID = 213L;
+	public static final long versionUID = 300L;
 	
 	private static final Map<String, byte[]> projectProtocolMapping = new LinkedHashMap<>();
 	

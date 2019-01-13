@@ -27,8 +27,8 @@ import ch.innovazion.arionide.ui.core.gl.Abstract3DSettings;
 
 public class StructureSettings extends Abstract3DSettings implements GeneralStructureSettings {
 	
-	private Vector3f camera;
-	private Vector4f color;
+	private Vector3f camera = new Vector3f();
+	private Vector4f color = new Vector4f();
 	private float ambientFactor;
 	
 	public void setCamera(Vector3f camera) {

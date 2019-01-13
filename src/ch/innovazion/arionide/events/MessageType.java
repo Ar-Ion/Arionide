@@ -23,7 +23,6 @@ package ch.innovazion.arionide.events;
 public enum MessageType {
 	SUCCESS(0x00FF00), 
 	DEBUG(0x0000FF),
-	INFO(0xFFFFFF),
 	WARN(0xFFFF00),
 	ERROR(0xFF0000);
 	

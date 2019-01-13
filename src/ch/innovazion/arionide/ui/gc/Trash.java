@@ -56,6 +56,7 @@ public class Trash {
 	}
 	
 	public static void init(TrashContext context) {
+		assert instance == null;
 		instance = new Trash(context);
 	}
 	

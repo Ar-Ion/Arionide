@@ -84,22 +84,24 @@ public class DataManager extends Manager {
 			
 			this.getMeta().put(structureID, new MutableStructureMeta(this.allocator.allocSpecification()));
 			this.getCode().put(structureID, new MutableCodeChain());
-			// Save responsibility is declined to the invocation of "insertCode"
+			// Save responsibility is delegated to the invocation of "insertCode"
 			
 			MessageEvent message = this.setName(structureID, name);
 			
-			if(message.getMessageType() != MessageType.SUCCESS) {
+			if(message.getMessageType() == MessageType.ERROR) {
 				return message;
 			} 
 			
 			if(withCodeBase) {
-				this.hostStack.push(structureID);
-				message = this.codeManager.insertCode(0, retrieveInstructionDefinition("init"));
-				this.hostStack.pop();
-			}
-			
-			if(message.getMessageType() == MessageType.ERROR) {
-				return message;
+				synchronized(hostStack) {
+					hostStack.push(structureID);
+					message = codeManager.insertCode(0, retrieveInstructionDefinition("init"));
+					hostStack.pop();
+				}
+				
+				if(message.getMessageType() == MessageType.ERROR) {
+					return message;
+				}
 			}
 			
 			return new MessageEvent("Structure created", MessageType.SUCCESS);
