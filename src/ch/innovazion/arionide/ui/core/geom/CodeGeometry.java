@@ -31,6 +31,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import ch.innovazion.arionide.debugging.IAm;
+import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.menu.structure.Coloring;
 import ch.innovazion.arionide.project.HierarchyElement;
@@ -106,7 +107,15 @@ public class CodeGeometry extends Geometry {
 				
 				for(int i = 0; i < specification.size(); i++) {
 					SpecificationElement specElement = specification.get(i);
-					WorldElement specObject = this.factory.make((((i + 1) & 0xFF) << 24) | element.getID(), specElement.getName(), specElement.getValue(), new Vector3f(specPos).add(position), color, spotColor, size / 5.0f, structMeta.isAccessAllowed());
+					
+					String value = specElement.getValue();
+					
+					if(specElement instanceof Reference) {
+						Integer id = Integer.parseInt(value);
+						value = meta.get(id).getName();
+					}
+					
+					WorldElement specObject = this.factory.make((((i + 1) & 0xFF) << 24) | element.getID(), specElement.getName(), value, new Vector3f(specPos).add(position), color, spotColor, size / 5.0f, structMeta.isAccessAllowed());
 					
 					outputSpecification.add(specObject);
 					outputConnections.add(new Connection(output, specObject));

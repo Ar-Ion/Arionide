@@ -20,50 +20,56 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.structure.specification;
 
-import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.TypeManager;
 import ch.innovazion.arionide.lang.Types;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
-import ch.innovazion.arionide.ui.AppManager;
 
 public class TypeSelector extends Menu {
 		
-	private final Specification specification;
-	private final int id;
-	private final String currentType;
+	private Specification specification;
+	private int index;
+	private String currentType;
 	
-	public TypeSelector(AppManager manager, Menu parent, Specification specification, int id) {
-		super(manager);
-		
+	public TypeSelector(Menu parent) {
+		super(parent);
+	}
+	
+	public void setTarget(Specification specification, int index) {
 		this.specification = specification;
-		this.id = id;
+		this.index = index;
+	}
+	
+	public void show() {
+		assert specification != null;
 		
-		Types types = manager.getWorkspace().getCurrentProject().getLanguage().getTypes();		
-		TypeManager typeManager = types.getTypeManager(((Data) this.specification.getElements().get(id)).getType());
+		super.show();
+
+		Types types = getProject().getLanguage().getTypes();		
+		TypeManager typeManager = types.getTypeManager(((Data) specification.getElements().get(index)).getType());
 		
 		if(typeManager != null) {
-			this.currentType = typeManager.toString();
+			currentType = typeManager.toString();
 		} else {
-			this.currentType = "Undefined";
+			currentType = "Undefined";
 		}
 		
-		this.getElements().addAll(types.getAvailableTypes());
-		this.getElements().add("Cancel");
+		getElements().addAll(types.getAvailableTypes());
 	}
 	
 	public void onClick(int id) {
-		if(id < this.getElements().size() - 1) {
-			MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().refactorType(this.specification, this.id, id);
-			this.getAppManager().getEventDispatcher().fire(event);
-		}
+		Event event = getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().refactorType(specification, this.index, id);
+		getAppManager().getEventDispatcher().fire(event);
 		
 		back();
 	}
 	
 	public MenuDescription getDescription() {
-		return new MenuDescription("Current type: " + this.currentType);
+		MenuDescription description = super.getDescription().clone();
+		description.add("Current type: " + currentType);
+		return description;
 	}
 }

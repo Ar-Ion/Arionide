@@ -593,7 +593,7 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 				
 				this.renderLabel(context, element.getName(), ApplicationTints.WHITE, alpha, screenAnchor, height);
 			}
-							
+			
 			if(renderSub && element.getDescription() != null && !element.getDescription().equals("?")) {
 				String description = element.getDescription().replace(SpecificationElement.VAR, "");
 									

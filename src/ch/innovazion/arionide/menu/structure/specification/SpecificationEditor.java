@@ -26,13 +26,12 @@ import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
-import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.menu.Menu;
-import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.structure.specification.reference.SpecificationReferenceEditor;
 import ch.innovazion.arionide.project.Storage;
 
@@ -40,6 +39,7 @@ public class SpecificationEditor extends Menu {
 		
 	private final DataEditor dataEditor;
 	private final SpecificationReferenceEditor specificationReferenceEditor;
+	private final TypeSelector typeSelector;
 	
 	private Specification specification;
 	
@@ -48,70 +48,64 @@ public class SpecificationEditor extends Menu {
 		
 		this.dataEditor = new DataEditor(parent);
 		this.specificationReferenceEditor = new SpecificationReferenceEditor(parent);
+		this.typeSelector = new TypeSelector(this);
 	}
 
 	public void show() {		
 		Storage storage = this.getAppManager().getWorkspace().getCurrentProject().getStorage();
 		
-		this.specification = storage.getStructureMeta().get(getTarget().getID()).getSpecification();
+		specification = storage.getStructureMeta().get(getTarget().getID()).getSpecification();
 		
-		if(this.specification != null) {
-			List<String> elements = this.getElements();
+		if(specification != null) {
+			List<String> elements = getElements();
 			
 			elements.clear();
-			elements.addAll(this.specification.getElements().stream().map(SpecificationElement::getName).collect(Collectors.toList()));
 			elements.add("Add data");
 			elements.add("Add reference");
-			elements.add("Back");
+			elements.addAll(specification.getElements().stream().map(SpecificationElement::getName).collect(Collectors.toList()));
 		}
 		
 		super.show();
 	}
 	
 	public void onClick(int id) {
-		if(id < this.getElements().size() - 3) {
-			SpecificationElement element = this.specification.getElements().get(id);
-			
-			if(element instanceof Data) {
-				this.dataEditor.setTarget(this.specification, id);
-				this.dataEditor.show();	
-			} else if(element instanceof Reference) {
-				this.specificationReferenceEditor.setTarget(this.specification, id);
-				this.specificationReferenceEditor.show();
-			} else {
-				throw new RuntimeException("Strange object found");
-			}
-		} else if(id == this.getElements().size() - 3) {
+		if(id == 0) {
 			new Thread(() -> {
 				String name = JOptionPane.showInputDialog(null, "Enter the name for the new data", "New data", JOptionPane.PLAIN_MESSAGE);
 				
 				if(name != null) {
 					SpecificationElement element = new Data(name, null, -1);
-					MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().addElement(this.specification, element);
-					this.getAppManager().getEventDispatcher().fire(event);
+					Event event = getProject().getDataManager().getSpecificationManager().addElement(specification, element);
+					getAppManager().getEventDispatcher().fire(event);
 					
-					TypeSelector selector = new TypeSelector(this.getAppManager(), this, this.specification, this.specification.getElements().size() - 1);
-					selector.show();
+					typeSelector.setTarget(specification, specification.getElements().size() - 1);
+					typeSelector.show();
 				}
 			}).start();
-		} else if(id == this.getElements().size() - 2) {
+		} else if(id == 1) {
 			new Thread(() -> {
 				String name = JOptionPane.showInputDialog(null, "Enter the name for the new reference", "New reference", JOptionPane.PLAIN_MESSAGE);
 				
 				if(name != null) {
 					SpecificationElement element = new Reference(name, null, new ArrayList<>(), new ArrayList<>());
-					MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().addElement(this.specification, element);
-					this.getAppManager().getEventDispatcher().fire(event);
+					Event event = getProject().getDataManager().getSpecificationManager().addElement(specification, element);
+					getAppManager().getEventDispatcher().fire(event);
 					
-					this.show();
+					show();
 				}
 			}).start();
 		} else {
-			back();
+			SpecificationElement element = specification.getElements().get(id);
+			
+			if(element instanceof Data) {
+				dataEditor.setTarget(specification, id);
+				dataEditor.show();	
+			} else if(element instanceof Reference) {
+				specificationReferenceEditor.setTarget(specification, id);
+				specificationReferenceEditor.show();
+			} else {
+				throw new RuntimeException("Strange object found");
+			}
 		}
-	}
-	
-	public MenuDescription getDescription() {
-		return new MenuDescription("Specification editor");
 	}
 }

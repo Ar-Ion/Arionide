@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.structure.specification;
 
-import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.TypeManager;
@@ -28,18 +28,21 @@ import ch.innovazion.arionide.menu.MainMenus;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.code.TypeEditor;
-import ch.innovazion.arionide.project.Project;
 
 public class DataEditor extends SpecificationElementEditor {
 
 	private static final String setType = "Set type";
 	private static final String setDefault = "Set default";
 
+	private final TypeSelector typeSelector;
+	
 	private TypeManager type;
 	private String description;
 	
 	protected DataEditor(Menu parent) {
 		super(parent);
+		
+		this.typeSelector = new TypeSelector(this);
 		
 		this.getElements().add(setType);
 		this.getElements().add(setDefault);
@@ -61,12 +64,12 @@ public class DataEditor extends SpecificationElementEditor {
 	public void onClick(String element) {		
 		switch(element) {
 			case setType:
-				TypeSelector selector = new TypeSelector(this.getAppManager(), this, this.getSpecification(), this.getElementID());
-				selector.show();
+				typeSelector.setTarget(getSpecification(), getElementID());
+				typeSelector.show();
 				break;
 			case setDefault:
 				TypeEditor editor = MainMenus.getTypeEditor();
-				editor.setTarget((Data) this.getElement());
+				editor.setTarget((Data) getElement());
 				editor.show();
 				break;
 			default: 
@@ -75,17 +78,13 @@ public class DataEditor extends SpecificationElementEditor {
 	}
 	
 	public void delete() {
-		Project project = this.getAppManager().getWorkspace().getCurrentProject();
+		Event message = getProject().getDataManager().getSpecificationManager().deleteElement(getSpecification(), getElementID());
+		getAppManager().getEventDispatcher().fire(message);
 		
-		if(project != null) {
-			MessageEvent message = project.getDataManager().getSpecificationManager().deleteElement(this.getSpecification(), this.getElementID());
-			this.getAppManager().getEventDispatcher().fire(message);
-			
-			back();
-		}
+		back();
 	}
 	
 	public MenuDescription getDescription() {
-		return new MenuDescription(this.description);
+		return new MenuDescription(description);
 	}
 }

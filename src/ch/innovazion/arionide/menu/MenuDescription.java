@@ -136,6 +136,15 @@ public class MenuDescription {
 		return lines.stream().map(Object::toString).collect(Collectors.toList()).toString();
 	}
 	
+	public MenuDescription clone() {
+		MenuDescription clone = new MenuDescription(baseColor, highlightFactor);
+		clone.lines.addAll(lines);
+		clone.highlight = highlight;
+		clone.scrollBase = scrollBase;
+		
+		return clone;
+	}
+	
 	public class DescriptionLine {
 		private final String text;
 		private int color;

@@ -50,13 +50,26 @@ public class ReferenceEditor extends Menu {
 	
 	public void setTarget(Reference element) {
 		this.element = element;
+	}
+	
+	public void show() {
+		assert element != null;
 		
+		super.show();
+
 		selector.setTarget(element);
 		
 		List<String> elements = this.getElements();
 		
 		description = new MenuDescription();
 		elements.clear();
+		
+		if(element.getValue() != null) {
+			int resolved = Integer.parseInt(element.getValue());
+			String realName = getProject().getStorage().getStructureMeta().get(resolved).getName();
+			
+			description.add("Predicate: " + realName);
+		}
 		
 		for(SpecificationElement data : element.getEagerParameters()) {
 			elements.add(data.getName());
@@ -73,7 +86,7 @@ public class ReferenceEditor extends Menu {
 		
 		this.setMenuCursor(this.refIndex);
 	}
-	
+
 	public void onClick(int id) {
 		if(id == this.refIndex) {
 			selector.show();
