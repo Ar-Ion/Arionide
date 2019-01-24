@@ -32,7 +32,7 @@ import org.joml.Vector4f;
 
 import ch.innovazion.arionide.debugging.IAm;
 import ch.innovazion.arionide.lang.SpecificationElement;
-import ch.innovazion.arionide.menu.edition.Coloring;
+import ch.innovazion.arionide.menu.structure.Coloring;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.StructureMeta;
@@ -45,7 +45,7 @@ public class CodeGeometry extends Geometry {
 	private static final float axisCorrection = 0.2f;
 	private static final float axisCorrectionFlexibility = 5.0f;
 
-	private final WorldElement container;
+	private WorldElement container;
 	
 	private WorldElementFactory factory = new WorldElementFactory();
 	
@@ -59,17 +59,21 @@ public class CodeGeometry extends Geometry {
 		this.factory = new WorldElementFactory(newSeed);
 	}
 	
+	public void updateContainer(WorldElement container) {
+		this.container = container;
+	}
+	
 	@IAm("constructing the code geometry")
 	protected void construct(List<WorldElement> elements, List<Connection> connections) {
 		this.factory.reset();
-		
+			
 		Storage storage = this.getProject().getStorage();
 				
 		List<WorldElement> specification = new ArrayList<>();
 		List<? extends HierarchyElement> input = storage.getCode().get(this.container.getID()).list();
-		
+				
 		this.build(this.container, input, elements, specification, connections, storage.getStructureMeta(), this.container.getSize() * relativeSize);
-
+		
 		elements.addAll(specification); // So that one can iterate through the code with the wheel having to pass through an instruction's specification.
 	}
 	

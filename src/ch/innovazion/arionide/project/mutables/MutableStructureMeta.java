@@ -21,7 +21,7 @@
 package ch.innovazion.arionide.project.mutables;
 
 import ch.innovazion.arionide.lang.Specification;
-import ch.innovazion.arionide.menu.edition.Coloring;
+import ch.innovazion.arionide.menu.structure.Coloring;
 import ch.innovazion.arionide.project.StructureMeta;
 
 public class MutableStructureMeta implements StructureMeta {

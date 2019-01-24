@@ -22,11 +22,12 @@ package ch.innovazion.arionide.ui.overlay.views;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.ClickEvent;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
@@ -171,7 +172,7 @@ public class RunView extends View implements EventHandler {
 		}
 	}
 
-	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(ClickEvent.class, WheelEvent.class);
+	public Set<Class<? extends Event>> getHandleableEvents() {
+		return Utils.asSet(ClickEvent.class, WheelEvent.class);
 	}
 }

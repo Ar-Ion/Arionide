@@ -27,7 +27,7 @@ import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.menu.MainMenus;
 import ch.innovazion.arionide.menu.Menu;
-import ch.innovazion.arionide.ui.AppManager;
+import ch.innovazion.arionide.menu.MenuDescription;
 
 public class ReferenceEditor extends Menu {
 	
@@ -37,14 +37,14 @@ public class ReferenceEditor extends Menu {
 	
 	private int refIndex;
 		
-	public ReferenceEditor(AppManager manager, Menu parent) {
-		super(manager);
+	public ReferenceEditor(Menu parent) {
+		super(parent);
 		this.parent = parent;
 	}
 	
 	public void setTarget(Reference element) {
 		this.element = element;
-		this.selector = new ReferenceSelector(this.getAppManager(), parent, element);
+		this.selector = new ReferenceSelector(parent, element);
 		
 		List<String> elements = this.getElements();
 		
@@ -71,7 +71,7 @@ public class ReferenceEditor extends Menu {
 		} else if(id == this.refIndex - 1) {
 			this.parent.show();
 		} else if(id < this.refIndex) {
-			Menu binding = new ReferenceBinding(this.getAppManager(), this, (Data) this.element.getNeededParameters().get(id), this.element.getSpecificationParameters());
+			Menu binding = new ReferenceBinding(this, (Data) this.element.getNeededParameters().get(id), this.element.getSpecificationParameters());
 			binding.show();
 		} else {
 			id -= this.refIndex + 1;
@@ -82,7 +82,7 @@ public class ReferenceEditor extends Menu {
 		}
 	}
 	
-	public String getDescription() {
-		return "Reference editor for '" + this.element + "'";
+	public MenuDescription getDescription() {
+		return new MenuDescription("Reference editor for '" + this.element + "'");
 	}
 }

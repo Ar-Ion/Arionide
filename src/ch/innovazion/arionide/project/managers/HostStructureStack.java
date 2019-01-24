@@ -20,17 +20,17 @@
  *******************************************************************************/
 package ch.innovazion.arionide.project.managers;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 public class HostStructureStack {
 	
 	private final Set<HostStructureChangeObserver> observers = Collections.synchronizedSet(new HashSet<>());
-	private final Deque<Integer> structIDs = new LinkedList<>();
+	private final Deque<Integer> structIDs = new ArrayDeque<>();
 	
 	private int generation = 0;
 
@@ -50,8 +50,8 @@ public class HostStructureStack {
 	}
 	
 	public synchronized int pop(boolean notifyObservers) {
-		int pop = structIDs.pop();
 		generation--;
+		int pop = structIDs.pop();
 				
 		notifyObservers();
 		

@@ -21,7 +21,6 @@
 package ch.innovazion.arionide.ui.core;
 
 import ch.innovazion.arionide.debugging.IAm;
-import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.core.geom.Geometry;
 import ch.innovazion.arionide.ui.topology.Bounds;
@@ -40,15 +39,14 @@ public interface CoreRenderer {
 	@IAm("changing the core scene")
 	public void setScene(RenderingScene scene);
 	
-	@IAm("selecting an instruction")
-	public void selectInstruction(int id);
-	
-	@IAm("setting up the current project")
-	public void loadProject(Project project);
-		
+	@IAm("selecting an object")
+	public void select(int id);
+
 	@IAm("teleporting to an element")
 	public void teleport(TeleportInfo info);
 	
-	public Geometry getStructuresGeometry();
+	public void requestFullReconstruction();
+	
 	public Geometry getCodeGeometry();
+	public Geometry getStructuresGeometry();
 }

@@ -73,6 +73,7 @@ public class AppManager implements Purgeable {
 		if(this.initialized) {						
 			for(Drawable view : Views.all) {
 				view.draw(this.getDrawingContext());
+
 			}
 		}
 	}

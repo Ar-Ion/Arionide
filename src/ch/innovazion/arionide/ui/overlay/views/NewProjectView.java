@@ -21,9 +21,9 @@
 package ch.innovazion.arionide.ui.overlay.views;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
+import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.events.ClickEvent;
 import ch.innovazion.arionide.events.Event;
@@ -88,7 +88,7 @@ public class NewProjectView extends View implements EventHandler {
 		}
 	}
 
-	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(ClickEvent.class);
+	public Set<Class<? extends Event>> getHandleableEvents() {
+		return Utils.asSet(ClickEvent.class);
 	}
 }

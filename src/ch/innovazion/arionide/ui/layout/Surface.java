@@ -37,6 +37,7 @@ public abstract class Surface implements Drawable {
 	public final void draw(AppDrawingContext context) {
 		if(!this.hidden && this.bounds != null) {
 			this.drawSurface(context);
+
 		}
 	}
 	

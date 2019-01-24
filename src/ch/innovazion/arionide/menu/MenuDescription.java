@@ -3,12 +3,14 @@ package ch.innovazion.arionide.menu;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.ui.ApplicationTints;
 
 public class MenuDescription {
 	
+	public static final MenuDescription EMPTY = new MenuDescription();
 	public static final int MAX_LINES = 6;
 	
 	private final List<DescriptionLine> lines = new ArrayList<>();
@@ -120,6 +122,10 @@ public class MenuDescription {
 		return display;
 	}
 	
+	public String toString() {
+		return lines.stream().map(Object::toString).collect(Collectors.toList()).toString();
+	}
+	
 	public class DescriptionLine {
 		private final String text;
 		private int color;
@@ -139,6 +145,10 @@ public class MenuDescription {
 		
 		public DescriptionLine clone() {
 			return new DescriptionLine(text, color);
+		}
+		
+		public String toString() {
+			return text;
 		}
  	}
 }

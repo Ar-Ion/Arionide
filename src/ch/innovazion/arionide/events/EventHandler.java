@@ -20,9 +20,9 @@
  *******************************************************************************/
 package ch.innovazion.arionide.events;
 
-import java.util.List;
+import java.util.Set;
 
 public interface EventHandler {
 	public <T extends Event> void handleEvent(T event);
-	public List<Class<? extends Event>> getHandleableEvents();
+	public Set<Class<? extends Event>> getHandleableEvents();
 }

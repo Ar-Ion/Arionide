@@ -21,9 +21,9 @@
 package ch.innovazion.arionide.ui.overlay.components;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.ActionEvent;
@@ -128,7 +128,10 @@ public class Tab extends MultiComponent implements EventHandler {
 	}
 	
 	public Tab setActiveComponent(int id) {
-		this.activeComponent = id;
+		if(id >= 0 && id < getComponents().size()) {
+			this.activeComponent = id;
+		}
+		
 		return this;
 	}
 	
@@ -172,8 +175,8 @@ public class Tab extends MultiComponent implements EventHandler {
 		synchronized(this.rectangles) {
 			for(Component component : components) {
 				Bounds rect = this.rectangles.get(i++);
-					
-				if(rect.getWidth() > 0) {
+									
+				if(rect.getWidth() > 0.0f) {
 					component.setBounds(rect);
 					
 					if(component instanceof Enlightenable) {
@@ -263,7 +266,7 @@ public class Tab extends MultiComponent implements EventHandler {
 		}
 	}
 	
-	protected void updateAll() {
+	public void updateAll() {
 		this.compute();
 
 		if(this.rectangles.size() > 0) {
@@ -296,8 +299,8 @@ public class Tab extends MultiComponent implements EventHandler {
 		return -666; // error
 	}
 
-	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(ActionEvent.class, InvalidateLayoutEvent.class);
+	public Set<Class<? extends Event>> getHandleableEvents() {
+		return Utils.asSet(ActionEvent.class, InvalidateLayoutEvent.class);
 	}
 	
 	protected static List<Component> makeLabels(View parent, String[] tabs) {
@@ -305,7 +308,9 @@ public class Tab extends MultiComponent implements EventHandler {
 		
 		for(String tab : tabs) {
 			if(tab != null) {
-				labels.add(new Label(parent, tab));
+				Label label = new Label(parent, tab);
+				label.load();
+				labels.add(label);
 			}
 		}
 				

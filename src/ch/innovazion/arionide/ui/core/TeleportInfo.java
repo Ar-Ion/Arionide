@@ -52,7 +52,7 @@ public class TeleportInfo {
 	}
 	
 	public boolean isAlive() {
-		return System.currentTimeMillis() < this.expires;
+		return System.currentTimeMillis() < this.expires && ~(focus & destination) != 0;
 	}
 	
 	public String toString() {

@@ -38,7 +38,7 @@ public class InheritanceManager extends Manager {
 			MutableInheritanceElement parentElement = this.getInheritance().get(parent);
 			MutableInheritanceElement childElement = this.getInheritance().get(child);
 			
-			if(this.recursiveCheck(childElement, parent) && this.recursiveCheck(parentElement, child)) { /* Check for cycle */
+			if(this.recursiveCheck(childElement, parent) && this.recursiveCheck(parentElement, child)) { /* Check for cyclicity */
 				List<Integer> children = parentElement.getMutableChildren();
 				List<Integer> parents = childElement.getMutableParents();
 				
@@ -52,7 +52,7 @@ public class InheritanceManager extends Manager {
 				
 				this.saveInheritance();
 		
-				return new MessageEvent("Inheritance updated", MessageType.SUCCESS);
+				return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 			} else {
 				return new MessageEvent("Cyclic inheritance is not permitted", MessageType.ERROR);
 			}
@@ -77,6 +77,6 @@ public class InheritanceManager extends Manager {
 		
 		this.saveInheritance();
 		
-		return new MessageEvent("Inheritance updated", MessageType.SUCCESS);
+		return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 	}
 }

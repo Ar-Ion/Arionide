@@ -20,7 +20,6 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.core.awt;
 
-import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.ui.AWTContext;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.core.CoreRenderer;
@@ -41,19 +40,13 @@ public class AWTCoreRenderer implements CoreRenderer {
 	}
 
 	@Override
-	public void loadProject(Project project) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void update(Bounds bounds) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void selectInstruction(int id) {
+	public void select(int id) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -71,13 +64,18 @@ public class AWTCoreRenderer implements CoreRenderer {
 	}
 
 	@Override
-	public Geometry getStructuresGeometry() {
+	public void requestFullReconstruction() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public Geometry getCodeGeometry() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Geometry getCodeGeometry() {
+	public Geometry getStructuresGeometry() {
 		// TODO Auto-generated method stub
 		return null;
 	}

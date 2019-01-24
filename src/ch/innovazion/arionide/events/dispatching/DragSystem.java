@@ -20,9 +20,9 @@
  *******************************************************************************/
 package ch.innovazion.arionide.events.dispatching;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
+import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.ActionEvent;
 import ch.innovazion.arionide.events.ActionType;
 import ch.innovazion.arionide.events.DragEvent;
@@ -65,7 +65,7 @@ public class DragSystem implements EventHandler {
 		}
 	}
 
-	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(ActionEvent.class, MoveEvent.class);
+	public Set<Class<? extends Event>> getHandleableEvents() {
+		return Utils.asSet(ActionEvent.class, MoveEvent.class);
 	}
 }

@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.edition.specification;
+package ch.innovazion.arionide.menu.structure.specification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,32 +32,29 @@ import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.menu.MainMenus;
-import ch.innovazion.arionide.menu.SpecificMenu;
-import ch.innovazion.arionide.menu.edition.specification.reference.SpecificationReferenceEditor;
+import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
+import ch.innovazion.arionide.menu.structure.specification.reference.SpecificationReferenceEditor;
 import ch.innovazion.arionide.project.Storage;
-import ch.innovazion.arionide.ui.AppManager;
-import ch.innovazion.arionide.ui.core.geom.WorldElement;
 
-public class SpecificationEditor extends SpecificMenu {
+public class SpecificationEditor extends Menu {
 		
 	private final DataEditor dataEditor;
 	private final SpecificationReferenceEditor specificationReferenceEditor;
 	
 	private Specification specification;
 	
-	public SpecificationEditor(AppManager manager) {
-		super(manager);
+	public SpecificationEditor(Menu parent) {
+		super(parent);
 		
-		this.dataEditor = new DataEditor(manager, this);
-		this.specificationReferenceEditor = new SpecificationReferenceEditor(manager, this);
+		this.dataEditor = new DataEditor(parent);
+		this.specificationReferenceEditor = new SpecificationReferenceEditor(parent);
 	}
 
-	public void setCurrent(WorldElement element) {
-		super.setCurrent(element);
-		
+	public void show() {		
 		Storage storage = this.getAppManager().getWorkspace().getCurrentProject().getStorage();
 		
-		this.specification = storage.getStructureMeta().get(element.getID()).getSpecification();
+		this.specification = storage.getStructureMeta().get(getTarget().getID()).getSpecification();
 		
 		if(this.specification != null) {
 			List<String> elements = this.getElements();
@@ -68,6 +65,8 @@ public class SpecificationEditor extends SpecificMenu {
 			elements.add("Add reference");
 			elements.add("Back");
 		}
+		
+		super.show();
 	}
 	
 	public void onClick(int id) {
@@ -105,7 +104,6 @@ public class SpecificationEditor extends SpecificMenu {
 					MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().addElement(this.specification, element);
 					this.getAppManager().getEventDispatcher().fire(event);
 					
-					this.reload();
 					this.show();
 				}
 			}).start();
@@ -114,7 +112,7 @@ public class SpecificationEditor extends SpecificMenu {
 		}
 	}
 	
-	public String getDescription() {
-		return "Specification editor for " + super.getDescription();
+	public MenuDescription getDescription() {
+		return new MenuDescription("Specification editor");
 	}
 }

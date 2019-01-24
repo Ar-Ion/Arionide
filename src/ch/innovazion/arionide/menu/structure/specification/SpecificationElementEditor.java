@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.edition.specification;
+package ch.innovazion.arionide.menu.structure.specification;
 
 import javax.swing.JOptionPane;
 
@@ -27,24 +27,19 @@ import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.menu.Confirm;
 import ch.innovazion.arionide.menu.Menu;
-import ch.innovazion.arionide.menu.SpecificMenu;
 import ch.innovazion.arionide.project.Project;
-import ch.innovazion.arionide.ui.AppManager;
 
 public abstract class SpecificationElementEditor extends Menu {
 	
-	private static final String back = "Back";
 	private static final String delete = "Delete";
 	private static final String setName = "Set name";
 
-	private final SpecificMenu parent;
 	private int id;
 	private Specification specification;
 	private SpecificationElement element;
 	
-	protected SpecificationElementEditor(AppManager manager, SpecificMenu parent) {
-		super(manager, back, delete, setName);
-		this.parent = parent;
+	protected SpecificationElementEditor(Menu parent) {
+		super(parent, delete, setName);
 	}
 
 	protected void setTarget(Specification specification, int id) {
@@ -72,12 +67,8 @@ public abstract class SpecificationElementEditor extends Menu {
 	
 	public void onClick(String element) {
 		switch(element) {
-			case back:
-				this.getParent().reload();
-				this.getParent().show();
-				break;
 			case delete:
-				Menu confirm = new Confirm(this.getAppManager(), this, this::delete, "Do you really want to delete this element?");
+				Menu confirm = new Confirm(this, this::delete, "Do you really want to delete this element?");
 				confirm.show();
 				break;
 			case setName:
@@ -98,10 +89,5 @@ public abstract class SpecificationElementEditor extends Menu {
 		}
 	}
 	
-	public SpecificMenu getParent() {
-		return this.parent;
-	}
-	
 	public abstract void delete();
-	public abstract String getDescription();
 }

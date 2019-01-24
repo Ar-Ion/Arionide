@@ -18,17 +18,17 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.edition.specification;
+package ch.innovazion.arionide.menu.structure.specification;
 
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.TypeManager;
 import ch.innovazion.arionide.menu.MainMenus;
-import ch.innovazion.arionide.menu.SpecificMenu;
+import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.code.TypeEditor;
 import ch.innovazion.arionide.project.Project;
-import ch.innovazion.arionide.ui.AppManager;
 
 public class DataEditor extends SpecificationElementEditor {
 
@@ -38,8 +38,8 @@ public class DataEditor extends SpecificationElementEditor {
 	private TypeManager type;
 	private String description;
 	
-	protected DataEditor(AppManager manager, SpecificMenu parent) {
-		super(manager, parent);
+	protected DataEditor(Menu parent) {
+		super(parent);
 		
 		this.getElements().add(setType);
 		this.getElements().add(setDefault);
@@ -81,12 +81,11 @@ public class DataEditor extends SpecificationElementEditor {
 			MessageEvent message = project.getDataManager().getSpecificationManager().deleteElement(this.getSpecification(), this.getElementID());
 			this.getAppManager().getEventDispatcher().fire(message);
 			
-			this.getParent().reload();
-			this.getParent().show();
+			back();
 		}
 	}
 	
-	public String getDescription() {
-		return this.description;
+	public MenuDescription getDescription() {
+		return new MenuDescription(this.description);
 	}
 }

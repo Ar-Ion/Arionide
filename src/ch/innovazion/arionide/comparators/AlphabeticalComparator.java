@@ -28,13 +28,13 @@ import ch.innovazion.arionide.project.StructureMeta;
 
 public class AlphabeticalComparator implements Comparator<Integer> {
 	
-	private final Map<Integer, StructureMeta> structure;
+	private final Map<Integer, StructureMeta> meta;
 	
 	public AlphabeticalComparator(Storage storage) {
-		this.structure = storage.getStructureMeta();
+		this.meta = storage.getStructureMeta();
 	}
 	
 	public int compare(Integer o1, Integer o2) {
-		return this.structure.get(o1).getName().compareTo(this.structure.get(o2).getName());
+		return this.meta.get(o1).getName().compareTo(this.meta.get(o2).getName());
 	}
 }

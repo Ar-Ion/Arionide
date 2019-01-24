@@ -20,118 +20,84 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.code;
 
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
 import ch.innovazion.arionide.events.MessageEvent;
-import ch.innovazion.arionide.events.MessageType;
+import ch.innovazion.arionide.lang.SpecificationElement;
+import ch.innovazion.arionide.menu.Browser;
 import ch.innovazion.arionide.menu.Menu;
-import ch.innovazion.arionide.project.CodeChain;
-import ch.innovazion.arionide.project.HierarchyElement;
+import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.StructureMeta;
 import ch.innovazion.arionide.ui.AppManager;
+import ch.innovazion.arionide.ui.ApplicationTints;
 
 public class CodeEditor extends Menu {
 
-	private static final String back = "Back";
-	private static final String description = "Set description";
-	private static final String delete = "Delete";
+	private static final String comment = "Comment";
+	private static final String delete = "Remove";
 	private static final String append = "Append";
 	
-	private final Menu parent;
 	private final CodeAppender appender;
+	private MenuDescription description;
 	
-	private int instructionID;
-	private HierarchyElement instruction;
-	private StructureMeta instructionMeta;
-	
-	public CodeEditor(AppManager manager, Menu parent) {
-		super(manager);
-		
-		this.parent = parent;
-		this.appender = new CodeAppender(manager, parent);
-		
-		this.getElements().add(back);
-		this.getElements().add(description);
-		this.getElements().add(delete);
-		this.getElements().add(append);
+	public CodeEditor(Browser parent) {
+		super(parent, append, comment, delete);
+		this.appender = new CodeAppender(parent);
 	}
 	
-	public void setTargetByID(int id) {
-		Project project = getCurrentProject();
-		CodeChain chain = getCode(project);
-		setTargetByIndex(project, getCode(project), chain.indexOf(id));
-	}
-	
-	public void setTargetByIndex(int index) {
-		Project project = getCurrentProject();
-		setTargetByIndex(project, getCode(project), index);
-	}
-	
-	private void setTargetByIndex(Project project, CodeChain chain, int index) {
-		this.instructionID = index;
-		this.instruction = chain.list().get(instructionID);
-		this.instructionMeta = project.getStorage().getStructureMeta().get(instruction.getID());
+	public void show() {
+		super.show();
 		
-		this.setMenuCursor(3);
-	}
-	
-	private Project getCurrentProject() {
-		Project project = this.getAppManager().getWorkspace().getCurrentProject();
+		StructureMeta meta = getProject().getStorage().getStructureMeta().get(getTarget().getID());
+		List<SpecificationElement> elements = meta.getSpecification().getElements();
 		
-		if(project != null) {
-			return project;
-		} else {
-			throw new IllegalStateException();
+		description = new MenuDescription(ApplicationTints.MENU_INFO_INACTIVE_COLOR, 1.0f);
+		
+		String name = meta.getName();
+		
+		if(!meta.getComment().equals("?")) {
+			name += " (" + meta.getComment() + ")";
 		}
-	}
-	
-	private CodeChain getCode(Project project) {
-		return project.getDataManager().getCodeManager().getCurrentCode();
+		
+		description.add(name);
+		
+		for(SpecificationElement element : elements) {
+			description.add(element.toString());
+		}
+
+		description.setHighlight(0);
+		description.setColor(0, ApplicationTints.MENU_INFO_DEFAULT_COLOR);
 	}
 	
 	public void onClick(String element) {
-		AppManager manager = this.getAppManager();
-		Project project = getCurrentProject();
+		AppManager manager = getAppManager();
+		Project project = getProject();
 		
 		if(element == append) {
-			this.appender.setAppenderPosition(this.instructionID);
-			this.appender.show();
+			appender.show();
 		} else if(element == delete) {
-			if(this.instructionID > 0) {
-				MessageEvent message = project.getDataManager().getCodeManager().deleteCode(this.instructionID);
-				manager.getEventDispatcher().fire(message);
-				manager.getCoreRenderer().getCodeGeometry().requestReconstruction();
-				this.parent.select(this.instructionID - 1);
-				this.parent.show();
-			} else {
-				manager.getEventDispatcher().fire(new MessageEvent("You can't delete the entry instruction", MessageType.ERROR));
-			}
-		} else if(element == description) {
+			MessageEvent message = project.getDataManager().getCodeManager().deleteCode(getTarget().getID());
+			manager.getEventDispatcher().fire(message);
+			manager.getCoreRenderer().getCodeGeometry().requestReconstruction();
+			back();
+		} else if(element == comment) {
 			new Thread(() -> {
-				String name = JOptionPane.showInputDialog(null, "Please enter the description of the instruction", "Description", JOptionPane.PLAIN_MESSAGE);
+				String name = JOptionPane.showInputDialog(null, "Please describe the purpose of this instruction", "Description", JOptionPane.PLAIN_MESSAGE);
 				
 				if(name != null) {
-					MessageEvent message = project.getDataManager().setName(this.instruction.getID(), name);
+					MessageEvent message = project.getDataManager().setComment(getTarget().getID(), name);
 					manager.getEventDispatcher().fire(message);
 					manager.getCoreRenderer().getCodeGeometry().requestReconstruction();
+					back();
 				}
 			}).start();
-		} else if(element == back) {
-			this.parent.show();
 		}
 	}
 	
-	public String getDescription() {
-		return this.getInstructionName() + " [" + this.instructionMeta.getSpecification() + "]";
-	}
-	
-	private String getInstructionName() {
-		if(this.instructionMeta.getName().equals("?") && this.getAppManager().getWorkspace().getCurrentProject() != null) {
-			int realID = Integer.parseInt(this.instructionMeta.getComment().substring(5));
-			return this.getAppManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta().get(realID).getName();
-		} else {
-			return this.instructionMeta.getName();
-		}
+	public MenuDescription getDescription() {
+		return description;
 	}
 }

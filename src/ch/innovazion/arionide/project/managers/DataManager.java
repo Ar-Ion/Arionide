@@ -23,13 +23,15 @@ package ch.innovazion.arionide.project.managers;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.Specification;
-import ch.innovazion.arionide.menu.edition.Coloring;
+import ch.innovazion.arionide.menu.structure.Coloring;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Manager;
 import ch.innovazion.arionide.project.Project;
@@ -39,6 +41,8 @@ import ch.innovazion.arionide.project.mutables.MutableInheritanceElement;
 import ch.innovazion.arionide.project.mutables.MutableStructureMeta;
 
 public class DataManager extends Manager {
+	
+	public static final String SUCCESS_STRING = "°";
 	
 	private final HostStructureStack hostStack;
 	private final ResourceAllocator allocator;
@@ -57,7 +61,12 @@ public class DataManager extends Manager {
 	}
 	
 	public MessageEvent newStructure(String name) {
-		return newStructure(name, true);
+		synchronized(hostStack) {
+			int current = hostStack.getCurrent();
+			
+			boolean codeBaseAllowed = !getCode().get(current).isAbstract();
+			return newStructure(name, current < 0 || codeBaseAllowed);
+		}
 	}
 
 	public MessageEvent newStructure(String name, boolean withCodeBase) {
@@ -67,12 +76,12 @@ public class DataManager extends Manager {
 			int structureID = this.allocator.allocStructure();
 			
 			MutableHierarchyElement structure = new MutableHierarchyElement(structureID, new ArrayList<>());
-			List<MutableHierarchyElement> generation = this.getMutableCurrentGeneration(this.getHierarchy());
+			List<MutableHierarchyElement> generation = this.getMutableCurrentGeneration();
 			
 			if(generation == null) {
 				return new MessageEvent("Invalid parent hierarchy", MessageType.ERROR);
 			}
-			
+						
 			generation.add(structure);
 			this.saveHierarchy();
 
@@ -95,16 +104,19 @@ public class DataManager extends Manager {
 			if(withCodeBase) {
 				synchronized(hostStack) {
 					hostStack.push(structureID);
-					message = codeManager.insertCode(0, retrieveInstructionDefinition("init"));
+					message = codeManager.insertCode(-1, retrieveInstructionDefinition("init"));
 					hostStack.pop();
 				}
 				
 				if(message.getMessageType() == MessageType.ERROR) {
 					return message;
 				}
+			} else {
+				this.saveMeta();
+				this.saveCode();
 			}
 			
-			return new MessageEvent("Structure created", MessageType.SUCCESS);
+			return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);
 		}
 	}
 	
@@ -115,7 +127,7 @@ public class DataManager extends Manager {
 			int structureID = this.allocator.allocStructure();
 					
 			MutableHierarchyElement structure = new MutableHierarchyElement(structureID, new ArrayList<>());
-			List<MutableHierarchyElement> generation = this.getMutableCurrentGeneration(this.getHierarchy());
+			List<MutableHierarchyElement> generation = this.getMutableCurrentGeneration();
 			
 			if(generation == null) {
 				return -1;
@@ -142,7 +154,7 @@ public class DataManager extends Manager {
 	}
 	
 	public MessageEvent deleteStructure(int id) {
-		Iterator<MutableHierarchyElement> iterator = this.getMutableCurrentGeneration(this.getHierarchy()).iterator();
+		Iterator<MutableHierarchyElement> iterator = this.getMutableCurrentGeneration().iterator();
 		
 		while(iterator.hasNext()) {
 			HierarchyElement element = iterator.next();
@@ -157,7 +169,7 @@ public class DataManager extends Manager {
 				this.deleteMeta(element);
 				this.saveMeta();
 				
-				return new MessageEvent("Structure deleted", MessageType.SUCCESS);
+				return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);
 			}
 		}
 		
@@ -167,6 +179,30 @@ public class DataManager extends Manager {
 	private void deleteMeta(HierarchyElement element) {
 		this.getMeta().remove(element.getID());
 		element.getChildren().stream().forEach(this::deleteMeta);
+	}
+	
+	public MessageEvent abstractifyStructure(int id) {		
+		getCode().get(id).getMutableList().clear();
+		
+		List<MutableHierarchyElement> list = this.getMutableCurrentGeneration();
+		
+		for(MutableHierarchyElement element : list) {
+			if(element.getID() == id) {
+				abstractify(element);
+			}
+		}
+
+		saveCode();
+		
+		return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);			
+	}
+	
+	private void abstractify(MutableHierarchyElement element) {		
+		codeManager.resetCodeChain(element.getID());
+
+		for(MutableHierarchyElement child : element.getMutableChildren()) {
+			abstractify(child);
+		}
 	}
 	
 	public MessageEvent setName(int id, String name) {
@@ -179,7 +215,23 @@ public class DataManager extends Manager {
 			if(name.isEmpty()) {
 				return new MessageEvent("Empty strings are discouraged", MessageType.WARN);
 			} else {
-				return new MessageEvent("Update successful", MessageType.SUCCESS);
+				return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);
+			}
+		} else {
+			return new MessageEvent("Invalid structure id", MessageType.ERROR);
+		}
+	}
+	
+	public MessageEvent setComment(int id, String comment) {
+		MutableStructureMeta meta = this.getMeta().get(id);
+		
+		if(meta != null) {
+			if(comment.isEmpty()) {
+				return new MessageEvent(SUCCESS_STRING, MessageType.WARN);
+			} else {
+				meta.setComment(comment);
+				this.saveMeta();
+				return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);
 			}
 		} else {
 			return new MessageEvent("Invalid structure id", MessageType.ERROR);
@@ -187,13 +239,27 @@ public class DataManager extends Manager {
 	}
 	
 	public MessageEvent setLanguage(int element, int language) {
-		HierarchyElement object = this.getHierarchy().get(element);
+		HierarchyElement object = null;
 		
-		this.setLanguage0(object, language);
+		for(HierarchyElement obj : getHierarchy()) {
+			if(obj.getID() == element) {
+				object = obj;
+				break;
+			}
+		}
 		
-		this.saveMeta();
+		if(object != null) {
+			if(getCode().get(language).isAbstract()) {
+				this.setLanguage0(object, language);
+				this.saveMeta();	
+			} else {
+				return new MessageEvent("The target language is not an abstract structure", MessageType.ERROR);
+			}
+		} else {
+			return new MessageEvent("The target structure does not exist anymore", MessageType.ERROR);
+		}
 		
-		return new MessageEvent("Language successfully set", MessageType.SUCCESS);
+		return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);
 	}
 	
 	private void setLanguage0(HierarchyElement element, int language) {
@@ -213,7 +279,7 @@ public class DataManager extends Manager {
 				
 				this.saveMeta();
 				
-				return new MessageEvent("Color updated", MessageType.SUCCESS);
+				return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);
 			} else {
 				return new MessageEvent("Invalid structure id", MessageType.ERROR);
 			}
@@ -242,43 +308,35 @@ public class DataManager extends Manager {
 		return this.inheritanceManager;
 	}
 	
-	private List<MutableHierarchyElement> getMutableCurrentGeneration(List<MutableHierarchyElement> root) {
-		Collection<Integer> parents = this.hostStack.getStack();
-		
-		for(Integer id : parents) {
-			boolean found = false;
-			
-			for(MutableHierarchyElement bro : root) {
-				if(bro.getID() == id) {
-					root = bro.getMutableChildren();
-					found = true;
-					break;
-				}
-			}
-			
-			if(!found) {
-				return new ArrayList<>();
-			}
-		}
-		
-		return root;
+	private List<MutableHierarchyElement> getMutableCurrentGeneration() {
+		return getCurrentGeneration0(getHierarchy(), hostStack.getStack(), MutableHierarchyElement::getMutableChildren);
+	}
+
+	public List<HierarchyElement> getCurrentGeneration(List<HierarchyElement> root) {
+		return getCurrentGeneration(root, hostStack.getStack());
 	}
 	
-	public List<HierarchyElement> getCurrentGeneration(List<HierarchyElement> root) {
-		Collection<Integer> parents = this.hostStack.getStack();
+	public List<HierarchyElement> getCurrentGeneration(List<HierarchyElement> root, Collection<Integer> stateStack) {
+		return getCurrentGeneration0(root, stateStack, HierarchyElement::getChildren);
+	}
+	
+	private <T extends HierarchyElement> List<T> getCurrentGeneration0(List<T> root, Collection<Integer> stateStack, Function<T, List<T>> expander) {
+		List<Integer> parents = new ArrayList<>(stateStack);
+		
+		Collections.reverse(parents);
 		
 		for(Integer id : parents) {
 			boolean found = false;
 			
-			for(HierarchyElement bro : root) {
+			for(T bro : root) {
 				if(bro.getID() == id) {
-					root = bro.getChildren();
+					root = expander.apply(bro);
 					found = true;
 					break;
 				}
 			}
 			
-			if(!found) {
+			if(!found && id >= 0) {
 				return new ArrayList<>();
 			}
 		}

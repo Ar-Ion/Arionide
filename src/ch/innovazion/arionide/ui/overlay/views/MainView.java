@@ -23,10 +23,11 @@ package ch.innovazion.arionide.ui.overlay.views;
 import java.awt.Desktop;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
+import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.Workspace;
 import ch.innovazion.arionide.events.ClickEvent;
 import ch.innovazion.arionide.events.Event;
@@ -165,14 +166,14 @@ public class MainView extends View implements EventHandler {
 	
 	public void show() {
 		super.show();
-		
+				
 		this.loadWorkspace();
 
 		this.setupFocusCycle();
 		this.setupFocus();
 	}
 	
-	public void drawSurface(AppDrawingContext context) {		
+	public void drawSurface(AppDrawingContext context) {
 		for(Component component : this.page) {
 			Bounds bounds = component.getBounds();
 			
@@ -242,8 +243,8 @@ public class MainView extends View implements EventHandler {
 					Object element = data[0];
 					
 					if(element instanceof Project) {
-						this.getAppManager().getWorkspace().loadProject((Project) element);
-						this.openView(Views.code);
+						getAppManager().getWorkspace().loadProject((Project) element);
+						openView(Views.code);
 					}
 				}
 			} else if(click.isTargetting(this, "browse")) {
@@ -274,7 +275,7 @@ public class MainView extends View implements EventHandler {
 		}
 	}
 
-	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(ClickEvent.class, TimerEvent.class);
+	public Set<Class<? extends Event>> getHandleableEvents() {
+		return Utils.asSet(ClickEvent.class, TimerEvent.class);
 	}
 }

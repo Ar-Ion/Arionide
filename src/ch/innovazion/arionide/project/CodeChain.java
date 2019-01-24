@@ -35,6 +35,10 @@ public abstract class CodeChain implements Iterable<HierarchyElement>, Serializa
 		return list().toString();
 	}
 	
+	public boolean isAbstract() {
+		return list().isEmpty();
+	}
+	
 	public abstract List<HierarchyElement> list();
 	public abstract int indexOf(int id);
 	public abstract int getID(int index);

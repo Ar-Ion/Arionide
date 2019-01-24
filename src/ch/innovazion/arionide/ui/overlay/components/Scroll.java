@@ -20,8 +20,8 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.overlay.components;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.ActionEvent;
@@ -44,6 +44,7 @@ public class Scroll extends Tab {
 	private boolean globalWheelListening = true;
 	
 	private int anchor = 0;
+	private int cycle = 0;
 	
 	public Scroll(View parent, String... labels) {
 		this(parent, Tab.makeLabels(parent, labels));
@@ -79,12 +80,12 @@ public class Scroll extends Tab {
 			
 			float initial = bounds.getWidth() / 3;
 			float initialHeight = bounds.getHeight();
-			
+									
 			for(int i = -this.activeComponent; i < 1; i++) {
 				float power = (float) Math.pow(2, i);
 				float width = initial * power;
 				float height = initialHeight * power;
-				
+
 				this.rectangles.add(new Bounds(bounds.getX() + width, bounds.getCenter().getY() - height / 2, width, height));
 			}
 						
@@ -99,9 +100,9 @@ public class Scroll extends Tab {
 		}
 	}
 	
-	protected void updateAll() {
+	public void updateAll() {
 		super.updateAll();
-		
+				
 		if(this.getBounds().getWidth() > 0) {
 			this.shadow = this.getBounds().getCenter().getX();
 			this.setShadowRadius(this.getBounds().getWidth() / 2);
@@ -141,29 +142,58 @@ public class Scroll extends Tab {
 	}
 	
 	private void commitDelta(int delta) {
-		if(delta < 0) {
-			delta = 0;
-		} else if(delta >= this.getComponents().size()) {
-			delta = this.getComponents().size() - 1;
+		if(cycle > 0) {
+			if(delta < cycle) {
+				commitDelta(delta + cycle);
+				return;
+			} else if(delta >= 2 * cycle) {
+				commitDelta(delta - cycle);
+				return;
+			}
+		} else {
+			if(delta < 0) {
+				delta = 0;
+			} else if(delta >= this.getComponents().size()) {
+				delta = this.getComponents().size() - 1;
+			}
 		}
-		
+				
 		if(this.activeComponent != delta) {
 			this.activeComponent = delta;
 			
-			this.getAppManager().getEventDispatcher().fire(new ScrollEvent(this, this.activeComponent));
+			if(cycle >= 0) {
+				this.getAppManager().getEventDispatcher().fire(new ScrollEvent(this, this.activeComponent - cycle));
+			} else {
+				this.getAppManager().getEventDispatcher().fire(new ScrollEvent(this, this.activeComponent));
+			}
 			
 			this.updateAll();
 		}
 	}
 	
-	public List<Class<? extends Event>> getHandleableEvents() {
-		List<Class<? extends Event>> theList = new ArrayList<>();
-		
-		theList.addAll(super.getHandleableEvents());
-		theList.add(WheelEvent.class);
-		theList.add(ActionEvent.class);
-		theList.add(DragEvent.class);
-		
-		return theList;
+	public Tab setActiveComponent(int id) {
+		return super.setActiveComponent(id + cycle);
+	}
+	
+	public void setCyclicComponents(String... tabs) {
+		if(tabs != null) {
+			cycle = tabs.length;
+			
+			String[] resulting = new String[3 * cycle];
+			
+			System.arraycopy(tabs, 0, resulting, 0, cycle);
+			System.arraycopy(tabs, 0, resulting, cycle, cycle);
+			System.arraycopy(tabs, 0, resulting, 2 * cycle, cycle);
+	
+			setComponents(resulting);
+					
+			activeComponent = cycle;
+		} else {
+			cycle = 0;
+		}
+	}
+	
+	public Set<Class<? extends Event>> getHandleableEvents() {
+		return Utils.combine(super.getHandleableEvents(), WheelEvent.class, ActionEvent.class, DragEvent.class);
 	}
 }

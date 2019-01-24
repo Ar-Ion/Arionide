@@ -28,8 +28,13 @@ import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import ch.innovazion.arionide.ui.topology.Affine;
@@ -152,13 +157,11 @@ public class Utils {
 	}
 	
 	public static <T, K> boolean contains(List<T> list, K key, Function<T, K> extractor) {
-		for(T obj : list) {
-			if(extractor.apply(obj).equals(key)) {
-				return true;
-			}
-		}
-		
-		return false;
+		return extract(list, extractor).contains(key);
+	}
+	
+	public static <I, O> List<O> extract(List<I> input, Function<I, O> extractor) {
+		return input.stream().map(extractor).collect(Collectors.toCollection(ArrayList::new));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -169,6 +172,16 @@ public class Utils {
 		System.arraycopy(rest, 0, objects, scope.length, rest.length);
 		
 		return objects;
+	}
+	
+	// Warning: this function modifies and returns the input
+	@SafeVarargs
+	public static <T> Set<T> combine(Set<T> scope, T... rest) {		
+		for(T element : rest) {
+			scope.add(element);
+		}
+		
+		return scope;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -185,8 +198,23 @@ public class Utils {
 				
 				return null;
 			} else {
-				throw new IllegalArgumentException("Non-void non-primitive non-array methods unsupported");
+				throw new UnsupportedOperationException("Non-void methods unsupported");
 			}
 		});
+	}
+	
+	@SafeVarargs
+	public static <T> Set<T> asSet(T... elements) {
+		Set<T> set = new HashSet<T>();
+		
+		for(T element : elements) {
+			set.add(element);
+		}
+		
+		return set;
+	}
+	
+	public static <T> Predicate<T> identityPredicate() {
+		return (nil) -> true;
 	}
 }

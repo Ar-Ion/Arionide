@@ -22,7 +22,9 @@ package ch.innovazion.arionide.ui;
 
 public class ApplicationTints {
 	public static final int MAIN_COLOR = 0xCAFE;
-	public static final int DISABLED_COLOR = 0xFF0000;
+	public static final int DISABLED_COLOR = 0x800000;
+	public static final int DANGER_COLOR = 0xFF0000;
+	public static final int COMMENT_COLOR = 0xFFAA00;
 	public static final int MENU_INFO_DEFAULT_COLOR = 0xFFFFFF;
 	public static final int MENU_INFO_INACTIVE_COLOR = 0x808080;
 	public static final int ACTIVE_ALPHA = 0xFF;

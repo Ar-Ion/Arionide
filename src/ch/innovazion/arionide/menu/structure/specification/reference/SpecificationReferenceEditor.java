@@ -18,22 +18,21 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.edition.specification.reference;
+package ch.innovazion.arionide.menu.structure.specification.reference;
 
 import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.menu.Menu;
-import ch.innovazion.arionide.menu.SpecificMenu;
-import ch.innovazion.arionide.menu.edition.specification.SpecificationElementEditor;
-import ch.innovazion.arionide.ui.AppManager;
+import ch.innovazion.arionide.menu.MenuDescription;
+import ch.innovazion.arionide.menu.structure.specification.SpecificationElementEditor;
 
 public class SpecificationReferenceEditor extends SpecificationElementEditor {
 	
 	private static final String callability = "Callability";
 	private static final String setParameters = "Parameters";
 	
-	public SpecificationReferenceEditor(AppManager manager, SpecificMenu parent) {
-		super(manager, parent);
+	public SpecificationReferenceEditor(Menu parent) {
+		super(parent);
 		
 		this.getElements().add(callability);
 		this.getElements().add(setParameters);
@@ -59,12 +58,10 @@ public class SpecificationReferenceEditor extends SpecificationElementEditor {
 	
 	public void delete() {
 		this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().remove(this.getSpecification(), this.getElement());
-		
-		this.getParent().reload();
-		this.getParent().show();
+		back();
 	}
 	
-	public String getDescription() {
-		return this.getElement().getName() + " <" + String.join("; ", ((Reference) this.getElement()).getNeededParameters().stream().map(SpecificationElement::toString).toArray(String[]::new)) + ">";
+	public MenuDescription getDescription() {
+		return new MenuDescription(this.getElement().getName() + " <" + String.join("; ", ((Reference) this.getElement()).getNeededParameters().stream().map(SpecificationElement::toString).toArray(String[]::new)) + ">");
 	}
 }

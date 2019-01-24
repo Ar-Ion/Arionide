@@ -21,12 +21,10 @@
 package ch.innovazion.arionide.project.managers;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.project.CodeChain;
-import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Manager;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.StructureMeta;
@@ -53,7 +51,7 @@ public class CodeManager extends Manager {
 		return new MessageEvent("Code chain reset", MessageType.SUCCESS);
 	}
 	
-	public MessageEvent insertCode(int index, int instructionID) {
+	public MessageEvent insertCode(int previous, int instructionID) {
 		int structureID = allocator.allocStructure();
 		StructureMeta codeBase = storage.getStructureMeta().get(instructionID);
 		MutableCodeMeta meta = new MutableCodeMeta(codeBase);
@@ -61,38 +59,51 @@ public class CodeManager extends Manager {
 		getMeta().put(structureID, meta);
 		saveMeta();
 		
-		getMutableCurrentCode().add(index, new MutableHierarchyElement(structureID, new ArrayList<>()));
+		CodeChain chain = getCurrentCode0();
+		int index = 0;
+		
+		if(previous >= 0) {
+			index = chain.indexOf(previous) + 1;
+		}
+		
+		getCurrentCode0().getMutableList().add(index, new MutableHierarchyElement(structureID, new ArrayList<>()));
 		saveCode();
 			
 		return new MessageEvent("Added an instruction to the code", MessageType.SUCCESS);
 	}
 
 	public MessageEvent deleteCode(int id) {
-		HierarchyElement element = getMutableCurrentCode().remove(id);
-		saveCode();
-		
-		if(element != null) {
-			getMeta().remove(element.getID());
+		MutableCodeChain chain = getCurrentCode0();
+		int index = chain.indexOf(id);
+				
+		if(index > 0) { 
+			getMeta().remove(id);
+			saveMeta();
+			
+			chain.getMutableList().remove(index);
+			saveCode();
+			
+			return new MessageEvent("Removed an instruction from the code", MessageType.SUCCESS);
+		} else {
+			return new MessageEvent("Cannot remove the 'init' instruction", MessageType.ERROR);
 		}
-		
-		return new MessageEvent("Removed an instruction from the code", MessageType.SUCCESS);
+
 	}
 	
 	public CodeChain getCurrentCode() {
 		return getCurrentCode0();
 	}
-	
-	private List<MutableHierarchyElement> getMutableCurrentCode() {
-		return getCurrentCode0().getMutableChain();
-	}
+
 	
 	private MutableCodeChain getCurrentCode0() {
-		MutableCodeChain chain = getCode().get(this.hostStack.getCurrent());	
-		
-		if(chain != null) {
-			return chain;
-		} else {
-			throw new IllegalStateException("The hoststack is inconsistent or the code section has been corrupted.");
+		synchronized(hostStack) {
+			MutableCodeChain chain = getCode().get(hostStack.getCurrent());	
+			
+			if(chain != null) {
+				return chain;
+			} else {
+				throw new IllegalStateException("The hoststack is inconsistent or the code section has been corrupted.");
+			}
 		}
 	}
 }

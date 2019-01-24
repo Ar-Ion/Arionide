@@ -20,13 +20,15 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu;
 
-import ch.innovazion.arionide.menu.browsers.CodeBrowser;
 import ch.innovazion.arionide.menu.browsers.SpecificationBrowser;
-import ch.innovazion.arionide.menu.browsers.StructureBrowser;
+import ch.innovazion.arionide.menu.code.CodeBrowser;
 import ch.innovazion.arionide.menu.code.CodeEditor;
+import ch.innovazion.arionide.menu.code.CoreCodeBrowser;
 import ch.innovazion.arionide.menu.code.ReferenceEditor;
 import ch.innovazion.arionide.menu.code.TypeEditor;
-import ch.innovazion.arionide.menu.edition.StructureEditor;
+import ch.innovazion.arionide.menu.structure.CoreStructureBrowser;
+import ch.innovazion.arionide.menu.structure.StructureBrowser;
+import ch.innovazion.arionide.menu.structure.StructureEditor;
 import ch.innovazion.arionide.ui.AppManager;
 
 public class MainMenus {
@@ -43,16 +45,16 @@ public class MainMenus {
 	private static boolean initialized = false;
 	
 	public static void init(AppManager manager) {
-		assert !initialized : "Already initialized";
+		if(initialized) {
+			throw new IllegalStateException("Already initialized");
+		}
 	
-		structBrowser = new StructureBrowser(manager);
-		codeBrowser = new CodeBrowser(manager);
+		structBrowser = new CoreStructureBrowser(manager);
+		codeBrowser = new CoreCodeBrowser(structBrowser);
 		//specificationBrowser = new SpecificationBrowser(manager);
 
-		structEditor = new StructureEditor(manager);
-		codeEditor = new CodeEditor(manager, codeBrowser);
-		typeEditor = new TypeEditor(manager, codeBrowser);
-		referenceEditor = new ReferenceEditor(manager, codeBrowser);
+		// codeEditor = new CodeEditor(manager, codeBrowser);
+ 		// referenceEditor = new ReferenceEditor(manager, codeBrowser);
 	}
 	
 	public static StructureBrowser getStructureList() {

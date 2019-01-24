@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.edition.specification.reference;
+package ch.innovazion.arionide.menu.structure.specification.reference;
 
 import javax.swing.JOptionPane;
 
@@ -31,12 +31,12 @@ import ch.innovazion.arionide.lang.TypeManager;
 import ch.innovazion.arionide.menu.Confirm;
 import ch.innovazion.arionide.menu.MainMenus;
 import ch.innovazion.arionide.menu.Menu;
-import ch.innovazion.arionide.menu.SpecificMenu;
+import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.code.TypeEditor;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.ui.AppManager;
 
-public class ReferenceParameterDataEditor extends SpecificMenu {
+public class ReferenceParameterDataEditor extends Menu {
 
 	private static final String back = "Back";
 	private static final String delete = "Delete";
@@ -81,7 +81,7 @@ public class ReferenceParameterDataEditor extends SpecificMenu {
 				this.parent.show();
 				break;
 			case delete:
-				Menu confirm = new Confirm(this.getAppManager(), this, this::delete, "Do you really want to delete this element?");
+				Menu confirm = new Confirm(this, this::delete, "Do you really want to delete this element?");
 				confirm.show();
 				break;
 			case setName:
@@ -126,7 +126,7 @@ public class ReferenceParameterDataEditor extends SpecificMenu {
 		this.parent.show();
 	}
 
-	public String getDescription() {
-		return "Reference parameter editor for " + this.description;
+	public MenuDescription getDescription() {
+		return new MenuDescription("Reference parameter editor for " + this.description);
 	}
 }

@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.joml.Matrix4f;
@@ -48,26 +49,29 @@ import ch.innovazion.arionide.events.ActionType;
 import ch.innovazion.arionide.events.ClickEvent;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
-import ch.innovazion.arionide.events.MenuEvent;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.events.MoveEvent;
 import ch.innovazion.arionide.events.PressureEvent;
+import ch.innovazion.arionide.events.ProjectCloseEvent;
+import ch.innovazion.arionide.events.ProjectEvent;
+import ch.innovazion.arionide.events.ProjectOpenEvent;
 import ch.innovazion.arionide.events.WheelEvent;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.SpecificationElement;
+import ch.innovazion.arionide.menu.Browser;
 import ch.innovazion.arionide.menu.MainMenus;
-import ch.innovazion.arionide.menu.browsers.CodeBrowser;
-import ch.innovazion.arionide.menu.browsers.StructureBrowser;
-import ch.innovazion.arionide.menu.code.CodeEditor;
+import ch.innovazion.arionide.menu.code.CodeBrowser;
 import ch.innovazion.arionide.menu.code.ReferenceEditor;
 import ch.innovazion.arionide.menu.code.TypeEditor;
+import ch.innovazion.arionide.menu.structure.StructureBrowser;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.StructureMeta;
 import ch.innovazion.arionide.project.managers.HostStructureStack;
 import ch.innovazion.arionide.ui.AppDrawingContext;
+import ch.innovazion.arionide.ui.ApplicationTints;
 import ch.innovazion.arionide.ui.OpenGLContext;
 import ch.innovazion.arionide.ui.core.CoreRenderer;
 import ch.innovazion.arionide.ui.core.RenderingScene;
@@ -103,6 +107,9 @@ import ch.innovazion.arionide.ui.topology.Point;
 public class GLRenderer implements CoreRenderer, EventHandler {
 		
 	private static final List<Integer> qualities = Arrays.asList(4);
+	
+	private static final int openProjectOP = 1 << 0;
+	private static final int closeProjectOP = 1 << 1;
 	
 	private static final int smallStarsCount = 2048;
 	private static final int bigStarsCount = 128;
@@ -179,6 +186,7 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	private WorldElement selected;
 	
 	private RenderingScene scene = null;
+	private int syncOperations = 0;
 	
 	private boolean needMenuReset = false;
 
@@ -186,6 +194,8 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	private float pitch = 0.0f;
 	private Vector3f user = new Vector3f();
 	private Vector3f sun = new Vector3f(0.0f, 2 * skyDistance, 0.0f);
+	private Vector3f translate = new Vector3f();
+	private Vector3f realUser = new Vector3f();
 	
 	private Vector3f velocity = new Vector3f();
 	private Vector3f acceleration = new Vector3f();
@@ -286,7 +296,17 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 				if(core) {
 					this.coreGeometry.processEventQueue();
 				}
-						
+				
+				/* Code to avoid floating-point precision issues (vertex jittering) */
+				int currentStruct = project.getDataManager().getHostStack().getCurrent();
+				WorldElement element = coreGeometry.getElementByID(currentStruct);
+			
+				if(element != null) {
+					translate = element.getCenter();
+				} else {
+					translate = new Vector3f();
+				}
+				
 				if(auxiliaries) {
 					for(Geometry geometry : this.codeGeometries) {					
 						geometry.processEventQueue();
@@ -301,18 +321,20 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	private void prepareCodeGeometry() {		
 		List<CodeGeometry> buffer = new ArrayList<>();
 		List<WorldElement> geometry = this.coreGeometry.getElements();
-		
-		int parentGeneration = this.project.getDataManager().getHostStack().getGeneration() - 1;
-		int childrenGeneration = parentGeneration + 2;
+				
+		int childrenGeneration = this.project.getDataManager().getHostStack().getGeneration();
+		int parentGeneration = childrenGeneration - 2;
 		
 		float maxDistance = this.coreGeometry.getSize(parentGeneration);
 		float minSize = this.coreGeometry.getSize(childrenGeneration) * 0.99f;
 				
 		for(WorldElement element : geometry) {
-			if((parentGeneration <= 0 || element.getCenter().distance(this.user) < maxDistance) 	// Under a certain distance
+			if((parentGeneration < 0 || element.getCenter().distance(this.user) < maxDistance) 		// Under a certain distance
 			&& element.getSize() > minSize  														// Bigger than a certain threshold
 			&& this.project.getStorage().getCode().containsKey(element.getID())) {  				// Possessing code				
 				CodeGeometry code = this.codeGeometries.stream().filter(geom -> geom.getContainer().equals(element)).findAny().orElseGet(() -> this.generateCodeGeometry(element));
+				
+				code.updateContainer(element);
 				
 				buffer.add(code);
 				
@@ -358,7 +380,7 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	private void setupSpace(GL4 gl) {
 		gl.glUseProgram(this.spaceShader);
 		
-		this.loadMatrix(new Matrix4f().translate(this.user).scale(skyDistance), this.modelData);
+		this.loadMatrix(new Matrix4f().translate(realUser).scale(skyDistance), this.modelData);
 		
 		jointStarsSettings.setModel(this.modelData);
 		jointStarsSettings.setView(this.viewData);
@@ -381,7 +403,7 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 		loadVP(jointStructureSettings);
 		loadVP(link.getSettings());
 
-		jointStructureSettings.setCamera(user);
+		jointStructureSettings.setCamera(realUser);
 	}
 	
 	private void renderStructures(GL4 gl) {
@@ -435,7 +457,7 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 			float angle = delta.angle(unitVector);
 			Matrix4f model = new Matrix4f();
 			
-			model.translate(element.getCenter());
+			model.translate(new Vector3f(element.getCenter()).sub(translate));
 			
 			if(angle > Math.ulp(0.0f)) {
 				Vector3f axis = unitVector.cross(delta).normalize();
@@ -490,6 +512,9 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private void connect(GL4 gl, Vector3f first, Vector3f second) {
+		first.sub(translate);
+		second.sub(translate);
+		
 		float[] data = new float[] {first.x, first.y, first.z, second.x, second.y, second.z};
 		link.updateData("position", FloatBuffer.wrap(data)); // "position" as defined in Link.java
 		link.render();
@@ -547,15 +572,15 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 				continue;
 			}
 			
-			if(current != null && element.getCenter().distance(current.getCenter()) > 2 * current.getSize()) {
+			if(current != null && element.getCenter().distance(current.getCenter()) > current.getSize()) {
 				alpha = 0x1F;
 			}
 			
 			GL4 gl = ((OpenGLContext) context).getRenderer();
 			
 			/* World ==> Screen-space calculation */
-			Vector3f mainSpaceAnchor = element.getCenter().add(0.0f, 2.0f * element.getSize(), 0.0f);
-			Vector3f subSpaceAnchor = element.getCenter().sub(0.0f, element.getSize(), 0.0f);
+			Vector3f mainSpaceAnchor = element.getCenter().add(0.0f, 2.0f * element.getSize(), 0.0f).sub(translate);
+			Vector3f subSpaceAnchor = element.getCenter().sub(0.0f, element.getSize(), 0.0f).sub(translate);
 
 			boolean renderMain = this.checkRenderability(mainSpaceAnchor);
 			boolean renderSub = this.checkRenderability(subSpaceAnchor);
@@ -564,21 +589,21 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 			
 			if(renderMain && element.getName() != null) {
 				Vector2f screenAnchor = this.getHVCFrom3D(mainSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
-				height = 1.0f - this.getHVCFrom3D(element.getCenter().add(0.0f, element.getSize(), 0.0f), proj).mul(1.0f).add(screenAnchor).y;
+				height = 1.0f - this.getHVCFrom3D(element.getCenter().sub(translate).add(0.0f, element.getSize(), 0.0f), proj).mul(1.0f).add(screenAnchor).y;
 				
-				this.renderLabel(context, element.getName(), 0xFFFFFF, alpha, screenAnchor, height);
+				this.renderLabel(context, element.getName(), ApplicationTints.WHITE, alpha, screenAnchor, height);
 			}
 							
-			if(renderSub && element.getDescription() != null && !element.getDescription().contentEquals("?")) {
+			if(renderSub && element.getDescription() != null && !element.getDescription().equals("?")) {
 				String description = element.getDescription().replace(SpecificationElement.VAR, "");
 									
 				Vector2f screenAnchor = this.getHVCFrom3D(subSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
 
 				if(height < 0.0f) { // Avoid double calculation (considering both heights approximately the same: lim(dist(player, object) -> infty) {dh -> 0})
-					height = 1.0f - this.getHVCFrom3D(element.getCenter().add(0.0f, element.getSize(), 0.0f), proj).mul(1.0f).add(screenAnchor).y;
+					height = 1.0f - this.getHVCFrom3D(element.getCenter().sub(translate).add(0.0f, element.getSize(), 0.0f), proj).mul(1.0f).add(screenAnchor).y;
 				}
 				
-				this.renderLabel(context, description, 0x888888, alpha, screenAnchor, height);
+				this.renderLabel(context, description, ApplicationTints.COMMENT_COLOR, alpha, screenAnchor, height * 0.5f);
 			}
 			
 			gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
@@ -599,7 +624,7 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private boolean checkRenderability(Vector3f object) {
-		return new Vector3f(object).sub(this.user).normalize().angle(this.getDOF()) < Geometry.PI / 2;
+		return new Vector3f(object).sub(realUser).normalize().angle(this.getDOF()) < Geometry.PI / 2;
 	}
 	
 	private Vector2f getHVCFrom3D(Vector3f input, Matrix4f projection) { // HVC stands for Homogeneous vector coordinates
@@ -608,11 +633,35 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	}
 
 	private void update() {
+		if((syncOperations & closeProjectOP) != 0) {
+			// Close project
+			project = null;
+			scene = null;
+			isInWorld = false;
+			context.setCursorVisible(true);
+			
+			generalAcceleration = initialAcceleration;
+			velocity = new Vector3f();
+			
+			syncOperations ^= closeProjectOP;
+		} 
+		
+		if((syncOperations & openProjectOP) != 0) {
+			// Open project
+			setScene(RenderingScene.HIERARCHY);
+			loadGeometries(true, false);
+			prepareCodeGeometry();
+			loadGeometries(false, true);
+			needMenuReset = true;
+			
+			syncOperations ^= openProjectOP;
+		}
+		
 		if(project != null) {
 			this.processTeleportation();
 		}
 		
-		this.updatePlayer();
+		this.updateUser();
 		this.updateCamera();
 		
 		if(project != null) {
@@ -625,29 +674,32 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 		}
 	}
 	
-	private void updatePlayer() {
+	private void updateUser() {
 		long deltaTime = System.nanoTime() - this.lastPositionUpdate;
 		this.lastPositionUpdate += deltaTime;
 		
 		Vector3f acceleration = new Vector3f(this.acceleration).mul(deltaTime * timeResolution);
 		
-		this.zNear = generalAcceleration * 0.1f;
-		this.zFar = generalAcceleration * 100000.0f;
+		this.zNear = generalAcceleration * 1.0f;
+		this.zFar = initialAcceleration * 10000.0f;
+		
+		updatePerspective();
 				
 		this.velocity.x += Math.sin(this.yaw) * acceleration.x - Math.cos(this.yaw) * acceleration.z;
 		this.velocity.y += acceleration.y;
 		this.velocity.z += -Math.cos(this.yaw) * acceleration.x - Math.sin(this.yaw) * acceleration.z;
-		
+				
 		this.velocity.mul(1.0f - spaceFriction * deltaTime * timeResolution);
-	
+										
 		this.user.add(new Vector3f(this.velocity).mul(deltaTime * timeResolution));
+		this.realUser = new Vector3f(user).sub(translate);
 	}
-	
-	private void updateCamera() {
+
+	private void updateCamera() {		
 		this.loadMatrix(this.viewMatrix.identity()
 				.rotate((float) -this.pitch, 1.0f, 0.0f, 0.0f)
 				.rotate((float) this.yaw, 0.0f, 1.0f, 0.0f)
-				.translate(-this.user.x, -this.user.y, -this.user.z), this.viewData);
+				.translate(-realUser.x, -realUser.y, -realUser.z), this.viewData);
 		
 		if(this.project != null && this.scene == RenderingScene.HIERARCHY) {
 			CameraInfo info = new CameraInfo(this.user.x, this.user.y, this.user.z, (float) this.yaw, (float) this.pitch);
@@ -667,8 +719,6 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 		} else {
 			this.generalAcceleration = initialAcceleration;
 		}
-
-		this.updatePerspective();
 	}
 	
 	private void detectCollisions() {
@@ -703,9 +753,9 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 			}
 		}
 				
-		int delta = stack.getGeneration() - sync;
-					
 		synchronized(stack) {
+			int delta = stack.getGeneration() - sync;
+			
 			for(int i = 0; i < delta; i++) {
 				// Clear the entries which are no longer colliding with the user
 				WorldElement current = merged.getElementByID(stack.pop());
@@ -719,6 +769,8 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 				// Resync with new entries
 				if(enterElement(last)) {
 					stack.push(last.getID());
+				} else {
+					last = null;
 				}
 				
 				while(iterator.hasNext()) {
@@ -731,12 +783,12 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 			}
 			
 			current = merged.getElementByID(stack.getCurrent());
-		}
-		
-		if(delta != 0 || last != null) {
-			this.needMenuReset = true;
-			prepareCodeGeometry();
-			loadGeometries(false, true);
+			
+			if(delta != 0 || last != null) {
+				this.needMenuReset = true;
+				prepareCodeGeometry();
+				loadGeometries(false, true);
+			}
 		}
 	}
 	
@@ -808,16 +860,14 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 		if(needMenuReset) {
 			if(!project.getDataManager().getCodeManager().getCurrentCode().list().isEmpty()) {
 				CodeBrowser menu = MainMenus.getCodeBrowser();
-				
+								
 				menu.show();
 				menu.select(-1);
 			} else {
 				StructureBrowser menu = MainMenus.getStructureList();
 				
 				menu.show();
-				menu.setMenuCursor(0);
-				
-				selected = null;
+				menu.select(0);
 			}
 			
 			ajustAcceleration();
@@ -874,7 +924,8 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	private void processTeleportation() {
 		if(teleport != null && teleport.isAlive()) {
 			WorldElement teleportElement = coreGeometry.getElementByID(teleport.getDestination());
-	
+			WorldElement lookAtElement = mainCodeGeometry.getElementByID(teleport.getFocus());
+
 			if(teleportElement != null) {
 				Vector3f center = teleportElement.getCenter();
 				float size = teleportElement.getSize();
@@ -885,7 +936,14 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 				detectCollisions();
 			}
 			
-			WorldElement lookAtElement = mainCodeGeometry.getElementByID(teleport.getFocus());
+			requestFullReconstruction();
+											
+			loadGeometries(true, false);
+			prepareCodeGeometry();
+			loadGeometries(false, true);
+						
+			needMenuReset = true;
+			resetMenu();
 			
 			if(lookAtElement != null) {
 				processLookAt(lookAtElement);
@@ -894,18 +952,21 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 					processLookAt(mainCodeGeometry.getElementByID(e.getID()));
 				});
 			}
-		}
+			
+			if(!teleport.isAlive()) {
+				teleport = null;
+			}
+ 		}
 	}
 	
 	private void processTeleportation(Vector3f position) {
-		updatePerspective();
 		user.set(position);
 	}
 	
 	private void processLookAt(WorldElement element) {
-		CodeEditor menu = MainMenus.getCodeEditor();
-
-		menu.setTargetByID(element.getID());
+		CodeBrowser menu = MainMenus.getCodeBrowser();
+		
+		menu.setSelectedID(element.getID());
 		menu.show();
 			
 		Vector3f lookAtVector = element.getCenter().sub(user).normalize();
@@ -919,8 +980,10 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	public void setScene(RenderingScene scene) {
+		assert project != null;
+
 		this.scene = scene;
-		
+				
 		project.getDataManager().getHostStack().reset();
 		codeGeometries.clear();
 		
@@ -950,29 +1013,16 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 		this.ajustAcceleration();
 	}
 	
-	public void selectInstruction(int id) {		
-		this.selected = this.mainCodeGeometry.getElementByID(id);
-		System.out.println(selected);
-	}
-
-	public void loadProject(Project project) {
-		this.project = project;
-
-		if(project != null) {
-			this.setScene(RenderingScene.HIERARCHY);
-			this.needMenuReset = true;
-			loadGeometries(true, false);
-			prepareCodeGeometry();
-		} else {
-			this.isInWorld = false;
-			this.context.setCursorVisible(true);
+	public void select(int id) {
+		selected = mainCodeGeometry.getElementByID(id);
+		
+		if(selected == null) {
+			selected = coreGeometry.getElementByID(id);
 		}
 	}
 
 	public void update(Bounds bounds) {
 		this.bounds = bounds;
-
-		this.updatePerspective();
 		
 		GL4 gl = (GL4) GLContext.getCurrentGL();
 		
@@ -991,10 +1041,19 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	}
 
 	public <T extends Event> void handleEvent(T event) {
-		if(this.project == null) {
-			return;
+		if(event instanceof ProjectEvent) {
+			if(event instanceof ProjectOpenEvent) {
+				project = ((ProjectEvent) event).getProject();
+				syncOperations |= openProjectOP;
+			} else if(event instanceof ProjectCloseEvent) {
+				syncOperations |= closeProjectOP;
+			}
 		}
 		
+		if(project == null) {
+			return;
+		}
+		 
 		if(event instanceof MoveEvent) {
 			if(this.isInWorld) {
 				Point position = ((MoveEvent) event).getPoint();
@@ -1089,7 +1148,6 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	
 	private void updateAcceleration(double wheelDelta) {
 		this.generalAcceleration = this.generalAcceleration * (float) Math.pow(1.01f, 2 * wheelDelta);
-		this.updatePerspective();
 	}
 	
 	private void onLeftClick() {
@@ -1139,16 +1197,18 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 		}
 		
 		if(this.selected != null) {
-			List<WorldElement> elements = this.mainCodeGeometry.getElements();
+			List<WorldElement> code = this.mainCodeGeometry.getElements();
 			
-			if(elements.contains(this.selected)) {
+			if(code.contains(this.selected)) {
 				int id = this.selected.getID();
 				
-				if((id & 0xFF000000) == 0) {					
+				if((id & 0xFF000000) == 0) {
+					// In the case of a code instruction
 					CodeBrowser menu = MainMenus.getCodeBrowser();
+					menu.setSelectedID(id);
 					menu.show();
-					menu.select(project.getDataManager().getCodeManager().getCurrentCode().indexOf(id));
 				} else {
+					// In the case of a specification element
 					int instructionID = this.selected.getID() & 0xFFFFFF;
 					int paramID = (this.selected.getID() >>> 24) - 1;
 					
@@ -1173,23 +1233,34 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 					}
 				}
 			} else {				
-				MainMenus.getStructureEditor().setCurrent(this.selected);
-				this.dispatcher.fire(new MenuEvent(MainMenus.getStructureEditor()));
+				Browser menu = MainMenus.getStructureList();
+				menu.setSelectedID(selected.getID());
+				menu.show();
 			}
 		} else {
-			this.dispatcher.fire(new MenuEvent(MainMenus.getStructureList()));
+			Browser menu = MainMenus.getStructureList();
+			menu.select(0);
+			menu.show();
 		}
 	}
 	
-	public Geometry getStructuresGeometry() {
-		return this.coreGeometry;
+	public void requestFullReconstruction() {
+		coreGeometry.requestReconstruction();
+				
+		for(CodeGeometry geometry : codeGeometries) {
+			geometry.requestReconstruction();
+		}
 	}
 	
 	public Geometry getCodeGeometry() {
-		return this.mainCodeGeometry;
+		return mainCodeGeometry;
 	}
 	
-	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(MoveEvent.class, PressureEvent.class, WheelEvent.class, ActionEvent.class);
+	public Geometry getStructuresGeometry() {
+		return coreGeometry;
+	}
+	
+	public Set<Class<? extends Event>> getHandleableEvents() {
+		return Utils.asSet(MoveEvent.class, PressureEvent.class, WheelEvent.class, ActionEvent.class, ProjectOpenEvent.class, ProjectCloseEvent.class);
 	}
 }

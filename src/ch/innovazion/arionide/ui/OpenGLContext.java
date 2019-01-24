@@ -21,8 +21,7 @@
 package ch.innovazion.arionide.ui;
 
 import java.nio.FloatBuffer;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 import com.jogamp.common.util.InterruptSource.Thread;
 import com.jogamp.newt.event.KeyEvent;
@@ -40,6 +39,7 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.FPSAnimator;
 
 import ch.innovazion.arionide.Arionide;
+import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.Workspace;
 import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.events.ActionEvent;
@@ -330,7 +330,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		}
 	}
 
-	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(MessageEvent.class);
+	public Set<Class<? extends Event>> getHandleableEvents() {
+		return Utils.asSet(MessageEvent.class);
 	}
 }

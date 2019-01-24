@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ch.innovazion.arionide.debugging.IAm;
+import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.animations.Animation;
@@ -86,7 +87,7 @@ public abstract class View extends Surface {
 		if(this.hasBorders) {
 			context.getRenderingSystem().renderLater(this.borders);
 		}
-		
+				
 		this.drawComponents(context);
 		
 		this.appManager.getAlphaLayering().pop(AlphaLayer.VIEW);
@@ -166,15 +167,21 @@ public abstract class View extends Surface {
 	
 	public void hide(boolean transition) {		
 		if(transition) {
-			this.getAppManager().getEventDispatcher().pause();
-			
-			this.alphaAnimation.startAnimation(500, after -> {
-				this.hide();
-				this.getAppManager().getEventDispatcher().resume();
-			}, 0);
+			// Async to avoid a dead lock on the event dispatcher (flush)
+			new Thread(() -> {
+				IEventDispatcher dispatcher = getAppManager().getEventDispatcher();
+				
+				dispatcher.flush();
+				dispatcher.pause();
+				
+				alphaAnimation.startAnimation(500, after -> {
+					hide();
+					dispatcher.resume();
+				}, 0);
+			}).start();
 		} else {
-			this.alpha = 0;
-			this.hide();
+			alpha = 0;
+			hide();
 		}
 	}
 }

@@ -32,7 +32,7 @@ import ch.innovazion.arionide.threading.EventDispatchingThread;
 
 public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	
-	private final List<EventHandler> handlers = Collections.synchronizedList(new ArrayList<>());
+	private final List<HandlerContainer> handlers = Collections.synchronizedList(new ArrayList<HandlerContainer>());
 	private final Queue<Event> events = new ConcurrentLinkedQueue<>();
 	
 	private volatile boolean paused = false;
@@ -43,46 +43,75 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	}
 	
 	public void fire(Event event) {
-		this.events.add(event);
+		events.add(event);
 	}
 	
 	public void purge() {
-		this.events.clear();
+		events.clear();
 	}
 	
-	public synchronized void dispatchEvents() {
-		while(!this.paused && !this.events.isEmpty()) {
-			Event event = this.events.poll();			
-			
-			for(EventHandler handler : this.handlers) {
+	public synchronized void dispatchEvents() {		
+		while(!paused && !events.isEmpty()) {
+			Event event = events.poll();			
+
+			for(HandlerContainer container : handlers) {
+				EventHandler handler = container.handler;
+				
 				if(handler.getHandleableEvents().contains(event.getClass())) {
-					if(!event.hasBeenAborted()) {	
+					if(!event.hasBeenAborted()) {
 						handler.handleEvent(event);
 					}
 				}
 			}
 		}
 		
-		if(this.waiting) {
-			this.notifyAll();
-			this.waiting = false;
+		if(waiting) {
+			notifyAll();
+			waiting = false;
 		}
 	}
 
 	public synchronized void registerHandler(EventHandler handler) {
-		this.handlers.add(handler);
+		registerHandler(handler, 0.5f);
 	}
 	
-	public synchronized void flush() throws InterruptedException { // Acquire lock (terminate current event dispatching) and wait for a complete event dispatching
-		this.waiting = true;
-		this.wait();
+	public synchronized void registerHandler(EventHandler handler, float priority) {
+		handlers.add(new HandlerContainer(handler, priority));
+		Collections.sort(handlers);
+	}
+	
+	public synchronized void flush() { // Acquire lock (terminate current event dispatching) and wait for a complete event dispatching
+		waiting = true;
+		
+		try {
+			wait();
+		} catch(InterruptedException exception) {
+			;
+		} finally {
+			waiting = false;
+		}
 	}
 	
 	public void pause() {
-		this.paused = true;
+		paused = true;
 	}
 	
 	public void resume() {
-		this.paused = false;
+		paused = false;
+	}
+	
+	private class HandlerContainer implements Comparable<HandlerContainer> {
+
+		private final EventHandler handler;
+		private final float priority;
+		
+		private HandlerContainer(EventHandler handler, float priority) {
+			this.handler = handler;
+			this.priority = priority;
+		}
+		
+		public int compareTo(HandlerContainer other) {
+			return Float.compare(other.priority, priority);
+		}
 	}
 }

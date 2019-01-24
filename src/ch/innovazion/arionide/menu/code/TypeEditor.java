@@ -33,6 +33,7 @@ import ch.innovazion.arionide.lang.TypeManager;
 import ch.innovazion.arionide.lang.UserHelper;
 import ch.innovazion.arionide.lang.Validator;
 import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.managers.HostStructureStack;
 import ch.innovazion.arionide.ui.AppManager;
@@ -131,7 +132,7 @@ public class TypeEditor extends Menu {
 		}
 	}
 	
-	public String getDescription() {
-		return this.element.toString();
+	public MenuDescription getDescription() {
+		return new MenuDescription(this.element.toString());
 	}
 }

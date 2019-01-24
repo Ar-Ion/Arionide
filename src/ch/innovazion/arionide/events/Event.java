@@ -22,13 +22,18 @@ package ch.innovazion.arionide.events;
 
 public abstract class Event {
 	
+	private final Exception stacktrace = new Exception();
 	private boolean aborted = false;
 	
 	public boolean hasBeenAborted() {
-		return this.aborted;
+		return aborted;
 	}
 	
 	public void abortDispatching() {
-		this.aborted = true;
+		aborted = true;
+	}
+	
+	public void printOrigin() {
+		stacktrace.printStackTrace();
 	}
 }

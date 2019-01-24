@@ -18,36 +18,31 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.edition.specification.reference;
+package ch.innovazion.arionide.menu.structure.specification;
 
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.TypeManager;
 import ch.innovazion.arionide.lang.Types;
 import ch.innovazion.arionide.menu.Menu;
-import ch.innovazion.arionide.menu.SpecificMenu;
+import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.ui.AppManager;
 
-public class ReferenceParameterDataTypeSelector extends Menu {
+public class TypeSelector extends Menu {
 		
-	private final Menu parent;
 	private final Specification specification;
 	private final int id;
-	private final int data;
 	private final String currentType;
 	
-	public ReferenceParameterDataTypeSelector(AppManager manager, Menu parent, Specification specification, int id, int data) {
+	public TypeSelector(AppManager manager, Menu parent, Specification specification, int id) {
 		super(manager);
 		
-		this.parent = parent;
 		this.specification = specification;
 		this.id = id;
-		this.data = data;
 		
 		Types types = manager.getWorkspace().getCurrentProject().getLanguage().getTypes();		
-		TypeManager typeManager = types.getTypeManager(((Data) ((Reference) this.specification.getElements().get(id)).getNeededParameters().get(id)).getType());
+		TypeManager typeManager = types.getTypeManager(((Data) this.specification.getElements().get(id)).getType());
 		
 		if(typeManager != null) {
 			this.currentType = typeManager.toString();
@@ -61,20 +56,14 @@ public class ReferenceParameterDataTypeSelector extends Menu {
 	
 	public void onClick(int id) {
 		if(id < this.getElements().size() - 1) {
-			MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().refactorParameterType(this.specification, this.id, this.data, id);
+			MessageEvent event = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().refactorType(this.specification, this.id, id);
 			this.getAppManager().getEventDispatcher().fire(event);
-			
-			if(this.parent instanceof SpecificMenu) {
-				((SpecificMenu) this.parent).reload();
-			}
-			
-			this.parent.show();
-		} else {
-			this.parent.show();
 		}
+		
+		back();
 	}
 	
-	public String getDescription() {
-		return "Current type: " + this.currentType;
+	public MenuDescription getDescription() {
+		return new MenuDescription("Current type: " + this.currentType);
 	}
 }

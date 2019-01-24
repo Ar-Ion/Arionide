@@ -18,61 +18,73 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.code;
+package ch.innovazion.arionide.menu.structure;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.menu.Browser;
+import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
+import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.HierarchyElement;
-import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.StructureMeta;
-import ch.innovazion.arionide.ui.AppManager;
 
-public class CodeAppender extends Browser {
-			
-	private final Browser parent;
+public class LanguageSelection extends Browser {
 	
-	protected CodeAppender(Browser parent) {
+	private MenuDescription description;
+	
+	protected LanguageSelection(Menu parent) {
 		super(parent);
-		this.parent = parent;
 	}
-
-	public void onClick(int id) {
-		AppManager manager = this.getAppManager();
-
-		Event event = getProject().getDataManager().getCodeManager().insertCode(getTarget().getID(), getSelectedID());
-		manager.getEventDispatcher().fire(event);
-		
-		manager.getCoreRenderer().getCodeGeometry().requestReconstruction();
+	
+	public void onClick(int id) {	
+		super.onClick(id);
+				
+		Event message = getProject().getDataManager().setLanguage(getTarget().getID(), getSelectedID());
+		getAppManager().getEventDispatcher().fire(message);
 		
 		back();
-
-		parent.select(parent.getMenuCursor() + 1);
 	}
 	
 	protected void onSelect(int id) {
 		return;
 	}
-
+	
+	public void show() {		
+		Map<Integer, StructureMeta> meta = getProject().getStorage().getStructureMeta();
+		int currentLanguage = meta.get(getTarget().getID()).getLanguage();
+		
+		String language = meta.get(currentLanguage).getName();
+		
+		description = new MenuDescription("Current language: " + language);
+		
+		super.show();
+	}
+	
 	protected List<Integer> loadCurrentElements() {
-		Storage storage = getProject().getStorage();
-
-		int parent = getProject().getDataManager().getHostStack().getCurrent();
-		StructureMeta parentMeta = storage.getStructureMeta().get(parent);
-		HierarchyElement instructionSet = storage.getHierarchy().get(parentMeta.getLanguage());
+		List<Integer> output = new ArrayList<>();
+		List<HierarchyElement> elements = getProject().getStorage().getHierarchy();
+		Map<Integer, CodeChain> code = getProject().getStorage().getCode();
 		
-		List<Integer> IDs = Utils.extract(instructionSet.getChildren(), HierarchyElement::getID);
-		int init = getProject().getDataManager().retrieveInstructionDefinition("init");
+		for(HierarchyElement element : elements) {
+			int id = element.getID();
+			
+			if(id != getTarget().getID() && code.get(id).isAbstract()) {
+				output.add(id);
+			}
+		}
+				
+		return output;
+	}
 		
-		IDs.remove((Integer) init);
-		
-		return IDs;
+	public boolean isCyclic() {
+		return true;
 	}
 	
 	public MenuDescription getDescription() {
-		return new MenuDescription("Please select the instruction to insert");
+		return description;
 	}
 }

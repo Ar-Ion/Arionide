@@ -21,25 +21,29 @@
 package ch.innovazion.arionide.ui.overlay.views;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
+import com.jogamp.newt.event.KeyEvent;
+
+import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.ClickEvent;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
 import ch.innovazion.arionide.events.MenuEvent;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
+import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.events.ScrollEvent;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuDescription.DescriptionLine;
+import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.Storage;
-import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.animations.Animation;
 import ch.innovazion.arionide.ui.animations.FieldModifierAnimation;
@@ -102,11 +106,6 @@ public class CodeView extends View implements EventHandler {
 		this.setupFocusCycle(2, 3, 5, 0);
 		this.currentProject = this.getAppManager().getWorkspace().getCurrentProject();
 		this.getAppManager().getEventDispatcher().fire(new MessageEvent("'" + this.currentProject.getName() + "' has been successfully loaded", MessageType.SUCCESS));
-		this.getAppManager().getCoreRenderer().loadProject(this.currentProject);
-	}
-	
-	public void drawSurface(AppDrawingContext context) {
-		super.drawSurface(context);
 	}
 
 	public <T extends Event> void handleEvent(T event) {
@@ -117,7 +116,6 @@ public class CodeView extends View implements EventHandler {
 			
 			if(click.isTargetting(this, "back")) {
 				manager.getWorkspace().closeProject(this.currentProject);
-				manager.getCoreRenderer().loadProject(null);
 				this.openView(Views.main);
 			} else if(click.isTargetting(this, "sceneChanged")) {
 				int tabID = (int) click.getData()[0];
@@ -149,10 +147,15 @@ public class CodeView extends View implements EventHandler {
 							Storage storage = this.currentProject.getStorage();
 							
 							int structID = storage.getCallGraph().get(storage.getCallGraph().size() - 1).getID();
-							int instructionID = storage.getCode().get(structID).list().get(0).getID();
+														
+							CodeChain code = storage.getCode().get(structID);
 							
-							renderer.getStructuresGeometry().requestReconstruction();
-							renderer.teleport(new TeleportInfo(structID, instructionID));
+							if(!code.isAbstract()) {
+								int instructionID = code.list().get(0).getID();
+								renderer.teleport(new TeleportInfo(structID, instructionID));
+							} else {
+								renderer.teleport(new TeleportInfo(structID, -1));
+							}
 						}
 					}
 				}).start();
@@ -164,22 +167,30 @@ public class CodeView extends View implements EventHandler {
 			}
 		} else if(event instanceof MessageEvent) {
 			MessageEvent message = (MessageEvent) event;
-			
-			if(message.getMessageType() != MessageType.DEBUG) {							
+						
+			if(message.getMessageType() != MessageType.DEBUG) {		
 				currentMessage.setLabel(message.getMessage());
 				currentMessage.setColor(message.getMessageType().getColor());
 				
-				currentMessageAlphaAnimation.startAnimation(1000, (animation) -> animation.startAnimation(5000, 1), 0xFF);
+				currentMessageAlphaAnimation.startAnimation(500, (animation) -> animation.startAnimation(3000, 1), 0xFF);
 			}
 		} else if(event instanceof MenuEvent) {
 			this.currentMenu = ((MenuEvent) event).getMenu();
-			this.menu.setActiveComponent(this.currentMenu.getMenuCursor());
 			
-			List<String> elements = new ArrayList<>(this.currentMenu.getMenuElements());
+			List<String> elements = new ArrayList<>(currentMenu.getMenuElements());
 			
 			synchronized(elements) {
-				this.menu.setComponents(elements.stream().map(this.menu.getGenerator()).collect(Collectors.toList()));
+				List<Component> components = elements.stream().map(menu.getGenerator()).collect(Collectors.toList());
+				if(currentMenu.isCyclic() && elements.size() > 1) {
+					menu.setCyclicComponents(elements.toArray(new String[0]));		
+				} else {
+					menu.setCyclicComponents((String[]) null);
+					menu.setComponents(components);
+				}
 			}
+
+			menu.setActiveComponent(currentMenu.getMenuCursor());
+			menu.updateAll();
 			
 			syncMenuDescription();
 		} else if(event instanceof ScrollEvent) {
@@ -187,14 +198,31 @@ public class CodeView extends View implements EventHandler {
 			
 			if(scroll.isTargetting(this)) {
 				assert this.currentMenu != null;
+
 				this.currentMenu.select(scroll.getSubComponentID());
 				
 				syncMenuDescription();
 			}
+		} else if(event instanceof PressureEvent) {
+			PressureEvent pressure = ((PressureEvent) event);
+			
+			if(currentMenu != null && pressure.isDown()) {
+				switch(pressure.getKeycode())  {
+				case KeyEvent.VK_ESCAPE:
+					currentMenu.back();
+					event.abortDispatching();
+					break;
+				case KeyEvent.VK_UP:
+					currentMenu.up();
+					break;
+				case KeyEvent.VK_DOWN:
+					currentMenu.down();
+				}
+			}
 		}
 	}
 	
-	private void syncMenuDescription() {
+	private void syncMenuDescription() {		
 		DescriptionLine[] lines = currentMenu.getDescription().getDisplay();
 		
 		for(int i = 0; i < lines.length; i++) {
@@ -210,7 +238,7 @@ public class CodeView extends View implements EventHandler {
 		}
 	}
 
-	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(ClickEvent.class, MessageEvent.class, MenuEvent.class, ScrollEvent.class);
+	public Set<Class<? extends Event>> getHandleableEvents() {
+		return Utils.asSet(ClickEvent.class, MessageEvent.class, MenuEvent.class, ScrollEvent.class, PressureEvent.class);
 	}
 }

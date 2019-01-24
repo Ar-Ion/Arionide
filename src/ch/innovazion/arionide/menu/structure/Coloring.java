@@ -18,7 +18,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.edition;
+package ch.innovazion.arionide.menu.structure;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,16 +28,12 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import ch.innovazion.arionide.Utils;
-import ch.innovazion.arionide.events.MessageEvent;
-import ch.innovazion.arionide.events.MessageType;
-import ch.innovazion.arionide.menu.MainMenus;
-import ch.innovazion.arionide.menu.SpecificMenu;
-import ch.innovazion.arionide.project.Project;
+import ch.innovazion.arionide.events.Event;
+import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.project.StructureMeta;
-import ch.innovazion.arionide.ui.AppManager;
-import ch.innovazion.arionide.ui.core.geom.WorldElement;
 
-public class Coloring extends SpecificMenu {
+public class Coloring extends Menu {
 	
 	private static final List<String> names = new ArrayList<>();
 	private static final List<Vector3f> colors = new ArrayList<>();
@@ -209,9 +205,7 @@ public class Coloring extends SpecificMenu {
 	}
 	
 	public static final int WHITE = 161;
-	
-	private static final String back = "Back";
-	
+		
 	private static void addColor(String name, int color) {
 		names.add(name);
 		colors.add(new Vector3f(Utils.getRed(color) / 255.0f, Utils.getGreen(color) / 255.0f, Utils.getBlue(color) / 255.0f));
@@ -231,45 +225,36 @@ public class Coloring extends SpecificMenu {
 	}
 	
 	
-	public Coloring(AppManager manager) {
-		super(manager);
-		this.getElements().addAll(names);
-		this.getElements().add(back);
+	public Coloring(Menu parent) {
+		super(parent);
+		getElements().addAll(names);
 	}
 
 	protected void onSelect(String element) {
-		this.getCurrent().setColor(new Vector4f(getColorByName(element), 0.3f));
+		getTarget().setColor(new Vector4f(getColorByName(element), 0.3f));
 	}
 	
-	public void setCurrent(WorldElement current) {
-		super.setCurrent(current);
+	public void show() {
+		super.show();
+				
+		Map<Integer, StructureMeta> metaData = getProject().getStorage().getStructureMeta();
+
+		StructureMeta meta = metaData.get(getTarget().getID());
 		
-		Map<Integer, StructureMeta> metaData = this.getAppManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta();
-		
-		if(metaData.containsKey(current.getID())) {
-			this.setMenuCursor(metaData.get(current.getID()).getColorID());
+		if(meta != null) {
+			this.setMenuCursor(meta.getColorID());
 		}
 	}
 	
 	protected void onClick(String element) {		
-		if(element != back) {
-			Project project = this.getAppManager().getWorkspace().getCurrentProject();
-			
-			MessageEvent message = null;
-			
-			if(project != null) {
-				message = project.getDataManager().setColor(this.getCurrent().getID(), names.indexOf(element));
-			} else {
-				message = new MessageEvent("No project is currently loaded", MessageType.ERROR);
-			}
-			
-			this.getAppManager().getEventDispatcher().fire(message);
-		}
+		Event message = getProject().getDataManager().setColor(getTarget().getID(), names.indexOf(element));
 		
-		MainMenus.getStructureEditor().show();
+		this.getAppManager().getEventDispatcher().fire(message);
+		
+		back();
 	}
 	
-	public String getDescription() {
-		return "Please select a color for " + super.getDescription();
+	public MenuDescription getDescription() {
+		return new MenuDescription("Please select a color for " + getTarget().getName());
 	}
 }

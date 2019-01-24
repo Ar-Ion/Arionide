@@ -86,7 +86,7 @@ public abstract class Geometry {
 	public void processEventQueue() throws GeometryException {
 		if(this.contructionRequested && this.project != null) {			
 			this.contructionRequested = false;
-
+			
 			this.clearAll();
 			
 			this.construct(this.elements, this.connections);

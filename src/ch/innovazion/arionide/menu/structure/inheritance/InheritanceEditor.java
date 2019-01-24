@@ -18,33 +18,46 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu;
+package ch.innovazion.arionide.menu.structure.inheritance;
 
-import ch.innovazion.arionide.ui.AppManager;
-import ch.innovazion.arionide.ui.core.geom.WorldElement;
+import ch.innovazion.arionide.events.Event;
+import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
 
-public class SpecificMenu extends Menu {
+public class InheritanceEditor extends Menu {
+
+	private static final String remove = "Desinherit";
 	
-	private WorldElement current;
-
-	protected SpecificMenu(AppManager manager, String... elements) {
-		super(manager, elements);
+	private int id = -1;
+	private String name;
+	
+	protected InheritanceEditor(Menu parent) {
+		super(parent, remove);
 	}
 	
-	public void setCurrent(WorldElement current) {
-		assert current != null;
-		this.current = current;
-	}
-	
-	public WorldElement getCurrent() {
-		return this.current;
-	}
-	
-	public String getDescription() {
-		return this.current != null ? "'" + this.current.getName() + "'" : "nothing";
+	protected void setInheritedStructure(int id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 
-	public void reload() {
-		this.setCurrent(this.getCurrent());
+	public void show() {
+		assert id >= 0;
+		super.show();
+	}
+	
+	protected void onClick(String element) {	
+		switch(element) {
+			case remove:				
+				Event message = getProject().getDataManager().getInheritanceManager().disinherit(id, getTarget().getID());
+				getAppManager().getEventDispatcher().fire(message);
+				
+				back();
+				
+				break;
+		}
+	}
+	
+	public MenuDescription getDescription() {
+		return new MenuDescription("Inheritance editor for '" + name + "'");
 	}
 }

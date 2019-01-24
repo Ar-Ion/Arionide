@@ -29,21 +29,19 @@ import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.UserHelper;
 import ch.innovazion.arionide.menu.Menu;
-import ch.innovazion.arionide.ui.AppManager;
+import ch.innovazion.arionide.menu.MenuDescription;
 
-class ReferenceSelector extends Menu {
-	private static final String back = "Back";
-	
+class ReferenceSelector extends Menu {	
 	private final Menu parent;
 	private final Reference element;
 	
-	public ReferenceSelector(AppManager manager, Menu parent, Reference element) {
-		super(manager, back);
+	public ReferenceSelector(Menu parent, Reference element) {
+		super(parent);
 		
 		this.parent = parent;
 		this.element = element;
 		
-		UserHelper cdm = manager.getWorkspace().getCurrentProject().getLanguage().getUserHelper();
+		UserHelper cdm = getAppManager().getWorkspace().getCurrentProject().getLanguage().getUserHelper();
 		
 		List<String> suggestions = new ArrayList<>();
 		
@@ -63,27 +61,23 @@ class ReferenceSelector extends Menu {
 		}
 	}
 	
-	public void onClick(String element) {
-		if(element.equals(back)) {
-			this.parent.show();
-		} else {			
-			if(this.element.getSpecificationParameters() != null) {
-				int index = element.indexOf("$$$");
-				
-				if(index > -1) {
-					int id = Integer.parseInt(element.substring(index + 3));
-					Specification spec = this.getAppManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta().get(id).getSpecification();
-					this.element.setSpecificationParameters(spec.getElements());
-				}
+	public void onClick(String element) {			
+		if(this.element.getSpecificationParameters() != null) {
+			int index = element.indexOf("$$$");
+			
+			if(index > -1) {
+				int id = Integer.parseInt(element.substring(index + 3));
+				Specification spec = this.getAppManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta().get(id).getSpecification();
+				this.element.setSpecificationParameters(spec.getElements());
 			}
-			
-			this.parent.show();
-			
-			this.getAppManager().getEventDispatcher().fire(this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().setValue(this.element, element));
 		}
+		
+		this.parent.show();
+		
+		this.getAppManager().getEventDispatcher().fire(this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().setValue(this.element, element));
 	}
 	
-	public String getDescription() {
-		return "Reference selector for '" + this.element + "'";
+	public MenuDescription getDescription() {
+		return new MenuDescription("Reference selector for '" + this.element + "'");
 	}
 }

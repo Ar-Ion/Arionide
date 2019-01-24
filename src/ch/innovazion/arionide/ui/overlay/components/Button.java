@@ -23,9 +23,11 @@ package ch.innovazion.arionide.ui.overlay.components;
 import java.awt.Cursor;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.ActionEvent;
 import ch.innovazion.arionide.events.ActionType;
 import ch.innovazion.arionide.events.ClickEvent;
@@ -213,15 +215,15 @@ public class Button extends Label implements EventHandler, Deformable {
 		this.onFocusLost();
 	}
 
-	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(MoveEvent.class, ActionEvent.class, FocusGainedEvent.class, FocusLostEvent.class, ValidateEvent.class);
-	}
-
 	public List<UILighting> getEnlightenablePrimitives() {
 		return Stream.concat(super.getEnlightenablePrimitives().stream(), Stream.of(this.borders)).collect(Collectors.toList());
 	}
 	
 	public List<AffineTransformable> getDeformablePrimitives() {
 		return Arrays.asList(this.borders);
+	}
+	
+	public Set<Class<? extends Event>> getHandleableEvents() {
+		return Utils.asSet(MoveEvent.class, ActionEvent.class, FocusGainedEvent.class, FocusLostEvent.class, ValidateEvent.class);
 	}
 }

@@ -18,40 +18,31 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.code;
+package ch.innovazion.arionide.menu.structure;
 
 import java.util.List;
 
-import ch.innovazion.arionide.events.MessageEvent;
-import ch.innovazion.arionide.lang.SpecificationElement;
-import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.Utils;
+import ch.innovazion.arionide.menu.Browser;
+import ch.innovazion.arionide.project.HierarchyElement;
+import ch.innovazion.arionide.ui.AppManager;
+import ch.innovazion.arionide.ui.core.geom.WorldElement;
 
-public class ReferenceBinding extends Menu {
-	
-	private final Menu parent;
-	private final SpecificationElement element;
-	private final List<SpecificationElement> possible;
-	
-	public ReferenceBinding(Menu parent, SpecificationElement element, List<SpecificationElement> possible) {
-		super(parent);
+public abstract class StructureBrowser extends Browser {
 		
-		this.parent = parent;
-		this.element = element;
-		this.possible = possible;
-		
-		for(SpecificationElement poss : possible) {
-			if(element.getClass().isInstance(poss)) {
-				this.getElements().add(poss.getName());
-			}
-		}
+	public StructureBrowser(AppManager manager) {
+		super(manager);
 	}
 	
-	public void onClick(int id) {
-		if(id != 0) {
-			MessageEvent msg = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().bindParameter(this.element, this.possible.get(id - 1));
-			this.getAppManager().getEventDispatcher().fire(msg);
-		}
-		
-		this.parent.show();
+	protected WorldElement getTarget() {
+		return getAppManager().getCoreRenderer().getStructuresGeometry().getElementByID(getSelectedID());
 	}
-}
+
+	protected List<Integer> loadCurrentElements() {
+		return Utils.extract(getProject().getDataManager().getCurrentGeneration(getProject().getStorage().getHierarchy()), HierarchyElement::getID);
+	}
+	
+	public boolean isCyclic() {
+		return true;
+	}
+ }

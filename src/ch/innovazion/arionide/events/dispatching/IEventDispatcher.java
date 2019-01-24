@@ -26,7 +26,8 @@ import ch.innovazion.arionide.events.EventHandler;
 public interface IEventDispatcher {
 	public void fire(Event event);
 	public void registerHandler(EventHandler handler);
+	public void registerHandler(EventHandler handler, float priority);
 	public void pause();
 	public void resume();
-	public void flush() throws InterruptedException;
+	public void flush();
 }

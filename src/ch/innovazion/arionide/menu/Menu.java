@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
+import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
 import ch.innovazion.arionide.events.MenuEvent;
@@ -32,6 +34,7 @@ import ch.innovazion.arionide.events.ProjectCloseEvent;
 import ch.innovazion.arionide.events.ProjectOpenEvent;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.ui.AppManager;
+import ch.innovazion.arionide.ui.core.geom.WorldElement;
 
 public abstract class Menu implements EventHandler {
 	
@@ -44,15 +47,19 @@ public abstract class Menu implements EventHandler {
 	
 	// Only for root menu
 	protected Menu(AppManager manager, String... elements) {
-		this.parent = null;
-		this.manager = parent.getAppManager();
-		this.elements.addAll(Arrays.asList(elements));
+		this(manager, null, elements);
 	}
 	
 	protected Menu(Menu parent, String... elements) {
+		this(parent.manager, parent, elements);
+	}
+	
+	private Menu(AppManager manager, Menu parent, String... elements) {
 		this.parent = parent;
-		this.manager = parent.getAppManager();
+		this.manager = manager;
 		this.elements.addAll(Arrays.asList(elements));
+		
+		manager.getEventDispatcher().registerHandler(this, 0.6f);
 	}
 	
 	public AppManager getAppManager() {
@@ -90,23 +97,35 @@ public abstract class Menu implements EventHandler {
 	public void select(int index) {
 		int realIndex = setMenuCursor(index);
 		
-		if(currentProject != null) {
+		if(currentProject != null && realIndex >= 0 && realIndex < elements.size()) {
 			onSelect(realIndex);
 			onSelect(elements.get(realIndex));
 		}
 	}
 	
-	public void click() {
+	public void click() {		
 		if(currentProject != null && menuCursor >= 0 && menuCursor < elements.size()) {
 			onClick(menuCursor);
 			onClick(elements.get(menuCursor));
 		}
 	}
 	
+	public void up() {
+		if(currentProject != null) {
+			onUp();
+		}
+	}
+	
+	public void down() {
+		if(currentProject != null) {
+			onDown();
+		}
+	}
+	
 	public void back() {
 		if(parent != null) {
 			parent.show();
-		}
+		} // else discard;
 	}
 
 	protected void onClick(String element) {
@@ -125,11 +144,39 @@ public abstract class Menu implements EventHandler {
 		return;
 	}
 	
+	protected void onUp() {
+		return;
+	}
+	
+	protected void onDown() {
+		return;
+	}
+	
 	protected Project getProject() {
 		return currentProject;
 	}
 	
-	public void handleEvent(Event event) {
+	protected WorldElement getTarget() {
+		if(parent != null) {
+			return parent.getTarget();
+		} else {
+			throw new IllegalStateException("Target undefined for root menus");
+		}
+	}
+	
+	public MenuDescription getDescription() {
+		if(parent != null) {
+			return parent.getDescription();
+		} else {
+			throw new IllegalStateException("Menu description undefined for root menus");
+		}
+	}
+	
+	public boolean isCyclic() {
+		return false;
+	}
+	
+	public <T extends Event> void handleEvent(T event) {
 		if(event instanceof ProjectOpenEvent) {
 			currentProject = ((ProjectOpenEvent) event).getProject();
 		} else if(event instanceof ProjectCloseEvent) {
@@ -137,9 +184,7 @@ public abstract class Menu implements EventHandler {
 		}
 	}
 	
-	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(ProjectOpenEvent.class, ProjectCloseEvent.class);
+	public Set<Class<? extends Event>> getHandleableEvents() {
+		return Utils.asSet(ProjectOpenEvent.class, ProjectCloseEvent.class);
 	}
-	
-	public abstract MenuDescription getDescription();
 }

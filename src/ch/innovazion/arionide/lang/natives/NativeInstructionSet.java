@@ -74,7 +74,8 @@ public class NativeInstructionSet extends InstructionSet {
 			retrieve("load");
 		} else {
 			manager.getCodeManager().resetCodeChain(-1);
-
+			manager.getCodeManager().resetCodeChain(structID);
+			
 			ResourceAllocator allocator = manager.getResourceAllocator();
 			
 			add("init", 0, new Specification(allocator.allocSpecification()));

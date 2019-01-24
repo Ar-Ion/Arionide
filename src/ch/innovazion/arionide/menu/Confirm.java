@@ -20,33 +20,37 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu;
 
-import ch.innovazion.arionide.ui.AppManager;
+import ch.innovazion.arionide.ui.ApplicationTints;
 
-public class Confirm extends SpecificMenu {
+public class Confirm extends Menu {
 	
 	private static final String yes = "Yes";
 	private static final String no = "No";
 
-	private final Menu parent;
 	private final Confirmable confirm;
 	private final String caption;
+	private MenuDescription description;
 	
-	public Confirm(AppManager manager, Menu parent, Confirmable confirm, String caption) {
-		super(manager, yes, no);
-		this.parent = parent;
+	public Confirm(Menu parent, Confirmable confirm, String caption) {
+		super(parent, yes, no);
 		this.confirm = confirm;
 		this.caption = caption;
 	}
 	
-	public void onClick(String element) {
-		this.parent.show();
-
+	public void onClick(String element) {		
 		if(element.equals(yes)) {
-			this.confirm.confirm();
+			confirm.confirm();
 		}
+		
+		back();
 	}
 	
-	public String getDescription() {
-		return this.caption.replace("$name", this.getCurrent() != null ? this.getCurrent().getName() : "?");
+	public void show() {
+		super.show();
+		description = new MenuDescription(ApplicationTints.DANGER_COLOR, caption.replace("$name", getTarget().getName()));
+	}
+	
+	public MenuDescription getDescription() {
+		return description;
 	}
 }

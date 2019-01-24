@@ -20,11 +20,11 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.layout;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.debugging.IAm;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
@@ -107,8 +107,8 @@ public class LayoutManager implements EventHandler {
 		}
 	}
 
-	public List<Class<? extends Event>> getHandleableEvents() {
-		return Arrays.asList(InvalidateLayoutEvent.class);
+	public Set<Class<? extends Event>> getHandleableEvents() {
+		return Utils.asSet(InvalidateLayoutEvent.class);
 	}
 	
 	private final class LayoutConfiguration {

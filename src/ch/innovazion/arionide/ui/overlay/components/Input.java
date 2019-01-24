@@ -21,11 +21,11 @@
 package ch.innovazion.arionide.ui.overlay.components;
 
 import java.awt.Cursor;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import com.jogamp.newt.event.KeyEvent;
 
+import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
 import ch.innovazion.arionide.events.WriteEvent;
@@ -296,16 +296,11 @@ public class Input extends Button implements EventHandler {
 		}
 	}
 	
-	public List<Class<? extends Event>> getHandleableEvents() {
-		List<Class<? extends Event>> theList = new ArrayList<>();
-		
-		theList.addAll(super.getHandleableEvents());
-		theList.add(WriteEvent.class);
-		
-		return theList;
+	public Set<Class<? extends Event>> getHandleableEvents() {
+		return Utils.combine(super.getHandleableEvents(), WriteEvent.class);
 	}
 	
 	public String toString() {
-		return this.text != null ? this.text.toString() : "<Uninitialized Input Component>";
+		return this.text != null ? this.text.toString() : "<Uninitialized Input component>";
 	}
 }
