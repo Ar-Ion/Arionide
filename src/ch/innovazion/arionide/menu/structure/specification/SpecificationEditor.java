@@ -31,7 +31,6 @@ import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.SpecificationElement;
-import ch.innovazion.arionide.menu.MainMenus;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.structure.specification.reference.SpecificationReferenceEditor;
@@ -108,7 +107,7 @@ public class SpecificationEditor extends Menu {
 				}
 			}).start();
 		} else {
-			MainMenus.getStructureEditor().show();
+			back();
 		}
 	}
 	

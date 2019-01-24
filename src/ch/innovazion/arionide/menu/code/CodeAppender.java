@@ -20,6 +20,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.code;
 
+import java.util.Arrays;
 import java.util.List;
 
 import ch.innovazion.arionide.Utils;
@@ -62,14 +63,26 @@ public class CodeAppender extends Browser {
 
 		int parent = getProject().getDataManager().getHostStack().getCurrent();
 		StructureMeta parentMeta = storage.getStructureMeta().get(parent);
-		HierarchyElement instructionSet = storage.getHierarchy().get(parentMeta.getLanguage());
 		
-		List<Integer> IDs = Utils.extract(instructionSet.getChildren(), HierarchyElement::getID);
-		int init = getProject().getDataManager().retrieveInstructionDefinition("init");
+		HierarchyElement instructionSet = null;
 		
-		IDs.remove((Integer) init);
+		for(HierarchyElement element : storage.getHierarchy()) {
+			if(element.getID() == parentMeta.getLanguage()) {
+				instructionSet = element;
+				break;
+			}
+		}
 		
-		return IDs;
+		if(instructionSet != null) {
+			List<Integer> IDs = Utils.extract(instructionSet.getChildren(), HierarchyElement::getID);
+			int init = getProject().getDataManager().retrieveInstructionDefinition("init");
+			
+			IDs.remove((Integer) init);
+			
+			return IDs;
+		}
+		
+		return Arrays.asList();
 	}
 	
 	public MenuDescription getDescription() {

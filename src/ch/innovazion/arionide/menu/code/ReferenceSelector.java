@@ -25,23 +25,29 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 
+import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.UserHelper;
 import ch.innovazion.arionide.menu.Menu;
-import ch.innovazion.arionide.menu.MenuDescription;
 
 class ReferenceSelector extends Menu {	
-	private final Menu parent;
-	private final Reference element;
+	private Reference element;
 	
-	public ReferenceSelector(Menu parent, Reference element) {
+	public ReferenceSelector(Menu parent) {
 		super(parent);
-		
-		this.parent = parent;
+	}
+	
+	protected void setTarget(Reference element) {
 		this.element = element;
+	}
+	
+	public void show() {
+		assert element != null;
 		
-		UserHelper cdm = getAppManager().getWorkspace().getCurrentProject().getLanguage().getUserHelper();
+		super.show();
+		
+		UserHelper cdm = getProject().getLanguage().getUserHelper();
 		
 		List<String> suggestions = new ArrayList<>();
 		
@@ -50,34 +56,31 @@ class ReferenceSelector extends Menu {
 		}
 		
 		Collections.sort(suggestions);
-		this.getElements().addAll(suggestions);
+		getElements().addAll(suggestions);
 				
 		if(element.getValue() != null) {
-			int index = this.getElements().indexOf(element.getValue());
+			int index = getElements().indexOf(element.getValue());
 		
 			if(index > -1) {
-				this.select(index + 1);
+				this.select(index);
 			}
 		}
 	}
 	
-	public void onClick(String element) {			
-		if(this.element.getSpecificationParameters() != null) {
-			int index = element.indexOf("$$$");
-			
-			if(index > -1) {
-				int id = Integer.parseInt(element.substring(index + 3));
-				Specification spec = this.getAppManager().getWorkspace().getCurrentProject().getStorage().getStructureMeta().get(id).getSpecification();
-				this.element.setSpecificationParameters(spec.getElements());
-			}
+	public void onClick(String element) {
+		int index = element.indexOf("$$$");
+		
+		if(index > -1) {
+			int id = Integer.parseInt(element.substring(index + 3));
+			Specification spec = getProject().getStorage().getStructureMeta().get(id).getSpecification();
+			this.element.setSpecificationParameters(spec.getElements());
 		}
 		
-		this.parent.show();
+		Event event = getProject().getDataManager().getSpecificationManager().setValue(this.element, element);
+		getAppManager().getEventDispatcher().fire(event);
 		
-		this.getAppManager().getEventDispatcher().fire(this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().setValue(this.element, element));
-	}
-	
-	public MenuDescription getDescription() {
-		return new MenuDescription("Reference selector for '" + this.element + "'");
+		getAppManager().getCoreRenderer().getCodeGeometry().requestReconstruction();
+		
+		back();
 	}
 }

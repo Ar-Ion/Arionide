@@ -20,25 +20,19 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu;
 
-import ch.innovazion.arionide.menu.browsers.SpecificationBrowser;
 import ch.innovazion.arionide.menu.code.CodeBrowser;
-import ch.innovazion.arionide.menu.code.CodeEditor;
 import ch.innovazion.arionide.menu.code.CoreCodeBrowser;
 import ch.innovazion.arionide.menu.code.ReferenceEditor;
 import ch.innovazion.arionide.menu.code.TypeEditor;
 import ch.innovazion.arionide.menu.structure.CoreStructureBrowser;
 import ch.innovazion.arionide.menu.structure.StructureBrowser;
-import ch.innovazion.arionide.menu.structure.StructureEditor;
 import ch.innovazion.arionide.ui.AppManager;
 
 public class MainMenus {
 	
 	private static StructureBrowser structBrowser;
 	private static CodeBrowser codeBrowser;
-	private static SpecificationBrowser specificationBrowser;
 	
-	private static StructureEditor structEditor;
-	private static CodeEditor codeEditor;
 	private static TypeEditor typeEditor;
 	private static ReferenceEditor referenceEditor;
 	
@@ -53,8 +47,8 @@ public class MainMenus {
 		codeBrowser = new CoreCodeBrowser(structBrowser);
 		//specificationBrowser = new SpecificationBrowser(manager);
 
-		// codeEditor = new CodeEditor(manager, codeBrowser);
- 		// referenceEditor = new ReferenceEditor(manager, codeBrowser);
+		typeEditor = new TypeEditor(codeBrowser);
+ 		referenceEditor = new ReferenceEditor(codeBrowser);
 	}
 	
 	public static StructureBrowser getStructureList() {
@@ -64,15 +58,7 @@ public class MainMenus {
 	public static CodeBrowser getCodeBrowser() {
 		return codeBrowser;
 	}
-	
-	public static StructureEditor getStructureEditor() {
-		return structEditor;
-	}
-	
-	public static CodeEditor getCodeEditor() {
-		return codeEditor;
-	}
-	
+
 	public static TypeEditor getTypeEditor() {
 		return typeEditor;
 	}

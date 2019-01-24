@@ -22,44 +22,53 @@ package ch.innovazion.arionide.menu.code;
 
 import java.util.List;
 
+import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.menu.MainMenus;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
+import ch.innovazion.arionide.ui.ApplicationTints;
 
 public class ReferenceEditor extends Menu {
 	
-	private final Menu parent;
-	private Reference element;
-	private ReferenceSelector selector;
+	private final ReferenceSelector selector;
+	private final ReferenceBinding binding;
 	
+	private Reference element;
+	private MenuDescription description;
+
 	private int refIndex;
 		
 	public ReferenceEditor(Menu parent) {
 		super(parent);
-		this.parent = parent;
+		this.selector = new ReferenceSelector(this);
+		this.binding = new ReferenceBinding(this);
 	}
 	
 	public void setTarget(Reference element) {
 		this.element = element;
-		this.selector = new ReferenceSelector(parent, element);
+		
+		selector.setTarget(element);
 		
 		List<String> elements = this.getElements();
 		
+		description = new MenuDescription();
 		elements.clear();
 		
-		for(SpecificationElement data : element.getNeededParameters()) {
+		for(SpecificationElement data : element.getEagerParameters()) {
 			elements.add(data.getName());
+			description.add(data.toString(), ApplicationTints.SPECIFICATION_EAGER);
 		}
 		
-		elements.add("Back");
 		this.refIndex = elements.size();
-		elements.add("Reference");
+		elements.add("Set referee");
 
-		for(SpecificationElement data : element.getSpecificationParameters()) {
+		for(SpecificationElement data : element.getLazyParameters()) {
 			elements.add(data.getName());
+			description.add(data.toString(), ApplicationTints.SPECIFICATION_LAZY);
 		}
 		
 		this.setMenuCursor(this.refIndex);
@@ -67,22 +76,24 @@ public class ReferenceEditor extends Menu {
 	
 	public void onClick(int id) {
 		if(id == this.refIndex) {
-			this.selector.show();
-		} else if(id == this.refIndex - 1) {
-			this.parent.show();
-		} else if(id < this.refIndex) {
-			Menu binding = new ReferenceBinding(this, (Data) this.element.getNeededParameters().get(id), this.element.getSpecificationParameters());
-			binding.show();
+			selector.show();
+		} else if(element.getValue() != null) {
+			if(id < this.refIndex) {
+				binding.setPossibleBindings(element.getEagerParameters().get(id), element.getLazyParameters());
+				binding.show();
+			} else {
+				id -= this.refIndex + 1;
+				
+				TypeEditor menu = MainMenus.getTypeEditor();
+				menu.setTarget((Data) element.getLazyParameters().get(id));
+				menu.show();
+			}
 		} else {
-			id -= this.refIndex + 1;
-			
-			TypeEditor menu = MainMenus.getTypeEditor();
-			menu.setTarget((Data) this.element.getSpecificationParameters().get(id));
-			menu.show();
+			getAppManager().getEventDispatcher().fire(new MessageEvent("You first have to set a referee", MessageType.ERROR));
 		}
 	}
 	
 	public MenuDescription getDescription() {
-		return new MenuDescription("Reference editor for '" + this.element + "'");
+		return description;
 	}
 }

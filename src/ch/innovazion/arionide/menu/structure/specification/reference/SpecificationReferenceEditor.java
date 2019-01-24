@@ -47,7 +47,7 @@ public class SpecificationReferenceEditor extends SpecificationElementEditor {
 				
 				break;
 			case setParameters:
-				Menu menu = new ReferenceParameters(this.getAppManager(), this, this.getSpecification(), this.getElementID(), reference.getNeededParameters());
+				Menu menu = new ReferenceParameters(this.getAppManager(), this, this.getSpecification(), this.getElementID(), reference.getEagerParameters());
 				menu.show();
 
 				break;
@@ -62,6 +62,6 @@ public class SpecificationReferenceEditor extends SpecificationElementEditor {
 	}
 	
 	public MenuDescription getDescription() {
-		return new MenuDescription(this.getElement().getName() + " <" + String.join("; ", ((Reference) this.getElement()).getNeededParameters().stream().map(SpecificationElement::toString).toArray(String[]::new)) + ">");
+		return new MenuDescription(this.getElement().getName() + " <" + String.join("; ", ((Reference) this.getElement()).getEagerParameters().stream().map(SpecificationElement::toString).toArray(String[]::new)) + ">");
 	}
 }

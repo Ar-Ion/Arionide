@@ -45,7 +45,7 @@ public class SpecificationManager extends Manager {
 	
 		this.saveMeta();
 		
-		return new MessageEvent("Specification successfully updated", MessageType.SUCCESS);
+		return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 	}
 	
 	public MessageEvent deleteElement(Specification spec, int id) {
@@ -53,7 +53,7 @@ public class SpecificationManager extends Manager {
 
 		this.saveMeta();
 
-		return new MessageEvent("Specification element successfully deleted", MessageType.SUCCESS);
+		return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 	}
 	
 	public MessageEvent refactorName(Specification spec, int id, String newName) {
@@ -61,7 +61,7 @@ public class SpecificationManager extends Manager {
 
 		this.saveMeta();
 		
-		return new MessageEvent("Name successfully refactored", MessageType.SUCCESS);
+		return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 	}
 
 	public MessageEvent refactorType(Specification spec, int id, int newType) {
@@ -69,23 +69,23 @@ public class SpecificationManager extends Manager {
 		
 		this.saveMeta();
 		
-		return new MessageEvent("Type successfully refactored", MessageType.SUCCESS);
+		return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 	}
 	
 	public MessageEvent refactorParameterName(Specification spec, int id, int data, String newName) {
-		this.doForeachConnectedSpecification(spec, l -> ((Reference) l.getElements().get(id)).getNeededParameters().get(data).setName(newName));
+		this.doForeachConnectedSpecification(spec, l -> ((Reference) l.getElements().get(id)).getEagerParameters().get(data).setName(newName));
 
 		this.saveMeta();
 		
-		return new MessageEvent("Name successfully refactored", MessageType.SUCCESS);
+		return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 	}
 	
 	public MessageEvent refactorParameterType(Specification spec, int id, int data, int newType) {
-		this.doForeachConnectedSpecification(spec, l -> ((Data) ((Reference) l.getElements().get(id)).getNeededParameters().get(data)).setType(newType));
+		this.doForeachConnectedSpecification(spec, l -> ((Data) ((Reference) l.getElements().get(id)).getEagerParameters().get(data)).setType(newType));
 		
 		this.saveMeta();
 		
-		return new MessageEvent("Type successfully refactored", MessageType.SUCCESS);
+		return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 	}
 	
 	public MessageEvent bind(SpecificationElement sourceParam, SpecificationElement targetParam) {
@@ -93,27 +93,27 @@ public class SpecificationManager extends Manager {
 		
 		this.saveMeta();
 									
-		return new MessageEvent("Parameter successfully bound", MessageType.SUCCESS);
+		return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 	}
 	
 	public MessageEvent toggleCallability(Reference reference) {
-		if(reference.getSpecificationParameters() != null) {
+		if(reference.getLazyParameters() != null) {
 			reference.setSpecificationParameters(null);
 			this.saveMeta();
-			return new MessageEvent("This reference is not callable anymore", MessageType.SUCCESS);
+			return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 		} else {
 			reference.setSpecificationParameters(new ArrayList<>());
 			this.saveMeta();
-			return new MessageEvent("This reference is now callable", MessageType.SUCCESS);
+			return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 		}
 	}
 	
 	public MessageEvent remove(Specification spec, SpecificationElement element) {
 		if(spec.getElements().remove(element)) {
 			this.saveMeta();
-			return new MessageEvent("Reference sucessfully removed", MessageType.SUCCESS);
+			return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 		} else {
-			return new MessageEvent("Nothing to remove", MessageType.WARN);
+			return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.WARN);
 		}
 	}
 	
@@ -122,7 +122,7 @@ public class SpecificationManager extends Manager {
 		
 		this.saveMeta();
 		
-		return new MessageEvent("Parameter successfully added", MessageType.SUCCESS);
+		return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 	}
 	
 	public MessageEvent setValue(SpecificationElement element, String value) {
@@ -130,7 +130,7 @@ public class SpecificationManager extends Manager {
 
 		this.saveMeta();
 		
-		return new MessageEvent("Update successful", MessageType.SUCCESS);
+		return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 	}
 	
 	public MessageEvent bindParameter(SpecificationElement source, SpecificationElement target) {
@@ -139,7 +139,7 @@ public class SpecificationManager extends Manager {
 		
 		this.saveMeta();
 		
-		return new MessageEvent("Parameter successfully bound", MessageType.SUCCESS);
+		return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
 	}
 	
 	private void doForeachConnectedSpecification(Specification spec, Consumer<Specification> action) {

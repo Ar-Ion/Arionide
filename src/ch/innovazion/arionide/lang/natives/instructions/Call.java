@@ -49,7 +49,7 @@ public class Call implements NativeInstruction {
 			
 			List<SpecificationElement> specVars = new ArrayList<>();
 			
-			for(SpecificationElement element : this.reference.getSpecificationParameters()) {
+			for(SpecificationElement element : this.reference.getLazyParameters()) {
 				String value = element.getValue();
 												
 				if(value.startsWith(SpecificationElement.VAR)) {
@@ -61,7 +61,7 @@ public class Call implements NativeInstruction {
 				}
 			}
 			
-			for(SpecificationElement element : this.reference.getNeededParameters()) {
+			for(SpecificationElement element : this.reference.getEagerParameters()) {
 				String value = element.getValue();
 					
 				if(value != null) {
@@ -95,7 +95,7 @@ public class Call implements NativeInstruction {
 			theStack.pop();
 						
 			for(SpecificationElement newVar : newVars) {
-				for(SpecificationElement original : this.reference.getSpecificationParameters()) { // Rename variable according to the parent's context					
+				for(SpecificationElement original : this.reference.getLazyParameters()) { // Rename variable according to the parent's context					
 					if(original.getName().equals(newVar.getName())) {
 						if(original.getValue().contains(SpecificationElement.VAR)) {
 							newVar.setName(original.getValue().substring(4));

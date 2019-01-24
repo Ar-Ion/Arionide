@@ -37,11 +37,11 @@ public class Reference extends SpecificationElement {
 		this.specificationParameters = specificationParameters;
 	}
 	
-	public List<SpecificationElement> getNeededParameters() {
+	public List<SpecificationElement> getEagerParameters() {
 		return this.neededParameters;
 	}
 	
-	public List<SpecificationElement> getSpecificationParameters() {
+	public List<SpecificationElement> getLazyParameters() {
 		return this.specificationParameters;
 	}
 	

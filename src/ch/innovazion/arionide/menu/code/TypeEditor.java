@@ -1,5 +1,5 @@
 /*******************************************************************************
- * This file is part of Arionide.
+  * This file is part of Arionide.
  *
  * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
  * Copyright (C) 2018, 2019 AZEntreprise Corporation. All rights reserved.
@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.Data;
@@ -36,11 +37,8 @@ import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.managers.HostStructureStack;
-import ch.innovazion.arionide.ui.AppManager;
 
 public class TypeEditor extends Menu {
-
-	private final Menu parent;
 	
 	private SpecificationElement element;
 	private TypeManager typeManager;
@@ -48,9 +46,8 @@ public class TypeEditor extends Menu {
 	private int separator;
 	private boolean eventAborted = false;
 	
-	public TypeEditor(AppManager manager, Menu parent) {
-		super(manager);
-		this.parent = parent;
+	public TypeEditor(Menu parent) {
+		super(parent);
 	}
 	
 	public void setTarget(Data element) {
@@ -65,74 +62,76 @@ public class TypeEditor extends Menu {
 		Language lang = project.getLanguage();
 		UserHelper helper = lang.getUserHelper();
 		
-		this.typeManager = lang.getTypes().getTypeManager(element.getType());
-		this.validator = lang.getTypes().getValidator(element.getType());
+		typeManager = lang.getTypes().getTypeManager(element.getType());
+		validator = lang.getTypes().getValidator(element.getType());
 
-		if(this.typeManager != null) {
+		if(typeManager != null) {
 			if(!stack.isEmpty()) {
 				elements.addAll(helper.getVariables(stack.getCurrent(), element.getType(), element.getName()));
-				elements.addAll(this.typeManager.getSuggestions(helper));
+				elements.addAll(typeManager.getSuggestions(helper));
 			}
 			
-			this.separator = this.getElements().size();
+			separator = elements.size();
 			
-			elements.add("Back");
 			elements.add("New variable");
-			elements.addAll(this.typeManager.getActionLabels());
+			elements.addAll(typeManager.getActionLabels());
 						
-			if(this.separator > 0) {
-				this.setMenuCursor(this.separator - 1);
+			if(separator > 0) {
+				setMenuCursor(separator - 1);
 			} else {
-				this.setMenuCursor(1);
+				setMenuCursor(1);
 			}
 		} else {
-			elements.add("Back");
-			this.separator = 0;
+			separator = 0;
 		}
 	}
 	
 	public void onClick(int id) {
-		if(id < this.separator) {
-			this.eventAborted = false;
+		if(id < separator) {
+			eventAborted = false;
 		} else {
-			this.eventAborted = true;
-			this.processAction(id - this.separator);
+			eventAborted = true;
+			processAction(id - separator);
 		}
 	}
 	
 	private void processAction(int id) {
 		if(id == 0) {
-			this.parent.show();
-		} else if(id == 1) {
 			new Thread(() -> {
 				String name = JOptionPane.showInputDialog(null, "Please enter the name of the variable", "New variable", JOptionPane.PLAIN_MESSAGE);
 				
 				if(name != null) {
-					this.validateAction(SpecificationElement.VAR + name);
+					validateAction(SpecificationElement.VAR + name);
 				}
 			}).start();
 		} else {
-			this.typeManager.getActions().get(id - 2).accept(this.element.getValue(), this::validateAction);
+			typeManager.getActions().get(id - 2).accept(element.getValue(), this::validateAction);
 		}
 	}
 	
 	private void validateAction(String newValue) {
 		if(this.validator.validate(newValue)) {
-			this.getAppManager().getEventDispatcher().fire(this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().setValue(this.element, newValue));
-			this.parent.show();
+			setValue(element, newValue);
 		} else {
 			this.getAppManager().getEventDispatcher().fire(new MessageEvent("Unable to validate the input '" + newValue + "'", MessageType.ERROR));
 		}
 	}
 	
-	public void onClick(String element) {
-		if(!this.eventAborted) {
-			this.getAppManager().getEventDispatcher().fire(this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().setValue(this.element, element));
-			this.parent.show();
+	public void onClick(String value) {
+		super.onClick(value);
+		
+		if(!eventAborted) {
+			setValue(element, value);
 		}
 	}
 	
+	private void setValue(SpecificationElement element, String value) {
+		Event event = getProject().getDataManager().getSpecificationManager().setValue(element, value);
+		getAppManager().getEventDispatcher().fire(event);
+		back();
+	}
+	
 	public MenuDescription getDescription() {
-		return new MenuDescription(this.element.toString());
+		return new MenuDescription(element.toString());
 	}
 }

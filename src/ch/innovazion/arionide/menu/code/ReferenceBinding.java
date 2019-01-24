@@ -20,38 +20,45 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.code;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.menu.Menu;
 
 public class ReferenceBinding extends Menu {
 	
-	private final Menu parent;
-	private final SpecificationElement element;
-	private final List<SpecificationElement> possible;
+	private SpecificationElement element;
+	private List<SpecificationElement> possible;
 	
-	public ReferenceBinding(Menu parent, SpecificationElement element, List<SpecificationElement> possible) {
+	public ReferenceBinding(Menu parent) {
 		super(parent);
-		
-		this.parent = parent;
+	}
+	
+	protected void setPossibleBindings(SpecificationElement element, List<SpecificationElement> possible) {
 		this.element = element;
-		this.possible = possible;
+		this.possible = new ArrayList<>();
 		
 		for(SpecificationElement poss : possible) {
 			if(element.getClass().isInstance(poss)) {
-				this.getElements().add(poss.getName());
+				if(poss.getValue() == null) {
+					this.possible.add(poss);
+					getElements().add(poss.getName());
+				}
 			}
+		}
+		
+		if(getElements().isEmpty()) {
+			getElements().add("<No bindings available>");
 		}
 	}
 	
 	public void onClick(int id) {
-		if(id != 0) {
-			MessageEvent msg = this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().bindParameter(this.element, this.possible.get(id - 1));
-			this.getAppManager().getEventDispatcher().fire(msg);
+		if(!possible.isEmpty()) {
+			Event event = getProject().getDataManager().getSpecificationManager().bindParameter(element, possible.get(id));
+			getAppManager().getEventDispatcher().fire(event);
+			back();
 		}
-		
-		this.parent.show();
 	}
 }
