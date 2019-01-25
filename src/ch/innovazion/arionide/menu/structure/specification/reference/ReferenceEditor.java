@@ -20,36 +20,36 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.structure.specification.reference;
 
+import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.structure.specification.SpecificationElementEditor;
+import ch.innovazion.arionide.ui.ApplicationTints;
 
-public class SpecificationReferenceEditor extends SpecificationElementEditor {
+public class ReferenceEditor extends SpecificationElementEditor {
 	
 	private static final String callability = "Callability";
 	private static final String setParameters = "Parameters";
 	
-	public SpecificationReferenceEditor(Menu parent) {
+	public ReferenceEditor(Menu parent) {
 		super(parent);
 		
-		this.getElements().add(callability);
-		this.getElements().add(setParameters);
+		getElements().add(callability);
+		getElements().add(setParameters);
 	}
 	
 	public void onClick(String element) {		
-		Reference reference = (Reference) this.getElement();
+		Reference reference = (Reference) getElement();
 
 		switch(element) {
 			case callability:				
-				this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().toggleCallability(reference);
-				
+				getProject().getDataManager().getSpecificationManager().toggleCallability(reference);
 				break;
 			case setParameters:
-				Menu menu = new ReferenceParameters(this.getAppManager(), this, this.getSpecification(), this.getElementID(), reference.getEagerParameters());
+				Menu menu = new ReferenceParameters(getAppManager(), this, getSpecification(), getElementID(), reference.getEagerParameters());
 				menu.show();
-
 				break;
 			default: 
 				super.onClick(element);
@@ -57,11 +57,25 @@ public class SpecificationReferenceEditor extends SpecificationElementEditor {
 	}
 	
 	public void delete() {
-		this.getAppManager().getWorkspace().getCurrentProject().getDataManager().getSpecificationManager().remove(this.getSpecification(), this.getElement());
+		Event message = getProject().getDataManager().getSpecificationManager().remove(getSpecification(), getElement());
+		getAppManager().getEventDispatcher().fire(message);
 		back();
 	}
 	
 	public MenuDescription getDescription() {
-		return new MenuDescription(this.getElement().getName() + " <" + String.join("; ", ((Reference) this.getElement()).getEagerParameters().stream().map(SpecificationElement::toString).toArray(String[]::new)) + ">");
+		Reference ref = (Reference) this.getElement();
+		MenuDescription description = new MenuDescription();
+		
+		description.add(ref.getName());
+		
+		for(SpecificationElement element : ref.getEagerParameters()) {
+			description.add(element.toString(), ApplicationTints.SPECIFICATION_EAGER);
+		}
+		
+		for(SpecificationElement element : ref.getLazyParameters()) {
+			description.add(element.toString(), ApplicationTints.SPECIFICATION_LAZY);
+		}
+		
+		return description;
 	}
 }

@@ -20,16 +20,14 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.structure;
 
-import java.util.List;
-
 import javax.swing.JOptionPane;
 
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.menu.Confirm;
+import ch.innovazion.arionide.menu.DisplayUtils;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.structure.inheritance.InheritanceMenu;
@@ -38,7 +36,6 @@ import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.StructureMeta;
 import ch.innovazion.arionide.project.managers.DataManager;
 import ch.innovazion.arionide.ui.AppManager;
-import ch.innovazion.arionide.ui.ApplicationTints;
 import ch.innovazion.arionide.ui.core.TeleportInfo;
 
 public class StructureEditor extends Menu {
@@ -78,25 +75,8 @@ public class StructureEditor extends Menu {
 		
 		StructureMeta meta = getProject().getStorage().getStructureMeta().get(getTarget().getID());
 		
-		if(meta != null) {
-			List<SpecificationElement> elements = meta.getSpecification().getElements();
-			
-			description = new MenuDescription(ApplicationTints.MENU_INFO_INACTIVE_COLOR, 1.0f);
-			
-			String name = meta.getName();
-			
-			if(!meta.getComment().equals("?")) {
-				name += " (" + meta.getComment() + ")";
-			}
-			
-			description.add(name);
-			
-			for(SpecificationElement element : elements) {
-				description.add(element.toString());
-			}
-	
-			description.setHighlight(0);
-			description.setColor(0, ApplicationTints.MENU_INFO_DEFAULT_COLOR);
+		if(meta != null) {			
+			description = DisplayUtils.fullDescription(meta);
 		} else {
 			// When the structure is deleted
 			back();

@@ -18,16 +18,17 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.structure.specification;
+package ch.innovazion.arionide.menu.structure.specification.data;
 
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.TypeManager;
-import ch.innovazion.arionide.menu.MainMenus;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.code.TypeEditor;
+import ch.innovazion.arionide.menu.structure.specification.SpecificationElementEditor;
+import ch.innovazion.arionide.ui.ApplicationTints;
 
 public class DataEditor extends SpecificationElementEditor {
 
@@ -35,29 +36,35 @@ public class DataEditor extends SpecificationElementEditor {
 	private static final String setDefault = "Set default";
 
 	private final TypeSelector typeSelector;
+	private final TypeEditor typeEditor;
 	
-	private TypeManager type;
-	private String description;
+	private MenuDescription description;
 	
-	protected DataEditor(Menu parent) {
+	public DataEditor(Menu parent) {
 		super(parent);
 		
 		this.typeSelector = new TypeSelector(this);
+		this.typeEditor = new TypeEditor(this);
 		
-		this.getElements().add(setType);
-		this.getElements().add(setDefault);
+		getElements().add(setType);
+		getElements().add(setDefault);
 	}
 
-	protected void setTarget(Specification specification, int id) {
+	public void setTarget(Specification specification, int id) {
 		super.setTarget(specification, id);
 		
-		Data element = (Data) this.getElement();
+		Data element = (Data) getElement();
 		
-		this.type = this.getAppManager().getWorkspace().getCurrentProject().getLanguage().getTypes().getTypeManager(element.getType());			
-		this.description = element.getName() + " [" + this.type + "]";
+		TypeManager type = getProject().getLanguage().getTypes().getTypeManager(element.getType());	
+		String typeName = type != null ? type.toString() : "Undefined";
+				
+		description = new MenuDescription();
+		
+		description.add(element.getName());
+		description.add("Type: " + typeName, ApplicationTints.DATA_TYPE);
 		
 		if(element.getValue() != null) {
-			this.description += " (default: " + element.getValue() + ")";
+			description.add("Default value: " + element.getValue());
 		}
 	}
 	
@@ -68,9 +75,8 @@ public class DataEditor extends SpecificationElementEditor {
 				typeSelector.show();
 				break;
 			case setDefault:
-				TypeEditor editor = MainMenus.getTypeEditor();
-				editor.setTarget((Data) getElement());
-				editor.show();
+				typeEditor.setTarget((Data) getElement());
+				typeEditor.show();
 				break;
 			default: 
 				super.onClick(element);
@@ -80,11 +86,10 @@ public class DataEditor extends SpecificationElementEditor {
 	public void delete() {
 		Event message = getProject().getDataManager().getSpecificationManager().deleteElement(getSpecification(), getElementID());
 		getAppManager().getEventDispatcher().fire(message);
-		
 		back();
 	}
 	
 	public MenuDescription getDescription() {
-		return new MenuDescription(description);
+		return description;
 	}
 }

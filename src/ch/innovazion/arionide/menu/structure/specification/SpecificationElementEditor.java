@@ -22,72 +22,77 @@ package ch.innovazion.arionide.menu.structure.specification;
 
 import javax.swing.JOptionPane;
 
-import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.menu.Confirm;
 import ch.innovazion.arionide.menu.Menu;
-import ch.innovazion.arionide.project.Project;
 
 public abstract class SpecificationElementEditor extends Menu {
 	
 	private static final String delete = "Delete";
 	private static final String setName = "Set name";
 
+	private final Menu confirm;
+	
 	private int id;
 	private Specification specification;
 	private SpecificationElement element;
 	
 	protected SpecificationElementEditor(Menu parent) {
 		super(parent, delete, setName);
+		this.confirm = new Confirm(parent, this::delete, "Do you really want to delete this element?");
 	}
 
 	protected void setTarget(Specification specification, int id) {
-		this.id = id;
-		this.specification = specification;
-		this.element = specification.getElements().get(id);
+		int size = specification.getElements().size();
+		
+		if(id < size) {
+			this.id = id;
+			this.specification = specification;
+			this.element = specification.getElements().get(id);
+		} else if(size > 0){
+			setTarget(specification, size - 1);
+		} else {
+			back();
+		}
 	}
 	
 	public void show() {
+		setTarget(specification, id); // reload
 		super.show();
-		this.setTarget(this.specification, this.id);
+	}
+
+	protected SpecificationElement getElement() {
+		return element;
 	}
 	
-	public SpecificationElement getElement() {
-		return this.element;
+	protected Specification getSpecification() {
+		return specification;
 	}
 	
-	public Specification getSpecification() {
-		return this.specification;
-	}
-	
-	public int getElementID() {
-		return this.id;
+	protected int getElementID() {
+		return id;
 	}
 	
 	public void onClick(String element) {
 		switch(element) {
 			case delete:
-				Menu confirm = new Confirm(this, this::delete, "Do you really want to delete this element?");
 				confirm.show();
 				break;
 			case setName:
 				new Thread(() -> {
-					String name = JOptionPane.showInputDialog(null, "Enter the specification element's new name", "Specification name editor", JOptionPane.PLAIN_MESSAGE);
+					String name = JOptionPane.showInputDialog(null, "Enter the new name of this specification element", "Element name", JOptionPane.PLAIN_MESSAGE);
 					
 					if(name != null) {
-						Project project = this.getAppManager().getWorkspace().getCurrentProject();
+						Event message = getProject().getDataManager().getSpecificationManager().refactorName(specification, id, name);
+						getAppManager().getEventDispatcher().fire(message);
 						
-						if(project != null) {
-							MessageEvent message = project.getDataManager().getSpecificationManager().refactorName(this.specification, this.id, name);
-							this.getAppManager().getEventDispatcher().fire(message);
-						}
-						
-						this.setTarget(this.specification, this.id);
+						setTarget(specification, id);
 					}
 				}).start();
 		}
 	}
 	
-	public abstract void delete();
+	protected abstract void delete();
 }

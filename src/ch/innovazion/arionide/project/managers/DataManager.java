@@ -41,9 +41,7 @@ import ch.innovazion.arionide.project.mutables.MutableInheritanceElement;
 import ch.innovazion.arionide.project.mutables.MutableStructureMeta;
 
 public class DataManager extends Manager {
-	
-	public static final String SUCCESS_STRING = "°";
-	
+		
 	private final HostStructureStack hostStack;
 	private final ResourceAllocator allocator;
 	private final CodeManager codeManager;
@@ -53,11 +51,11 @@ public class DataManager extends Manager {
 	public DataManager(Project project) {
 		super(project.getStorage());
 		
-		this.hostStack = new HostStructureStack();
-		this.allocator = new ResourceAllocator(project);
-		this.codeManager = new CodeManager(this.getStorage(), allocator, hostStack);
-		this.specManager = new SpecificationManager(this.getStorage());
-		this.inheritanceManager = new InheritanceManager(this.getStorage());
+		hostStack = new HostStructureStack();
+		allocator = new ResourceAllocator(project);
+		codeManager = new CodeManager(getStorage(), allocator, hostStack);
+		specManager = new SpecificationManager(getStorage());
+		inheritanceManager = new InheritanceManager(getStorage());
 	}
 	
 	public MessageEvent newStructure(String name) {
@@ -70,32 +68,32 @@ public class DataManager extends Manager {
 	}
 
 	public MessageEvent newStructure(String name, boolean withCodeBase) {
-		if(this.getMeta().values().stream().filter(meta -> meta.getName().equals(name)).count() > 0) {
+		if(getMeta().values().stream().filter(meta -> meta.getName().equals(name)).count() > 0) {
 			return new MessageEvent("This structure name is already used", MessageType.ERROR);
 		} else {
-			int structureID = this.allocator.allocStructure();
+			int structureID = allocator.allocStructure();
 			
 			MutableHierarchyElement structure = new MutableHierarchyElement(structureID, new ArrayList<>());
-			List<MutableHierarchyElement> generation = this.getMutableCurrentGeneration();
+			List<MutableHierarchyElement> generation = getMutableCurrentGeneration();
 			
 			if(generation == null) {
 				return new MessageEvent("Invalid parent hierarchy", MessageType.ERROR);
 			}
 						
 			generation.add(structure);
-			this.saveHierarchy();
+			saveHierarchy();
 
-			this.getInheritance().put(structureID, new MutableInheritanceElement());
-			this.saveInheritance();
+			getInheritance().put(structureID, new MutableInheritanceElement());
+			saveInheritance();
 			
-			this.getCallGraph().add(structure);
-			this.saveCallGraph();
+			getCallGraph().add(structure);
+			saveCallGraph();
 			
-			this.getMeta().put(structureID, new MutableStructureMeta(this.allocator.allocSpecification()));
-			this.getCode().put(structureID, new MutableCodeChain());
+			getMeta().put(structureID, new MutableStructureMeta(allocator.allocSpecification()));
+			getCode().put(structureID, new MutableCodeChain());
 			// Save responsibility is delegated to the invocation of "insertCode"
 			
-			MessageEvent message = this.setName(structureID, name);
+			MessageEvent message = setName(structureID, name);
 			
 			if(message.getMessageType() == MessageType.ERROR) {
 				return message;
@@ -112,38 +110,38 @@ public class DataManager extends Manager {
 					return message;
 				}
 			} else {
-				this.saveMeta();
-				this.saveCode();
+				saveMeta();
+				saveCode();
 			}
 			
-			return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);
+			return success();
 		}
 	}
 	
 	public int addInstructionDefinition(String name, int color, Specification specification) {
-		if(this.getMeta().values().stream().filter(meta -> meta.getName().equals(name)).count() > 0) {
+		if(getMeta().values().stream().filter(meta -> meta.getName().equals(name)).count() > 0) {
 			return -1;
 		} else {
-			int structureID = this.allocator.allocStructure();
+			int structureID = allocator.allocStructure();
 					
 			MutableHierarchyElement structure = new MutableHierarchyElement(structureID, new ArrayList<>());
-			List<MutableHierarchyElement> generation = this.getMutableCurrentGeneration();
+			List<MutableHierarchyElement> generation = getMutableCurrentGeneration();
 			
 			if(generation == null) {
 				return -1;
 			}
 			
 			generation.add(structure);
-			this.saveHierarchy();
+			saveHierarchy();
 			
-			MutableStructureMeta meta = new MutableStructureMeta(this.allocator.allocSpecification());
+			MutableStructureMeta meta = new MutableStructureMeta(allocator.allocSpecification());
 			meta.setName(name);
 			meta.setColorID(color);
 			meta.setAccessAllowed(false);
 			meta.setSpecification(specification);
 			
-			this.getMeta().put(structureID, meta);
-			this.saveMeta();
+			getMeta().put(structureID, meta);
+			saveMeta();
 						
 			return structureID;
 		}
@@ -154,22 +152,22 @@ public class DataManager extends Manager {
 	}
 	
 	public MessageEvent deleteStructure(int id) {
-		Iterator<MutableHierarchyElement> iterator = this.getMutableCurrentGeneration().iterator();
+		Iterator<MutableHierarchyElement> iterator = getMutableCurrentGeneration().iterator();
 		
 		while(iterator.hasNext()) {
 			HierarchyElement element = iterator.next();
 			
 			if(element.getID() == id) {
 				iterator.remove();
-				this.saveHierarchy();
+				saveHierarchy();
 				
-				this.getInheritance().remove(id);
-				this.saveInheritance();
+				getInheritance().remove(id);
+				saveInheritance();
 				
-				this.deleteMeta(element);
-				this.saveMeta();
+				deleteMeta(element);
+				saveMeta();
 				
-				return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);
+				return success();
 			}
 		}
 		
@@ -177,14 +175,14 @@ public class DataManager extends Manager {
 	}
 	
 	private void deleteMeta(HierarchyElement element) {
-		this.getMeta().remove(element.getID());
+		getMeta().remove(element.getID());
 		element.getChildren().stream().forEach(this::deleteMeta);
 	}
 	
 	public MessageEvent abstractifyStructure(int id) {		
 		getCode().get(id).getMutableList().clear();
 		
-		List<MutableHierarchyElement> list = this.getMutableCurrentGeneration();
+		List<MutableHierarchyElement> list = getMutableCurrentGeneration();
 		
 		for(MutableHierarchyElement element : list) {
 			if(element.getID() == id) {
@@ -194,7 +192,7 @@ public class DataManager extends Manager {
 
 		saveCode();
 		
-		return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);			
+		return success();			
 	}
 	
 	private void abstractify(MutableHierarchyElement element) {		
@@ -206,16 +204,16 @@ public class DataManager extends Manager {
 	}
 	
 	public MessageEvent setName(int id, String name) {
-		MutableStructureMeta meta = this.getMeta().get(id);
+		MutableStructureMeta meta = getMeta().get(id);
 		
 		if(meta != null) {
 			meta.setName(name);
-			this.saveMeta();
+			saveMeta();
 			
 			if(name.isEmpty()) {
 				return new MessageEvent("Empty strings are discouraged", MessageType.WARN);
 			} else {
-				return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);
+				return success();
 			}
 		} else {
 			return new MessageEvent("Invalid structure id", MessageType.ERROR);
@@ -223,15 +221,15 @@ public class DataManager extends Manager {
 	}
 	
 	public MessageEvent setComment(int id, String comment) {
-		MutableStructureMeta meta = this.getMeta().get(id);
+		MutableStructureMeta meta = getMeta().get(id);
 		
 		if(meta != null) {
 			if(comment.isEmpty()) {
-				return new MessageEvent(SUCCESS_STRING, MessageType.WARN);
+				return warn();
 			} else {
 				meta.setComment(comment);
-				this.saveMeta();
-				return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);
+				saveMeta();
+				return success();
 			}
 		} else {
 			return new MessageEvent("Invalid structure id", MessageType.ERROR);
@@ -250,8 +248,8 @@ public class DataManager extends Manager {
 		
 		if(object != null) {
 			if(getCode().get(language).isAbstract()) {
-				this.setLanguage0(object, language);
-				this.saveMeta();	
+				setLanguage0(object, language);
+				saveMeta();	
 			} else {
 				return new MessageEvent("The target language is not an abstract structure", MessageType.ERROR);
 			}
@@ -259,27 +257,27 @@ public class DataManager extends Manager {
 			return new MessageEvent("The target structure does not exist anymore", MessageType.ERROR);
 		}
 		
-		return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);
+		return success();
 	}
 	
 	private void setLanguage0(HierarchyElement element, int language) {
-		this.getMeta().get(element.getID()).setLanguage(language);
+		getMeta().get(element.getID()).setLanguage(language);
 		
 		for(HierarchyElement children : element.getChildren()) {
-			this.setLanguage0(children, language);
+			setLanguage0(children, language);
 		}
 	}
 	
 	public MessageEvent setColor(int id, int colorID) {
 		if(Coloring.hasColor(colorID)) {
-			MutableStructureMeta meta = this.getMeta().get(id);
+			MutableStructureMeta meta = getMeta().get(id);
 			
 			if(meta != null) {
 				meta.setColorID(colorID);
 				
-				this.saveMeta();
+				saveMeta();
 				
-				return new MessageEvent(SUCCESS_STRING, MessageType.SUCCESS);
+				return success();
 			} else {
 				return new MessageEvent("Invalid structure id", MessageType.ERROR);
 			}
@@ -289,23 +287,23 @@ public class DataManager extends Manager {
 	}
 	
 	public HostStructureStack getHostStack() {
-		return this.hostStack;
+		return hostStack;
 	}
 	
 	public ResourceAllocator getResourceAllocator() {
-		return this.allocator;
+		return allocator;
 	}
 	
 	public CodeManager getCodeManager() {
-		return this.codeManager;
+		return codeManager;
 	}
 	
 	public SpecificationManager getSpecificationManager() {
-		return this.specManager;
+		return specManager;
 	}
 	
 	public InheritanceManager getInheritanceManager() {
-		return this.inheritanceManager;
+		return inheritanceManager;
 	}
 	
 	private List<MutableHierarchyElement> getMutableCurrentGeneration() {

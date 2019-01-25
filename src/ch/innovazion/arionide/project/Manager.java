@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 import ch.innovazion.arionide.debugging.Debug;
+import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.project.mutables.MutableCodeChain;
 import ch.innovazion.arionide.project.mutables.MutableHierarchyElement;
 import ch.innovazion.arionide.project.mutables.MutableHistoryElement;
@@ -32,6 +34,8 @@ import ch.innovazion.arionide.project.mutables.MutableStructureMeta;
 
 public abstract class Manager {
 	
+	private static final String ACK_STRING = "°";
+	
 	private final Storage storage;
 	
 	protected Manager(Storage storage) {
@@ -39,32 +43,32 @@ public abstract class Manager {
 	}
 	
 	protected List<MutableHierarchyElement> getHierarchy() {
-		return this.storage.getMutableHierarchy();
+		return storage.getMutableHierarchy();
 	}
 	
 	protected Map<Integer, MutableInheritanceElement> getInheritance() {
-		return this.storage.getMutableInheritance();
+		return storage.getMutableInheritance();
 	}
 	
 	protected List<MutableHierarchyElement> getCallGraph() {
-		return this.storage.getMutableCallGraph();
+		return storage.getMutableCallGraph();
 	}
 	
 	protected Map<Integer, MutableStructureMeta> getMeta() {
-		return this.storage.getMutableStructureMeta();
+		return storage.getMutableStructureMeta();
 	}
 	
 	protected List<MutableHistoryElement> getHistory() {
-		return this.storage.getMutableHistory();
+		return storage.getMutableHistory();
 	}
 	
 	protected Map<Integer, MutableCodeChain> getCode() {
-		return this.storage.getMutableCode();
+		return storage.getMutableCode();
 	}
 	
 	protected void saveHierarchy() {
 		try {
-			this.storage.saveHierarchy();
+			storage.saveHierarchy();
 		} catch (StorageException exception) {
 			Debug.exception(exception);
 		}
@@ -72,7 +76,7 @@ public abstract class Manager {
 	
 	protected void saveInheritance() {
 		try {
-			this.storage.saveInheritance();
+			storage.saveInheritance();
 		} catch (StorageException exception) {
 			Debug.exception(exception);
 		}
@@ -80,7 +84,7 @@ public abstract class Manager {
 
 	protected void saveCallGraph() {
 		try {
-			this.storage.saveCallGraph();
+			storage.saveCallGraph();
 		} catch (StorageException exception) {
 			Debug.exception(exception);
 		}
@@ -88,7 +92,7 @@ public abstract class Manager {
 	
 	protected void saveMeta() {
 		try {
-			this.storage.saveStructureMeta();
+			storage.saveStructureMeta();
 		} catch (StorageException exception) {
 			Debug.exception(exception);
 		}
@@ -96,7 +100,7 @@ public abstract class Manager {
 	
 	protected void saveHistory() {
 		try {
-			this.storage.saveHistory();
+			storage.saveHistory();
 		} catch (StorageException exception) {
 			Debug.exception(exception);
 		}
@@ -104,13 +108,21 @@ public abstract class Manager {
 	
 	protected void saveCode() {
 		try {
-			this.storage.saveCode();
+			storage.saveCode();
 		} catch (StorageException exception) {
 			Debug.exception(exception);
 		}
 	}
 	
 	protected Storage getStorage() {
-		return this.storage;
+		return storage;
+	}
+	
+	protected MessageEvent success() {
+		return new MessageEvent(ACK_STRING, MessageType.SUCCESS);
+	}
+	
+	protected MessageEvent warn() {
+		return new MessageEvent(ACK_STRING, MessageType.SUCCESS);
 	}
 }

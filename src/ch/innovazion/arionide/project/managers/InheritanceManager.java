@@ -35,10 +35,10 @@ public class InheritanceManager extends Manager {
 
 	public MessageEvent inherit(int child, int parent) {
 		if(child != parent) {
-			MutableInheritanceElement parentElement = this.getInheritance().get(parent);
-			MutableInheritanceElement childElement = this.getInheritance().get(child);
+			MutableInheritanceElement parentElement = getInheritance().get(parent);
+			MutableInheritanceElement childElement = getInheritance().get(child);
 			
-			if(this.recursiveCheck(childElement, parent) && this.recursiveCheck(parentElement, child)) { /* Check for cyclicity */
+			if(recursiveCheck(childElement, parent) && recursiveCheck(parentElement, child)) { /* Check for cyclicity */
 				List<Integer> children = parentElement.getMutableChildren();
 				List<Integer> parents = childElement.getMutableParents();
 				
@@ -50,9 +50,9 @@ public class InheritanceManager extends Manager {
 					parents.add(parent);
 				}
 				
-				this.saveInheritance();
+				saveInheritance();
 		
-				return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
+				return success();
 			} else {
 				return new MessageEvent("Cyclic inheritance is not permitted", MessageType.ERROR);
 			}
@@ -63,7 +63,7 @@ public class InheritanceManager extends Manager {
 	
 	private boolean recursiveCheck(MutableInheritanceElement object, int potentialParent) {		
 		for(int nextGenParent : object.getParents()) {
-			if(nextGenParent == potentialParent || !this.recursiveCheck(this.getInheritance().get(nextGenParent), potentialParent)) {
+			if(nextGenParent == potentialParent || !recursiveCheck(getInheritance().get(nextGenParent), potentialParent)) {
 				return false;
 			}
 		}
@@ -72,11 +72,11 @@ public class InheritanceManager extends Manager {
 	}
 	
 	public MessageEvent disinherit(Integer parent, Integer child) {
-		this.getInheritance().get(parent).getMutableChildren().remove(child);
-		this.getInheritance().get(child).getMutableParents().remove(parent);
+		getInheritance().get(parent).getMutableChildren().remove(child);
+		getInheritance().get(child).getMutableParents().remove(parent);
 		
-		this.saveInheritance();
+		saveInheritance();
 		
-		return new MessageEvent(DataManager.SUCCESS_STRING, MessageType.SUCCESS);
+		return success();
 	}
 }
