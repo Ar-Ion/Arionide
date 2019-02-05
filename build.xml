@@ -48,7 +48,7 @@
         	<zipgroupfileset dir="lib" includes="*.jar"/>
         	
             <manifest>
-                <attribute name="Main-Class" value="org.azentreprise.arionide.Main"/>
+                <attribute name="Main-Class" value="ch.innovazion.arionide.Main"/>
             </manifest>
         </jar>
     </target>
