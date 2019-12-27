@@ -90,6 +90,10 @@ public class CodeManager extends Manager {
 
 	}
 	
+	public boolean hasCode() {
+		return hostStack.getCurrent() != -1;
+	}
+	
 	public CodeChain getCurrentCode() {
 		return getCurrentCode0();
 	}

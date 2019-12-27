@@ -73,7 +73,7 @@ public class ArionideImpl implements Arionide {
 	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher) {
 		DragSystem.init(dispatcher);
 		
-		return new OpenGLContext(this, dispatcher, 1080, 720);
+		return new OpenGLContext(this, dispatcher, 1920, 1080);
 	}
 
 	public Resources loadResources(Workspace workspace) {

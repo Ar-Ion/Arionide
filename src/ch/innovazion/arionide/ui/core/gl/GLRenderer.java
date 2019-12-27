@@ -69,6 +69,7 @@ import ch.innovazion.arionide.menu.code.TypeEditor;
 import ch.innovazion.arionide.menu.structure.StructureBrowser;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.StructureMeta;
+import ch.innovazion.arionide.project.managers.CodeManager;
 import ch.innovazion.arionide.project.managers.HostStructureStack;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.ApplicationTints;
@@ -106,7 +107,7 @@ import ch.innovazion.arionide.ui.topology.Point;
 
 public class GLRenderer implements CoreRenderer, EventHandler {
 		
-	private static final List<Integer> qualities = Arrays.asList(4);
+	private static final List<Integer> qualities = Arrays.asList(16, 20, 24, 28, 32);
 	
 	private static final int openProjectOP = 1 << 0;
 	private static final int closeProjectOP = 1 << 1;
@@ -165,7 +166,7 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	
 	private final StaticAllocator allocator = new StaticAllocator(Utils.combine(RenderableObject.class, structures, link, smallStars, bigStars, fx));
 
-	private boolean fxEnabled = false;
+	private boolean fxEnabled = true;
 	
 	private float zNear = 1.0f * HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN;
 	private float zFar = 100.0f * HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN;
@@ -236,8 +237,10 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 		LinkContext context = new LinkContext(gl, structuresShader);
 		link.init(gl, context, allocator);
 		
-		FBOFrameContext fxContext = new FBOFrameContext(gl, fxShader);
-		fx.init(gl, fxContext, allocator);
+		if(fxEnabled) {
+			FBOFrameContext fxContext = new FBOFrameContext(gl, fxShader);
+			fx.init(gl, fxContext, allocator);
+		}
 
 		/* Init player */
 		this.ajustAcceleration();
@@ -535,11 +538,13 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 		
 		fx.getSettings().setPixelSize(new Vector2f(1 / this.bounds.getWidth(), 1 / this.bounds.getHeight()));
 
+		
+		Matrix4f viewProjectionMatrix = new Matrix4f(this.projectionMatrix).mul(this.viewMatrix);
 		/* Setup FX uniforms */
-		this.loadMatrix(this.previousViewProjectionMatrix.mul(new Matrix4f(this.projectionMatrix).mul(this.viewMatrix).invert()), this.currentToPreviousViewportData);
+		this.loadMatrix(this.previousViewProjectionMatrix.mul(new Matrix4f(viewProjectionMatrix).invert()), this.currentToPreviousViewportData);
 		fx.getSettings().setC2PVM(currentToPreviousViewportData);
 		
-		this.previousViewProjectionMatrix = new Matrix4f(this.projectionMatrix).mul(this.viewMatrix); // Do not trash the projection matrix: it will be reused!
+		this.previousViewProjectionMatrix = viewProjectionMatrix; // Do not trash the projection matrix: it will be reused!
 	}
 	
 	private void postProcess(GL4 gl) {		
@@ -858,7 +863,7 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	
 	private void resetMenu() {
 		if(needMenuReset) {
-			if(!project.getDataManager().getCodeManager().getCurrentCode().list().isEmpty()) {
+			if(project.getDataManager().getCodeManager().hasCode()) {
 				CodeBrowser menu = MainMenus.getCodeBrowser();
 								
 				menu.show();
@@ -945,10 +950,12 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 			needMenuReset = true;
 			resetMenu();
 			
+			CodeManager manager = project.getDataManager().getCodeManager();
+			
 			if(lookAtElement != null) {
 				processLookAt(lookAtElement);
-			} else {
-				project.getDataManager().getCodeManager().getCurrentCode().list().stream().findFirst().ifPresent((e) -> {
+			} else if(manager.hasCode()) {
+				manager.getCurrentCode().list().stream().findFirst().ifPresent((e) -> {
 					processLookAt(mainCodeGeometry.getElementByID(e.getID()));
 				});
 			}
@@ -1029,15 +1036,8 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 		/*
 		 * Resize buffers
 		 */
-		gl.glActiveTexture(GL4.GL_TEXTURE2);
-		fx.bindColorBuffer(gl);
-		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGB, bounds.getWidthAsInt(), bounds.getHeightAsInt(), 0, GL4.GL_RGB, GL4.GL_UNSIGNED_BYTE, null);
 		
-		gl.glActiveTexture(GL4.GL_TEXTURE3);
-		fx.bindDepthBuffer(gl);
-		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_DEPTH_COMPONENT32, bounds.getWidthAsInt(), bounds.getHeightAsInt(), 0, GL4.GL_DEPTH_COMPONENT, GL4.GL_FLOAT, null);
-		
-		gl.glBindTexture(GL4.GL_TEXTURE_2D, 0); // Unbind
+		fx.resizeBuffers(gl, bounds.getWidthAsInt(), bounds.getHeightAsInt());
 	}
 
 	public <T extends Event> void handleEvent(T event) {
@@ -1130,8 +1130,8 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 	}
 	
 	private void updateMouse(Point position) {
-		this.yaw += (position.getX() - 1.0f) * 0.1f;
-		this.pitch -= (position.getY() - 1.0f) * 0.1f;
+		this.yaw += (position.getX() - 1.0f) * bounds.getWidth() * 0.0001f;
+		this.pitch -= (position.getY() - 1.0f) * bounds.getHeight() * 0.0001f;
 		
 		float halfPI = Geometry.PI / 2.0f;
 		
@@ -1140,9 +1140,9 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 		} else if(this.pitch < -halfPI) {
 			this.pitch = -halfPI;
 		}
-		
+				
 		this.yaw %= 4.0f * halfPI;
-		
+				
 		this.context.moveCursor(this.bounds.getWidthAsInt() / 2, this.bounds.getHeightAsInt() / 2);
 	}
 	

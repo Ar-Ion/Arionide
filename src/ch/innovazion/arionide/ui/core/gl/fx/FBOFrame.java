@@ -61,16 +61,31 @@ public class FBOFrame extends RenderableObject<FBOFrameContext, FBOFrameSettings
 		this.colorBuffer = textures.get();
 		this.depthBuffer = textures.get();
 		
+		
 		// TODO use texture allocator
 		gl.glActiveTexture(GL4.GL_TEXTURE2);
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, colorBuffer);
-		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGB, 1, 1, 0, GL4.GL_RGB, GL4.GL_UNSIGNED_BYTE, null);
-		finalizeBuffer(gl);
+		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, 1, 1, 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, null);
+		
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_MIRRORED_REPEAT);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_MIRRORED_REPEAT);
+		
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, 0);
+		
 		
 		gl.glActiveTexture(GL4.GL_TEXTURE3);
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, depthBuffer);
-		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_DEPTH_COMPONENT32, 1, 1, 0, GL4.GL_DEPTH_COMPONENT, GL4.GL_FLOAT, null);
-		finalizeBuffer(gl);
+		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_DEPTH_COMPONENT, 1, 1, 0, GL4.GL_DEPTH_COMPONENT, GL4.GL_FLOAT, null);
+		
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
+		
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, 0);
+		
 
 		gl.glFramebufferTexture(GL4.GL_FRAMEBUFFER, GL4.GL_COLOR_ATTACHMENT0, this.colorBuffer, 0);
 		gl.glFramebufferTexture(GL4.GL_FRAMEBUFFER, GL4.GL_DEPTH_ATTACHMENT, this.depthBuffer, 0);
@@ -82,25 +97,22 @@ public class FBOFrame extends RenderableObject<FBOFrameContext, FBOFrameSettings
 		gl.glBindFramebuffer(GL4.GL_FRAMEBUFFER, 0);
 	}
 
-	private void finalizeBuffer(GL4 gl) {
-		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR);
-		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);
-		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_MIRRORED_REPEAT);
-		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_MIRRORED_REPEAT);
-				
-		gl.glBindTexture(GL4.GL_TEXTURE_2D, 0);
-	}
-	
 	public void bindFBO(GL4 gl) {
 		gl.glBindFramebuffer(GL4.GL_FRAMEBUFFER, fbo);
 	}
 	
-	public void bindColorBuffer(GL4 gl) {
+	public void resizeBuffers(GL4 gl, int width, int height) {
+		gl.glBindFramebuffer(GL4.GL_FRAMEBUFFER, fbo);
+
+		gl.glActiveTexture(GL4.GL_TEXTURE2);
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, colorBuffer);
-	}
-	
-	public void bindDepthBuffer(GL4 gl) {
+		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, width, height, 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, null);
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, 0); // Unbind
+
+		gl.glActiveTexture(GL4.GL_TEXTURE3);
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, depthBuffer);
+		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_DEPTH_COMPONENT, width, height, 0, GL4.GL_DEPTH_COMPONENT, GL4.GL_FLOAT, null);
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, 0); // Unbind
 	}
 	
 	protected void setupData(FBOFrameContext context, StaticAllocator allocator) {
@@ -113,9 +125,11 @@ public class FBOFrame extends RenderableObject<FBOFrameContext, FBOFrameSettings
 		Vector2f pixelSize = settings.getPixelSize();
 
 		gl.glActiveTexture(GL4.GL_TEXTURE2);
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, colorBuffer);
 		gl.glUniform1i(context.getColorTextureUniform(), 2);
 		
 		gl.glActiveTexture(GL4.GL_TEXTURE3);
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, depthBuffer);
 		gl.glUniform1i(context.getDepthTextureUniform(), 3);
 				
 		gl.glUniformMatrix4fv(context.getCurrentToPreviousViewportMatrixUniform(), 1, false, settings.getC2PVM());

@@ -143,14 +143,6 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		this.animator.start();
 	}
 
-	public Size getWindowSize() {
-		return new Size(2.0f, 2.0f);
-	}
-
-	public void setCursorVisible(boolean visible) {
-		this.window.setPointerVisible(visible);
-	}
-
 	public void init(GLAutoDrawable arg0) {
 		this.gl = this.window.getGL().getGL4();
 		
@@ -212,14 +204,6 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		this.core.update(new Bounds(this.window.getX(), this.window.getY(), width, height));
 	}
 	
-	public GL4 getRenderer() {
-		return this.gl;
-	}
-	
-	public Resources getResources() {
-		return this.resources;
-	}
-	
 	public void draw() {
 		this.thread = (DrawingThread) Thread.currentThread();
 
@@ -236,12 +220,8 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		this.theManager.update();
 	}
 	
-	public FontRenderer getFontRenderer() {
-		return this.fontRenderer;
-	}
-	
-	public PrimitiveRenderingSystem getRenderingSystem() {
-		return this.system;
+	public void setCursorVisible(boolean visible) {
+		this.window.setPointerVisible(visible);
 	}
 
 	public void toggleFullscreen() {
@@ -251,9 +231,29 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	public void purge() {
 		this.theManager.purge();
 	}
-	
+		
 	public void moveCursor(int x, int y) {
 		this.window.warpPointer(x, y);
+	}
+	
+	public Size getWindowSize() {
+		return new Size(2.0f, 2.0f);
+	}
+
+	public GL4 getRenderer() {
+		return this.gl;
+	}
+	
+	public Resources getResources() {
+		return this.resources;
+	}
+
+	public FontRenderer getFontRenderer() {
+		return this.fontRenderer;
+	}
+	
+	public PrimitiveRenderingSystem getRenderingSystem() {
+		return this.system;
 	}
 	
 	public void mouseClicked(MouseEvent event) {

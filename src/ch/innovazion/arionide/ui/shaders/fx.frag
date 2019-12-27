@@ -1,7 +1,7 @@
 #version 400
 
-// #define MOTION_BLUR
-// #define LIGHT_ADAPTATION
+#define MOTION_BLUR
+#define LIGHT_ADAPTATION
 #define GOD_RAYS
 #define SUN
 
@@ -12,15 +12,14 @@ const float quality[] = float[](1.0, 1.0, 1.0, 1.0, 1.0, 1.5, 2.0, 2.0, 2.0, 2.0
 uniform vec2 pixelSize;
 
 /* Motion blur */
-const vec2 blurTransform = vec2(0.5, 0.5);
 const int blurSamples = 64;
 const vec3 minColor = vec3(0.0001);
 
 /* God rays */
-const float decay = 1.0;
-const float density = 0.84;
+const float decay = 1.02;
+const float density = 0.74;
 const float weight = 5.65;
-const int godRaysSamples = 64;
+const int godRaysSamples = 32;
 
 uniform float exposure;
 uniform vec2 lightPosition;
@@ -33,7 +32,7 @@ const float strength = 5.5;
 /* Common */
 uniform sampler2D colorTexture;
 uniform sampler2D depthTexture;
-uniform dmat4 currentToPreviousViewportMatrix;
+uniform mat4 currentToPreviousViewportMatrix;
 
 /* Shader data */
 in vec2 textureCoords;
@@ -204,16 +203,16 @@ vec4 fxaa(vec2 coords) {
 }
 
 dvec4 normalizeHVC(dvec4 hvc) {
-	return vec4(hvc.xyz / hvc.w, hvc.w);
+	return dvec4(hvc.xyz / hvc.w, 1.0);
 }
 
 vec4 motionBlur() {
 	double z = texture(depthTexture, textureCoords).r;
 
-	dvec4 viewportPosition = normalizeHVC(dvec4(textureCoords.x * 2.0 - 1.0, (1.0 - textureCoords.y) * 2.0 - 1.0, z * 2.0 - 1.0, 1.0));
+	dvec4 viewportPosition = dvec4(textureCoords.x, textureCoords.y, z, 1.0) * 2 - 1;
 	dvec4 previousViewportPosition = normalizeHVC(currentToPreviousViewportMatrix * viewportPosition);
 
-	dvec2 velocity = (previousViewportPosition.xy * vec2(1.0, -1.0) - viewportPosition.xy * vec2(1.0, -1.0)) * blurTransform / 2.0;
+	dvec2 velocity = previousViewportPosition.xy - viewportPosition.xy;
 
     vec4 result = vec4(0.0);
 
@@ -231,7 +230,7 @@ vec4 motionBlur() {
     	result += color * weight;
 		contributions += weight;
     }
-
+    
     return result / contributions;
 }
 
@@ -258,6 +257,8 @@ vec4 godRays() {
 }
 
 void sun() {
+    vec4 color = texture(colorTexture, textureCoords);
+
     float ratio = pixelSize.y / pixelSize.x;
     
     vec2 transformed = textureCoords - vec2(0.5, 0.5);
@@ -268,8 +269,8 @@ void sun() {
     float brightness = pow(lightDistanceFromCenter / sunSize, -concentration);
     
     float factor = 1.0 - pow(strength, -brightness);
-    
-    fragColor += (vec4(1.0) - fragColor) * factor * (1 - dot(vec3(fragColor), lumaVector));
+
+    fragColor += (1 - fragColor) * factor * max(1 - color.a, 1 - pow(getLuma(color), 3.5));
 }
 
 void main() {
