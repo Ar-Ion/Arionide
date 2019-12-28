@@ -74,7 +74,7 @@ public class NewProjectView extends View implements EventHandler {
 				if(!name.isEmpty()) {
 					try {
 						this.getAppManager().getWorkspace().createProject(name);
-						this.openView(Views.code);
+						this.navigate(Views.code);
 						
 						this.projectName.setText(new String()); // Reset field
 					} catch(IOException exception) {
@@ -82,7 +82,7 @@ public class NewProjectView extends View implements EventHandler {
 					}
 				}
 			} else if(click.isTargetting(this, "cancel")) {
-				this.openView(Views.main);
+				this.navigate(Views.main);
 				this.projectName.setText(new String()); // Reset field
 			}
 		}

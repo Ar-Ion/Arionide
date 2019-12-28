@@ -160,6 +160,10 @@ public class AWTContext extends Canvas implements AppDrawingContext, MouseListen
 		return null;
 	}
 	
+	public PrimitiveRenderingSystem getOverlayRenderingSystem() {
+		return null;
+	}
+	
 	public Size getWindowSize() {
 		return new Size(this.getWidth(), this.getHeight());
 	}

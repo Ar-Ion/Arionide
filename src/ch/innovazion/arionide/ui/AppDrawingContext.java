@@ -39,6 +39,7 @@ public interface AppDrawingContext extends Purgeable {
 	public Size getWindowSize();
 	public FontRenderer getFontRenderer();
 	public PrimitiveRenderingSystem getRenderingSystem();
+	public PrimitiveRenderingSystem getOverlayRenderingSystem();
 	public Resources getResources();
 	public void setCursorVisible(boolean visible);
 	public void moveCursor(int x, int y);

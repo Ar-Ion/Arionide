@@ -70,7 +70,7 @@ public class RunView extends View implements EventHandler {
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
 
-	public void show(boolean transition) {		
+	public void show() {		
 		Storage storage = this.getAppManager().getWorkspace().getCurrentProject().getStorage();
 		
 		List<HierarchyElement> elements = storage.getHierarchy();
@@ -84,7 +84,7 @@ public class RunView extends View implements EventHandler {
 				
 		this.sourceSelector.setComponents(buffer);
 		
-		super.show(transition);
+		super.show();
 	}
 	
 	public <T extends Event> void handleEvent(T event) {
@@ -92,7 +92,7 @@ public class RunView extends View implements EventHandler {
 			ClickEvent click = (ClickEvent) event;
 			
 			if(click.isTargetting(this, "back")) {
-				this.openView(Views.code);
+				this.navigate(Views.code);
 			} else if(click.isTargetting(this, "setSource")) {
 				this.sourceID = (int) click.getData()[0];
 			} else if(click.isTargetting(this, "run")) {				
@@ -119,7 +119,7 @@ public class RunView extends View implements EventHandler {
 							int structID = Integer.parseInt(identifiers[0]);
 							int instructionID = Integer.parseInt(identifiers[1]);
 							
-							this.openView(Views.code);
+							this.navigate(Views.code);
 							this.getAppManager().getCoreRenderer().teleport(new TeleportInfo(structID, instructionID));	
 						}
 					}

@@ -24,6 +24,7 @@ import ch.innovazion.arionide.ui.render.gl.GLCursor;
 import ch.innovazion.arionide.ui.render.gl.GLEdge;
 import ch.innovazion.arionide.ui.render.gl.GLLine;
 import ch.innovazion.arionide.ui.render.gl.GLShape;
+import ch.innovazion.arionide.ui.render.gl.GLSolid;
 import ch.innovazion.arionide.ui.render.gl.GLText;
 import ch.innovazion.arionide.ui.render.gl.GLUnedgedRectangle;
 
@@ -60,6 +61,14 @@ public class PrimitiveFactory {
 		GLShape edge = new GLEdge(rgb, alpha, 32.0f);
 		
 		return PrimitiveMulticaster.create(Shape.class, rect, edge);
+	}
+	
+	public Shape newSolid() {
+		return this.newSolid(0, 0);
+	}
+	
+	public Shape newSolid(int rgb, int alpha) {
+		return new GLSolid(rgb, alpha);
 	}
 	
 	public Shape newLine() {

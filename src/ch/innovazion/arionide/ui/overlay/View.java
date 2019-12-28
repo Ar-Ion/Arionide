@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 
 import ch.innovazion.arionide.debugging.IAm;
-import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.animations.Animation;
@@ -37,82 +36,82 @@ import ch.innovazion.arionide.ui.render.Shape;
 import ch.innovazion.arionide.ui.topology.Bounds;
 
 public abstract class View extends Surface {
-	
+		
 	private final AppManager appManager;
 	private final LayoutManager layoutManager;
 
 	private final List<Component> components = new ArrayList<>();
 	
-	private final Animation alphaAnimation;
 	private final Shape borders = PrimitiveFactory.instance().newRectangle();
+	
+	private final Animation animation;
 	
 	private final int focusViewUID;
 	
+	private int alpha = 255;
 	private boolean hasBorders;
-	private int alpha = 0;
 	
 	public View(AppManager appManager, LayoutManager layoutManager) {
 		this.appManager = appManager;
 		this.layoutManager = layoutManager;
-
-		this.alphaAnimation = new FieldModifierAnimation(this.appManager, "alpha", View.class, this);
 		
-		this.focusViewUID = this.getAppManager().getFocusManager().requestViewUID();
+		this.animation = new FieldModifierAnimation(appManager, "alpha", View.class, this);
+		this.focusViewUID = getAppManager().getFocusManager().requestViewUID();
 	}
 	
 	public View setBounds(Bounds bounds) {
 		super.setBounds(bounds);
-		this.borders.updateBounds(bounds);
+		borders.updateBounds(bounds);
 		return this;
 	}
 	
 	public void setBorderColor(int rgb) {
-		this.borders.updateRGB(rgb);
-		this.hasBorders = rgb != -1;
+		borders.updateRGB(rgb);
+		hasBorders = rgb != -1;
 	}
 	
 	public void load() {
-		for(Component component : this.components) {
+		for(Component component : components) {
 			component.load();
 		}
 	}
 	
 	public AppManager getAppManager() {
-		return this.appManager;
+		return appManager;
 	}
 
 	public void drawSurface(AppDrawingContext context) {		
-		this.borders.updateAlpha(this.appManager.getAlphaLayering().push(AlphaLayer.VIEW, this.alpha));
+		borders.updateAlpha(appManager.getAlphaLayering().push(AlphaLayer.VIEW, alpha));
 		
-		if(this.hasBorders) {
-			context.getRenderingSystem().renderLater(this.borders);
+		if(hasBorders) {
+			getPreferedRenderingSystem(context).renderLater(borders);
 		}
 				
-		this.drawComponents(context);
+		drawComponents(context);
 		
-		this.appManager.getAlphaLayering().pop(AlphaLayer.VIEW);
+		appManager.getAlphaLayering().pop(AlphaLayer.VIEW);
 	}
 	
 	protected void drawComponents(AppDrawingContext context) {
-		for(Component component : this.components) {
+		for(Component component : components) {
 			component.draw(context);
 		}
 	}
 	
 	public void update() {
-		for(Component component : this.components) {
+		for(Component component : components) {
 			component.update();
 		}
 	}
 	
 	protected void add(Component component, float x1, float y1, float x2, float y2) {
-		this.components.add(component);
-		this.layoutManager.register(component, this, x1, y1, x2, y2);
-		this.getAppManager().getFocusManager().registerComponent(component);
+		components.add(component);
+		layoutManager.register(component, this, x1, y1, x2, y2);
+		getAppManager().getFocusManager().registerComponent(component);
 	}
 	
 	protected List<Component> getComponents() {
-		return Collections.unmodifiableList(this.components);
+		return Collections.unmodifiableList(components);
 	}
 	
 	protected void setupFocusCycle(int... elements) {
@@ -121,67 +120,39 @@ public abstract class View extends Surface {
 		if(elements.length == 0) {
 			int fillingIndex = 0;
 			
-			elements = new int[this.components.size()];
+			elements = new int[components.size()];
 			
-			while(fillingIndex < this.components.size()) {
+			while(fillingIndex < components.size()) {
 				elements[fillingIndex] = fillingIndex++;
 			}
 		}
 				
 		for(int element : elements) {
-			cycle.add(this.focusViewUID + element);
+			cycle.add(focusViewUID + element);
 		}
 				
-		this.getAppManager().getFocusManager().setupCycle(cycle);
+		getAppManager().getFocusManager().setupCycle(cycle);
 	}
-	
+		
 	public void show() {
 		super.show();
-		this.components.forEach(Component::show);
+		components.forEach(Component::show);
 	}
 	
 	public void hide() {
 		super.hide();
-		this.components.forEach(Component::hide);
+		components.forEach(Component::hide);
+	}
+
+	@IAm("navigating to a view")
+	public void navigate(View target) {
+		Transition.replace.show(target, target.animation);
+		Transition.replace.hide(this, this.animation);
 	}
 	
-	public void openView(View target) {
-		this.openView(target, true);
-	}
-	
-	@IAm("opening a view")
-	public void openView(View target, boolean transition) {
-		target.show(transition);
-		this.hide(transition);
-	}
-	
-	public void show(boolean transition) {		
-		this.show();
-		
-		if(transition) {
-			this.alphaAnimation.startAnimation(500, 255);
-		} else {
-			this.alpha = 255;
-		}
-	}
-	
-	public void hide(boolean transition) {		
-		if(transition) {
-			// Async to avoid a dead lock on the event dispatcher (flush)
-			new Thread(() -> {
-				IEventDispatcher dispatcher = getAppManager().getEventDispatcher();
-				
-				dispatcher.flush();
-				dispatcher.pause();
-				
-				alphaAnimation.startAnimation(500, after -> {
-					hide();
-					dispatcher.resume();
-				}, 0);
-			}).start();
-		} else {
-			alpha = 0;
-			hide();
-		}
+	@IAm("stacking a view")
+	public void stack(View target) {
+		Transition.fade.show(target, target.animation);
+		Transition.fade.hide(this, this.animation);
 	}
 }

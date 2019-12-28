@@ -22,6 +22,7 @@ package ch.innovazion.arionide.ui.layout;
 
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.Drawable;
+import ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem;
 import ch.innovazion.arionide.ui.topology.Bounds;
 
 public abstract class Surface implements Drawable {
@@ -57,6 +58,10 @@ public abstract class Surface implements Drawable {
 		return this.bounds;
 	}
 	
+	public PrimitiveRenderingSystem getPreferedRenderingSystem(AppDrawingContext context) {
+		return context.getRenderingSystem();
+	}
+
 	public abstract void load();
 	public abstract void drawSurface(AppDrawingContext context);
 }

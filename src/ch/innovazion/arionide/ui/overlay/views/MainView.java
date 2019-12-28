@@ -244,7 +244,7 @@ public class MainView extends View implements EventHandler {
 					
 					if(element instanceof Project) {
 						getAppManager().getWorkspace().loadProject((Project) element);
-						openView(Views.code);
+						navigate(Views.code);
 					}
 				}
 			} else if(click.isTargetting(this, "browse")) {
@@ -254,7 +254,7 @@ public class MainView extends View implements EventHandler {
 					System.err.println("Could not open link");
 				}
 			} else if(click.isTargetting(this, "new")) {
-				this.openView(Views.newProject);
+				this.stack(Views.overlay);
 			} else if(click.isTargetting(this, "connect")) {
 				// TODO
 			} else if(click.isTargetting(this, "import")) {

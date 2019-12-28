@@ -21,6 +21,7 @@
 package ch.innovazion.arionide.ui.overlay;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ch.innovazion.arionide.ui.AppManager;
@@ -28,6 +29,7 @@ import ch.innovazion.arionide.ui.layout.LayoutManager;
 import ch.innovazion.arionide.ui.overlay.views.CodeView;
 import ch.innovazion.arionide.ui.overlay.views.MainView;
 import ch.innovazion.arionide.ui.overlay.views.NewProjectView;
+import ch.innovazion.arionide.ui.overlay.views.OverlayView;
 import ch.innovazion.arionide.ui.overlay.views.RunView;
 
 public class Views {
@@ -36,8 +38,9 @@ public class Views {
 	public static View newProject;
 	public static View code;
 	public static View run;
+	public static View overlay;
 
-	public static List<View> all = new ArrayList<>();
+	private static List<View> all = new ArrayList<>();
 	
 	public static void init(AppManager appManager, LayoutManager layoutManager) {
 		assert Views.all.isEmpty();
@@ -46,6 +49,7 @@ public class Views {
 		Views.all.add(Views.newProject = new NewProjectView(appManager, layoutManager));
 		Views.all.add(Views.code = new CodeView(appManager, layoutManager));
 		Views.all.add(Views.run = new RunView(appManager, layoutManager));
+		Views.all.add(Views.overlay = new OverlayView(appManager, layoutManager));
 	}
 	
 	public static void load() {
@@ -54,5 +58,9 @@ public class Views {
 		for(View view : all) {
 			view.load();
 		}
+	}
+	
+	public static List<View> getList() {
+		return Collections.unmodifiableList(all);
 	}
 }

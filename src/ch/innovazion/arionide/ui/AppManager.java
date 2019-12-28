@@ -71,9 +71,8 @@ public class AppManager implements Purgeable {
 	@IAm("drawing the frame")
 	public void draw() {		
 		if(this.initialized) {						
-			for(Drawable view : Views.all) {
+			for(Drawable view : Views.getList()) {
 				view.draw(this.getDrawingContext());
-
 			}
 		}
 	}
@@ -86,7 +85,7 @@ public class AppManager implements Purgeable {
 			}
 		}
 		
-		for(Drawable view : Views.all) {
+		for(Drawable view : Views.getList()) {
 			view.update();
 		}
 	}
@@ -113,7 +112,7 @@ public class AppManager implements Purgeable {
 		this.getEventDispatcher().fire(new InvalidateLayoutEvent());
 		
 		Views.load();
-		Views.main.show(true);
+		Views.main.show();
 	}
 	
 	public AppDrawingContext getDrawingContext() {

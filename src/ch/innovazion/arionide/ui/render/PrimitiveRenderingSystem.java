@@ -21,13 +21,13 @@
 package ch.innovazion.arionide.ui.render;
 
 import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.BiConsumer;
 
 public class PrimitiveRenderingSystem {
 	
-	private final Map<PrimitiveType, RenderingQueue> queues = new HashMap<>();
+	private final Map<PrimitiveType, RenderingQueue> queues = new TreeMap<>();
 	
 	public void registerPrimitive(PrimitiveType type, RenderingContext context) {
 		assert type != null;
@@ -94,7 +94,7 @@ public class PrimitiveRenderingSystem {
 		}
 		
 		primitive.render();
-			
+		
 		context.exit();
 	}
 	

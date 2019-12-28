@@ -85,8 +85,9 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	
 	private final FPSAnimator animator;
 	
-	private final PrimitiveRenderingSystem system = new PrimitiveRenderingSystem();
-	
+	private final PrimitiveRenderingSystem coreSystem = new PrimitiveRenderingSystem();
+	private final PrimitiveRenderingSystem overlaySystem = new PrimitiveRenderingSystem();
+
 	private final FloatBuffer clearColor = FloatBuffer.allocate(4);
 	private final FloatBuffer clearDepth = FloatBuffer.allocate(1);
 	
@@ -144,51 +145,60 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	}
 
 	public void init(GLAutoDrawable arg0) {
-		this.gl = this.window.getGL().getGL4();
+		this.gl = window.getGL().getGL4();
 		
-		this.gl.glHint(GL4.GL_GENERATE_MIPMAP_HINT, GL4.GL_NICEST);
+		gl.glHint(GL4.GL_GENERATE_MIPMAP_HINT, GL4.GL_NICEST);
 		
-		Trash.init(new GLTrashContext(this.gl));
+		Trash.init(new GLTrashContext(gl));
 		
-		this.core.init(this.gl);
+		core.init(gl);
 		
-		GLRenderingContext.init(this.gl, this.resources, this.fontRenderer);
+		GLRenderingContext.init(gl, resources, fontRenderer);
 		
-		this.system.registerPrimitive(PrimitiveType.POLYGON, GLRenderingContext.polygon);
-		this.system.registerPrimitive(PrimitiveType.UNEDGED_RECT, GLRenderingContext.unedgedRectangle);
-		this.system.registerPrimitive(PrimitiveType.EDGE, GLRenderingContext.edge);
-		this.system.registerPrimitive(PrimitiveType.CURSOR, GLRenderingContext.cursor);
-		this.system.registerPrimitive(PrimitiveType.TEXT, GLRenderingContext.text);
+		coreSystem.registerPrimitive(PrimitiveType.POLYGON, GLRenderingContext.polygon);
+		coreSystem.registerPrimitive(PrimitiveType.SOLID, GLRenderingContext.polygon);
+		coreSystem.registerPrimitive(PrimitiveType.UNEDGED_RECT, GLRenderingContext.unedgedRectangle);
+		coreSystem.registerPrimitive(PrimitiveType.EDGE, GLRenderingContext.edge);
+		coreSystem.registerPrimitive(PrimitiveType.CURSOR, GLRenderingContext.cursor);
+		coreSystem.registerPrimitive(PrimitiveType.TEXT, GLRenderingContext.text);
 
-		this.theCursor = PrimitiveFactory.instance().newCursor(3.0f);
-		this.theCursor.updateBounds(new Bounds(-1.0f, -1.0f, 2.0f, 2.0f));
-		this.theCursor.prepare();
+		overlaySystem.registerPrimitive(PrimitiveType.POLYGON, GLRenderingContext.polygon);
+		overlaySystem.registerPrimitive(PrimitiveType.SOLID, GLRenderingContext.polygon);
+		overlaySystem.registerPrimitive(PrimitiveType.UNEDGED_RECT, GLRenderingContext.unedgedRectangle);
+		overlaySystem.registerPrimitive(PrimitiveType.EDGE, GLRenderingContext.edge);
+		overlaySystem.registerPrimitive(PrimitiveType.CURSOR, GLRenderingContext.cursor);
+		overlaySystem.registerPrimitive(PrimitiveType.TEXT, GLRenderingContext.text);
 		
-		this.clearColor.put(0, 0.0f).put(1, 0.0f).put(2, 0.0f).put(3, 1.0f);
-		this.clearDepth.put(0, 1.0f);
+		theCursor = PrimitiveFactory.instance().newCursor(3.0f);
+		theCursor.updateBounds(new Bounds(-1.0f, -1.0f, 2.0f, 2.0f));
+		theCursor.prepare();
 		
-		this.theManager.loadUI();
+		clearColor.put(0, 0.0f).put(1, 0.0f).put(2, 0.0f).put(3, 1.0f);
+		clearDepth.put(0, 1.0f);
+		
+		theManager.loadUI();
 	}
 	
 	public void display(GLAutoDrawable arg0) {
-		if(this.thread != null) {			
-			this.thread.incrementTicks();
+		if(thread != null) {			
+			thread.incrementTicks();
 	        
-			this.gl.glClearBufferfv(GL4.GL_COLOR, 0, this.clearColor);
-	        this.gl.glClearBufferfv(GL4.GL_DEPTH, 0, this.clearDepth);
+			gl.glClearBufferfv(GL4.GL_COLOR, 0, clearColor);
+	        gl.glClearBufferfv(GL4.GL_DEPTH, 0, clearDepth);
 			
-	        this.core.render3D(this);
+	        core.render3D(this);
 	        	        
-	        this.gl.glEnable(GL4.GL_BLEND);
-	        this.gl.glBlendFunc(GL4.GL_SRC_ALPHA,  GL4.GL_ONE_MINUS_SRC_ALPHA);
+	        gl.glEnable(GL4.GL_BLEND);
+	        gl.glBlendFunc(GL4.GL_SRC_ALPHA,  GL4.GL_ONE_MINUS_SRC_ALPHA);
 	        
-	        this.theManager.draw();
-	        this.core.render2D(this);
-			this.system.renderLater(this.theCursor);
+	        theManager.draw();
+	        core.render2D(this);
+			coreSystem.renderLater(theCursor);
 	        
-	        this.system.processRenderingQueue();
+	        coreSystem.processRenderingQueue();
+	        overlaySystem.processRenderingQueue();
 	        
-			this.gl.glDisable(GL4.GL_BLEND);
+			gl.glDisable(GL4.GL_BLEND);
 			
 			Trash.instance().burnGarbage();
 		}
@@ -198,10 +208,11 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	}
 
 	public void reshape(GLAutoDrawable drawble, int x, int y, int width, int height) {
-		this.gl.glViewport(x, y, width, height);
+		gl.glViewport(x, y, width, height);
 		
-		this.system.updateAspectRatio((float) width / height);
-		this.core.update(new Bounds(this.window.getX(), this.window.getY(), width, height));
+		coreSystem.updateAspectRatio((float) width / height);
+		overlaySystem.updateAspectRatio((float) width / height);
+		core.update(new Bounds(this.window.getX(), this.window.getY(), width, height));
 	}
 	
 	public void draw() {
@@ -253,7 +264,11 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	}
 	
 	public PrimitiveRenderingSystem getRenderingSystem() {
-		return this.system;
+		return this.coreSystem;
+	}
+	
+	public PrimitiveRenderingSystem getOverlayRenderingSystem() {
+		return this.overlaySystem;
 	}
 	
 	public void mouseClicked(MouseEvent event) {

@@ -110,7 +110,7 @@ public class CodeGeometry extends Geometry {
 					
 					String value = specElement.getValue();
 					
-					if(specElement instanceof Reference) {
+					if(value != null && specElement instanceof Reference) {
 						Integer id = Integer.parseInt(value);
 						value = meta.get(id).getName();
 					}
