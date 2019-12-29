@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.swing.JOptionPane;
-
 import com.jogamp.newt.event.KeyEvent;
 
 import ch.innovazion.arionide.Utils;
@@ -44,7 +42,6 @@ import ch.innovazion.arionide.menu.MenuDescription.DescriptionLine;
 import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.Storage;
-import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.animations.Animation;
 import ch.innovazion.arionide.ui.animations.FieldModifierAnimation;
@@ -59,9 +56,6 @@ import ch.innovazion.arionide.ui.overlay.components.Button;
 import ch.innovazion.arionide.ui.overlay.components.Label;
 import ch.innovazion.arionide.ui.overlay.components.Scroll;
 import ch.innovazion.arionide.ui.overlay.components.Tab;
-import ch.innovazion.arionide.ui.render.PrimitiveFactory;
-import ch.innovazion.arionide.ui.render.Shape;
-import ch.innovazion.arionide.ui.topology.Bounds;
 
 public class CodeView extends View implements EventHandler {
 
@@ -143,29 +137,11 @@ public class CodeView extends View implements EventHandler {
 			} else if(click.isTargetting(this, "run")) {
 				this.navigateTo(Views.run);
 			} else if(click.isTargetting(this, "add")) {
-				new Thread(() -> {
-					String name = JOptionPane.showInputDialog(null, "Please enter the name of the new structure", "New structure", JOptionPane.PLAIN_MESSAGE);
-					
-					if(name != null) {
-						MessageEvent message = this.currentProject.getDataManager().newStructure(name);
-						manager.getEventDispatcher().fire(message);
-						
-						if(message.getMessageType() != MessageType.ERROR) {
-							Storage storage = this.currentProject.getStorage();
-							
-							int structID = storage.getCallGraph().get(storage.getCallGraph().size() - 1).getID();
-														
-							CodeChain code = storage.getCode().get(structID);
-							
-							if(!code.isAbstract()) {
-								int instructionID = code.list().get(0).getID();
-								renderer.teleport(new TeleportInfo(structID, instructionID));
-							} else {
-								renderer.teleport(new TeleportInfo(structID, -1));
-							}
-						}
-					}
-				}).start();
+				
+				Views.input.setText("Please enter the name of the new structure")
+						   .setResponder(this::createStructure)
+						   .stackOnto(this);
+				
 			} else if(click.isTargetting((Component) null, "menuScroll")) {
 				if(this.isVisible()) {
 					assert this.currentMenu != null;
@@ -225,6 +201,29 @@ public class CodeView extends View implements EventHandler {
 				case KeyEvent.VK_DOWN:
 					currentMenu.down();
 				}
+			}
+		}
+	}
+	
+	private void createStructure(String name) {
+		AppManager manager = getAppManager();
+		CoreRenderer renderer = manager.getCoreRenderer();
+		
+		MessageEvent message = this.currentProject.getDataManager().newStructure(name);
+		manager.getEventDispatcher().fire(message);
+		
+		if(message.getMessageType() != MessageType.ERROR) {
+			Storage storage = this.currentProject.getStorage();
+			
+			int structID = storage.getCallGraph().get(storage.getCallGraph().size() - 1).getID();
+										
+			CodeChain code = storage.getCode().get(structID);
+			
+			if(!code.isAbstract()) {
+				int instructionID = code.list().get(0).getID();
+				renderer.teleport(new TeleportInfo(structID, instructionID));
+			} else {
+				renderer.teleport(new TeleportInfo(structID, -1));
 			}
 		}
 	}

@@ -27,6 +27,7 @@ import java.util.List;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
 import ch.innovazion.arionide.ui.overlay.views.CodeView;
+import ch.innovazion.arionide.ui.overlay.views.InputPromptView;
 import ch.innovazion.arionide.ui.overlay.views.MainView;
 import ch.innovazion.arionide.ui.overlay.views.NewProjectView;
 import ch.innovazion.arionide.ui.overlay.views.RunView;
@@ -41,6 +42,7 @@ public class Views {
 	public static TextPromptView acknowledge;
 	public static TextPromptView confirm;
 	public static TextPromptView decide;
+	public static InputPromptView input;
 
 	private static List<View> all = new ArrayList<>();
 	
@@ -54,6 +56,7 @@ public class Views {
 		Views.all.add(Views.acknowledge = new TextPromptView(appManager, layoutManager, 1));
 		Views.all.add(Views.confirm = new TextPromptView(appManager, layoutManager, 2));
 		Views.all.add(Views.decide = new TextPromptView(appManager, layoutManager, 3));
+		Views.all.add(Views.input = new InputPromptView(appManager, layoutManager));
 	}
 	
 	public static void load() {
