@@ -83,11 +83,13 @@ public abstract class View extends Surface {
 		return appManager;
 	}
 
-	public void drawSurface(AppDrawingContext context) {		
-		borders.updateAlpha(appManager.getAlphaLayering().push(AlphaLayer.VIEW, alpha));
+	public void drawSurface(AppDrawingContext context) {
+		int newAlpha = appManager.getAlphaLayering().push(AlphaLayer.VIEW, alpha);
 		
-		mask.updateAlpha(getMaskAlpha(alpha));
-		context.getRenderingSystem().renderDirect(mask);
+		borders.updateAlpha(newAlpha);
+		mask.updateAlpha(getMaskAlpha(newAlpha));
+		
+		getPreferedRenderingSystem(context).renderLater(mask);
 		
 		if(hasBorders) {
 			getPreferedRenderingSystem(context).renderLater(borders);
@@ -141,9 +143,15 @@ public abstract class View extends Surface {
 	}
 
 	@IAm("navigating to a view")
-	public void navigate(View target) {
+	public void navigateTo(View target) {
 		Transition.replace.show(target, target.animation);
 		Transition.replace.hide(this, this.animation);
+	}
+	
+	@IAm("navigating to a view")
+	public void navigateFrom(View source) {
+		Transition.replace.show(this, this.animation);
+		Transition.replace.hide(source, source.animation);
 	}
 	
 	@IAm("stacking a view") 
@@ -151,6 +159,8 @@ public abstract class View extends Surface {
 		Transition.fade.show(target, target.animation);
 		Transition.fade.hide(this, this.animation);
 	}
+	
+	
 	
 	protected int getMaskAlpha(int viewAlpha) {
 		return viewAlpha / 2;

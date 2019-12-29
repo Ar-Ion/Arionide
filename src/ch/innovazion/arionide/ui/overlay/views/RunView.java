@@ -90,7 +90,7 @@ public class RunView extends View implements EventHandler {
 			ClickEvent click = (ClickEvent) event;
 			
 			if(click.isTargetting(this, "back")) {
-				this.navigate(Views.code);
+				this.navigateTo(Views.code);
 			} else if(click.isTargetting(this, "setSource")) {
 				this.sourceID = (int) click.getData()[0];
 			} else if(click.isTargetting(this, "run")) {				
@@ -117,7 +117,7 @@ public class RunView extends View implements EventHandler {
 							int structID = Integer.parseInt(identifiers[0]);
 							int instructionID = Integer.parseInt(identifiers[1]);
 							
-							this.navigate(Views.code);
+							this.navigateTo(Views.code);
 							this.getAppManager().getCoreRenderer().teleport(new TeleportInfo(structID, instructionID));	
 						}
 					}

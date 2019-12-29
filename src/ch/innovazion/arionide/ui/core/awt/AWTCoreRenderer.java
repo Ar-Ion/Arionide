@@ -79,4 +79,8 @@ public class AWTCoreRenderer implements CoreRenderer {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public boolean isActive() {
+		return false;
+	}
 }

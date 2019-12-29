@@ -47,6 +47,7 @@ public interface CoreRenderer {
 	
 	public void requestFullReconstruction();
 	
+	public boolean isActive();
 	public Geometry getCodeGeometry();
 	public Geometry getStructuresGeometry();
 }

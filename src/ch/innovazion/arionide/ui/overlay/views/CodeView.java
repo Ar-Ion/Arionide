@@ -123,7 +123,7 @@ public class CodeView extends View implements EventHandler {
 			
 			if(click.isTargetting(this, "back")) {
 				manager.getWorkspace().closeProject(this.currentProject);
-				this.navigate(Views.main);
+				this.navigateTo(Views.main);
 			} else if(click.isTargetting(this, "sceneChanged")) {
 				int tabID = (int) click.getData()[0];
 				
@@ -141,7 +141,7 @@ public class CodeView extends View implements EventHandler {
 						throw new RuntimeException("Invalid scene id");
 				}
 			} else if(click.isTargetting(this, "run")) {
-				this.navigate(Views.run);
+				this.navigateTo(Views.run);
 			} else if(click.isTargetting(this, "add")) {
 				new Thread(() -> {
 					String name = JOptionPane.showInputDialog(null, "Please enter the name of the new structure", "New structure", JOptionPane.PLAIN_MESSAGE);

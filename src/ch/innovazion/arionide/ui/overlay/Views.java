@@ -29,8 +29,8 @@ import ch.innovazion.arionide.ui.layout.LayoutManager;
 import ch.innovazion.arionide.ui.overlay.views.CodeView;
 import ch.innovazion.arionide.ui.overlay.views.MainView;
 import ch.innovazion.arionide.ui.overlay.views.NewProjectView;
-import ch.innovazion.arionide.ui.overlay.views.OverlayView;
 import ch.innovazion.arionide.ui.overlay.views.RunView;
+import ch.innovazion.arionide.ui.overlay.views.TextPromptView;
 
 public class Views {
 	
@@ -38,7 +38,9 @@ public class Views {
 	public static View newProject;
 	public static View code;
 	public static View run;
-	public static View overlay;
+	public static TextPromptView acknowledge;
+	public static TextPromptView confirm;
+	public static TextPromptView decide;
 
 	private static List<View> all = new ArrayList<>();
 	
@@ -49,7 +51,9 @@ public class Views {
 		Views.all.add(Views.newProject = new NewProjectView(appManager, layoutManager));
 		Views.all.add(Views.code = new CodeView(appManager, layoutManager));
 		Views.all.add(Views.run = new RunView(appManager, layoutManager));
-		Views.all.add(Views.overlay = new OverlayView(appManager, layoutManager));
+		Views.all.add(Views.acknowledge = new TextPromptView(appManager, layoutManager, 1));
+		Views.all.add(Views.confirm = new TextPromptView(appManager, layoutManager, 2));
+		Views.all.add(Views.decide = new TextPromptView(appManager, layoutManager, 3));
 	}
 	
 	public static void load() {

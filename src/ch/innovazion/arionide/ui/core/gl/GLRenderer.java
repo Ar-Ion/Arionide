@@ -1244,6 +1244,10 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 		}
 	}
 	
+	public boolean isActive() {
+		return isInWorld;
+	}
+	
 	public void requestFullReconstruction() {
 		coreGeometry.requestReconstruction();
 				

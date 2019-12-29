@@ -193,7 +193,10 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	        
 	        theManager.draw();
 	        core.render2D(this);
-			coreSystem.renderLater(theCursor);
+	        
+	        if(theManager.getCoreRenderer().isActive()) {
+				coreSystem.renderLater(theCursor);
+	        }
 	        
 	        coreSystem.synchronise(overlaySystem);
 			coreSystem.processRenderingQueue();

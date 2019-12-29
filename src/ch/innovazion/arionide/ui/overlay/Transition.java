@@ -8,7 +8,7 @@ public class Transition {
 	
 	public static Transition slowReplace = new Transition(255, 0, 1000);
 	public static Transition replace = new Transition(255, 0, 500);
-	public static Transition fade = new Transition(255, 127, 500);
+	public static Transition fade = new Transition(255, 63, 500);
 	public static Transition none = new Transition(255, 0, 0);
 	
 	private final int activeOpacity;
@@ -37,11 +37,12 @@ public class Transition {
 		surface.setVisible(false);
 	}
 	
-	public void show(View view, Animation animation) {				
+	public void show(View view, Animation animation) {
+		view.getComponents().forEach(this::enable);
+		view.getComponents().forEach(this::show);
+
 		view.viewWillAppear();
 		show(view);
-		view.getComponents().forEach(this::show);
-		view.getComponents().forEach(this::enable);
 		
 		animation.startAnimation(duration, activeOpacity);
 	}
@@ -54,17 +55,15 @@ public class Transition {
 			dispatcher.flush();
 			dispatcher.pause();
 			
+			view.getComponents().forEach(this::disable);
 			view.viewWillDisappear();
 			
 			animation.startAnimation(duration, after -> {
-				
-				view.getComponents().forEach(this::disable);
-
 				if(inactiveOpacity == 0) {
-					hide(view);
 					view.getComponents().forEach(this::hide);
+					hide(view);
 				}
-				
+								
 				dispatcher.resume();
 			}, inactiveOpacity);
 		}).start();
