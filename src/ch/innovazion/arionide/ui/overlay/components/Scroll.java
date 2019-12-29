@@ -110,8 +110,8 @@ public class Scroll extends Tab {
 	}
 	
 	public <T extends Event> void handleEvent(T event) {
-		if(this.isHidden() || this.getBounds() == null) {
-			return;
+		if(!isEnabled() || !isVisible() || getBounds() == null) {
+			return; // Abort event if the button is not supposed to handle it.
 		}
 		
 		if(this.doubleFocusSystem) {

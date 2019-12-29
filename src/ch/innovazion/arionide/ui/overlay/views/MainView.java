@@ -116,17 +116,8 @@ public class MainView extends View implements EventHandler {
 			this.pageID = this.getMaxPage();
 		}
 		
-		if(this.pageID <= 0) {
-			this.prev.hide();
-		} else {
-			this.prev.show();
-		}
-		
-		if(this.pageID >= this.getMaxPage()) {
-			this.next.hide();
-		} else {
-			this.next.show();
-		}
+		prev.setVisible(this.pageID > 0);
+		next.setVisible(this.pageID < this.getMaxPage());
 		
 		if(this.pageID > 0) {
 			int scalar = 4 * (this.pageID - 1);
@@ -137,18 +128,18 @@ public class MainView extends View implements EventHandler {
 				
 				if(scalar + displacement < projects.size()) {
 					Project project = (Project) projects.get(scalar + displacement);
-					button.setSignal("open", project).setLabel("Open " + project.getName()).show();
+					button.setSignal("open", project).setLabel("Open " + project.getName());
 				} else {
-					button.hide();
+					button.setVisible(false);
 				}
 				
 				displacement++;
 			}
 		} else {
-			((Button) this.page.get(0)).setSignal("browse", "https://azentreprise.org").setLabel("AZEntreprise.org").show();
-			((Button) this.page.get(1)).setSignal("browse", "https://azentreprise.org/Arionide/bugreport.php").setLabel("Arionide bug report").show();
-			((Button) this.page.get(2)).setSignal("browse", "https://azentreprise.org/Arionide/tutorials.php").setLabel("Arionide tutorials").show();
-			((Button) this.page.get(3)).setSignal("browse", "https://azentreprise.org/Arionide").setLabel("Arionide community").show();
+			((Button) this.page.get(0)).setSignal("browse", "https://azentreprise.org").setLabel("AZEntreprise.org");
+			((Button) this.page.get(1)).setSignal("browse", "https://azentreprise.org/Arionide/bugreport.php").setLabel("Arionide bug report");
+			((Button) this.page.get(2)).setSignal("browse", "https://azentreprise.org/Arionide/tutorials.php").setLabel("Arionide tutorials");
+			((Button) this.page.get(3)).setSignal("browse", "https://azentreprise.org/Arionide").setLabel("Arionide community");
 		}
 	}
 	
@@ -164,9 +155,7 @@ public class MainView extends View implements EventHandler {
 		return (this.getAppManager().getWorkspace().getProjectList().size() + 3) / 4;
 	}
 	
-	public void show() {
-		super.show();
-				
+	public void viewWillAppear() {				
 		this.loadWorkspace();
 
 		this.setupFocusCycle();

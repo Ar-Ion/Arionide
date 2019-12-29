@@ -21,13 +21,12 @@
 package ch.innovazion.arionide.ui.render;
 
 import java.math.BigInteger;
-import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
 
 public class PrimitiveRenderingSystem {
 	
-	private final Map<PrimitiveType, RenderingQueue> queues = new TreeMap<>();
+	private final TreeMap<PrimitiveType, RenderingQueue> queues = new TreeMap<>();
 	
 	public void registerPrimitive(PrimitiveType type, RenderingContext context) {
 		assert type != null;
@@ -36,6 +35,10 @@ public class PrimitiveRenderingSystem {
 		this.queues.put(type, new RenderingQueue(context));
 		
 		context.load();
+	}
+	
+	public void synchronise(PrimitiveRenderingSystem source) {
+		queues.descendingMap().replaceAll(source.queues::getOrDefault);
 	}
 	
 	public void renderLater(Object object) {
@@ -76,7 +79,7 @@ public class PrimitiveRenderingSystem {
 	private void render(Primitive primitive, RenderingQueue queue) {
 		RenderingContext context = queue.getContext();
 		BigInteger difference = queue.getAndUpdateStateDifference(primitive);
-				
+
 		context.enter();
 		
 		for(BigInteger identifier : context.getIdentificationScheme()) {

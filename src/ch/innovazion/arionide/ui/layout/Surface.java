@@ -28,7 +28,7 @@ import ch.innovazion.arionide.ui.topology.Bounds;
 public abstract class Surface implements Drawable {
 		
 	private Bounds bounds;
-	private boolean hidden = true;
+	private boolean visible;
 		
 	public Surface setBounds(Bounds bounds) {
 		this.bounds = bounds;
@@ -36,22 +36,19 @@ public abstract class Surface implements Drawable {
 	}
 	
 	public final void draw(AppDrawingContext context) {
-		if(!this.hidden && this.bounds != null) {
+		if(this.visible && this.bounds != null) {
 			this.drawSurface(context);
 
 		}
 	}
 	
-	public boolean isHidden() {
-		return this.hidden;
+	public boolean isVisible() {
+		return this.visible;
 	}
 	
-	public void show() {
-		this.hidden = false;
-	}
-	
-	public void hide() {
-		this.hidden = true;
+	public Surface setVisible(boolean visible) {
+		this.visible = visible;
+		return this;
 	}
 	
 	public Bounds getBounds() {

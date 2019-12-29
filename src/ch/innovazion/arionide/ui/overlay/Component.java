@@ -30,6 +30,8 @@ public abstract class Component extends Surface {
 	
 	private final View parent;
 	
+	private boolean enabled;
+	
 	@IAm("initializing a component")
 	public Component(View parent) {
 		this.parent = parent;
@@ -49,6 +51,36 @@ public abstract class Component extends Surface {
 	}
 	
 	public void update() {
+		;
+	}
+	
+	public final Component setVisible(boolean visible) {		
+		if(!visible) {
+			componentWillDisappear();
+			enabled = false;
+		} else {
+			componentWillAppear();
+		}
+		
+		super.setVisible(visible);
+		
+		return this;
+	}
+	
+	public Component setEnabled(boolean enabled) {
+		this.enabled = enabled;
+		return this;
+	}
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
+	
+	protected void componentWillAppear() {
+		;
+	}
+	
+	protected void componentWillDisappear() {
 		;
 	}
 	

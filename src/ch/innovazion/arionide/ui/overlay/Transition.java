@@ -2,9 +2,11 @@ package ch.innovazion.arionide.ui.overlay;
 
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.ui.animations.Animation;
+import ch.innovazion.arionide.ui.layout.Surface;
 
 public class Transition {
 	
+	public static Transition slowReplace = new Transition(255, 0, 1000);
 	public static Transition replace = new Transition(255, 0, 500);
 	public static Transition fade = new Transition(255, 127, 500);
 	public static Transition none = new Transition(255, 0, 0);
@@ -19,8 +21,28 @@ public class Transition {
 		this.duration = duration;
 	}
 	
+	private void enable(Component component) {
+		component.setEnabled(true);
+	}
+	
+	private void show(Surface surface) {
+		surface.setVisible(true);
+	}
+	
+	private void disable(Component component) {
+		component.setEnabled(false);
+	}
+	
+	private void hide(Surface surface) {
+		surface.setVisible(false);
+	}
+	
 	public void show(View view, Animation animation) {				
-		view.show();
+		view.viewWillAppear();
+		show(view);
+		view.getComponents().forEach(this::show);
+		view.getComponents().forEach(this::enable);
+		
 		animation.startAnimation(duration, activeOpacity);
 	}
 	
@@ -32,13 +54,15 @@ public class Transition {
 			dispatcher.flush();
 			dispatcher.pause();
 			
+			view.viewWillDisappear();
+			
 			animation.startAnimation(duration, after -> {
+				
+				view.getComponents().forEach(this::disable);
+
 				if(inactiveOpacity == 0) {
-					view.hide();
-				} else {
-					for(Component component : view.getComponents()) {
-						component.hide();
-					}
+					hide(view);
+					view.getComponents().forEach(this::hide);
 				}
 				
 				dispatcher.resume();

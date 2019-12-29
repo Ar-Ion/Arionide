@@ -37,6 +37,7 @@ import ch.innovazion.arionide.ui.animations.Animation;
 import ch.innovazion.arionide.ui.core.CoreRenderer;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
 import ch.innovazion.arionide.ui.overlay.AlphaLayeringSystem;
+import ch.innovazion.arionide.ui.overlay.View;
 import ch.innovazion.arionide.ui.overlay.Views;
 
 public class AppManager implements Purgeable {
@@ -112,7 +113,8 @@ public class AppManager implements Purgeable {
 		this.getEventDispatcher().fire(new InvalidateLayoutEvent());
 		
 		Views.load();
-		Views.main.show();
+		
+		View.showAsInitialView(Views.main);
 	}
 	
 	public AppDrawingContext getDrawingContext() {

@@ -195,7 +195,10 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	        core.render2D(this);
 			coreSystem.renderLater(theCursor);
 	        
-	        coreSystem.processRenderingQueue();
+	        coreSystem.synchronise(overlaySystem);
+			coreSystem.processRenderingQueue();
+	        
+			overlaySystem.synchronise(coreSystem);
 	        overlaySystem.processRenderingQueue();
 	        
 			gl.glDisable(GL4.GL_BLEND);

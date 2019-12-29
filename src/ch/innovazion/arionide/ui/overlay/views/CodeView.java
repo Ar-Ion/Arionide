@@ -44,6 +44,7 @@ import ch.innovazion.arionide.menu.MenuDescription.DescriptionLine;
 import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.Storage;
+import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.animations.Animation;
 import ch.innovazion.arionide.ui.animations.FieldModifierAnimation;
@@ -58,11 +59,14 @@ import ch.innovazion.arionide.ui.overlay.components.Button;
 import ch.innovazion.arionide.ui.overlay.components.Label;
 import ch.innovazion.arionide.ui.overlay.components.Scroll;
 import ch.innovazion.arionide.ui.overlay.components.Tab;
+import ch.innovazion.arionide.ui.render.PrimitiveFactory;
+import ch.innovazion.arionide.ui.render.Shape;
+import ch.innovazion.arionide.ui.topology.Bounds;
 
 public class CodeView extends View implements EventHandler {
 
 	private final Animation currentMessageAlphaAnimation;
-	
+		
 	private final Scroll menu = new Scroll(this, "<No menu loaded>");
 	
 	private final Label[] menuDescription = new Label[MenuDescription.MAX_LINES];
@@ -89,7 +93,7 @@ public class CodeView extends View implements EventHandler {
 		this.add(new Button(this, " ... ").setSignal("more"), 0.85f, 0.86f, 0.95f, 0.94f);
 
 		this.add(this.currentMessage, 0.2f, 0.1f, 0.8f, 0.2f);
-		
+				
 		for(int i = 0; i < menuDescription.length; i++) {
 			menuDescription[i] = new Label(this, new String());
 			
@@ -101,11 +105,14 @@ public class CodeView extends View implements EventHandler {
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
 	
-	public void show() {
-		super.show();
-		this.setupFocusCycle(2, 3, 5, 0);
-		this.currentProject = this.getAppManager().getWorkspace().getCurrentProject();
-		this.getAppManager().getEventDispatcher().fire(new MessageEvent("'" + this.currentProject.getName() + "' has been successfully loaded", MessageType.SUCCESS));
+	public void viewWillAppear() {
+		setupFocusCycle(2, 3, 5, 0);
+		currentProject = getAppManager().getWorkspace().getCurrentProject();
+		getAppManager().getEventDispatcher().fire(new MessageEvent("'" + currentProject.getName() + "' has been successfully loaded", MessageType.SUCCESS));
+	}
+	
+	protected int getMaskAlpha(int viewAlpha) {
+		return 0;
 	}
 
 	public <T extends Event> void handleEvent(T event) {
@@ -160,7 +167,7 @@ public class CodeView extends View implements EventHandler {
 					}
 				}).start();
 			} else if(click.isTargetting((Component) null, "menuScroll")) {
-				if(!this.isHidden()) {
+				if(this.isVisible()) {
 					assert this.currentMenu != null;
 					this.currentMenu.click();
 				}

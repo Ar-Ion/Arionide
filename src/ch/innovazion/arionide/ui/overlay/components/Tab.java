@@ -148,9 +148,8 @@ public class Tab extends MultiComponent implements EventHandler {
 		return true;
 	}
 	
-	public void show() {
-		super.show();
-		this.updateAll();
+	protected void componentWillAppear() {		
+		updateAll();
 	}
 
 	public void drawSurface(AppDrawingContext context) {
@@ -168,7 +167,7 @@ public class Tab extends MultiComponent implements EventHandler {
 		this.borders.updateAlpha(layering.getCurrentAlpha());
 		this.borders.updateLightCenter(new Point(this.shadow, y));
 		
-		context.getRenderingSystem().renderLater(this.borders);
+		getParentView().getPreferedRenderingSystem(context).renderLater(this.borders);
 
 		int i = 0;
 		
@@ -235,8 +234,8 @@ public class Tab extends MultiComponent implements EventHandler {
 	}
 	
 	public <T extends Event> void handleEvent(T event) {
-		if(this.isHidden() || this.getBounds() == null) {
-			return;
+		if(!isEnabled() || !isVisible() || getBounds() == null) {
+			return; // Abort event if the button is not supposed to handle it.
 		}
 		
 		if(event instanceof ActionEvent) {

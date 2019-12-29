@@ -92,7 +92,7 @@ public class Label extends Component implements Enlightenable {
 	
 	
 	protected void drawComponent(AppDrawingContext context) {
-		context.getRenderingSystem().renderLater(this.text);	
+		getParentView().getPreferedRenderingSystem(context).renderLater(this.text);	
 	}
 	
 	public String toString() {

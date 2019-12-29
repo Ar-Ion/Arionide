@@ -43,12 +43,13 @@ public abstract class View extends Surface {
 	private final List<Component> components = new ArrayList<>();
 	
 	private final Shape borders = PrimitiveFactory.instance().newRectangle();
-	
+	private final Shape mask = PrimitiveFactory.instance().newSolid(0, 127);
+
 	private final Animation animation;
 	
 	private final int focusViewUID;
 	
-	private int alpha = 255;
+	private int alpha;
 	private boolean hasBorders;
 	
 	public View(AppManager appManager, LayoutManager layoutManager) {
@@ -57,6 +58,8 @@ public abstract class View extends Surface {
 		
 		this.animation = new FieldModifierAnimation(appManager, "alpha", View.class, this);
 		this.focusViewUID = getAppManager().getFocusManager().requestViewUID();
+		
+		mask.updateBounds(new Bounds(0.0f, 0.0f, 2.0f, 2.0f));
 	}
 	
 	public View setBounds(Bounds bounds) {
@@ -82,6 +85,9 @@ public abstract class View extends Surface {
 
 	public void drawSurface(AppDrawingContext context) {		
 		borders.updateAlpha(appManager.getAlphaLayering().push(AlphaLayer.VIEW, alpha));
+		
+		mask.updateAlpha(getMaskAlpha(alpha));
+		context.getRenderingSystem().renderDirect(mask);
 		
 		if(hasBorders) {
 			getPreferedRenderingSystem(context).renderLater(borders);
@@ -133,16 +139,6 @@ public abstract class View extends Surface {
 				
 		getAppManager().getFocusManager().setupCycle(cycle);
 	}
-		
-	public void show() {
-		super.show();
-		components.forEach(Component::show);
-	}
-	
-	public void hide() {
-		super.hide();
-		components.forEach(Component::hide);
-	}
 
 	@IAm("navigating to a view")
 	public void navigate(View target) {
@@ -150,9 +146,25 @@ public abstract class View extends Surface {
 		Transition.replace.hide(this, this.animation);
 	}
 	
-	@IAm("stacking a view")
+	@IAm("stacking a view") 
 	public void stack(View target) {
 		Transition.fade.show(target, target.animation);
 		Transition.fade.hide(this, this.animation);
+	}
+	
+	protected int getMaskAlpha(int viewAlpha) {
+		return viewAlpha / 2;
+	}
+	
+	protected void viewWillAppear() {
+		;
+	}
+	
+	protected void viewWillDisappear() {
+		;
+	}
+	
+	public static void showAsInitialView(View view) {
+		Transition.slowReplace.show(view, view.animation);
 	}
 }

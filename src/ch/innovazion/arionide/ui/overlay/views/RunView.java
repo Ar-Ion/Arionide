@@ -70,7 +70,7 @@ public class RunView extends View implements EventHandler {
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
 
-	public void show() {		
+	public void viewWillAppear() {		
 		Storage storage = this.getAppManager().getWorkspace().getCurrentProject().getStorage();
 		
 		List<HierarchyElement> elements = storage.getHierarchy();
@@ -83,8 +83,6 @@ public class RunView extends View implements EventHandler {
 		}
 				
 		this.sourceSelector.setComponents(buffer);
-		
-		super.show();
 	}
 	
 	public <T extends Event> void handleEvent(T event) {

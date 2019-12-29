@@ -58,9 +58,8 @@ public class NewProjectView extends View implements EventHandler {
 		this.getAppManager().getEventDispatcher().registerHandler(this);
 	}
 	
-	public void show() {
-		super.show();
-		this.setupFocusCycle();
+	public void viewWillAppear() {
+		setupFocusCycle();
 	}
 
 	public <T extends Event> void handleEvent(T event) {

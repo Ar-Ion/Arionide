@@ -148,7 +148,7 @@ public class Input extends Button implements EventHandler {
 				
 				layering.push(AlphaLayer.COMPONENT, this.cursorAlpha);
 				this.cursor.updateAlpha(this.cursorAlpha);
-				context.getRenderingSystem().renderLater(this.cursor);
+				getParentView().getPreferedRenderingSystem(context).renderLater(this.cursor);
 				layering.pop(AlphaLayer.COMPONENT);
 	
 				if(this.highlighted) {
@@ -163,14 +163,14 @@ public class Input extends Button implements EventHandler {
 	
 	public void drawComponent(AppDrawingContext context) {
 		if(this.text.length() != 0) {
-			context.getRenderingSystem().renderDirect(this.getText());
+			getParentView().getPreferedRenderingSystem(context).renderLater(this.getText());
 		} else {
 			AlphaLayeringSystem layering = this.getAppManager().getAlphaLayering();
 			
 			layering.push(AlphaLayer.COMPONENT, ApplicationTints.PLACEHOLDER_ALPHA);
 			
 			this.getText().updateAlpha(layering.getCurrentAlpha());
-			context.getRenderingSystem().renderDirect(this.getText());
+			getParentView().getPreferedRenderingSystem(context).renderLater(this.getText());
 			
 			layering.pop(AlphaLayer.COMPONENT);
 		}
@@ -187,8 +187,8 @@ public class Input extends Button implements EventHandler {
 	}
 	
 	public <T extends Event> void handleEvent(T event) {
-		if(this.isHidden() || this.getBounds() == null) {
-			return;
+		if(!isEnabled() || !isVisible() || getBounds() == null) {
+			return; // Abort event if the button is not supposed to handle it.
 		}
 		
 		super.handleEvent(event);
