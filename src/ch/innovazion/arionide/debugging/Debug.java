@@ -34,6 +34,9 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import ch.innovazion.arionide.ui.overlay.View;
+import ch.innovazion.arionide.ui.overlay.Views;
+
 public class Debug {
 	
 	private static final boolean JAVA_STACKTRACE = true;
@@ -55,11 +58,30 @@ public class Debug {
 			System.err.println();
 		}
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JOptionPane.showMessageDialog(null, "An internal error occured while " + (stacktrace.length > 1 ? stacktrace[1] : "running Arionide") + ".\n\"" + exception.getClass().getSimpleName() + ": " + exception.getMessage() + "\".", "An error occured", JOptionPane.ERROR_MESSAGE);
+		int maxAlpha = 0;
+		View currentView = null;
+		
+		for(View view : Views.getList()) {
+			if(view.getOpacity() > maxAlpha) {
+				maxAlpha = view.getOpacity();
+				currentView = view;
 			}
-		});
+		}
+		
+		if(currentView != null) {
+			Views.acknowledge.setPrimaryText("An internal error occured while " + (stacktrace.length > 1 ? stacktrace[1] : "running Arionide"))
+							 .setSecondaryText(exception.getClass().getSimpleName() + ": " + exception.getMessage())
+							 .setButtons("Close")
+							 .react("Close", View::discard)
+							 .stackOnto(currentView);
+		} else {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					JOptionPane.showMessageDialog(null, "An internal error occured while " + (stacktrace.length > 1 ? stacktrace[1] : "running Arionide") + ".\n\"" + exception.getClass().getSimpleName() + ": " + exception.getMessage() + "\".", "An error occured", JOptionPane.ERROR_MESSAGE);
+				}
+			});
+		}
+		
 	}
 	
 	// this code isn't meant to be fast

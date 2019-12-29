@@ -59,11 +59,7 @@ public abstract class GLShapeContext extends GLRenderingContext {
 
 	protected GLShapeContext(GL4 gl) {
 		super(gl);
-	}
 	
-	public void load() {
-		GL4 gl = this.getGL();
-		
 		try {
 			int vert = Shaders.loadShader(gl, this.getVertexShader(), DummySettings.VERTEX);
 			int frag = Shaders.loadShader(gl, this.getFragmentShader(), DummySettings.FRAGMENT);

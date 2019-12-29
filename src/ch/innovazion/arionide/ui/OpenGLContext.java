@@ -156,14 +156,12 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		GLRenderingContext.init(gl, resources, fontRenderer);
 		
 		coreSystem.registerPrimitive(PrimitiveType.POLYGON, GLRenderingContext.polygon);
-		coreSystem.registerPrimitive(PrimitiveType.SOLID, GLRenderingContext.polygon);
 		coreSystem.registerPrimitive(PrimitiveType.UNEDGED_RECT, GLRenderingContext.unedgedRectangle);
 		coreSystem.registerPrimitive(PrimitiveType.EDGE, GLRenderingContext.edge);
 		coreSystem.registerPrimitive(PrimitiveType.CURSOR, GLRenderingContext.cursor);
 		coreSystem.registerPrimitive(PrimitiveType.TEXT, GLRenderingContext.text);
 
 		overlaySystem.registerPrimitive(PrimitiveType.POLYGON, GLRenderingContext.polygon);
-		overlaySystem.registerPrimitive(PrimitiveType.SOLID, GLRenderingContext.polygon);
 		overlaySystem.registerPrimitive(PrimitiveType.UNEDGED_RECT, GLRenderingContext.unedgedRectangle);
 		overlaySystem.registerPrimitive(PrimitiveType.EDGE, GLRenderingContext.edge);
 		overlaySystem.registerPrimitive(PrimitiveType.CURSOR, GLRenderingContext.cursor);
@@ -198,12 +196,12 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 				coreSystem.renderLater(theCursor);
 	        }
 	        
-	        coreSystem.synchronise(overlaySystem);
 			coreSystem.processRenderingQueue();
-	        
 			overlaySystem.synchronise(coreSystem);
+			
 	        overlaySystem.processRenderingQueue();
-	        
+	        coreSystem.synchronise(overlaySystem);
+
 			gl.glDisable(GL4.GL_BLEND);
 			
 			Trash.instance().burnGarbage();

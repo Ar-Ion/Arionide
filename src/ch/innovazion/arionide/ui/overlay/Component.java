@@ -57,7 +57,6 @@ public abstract class Component extends Surface {
 	public final Component setVisible(boolean visible) {		
 		if(!visible) {
 			componentWillDisappear();
-			enabled = false;
 		} else {
 			componentWillAppear();
 		}

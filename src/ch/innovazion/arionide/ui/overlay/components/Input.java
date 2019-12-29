@@ -148,7 +148,7 @@ public class Input extends Button implements EventHandler {
 				
 				layering.push(AlphaLayer.COMPONENT, this.cursorAlpha);
 				this.cursor.updateAlpha(this.cursorAlpha);
-				getParentView().getPreferedRenderingSystem(context).renderLater(this.cursor);
+				context.getRenderingSystem().renderLater(this.cursor);
 				layering.pop(AlphaLayer.COMPONENT);
 	
 				if(this.highlighted) {

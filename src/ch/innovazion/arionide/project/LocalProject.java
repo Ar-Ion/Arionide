@@ -27,6 +27,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import ch.innovazion.arionide.SystemCache;
 import ch.innovazion.arionide.Utils;
@@ -41,8 +42,6 @@ import ch.innovazion.arionide.lang.natives.NativeInstructionSet;
 import ch.innovazion.arionide.lang.natives.NativeRuntime;
 import ch.innovazion.arionide.lang.natives.NativeTypes;
 import ch.innovazion.arionide.project.managers.DataManager;
-
-import java.util.Random;
 
 public class LocalProject implements Project {
 

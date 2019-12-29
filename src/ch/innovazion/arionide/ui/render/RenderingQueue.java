@@ -34,8 +34,17 @@ public class RenderingQueue extends PriorityQueue<Primitive> {
 		this.context = context;
 	}
 	
+	protected RenderingQueue(RenderingQueue parent) {
+		this.context = parent.context;
+		this.trace = parent.trace;
+	}
+	
 	protected BigInteger getStateDifference(Primitive other) {
 		return this.trace.xor(other.getStateFingerprint());
+	}
+	
+	protected void synchroniseState(RenderingQueue other) {
+		this.trace = other.trace;
 	}
 	
 	protected void updateState(Primitive other) {

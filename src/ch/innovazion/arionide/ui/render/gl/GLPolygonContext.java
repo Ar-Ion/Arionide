@@ -28,10 +28,7 @@ public class GLPolygonContext extends GLShapeContext {
 	
 	public GLPolygonContext(GL4 gl) {
 		super(gl);
-	}
 	
-	public void load() {
-		super.load();
 		this.position = this.getGL().glGetAttribLocation(this.getShaderID(), "position");
 	}
 	

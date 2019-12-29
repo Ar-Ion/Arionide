@@ -37,13 +37,7 @@ public class GLUnedgedRectangleContext extends GLPolygonContext {
 	
 	public GLUnedgedRectangleContext(GL4 gl) {
 		super(gl);
-	}
-	
-	public void load() {
-		super.load();
-		
-		GL4 gl = this.getGL();
-		
+
 		this.unedgingFactor = gl.glGetAttribLocation(this.getShaderID(), "unedgingFactor");
 		this.unedgingRadius = gl.glGetUniformLocation(this.getShaderID(), "radius");
 	}

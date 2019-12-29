@@ -50,13 +50,8 @@ public class GLEdgeContext extends GLPolygonContext {
 	
 	public GLEdgeContext(GL4 gl, Resources resources) {
 		super(gl);
-		this.edgeFile = resources.getResource("edge");
-	}
-	
-	public void load() {
-		super.load();
 		
-		GL4 gl = this.getGL();
+		this.edgeFile = resources.getResource("edge");
 		
 		this.edgeFactor = gl.glGetAttribLocation(this.getShaderID(), "edgeFactor");
 		

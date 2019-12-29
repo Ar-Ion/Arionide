@@ -35,13 +35,7 @@ public class GLTextContext extends GLShapeContext {
 	public GLTextContext(GL4 gl, GLFontRenderer fontRenderer) {
 		super(gl);
 		this.fontRenderer = fontRenderer;
-	}
-	
-	public void load() {
-		super.load();
-		
-		GL4 gl = this.getGL();
-		
+
 		this.sampler = gl.glGetUniformLocation(this.getShaderID(), "bitmap");
 		
 		IntBuffer texture = IntBuffer.allocate(1);

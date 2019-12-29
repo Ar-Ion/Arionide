@@ -42,10 +42,6 @@ public class GLCursorContext extends GLRenderingContext {
 
 	protected GLCursorContext(GL4 gl) {
 		super(gl);
-	}
-	
-	public void load() {
-		GL4 gl = this.getGL();
 		
 		try {
 			int vert = Shaders.loadShader(gl, "cursor.vert", DummySettings.VERTEX);

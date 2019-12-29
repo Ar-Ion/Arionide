@@ -21,6 +21,7 @@
 package ch.innovazion.arionide.ui.render;
 
 import java.math.BigInteger;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
 
@@ -33,12 +34,23 @@ public class PrimitiveRenderingSystem {
 		assert context != null;
 		
 		this.queues.put(type, new RenderingQueue(context));
-		
-		context.load();
 	}
 	
 	public void synchronise(PrimitiveRenderingSystem source) {
-		queues.descendingMap().replaceAll(source.queues::getOrDefault);
+		SortedMap<PrimitiveType, RenderingQueue> sourceSubmap = source.queues;
+		SortedMap<PrimitiveType, RenderingQueue> targetSubmap = this.queues;
+		
+		for(PrimitiveType type : PrimitiveType.values()) {
+			sourceSubmap = sourceSubmap.tailMap(type);
+			targetSubmap = targetSubmap.tailMap(type);
+			
+			PrimitiveType sourceType = sourceSubmap.firstKey();
+			PrimitiveType targetType = targetSubmap.firstKey();
+			
+			if(sourceType == targetType) {				
+				targetSubmap.get(targetType).synchroniseState(sourceSubmap.get(sourceType));
+			}
+		}
 	}
 	
 	public void renderLater(Object object) {

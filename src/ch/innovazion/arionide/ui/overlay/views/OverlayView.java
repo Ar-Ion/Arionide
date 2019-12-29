@@ -19,8 +19,4 @@ public abstract class OverlayView extends View {
 	public PrimitiveRenderingSystem getPreferedRenderingSystem(AppDrawingContext context) {
 		return context.getOverlayRenderingSystem();
 	}
-	
-	protected int getMaskAlpha(int alpha) {
-		return 127;
-	}
 }

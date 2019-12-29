@@ -49,6 +49,8 @@ public abstract class View extends Surface {
 	
 	private final int focusViewUID;
 	
+	private View stackParent;
+	
 	private int alpha;
 	private boolean hasBorders;
 	
@@ -156,10 +158,32 @@ public abstract class View extends Surface {
 	
 	@IAm("stacking a view") 
 	public void stack(View target) {
+		target.stackParent = this;
+		
 		Transition.fade.show(target, target.animation);
 		Transition.fade.hide(this, this.animation);
 	}
 	
+	@IAm("stacking a view") 
+	public void stackOnto(View source) {
+		stackParent = source;
+		
+		Transition.fade.show(this, this.animation);
+		Transition.fade.hide(source, source.animation);
+	}
+	
+	@IAm("discarding a view") 
+	public void discard() {
+		if(stackParent != null) {
+			navigateTo(stackParent);
+		} else {
+			System.err.println("Could not discard a view that was not previously stacked");
+		}
+	}
+	
+	public int getOpacity() {
+		return alpha;
+	}
 	
 	
 	protected int getMaskAlpha(int viewAlpha) {

@@ -23,7 +23,6 @@ package ch.innovazion.arionide.ui.render;
 import java.math.BigInteger;
 
 public interface RenderingContext {
-	public void load();
 	public void enter();
 	public void exit();
 	public void onAspectRatioUpdate(float newRatio);
