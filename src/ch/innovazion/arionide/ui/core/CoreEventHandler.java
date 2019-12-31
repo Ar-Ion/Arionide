@@ -37,7 +37,6 @@ import ch.innovazion.arionide.events.ProjectCloseEvent;
 import ch.innovazion.arionide.events.ProjectEvent;
 import ch.innovazion.arionide.events.ProjectOpenEvent;
 import ch.innovazion.arionide.events.WheelEvent;
-import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.ui.topology.Point;
 
@@ -60,10 +59,8 @@ public class CoreEventHandler implements EventHandler {
 	
 	private Menu currentMenu;
 	
-	public CoreEventHandler(CoreController controller, IEventDispatcher dispatcher) {
+	public CoreEventHandler(CoreController controller) {
 		this.controller = controller;
-		
-		dispatcher.registerHandler(this);
 	}
 	
 	public <T extends Event> void handleEvent(T event) {

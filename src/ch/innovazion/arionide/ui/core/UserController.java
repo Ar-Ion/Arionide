@@ -85,6 +85,18 @@ public class UserController {
 		return focus;
 	}
 	
+	public float getYaw() {
+		return yaw;
+	}
+	
+	public float getPitch() {
+		return pitch;
+	}
+	
+	public float getAcceleration() {
+		return generalAcceleration;
+	}
+	
 	protected void updatePhysics() {
 		long deltaTime = System.nanoTime() - lastPositionUpdate;
 		lastPositionUpdate += deltaTime;

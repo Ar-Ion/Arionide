@@ -123,7 +123,7 @@ public class CoreController {
 		}
 	}
 	
-	protected void updateDynamic(HostStructureStack stack) {
+	protected void updateDynamics() {		
 		if(requestTeleportation.compareAndSet(true, false)) {
 			WorldElement destination = coreGeometry.getElementByID(requestedDestination);
 
@@ -173,8 +173,11 @@ public class CoreController {
 		} catch (GeometryException exception) {
 			Debug.exception(exception);
 		}
-		
-		
+	}
+	
+	public void updateUserDynamics() {
+		HostStructureStack stack = project.getDataManager().getHostStack();
+
 		user.updatePhysics();
 		user.detectCollisions(stack, coreGeometry, mainCodeGeometry);
 		user.detectFocus(stack, coreGeometry, mainCodeGeometry);
@@ -234,6 +237,12 @@ public class CoreController {
 	
 	void onMouseMove() {
 		user.normaliseCameraQuaternion();
+		
+		if(isActive() && scene == RenderingScene.HIERARCHY) {
+			Vector3f position = user.getPosition();
+			CameraInfo info = new CameraInfo(position.x, position.y, position.z, user.getYaw(), user.getPitch());
+			project.setProperty("player", info, Coder.cameraEncoder);
+		}
 	}
 	
 	boolean onLeftClick() {
@@ -432,23 +441,39 @@ public class CoreController {
 		return active;
 	}
 	
+	public UserController getUserController() {
+		return user;
+	}
+	
 	public Geometry getCodeGeometry() {
 		return mainCodeGeometry;
 	}
 	
-	public Geometry getStructuresGeometry() {
+	public List<CodeGeometry> getCodeGeometries() {
+		return codeGeometries;
+	}
+	
+	public Geometry getCoreGeometry() {
 		return coreGeometry;
 	}
 	
-	protected Vector3f getGLPosition() {
-		return glPosition;
+	public WorldElement getSelection() {
+		return selection;
 	}
 	
-	protected RenderingScene getCurrentScene() {
+	public HostStructureStack getHostStack() {
+		return project.getDataManager().getHostStack();
+	}
+	
+	public Vector3f getGLPosition() {
+		return new Vector3f(glPosition);
+	}
+	
+	public Vector3f getTranslationVector() {
+		return new Vector3f(translationVector);
+	}
+	
+	public RenderingScene getCurrentScene() {
 		return scene;
-	}
-	
-	protected Vector3f getTranslationVector() {
-		return translationVector;
 	}
 }
