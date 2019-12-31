@@ -1,8 +1,9 @@
 /*******************************************************************************
  * This file is part of Arionide.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
- * Copyright (C) 2018, 2019 AZEntreprise Corporation. All rights reserved.
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2019 Innovazion. All rights reserved.
  *
  * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +54,6 @@ import ch.innovazion.arionide.events.MoveType;
 import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.events.ValidateEvent;
 import ch.innovazion.arionide.events.WheelEvent;
-import ch.innovazion.arionide.events.WriteEvent;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.resources.Resources;
 import ch.innovazion.arionide.threading.DrawingThread;
@@ -301,6 +301,10 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 
 	public void mouseMoved(MouseEvent event) {
 		this.dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.MOVE));
+	
+		if(theManager.getCoreRenderer().isActive()) {
+			moveCursor(window.getWidth() / 2, window.getHeight() / 2);
+		}
 	}
 	
 	public void mouseWheelMoved(MouseEvent event) {
@@ -320,7 +324,9 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	}
 
 	public void keyPressed(KeyEvent event) {
-		this.dispatcher.fire(new PressureEvent(event.getKeyChar(), event.getKeyCode(), event.getModifiers(), true));
+		PressureEvent pressure = new PressureEvent(event.getKeyChar(), event.getKeyCode(), event.getModifiers(), true);
+		
+		this.dispatcher.fire(pressure);
 
 		if(event.getKeyCode() == KeyEvent.VK_ENTER) {
 			this.dispatcher.fire(new ValidateEvent());
@@ -332,8 +338,6 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 			}
 		} else if(event.getKeyCode() == KeyEvent.VK_F && (event.isMetaDown() || event.isControlDown())) {
 			this.toggleFullscreen();
-		} else {
-			this.dispatcher.fire(new WriteEvent(event.getKeyChar(), event.getKeyCode(), event.getModifiers()));
 		}
 	}
 

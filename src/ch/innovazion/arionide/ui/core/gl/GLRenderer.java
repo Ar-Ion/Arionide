@@ -1,8 +1,9 @@
 /*******************************************************************************
  * This file is part of Arionide.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
- * Copyright (C) 2018, 2019 AZEntreprise Corporation. All rights reserved.
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2019 Innovazion. All rights reserved.
  *
  * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1179,14 +1180,11 @@ public class GLRenderer implements CoreRenderer, EventHandler {
 				}
 				
 				this.isFastBindingMode = !this.isFastBindingMode;
-				
-				return;
 			}
 		} else {
 			this.isFastBindingMode = false;
+			this.dispatcher.fire(new ClickEvent(null, "menuScroll"));
 		}
-		
-		this.dispatcher.fire(new ClickEvent(null, "menuScroll"));
 	}
 	
 	private void onRightClick() {

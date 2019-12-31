@@ -1,8 +1,9 @@
 /*******************************************************************************
  * This file is part of Arionide.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
- * Copyright (C) 2018, 2019 AZEntreprise Corporation. All rights reserved.
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2019 Innovazion. All rights reserved.
  *
  * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,12 +26,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.jogamp.newt.event.KeyEvent;
+
 import java.util.Set;
 
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.ClickEvent;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
+import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.events.WheelEvent;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
@@ -67,7 +72,7 @@ public class RunView extends View implements EventHandler {
 			this.add(this.console[i] = new Button(this, new String()).setSignal("console", i).setBordered(false), 0.0f, 0.17f + i * 0.05f, 1.0f, 0.22f + i * 0.05f);
 		}
 
-		this.getAppManager().getEventDispatcher().registerHandler(this);
+		this.getAppManager().getEventDispatcher().registerHandler(this, 0.6f);
 	}
 
 	public void viewWillAppear() {		
@@ -86,6 +91,10 @@ public class RunView extends View implements EventHandler {
 	}
 	
 	public <T extends Event> void handleEvent(T event) {
+		if(!isVisible()) {
+			return;
+		}
+		
 		if(event instanceof ClickEvent) {
 			ClickEvent click = (ClickEvent) event;
 			
@@ -135,6 +144,18 @@ public class RunView extends View implements EventHandler {
 			}
 			
 			this.updateConsole();
+		} else if(event instanceof PressureEvent) {
+			PressureEvent pressure = ((PressureEvent) event);
+		
+			event.abortDispatching();
+
+			if(pressure.isDown()) {
+				switch(pressure.getKeycode())  {
+				case KeyEvent.VK_ESCAPE:
+					navigateTo(Views.code);
+					break;
+				}
+			}
 		}
 	}
 	
@@ -171,6 +192,6 @@ public class RunView extends View implements EventHandler {
 	}
 
 	public Set<Class<? extends Event>> getHandleableEvents() {
-		return Utils.asSet(ClickEvent.class, WheelEvent.class);
+		return Utils.asSet(ClickEvent.class, WheelEvent.class, PressureEvent.class);
 	}
 }

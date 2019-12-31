@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * This file is part of Arionide.
+ *
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2019 Innovazion. All rights reserved.
+ *
+ * Arionide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Arionide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
+ *******************************************************************************/
 package ch.innovazion.arionide.ui.overlay.views;
 
 import java.util.ArrayList;
@@ -7,10 +28,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import com.jogamp.newt.event.KeyEvent;
+
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.ClickEvent;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
+import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.ApplicationTints;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
@@ -71,10 +95,17 @@ public abstract class PromptView extends OverlayView implements EventHandler {
 				String actionIdentifier = (String) click.getData()[0];
 				actions.getOrDefault(actionIdentifier, (nil) -> {}).accept(this);
 			}
+		} else if(event instanceof PressureEvent) {
+			
+			PressureEvent pressure = (PressureEvent) event;
+			
+			if(pressure.isDown() && pressure.getKeycode() == KeyEvent.VK_ESCAPE) {
+				discard();
+			}
 		}
 	}
 
 	public Set<Class<? extends Event>> getHandleableEvents() {
-		return Utils.asSet(ClickEvent.class);
+		return Utils.combine(super.getHandleableEvents(), ClickEvent.class, PressureEvent.class);
 	}
 }

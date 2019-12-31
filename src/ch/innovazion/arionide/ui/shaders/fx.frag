@@ -5,6 +5,8 @@
 #define GOD_RAYS
 #define SUN
 
+precision highp float;
+
 /* FXAA */
 const vec3 lumaVector = vec3(0.299, 0.587, 0.114);
 const float quality[] = float[](1.0, 1.0, 1.0, 1.0, 1.0, 1.5, 2.0, 2.0, 2.0, 2.0, 4.0, 8.0, 16.0, 24.0, 32.0);

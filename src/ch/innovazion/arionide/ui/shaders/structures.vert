@@ -1,6 +1,6 @@
 #version 400
 
-precision mediump float;
+precision highp float;
 
 in vec3 position;
 

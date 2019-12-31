@@ -1,8 +1,9 @@
 /*******************************************************************************
  * This file is part of Arionide.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
- * Copyright (C) 2018, 2019 AZEntreprise Corporation. All rights reserved.
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2019 Innovazion. All rights reserved.
  *
  * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,6 +111,10 @@ public class CodeView extends View implements EventHandler {
 	}
 
 	public <T extends Event> void handleEvent(T event) {
+		if(!isVisible()) {
+			return;
+		}
+		
 		if(event instanceof ClickEvent) {
 			ClickEvent click = (ClickEvent) event;
 			AppManager manager = this.getAppManager();
@@ -139,6 +144,7 @@ public class CodeView extends View implements EventHandler {
 			} else if(click.isTargetting(this, "add")) {
 				
 				Views.input.setText("Please enter the name of the new structure")
+						   .setPlaceholder("Structure name")
 						   .setResponder(this::createStructure)
 						   .stackOnto(this);
 				

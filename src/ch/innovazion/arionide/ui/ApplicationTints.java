@@ -1,8 +1,9 @@
 /*******************************************************************************
  * This file is part of Arionide.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
- * Copyright (C) 2018, 2019 AZEntreprise Corporation. All rights reserved.
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2019 Innovazion. All rights reserved.
  *
  * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +33,7 @@ public class ApplicationTints {
 	public static final int MENU_INFO_INACTIVE_COLOR = 0x808080;
 	public static final int ACTIVE_ALPHA = 0xFF;
 	public static final int INACTIVE_ALPHA = 0x5F;
-	public static final int PLACEHOLDER_ALPHA = 0x9F;
+	public static final int PLACEHOLDER_COLOR = 0xFFFFFF;
+	public static final int PLACEHOLDER_ALPHA = 0x6F;
 	public static final int WHITE = 0xFFFFFF;
 }

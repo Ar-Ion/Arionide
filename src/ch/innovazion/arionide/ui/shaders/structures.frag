@@ -1,6 +1,6 @@
 #version 400
 
-precision lowp float;
+precision highp float;
 
 /*
 const vec3 lightColor = vec3(1.0, 1.0, 1.0);

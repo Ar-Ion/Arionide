@@ -1,8 +1,9 @@
 /*******************************************************************************
  * This file is part of Arionide.
  *
- * Arionide is an IDE whose purpose is to build a language from scratch. It is the work of Arion Zimmermann in context of his TM.
- * Copyright (C) 2018, 2019 AZEntreprise Corporation. All rights reserved.
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2019 Innovazion. All rights reserved.
  *
  * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +29,7 @@ import com.jogamp.newt.event.KeyEvent;
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
-import ch.innovazion.arionide.events.WriteEvent;
+import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.ApplicationTints;
 import ch.innovazion.arionide.ui.Viewport;
@@ -127,6 +128,7 @@ public class Input extends Button implements EventHandler {
 			
 			if(entry != null) {
 				Point center = this.getBounds().getCenter();
+								
 				minusOne.apply(center);
 				
 				Size pixelSize = Viewport.getPixelSize(context);
@@ -140,7 +142,7 @@ public class Input extends Button implements EventHandler {
 				}
 				
 				Scalar scalar = new Scalar(1.0f, -affine.getScalar().getScaleY() / symbolicSize.getHeight() * entry.getHeight());
-				Translation translation = new Translation(center.getX() + cursorDisplacement - entry.getWidth() * affine.getScalar().getScaleX() * 0.5f, center.getY() - entry.getHeight() * affine.getScalar().getScaleY() * 0.5f);
+				Translation translation = new Translation(center.getX() + cursorDisplacement - entry.getWidth() * affine.getScalar().getScaleX() * 0.5f, -center.getY() - entry.getHeight() * affine.getScalar().getScaleY() * 0.5f);
 	
 				this.cursor.updateAffine(new Affine(scalar, translation));
 				
@@ -148,7 +150,7 @@ public class Input extends Button implements EventHandler {
 				
 				layering.push(AlphaLayer.COMPONENT, this.cursorAlpha);
 				this.cursor.updateAlpha(this.cursorAlpha);
-				context.getRenderingSystem().renderLater(this.cursor);
+				getParentView().getPreferedRenderingSystem(context).renderLater(this.cursor);
 				layering.pop(AlphaLayer.COMPONENT);
 	
 				if(this.highlighted) {
@@ -170,6 +172,7 @@ public class Input extends Button implements EventHandler {
 			layering.push(AlphaLayer.COMPONENT, ApplicationTints.PLACEHOLDER_ALPHA);
 			
 			this.getText().updateAlpha(layering.getCurrentAlpha());
+			getText().updateRGB(ApplicationTints.PLACEHOLDER_COLOR);
 			getParentView().getPreferedRenderingSystem(context).renderLater(this.getText());
 			
 			layering.pop(AlphaLayer.COMPONENT);
@@ -193,10 +196,16 @@ public class Input extends Button implements EventHandler {
 		
 		super.handleEvent(event);
 		
-		if(this.hasFocus && (event instanceof WriteEvent)) {
-			WriteEvent writeEvent = (WriteEvent) event;
+		if(this.hasFocus && (event instanceof PressureEvent)) {
+			PressureEvent pressure = (PressureEvent) event;
 			
-			int code = writeEvent.getKeycode();
+			event.abortDispatching();
+			
+			if(pressure.isUp()) {
+				return; // Do not respond twice to the "same" event
+			}
+			
+			int code = pressure.getKeycode();
 			
 			boolean noSeek = code != KeyEvent.VK_LEFT && code != KeyEvent.VK_RIGHT;
 						
@@ -206,7 +215,7 @@ public class Input extends Button implements EventHandler {
 				this.highlighted = false;
 			}
 			
-			this.dispatch(code, writeEvent.getChar(), writeEvent.getModifiers(), !noSeek);
+			this.dispatch(code, pressure.getChar(), pressure.getModifiers(), !noSeek);
 			
 			if(this.cursorPosition < 0) {
 				this.cursorPosition = 0;
@@ -297,7 +306,7 @@ public class Input extends Button implements EventHandler {
 	}
 	
 	public Set<Class<? extends Event>> getHandleableEvents() {
-		return Utils.combine(super.getHandleableEvents(), WriteEvent.class);
+		return Utils.combine(super.getHandleableEvents(), PressureEvent.class);
 	}
 	
 	public String toString() {
