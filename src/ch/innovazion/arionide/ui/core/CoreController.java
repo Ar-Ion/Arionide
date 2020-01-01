@@ -3,7 +3,7 @@
  *
  * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
  * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
- * Copyright (C) 2016-2019 Innovazion. All rights reserved.
+ * Copyright (C) 2016-2020 Innovazion. All rights reserved.
  *
  * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -197,8 +197,16 @@ public class CoreController {
 	}
 	
 	
-	public void requestMenuReset() {
+	public void invalidateMenu() {
 		requestMenuReset.set(true);
+	}
+
+	public void invalidateGeometries() {
+		coreGeometry.requestReconstruction();
+				
+		for(CodeGeometry geometry : codeGeometries) {
+			geometry.requestReconstruction();
+		}
 	}
 	
 	public void requestFocus(int target) {
@@ -209,14 +217,6 @@ public class CoreController {
 	public void requestTeleportation(int target) {
 		this.requestedDestination = target;
 		requestTeleportation.set(true);
-	}
-
-	public void requestGeometryReconstruction() {
-		coreGeometry.requestReconstruction();
-				
-		for(CodeGeometry geometry : codeGeometries) {
-			geometry.requestReconstruction();
-		}
 	}
 	
 	public void setScene(RenderingScene scene) {

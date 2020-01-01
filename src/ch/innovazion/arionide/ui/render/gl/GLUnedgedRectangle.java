@@ -3,7 +3,7 @@
  *
  * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
  * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
- * Copyright (C) 2016-2019 Innovazion. All rights reserved.
+ * Copyright (C) 2016-2020 Innovazion. All rights reserved.
  *
  * Arionide is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
