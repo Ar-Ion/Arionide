@@ -55,7 +55,7 @@ import ch.innovazion.arionide.events.WheelEvent;
 import ch.innovazion.arionide.events.WriteEvent;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.resources.Resources;
-import ch.innovazion.arionide.ui.core.CoreRenderer;
+import ch.innovazion.arionide.ui.core.CoreOrchestrator;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
 import ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem;
 import ch.innovazion.arionide.ui.render.font.FontRenderer;
@@ -116,10 +116,10 @@ public class AWTContext extends Canvas implements AppDrawingContext, MouseListen
 		this.renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 	}
 	
-	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+	public void load(Workspace workspace, Resources resources, CoreOrchestrator orchestrator, LayoutManager manager) {
 		this.theFrame.setVisible(true);
 		
-		this.theManager.initUI(workspace, resources, renderer, manager);
+		this.theManager.initUI(workspace, resources, orchestrator, manager);
 	}
 
 	public void draw() {		

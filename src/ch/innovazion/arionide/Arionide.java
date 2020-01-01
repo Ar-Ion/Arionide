@@ -26,7 +26,7 @@ import ch.innovazion.arionide.debugging.WatchdogState;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.resources.Resources;
 import ch.innovazion.arionide.ui.AppDrawingContext;
-import ch.innovazion.arionide.ui.core.CoreRenderer;
+import ch.innovazion.arionide.ui.core.CoreOrchestrator;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
 
 public interface Arionide {
@@ -49,14 +49,14 @@ public interface Arionide {
 	@IAm("loading the system resources")
 	public Resources loadResources(Workspace workspace);
 	
-	@IAm("loading the core renderer")
-	public CoreRenderer loadCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher, Resources resources);
+	@IAm("loading the core orchestrator")
+	public CoreOrchestrator loadCoreOrchestrator(IEventDispatcher dispatcher, Resources resources);
 	
 	@IAm("setting up the layout manager")
 	public LayoutManager setupLayoutManager(AppDrawingContext context, IEventDispatcher dispatcher);
 	
 	@IAm("showing up the user interface")
-	public void loadUI(AppDrawingContext context, Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager);
+	public void loadUI(AppDrawingContext context, Workspace workspace, Resources resources, CoreOrchestrator renderer, LayoutManager manager);
 	
 	@IAm("running the watchdog")
 	public WatchdogState runWatchdog();

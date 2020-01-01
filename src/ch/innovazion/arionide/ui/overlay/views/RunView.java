@@ -26,10 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.jogamp.newt.event.KeyEvent;
-
-import java.util.Set;
 
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.ClickEvent;
@@ -41,7 +40,7 @@ import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.StructureMeta;
 import ch.innovazion.arionide.ui.AppManager;
-import ch.innovazion.arionide.ui.core.TeleportInfo;
+import ch.innovazion.arionide.ui.core.CoreController;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
 import ch.innovazion.arionide.ui.overlay.View;
 import ch.innovazion.arionide.ui.overlay.Views;
@@ -126,8 +125,12 @@ public class RunView extends View implements EventHandler {
 							int structID = Integer.parseInt(identifiers[0]);
 							int instructionID = Integer.parseInt(identifiers[1]);
 							
-							this.navigateTo(Views.code);
-							this.getAppManager().getCoreRenderer().teleport(new TeleportInfo(structID, instructionID));	
+							navigateTo(Views.code);
+							
+							CoreController controller = getAppManager().getCoreOrchestrator().getController();
+							
+							controller.requestTeleportation(structID);
+							controller.requestFocus(instructionID);
 						}
 					}
 				}

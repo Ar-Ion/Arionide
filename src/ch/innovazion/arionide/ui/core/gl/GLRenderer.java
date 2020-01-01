@@ -257,7 +257,7 @@ public class GLRenderer {
 		
 		MergedGeometry merged = new MergedGeometry();
 				
-		merged.addGeometry(controller.getCoreGeometry());
+		merged.addGeometry(controller.getStructuresGeometry());
 		
 		if(controller.getCurrentScene() != RenderingScene.INHERITANCE) {			
 			for(Geometry geometry : controller.getCodeGeometries()) {
@@ -395,7 +395,7 @@ public class GLRenderer {
 	}
 	
 	public void render2D(AppDrawingContext context) {
-		this.renderLabels(context, controller.getCoreGeometry().getElements());
+		this.renderLabels(context, controller.getStructuresGeometry().getElements());
 		
 		for(Geometry geometry : controller.getCodeGeometries()) {
 			this.renderLabels(context, geometry.getElements());
@@ -408,7 +408,7 @@ public class GLRenderer {
 		
 		Vector3f translation = controller.getTranslationVector();
 		int currentID = controller.getHostStack().getCurrent();
-		WorldElement current = controller.getCoreGeometry().getElementByID(currentID);
+		WorldElement current = controller.getStructuresGeometry().getElementByID(currentID);
 
 		for(WorldElement element : elements) {
 			/* Context initialization */

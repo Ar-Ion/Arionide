@@ -48,7 +48,7 @@ public abstract class Browser extends Menu {
 			Integer id = objects.get(index);
 								
 			if(id != null) {				
-				getAppManager().getCoreRenderer().select(id);
+				getAppManager().getCoreOrchestrator().getController().select(id);
 							
 				StructureMeta meta = getProject().getStorage().getStructureMeta().get(id);
 				List<SpecificationElement> elements = meta.getSpecification().getElements();

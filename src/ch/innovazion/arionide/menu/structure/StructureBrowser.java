@@ -36,7 +36,7 @@ public abstract class StructureBrowser extends Browser {
 	}
 	
 	protected WorldElement getTarget() {
-		return getAppManager().getCoreRenderer().getStructuresGeometry().getElementByID(getSelectedID());
+		return getAppManager().getCoreOrchestrator().getController().getStructuresGeometry().getElementByID(getSelectedID());
 	}
 
 	protected List<Integer> loadCurrentElements() {

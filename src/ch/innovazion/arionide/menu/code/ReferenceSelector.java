@@ -80,7 +80,7 @@ class ReferenceSelector extends Menu {
 		Event event = getProject().getDataManager().getSpecificationManager().setValue(this.element, element);
 		getAppManager().getEventDispatcher().fire(event);
 		
-		getAppManager().getCoreRenderer().getCodeGeometry().requestReconstruction();
+		getAppManager().getCoreOrchestrator().getController().getCodeGeometry().requestReconstruction();
 		
 		back();
 	}

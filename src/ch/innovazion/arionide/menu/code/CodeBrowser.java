@@ -36,7 +36,7 @@ public abstract class CodeBrowser extends Browser {
 	}
 	
 	protected WorldElement getTarget() {
-		return getAppManager().getCoreRenderer().getCodeGeometry().getElementByID(getSelectedID());
+		return getAppManager().getCoreOrchestrator().getController().getCodeGeometry().getElementByID(getSelectedID());
 	}
 	
 	public List<Integer> loadCurrentElements() {

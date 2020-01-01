@@ -82,7 +82,7 @@ public class CodeEditor extends Menu {
 		} else if(element == delete) {
 			MessageEvent message = project.getDataManager().getCodeManager().deleteCode(getTarget().getID());
 			manager.getEventDispatcher().fire(message);
-			manager.getCoreRenderer().getCodeGeometry().requestReconstruction();
+			manager.getCoreOrchestrator().getController().getCodeGeometry().requestReconstruction();
 			back();
 		} else if(element == comment) {
 			new Thread(() -> {
@@ -91,7 +91,7 @@ public class CodeEditor extends Menu {
 				if(name != null) {
 					MessageEvent message = project.getDataManager().setComment(getTarget().getID(), name);
 					manager.getEventDispatcher().fire(message);
-					manager.getCoreRenderer().getCodeGeometry().requestReconstruction();
+					manager.getCoreOrchestrator().getController().getCodeGeometry().requestReconstruction();
 					back();
 				}
 			}).start();

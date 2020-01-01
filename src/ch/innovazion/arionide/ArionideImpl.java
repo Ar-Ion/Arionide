@@ -38,7 +38,8 @@ import ch.innovazion.arionide.threading.UserHelpingThread;
 import ch.innovazion.arionide.threading.WorkingThread;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.OpenGLContext;
-import ch.innovazion.arionide.ui.core.CoreRenderer;
+import ch.innovazion.arionide.ui.core.CoreController;
+import ch.innovazion.arionide.ui.core.CoreOrchestrator;
 import ch.innovazion.arionide.ui.core.gl.GLRenderer;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
 
@@ -81,16 +82,19 @@ public class ArionideImpl implements Arionide {
 		return new Resources(workspace);
 	}
 
-	public CoreRenderer loadCoreRenderer(AppDrawingContext context, IEventDispatcher dispatcher, Resources resources) {
-		return new GLRenderer(context, dispatcher);
+	public CoreOrchestrator loadCoreOrchestrator(IEventDispatcher dispatcher, Resources resources) {
+		CoreController controller = new CoreController();
+		GLRenderer renderer = new GLRenderer(controller);
+		
+		return new CoreOrchestrator(dispatcher, controller, renderer);
 	}
 
 	public LayoutManager setupLayoutManager(AppDrawingContext context, IEventDispatcher dispatcher) {
 		return new LayoutManager(context, dispatcher);
 	}
 
-	public void loadUI(AppDrawingContext context, Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {		
-		context.load(workspace, resources, renderer, manager);
+	public void loadUI(AppDrawingContext context, Workspace workspace, Resources resources, CoreOrchestrator orchestrator, LayoutManager manager) {		
+		context.load(workspace, resources, orchestrator, manager);
 		
 		this.drawingThread.setupManager(context);
 		this.updatingThread.setupManager(context);

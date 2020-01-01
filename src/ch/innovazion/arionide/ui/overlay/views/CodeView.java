@@ -46,9 +46,8 @@ import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.animations.Animation;
 import ch.innovazion.arionide.ui.animations.FieldModifierAnimation;
-import ch.innovazion.arionide.ui.core.CoreRenderer;
+import ch.innovazion.arionide.ui.core.CoreController;
 import ch.innovazion.arionide.ui.core.RenderingScene;
-import ch.innovazion.arionide.ui.core.TeleportInfo;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
 import ch.innovazion.arionide.ui.overlay.Component;
 import ch.innovazion.arionide.ui.overlay.View;
@@ -118,7 +117,7 @@ public class CodeView extends View implements EventHandler {
 		if(event instanceof ClickEvent) {
 			ClickEvent click = (ClickEvent) event;
 			AppManager manager = this.getAppManager();
-			CoreRenderer renderer = manager.getCoreRenderer();
+			CoreController controller = manager.getCoreOrchestrator().getController();
 			
 			if(click.isTargetting(this, "back")) {
 				manager.getWorkspace().closeProject(this.currentProject);
@@ -128,13 +127,13 @@ public class CodeView extends View implements EventHandler {
 				
 				switch(tabID) {
 					case 0:
-						renderer.setScene(RenderingScene.INHERITANCE);
+						controller.setScene(RenderingScene.INHERITANCE);
 						break;
 					case 1:
-						renderer.setScene(RenderingScene.HIERARCHY);
+						controller.setScene(RenderingScene.HIERARCHY);
 						break;
 					case 2:
-						renderer.setScene(RenderingScene.CALLGRAPH);
+						controller.setScene(RenderingScene.CALLGRAPH);
 						break;
 					default:
 						throw new RuntimeException("Invalid scene id");
@@ -213,7 +212,7 @@ public class CodeView extends View implements EventHandler {
 	
 	private void createStructure(String name) {
 		AppManager manager = getAppManager();
-		CoreRenderer renderer = manager.getCoreRenderer();
+		CoreController controller = manager.getCoreOrchestrator().getController();
 		
 		MessageEvent message = this.currentProject.getDataManager().newStructure(name);
 		manager.getEventDispatcher().fire(message);
@@ -225,11 +224,11 @@ public class CodeView extends View implements EventHandler {
 										
 			CodeChain code = storage.getCode().get(structID);
 			
+			controller.requestTeleportation(structID);
+			
 			if(!code.isAbstract()) {
 				int instructionID = code.list().get(0).getID();
-				renderer.teleport(new TeleportInfo(structID, instructionID));
-			} else {
-				renderer.teleport(new TeleportInfo(structID, -1));
+				controller.requestFocus(instructionID);
 			}
 		}
 	}

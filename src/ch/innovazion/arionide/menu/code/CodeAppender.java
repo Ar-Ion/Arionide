@@ -48,7 +48,7 @@ public class CodeAppender extends Browser {
 		Event event = getProject().getDataManager().getCodeManager().insertCode(getTarget().getID(), getSelectedID());
 		manager.getEventDispatcher().fire(event);
 		
-		manager.getCoreRenderer().getCodeGeometry().requestReconstruction();
+		manager.getCoreOrchestrator().getController().getCodeGeometry().requestReconstruction();
 		
 		back();
 

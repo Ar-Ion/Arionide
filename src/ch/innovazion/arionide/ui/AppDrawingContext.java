@@ -24,7 +24,7 @@ package ch.innovazion.arionide.ui;
 import ch.innovazion.arionide.Workspace;
 import ch.innovazion.arionide.resources.Resources;
 import ch.innovazion.arionide.threading.Purgeable;
-import ch.innovazion.arionide.ui.core.CoreRenderer;
+import ch.innovazion.arionide.ui.core.CoreOrchestrator;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
 import ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem;
 import ch.innovazion.arionide.ui.render.font.FontRenderer;
@@ -34,7 +34,7 @@ public interface AppDrawingContext extends Purgeable {
 	
 	public static final double MOUSE_WHEEL_SENSIBILITY = 1.0d;
 	
-	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager);
+	public void load(Workspace workspace, Resources resources, CoreOrchestrator orchestrator, LayoutManager manager);
 	public void draw();
 	public void update();
 	public Size getWindowSize();

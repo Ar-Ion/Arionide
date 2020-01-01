@@ -15,11 +15,10 @@ public class CoreOrchestrator {
 	private final CoreController controller;
 	private final GLRenderer renderer;
 		
-	public CoreOrchestrator(IEventDispatcher dispatcher) {
+	public CoreOrchestrator(IEventDispatcher dispatcher, CoreController controller, GLRenderer renderer) {
 		this.dispatcher = dispatcher;
-		
-		this.controller = new CoreController();
-		this.renderer = new GLRenderer(controller);
+		this.controller = controller;
+		this.renderer = renderer;
 		
 		CoreEventHandler handler = new CoreEventHandler(controller);
 		

@@ -37,7 +37,7 @@ import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.StructureMeta;
 import ch.innovazion.arionide.project.managers.DataManager;
 import ch.innovazion.arionide.ui.AppManager;
-import ch.innovazion.arionide.ui.core.TeleportInfo;
+import ch.innovazion.arionide.ui.core.CoreController;
 
 public class StructureEditor extends Menu {
 	
@@ -112,7 +112,7 @@ public class StructureEditor extends Menu {
 				specificationMenu.show();
 				break;
 			case go:
-				getAppManager().getCoreRenderer().teleport(new TeleportInfo(getTarget().getID(), -1));
+				manager.getCoreOrchestrator().getController().requestTeleportation(getTarget().getID());
 				break;
 			case name:
 				new Thread(() -> {
@@ -121,7 +121,7 @@ public class StructureEditor extends Menu {
 					if(name != null) {
 						Event message = getProject().getDataManager().setName(getTarget().getID(), name);
 						manager.getEventDispatcher().fire(message);
-						manager.getCoreRenderer().requestFullReconstruction();
+						manager.getCoreOrchestrator().getController().requestGeometryReconstruction();
 						show();
 					}
 				}).start();
@@ -135,25 +135,24 @@ public class StructureEditor extends Menu {
 	}
 	
 	private void delete() {
-		AppManager manager = getAppManager();
-		DataManager dataManager = getProject().getDataManager();
-		
-		Event message = dataManager.deleteStructure(getTarget().getID());
-		
-		manager.getCoreRenderer().requestFullReconstruction();
-		manager.getCoreRenderer().teleport(new TeleportInfo(dataManager.getHostStack().getCurrent(), -1));
-		manager.getEventDispatcher().fire(message);
+		DataManager manager = getProject().getDataManager();
+		Event message = manager.deleteStructure(getTarget().getID());
+		updateUser(manager, message);
 	}
 	
 	private void abstractify() {
+		DataManager manager = getProject().getDataManager();
+		Event message = manager.abstractifyStructure(getTarget().getID());
+		updateUser(manager, message);
+	}
+	
+	private void updateUser(DataManager dataManager, Event event) {
 		AppManager manager = getAppManager();
-		DataManager dataManager = getProject().getDataManager();
-		
-		Event message = dataManager.abstractifyStructure(getTarget().getID());
-		
-		manager.getCoreRenderer().getCodeGeometry().requestReconstruction();
-		manager.getCoreRenderer().teleport(new TeleportInfo(dataManager.getHostStack().getCurrent(), -1));
-		manager.getEventDispatcher().fire(message);
+		CoreController controller = manager.getCoreOrchestrator().getController();
+
+		controller.getCodeGeometry().requestReconstruction();
+		controller.requestTeleportation(dataManager.getHostStack().getCurrent());
+		manager.getEventDispatcher().fire(event);
 	}
 	
 	public MenuDescription getDescription() {

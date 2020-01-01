@@ -219,6 +219,23 @@ public class CoreController {
 		}
 	}
 	
+	public void setScene(RenderingScene scene) {
+		this.scene = scene;
+
+		if(scene != RenderingScene.HIERARCHY) {
+			user.setPosition(new Vector3f(0.0f, 0.0f, HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN * 5.0f));
+		} else {
+			CameraInfo info = this.project.getProperty("player", Coder.cameraDecoder);
+			
+			user.setPosition(new Vector3f(info.getX(), info.getY(), info.getZ()));
+			
+			user.updateYaw(info.getYaw());
+			user.updatePitch(info.getPitch());
+		}
+
+		onDiscontinuityCrossed();
+	}
+	
 	public void select(int id) {
 		selection = mainCodeGeometry.getElementByID(id);
 		
@@ -334,23 +351,6 @@ public class CoreController {
 		}
 	}
 	
-	void onSceneChanged(RenderingScene scene) {
-		this.scene = scene;
-
-		if(scene != RenderingScene.HIERARCHY) {
-			user.setPosition(new Vector3f(0.0f, 0.0f, HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN * 5.0f));
-		} else {
-			CameraInfo info = this.project.getProperty("player", Coder.cameraDecoder);
-			
-			user.setPosition(new Vector3f(info.getX(), info.getY(), info.getZ()));
-			
-			user.updateYaw(info.getYaw());
-			user.updatePitch(info.getPitch());
-		}
-
-		onDiscontinuityCrossed();
-	}
-	
 	void onDiscontinuityCrossed() {
 		requestMenuReset.set(true);
 
@@ -453,7 +453,7 @@ public class CoreController {
 		return codeGeometries;
 	}
 	
-	public Geometry getCoreGeometry() {
+	public Geometry getStructuresGeometry() {
 		return coreGeometry;
 	}
 	

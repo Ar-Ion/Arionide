@@ -35,7 +35,7 @@ import ch.innovazion.arionide.resources.Resources;
 import ch.innovazion.arionide.threading.Purgeable;
 import ch.innovazion.arionide.threading.timing.Timer;
 import ch.innovazion.arionide.ui.animations.Animation;
-import ch.innovazion.arionide.ui.core.CoreRenderer;
+import ch.innovazion.arionide.ui.core.CoreOrchestrator;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
 import ch.innovazion.arionide.ui.overlay.AlphaLayeringSystem;
 import ch.innovazion.arionide.ui.overlay.View;
@@ -54,7 +54,7 @@ public class AppManager implements Purgeable {
 	
 	private Workspace workspace;
 	private Resources resources;
-	private CoreRenderer renderer;
+	private CoreOrchestrator orchestrator;
 	private LayoutManager layout;
 	
 	private boolean initialized = false;
@@ -98,10 +98,10 @@ public class AppManager implements Purgeable {
 		}
 	}
 	
-	public void initUI(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
+	public void initUI(Workspace workspace, Resources resources, CoreOrchestrator orchestrator, LayoutManager manager) {
 		this.workspace = workspace;
 		this.resources = resources;
-		this.renderer = renderer;
+		this.orchestrator = orchestrator;
 		this.layout = manager;
 		
 		this.initialized = true;
@@ -146,8 +146,8 @@ public class AppManager implements Purgeable {
 		return this.workspace;
 	}
 	
-	public CoreRenderer getCoreRenderer() {
-		return this.renderer;
+	public CoreOrchestrator getCoreOrchestrator() {
+		return this.orchestrator;
 	}
 	
 	public void shutdown() {

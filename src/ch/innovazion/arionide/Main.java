@@ -27,7 +27,7 @@ import ch.innovazion.arionide.debugging.WatchdogState;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.resources.Resources;
 import ch.innovazion.arionide.ui.AppDrawingContext;
-import ch.innovazion.arionide.ui.core.CoreRenderer;
+import ch.innovazion.arionide.ui.core.CoreOrchestrator;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
 
 public class Main {
@@ -55,10 +55,10 @@ public class Main {
 	
 			Resources resources = theInstance.loadResources(workspace);
 			AppDrawingContext context = theInstance.setupAppDrawingContext(dispatcher);
-			CoreRenderer renderer = theInstance.loadCoreRenderer(context, dispatcher, resources);
+			CoreOrchestrator orchestrator = theInstance.loadCoreOrchestrator(dispatcher, resources);
 			LayoutManager manager = theInstance.setupLayoutManager(context, dispatcher);
 			
-			theInstance.loadUI(context, workspace, resources, renderer, manager);
+			theInstance.loadUI(context, workspace, resources, orchestrator, manager);
 			
 			WatchdogState state = null;
 			

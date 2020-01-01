@@ -57,8 +57,7 @@ import ch.innovazion.arionide.events.WheelEvent;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.resources.Resources;
 import ch.innovazion.arionide.threading.DrawingThread;
-import ch.innovazion.arionide.ui.core.CoreRenderer;
-import ch.innovazion.arionide.ui.core.gl.GLRenderer;
+import ch.innovazion.arionide.ui.core.CoreOrchestrator;
 import ch.innovazion.arionide.ui.gc.GLTrashContext;
 import ch.innovazion.arionide.ui.gc.Trash;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
@@ -92,7 +91,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	private final FloatBuffer clearDepth = FloatBuffer.allocate(1);
 	
 	private DrawingThread thread;
-	private GLRenderer core;
+	private CoreOrchestrator orchestrator;
 	private Resources resources;
 	private GLFontRenderer fontRenderer;
 	
@@ -126,10 +125,8 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		dispatcher.registerHandler(this);
 	}
 
-	public void load(Workspace workspace, Resources resources, CoreRenderer renderer, LayoutManager manager) {
-		assert renderer instanceof GLRenderer;
-		
-		this.core = (GLRenderer) renderer;
+	public void load(Workspace workspace, Resources resources, CoreOrchestrator orchestrator, LayoutManager manager) {		
+		this.orchestrator = orchestrator;
 		this.resources = resources;
 		
 		try {
@@ -138,7 +135,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 			Debug.exception(exception);
 		}
 		
-		this.theManager.initUI(workspace, resources, renderer, manager);
+		this.theManager.initUI(workspace, resources, orchestrator, manager);
 	
 		this.window.setVisible(true);
 		this.animator.start();
@@ -151,7 +148,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		
 		Trash.init(new GLTrashContext(gl));
 		
-		core.init(gl);
+		orchestrator.orchestrateInitialisation(this);
 		
 		GLRenderingContext.init(gl, resources, fontRenderer);
 		
@@ -184,15 +181,16 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 			gl.glClearBufferfv(GL4.GL_COLOR, 0, clearColor);
 	        gl.glClearBufferfv(GL4.GL_DEPTH, 0, clearDepth);
 			
-	        core.render3D(this);
+	        orchestrator.orchestrateMain(this);
 	        	        
 	        gl.glEnable(GL4.GL_BLEND);
 	        gl.glBlendFunc(GL4.GL_SRC_ALPHA,  GL4.GL_ONE_MINUS_SRC_ALPHA);
 	        
 	        theManager.draw();
-	        core.render2D(this);
+
+	        orchestrator.orchestrateOverlay(this);
 	        
-	        if(theManager.getCoreRenderer().isActive()) {
+	        if(orchestrator.getController().isActive()) {
 				coreSystem.renderLater(theCursor);
 	        }
 	        
@@ -216,7 +214,8 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		
 		coreSystem.updateAspectRatio((float) width / height);
 		overlaySystem.updateAspectRatio((float) width / height);
-		core.update(new Bounds(this.window.getX(), this.window.getY(), width, height));
+		
+		orchestrator.updateBounds(new Bounds(this.window.getX(), this.window.getY(), width, height));
 	}
 	
 	public void draw() {
@@ -302,7 +301,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	public void mouseMoved(MouseEvent event) {
 		this.dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.MOVE));
 	
-		if(theManager.getCoreRenderer().isActive()) {
+		if(orchestrator.getController().isActive()) {
 			moveCursor(window.getWidth() / 2, window.getHeight() / 2);
 		}
 	}
