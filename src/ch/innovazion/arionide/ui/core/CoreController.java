@@ -95,18 +95,15 @@ public class CoreController {
 	}
 	
 	protected void updateStatic() {
-		if(requestProjectFinalisation.compareAndSet(true, false)) {
-			// Close project
+		if(requestProjectFinalisation.compareAndSet(true, false)) {	// Close project
 			project = null;
 			scene = null;
 			active = false;
 			
 			codeGeometries.clear();
-			
-			project.save();
 		} 
 		
-		if(requestProjectInitialisation.compareAndSet(true, false)) {
+		if(requestProjectInitialisation.compareAndSet(true, false)) { // Open project
 			project.getDataManager().getHostStack().reset();
 
 			long seed = project.getProperty("seed", Coder.integerDecoder);
@@ -255,7 +252,6 @@ public class CoreController {
 	}
 	
 	void onProjectClose() {
-		this.project = null;
 		requestProjectFinalisation.set(true);
 	}
 	

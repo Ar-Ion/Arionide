@@ -43,6 +43,7 @@ import ch.innovazion.arionide.ui.ApplicationTints;
 import ch.innovazion.arionide.ui.OpenGLContext;
 import ch.innovazion.arionide.ui.core.CoreController;
 import ch.innovazion.arionide.ui.core.RenderingScene;
+import ch.innovazion.arionide.ui.core.UserController;
 import ch.innovazion.arionide.ui.core.geom.Connection;
 import ch.innovazion.arionide.ui.core.geom.Geometry;
 import ch.innovazion.arionide.ui.core.geom.GeometryException;
@@ -243,8 +244,8 @@ public class GLRenderer {
 	private void setupStructures(GL4 gl) {
 		gl.glUseProgram(structuresShader);
 		
-		loadVP(jointStructureSettings);
-		loadVP(link.getSettings());
+		loadViewProjection(jointStructureSettings);
+		loadViewProjection(link.getSettings());
 
 		jointStructureSettings.setCamera(controller.getGLPosition());
 	}
@@ -479,39 +480,39 @@ public class GLRenderer {
 		Vector4f point = new Matrix4f(projection).mul(this.viewMatrix).transform(new Vector4f(input, 1.0f));
 		return new Vector2f(point.x / point.z, point.y / point.z);
 	}
-
-	public void updateCamera(Vector3f position, float yaw, float pitch) {	
-		this.zNear = controller.getUserController().getAcceleration() * 3.0f;		
-
-		loadMatrix(viewMatrix.identity()
-				.rotate(-pitch, 1.0f, 0.0f, 0.0f)
-				.rotate(yaw, 0.0f, 1.0f, 0.0f)
-				.translate(-position.x, -position.y, -position.z), this.viewData);
-		
-		loadMatrix(projectionMatrix.identity().perspective(fov, bounds.getWidth() / bounds.getHeight(), zNear, zFar), projectionData);
-	}
-
-	/*
-	 * Loads the view and the projection matrix in a buffer ready to be uploaded to GPU memory (the loaded shader must be Classic3DSettings-compatible)
-	 */
-	private void loadVP(General3DSettings settings) {
-		settings.setView(viewData);
-		settings.setProjection(projectionData);
-	}
 	
-	public void updateBounds(Bounds bounds) {
+	public void updateViewport(Bounds bounds) {
 		this.bounds = bounds;
 		
 		GL4 gl = (GL4) GLContext.getCurrentGL();
 		fx.resizeBuffers(gl, bounds.getWidthAsInt(), bounds.getHeightAsInt());
 	}
 	
+	public void updateCamera() {
+		UserController user = controller.getUserController();
+		
+		this.zNear = user.getAcceleration() * 3.0f;		
+
+		loadMatrix(viewMatrix.identity()
+				.rotate(-user.getPitch(), 1.0f, 0.0f, 0.0f)
+				.rotate(user.getYaw(), 0.0f, 1.0f, 0.0f)
+				.translate(controller.getGLPosition().negate()), this.viewData);
+		
+		loadMatrix(projectionMatrix.identity().perspective(fov, bounds.getWidth() / bounds.getHeight(), zNear, zFar), projectionData);
+	}
+	
 	public Vector3f getCameraDirection() {
 		return new Vector3f(-this.viewData.get(2), -this.viewData.get(6), -this.viewData.get(10));
 	}
 
-	
-	/* Hack because put(FloatBuffer) does not work */
+	/*
+	 * Loads the view and the projection matrix in a buffer ready to be uploaded to GPU memory (the loaded shader must be Classic3DSettings-compatible)
+	 */
+	private void loadViewProjection(General3DSettings settings) {
+		settings.setView(viewData);
+		settings.setProjection(projectionData);
+	}
+
 	private void loadMatrix(Matrix4f matrix, FloatBuffer modelData) {
 		modelData.put(0, matrix.m00());
 		modelData.put(1, matrix.m01());

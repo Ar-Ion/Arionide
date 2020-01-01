@@ -70,7 +70,7 @@ public class CoreOrchestrator {
 				controller.updateDynamics();
 			}
 			
-			renderer.updateCamera(controller.getGLPosition(), user.getYaw(), user.getPitch());
+			renderer.updateCamera();
 			
 			if(controller.isReady()) {
 				controller.updateUserDynamics();
@@ -100,7 +100,7 @@ public class CoreOrchestrator {
 	@IAm("updating the viewport")
 	public void updateBounds(Bounds bounds) {
 		try {
-			renderer.updateBounds(bounds);
+			renderer.updateViewport(bounds);
 			controller.updateBounds(bounds);
 		} catch(Exception exception) {
 			pauseController();
