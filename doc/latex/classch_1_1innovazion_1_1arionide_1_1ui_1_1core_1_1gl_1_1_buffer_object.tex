@@ -1,0 +1,138 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}{}\doxysection{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object$<$ C extends Context, S extends Settings $>$ Class Template Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}\index{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object$<$ C extends Context, S extends Settings $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object$<$ C extends Context, S extends Settings $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_aa87fd2b19496eeed7458a4f317e092b1}{update\+Data}} (String label, Buffer data)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_a066f58e4b8a035e5dfc56aceb986d566}{update\+Data\+Segment}} (String label, int offset, Buffer data)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_abcd5d40ea907bb31e0b4c2e27b2b0b5d}{Buffer\+Object}} (S \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object_a591542b8b7e4f448088d8bb74cd4fc9e}{settings}})
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_add261c5f768ffa7748284c6d66c3c63e}{set\+Buffer\+Initializer}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}} generator, Consumer$<$ C $>$ initializer)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_a06d64ec4353be75f9a2b323f6c9afbc3}{set\+Buffer\+Label}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}} generator, String label)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_ae3feba86dad4e37cc61d5ca3c985e211}{setup\+Data}} (C \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object_aa50d424be322377fd391fecdf916541f}{context}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator}{Static\+Allocator}} allocator)
+\item 
+abstract List$<$ \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_af229ddeed0037372ca7348a5f9663067}{get\+Generators}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_ad6f1d5d4e00831b05ca65d65096a84bf}{fetch\+Generator}} (String label)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final Map$<$ \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}}, Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_af9704f82dd5caddfc193c0b7f9382b1b}{vbos}} = new Hash\+Map$<$$>$()
+\item 
+final Map$<$ \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}}, Consumer$<$ C $>$ $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_aa93d78107bddab1788a3c766710da405}{initializers}} = new Hash\+Map$<$$>$()
+\item 
+final Map$<$ String, \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_ac00d8c55ca6de763013ee77a3b3ab9bd}{labels}} = new Hash\+Map$<$$>$()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_abcd5d40ea907bb31e0b4c2e27b2b0b5d}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_abcd5d40ea907bb31e0b4c2e27b2b0b5d}} 
+\index{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}!BufferObject@{BufferObject}}
+\index{BufferObject@{BufferObject}!ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}}
+\doxysubsubsection{\texorpdfstring{BufferObject()}{BufferObject()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object}}$<$ C extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_context}{Context}}, S extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_settings}{Settings}} $>$.\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}{Buffer\+Object}} (\begin{DoxyParamCaption}\item[{S}]{settings }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_ad6f1d5d4e00831b05ca65d65096a84bf}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_ad6f1d5d4e00831b05ca65d65096a84bf}} 
+\index{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}!fetchGenerator@{fetchGenerator}}
+\index{fetchGenerator@{fetchGenerator}!ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}}
+\doxysubsubsection{\texorpdfstring{fetchGenerator()}{fetchGenerator()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object}}$<$ C extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_context}{Context}}, S extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_settings}{Settings}} $>$.fetch\+Generator (\begin{DoxyParamCaption}\item[{String}]{label }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_af229ddeed0037372ca7348a5f9663067}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_af229ddeed0037372ca7348a5f9663067}} 
+\index{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}!getGenerators@{getGenerators}}
+\index{getGenerators@{getGenerators}!ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}}
+\doxysubsubsection{\texorpdfstring{getGenerators()}{getGenerators()}}
+{\footnotesize\ttfamily abstract List$<$\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}}$>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object}}$<$ C extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_context}{Context}}, S extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_settings}{Settings}} $>$.get\+Generators (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}, {\ttfamily [protected]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_structure_a97e9ecbcbd02a6bfbade17f399659013}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+structures.\+Structure}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars_aa95b450e6b4370264128eb585595cfd4}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+stars.\+Stars}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link_a9bcf55a58c9cd14c98eaa37d185113a6}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+links.\+Link}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_add261c5f768ffa7748284c6d66c3c63e}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_add261c5f768ffa7748284c6d66c3c63e}} 
+\index{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}!setBufferInitializer@{setBufferInitializer}}
+\index{setBufferInitializer@{setBufferInitializer}!ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}}
+\doxysubsubsection{\texorpdfstring{setBufferInitializer()}{setBufferInitializer()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object}}$<$ C extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_context}{Context}}, S extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_settings}{Settings}} $>$.set\+Buffer\+Initializer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}}}]{generator,  }\item[{Consumer$<$ C $>$}]{initializer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_a06d64ec4353be75f9a2b323f6c9afbc3}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_a06d64ec4353be75f9a2b323f6c9afbc3}} 
+\index{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}!setBufferLabel@{setBufferLabel}}
+\index{setBufferLabel@{setBufferLabel}!ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}}
+\doxysubsubsection{\texorpdfstring{setBufferLabel()}{setBufferLabel()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object}}$<$ C extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_context}{Context}}, S extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_settings}{Settings}} $>$.set\+Buffer\+Label (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}}}]{generator,  }\item[{String}]{label }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_ae3feba86dad4e37cc61d5ca3c985e211}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_ae3feba86dad4e37cc61d5ca3c985e211}} 
+\index{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}!setupData@{setupData}}
+\index{setupData@{setupData}!ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}}
+\doxysubsubsection{\texorpdfstring{setupData()}{setupData()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object}}$<$ C extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_context}{Context}}, S extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_settings}{Settings}} $>$.setup\+Data (\begin{DoxyParamCaption}\item[{C}]{context,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator}{Static\+Allocator}}}]{allocator }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_aa87fd2b19496eeed7458a4f317e092b1}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_aa87fd2b19496eeed7458a4f317e092b1}} 
+\index{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}!updateData@{updateData}}
+\index{updateData@{updateData}!ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}}
+\doxysubsubsection{\texorpdfstring{updateData()}{updateData()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object}}$<$ C extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_context}{Context}}, S extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_settings}{Settings}} $>$.update\+Data (\begin{DoxyParamCaption}\item[{String}]{label,  }\item[{Buffer}]{data }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_a066f58e4b8a035e5dfc56aceb986d566}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_a066f58e4b8a035e5dfc56aceb986d566}} 
+\index{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}!updateDataSegment@{updateDataSegment}}
+\index{updateDataSegment@{updateDataSegment}!ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}}
+\doxysubsubsection{\texorpdfstring{updateDataSegment()}{updateDataSegment()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object}}$<$ C extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_context}{Context}}, S extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_settings}{Settings}} $>$.update\+Data\+Segment (\begin{DoxyParamCaption}\item[{String}]{label,  }\item[{int}]{offset,  }\item[{Buffer}]{data }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_aa93d78107bddab1788a3c766710da405}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_aa93d78107bddab1788a3c766710da405}} 
+\index{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}!initializers@{initializers}}
+\index{initializers@{initializers}!ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}}
+\doxysubsubsection{\texorpdfstring{initializers}{initializers}}
+{\footnotesize\ttfamily final Map$<$\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}}, Consumer$<$C$>$ $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object}}$<$ C extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_context}{Context}}, S extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_settings}{Settings}} $>$.initializers = new Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_ac00d8c55ca6de763013ee77a3b3ab9bd}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_ac00d8c55ca6de763013ee77a3b3ab9bd}} 
+\index{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}!labels@{labels}}
+\index{labels@{labels}!ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}}
+\doxysubsubsection{\texorpdfstring{labels}{labels}}
+{\footnotesize\ttfamily final Map$<$String, \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}}$>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object}}$<$ C extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_context}{Context}}, S extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_settings}{Settings}} $>$.labels = new Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_af9704f82dd5caddfc193c0b7f9382b1b}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object_af9704f82dd5caddfc193c0b7f9382b1b}} 
+\index{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}!vbos@{vbos}}
+\index{vbos@{vbos}!ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$@{ch.innovazion.arionide.ui.core.gl.BufferObject$<$ C extends Context, S extends Settings $>$}}
+\doxysubsubsection{\texorpdfstring{vbos}{vbos}}
+{\footnotesize\ttfamily final Map$<$\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator}{Buffer\+Generator}}, Integer$>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object}{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Buffer\+Object}}$<$ C extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_context}{Context}}, S extends \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_settings}{Settings}} $>$.vbos = new Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/ui/core/gl/\mbox{\hyperlink{_buffer_object_8java}{Buffer\+Object.\+java}}\end{DoxyCompactItemize}

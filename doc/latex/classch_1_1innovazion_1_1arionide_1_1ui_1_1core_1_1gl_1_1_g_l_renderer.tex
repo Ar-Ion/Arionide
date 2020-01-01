@@ -1,0 +1,640 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer}{}\doxysection{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer}\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6fea5bb0423c5a46ef047be59cd3119f}{G\+L\+Renderer}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_controller}{Core\+Controller}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_adb21e972dc6463ea1e8da26e356595dc}{controller}})
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0851a9449f0e9fa47420fde0aa535ba4}{init}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} context)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a10e192d19faec361e4611f6200585faa}{render3D}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} context)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aceebfe5935c24e64189ab8ba94c9125e}{render2D}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} context)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1401b72ce86493312f64553d6db0eeb}{update\+Camera}} (Vector3f position, float yaw, float pitch)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6837e90789690b9a05f1e84185952946}{update\+Acceleration}} (float acceleration)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1cb4b8dcd1924a974359e42d76e34f4}{update\+Bounds}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds}{Bounds}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa62c7fd8c6c6dc2d945b4b53a50868d3}{bounds}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6d70d06cb3357db268eae5865d35a5b0}{init\+Shaders}} (G\+L4 gl)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a25be4c0daf86337517fa72ebb3e5a4d0}{render\+Universe}} (G\+L4 gl)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_af59654216f43c0600ad87d46c548cfba}{setup\+Space}} (G\+L4 gl)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0d6ee9aa7bf310d2fa2a12096da2db07}{render\+Space}} (G\+L4 gl)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a79628bbb614db6ab294d8315e96553eb}{setup\+Structures}} (G\+L4 gl)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a188ab74f8f9a26fe77c3853d8039b4fb}{render\+Structures}} (G\+L4 gl)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a32b0b775af3d660115a274f1ea9fd0a1}{render\+Structures0}} (G\+L4 gl, List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$ elements)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ae0033effa48e78a3c324a722e243e6aa}{render\+Connections}} (G\+L4 gl, List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_connection}{Connection}} $>$ connections)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a98138f4333bb50d48648935b967b797a}{connect}} (G\+L4 gl, Vector3f first, Vector3f second)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_af3b36bf11266fbc008248a54a10cf1ec}{setup\+FX}} (G\+L4 gl)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac27a150fa037fab5082554ed4b906d11}{post\+Process}} (G\+L4 gl)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac03409dfde29c84087d7b4dd6bde6944}{render\+Labels}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} context, List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$ elements)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a919fa4fe3625c810df0918bff938828c}{render\+Label}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} context, String label, int color, int alpha, Vector2f screen\+Anchor, float height)
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a73fed4a61e5c8a361b4b9a137c3fb4fc}{check\+Renderability}} (Vector3f object)
+\item 
+Vector2f \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a2b041e0ebce1c2be7fe087a556f6e34b}{get\+H\+V\+C\+From3D}} (Vector3f input, Matrix4f projection)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9cf9be7d2ccef26a18e1646d80b30417}{update\+Perspective}} ()
+\item 
+Vector3f \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9d474b52804c12a2bebfa1f72c41f8c6}{get\+D\+OF}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0513a881e72ad516053a12c2cf12f44c}{load\+VP}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_general3_d_settings}{General3\+D\+Settings}} settings)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4b36442dfb11888ebcabda69d365e920}{load\+Matrix}} (Matrix4f matrix, Float\+Buffer \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a32a4a61357b3207df70cd1782ad7cddb}{model\+Data}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_controller}{Core\+Controller}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_adb21e972dc6463ea1e8da26e356595dc}{controller}}
+\item 
+final Float\+Buffer \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a32a4a61357b3207df70cd1782ad7cddb}{model\+Data}} = Float\+Buffer.\+allocate(16)
+\item 
+final Float\+Buffer \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5a2bca72592401aaba0db1dde1d2b58e}{view\+Data}} = Float\+Buffer.\+allocate(16)
+\item 
+final Float\+Buffer \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa1f7009589e9893d498f8a6e2cd777c6}{projection\+Data}} = Float\+Buffer.\+allocate(16)
+\item 
+final Float\+Buffer \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a3f2f4d083443936e4770660934fb2746}{current\+To\+Previous\+Viewport\+Data}} = Float\+Buffer.\+allocate(16)
+\item 
+final Float\+Buffer \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5178e510c9ba4bec4fab1d1573f68d90}{clear\+Color}} = Float\+Buffer.\+allocate(4)
+\item 
+final Float\+Buffer \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_af47083ba9ff125e86581a010c6d577a8}{clear\+Depth}} = Float\+Buffer.\+allocate(1)
+\item 
+final Matrix4f \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a3a3c35b01250ab8ef91862a6e9ce6968}{view\+Matrix}} = new Matrix4f()
+\item 
+final Matrix4f \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a23be1fa02ce3146d591639f93f271a4a}{projection\+Matrix}} = new Matrix4f()
+\item 
+Matrix4f \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0af74c7e217e61abaa918ca04a81a25d}{previous\+View\+Projection\+Matrix}} = new Matrix4f()
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars}{Stars}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5b3ee0e0d47d24bf22d5230bf420ebf3}{small\+Stars}} = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars}{Stars}}(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a8c48f5ee953af920ca07d71d31964174}{small\+Stars\+Count}}, 1.\+0f)
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars}{Stars}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9706fc4c6831cb7a71a6bad4bc5e1407}{big\+Stars}} = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars}{Stars}}(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab17af7f62e61defaf67a530c9786edb6}{big\+Stars\+Count}}, 2.\+0f)
+\item 
+final \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_general_stars_settings}{General\+Stars\+Settings}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_acea996812b6e7e13ccd2ad5ab5c45dc4}{joint\+Stars\+Settings}} = \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_utils_a20459ac6f7d54c62d21fae8db37615a1}{Utils.\+bind}}(General\+Stars\+Settings.\+class, small\+Stars.\+get\+Settings(), big\+Stars.\+get\+Settings())
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_structure}{Structure}}\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_abd2bb0e2e7d6b95b189f52ebd925f82b}{structures}} = qualities.\+stream().map(Structure\+::new).to\+Array(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_structure}{Structure}}\mbox{[}$\,$\mbox{]}\+::new)
+\item 
+final \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_general_structure_settings}{General\+Structure\+Settings}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab0b93291ce5b945058c8bbc3eab412d0}{joint\+Structure\+Settings}} = \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_utils_a20459ac6f7d54c62d21fae8db37615a1}{Utils.\+bind}}(General\+Structure\+Settings.\+class, Stream.\+of(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_abd2bb0e2e7d6b95b189f52ebd925f82b}{structures}}).map(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object_acef7320795be9c06070f85fc00c0a082}{Structure\+::get\+Settings}}).to\+Array(\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_general_structure_settings}{General\+Structure\+Settings}}\mbox{[}$\,$\mbox{]}\+::new))
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link}{Link}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aec2d4360eae53aa0e09dd82eed7787aa}{link}} = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link}{Link}}()
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1fx_1_1_f_b_o_frame}{F\+B\+O\+Frame}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa534cb2bb5b92e17725b0e393d547e0f}{fx}} = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1fx_1_1_f_b_o_frame}{F\+B\+O\+Frame}}()
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator}{Static\+Allocator}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a2c8dd7d9adc4360cdf90d9deed4a6104}{allocator}} = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator}{Static\+Allocator}}(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_utils_acd428894e41713fb157eee54fcb75543}{Utils.\+combine}}(Renderable\+Object.\+class, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_abd2bb0e2e7d6b95b189f52ebd925f82b}{structures}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aec2d4360eae53aa0e09dd82eed7787aa}{link}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5b3ee0e0d47d24bf22d5230bf420ebf3}{small\+Stars}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9706fc4c6831cb7a71a6bad4bc5e1407}{big\+Stars}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa534cb2bb5b92e17725b0e393d547e0f}{fx}}))
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ada1da82dd1bfa3f441d74c7fb7c28433}{fx\+Enabled}} = true
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds}{Bounds}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa62c7fd8c6c6dc2d945b4b53a50868d3}{bounds}}
+\item 
+float \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6c945025515a87b906264a408af375bd}{z\+Near}} = 1.\+0f $\ast$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry_a16712ff0bd3ca2b83ba2573482850a0d}{Hierarchical\+Geometry.\+M\+A\+K\+E\+\_\+\+T\+H\+E\+\_\+\+U\+N\+I\+V\+E\+R\+S\+E\+\_\+\+G\+R\+E\+A\+T\+\_\+\+A\+G\+A\+IN}}
+\item 
+float \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac059ed5e324ce8797f342baf034bdcb9}{z\+Far}} = 100.\+0f $\ast$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry_a16712ff0bd3ca2b83ba2573482850a0d}{Hierarchical\+Geometry.\+M\+A\+K\+E\+\_\+\+T\+H\+E\+\_\+\+U\+N\+I\+V\+E\+R\+S\+E\+\_\+\+G\+R\+E\+A\+T\+\_\+\+A\+G\+A\+IN}}
+\item 
+Vector3f \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a12ccebc11c46da582da7f95ee5878356}{sun}} = new Vector3f(0.\+0f, 2 $\ast$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4878ca73e1b961a39090a4e07b95a43a}{sky\+Distance}}, 0.\+0f)
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_adafae5342de82c8a5238da6208cc4564}{structures\+Shader}}
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5518a66a363aa448551164e1983286ca}{space\+Shader}}
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a937723c30e2ac71a8e6ee03f9eb37ca9}{fx\+Shader}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final List$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab24395834c2123323dd16fdd4eefe537}{qualities}} = Arrays.\+as\+List(16, 20, 24, 28, 32)
+\item 
+static final int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a8c48f5ee953af920ca07d71d31964174}{small\+Stars\+Count}} = 2048
+\item 
+static final int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab17af7f62e61defaf67a530c9786edb6}{big\+Stars\+Count}} = 128
+\item 
+static final float \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ae5a614f23257c7e9707928ceb8bed490}{fov}} = (float) Math.\+to\+Radians(60.\+0f)
+\item 
+static final float \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4878ca73e1b961a39090a4e07b95a43a}{sky\+Distance}} = 32.\+0f $\ast$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry_a16712ff0bd3ca2b83ba2573482850a0d}{Hierarchical\+Geometry.\+M\+A\+K\+E\+\_\+\+T\+H\+E\+\_\+\+U\+N\+I\+V\+E\+R\+S\+E\+\_\+\+G\+R\+E\+A\+T\+\_\+\+A\+G\+A\+IN}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6fea5bb0423c5a46ef047be59cd3119f}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6fea5bb0423c5a46ef047be59cd3119f}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!GLRenderer@{GLRenderer}}
+\index{GLRenderer@{GLRenderer}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{GLRenderer()}{GLRenderer()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+G\+L\+Renderer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_controller}{Core\+Controller}}}]{controller }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a73fed4a61e5c8a361b4b9a137c3fb4fc}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a73fed4a61e5c8a361b4b9a137c3fb4fc}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!checkRenderability@{checkRenderability}}
+\index{checkRenderability@{checkRenderability}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{checkRenderability()}{checkRenderability()}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+check\+Renderability (\begin{DoxyParamCaption}\item[{Vector3f}]{object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a73fed4a61e5c8a361b4b9a137c3fb4fc_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a98138f4333bb50d48648935b967b797a}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a98138f4333bb50d48648935b967b797a}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!connect@{connect}}
+\index{connect@{connect}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{connect()}{connect()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+connect (\begin{DoxyParamCaption}\item[{G\+L4}]{gl,  }\item[{Vector3f}]{first,  }\item[{Vector3f}]{second }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a98138f4333bb50d48648935b967b797a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9d474b52804c12a2bebfa1f72c41f8c6}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9d474b52804c12a2bebfa1f72c41f8c6}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!getDOF@{getDOF}}
+\index{getDOF@{getDOF}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{getDOF()}{getDOF()}}
+{\footnotesize\ttfamily Vector3f ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+get\+D\+OF (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a2b041e0ebce1c2be7fe087a556f6e34b}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a2b041e0ebce1c2be7fe087a556f6e34b}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!getHVCFrom3D@{getHVCFrom3D}}
+\index{getHVCFrom3D@{getHVCFrom3D}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{getHVCFrom3D()}{getHVCFrom3D()}}
+{\footnotesize\ttfamily Vector2f ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+get\+H\+V\+C\+From3D (\begin{DoxyParamCaption}\item[{Vector3f}]{input,  }\item[{Matrix4f}]{projection }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0851a9449f0e9fa47420fde0aa535ba4}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0851a9449f0e9fa47420fde0aa535ba4}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!init@{init}}
+\index{init@{init}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}}}]{context }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0851a9449f0e9fa47420fde0aa535ba4_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6d70d06cb3357db268eae5865d35a5b0}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6d70d06cb3357db268eae5865d35a5b0}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!initShaders@{initShaders}}
+\index{initShaders@{initShaders}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{initShaders()}{initShaders()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+init\+Shaders (\begin{DoxyParamCaption}\item[{G\+L4}]{gl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6d70d06cb3357db268eae5865d35a5b0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4b36442dfb11888ebcabda69d365e920}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4b36442dfb11888ebcabda69d365e920}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!loadMatrix@{loadMatrix}}
+\index{loadMatrix@{loadMatrix}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{loadMatrix()}{loadMatrix()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+load\+Matrix (\begin{DoxyParamCaption}\item[{Matrix4f}]{matrix,  }\item[{Float\+Buffer}]{model\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0513a881e72ad516053a12c2cf12f44c}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0513a881e72ad516053a12c2cf12f44c}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!loadVP@{loadVP}}
+\index{loadVP@{loadVP}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{loadVP()}{loadVP()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+load\+VP (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_general3_d_settings}{General3\+D\+Settings}}}]{settings }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0513a881e72ad516053a12c2cf12f44c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac27a150fa037fab5082554ed4b906d11}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac27a150fa037fab5082554ed4b906d11}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!postProcess@{postProcess}}
+\index{postProcess@{postProcess}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{postProcess()}{postProcess()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+post\+Process (\begin{DoxyParamCaption}\item[{G\+L4}]{gl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac27a150fa037fab5082554ed4b906d11_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aceebfe5935c24e64189ab8ba94c9125e}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aceebfe5935c24e64189ab8ba94c9125e}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!render2D@{render2D}}
+\index{render2D@{render2D}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{render2D()}{render2D()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+render2D (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}}}]{context }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aceebfe5935c24e64189ab8ba94c9125e_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a10e192d19faec361e4611f6200585faa}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a10e192d19faec361e4611f6200585faa}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!render3D@{render3D}}
+\index{render3D@{render3D}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{render3D()}{render3D()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+render3D (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}}}]{context }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a10e192d19faec361e4611f6200585faa_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ae0033effa48e78a3c324a722e243e6aa}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ae0033effa48e78a3c324a722e243e6aa}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!renderConnections@{renderConnections}}
+\index{renderConnections@{renderConnections}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{renderConnections()}{renderConnections()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+render\+Connections (\begin{DoxyParamCaption}\item[{G\+L4}]{gl,  }\item[{List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_connection}{Connection}} $>$}]{connections }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ae0033effa48e78a3c324a722e243e6aa_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a919fa4fe3625c810df0918bff938828c}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a919fa4fe3625c810df0918bff938828c}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!renderLabel@{renderLabel}}
+\index{renderLabel@{renderLabel}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{renderLabel()}{renderLabel()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+render\+Label (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}}}]{context,  }\item[{String}]{label,  }\item[{int}]{color,  }\item[{int}]{alpha,  }\item[{Vector2f}]{screen\+Anchor,  }\item[{float}]{height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a919fa4fe3625c810df0918bff938828c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac03409dfde29c84087d7b4dd6bde6944}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac03409dfde29c84087d7b4dd6bde6944}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!renderLabels@{renderLabels}}
+\index{renderLabels@{renderLabels}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{renderLabels()}{renderLabels()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+render\+Labels (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}}}]{context,  }\item[{List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$}]{elements }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac03409dfde29c84087d7b4dd6bde6944_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0d6ee9aa7bf310d2fa2a12096da2db07}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0d6ee9aa7bf310d2fa2a12096da2db07}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!renderSpace@{renderSpace}}
+\index{renderSpace@{renderSpace}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{renderSpace()}{renderSpace()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+render\+Space (\begin{DoxyParamCaption}\item[{G\+L4}]{gl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0d6ee9aa7bf310d2fa2a12096da2db07_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a188ab74f8f9a26fe77c3853d8039b4fb}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a188ab74f8f9a26fe77c3853d8039b4fb}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!renderStructures@{renderStructures}}
+\index{renderStructures@{renderStructures}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{renderStructures()}{renderStructures()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+render\+Structures (\begin{DoxyParamCaption}\item[{G\+L4}]{gl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a188ab74f8f9a26fe77c3853d8039b4fb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a32b0b775af3d660115a274f1ea9fd0a1}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a32b0b775af3d660115a274f1ea9fd0a1}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!renderStructures0@{renderStructures0}}
+\index{renderStructures0@{renderStructures0}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{renderStructures0()}{renderStructures0()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+render\+Structures0 (\begin{DoxyParamCaption}\item[{G\+L4}]{gl,  }\item[{List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$}]{elements }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a32b0b775af3d660115a274f1ea9fd0a1_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a25be4c0daf86337517fa72ebb3e5a4d0}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a25be4c0daf86337517fa72ebb3e5a4d0}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!renderUniverse@{renderUniverse}}
+\index{renderUniverse@{renderUniverse}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{renderUniverse()}{renderUniverse()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+render\+Universe (\begin{DoxyParamCaption}\item[{G\+L4}]{gl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a25be4c0daf86337517fa72ebb3e5a4d0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_af3b36bf11266fbc008248a54a10cf1ec}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_af3b36bf11266fbc008248a54a10cf1ec}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!setupFX@{setupFX}}
+\index{setupFX@{setupFX}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{setupFX()}{setupFX()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+setup\+FX (\begin{DoxyParamCaption}\item[{G\+L4}]{gl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_af3b36bf11266fbc008248a54a10cf1ec_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_af59654216f43c0600ad87d46c548cfba}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_af59654216f43c0600ad87d46c548cfba}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!setupSpace@{setupSpace}}
+\index{setupSpace@{setupSpace}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{setupSpace()}{setupSpace()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+setup\+Space (\begin{DoxyParamCaption}\item[{G\+L4}]{gl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_af59654216f43c0600ad87d46c548cfba_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a79628bbb614db6ab294d8315e96553eb}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a79628bbb614db6ab294d8315e96553eb}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!setupStructures@{setupStructures}}
+\index{setupStructures@{setupStructures}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{setupStructures()}{setupStructures()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+setup\+Structures (\begin{DoxyParamCaption}\item[{G\+L4}]{gl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a79628bbb614db6ab294d8315e96553eb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6837e90789690b9a05f1e84185952946}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6837e90789690b9a05f1e84185952946}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!updateAcceleration@{updateAcceleration}}
+\index{updateAcceleration@{updateAcceleration}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{updateAcceleration()}{updateAcceleration()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+update\+Acceleration (\begin{DoxyParamCaption}\item[{float}]{acceleration }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1cb4b8dcd1924a974359e42d76e34f4}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1cb4b8dcd1924a974359e42d76e34f4}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!updateBounds@{updateBounds}}
+\index{updateBounds@{updateBounds}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{updateBounds()}{updateBounds()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+update\+Bounds (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds}{Bounds}}}]{bounds }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1cb4b8dcd1924a974359e42d76e34f4_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1401b72ce86493312f64553d6db0eeb}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1401b72ce86493312f64553d6db0eeb}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!updateCamera@{updateCamera}}
+\index{updateCamera@{updateCamera}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{updateCamera()}{updateCamera()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+update\+Camera (\begin{DoxyParamCaption}\item[{Vector3f}]{position,  }\item[{float}]{yaw,  }\item[{float}]{pitch }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1401b72ce86493312f64553d6db0eeb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9cf9be7d2ccef26a18e1646d80b30417}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9cf9be7d2ccef26a18e1646d80b30417}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!updatePerspective@{updatePerspective}}
+\index{updatePerspective@{updatePerspective}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{updatePerspective()}{updatePerspective()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+update\+Perspective (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9cf9be7d2ccef26a18e1646d80b30417_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a2c8dd7d9adc4360cdf90d9deed4a6104}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a2c8dd7d9adc4360cdf90d9deed4a6104}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!allocator@{allocator}}
+\index{allocator@{allocator}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{allocator}{allocator}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator}{Static\+Allocator}} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+allocator = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator}{Static\+Allocator}}(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_utils_acd428894e41713fb157eee54fcb75543}{Utils.\+combine}}(Renderable\+Object.\+class, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_abd2bb0e2e7d6b95b189f52ebd925f82b}{structures}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aec2d4360eae53aa0e09dd82eed7787aa}{link}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5b3ee0e0d47d24bf22d5230bf420ebf3}{small\+Stars}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9706fc4c6831cb7a71a6bad4bc5e1407}{big\+Stars}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa534cb2bb5b92e17725b0e393d547e0f}{fx}}))\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9706fc4c6831cb7a71a6bad4bc5e1407}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9706fc4c6831cb7a71a6bad4bc5e1407}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!bigStars@{bigStars}}
+\index{bigStars@{bigStars}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{bigStars}{bigStars}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars}{Stars}} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+big\+Stars = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars}{Stars}}(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab17af7f62e61defaf67a530c9786edb6}{big\+Stars\+Count}}, 2.\+0f)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab17af7f62e61defaf67a530c9786edb6}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab17af7f62e61defaf67a530c9786edb6}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!bigStarsCount@{bigStarsCount}}
+\index{bigStarsCount@{bigStarsCount}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{bigStarsCount}{bigStarsCount}}
+{\footnotesize\ttfamily final int ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+big\+Stars\+Count = 128\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa62c7fd8c6c6dc2d945b4b53a50868d3}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa62c7fd8c6c6dc2d945b4b53a50868d3}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!bounds@{bounds}}
+\index{bounds@{bounds}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{bounds}{bounds}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds}{Bounds}} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+bounds\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5178e510c9ba4bec4fab1d1573f68d90}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5178e510c9ba4bec4fab1d1573f68d90}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!clearColor@{clearColor}}
+\index{clearColor@{clearColor}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{clearColor}{clearColor}}
+{\footnotesize\ttfamily final Float\+Buffer ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+clear\+Color = Float\+Buffer.\+allocate(4)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_af47083ba9ff125e86581a010c6d577a8}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_af47083ba9ff125e86581a010c6d577a8}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!clearDepth@{clearDepth}}
+\index{clearDepth@{clearDepth}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{clearDepth}{clearDepth}}
+{\footnotesize\ttfamily final Float\+Buffer ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+clear\+Depth = Float\+Buffer.\+allocate(1)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_adb21e972dc6463ea1e8da26e356595dc}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_adb21e972dc6463ea1e8da26e356595dc}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!controller@{controller}}
+\index{controller@{controller}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{controller}{controller}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_controller}{Core\+Controller}} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+controller\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a3f2f4d083443936e4770660934fb2746}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a3f2f4d083443936e4770660934fb2746}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!currentToPreviousViewportData@{currentToPreviousViewportData}}
+\index{currentToPreviousViewportData@{currentToPreviousViewportData}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{currentToPreviousViewportData}{currentToPreviousViewportData}}
+{\footnotesize\ttfamily final Float\+Buffer ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+current\+To\+Previous\+Viewport\+Data = Float\+Buffer.\+allocate(16)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ae5a614f23257c7e9707928ceb8bed490}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ae5a614f23257c7e9707928ceb8bed490}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!fov@{fov}}
+\index{fov@{fov}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{fov}{fov}}
+{\footnotesize\ttfamily final float ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+fov = (float) Math.\+to\+Radians(60.\+0f)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa534cb2bb5b92e17725b0e393d547e0f}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa534cb2bb5b92e17725b0e393d547e0f}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!fx@{fx}}
+\index{fx@{fx}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{fx}{fx}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1fx_1_1_f_b_o_frame}{F\+B\+O\+Frame}} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+fx = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1fx_1_1_f_b_o_frame}{F\+B\+O\+Frame}}()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ada1da82dd1bfa3f441d74c7fb7c28433}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ada1da82dd1bfa3f441d74c7fb7c28433}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!fxEnabled@{fxEnabled}}
+\index{fxEnabled@{fxEnabled}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{fxEnabled}{fxEnabled}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+fx\+Enabled = true\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a937723c30e2ac71a8e6ee03f9eb37ca9}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a937723c30e2ac71a8e6ee03f9eb37ca9}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!fxShader@{fxShader}}
+\index{fxShader@{fxShader}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{fxShader}{fxShader}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+fx\+Shader\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_acea996812b6e7e13ccd2ad5ab5c45dc4}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_acea996812b6e7e13ccd2ad5ab5c45dc4}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!jointStarsSettings@{jointStarsSettings}}
+\index{jointStarsSettings@{jointStarsSettings}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{jointStarsSettings}{jointStarsSettings}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_general_stars_settings}{General\+Stars\+Settings}} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+joint\+Stars\+Settings = \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_utils_a20459ac6f7d54c62d21fae8db37615a1}{Utils.\+bind}}(General\+Stars\+Settings.\+class, small\+Stars.\+get\+Settings(), big\+Stars.\+get\+Settings())\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab0b93291ce5b945058c8bbc3eab412d0}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab0b93291ce5b945058c8bbc3eab412d0}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!jointStructureSettings@{jointStructureSettings}}
+\index{jointStructureSettings@{jointStructureSettings}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{jointStructureSettings}{jointStructureSettings}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_general_structure_settings}{General\+Structure\+Settings}} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+joint\+Structure\+Settings = \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_utils_a20459ac6f7d54c62d21fae8db37615a1}{Utils.\+bind}}(General\+Structure\+Settings.\+class, Stream.\+of(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_abd2bb0e2e7d6b95b189f52ebd925f82b}{structures}}).map(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object_acef7320795be9c06070f85fc00c0a082}{Structure\+::get\+Settings}}).to\+Array(\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_general_structure_settings}{General\+Structure\+Settings}}\mbox{[}$\,$\mbox{]}\+::new))\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aec2d4360eae53aa0e09dd82eed7787aa}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aec2d4360eae53aa0e09dd82eed7787aa}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!link@{link}}
+\index{link@{link}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{link}{link}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link}{Link}} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+link = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link}{Link}}()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a32a4a61357b3207df70cd1782ad7cddb}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a32a4a61357b3207df70cd1782ad7cddb}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!modelData@{modelData}}
+\index{modelData@{modelData}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{modelData}{modelData}}
+{\footnotesize\ttfamily final Float\+Buffer ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+model\+Data = Float\+Buffer.\+allocate(16)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0af74c7e217e61abaa918ca04a81a25d}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0af74c7e217e61abaa918ca04a81a25d}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!previousViewProjectionMatrix@{previousViewProjectionMatrix}}
+\index{previousViewProjectionMatrix@{previousViewProjectionMatrix}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{previousViewProjectionMatrix}{previousViewProjectionMatrix}}
+{\footnotesize\ttfamily Matrix4f ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+previous\+View\+Projection\+Matrix = new Matrix4f()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa1f7009589e9893d498f8a6e2cd777c6}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa1f7009589e9893d498f8a6e2cd777c6}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!projectionData@{projectionData}}
+\index{projectionData@{projectionData}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{projectionData}{projectionData}}
+{\footnotesize\ttfamily final Float\+Buffer ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+projection\+Data = Float\+Buffer.\+allocate(16)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a23be1fa02ce3146d591639f93f271a4a}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a23be1fa02ce3146d591639f93f271a4a}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!projectionMatrix@{projectionMatrix}}
+\index{projectionMatrix@{projectionMatrix}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{projectionMatrix}{projectionMatrix}}
+{\footnotesize\ttfamily final Matrix4f ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+projection\+Matrix = new Matrix4f()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab24395834c2123323dd16fdd4eefe537}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab24395834c2123323dd16fdd4eefe537}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!qualities@{qualities}}
+\index{qualities@{qualities}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{qualities}{qualities}}
+{\footnotesize\ttfamily final List$<$Integer$>$ ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+qualities = Arrays.\+as\+List(16, 20, 24, 28, 32)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4878ca73e1b961a39090a4e07b95a43a}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4878ca73e1b961a39090a4e07b95a43a}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!skyDistance@{skyDistance}}
+\index{skyDistance@{skyDistance}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{skyDistance}{skyDistance}}
+{\footnotesize\ttfamily final float ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+sky\+Distance = 32.\+0f $\ast$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry_a16712ff0bd3ca2b83ba2573482850a0d}{Hierarchical\+Geometry.\+M\+A\+K\+E\+\_\+\+T\+H\+E\+\_\+\+U\+N\+I\+V\+E\+R\+S\+E\+\_\+\+G\+R\+E\+A\+T\+\_\+\+A\+G\+A\+IN}}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5b3ee0e0d47d24bf22d5230bf420ebf3}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5b3ee0e0d47d24bf22d5230bf420ebf3}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!smallStars@{smallStars}}
+\index{smallStars@{smallStars}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{smallStars}{smallStars}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars}{Stars}} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+small\+Stars = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars}{Stars}}(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a8c48f5ee953af920ca07d71d31964174}{small\+Stars\+Count}}, 1.\+0f)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a8c48f5ee953af920ca07d71d31964174}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a8c48f5ee953af920ca07d71d31964174}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!smallStarsCount@{smallStarsCount}}
+\index{smallStarsCount@{smallStarsCount}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{smallStarsCount}{smallStarsCount}}
+{\footnotesize\ttfamily final int ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+small\+Stars\+Count = 2048\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5518a66a363aa448551164e1983286ca}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5518a66a363aa448551164e1983286ca}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!spaceShader@{spaceShader}}
+\index{spaceShader@{spaceShader}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{spaceShader}{spaceShader}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+space\+Shader\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_abd2bb0e2e7d6b95b189f52ebd925f82b}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_abd2bb0e2e7d6b95b189f52ebd925f82b}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!structures@{structures}}
+\index{structures@{structures}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{structures}{structures}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_structure}{Structure}} \mbox{[}$\,$\mbox{]} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+structures = qualities.\+stream().map(Structure\+::new).to\+Array(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_structure}{Structure}}\mbox{[}$\,$\mbox{]}\+::new)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_adafae5342de82c8a5238da6208cc4564}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_adafae5342de82c8a5238da6208cc4564}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!structuresShader@{structuresShader}}
+\index{structuresShader@{structuresShader}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{structuresShader}{structuresShader}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+structures\+Shader\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a12ccebc11c46da582da7f95ee5878356}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a12ccebc11c46da582da7f95ee5878356}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!sun@{sun}}
+\index{sun@{sun}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{sun}{sun}}
+{\footnotesize\ttfamily Vector3f ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+sun = new Vector3f(0.\+0f, 2 $\ast$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4878ca73e1b961a39090a4e07b95a43a}{sky\+Distance}}, 0.\+0f)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5a2bca72592401aaba0db1dde1d2b58e}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a5a2bca72592401aaba0db1dde1d2b58e}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!viewData@{viewData}}
+\index{viewData@{viewData}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{viewData}{viewData}}
+{\footnotesize\ttfamily final Float\+Buffer ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+view\+Data = Float\+Buffer.\+allocate(16)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a3a3c35b01250ab8ef91862a6e9ce6968}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a3a3c35b01250ab8ef91862a6e9ce6968}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!viewMatrix@{viewMatrix}}
+\index{viewMatrix@{viewMatrix}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{viewMatrix}{viewMatrix}}
+{\footnotesize\ttfamily final Matrix4f ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+view\+Matrix = new Matrix4f()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac059ed5e324ce8797f342baf034bdcb9}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac059ed5e324ce8797f342baf034bdcb9}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!zFar@{zFar}}
+\index{zFar@{zFar}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{zFar}{zFar}}
+{\footnotesize\ttfamily float ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+z\+Far = 100.\+0f $\ast$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry_a16712ff0bd3ca2b83ba2573482850a0d}{Hierarchical\+Geometry.\+M\+A\+K\+E\+\_\+\+T\+H\+E\+\_\+\+U\+N\+I\+V\+E\+R\+S\+E\+\_\+\+G\+R\+E\+A\+T\+\_\+\+A\+G\+A\+IN}}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6c945025515a87b906264a408af375bd}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6c945025515a87b906264a408af375bd}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!zNear@{zNear}}
+\index{zNear@{zNear}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{zNear}{zNear}}
+{\footnotesize\ttfamily float ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+z\+Near = 1.\+0f $\ast$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry_a16712ff0bd3ca2b83ba2573482850a0d}{Hierarchical\+Geometry.\+M\+A\+K\+E\+\_\+\+T\+H\+E\+\_\+\+U\+N\+I\+V\+E\+R\+S\+E\+\_\+\+G\+R\+E\+A\+T\+\_\+\+A\+G\+A\+IN}}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/ui/core/gl/\mbox{\hyperlink{_g_l_renderer_8java}{G\+L\+Renderer.\+java}}\end{DoxyCompactItemize}

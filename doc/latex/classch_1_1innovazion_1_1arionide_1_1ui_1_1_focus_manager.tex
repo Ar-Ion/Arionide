@@ -1,0 +1,207 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager}{}\doxysection{ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager}\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_aa06df12b6f933e9932a3f99c902b34ca}{Focus\+Manager}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher}{I\+Event\+Dispatcher}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_abdfbcdcf6c27314eb3c8ba8984b614f6}{dispatcher}})
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a9c3e1a89a35268c4361570e910315920}{register\+Component}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component}{Component}} component)
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_aeb72273afb062e29b817b98c5752af97}{request\+View\+U\+ID}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a609160003ba92f6cdbb5c8ac3b98d5f7}{setup\+Cycle}} (List$<$ Integer $>$ elements)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_aacd0b8a53230fae6cc3d0d026b823714}{request}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component}{Component}} component)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a0fe967e27c947329e6748823ff1a80a2}{request}} (int id)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_ac0af1fa453aa7b499609a29ae16a5438}{next}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a59e602709da27e45cd2b0304315ebc35}{prev}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a70e7904c5d8399af559213b671e5bef1}{lose\+Focus}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_ad78daaf422787704b035862af1b611ae}{try\+Incremental\+Focus}} (int lambda)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component}{Component}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a628ade52b8b6dbb99f613eef4c9e5751}{access\+Modular}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component}{Component}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a3bf267e3532de860d5c567171ae6ad82}{components}} = new Array\+List$<$$>$()
+\item 
+final \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher}{I\+Event\+Dispatcher}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_abdfbcdcf6c27314eb3c8ba8984b614f6}{dispatcher}}
+\item 
+List$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_af48c484e596a86247c9cef153ec2169a}{cycle}} = null
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a35e1cb9ae8d860b9b491dd8dc728cbaa}{focus}} = \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a75060e2e063bae9c622de210ff2bff90}{Focus\+Manager.\+N\+O\+T\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ED}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a75060e2e063bae9c622de210ff2bff90}{N\+O\+T\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ED}} = 0x\+C0\+F\+F\+EE
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_aa06df12b6f933e9932a3f99c902b34ca}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_aa06df12b6f933e9932a3f99c902b34ca}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!FocusManager@{FocusManager}}
+\index{FocusManager@{FocusManager}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{FocusManager()}{FocusManager()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+Focus\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher}{I\+Event\+Dispatcher}}}]{dispatcher }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a628ade52b8b6dbb99f613eef4c9e5751}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a628ade52b8b6dbb99f613eef4c9e5751}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!accessModular@{accessModular}}
+\index{accessModular@{accessModular}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{accessModular()}{accessModular()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component}{Component}} ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+access\+Modular (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a70e7904c5d8399af559213b671e5bef1}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a70e7904c5d8399af559213b671e5bef1}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!loseFocus@{loseFocus}}
+\index{loseFocus@{loseFocus}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{loseFocus()}{loseFocus()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+lose\+Focus (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a70e7904c5d8399af559213b671e5bef1_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_ac0af1fa453aa7b499609a29ae16a5438}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_ac0af1fa453aa7b499609a29ae16a5438}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!next@{next}}
+\index{next@{next}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{next()}{next()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_ac0af1fa453aa7b499609a29ae16a5438_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a59e602709da27e45cd2b0304315ebc35}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a59e602709da27e45cd2b0304315ebc35}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!prev@{prev}}
+\index{prev@{prev}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{prev()}{prev()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+prev (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a59e602709da27e45cd2b0304315ebc35_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a9c3e1a89a35268c4361570e910315920}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a9c3e1a89a35268c4361570e910315920}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!registerComponent@{registerComponent}}
+\index{registerComponent@{registerComponent}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{registerComponent()}{registerComponent()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+register\+Component (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component}{Component}}}]{component }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_aacd0b8a53230fae6cc3d0d026b823714}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_aacd0b8a53230fae6cc3d0d026b823714}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!request@{request}}
+\index{request@{request}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{request()}{request()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+request (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component}{Component}}}]{component }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a0fe967e27c947329e6748823ff1a80a2}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a0fe967e27c947329e6748823ff1a80a2}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!request@{request}}
+\index{request@{request}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{request()}{request()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+request (\begin{DoxyParamCaption}\item[{int}]{id }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a0fe967e27c947329e6748823ff1a80a2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_aeb72273afb062e29b817b98c5752af97}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_aeb72273afb062e29b817b98c5752af97}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!requestViewUID@{requestViewUID}}
+\index{requestViewUID@{requestViewUID}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{requestViewUID()}{requestViewUID()}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+request\+View\+U\+ID (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a609160003ba92f6cdbb5c8ac3b98d5f7}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a609160003ba92f6cdbb5c8ac3b98d5f7}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!setupCycle@{setupCycle}}
+\index{setupCycle@{setupCycle}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{setupCycle()}{setupCycle()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+setup\+Cycle (\begin{DoxyParamCaption}\item[{List$<$ Integer $>$}]{elements }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a609160003ba92f6cdbb5c8ac3b98d5f7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_ad78daaf422787704b035862af1b611ae}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_ad78daaf422787704b035862af1b611ae}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!tryIncrementalFocus@{tryIncrementalFocus}}
+\index{tryIncrementalFocus@{tryIncrementalFocus}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{tryIncrementalFocus()}{tryIncrementalFocus()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+try\+Incremental\+Focus (\begin{DoxyParamCaption}\item[{int}]{lambda }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_ad78daaf422787704b035862af1b611ae_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a3bf267e3532de860d5c567171ae6ad82}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a3bf267e3532de860d5c567171ae6ad82}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!components@{components}}
+\index{components@{components}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{components}{components}}
+{\footnotesize\ttfamily final List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component}{Component}}$>$ ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+components = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_af48c484e596a86247c9cef153ec2169a}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_af48c484e596a86247c9cef153ec2169a}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!cycle@{cycle}}
+\index{cycle@{cycle}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{cycle}{cycle}}
+{\footnotesize\ttfamily List$<$Integer$>$ ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+cycle = null\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_abdfbcdcf6c27314eb3c8ba8984b614f6}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_abdfbcdcf6c27314eb3c8ba8984b614f6}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!dispatcher@{dispatcher}}
+\index{dispatcher@{dispatcher}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{dispatcher}{dispatcher}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher}{I\+Event\+Dispatcher}} ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+dispatcher\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a35e1cb9ae8d860b9b491dd8dc728cbaa}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a35e1cb9ae8d860b9b491dd8dc728cbaa}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!focus@{focus}}
+\index{focus@{focus}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{focus}{focus}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+focus = \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a75060e2e063bae9c622de210ff2bff90}{Focus\+Manager.\+N\+O\+T\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ED}}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a75060e2e063bae9c622de210ff2bff90}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager_a75060e2e063bae9c622de210ff2bff90}} 
+\index{ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}!NOT\_INITIALIZED@{NOT\_INITIALIZED}}
+\index{NOT\_INITIALIZED@{NOT\_INITIALIZED}!ch.innovazion.arionide.ui.FocusManager@{ch.innovazion.arionide.ui.FocusManager}}
+\doxysubsubsection{\texorpdfstring{NOT\_INITIALIZED}{NOT\_INITIALIZED}}
+{\footnotesize\ttfamily final int ch.\+innovazion.\+arionide.\+ui.\+Focus\+Manager.\+N\+O\+T\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ED = 0x\+C0\+F\+F\+EE\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/ui/\mbox{\hyperlink{_focus_manager_8java}{Focus\+Manager.\+java}}\end{DoxyCompactItemize}

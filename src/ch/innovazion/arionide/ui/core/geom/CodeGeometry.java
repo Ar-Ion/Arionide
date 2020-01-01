@@ -35,6 +35,7 @@ import ch.innovazion.arionide.debugging.IAm;
 import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.menu.structure.Coloring;
+import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.StructureMeta;
@@ -72,9 +73,12 @@ public class CodeGeometry extends Geometry {
 		Storage storage = this.getProject().getStorage();
 				
 		List<WorldElement> specification = new ArrayList<>();
-		List<? extends HierarchyElement> input = storage.getCode().get(this.container.getID()).list();
-				
-		this.build(this.container, input, elements, specification, connections, storage.getStructureMeta(), this.container.getSize() * relativeSize);
+
+		CodeChain chain = storage.getCode().get(this.container.getID());
+		
+		if(chain != null) {
+			this.build(this.container, chain.list(), elements, specification, connections, storage.getStructureMeta(), this.container.getSize() * relativeSize);
+		}
 		
 		elements.addAll(specification); // So that one can iterate through the code with the wheel having to pass through an instruction's specification.
 	}

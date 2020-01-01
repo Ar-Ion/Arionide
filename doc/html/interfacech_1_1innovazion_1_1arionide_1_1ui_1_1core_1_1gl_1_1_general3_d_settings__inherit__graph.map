@@ -1,0 +1,10 @@
+<map id="ch.innovazion.arionide.ui.core.gl.General3DSettings" name="ch.innovazion.arionide.ui.core.gl.General3DSettings">
+<area shape="rect" id="node1" title=" " alt="" coords="269,68,484,107"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_abstract3_d_settings.html" title=" " alt="" coords="564,68,779,107"/>
+<area shape="rect" id="node7" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_general_stars_settings.html" title=" " alt="" coords="547,5,795,44"/>
+<area shape="rect" id="node8" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_general_structure_settings.html" title=" " alt="" coords="532,131,810,169"/>
+<area shape="rect" id="node2" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_settings.html" title=" " alt="" coords="5,68,221,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link_settings.html" title=" " alt="" coords="874,68,1120,107"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars_settings.html" title=" " alt="" coords="873,5,1121,44"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_structure_settings.html" title=" " alt="" coords="858,131,1136,169"/>
+</map>

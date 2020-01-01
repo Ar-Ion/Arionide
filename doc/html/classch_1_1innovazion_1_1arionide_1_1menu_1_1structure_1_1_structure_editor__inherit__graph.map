@@ -1,0 +1,5 @@
+<map id="ch.innovazion.arionide.menu.structure.StructureEditor" name="ch.innovazion.arionide.menu.structure.StructureEditor">
+<area shape="rect" id="node1" title=" " alt="" coords="5,165,256,204"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html" title=" " alt="" coords="16,92,245,117"/>
+<area shape="rect" id="node3" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1_event_handler.html" title=" " alt="" coords="30,5,231,44"/>
+</map>

@@ -1,0 +1,21 @@
+<map id="ch.innovazion.arionide.ui.overlay.views.MainView.viewWillAppear" name="ch.innovazion.arionide.ui.overlay.views.MainView.viewWillAppear">
+<area shape="rect" id="node1" title=" " alt="" coords="5,139,260,178"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_main_view.html#a3ca26a22be7d20d9ad5e8197d6a147cc" title=" " alt="" coords="308,459,562,498"/>
+<area shape="rect" id="node15" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_main_view.html#af054061245c1e839de3fba9fa2115b27" title=" " alt="" coords="308,48,562,87"/>
+<area shape="rect" id="node18" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html#a01b742aed0ecc59d645551057896f707" title=" " alt="" coords="326,139,544,178"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html#a43b19b9b0434accd2965cabe96415071" title=" " alt="" coords="965,228,1182,267"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_main_view.html#a4d31673ddaec3dfe03566b52026f73c5" title=" " alt="" coords="630,254,885,292"/>
+<area shape="rect" id="node5" href="$interfacech_1_1innovazion_1_1arionide_1_1_resource.html#a3b2a7d9c2f9c1109f741e6d7b006f503" title=" " alt="" coords="621,494,894,519"/>
+<area shape="rect" id="node6" href="$interfacech_1_1innovazion_1_1arionide_1_1_workspace.html#a0f5925ea0197c2855c7fb596e7695b96" title=" " alt="" coords="634,543,881,582"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a25f07e086101717c4da4b7dcfc3abfac" title=" " alt="" coords="665,668,850,707"/>
+<area shape="rect" id="node8" href="$interfacech_1_1innovazion_1_1arionide_1_1_loadable.html#a85b9a9d6bca5df566f5c5eedbb1c0566" title=" " alt="" coords="637,731,878,756"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html#a848534201c4030d6d9e6112f823b04db" title=" " alt="" coords="610,368,904,407"/>
+<area shape="rect" id="node11" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button.html#acb7e48fb8c6660563b741101f7b93aaf" title=" " alt="" coords="610,431,904,470"/>
+<area shape="rect" id="node12" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#acd21eecacc72b5451effc0ebcdb1978f" title=" " alt="" coords="649,606,866,644"/>
+<area shape="rect" id="node10" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_text.html#a89be25cb521ad7278a820035d44d9bd7" title=" " alt="" coords="967,368,1180,407"/>
+<area shape="rect" id="node13" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#a27c3b13173c9da1dbbc6b2bcd8b6ee28" title=" " alt="" coords="961,638,1186,676"/>
+<area shape="rect" id="node14" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#ac68f5f8ea7bfb9dbf8742789680a0e36" title=" " alt="" coords="952,575,1194,614"/>
+<area shape="rect" id="node16" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a3d00c2f35a8ca7a00f38f722545d1378" title=" " alt="" coords="653,76,861,115"/>
+<area shape="rect" id="node17" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager.html#aacd0b8a53230fae6cc3d0d026b823714" title=" " alt="" coords="987,54,1159,92"/>
+<area shape="rect" id="node19" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager.html#a609160003ba92f6cdbb5c8ac3b98d5f7" title=" " alt="" coords="668,139,847,178"/>
+</map>

@@ -288,18 +288,19 @@ public class GLRenderer {
 				gl.glEnable(GL4.GL_DEPTH_TEST);
 			}
 			
-			double viewHeight = 2.0d * Math.atan(fov / 2.0d) * controller.getGLPosition().distance(element.getCenter());
+			Vector3f delta = controller.getUserController().getPosition().sub(element.getCenter());
+
+			double viewHeight = 2.0d * Math.atan(fov / 2.0d) * delta.length();
 			int quality = (int) (structures.length * Math.min(1.0f - 10E-5f, 2 * element.getSize() / viewHeight));
 			Structure structure = structures[quality];
 			StructureSettings settings = structure.getSettings();
 
 			Vector3f unitVector = new Vector3f(0.0f, 1.0f, 0.0f);
-			Vector3f delta = controller.getGLPosition().sub(element.getCenter());			
 			
 			float angle = delta.angle(unitVector);
 			Matrix4f model = new Matrix4f();
 			
-			model.translate(new Vector3f(element.getCenter()).sub(controller.getTranslationVector()));
+			model.translate(element.getCenter().sub(controller.getTranslationVector()));
 			
 			if(angle > Math.ulp(0.0f)) {
 				Vector3f axis = unitVector.cross(delta).normalize();
@@ -471,7 +472,7 @@ public class GLRenderer {
 	}
 	
 	private boolean checkRenderability(Vector3f object) {
-		return new Vector3f(object).sub(controller.getGLPosition()).normalize().angle(this.getDOF()) < Geometry.PI / 2;
+		return new Vector3f(object).sub(controller.getGLPosition()).normalize().angle(this.getCameraDirection()) < Geometry.PI / 2;
 	}
 	
 	private Vector2f getHVCFrom3D(Vector3f input, Matrix4f projection) { // HVC stands for Homogeneous vector coordinates
@@ -479,33 +480,15 @@ public class GLRenderer {
 		return new Vector2f(point.x / point.z, point.y / point.z);
 	}
 
-	public void updateCamera(Vector3f position, float yaw, float pitch) {		
+	public void updateCamera(Vector3f position, float yaw, float pitch) {	
+		this.zNear = controller.getUserController().getAcceleration() * 3.0f;		
+
 		loadMatrix(viewMatrix.identity()
 				.rotate(-pitch, 1.0f, 0.0f, 0.0f)
 				.rotate(yaw, 0.0f, 1.0f, 0.0f)
 				.translate(-position.x, -position.y, -position.z), this.viewData);
-	}
-	
-	public void updateAcceleration(float acceleration) {
-		this.zNear = acceleration * 1.0f;
-		this.zFar = acceleration * 10000.0f;
-	}
-	
-	public void updateBounds(Bounds bounds) {
-		this.bounds = bounds;
 		
-		updatePerspective();
-
-		GL4 gl = (GL4) GLContext.getCurrentGL();
-		fx.resizeBuffers(gl, bounds.getWidthAsInt(), bounds.getHeightAsInt());
-	}
-	
-	private void updatePerspective() {
 		loadMatrix(projectionMatrix.identity().perspective(fov, bounds.getWidth() / bounds.getHeight(), zNear, zFar), projectionData);
-	}
-	
-	private Vector3f getDOF() {
-		return new Vector3f(-this.viewData.get(2), -this.viewData.get(6), -this.viewData.get(10));
 	}
 
 	/*
@@ -515,6 +498,18 @@ public class GLRenderer {
 		settings.setView(viewData);
 		settings.setProjection(projectionData);
 	}
+	
+	public void updateBounds(Bounds bounds) {
+		this.bounds = bounds;
+		
+		GL4 gl = (GL4) GLContext.getCurrentGL();
+		fx.resizeBuffers(gl, bounds.getWidthAsInt(), bounds.getHeightAsInt());
+	}
+	
+	public Vector3f getCameraDirection() {
+		return new Vector3f(-this.viewData.get(2), -this.viewData.get(6), -this.viewData.get(10));
+	}
+
 	
 	/* Hack because put(FloatBuffer) does not work */
 	private void loadMatrix(Matrix4f matrix, FloatBuffer modelData) {

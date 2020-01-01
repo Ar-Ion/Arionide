@@ -1,0 +1,15 @@
+<map id="ch.innovazion.arionide.ui.render.gl.GLEdge.updateBuffers" name="ch.innovazion.arionide.ui.render.gl.GLEdge.updateBuffers">
+<area shape="rect" id="node1" title=" " alt="" coords="5,100,233,139"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_g_l_bounds.html#a13b6f97d24b12922e108de8a5c7724d8" title=" " alt="" coords="307,5,521,44"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_g_l_bounds.html#a59dedd61132ed52820fb53571d7a4e00" title=" " alt="" coords="307,68,521,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_g_l_bounds.html#a2c6b94fde502bffd828e2efdf3e7d2c4" title=" " alt="" coords="307,131,521,169"/>
+<area shape="rect" id="node13" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1cache_1_1_vertex_buffer.html#aa0b5af9cebc2edf684bc1f1292de267f" title=" " alt="" coords="281,193,547,232"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_g_l_bounds.html#a6d58f5e5b66fd7fa144116eafcf4c205" title=" " alt="" coords="595,99,809,137"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_g_l_bounds.html#a04a35c5e32961d1825ed2a60765913af" title=" " alt="" coords="595,224,809,263"/>
+<area shape="rect" id="node10" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_g_l_bounds.html#af7e4e012721695334a4395b534a65b48" title=" " alt="" coords="595,36,809,75"/>
+<area shape="rect" id="node12" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_g_l_bounds.html#a748f2e2240a04df6dc7a45f371af2fbf" title=" " alt="" coords="595,161,809,200"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_g_l_bounds.html#a6af8a7284761186de8665778582f6b57" title=" " alt="" coords="857,36,1070,75"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_g_l_bounds.html#a86dd37cf9d26b5a2b531ed4d96c4bb3e" title=" " alt="" coords="857,161,1070,200"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_g_l_bounds.html#a704152b94d48d8c5afc045f4c6c1b702" title=" " alt="" coords="857,224,1070,263"/>
+<area shape="rect" id="node11" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_g_l_bounds.html#a4ba8294805211ba1c59ec584c135041b" title=" " alt="" coords="857,99,1070,137"/>
+</map>

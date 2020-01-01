@@ -1,0 +1,296 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace}{}\doxysection{ch.\+innovazion.\+arionide.\+Local\+Workspace Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace}\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+Local\+Workspace\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1_local_workspace__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+Local\+Workspace\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1_local_workspace__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a7fca7e85b967e1fb0b2a28c6cee1addb}{Local\+Workspace}} (File \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_ac2386c0d4b86ae37be979fac2acb0a52}{path}}, \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher}{I\+Event\+Dispatcher}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_abcfae5ae4ddfdbf7d512eba30144d920}{dispatcher}})
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_affba15f4bb13cba6eabdcaad4e1f5ae0}{load}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a8e3ea0aa0725481ccb2cfae976ffe7e6}{save}} ()
+\item 
+String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_ac3e34a0303cd9956c4a866fec41544db}{get\+Name}} ()
+\item 
+File \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_aed201e12b018608c5a12ff943da849d2}{get\+Path}} ()
+\item 
+List$<$? super \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a9709562d9f435c551c1590a547384a31}{get\+Project\+List}} ()
+\item 
+\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a4ab637006d14e22aab38e500dab1c8c5}{get\+Current\+Project}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a541dadbcd441e1085e88cc409ad2e401}{load\+Project}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} project)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_aae92a20b584e1f347fa7a81935a70da2}{close\+Project}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} project)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a921a37fdc3b3985170624a96fed88826}{create\+Project}} (String name)  throws I\+O\+Exception 
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a84f925acb667e27ee17f70caae1587e0}{delete\+Project}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} project)
+\item 
+Map$<$?, ?$>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_aeb92fd7e4a6ee07ec73276a3caa029ea}{get\+Protocol\+Mapping}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final File \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_ac2386c0d4b86ae37be979fac2acb0a52}{path}}
+\item 
+final File \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a12a4acdee1b2020ee2ca97ed74a2d096}{configuration\+File}}
+\item 
+final \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher}{I\+Event\+Dispatcher}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_abcfae5ae4ddfdbf7d512eba30144d920}{dispatcher}}
+\item 
+final Map$<$ String, String $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a6c4f55307501518c950a0ef8c7e04a0a}{properties}} = new Linked\+Hash\+Map$<$$>$()
+\item 
+final List$<$? super \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_ace16b78fb0b720c97028ebbd39890837}{projects}} = new Array\+List$<$$>$()
+\item 
+\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a44e52b1b9f10496cd449ea7772f23a1b}{current}} = null
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a51d5fb8be086df695b6bc3683fe5c51e}{configuration\+Assignement\+Symbol}} = new String(\char`\"{}=\char`\"{})
+\item 
+static final Map$<$?, ?$>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_local_workspace_ae7b5188b5c737af7b0a612a446c54480}{workspace\+Protocol\+Mapping}} = new Linked\+Hash\+Map$<$$>$()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a7fca7e85b967e1fb0b2a28c6cee1addb}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a7fca7e85b967e1fb0b2a28c6cee1addb}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!LocalWorkspace@{LocalWorkspace}}
+\index{LocalWorkspace@{LocalWorkspace}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{LocalWorkspace()}{LocalWorkspace()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+Local\+Workspace.\+Local\+Workspace (\begin{DoxyParamCaption}\item[{File}]{path,  }\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher}{I\+Event\+Dispatcher}}}]{dispatcher }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a7fca7e85b967e1fb0b2a28c6cee1addb_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_aae92a20b584e1f347fa7a81935a70da2}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_aae92a20b584e1f347fa7a81935a70da2}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!closeProject@{closeProject}}
+\index{closeProject@{closeProject}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{closeProject()}{closeProject()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+Local\+Workspace.\+close\+Project (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}}}]{project }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1_workspace_aa5e89ff4ee3156b2911e7a02101635a8}{ch.\+innovazion.\+arionide.\+Workspace}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1_local_workspace_aae92a20b584e1f347fa7a81935a70da2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a921a37fdc3b3985170624a96fed88826}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a921a37fdc3b3985170624a96fed88826}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!createProject@{createProject}}
+\index{createProject@{createProject}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{createProject()}{createProject()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+Local\+Workspace.\+create\+Project (\begin{DoxyParamCaption}\item[{String}]{name }\end{DoxyParamCaption}) throws I\+O\+Exception}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1_workspace_a69e97a7dfa493188d60e4f8e1bb38f78}{ch.\+innovazion.\+arionide.\+Workspace}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a921a37fdc3b3985170624a96fed88826_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a84f925acb667e27ee17f70caae1587e0}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a84f925acb667e27ee17f70caae1587e0}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!deleteProject@{deleteProject}}
+\index{deleteProject@{deleteProject}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{deleteProject()}{deleteProject()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+Local\+Workspace.\+delete\+Project (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}}}]{project }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1_workspace_aa062e17c2427dfc424a09651c2b30202}{ch.\+innovazion.\+arionide.\+Workspace}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a84f925acb667e27ee17f70caae1587e0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a4ab637006d14e22aab38e500dab1c8c5}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a4ab637006d14e22aab38e500dab1c8c5}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!getCurrentProject@{getCurrentProject}}
+\index{getCurrentProject@{getCurrentProject}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{getCurrentProject()}{getCurrentProject()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} ch.\+innovazion.\+arionide.\+Local\+Workspace.\+get\+Current\+Project (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1_workspace_a86d2c3af813225cf571830bd8c6ad379}{ch.\+innovazion.\+arionide.\+Workspace}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_ac3e34a0303cd9956c4a866fec41544db}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_ac3e34a0303cd9956c4a866fec41544db}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!getName@{getName}}
+\index{getName@{getName}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{getName()}{getName()}}
+{\footnotesize\ttfamily String ch.\+innovazion.\+arionide.\+Local\+Workspace.\+get\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1_resource_a3b2a7d9c2f9c1109f741e6d7b006f503}{ch.\+innovazion.\+arionide.\+Resource}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_aed201e12b018608c5a12ff943da849d2}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_aed201e12b018608c5a12ff943da849d2}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!getPath@{getPath}}
+\index{getPath@{getPath}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{getPath()}{getPath()}}
+{\footnotesize\ttfamily File ch.\+innovazion.\+arionide.\+Local\+Workspace.\+get\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1_resource_a037102b4328d367369647296902123b2}{ch.\+innovazion.\+arionide.\+Resource}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a9709562d9f435c551c1590a547384a31}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a9709562d9f435c551c1590a547384a31}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!getProjectList@{getProjectList}}
+\index{getProjectList@{getProjectList}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{getProjectList()}{getProjectList()}}
+{\footnotesize\ttfamily List$<$? super \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}}$>$ ch.\+innovazion.\+arionide.\+Local\+Workspace.\+get\+Project\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1_workspace_a0f5925ea0197c2855c7fb596e7695b96}{ch.\+innovazion.\+arionide.\+Workspace}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_aeb92fd7e4a6ee07ec73276a3caa029ea}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_aeb92fd7e4a6ee07ec73276a3caa029ea}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!getProtocolMapping@{getProtocolMapping}}
+\index{getProtocolMapping@{getProtocolMapping}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{getProtocolMapping()}{getProtocolMapping()}}
+{\footnotesize\ttfamily Map$<$?, ?$>$ ch.\+innovazion.\+arionide.\+Local\+Workspace.\+get\+Protocol\+Mapping (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1_mapped_structure_ac3533a898149eda41ef6169d1ff342de}{ch.\+innovazion.\+arionide.\+Mapped\+Structure}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_affba15f4bb13cba6eabdcaad4e1f5ae0}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_affba15f4bb13cba6eabdcaad4e1f5ae0}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!load@{load}}
+\index{load@{load}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+Local\+Workspace.\+load (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1_loadable_a85b9a9d6bca5df566f5c5eedbb1c0566}{ch.\+innovazion.\+arionide.\+Loadable}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1_local_workspace_affba15f4bb13cba6eabdcaad4e1f5ae0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a541dadbcd441e1085e88cc409ad2e401}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a541dadbcd441e1085e88cc409ad2e401}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!loadProject@{loadProject}}
+\index{loadProject@{loadProject}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{loadProject()}{loadProject()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+Local\+Workspace.\+load\+Project (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}}}]{project }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1_workspace_a748b7eb944378b35d23692241cd8dbcf}{ch.\+innovazion.\+arionide.\+Workspace}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a541dadbcd441e1085e88cc409ad2e401_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a8e3ea0aa0725481ccb2cfae976ffe7e6}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a8e3ea0aa0725481ccb2cfae976ffe7e6}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!save@{save}}
+\index{save@{save}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{save()}{save()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+Local\+Workspace.\+save (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1_saveable_a275662926a4cc389616a14b09a70a1c7}{ch.\+innovazion.\+arionide.\+Saveable}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a8e3ea0aa0725481ccb2cfae976ffe7e6_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a51d5fb8be086df695b6bc3683fe5c51e}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a51d5fb8be086df695b6bc3683fe5c51e}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!configurationAssignementSymbol@{configurationAssignementSymbol}}
+\index{configurationAssignementSymbol@{configurationAssignementSymbol}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{configurationAssignementSymbol}{configurationAssignementSymbol}}
+{\footnotesize\ttfamily final String ch.\+innovazion.\+arionide.\+Local\+Workspace.\+configuration\+Assignement\+Symbol = new String(\char`\"{}=\char`\"{})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a12a4acdee1b2020ee2ca97ed74a2d096}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a12a4acdee1b2020ee2ca97ed74a2d096}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!configurationFile@{configurationFile}}
+\index{configurationFile@{configurationFile}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{configurationFile}{configurationFile}}
+{\footnotesize\ttfamily final File ch.\+innovazion.\+arionide.\+Local\+Workspace.\+configuration\+File\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a44e52b1b9f10496cd449ea7772f23a1b}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a44e52b1b9f10496cd449ea7772f23a1b}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!current@{current}}
+\index{current@{current}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{current}{current}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} ch.\+innovazion.\+arionide.\+Local\+Workspace.\+current = null\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_abcfae5ae4ddfdbf7d512eba30144d920}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_abcfae5ae4ddfdbf7d512eba30144d920}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!dispatcher@{dispatcher}}
+\index{dispatcher@{dispatcher}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{dispatcher}{dispatcher}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher}{I\+Event\+Dispatcher}} ch.\+innovazion.\+arionide.\+Local\+Workspace.\+dispatcher\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_ac2386c0d4b86ae37be979fac2acb0a52}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_ac2386c0d4b86ae37be979fac2acb0a52}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!path@{path}}
+\index{path@{path}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{path}{path}}
+{\footnotesize\ttfamily final File ch.\+innovazion.\+arionide.\+Local\+Workspace.\+path\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_ace16b78fb0b720c97028ebbd39890837}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_ace16b78fb0b720c97028ebbd39890837}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!projects@{projects}}
+\index{projects@{projects}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{projects}{projects}}
+{\footnotesize\ttfamily final List$<$? super \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}}$>$ ch.\+innovazion.\+arionide.\+Local\+Workspace.\+projects = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a6c4f55307501518c950a0ef8c7e04a0a}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_a6c4f55307501518c950a0ef8c7e04a0a}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!properties@{properties}}
+\index{properties@{properties}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{properties}{properties}}
+{\footnotesize\ttfamily final Map$<$String, String$>$ ch.\+innovazion.\+arionide.\+Local\+Workspace.\+properties = new Linked\+Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_local_workspace_ae7b5188b5c737af7b0a612a446c54480}\label{classch_1_1innovazion_1_1arionide_1_1_local_workspace_ae7b5188b5c737af7b0a612a446c54480}} 
+\index{ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}!workspaceProtocolMapping@{workspaceProtocolMapping}}
+\index{workspaceProtocolMapping@{workspaceProtocolMapping}!ch.innovazion.arionide.LocalWorkspace@{ch.innovazion.arionide.LocalWorkspace}}
+\doxysubsubsection{\texorpdfstring{workspaceProtocolMapping}{workspaceProtocolMapping}}
+{\footnotesize\ttfamily final Map$<$?, ?$>$ ch.\+innovazion.\+arionide.\+Local\+Workspace.\+workspace\+Protocol\+Mapping = new Linked\+Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/\mbox{\hyperlink{_local_workspace_8java}{Local\+Workspace.\+java}}\end{DoxyCompactItemize}

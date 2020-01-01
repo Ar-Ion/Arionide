@@ -1,0 +1,9 @@
+<map id="ch.innovazion.arionide.events.ComponentEvent" name="ch.innovazion.arionide.events.ComponentEvent">
+<area shape="rect" id="node1" title=" " alt="" coords="254,68,455,107"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1events_1_1_click_event.html" title=" " alt="" coords="503,5,703,44"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1events_1_1_focus_event.html" title=" " alt="" coords="503,68,703,107"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1events_1_1_scroll_event.html" title=" " alt="" coords="503,131,703,169"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1events_1_1_event.html" title=" " alt="" coords="5,68,206,107"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1events_1_1_focus_gained_event.html" title=" " alt="" coords="751,37,952,76"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1events_1_1_focus_lost_event.html" title=" " alt="" coords="751,100,952,139"/>
+</map>

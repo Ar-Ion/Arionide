@@ -1,0 +1,130 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics}{}\doxysection{ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics}\index{ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_ae032afa58384363758182c8e057be46c}{Metrics}} (Input\+Stream meta\+Stream)  throws Parser\+Configuration\+Exception, S\+A\+X\+Exception, I\+O\+Exception 
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a1262ed1b5cd590f512786ec23014492d}{get\+Base}} ()
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a60a3f93d01bf10b99151e252a3a8dcda}{get\+Line\+Height}} ()
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a383edc7c9dce7ee2ce236a222844a732}{get\+Texture\+Size}} ()
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_af838a240730540e70137025f242b3a3a}{is\+Char\+Valid}} (char ch)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_char_meta}{Char\+Meta}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a2bd3785abddcaff1ac492c58aeb6e9d2}{fetch\+Meta}} (int ch)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_char_meta}{Char\+Meta}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_ae86bb4c34f3211460d71ffc17a8e89f6}{fetch\+Meta}} (char ch)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final Map$<$ Character, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_char_meta}{Char\+Meta}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a941ded2e59182fbed10a13a9f9798551}{meta}} = new Hash\+Map$<$$>$()
+\item 
+final int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a42fbf7fa53e0365ecdac1a054e13016a}{base}}
+\item 
+final int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a868920b5c724a61a22363d138fbac944}{line\+Height}}
+\item 
+final int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a82ba756075c754a9ab3299b9b54446d3}{texture\+Size}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_char_meta}{Char\+Meta}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_ab0db0747f8d20b6c2f995840094b36f4}{dummy\+Meta}} = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_char_meta}{Char\+Meta}}(-\/1, 0, 0, 0, 0, 0, 0, 0, 0)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_ae032afa58384363758182c8e057be46c}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_ae032afa58384363758182c8e057be46c}} 
+\index{ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}!Metrics@{Metrics}}
+\index{Metrics@{Metrics}!ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}}
+\doxysubsubsection{\texorpdfstring{Metrics()}{Metrics()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics.\+Metrics (\begin{DoxyParamCaption}\item[{Input\+Stream}]{meta\+Stream }\end{DoxyParamCaption}) throws Parser\+Configuration\+Exception, S\+A\+X\+Exception, I\+O\+Exception}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_ae86bb4c34f3211460d71ffc17a8e89f6}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_ae86bb4c34f3211460d71ffc17a8e89f6}} 
+\index{ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}!fetchMeta@{fetchMeta}}
+\index{fetchMeta@{fetchMeta}!ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}}
+\doxysubsubsection{\texorpdfstring{fetchMeta()}{fetchMeta()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_char_meta}{Char\+Meta}} ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics.\+fetch\+Meta (\begin{DoxyParamCaption}\item[{char}]{ch }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a2bd3785abddcaff1ac492c58aeb6e9d2}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a2bd3785abddcaff1ac492c58aeb6e9d2}} 
+\index{ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}!fetchMeta@{fetchMeta}}
+\index{fetchMeta@{fetchMeta}!ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}}
+\doxysubsubsection{\texorpdfstring{fetchMeta()}{fetchMeta()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_char_meta}{Char\+Meta}} ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics.\+fetch\+Meta (\begin{DoxyParamCaption}\item[{int}]{ch }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a1262ed1b5cd590f512786ec23014492d}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a1262ed1b5cd590f512786ec23014492d}} 
+\index{ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}!getBase@{getBase}}
+\index{getBase@{getBase}!ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}}
+\doxysubsubsection{\texorpdfstring{getBase()}{getBase()}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics.\+get\+Base (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a60a3f93d01bf10b99151e252a3a8dcda}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a60a3f93d01bf10b99151e252a3a8dcda}} 
+\index{ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}!getLineHeight@{getLineHeight}}
+\index{getLineHeight@{getLineHeight}!ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}}
+\doxysubsubsection{\texorpdfstring{getLineHeight()}{getLineHeight()}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics.\+get\+Line\+Height (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a383edc7c9dce7ee2ce236a222844a732}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a383edc7c9dce7ee2ce236a222844a732}} 
+\index{ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}!getTextureSize@{getTextureSize}}
+\index{getTextureSize@{getTextureSize}!ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}}
+\doxysubsubsection{\texorpdfstring{getTextureSize()}{getTextureSize()}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics.\+get\+Texture\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_af838a240730540e70137025f242b3a3a}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_af838a240730540e70137025f242b3a3a}} 
+\index{ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}!isCharValid@{isCharValid}}
+\index{isCharValid@{isCharValid}!ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}}
+\doxysubsubsection{\texorpdfstring{isCharValid()}{isCharValid()}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics.\+is\+Char\+Valid (\begin{DoxyParamCaption}\item[{char}]{ch }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a42fbf7fa53e0365ecdac1a054e13016a}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a42fbf7fa53e0365ecdac1a054e13016a}} 
+\index{ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}!base@{base}}
+\index{base@{base}!ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}}
+\doxysubsubsection{\texorpdfstring{base}{base}}
+{\footnotesize\ttfamily final int ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics.\+base\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_ab0db0747f8d20b6c2f995840094b36f4}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_ab0db0747f8d20b6c2f995840094b36f4}} 
+\index{ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}!dummyMeta@{dummyMeta}}
+\index{dummyMeta@{dummyMeta}!ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}}
+\doxysubsubsection{\texorpdfstring{dummyMeta}{dummyMeta}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_char_meta}{Char\+Meta}} ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics.\+dummy\+Meta = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_char_meta}{Char\+Meta}}(-\/1, 0, 0, 0, 0, 0, 0, 0, 0)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a868920b5c724a61a22363d138fbac944}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a868920b5c724a61a22363d138fbac944}} 
+\index{ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}!lineHeight@{lineHeight}}
+\index{lineHeight@{lineHeight}!ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}}
+\doxysubsubsection{\texorpdfstring{lineHeight}{lineHeight}}
+{\footnotesize\ttfamily final int ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics.\+line\+Height\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a941ded2e59182fbed10a13a9f9798551}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a941ded2e59182fbed10a13a9f9798551}} 
+\index{ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}!meta@{meta}}
+\index{meta@{meta}!ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}}
+\doxysubsubsection{\texorpdfstring{meta}{meta}}
+{\footnotesize\ttfamily final Map$<$Character, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_char_meta}{Char\+Meta}}$>$ ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics.\+meta = new Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a82ba756075c754a9ab3299b9b54446d3}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_metrics_a82ba756075c754a9ab3299b9b54446d3}} 
+\index{ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}!textureSize@{textureSize}}
+\index{textureSize@{textureSize}!ch.innovazion.arionide.ui.render.font.Metrics@{ch.innovazion.arionide.ui.render.font.Metrics}}
+\doxysubsubsection{\texorpdfstring{textureSize}{textureSize}}
+{\footnotesize\ttfamily final int ch.\+innovazion.\+arionide.\+ui.\+render.\+font.\+Metrics.\+texture\+Size\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/ui/render/font/\mbox{\hyperlink{_metrics_8java}{Metrics.\+java}}\end{DoxyCompactItemize}

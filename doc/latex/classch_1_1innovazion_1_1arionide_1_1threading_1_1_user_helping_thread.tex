@@ -1,0 +1,124 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread}{}\doxysection{ch.\+innovazion.\+arionide.\+threading.\+User\+Helping\+Thread Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread}\index{ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+threading.\+User\+Helping\+Thread\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=243pt]{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+threading.\+User\+Helping\+Thread\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a0f7c774fe9a35b92658061f478b9dede}{tick}} ()
+\item 
+long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_afc86c63b2e802b748e5defbd42f94d70}{get\+Refresh\+Delay}} ()
+\item 
+String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a17791b42a5ba327473bd81738308d041}{get\+Descriptor}} ()
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_aef0a496586a481107273449d57b95f30}{respawn}} (int attempt)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a7dabb3af7bfe89cc600a10fc74076b77}{register\+Task}} (Runnable task)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a4e7ca5fae4e2bc59676520f041395919}{P\+R\+O\+C\+E\+S\+S\+I\+NG}} = 0
+\item 
+static final int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a6a6ba4e4ca1fc57b92cf597a8528dc91}{W\+A\+I\+T\+I\+NG}} = 1
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final Queue$<$ Runnable $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_ab55e7338b9704ddd1e6aff3ebfe63af9}{queue}} = new Array\+Deque$<$$>$()
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a17791b42a5ba327473bd81738308d041}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a17791b42a5ba327473bd81738308d041}} 
+\index{ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}!getDescriptor@{getDescriptor}}
+\index{getDescriptor@{getDescriptor}!ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}}
+\doxysubsubsection{\texorpdfstring{getDescriptor()}{getDescriptor()}}
+{\footnotesize\ttfamily String ch.\+innovazion.\+arionide.\+threading.\+User\+Helping\+Thread.\+get\+Descriptor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread_aa11c7a257182ebe9a0af73e6e5df067e}{ch.\+innovazion.\+arionide.\+threading.\+Working\+Thread}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_afc86c63b2e802b748e5defbd42f94d70}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_afc86c63b2e802b748e5defbd42f94d70}} 
+\index{ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}!getRefreshDelay@{getRefreshDelay}}
+\index{getRefreshDelay@{getRefreshDelay}!ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}}
+\doxysubsubsection{\texorpdfstring{getRefreshDelay()}{getRefreshDelay()}}
+{\footnotesize\ttfamily long ch.\+innovazion.\+arionide.\+threading.\+User\+Helping\+Thread.\+get\+Refresh\+Delay (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread_a975e0ffe100fe78f5009322e24f85c7d}{ch.\+innovazion.\+arionide.\+threading.\+Working\+Thread}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a7dabb3af7bfe89cc600a10fc74076b77}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a7dabb3af7bfe89cc600a10fc74076b77}} 
+\index{ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}!registerTask@{registerTask}}
+\index{registerTask@{registerTask}!ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}}
+\doxysubsubsection{\texorpdfstring{registerTask()}{registerTask()}}
+{\footnotesize\ttfamily static int ch.\+innovazion.\+arionide.\+threading.\+User\+Helping\+Thread.\+register\+Task (\begin{DoxyParamCaption}\item[{Runnable}]{task }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_aef0a496586a481107273449d57b95f30}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_aef0a496586a481107273449d57b95f30}} 
+\index{ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}!respawn@{respawn}}
+\index{respawn@{respawn}!ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}}
+\doxysubsubsection{\texorpdfstring{respawn()}{respawn()}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+threading.\+User\+Helping\+Thread.\+respawn (\begin{DoxyParamCaption}\item[{int}]{attempt }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread_a3979e2af050b5e03ca103d7db23eae55}{ch.\+innovazion.\+arionide.\+threading.\+Working\+Thread}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a0f7c774fe9a35b92658061f478b9dede}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a0f7c774fe9a35b92658061f478b9dede}} 
+\index{ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}!tick@{tick}}
+\index{tick@{tick}!ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}}
+\doxysubsubsection{\texorpdfstring{tick()}{tick()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+threading.\+User\+Helping\+Thread.\+tick (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread_a0f13e1911f910b85a5e92e5a6eded7f3}{ch.\+innovazion.\+arionide.\+threading.\+Working\+Thread}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a4e7ca5fae4e2bc59676520f041395919}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a4e7ca5fae4e2bc59676520f041395919}} 
+\index{ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}!PROCESSING@{PROCESSING}}
+\index{PROCESSING@{PROCESSING}!ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}}
+\doxysubsubsection{\texorpdfstring{PROCESSING}{PROCESSING}}
+{\footnotesize\ttfamily final int ch.\+innovazion.\+arionide.\+threading.\+User\+Helping\+Thread.\+P\+R\+O\+C\+E\+S\+S\+I\+NG = 0\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_ab55e7338b9704ddd1e6aff3ebfe63af9}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_ab55e7338b9704ddd1e6aff3ebfe63af9}} 
+\index{ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}!queue@{queue}}
+\index{queue@{queue}!ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}}
+\doxysubsubsection{\texorpdfstring{queue}{queue}}
+{\footnotesize\ttfamily final Queue$<$Runnable$>$ ch.\+innovazion.\+arionide.\+threading.\+User\+Helping\+Thread.\+queue = new Array\+Deque$<$$>$()\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a6a6ba4e4ca1fc57b92cf597a8528dc91}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread_a6a6ba4e4ca1fc57b92cf597a8528dc91}} 
+\index{ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}!WAITING@{WAITING}}
+\index{WAITING@{WAITING}!ch.innovazion.arionide.threading.UserHelpingThread@{ch.innovazion.arionide.threading.UserHelpingThread}}
+\doxysubsubsection{\texorpdfstring{WAITING}{WAITING}}
+{\footnotesize\ttfamily final int ch.\+innovazion.\+arionide.\+threading.\+User\+Helping\+Thread.\+W\+A\+I\+T\+I\+NG = 1\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/threading/\mbox{\hyperlink{_user_helping_thread_8java}{User\+Helping\+Thread.\+java}}\end{DoxyCompactItemize}

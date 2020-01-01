@@ -1,0 +1,17 @@
+<map id="ch.innovazion.arionide.lang.natives.instructions.NativeInstruction" name="ch.innovazion.arionide.lang.natives.instructions.NativeInstruction">
+<area shape="rect" id="node1" title=" " alt="" coords="5,356,309,395"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_add.html" title=" " alt="" coords="361,5,689,31"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_call.html" title=" " alt="" coords="362,55,688,80"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_compare.html" title=" " alt="" coords="373,104,677,143"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_define.html" title=" " alt="" coords="373,167,677,205"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_if.html" title=" " alt="" coords="369,229,680,255"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_init.html" title=" " alt="" coords="364,279,686,304"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_iterate.html" title=" " alt="" coords="373,328,677,367"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_load.html" title=" " alt="" coords="358,391,692,416"/>
+<area shape="rect" id="node10" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_merge.html" title=" " alt="" coords="373,440,677,479"/>
+<area shape="rect" id="node11" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_object.html" title=" " alt="" coords="373,503,677,541"/>
+<area shape="rect" id="node12" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_print.html" title=" " alt="" coords="373,565,677,604"/>
+<area shape="rect" id="node13" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_redo.html" title=" " alt="" coords="357,628,693,653"/>
+<area shape="rect" id="node14" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_size.html" title=" " alt="" coords="360,677,690,703"/>
+<area shape="rect" id="node15" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_write.html" title=" " alt="" coords="373,727,677,765"/>
+</map>

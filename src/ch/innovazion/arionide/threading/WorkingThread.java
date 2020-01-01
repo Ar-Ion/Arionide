@@ -22,7 +22,6 @@
 package ch.innovazion.arionide.threading;
 
 import ch.innovazion.arionide.debugging.Debug;
-import ch.innovazion.arionide.ui.overlay.Views;
 
 public abstract class WorkingThread extends Thread {
 

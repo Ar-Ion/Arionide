@@ -1,0 +1,146 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system}{}\doxysection{ch.\+innovazion.\+arionide.\+ui.\+render.\+Primitive\+Rendering\+System Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system}\index{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+render.\+Primitive\+Rendering\+System\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_aaa7ff5764109d6a7e5d79492991f4c8a}{register\+Primitive}} (\mbox{\hyperlink{enumch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_type}{Primitive\+Type}} type, \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_rendering_context}{Rendering\+Context}} context)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_abeb9f7dd9436f5d6b61fb959d828d90b}{synchronise}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system}{Primitive\+Rendering\+System}} source)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a95896e33dd006ac442413f4d74dc24bf}{render\+Later}} (Object object)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a28dcae08b65b9a30990f3982cfd4f99c}{render\+Direct}} (Object object)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_af0751acaa74e538eca0433da8ab0896d}{process\+Rendering\+Queue}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_afbdd902a88a6d0001a74cb18073268df}{update\+Aspect\+Ratio}} (float new\+Ratio)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_ab1e6180723b3e7b02f5f8b385fbf80cc}{dispatch}} (Object object, Bi\+Consumer$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive}{Primitive}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_rendering_queue}{Rendering\+Queue}} $>$ action)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a9fcdc84721c9d0c32440c36854509177}{enqueue}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive}{Primitive}} primitive, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_rendering_queue}{Rendering\+Queue}} queue)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_ad947de065d35997191d2b09e5a040564}{render}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive}{Primitive}} primitive, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_rendering_queue}{Rendering\+Queue}} queue)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final Tree\+Map$<$ \mbox{\hyperlink{enumch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_type}{Primitive\+Type}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_rendering_queue}{Rendering\+Queue}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a7b10e25302e55e2434388e271cf5cfec}{queues}} = new Tree\+Map$<$$>$()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_ab1e6180723b3e7b02f5f8b385fbf80cc}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_ab1e6180723b3e7b02f5f8b385fbf80cc}} 
+\index{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}!dispatch@{dispatch}}
+\index{dispatch@{dispatch}!ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}}
+\doxysubsubsection{\texorpdfstring{dispatch()}{dispatch()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+render.\+Primitive\+Rendering\+System.\+dispatch (\begin{DoxyParamCaption}\item[{Object}]{object,  }\item[{Bi\+Consumer$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive}{Primitive}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_rendering_queue}{Rendering\+Queue}} $>$}]{action }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_ab1e6180723b3e7b02f5f8b385fbf80cc_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a9fcdc84721c9d0c32440c36854509177}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a9fcdc84721c9d0c32440c36854509177}} 
+\index{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}!enqueue@{enqueue}}
+\index{enqueue@{enqueue}!ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}}
+\doxysubsubsection{\texorpdfstring{enqueue()}{enqueue()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+render.\+Primitive\+Rendering\+System.\+enqueue (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive}{Primitive}}}]{primitive,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_rendering_queue}{Rendering\+Queue}}}]{queue }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_af0751acaa74e538eca0433da8ab0896d}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_af0751acaa74e538eca0433da8ab0896d}} 
+\index{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}!processRenderingQueue@{processRenderingQueue}}
+\index{processRenderingQueue@{processRenderingQueue}!ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}}
+\doxysubsubsection{\texorpdfstring{processRenderingQueue()}{processRenderingQueue()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+render.\+Primitive\+Rendering\+System.\+process\+Rendering\+Queue (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_af0751acaa74e538eca0433da8ab0896d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_aaa7ff5764109d6a7e5d79492991f4c8a}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_aaa7ff5764109d6a7e5d79492991f4c8a}} 
+\index{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}!registerPrimitive@{registerPrimitive}}
+\index{registerPrimitive@{registerPrimitive}!ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}}
+\doxysubsubsection{\texorpdfstring{registerPrimitive()}{registerPrimitive()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+render.\+Primitive\+Rendering\+System.\+register\+Primitive (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{enumch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_type}{Primitive\+Type}}}]{type,  }\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_rendering_context}{Rendering\+Context}}}]{context }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_ad947de065d35997191d2b09e5a040564}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_ad947de065d35997191d2b09e5a040564}} 
+\index{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}!render@{render}}
+\index{render@{render}!ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+render.\+Primitive\+Rendering\+System.\+render (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive}{Primitive}}}]{primitive,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_rendering_queue}{Rendering\+Queue}}}]{queue }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_ad947de065d35997191d2b09e5a040564_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a28dcae08b65b9a30990f3982cfd4f99c}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a28dcae08b65b9a30990f3982cfd4f99c}} 
+\index{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}!renderDirect@{renderDirect}}
+\index{renderDirect@{renderDirect}!ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}}
+\doxysubsubsection{\texorpdfstring{renderDirect()}{renderDirect()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+render.\+Primitive\+Rendering\+System.\+render\+Direct (\begin{DoxyParamCaption}\item[{Object}]{object }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a28dcae08b65b9a30990f3982cfd4f99c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a95896e33dd006ac442413f4d74dc24bf}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a95896e33dd006ac442413f4d74dc24bf}} 
+\index{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}!renderLater@{renderLater}}
+\index{renderLater@{renderLater}!ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}}
+\doxysubsubsection{\texorpdfstring{renderLater()}{renderLater()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+render.\+Primitive\+Rendering\+System.\+render\+Later (\begin{DoxyParamCaption}\item[{Object}]{object }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a95896e33dd006ac442413f4d74dc24bf_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_abeb9f7dd9436f5d6b61fb959d828d90b}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_abeb9f7dd9436f5d6b61fb959d828d90b}} 
+\index{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}!synchronise@{synchronise}}
+\index{synchronise@{synchronise}!ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}}
+\doxysubsubsection{\texorpdfstring{synchronise()}{synchronise()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+render.\+Primitive\+Rendering\+System.\+synchronise (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system}{Primitive\+Rendering\+System}}}]{source }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_afbdd902a88a6d0001a74cb18073268df}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_afbdd902a88a6d0001a74cb18073268df}} 
+\index{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}!updateAspectRatio@{updateAspectRatio}}
+\index{updateAspectRatio@{updateAspectRatio}!ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}}
+\doxysubsubsection{\texorpdfstring{updateAspectRatio()}{updateAspectRatio()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+render.\+Primitive\+Rendering\+System.\+update\+Aspect\+Ratio (\begin{DoxyParamCaption}\item[{float}]{new\+Ratio }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a7b10e25302e55e2434388e271cf5cfec}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system_a7b10e25302e55e2434388e271cf5cfec}} 
+\index{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}!queues@{queues}}
+\index{queues@{queues}!ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem@{ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem}}
+\doxysubsubsection{\texorpdfstring{queues}{queues}}
+{\footnotesize\ttfamily final Tree\+Map$<$\mbox{\hyperlink{enumch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_type}{Primitive\+Type}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_rendering_queue}{Rendering\+Queue}}$>$ ch.\+innovazion.\+arionide.\+ui.\+render.\+Primitive\+Rendering\+System.\+queues = new Tree\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/ui/render/\mbox{\hyperlink{_primitive_rendering_system_8java}{Primitive\+Rendering\+System.\+java}}\end{DoxyCompactItemize}

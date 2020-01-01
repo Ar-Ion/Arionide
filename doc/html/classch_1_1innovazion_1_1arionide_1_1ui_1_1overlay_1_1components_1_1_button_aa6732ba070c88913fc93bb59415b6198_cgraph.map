@@ -1,0 +1,10 @@
+<map id="ch.innovazion.arionide.ui.overlay.components.Button.Button" name="ch.innovazion.arionide.ui.overlay.components.Button.Button">
+<area shape="rect" id="node1" title=" " alt="" coords="5,100,299,139"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#a6797c323866a5d656aa70fc6e78afda1" title=" " alt="" coords="385,5,603,44"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a09d0cee3370c7a91bd916eca48483967" title=" " alt="" coords="386,68,603,107"/>
+<area shape="rect" id="node5" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#ab3b4329dbed53b4d9912a21e65bd2611" title=" " alt="" coords="358,131,630,169"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html#a9bf40e669d9d3d65ea3f9e5c5bc8cbdc" title=" " alt="" coords="347,193,641,232"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html#a43b19b9b0434accd2965cabe96415071" title=" " alt="" coords="691,5,909,44"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1_utils.html#ab099a137d90e3cd5e348bfc139fd5e1d" title=" " alt="" coords="689,193,911,232"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1_utils.html#a22b24862deacb379cdc92109ff1007d6" title=" " alt="" coords="959,193,1181,232"/>
+</map>

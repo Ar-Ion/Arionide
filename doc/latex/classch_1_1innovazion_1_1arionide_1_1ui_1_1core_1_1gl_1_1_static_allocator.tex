@@ -1,0 +1,135 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator}{}\doxysection{ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Static\+Allocator Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator}\index{ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Static\+Allocator\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_afd4688af9492641275ed61609621a326}{Static\+Allocator}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object}{Renderable\+Object}}$<$?, ?$>$... objects)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_ad23b28693c32aa26bf0b1eab14550d19}{generate}} (G\+L4 gl)
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a40b60c78ed5b2243ec1b2ffd661c444c}{pop\+V\+AO}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object}{Renderable\+Object}}$<$?, ?$>$ object)
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_acd46399d2eb98d8f0c923b9abaff170f}{pop\+V\+BO}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object}{Renderable\+Object}}$<$?, ?$>$ object)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a74dbe81769934498d4b1a082f215b9b2}{security\+Check}} (int\mbox{[}$\,$\mbox{]} table, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object}{Renderable\+Object}}$<$?, ?$>$ object)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final Int\+Buffer \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a678f838c3e9925df5bdbf10958a5cc87}{V\+A\+Os}}
+\item 
+final Int\+Buffer \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a62c7c927b74a87beecd343ec1033b53f}{V\+B\+Os}}
+\item 
+final int\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a9071e5f6ca55f784f4936208c5d6e240}{V\+A\+O\+Access\+Table}}
+\item 
+final int\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_ad41d930f79d4c95af399979bdb9692c5}{V\+B\+O\+Access\+Table}}
+\item 
+final Map$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object}{Renderable\+Object}}$<$?, ?$>$, Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_af860a34fdfb584a8aa8144bca3ab4c0e}{I\+Ds}} = new Hash\+Map$<$$>$()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_afd4688af9492641275ed61609621a326}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_afd4688af9492641275ed61609621a326}} 
+\index{ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}!StaticAllocator@{StaticAllocator}}
+\index{StaticAllocator@{StaticAllocator}!ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}}
+\doxysubsubsection{\texorpdfstring{StaticAllocator()}{StaticAllocator()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Static\+Allocator.\+Static\+Allocator (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object}{Renderable\+Object}}$<$?, ?$>$...}]{objects }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_afd4688af9492641275ed61609621a326_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_ad23b28693c32aa26bf0b1eab14550d19}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_ad23b28693c32aa26bf0b1eab14550d19}} 
+\index{ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}!generate@{generate}}
+\index{generate@{generate}!ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}}
+\doxysubsubsection{\texorpdfstring{generate()}{generate()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Static\+Allocator.\+generate (\begin{DoxyParamCaption}\item[{G\+L4}]{gl }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a40b60c78ed5b2243ec1b2ffd661c444c}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a40b60c78ed5b2243ec1b2ffd661c444c}} 
+\index{ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}!popVAO@{popVAO}}
+\index{popVAO@{popVAO}!ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}}
+\doxysubsubsection{\texorpdfstring{popVAO()}{popVAO()}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Static\+Allocator.\+pop\+V\+AO (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object}{Renderable\+Object}}$<$?, ?$>$}]{object }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a40b60c78ed5b2243ec1b2ffd661c444c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_acd46399d2eb98d8f0c923b9abaff170f}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_acd46399d2eb98d8f0c923b9abaff170f}} 
+\index{ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}!popVBO@{popVBO}}
+\index{popVBO@{popVBO}!ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}}
+\doxysubsubsection{\texorpdfstring{popVBO()}{popVBO()}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Static\+Allocator.\+pop\+V\+BO (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object}{Renderable\+Object}}$<$?, ?$>$}]{object }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_acd46399d2eb98d8f0c923b9abaff170f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a74dbe81769934498d4b1a082f215b9b2}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a74dbe81769934498d4b1a082f215b9b2}} 
+\index{ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}!securityCheck@{securityCheck}}
+\index{securityCheck@{securityCheck}!ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}}
+\doxysubsubsection{\texorpdfstring{securityCheck()}{securityCheck()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Static\+Allocator.\+security\+Check (\begin{DoxyParamCaption}\item[{int\mbox{[}$\,$\mbox{]}}]{table,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object}{Renderable\+Object}}$<$?, ?$>$}]{object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_af860a34fdfb584a8aa8144bca3ab4c0e}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_af860a34fdfb584a8aa8144bca3ab4c0e}} 
+\index{ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}!IDs@{IDs}}
+\index{IDs@{IDs}!ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}}
+\doxysubsubsection{\texorpdfstring{IDs}{IDs}}
+{\footnotesize\ttfamily final Map$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object}{Renderable\+Object}}$<$?, ?$>$, Integer$>$ ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Static\+Allocator.\+I\+Ds = new Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a9071e5f6ca55f784f4936208c5d6e240}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a9071e5f6ca55f784f4936208c5d6e240}} 
+\index{ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}!VAOAccessTable@{VAOAccessTable}}
+\index{VAOAccessTable@{VAOAccessTable}!ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}}
+\doxysubsubsection{\texorpdfstring{VAOAccessTable}{VAOAccessTable}}
+{\footnotesize\ttfamily final int \mbox{[}$\,$\mbox{]} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Static\+Allocator.\+V\+A\+O\+Access\+Table\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a678f838c3e9925df5bdbf10958a5cc87}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a678f838c3e9925df5bdbf10958a5cc87}} 
+\index{ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}!VAOs@{VAOs}}
+\index{VAOs@{VAOs}!ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}}
+\doxysubsubsection{\texorpdfstring{VAOs}{VAOs}}
+{\footnotesize\ttfamily final Int\+Buffer ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Static\+Allocator.\+V\+A\+Os\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_ad41d930f79d4c95af399979bdb9692c5}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_ad41d930f79d4c95af399979bdb9692c5}} 
+\index{ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}!VBOAccessTable@{VBOAccessTable}}
+\index{VBOAccessTable@{VBOAccessTable}!ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}}
+\doxysubsubsection{\texorpdfstring{VBOAccessTable}{VBOAccessTable}}
+{\footnotesize\ttfamily final int \mbox{[}$\,$\mbox{]} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Static\+Allocator.\+V\+B\+O\+Access\+Table\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a62c7c927b74a87beecd343ec1033b53f}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator_a62c7c927b74a87beecd343ec1033b53f}} 
+\index{ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}!VBOs@{VBOs}}
+\index{VBOs@{VBOs}!ch.innovazion.arionide.ui.core.gl.StaticAllocator@{ch.innovazion.arionide.ui.core.gl.StaticAllocator}}
+\doxysubsubsection{\texorpdfstring{VBOs}{VBOs}}
+{\footnotesize\ttfamily final Int\+Buffer ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+Static\+Allocator.\+V\+B\+Os\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/ui/core/gl/\mbox{\hyperlink{_static_allocator_8java}{Static\+Allocator.\+java}}\end{DoxyCompactItemize}

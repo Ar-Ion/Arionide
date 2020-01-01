@@ -1,0 +1,79 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1_system_cache}{}\doxysection{ch.\+innovazion.\+arionide.\+System\+Cache Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1_system_cache}\index{ch.innovazion.arionide.SystemCache@{ch.innovazion.arionide.SystemCache}}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+System\+Cache\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{classch_1_1innovazion_1_1arionide_1_1_system_cache__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static synchronized$<$ T $>$ T \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_system_cache_a6a98b5cdebc430c44fefd6a8dafa4648}{set}} (String key, T value, long millis\+Before\+Expiration)
+\item 
+static$<$ T $>$ T \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_system_cache_a4112285aaa09ef75baccc37601106c7f}{get}} (String key)
+\item 
+static boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_system_cache_af56175e096639f7b964931d7db18733f}{has}} (String key)
+\item 
+static synchronized void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_system_cache_a4ba4c32ba84e585a286cf27f4319a4da}{clean}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_system_cache_ac85709b2e50f1b3b06f4b5c5b954ca54}{N\+E\+V\+ER}} = Long.\+M\+A\+X\+\_\+\+V\+A\+L\+UE
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final Map$<$ String, Entry$<$ Object, Long $>$ $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_system_cache_a6ad3806926d83c6ee5e6f5be5d66a14f}{elements}} = Collections.\+synchronized\+Map(new Hash\+Map$<$$>$())
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_system_cache_a4ba4c32ba84e585a286cf27f4319a4da}\label{classch_1_1innovazion_1_1arionide_1_1_system_cache_a4ba4c32ba84e585a286cf27f4319a4da}} 
+\index{ch.innovazion.arionide.SystemCache@{ch.innovazion.arionide.SystemCache}!clean@{clean}}
+\index{clean@{clean}!ch.innovazion.arionide.SystemCache@{ch.innovazion.arionide.SystemCache}}
+\doxysubsubsection{\texorpdfstring{clean()}{clean()}}
+{\footnotesize\ttfamily static synchronized void ch.\+innovazion.\+arionide.\+System\+Cache.\+clean (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_system_cache_a4112285aaa09ef75baccc37601106c7f}\label{classch_1_1innovazion_1_1arionide_1_1_system_cache_a4112285aaa09ef75baccc37601106c7f}} 
+\index{ch.innovazion.arionide.SystemCache@{ch.innovazion.arionide.SystemCache}!get@{get}}
+\index{get@{get}!ch.innovazion.arionide.SystemCache@{ch.innovazion.arionide.SystemCache}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily static $<$T$>$ T ch.\+innovazion.\+arionide.\+System\+Cache.\+get (\begin{DoxyParamCaption}\item[{String}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_system_cache_af56175e096639f7b964931d7db18733f}\label{classch_1_1innovazion_1_1arionide_1_1_system_cache_af56175e096639f7b964931d7db18733f}} 
+\index{ch.innovazion.arionide.SystemCache@{ch.innovazion.arionide.SystemCache}!has@{has}}
+\index{has@{has}!ch.innovazion.arionide.SystemCache@{ch.innovazion.arionide.SystemCache}}
+\doxysubsubsection{\texorpdfstring{has()}{has()}}
+{\footnotesize\ttfamily static boolean ch.\+innovazion.\+arionide.\+System\+Cache.\+has (\begin{DoxyParamCaption}\item[{String}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_system_cache_a6a98b5cdebc430c44fefd6a8dafa4648}\label{classch_1_1innovazion_1_1arionide_1_1_system_cache_a6a98b5cdebc430c44fefd6a8dafa4648}} 
+\index{ch.innovazion.arionide.SystemCache@{ch.innovazion.arionide.SystemCache}!set@{set}}
+\index{set@{set}!ch.innovazion.arionide.SystemCache@{ch.innovazion.arionide.SystemCache}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily static synchronized$<$T$>$ T ch.\+innovazion.\+arionide.\+System\+Cache.\+set (\begin{DoxyParamCaption}\item[{String}]{key,  }\item[{T}]{value,  }\item[{long}]{millis\+Before\+Expiration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_system_cache_a6ad3806926d83c6ee5e6f5be5d66a14f}\label{classch_1_1innovazion_1_1arionide_1_1_system_cache_a6ad3806926d83c6ee5e6f5be5d66a14f}} 
+\index{ch.innovazion.arionide.SystemCache@{ch.innovazion.arionide.SystemCache}!elements@{elements}}
+\index{elements@{elements}!ch.innovazion.arionide.SystemCache@{ch.innovazion.arionide.SystemCache}}
+\doxysubsubsection{\texorpdfstring{elements}{elements}}
+{\footnotesize\ttfamily final Map$<$String, Entry$<$Object, Long$>$ $>$ ch.\+innovazion.\+arionide.\+System\+Cache.\+elements = Collections.\+synchronized\+Map(new Hash\+Map$<$$>$())\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1_system_cache_ac85709b2e50f1b3b06f4b5c5b954ca54}\label{classch_1_1innovazion_1_1arionide_1_1_system_cache_ac85709b2e50f1b3b06f4b5c5b954ca54}} 
+\index{ch.innovazion.arionide.SystemCache@{ch.innovazion.arionide.SystemCache}!NEVER@{NEVER}}
+\index{NEVER@{NEVER}!ch.innovazion.arionide.SystemCache@{ch.innovazion.arionide.SystemCache}}
+\doxysubsubsection{\texorpdfstring{NEVER}{NEVER}}
+{\footnotesize\ttfamily final long ch.\+innovazion.\+arionide.\+System\+Cache.\+N\+E\+V\+ER = Long.\+M\+A\+X\+\_\+\+V\+A\+L\+UE\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/\mbox{\hyperlink{_system_cache_8java}{System\+Cache.\+java}}\end{DoxyCompactItemize}

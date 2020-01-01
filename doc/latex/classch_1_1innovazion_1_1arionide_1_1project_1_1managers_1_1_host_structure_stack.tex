@@ -1,0 +1,195 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack}{}\doxysection{ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack}\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+synchronized void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_afc0e3a6370c6aaf64c2d8b916f7f6df5}{push}} (int struct\+ID)
+\item 
+synchronized int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a2ef19f989d42d9907cd7039e9c4cab98}{pop}} ()
+\item 
+synchronized void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a016d4d86176266edba5f54145ae71e52}{push}} (int struct\+ID, boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_ac96ce3828668d83fcac81247685cd5c4}{notify\+Observers}})
+\item 
+synchronized int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a7d5a9f8439736acad02862142be30dd6}{pop}} (boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_ac96ce3828668d83fcac81247685cd5c4}{notify\+Observers}})
+\item 
+synchronized void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a8c2ab982d36ce792505a41d1c824406e}{reset}} ()
+\item 
+synchronized boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a8c7b1efb9a63392f1e1312514d81f26c}{contains}} (int struct)
+\item 
+synchronized int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a01354c30c3a9f3b0fd393817a35836f7}{get\+Current}} ()
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_af3e61090d6a1ad735294809251a397e7}{get\+Generation}} ()
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_acb6854d13546b098249fbe94dc518def}{is\+Empty}} ()
+\item 
+Collection$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a905162cb54b3044ca753ddaa6e7d6dbc}{get\+Stack}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_ae6d8a1aaff47bc2d435a09f577ff476c}{register\+Observer}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_change_observer}{Host\+Structure\+Change\+Observer}} observer)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a92da90f745fd482d95b50dadf9fd6b99}{unregister\+Observer}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_change_observer}{Host\+Structure\+Change\+Observer}} observer)
+\item 
+String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a050acb66fb82f6188f0cf0be3c774ad2}{to\+String}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_ac96ce3828668d83fcac81247685cd5c4}{notify\+Observers}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final Set$<$ \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_change_observer}{Host\+Structure\+Change\+Observer}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a088e1d80615726e4c13e0d67549c972c}{observers}} = Collections.\+synchronized\+Set(new Hash\+Set$<$$>$())
+\item 
+final Deque$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a3ef7489e42da96025a1e76b92eea0074}{struct\+I\+Ds}} = new Array\+Deque$<$$>$()
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_afeab1a9a0d8f76f4a1c475360471d7f7}{generation}} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a8c7b1efb9a63392f1e1312514d81f26c}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a8c7b1efb9a63392f1e1312514d81f26c}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!contains@{contains}}
+\index{contains@{contains}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily synchronized boolean ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+contains (\begin{DoxyParamCaption}\item[{int}]{struct }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a01354c30c3a9f3b0fd393817a35836f7}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a01354c30c3a9f3b0fd393817a35836f7}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!getCurrent@{getCurrent}}
+\index{getCurrent@{getCurrent}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{getCurrent()}{getCurrent()}}
+{\footnotesize\ttfamily synchronized int ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+get\+Current (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a01354c30c3a9f3b0fd393817a35836f7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_af3e61090d6a1ad735294809251a397e7}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_af3e61090d6a1ad735294809251a397e7}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!getGeneration@{getGeneration}}
+\index{getGeneration@{getGeneration}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{getGeneration()}{getGeneration()}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+get\+Generation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a905162cb54b3044ca753ddaa6e7d6dbc}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a905162cb54b3044ca753ddaa6e7d6dbc}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!getStack@{getStack}}
+\index{getStack@{getStack}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{getStack()}{getStack()}}
+{\footnotesize\ttfamily Collection$<$Integer$>$ ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+get\+Stack (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_acb6854d13546b098249fbe94dc518def}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_acb6854d13546b098249fbe94dc518def}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!isEmpty@{isEmpty}}
+\index{isEmpty@{isEmpty}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{isEmpty()}{isEmpty()}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+is\+Empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_ac96ce3828668d83fcac81247685cd5c4}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_ac96ce3828668d83fcac81247685cd5c4}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!notifyObservers@{notifyObservers}}
+\index{notifyObservers@{notifyObservers}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{notifyObservers()}{notifyObservers()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+notify\+Observers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_ac96ce3828668d83fcac81247685cd5c4_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a2ef19f989d42d9907cd7039e9c4cab98}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a2ef19f989d42d9907cd7039e9c4cab98}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!pop@{pop}}
+\index{pop@{pop}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{pop()}{pop()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily synchronized int ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+pop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a7d5a9f8439736acad02862142be30dd6}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a7d5a9f8439736acad02862142be30dd6}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!pop@{pop}}
+\index{pop@{pop}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{pop()}{pop()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily synchronized int ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+pop (\begin{DoxyParamCaption}\item[{boolean}]{notify\+Observers }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a7d5a9f8439736acad02862142be30dd6_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_afc0e3a6370c6aaf64c2d8b916f7f6df5}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_afc0e3a6370c6aaf64c2d8b916f7f6df5}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!push@{push}}
+\index{push@{push}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{push()}{push()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily synchronized void ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+push (\begin{DoxyParamCaption}\item[{int}]{struct\+ID }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a016d4d86176266edba5f54145ae71e52}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a016d4d86176266edba5f54145ae71e52}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!push@{push}}
+\index{push@{push}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{push()}{push()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily synchronized void ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+push (\begin{DoxyParamCaption}\item[{int}]{struct\+ID,  }\item[{boolean}]{notify\+Observers }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a016d4d86176266edba5f54145ae71e52_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_ae6d8a1aaff47bc2d435a09f577ff476c}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_ae6d8a1aaff47bc2d435a09f577ff476c}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!registerObserver@{registerObserver}}
+\index{registerObserver@{registerObserver}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{registerObserver()}{registerObserver()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+register\+Observer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_change_observer}{Host\+Structure\+Change\+Observer}}}]{observer }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a8c2ab982d36ce792505a41d1c824406e}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a8c2ab982d36ce792505a41d1c824406e}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!reset@{reset}}
+\index{reset@{reset}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily synchronized void ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a050acb66fb82f6188f0cf0be3c774ad2}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a050acb66fb82f6188f0cf0be3c774ad2}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!toString@{toString}}
+\index{toString@{toString}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily String ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a92da90f745fd482d95b50dadf9fd6b99}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a92da90f745fd482d95b50dadf9fd6b99}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!unregisterObserver@{unregisterObserver}}
+\index{unregisterObserver@{unregisterObserver}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{unregisterObserver()}{unregisterObserver()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+unregister\+Observer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_change_observer}{Host\+Structure\+Change\+Observer}}}]{observer }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_afeab1a9a0d8f76f4a1c475360471d7f7}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_afeab1a9a0d8f76f4a1c475360471d7f7}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!generation@{generation}}
+\index{generation@{generation}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{generation}{generation}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+generation = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a088e1d80615726e4c13e0d67549c972c}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a088e1d80615726e4c13e0d67549c972c}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!observers@{observers}}
+\index{observers@{observers}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{observers}{observers}}
+{\footnotesize\ttfamily final Set$<$\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_change_observer}{Host\+Structure\+Change\+Observer}}$>$ ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+observers = Collections.\+synchronized\+Set(new Hash\+Set$<$$>$())\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a3ef7489e42da96025a1e76b92eea0074}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack_a3ef7489e42da96025a1e76b92eea0074}} 
+\index{ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}!structIDs@{structIDs}}
+\index{structIDs@{structIDs}!ch.innovazion.arionide.project.managers.HostStructureStack@{ch.innovazion.arionide.project.managers.HostStructureStack}}
+\doxysubsubsection{\texorpdfstring{structIDs}{structIDs}}
+{\footnotesize\ttfamily final Deque$<$Integer$>$ ch.\+innovazion.\+arionide.\+project.\+managers.\+Host\+Structure\+Stack.\+struct\+I\+Ds = new Array\+Deque$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/project/managers/\mbox{\hyperlink{_host_structure_stack_8java}{Host\+Structure\+Stack.\+java}}\end{DoxyCompactItemize}

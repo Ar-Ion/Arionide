@@ -53,6 +53,7 @@ public class UserController {
 	private Vector3f position = new Vector3f();
 	private Vector3f velocity = new Vector3f();
 	private Vector3f acceleration = new Vector3f();
+	private Vector3f cameraDirection = new Vector3f();
 	private float generalAcceleration = initialAcceleration;
 	
 	private long lastPositionUpdate = System.nanoTime();
@@ -78,7 +79,7 @@ public class UserController {
 	}
 	
 	public Vector3f getPosition() {
-		return position;
+		return new Vector3f(position);
 	}
 	
 	public WorldElement getFocus() {
@@ -96,6 +97,11 @@ public class UserController {
 	public float getAcceleration() {
 		return generalAcceleration;
 	}
+	
+	protected void setCameraDirection(Vector3f direction) {
+		this.cameraDirection = direction;
+	}
+	
 	
 	protected void updatePhysics() {
 		long deltaTime = System.nanoTime() - lastPositionUpdate;
@@ -199,14 +205,6 @@ public class UserController {
  	}
 	
  	protected void detectFocus(HostStructureStack stack, Geometry coreGeometry, Geometry codeGeometry) {
-		double projectedVector = Math.cos(pitch);
-		
-		double x = projectedVector * Math.cos(yaw);
-		double y = Math.sin(pitch);
-		double z = projectedVector * Math.sin(yaw);
-		
-		Vector3f cameraDirection = new Vector3f((float) x, (float) y, (float) z);
-		
 		int generation = stack.getGeneration();
 		WorldElement current = coreGeometry.getElementByID(stack.getCurrent());
 		
@@ -247,8 +245,8 @@ public class UserController {
 	}
 
 	
-	protected void setPosition(Vector3f position) {
-		position.set(position);
+	protected void setPosition(Vector3f newPosition) {
+		position.set(newPosition);
 		
 		yaw = 0.0f;
 		pitch = 0.0f;
@@ -260,10 +258,10 @@ public class UserController {
 		menu.setSelectedID(element.getID());
 		menu.show();
 			
-		Vector3f lookAtVector = element.getCenter().sub(position).normalize();
+		Vector3f focus = element.getCenter().sub(position).normalize();
 		
-		yaw = Geometry.PI - (float) Math.atan2(lookAtVector.x, lookAtVector.z);
-		pitch = (float) Math.asin(lookAtVector.y);
+		yaw = Geometry.PI - (float) Math.atan2(focus.x, focus.z);
+		pitch = (float) Math.asin(focus.y);
 	}
 	
 	protected void reset() {

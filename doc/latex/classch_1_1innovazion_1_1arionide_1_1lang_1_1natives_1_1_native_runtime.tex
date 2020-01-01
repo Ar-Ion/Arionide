@@ -1,0 +1,170 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime}{}\doxysection{ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime}\index{ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=254pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a1abbc237afee190bddd0a6a311063001}{Native\+Runtime}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_runtime_acdcb3f3ecf0feb0237344d8937f6679b}{project}})
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_afce9ec435ec8483a143daa79bbd2f98b}{run}} (int id)
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a1ce1d4359dd8c1f2a11eb071d27225ef}{exec}} (int structure\+ID)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+List$<$ Entry$<$ String, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_specification}{Specification}} $>$ $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a618b642913e08eed6c3dd38dd4c010e6}{get\+Code}} (int object\+ID)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a2aeebbc2e4622b188c4545014bd645dc}{info}} (String message, int color)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_ad9a48ff433887f3df24d5cbe55ef4cf8}{compile}} (int real\+ID, String name, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage}{Storage}} storage)
+\item 
+\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_native_instruction}{Native\+Instruction}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a0f4eda821c7181a141628326d3bc97c2}{compile\+Instruction}} (int sym\+ID, String instruction, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_specification}{Specification}} spec, List$<$ Integer $>$ next\+Elements)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_data_communicator}{Native\+Data\+Communicator}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_ac3bd756802690227a6ce05980fadacda}{ndc}}
+\item 
+final List$<$ List$<$ \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_native_instruction}{Native\+Instruction}} $>$ $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_ada143308101b25ede70c5fb5a05585a8}{code}} = new Array\+List$<$$>$()
+\item 
+final List$<$ String $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a5d8e44ac4bfa115c7dbff661f177b747}{symbols}} = new Array\+List$<$$>$()
+\item 
+final List$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_ae967a2848bc5add02cbe3bdef20165bf}{references}} = new Array\+List$<$$>$()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a1abbc237afee190bddd0a6a311063001}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a1abbc237afee190bddd0a6a311063001}} 
+\index{ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}!NativeRuntime@{NativeRuntime}}
+\index{NativeRuntime@{NativeRuntime}!ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}}
+\doxysubsubsection{\texorpdfstring{NativeRuntime()}{NativeRuntime()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime.\+Native\+Runtime (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}}}]{project }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_ad9a48ff433887f3df24d5cbe55ef4cf8}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_ad9a48ff433887f3df24d5cbe55ef4cf8}} 
+\index{ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}!compile@{compile}}
+\index{compile@{compile}!ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}}
+\doxysubsubsection{\texorpdfstring{compile()}{compile()}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime.\+compile (\begin{DoxyParamCaption}\item[{int}]{real\+ID,  }\item[{String}]{name,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage}{Storage}}}]{storage }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_ad9a48ff433887f3df24d5cbe55ef4cf8_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a0f4eda821c7181a141628326d3bc97c2}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a0f4eda821c7181a141628326d3bc97c2}} 
+\index{ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}!compileInstruction@{compileInstruction}}
+\index{compileInstruction@{compileInstruction}!ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}}
+\doxysubsubsection{\texorpdfstring{compileInstruction()}{compileInstruction()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_native_instruction}{Native\+Instruction}} ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime.\+compile\+Instruction (\begin{DoxyParamCaption}\item[{int}]{sym\+ID,  }\item[{String}]{instruction,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_specification}{Specification}}}]{spec,  }\item[{List$<$ Integer $>$}]{next\+Elements }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a0f4eda821c7181a141628326d3bc97c2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a1ce1d4359dd8c1f2a11eb071d27225ef}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a1ce1d4359dd8c1f2a11eb071d27225ef}} 
+\index{ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}!exec@{exec}}
+\index{exec@{exec}!ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}}
+\doxysubsubsection{\texorpdfstring{exec()}{exec()}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime.\+exec (\begin{DoxyParamCaption}\item[{int}]{structure\+ID }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a618b642913e08eed6c3dd38dd4c010e6}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a618b642913e08eed6c3dd38dd4c010e6}} 
+\index{ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}!getCode@{getCode}}
+\index{getCode@{getCode}!ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}}
+\doxysubsubsection{\texorpdfstring{getCode()}{getCode()}}
+{\footnotesize\ttfamily List$<$Entry$<$String, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_specification}{Specification}}$>$ $>$ ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime.\+get\+Code (\begin{DoxyParamCaption}\item[{int}]{object\+ID }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a618b642913e08eed6c3dd38dd4c010e6_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a2aeebbc2e4622b188c4545014bd645dc}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a2aeebbc2e4622b188c4545014bd645dc}} 
+\index{ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}!info@{info}}
+\index{info@{info}!ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}}
+\doxysubsubsection{\texorpdfstring{info()}{info()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime.\+info (\begin{DoxyParamCaption}\item[{String}]{message,  }\item[{int}]{color }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_runtime_abede19a2704ff262c573a02dcc54382b}{ch.\+innovazion.\+arionide.\+lang.\+Runtime}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_afce9ec435ec8483a143daa79bbd2f98b}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_afce9ec435ec8483a143daa79bbd2f98b}} 
+\index{ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}!run@{run}}
+\index{run@{run}!ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime.\+run (\begin{DoxyParamCaption}\item[{int}]{id }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_runtime_abe69588f40e5d5a6f5813c011cf11913}{ch.\+innovazion.\+arionide.\+lang.\+Runtime}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_afce9ec435ec8483a143daa79bbd2f98b_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_ada143308101b25ede70c5fb5a05585a8}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_ada143308101b25ede70c5fb5a05585a8}} 
+\index{ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}!code@{code}}
+\index{code@{code}!ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}}
+\doxysubsubsection{\texorpdfstring{code}{code}}
+{\footnotesize\ttfamily final List$<$List$<$\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1instructions_1_1_native_instruction}{Native\+Instruction}}$>$ $>$ ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime.\+code = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_ac3bd756802690227a6ce05980fadacda}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_ac3bd756802690227a6ce05980fadacda}} 
+\index{ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}!ndc@{ndc}}
+\index{ndc@{ndc}!ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}}
+\doxysubsubsection{\texorpdfstring{ndc}{ndc}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_data_communicator}{Native\+Data\+Communicator}} ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime.\+ndc\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_ae967a2848bc5add02cbe3bdef20165bf}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_ae967a2848bc5add02cbe3bdef20165bf}} 
+\index{ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}!references@{references}}
+\index{references@{references}!ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}}
+\doxysubsubsection{\texorpdfstring{references}{references}}
+{\footnotesize\ttfamily final List$<$Integer$>$ ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime.\+references = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a5d8e44ac4bfa115c7dbff661f177b747}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_native_runtime_a5d8e44ac4bfa115c7dbff661f177b747}} 
+\index{ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}!symbols@{symbols}}
+\index{symbols@{symbols}!ch.innovazion.arionide.lang.natives.NativeRuntime@{ch.innovazion.arionide.lang.natives.NativeRuntime}}
+\doxysubsubsection{\texorpdfstring{symbols}{symbols}}
+{\footnotesize\ttfamily final List$<$String$>$ ch.\+innovazion.\+arionide.\+lang.\+natives.\+Native\+Runtime.\+symbols = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/lang/natives/\mbox{\hyperlink{_native_runtime_8java}{Native\+Runtime.\+java}}\end{DoxyCompactItemize}

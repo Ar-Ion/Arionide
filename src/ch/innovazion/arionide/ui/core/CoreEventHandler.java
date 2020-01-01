@@ -76,7 +76,7 @@ public class CoreEventHandler implements EventHandler {
 			if(event instanceof PressureEvent) {
 				PressureEvent pressure = (PressureEvent) event;
 
-				if(pressure.getKeycode() == worldToggle) {
+				if(pressure.isDown() && pressure.getKeycode() == worldToggle) {
 					controller.toggleActivity();
 				}
 			}
@@ -88,6 +88,8 @@ public class CoreEventHandler implements EventHandler {
 						
 						controller.updateYaw((position.getX() - 1.0f) * mouseSensibility);
 						controller.updatePitch((1.0f - position.getY()) * mouseSensibility);
+						
+						controller.onMove();
 						
 						event.abortDispatching();
 					}
@@ -124,6 +126,8 @@ public class CoreEventHandler implements EventHandler {
 								this.isControlDown = pressure.isDown();
 								break;
 						}
+						
+						controller.onMove();
 					}
 				} else if(event instanceof WheelEvent) {
 					if(isControlDown) {

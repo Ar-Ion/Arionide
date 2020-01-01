@@ -40,7 +40,7 @@ public abstract class Geometry {
 	private List<WorldElement> elements = new ArrayList<>();
 	private List<Connection> connections = new ArrayList<>();
 	private Project project;
-	private boolean contructionRequested = false;
+	private boolean contructionRequested = true;
 	private long seed = System.nanoTime();
 	
 	public void setProject(Project project) {

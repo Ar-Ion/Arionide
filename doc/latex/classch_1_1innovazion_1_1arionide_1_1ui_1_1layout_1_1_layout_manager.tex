@@ -1,0 +1,153 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager}{}\doxysection{ch.\+innovazion.\+arionide.\+ui.\+layout.\+Layout\+Manager Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager}\index{ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+ui.\+layout.\+Layout\+Manager\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+layout.\+Layout\+Manager\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_1_1_layout_configuration}{Layout\+Configuration}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a1f4a77c1c68d372e12747635b8463691}{Layout\+Manager}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a7da006dc8c36f650081b9891fb19d8db}{drawing\+Context}}, \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher}{I\+Event\+Dispatcher}} dispatcher)
+\item 
+synchronized void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_ae4100ffe56b9f90d3f937b70c26692fb}{register}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface}{Surface}} surface, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface}{Surface}} parent, float x1, float y1, float x2, float y2)
+\item 
+synchronized void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_aea12482ed05ce8cd7d05729d7a804c65}{compute}} ()
+\item 
+synchronized void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a51d0eadcef7894e4347257c0a7254cef}{apply}} ()
+\item 
+Set$<$ Class$<$? extends \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_event}{Event}} $>$ $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_aa786551e19e6e14a3a3545563e96eadc}{get\+Handleable\+Events}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_afbc07cf3f6faba17b9bd385c0c569359}{compute}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_1_1_layout_configuration}{Layout\+Configuration}} config)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a7da006dc8c36f650081b9891fb19d8db}{drawing\+Context}}
+\item 
+final Map$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface}{Surface}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_1_1_layout_configuration}{Layout\+Configuration}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a0df75b8a5f8a1340aaa4461f62efaa0d}{surfaces}} = new Hash\+Map$<$$>$()
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_ab2bd1504eb3d7c6a0f4f1a26efdc54dc}{frame\+Width}}
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_aa05b35a8b2820161aa10b00474d13fb0}{frame\+Height}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a1f4a77c1c68d372e12747635b8463691}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a1f4a77c1c68d372e12747635b8463691}} 
+\index{ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}!LayoutManager@{LayoutManager}}
+\index{LayoutManager@{LayoutManager}!ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}}
+\doxysubsubsection{\texorpdfstring{LayoutManager()}{LayoutManager()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+ui.\+layout.\+Layout\+Manager.\+Layout\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}}}]{drawing\+Context,  }\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher}{I\+Event\+Dispatcher}}}]{dispatcher }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a1f4a77c1c68d372e12747635b8463691_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a51d0eadcef7894e4347257c0a7254cef}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a51d0eadcef7894e4347257c0a7254cef}} 
+\index{ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}!apply@{apply}}
+\index{apply@{apply}!ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}}
+\doxysubsubsection{\texorpdfstring{apply()}{apply()}}
+{\footnotesize\ttfamily synchronized void ch.\+innovazion.\+arionide.\+ui.\+layout.\+Layout\+Manager.\+apply (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_aea12482ed05ce8cd7d05729d7a804c65}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_aea12482ed05ce8cd7d05729d7a804c65}} 
+\index{ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}!compute@{compute}}
+\index{compute@{compute}!ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}}
+\doxysubsubsection{\texorpdfstring{compute()}{compute()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily synchronized void ch.\+innovazion.\+arionide.\+ui.\+layout.\+Layout\+Manager.\+compute (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_afbc07cf3f6faba17b9bd385c0c569359}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_afbc07cf3f6faba17b9bd385c0c569359}} 
+\index{ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}!compute@{compute}}
+\index{compute@{compute}!ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}}
+\doxysubsubsection{\texorpdfstring{compute()}{compute()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+layout.\+Layout\+Manager.\+compute (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_1_1_layout_configuration}{Layout\+Configuration}}}]{config }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_afbc07cf3f6faba17b9bd385c0c569359_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_aa786551e19e6e14a3a3545563e96eadc}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_aa786551e19e6e14a3a3545563e96eadc}} 
+\index{ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}!getHandleableEvents@{getHandleableEvents}}
+\index{getHandleableEvents@{getHandleableEvents}!ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}}
+\doxysubsubsection{\texorpdfstring{getHandleableEvents()}{getHandleableEvents()}}
+{\footnotesize\ttfamily Set$<$Class$<$? extends \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_event}{Event}}$>$ $>$ ch.\+innovazion.\+arionide.\+ui.\+layout.\+Layout\+Manager.\+get\+Handleable\+Events (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1_event_handler_a9fec9f2e677f15352317af0b04fddde5}{ch.\+innovazion.\+arionide.\+events.\+Event\+Handler}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_aa786551e19e6e14a3a3545563e96eadc_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_ae4100ffe56b9f90d3f937b70c26692fb}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_ae4100ffe56b9f90d3f937b70c26692fb}} 
+\index{ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}!register@{register}}
+\index{register@{register}!ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}}
+\doxysubsubsection{\texorpdfstring{register()}{register()}}
+{\footnotesize\ttfamily synchronized void ch.\+innovazion.\+arionide.\+ui.\+layout.\+Layout\+Manager.\+register (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface}{Surface}}}]{surface,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface}{Surface}}}]{parent,  }\item[{float}]{x1,  }\item[{float}]{y1,  }\item[{float}]{x2,  }\item[{float}]{y2 }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a7da006dc8c36f650081b9891fb19d8db}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a7da006dc8c36f650081b9891fb19d8db}} 
+\index{ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}!drawingContext@{drawingContext}}
+\index{drawingContext@{drawingContext}!ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}}
+\doxysubsubsection{\texorpdfstring{drawingContext}{drawingContext}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} ch.\+innovazion.\+arionide.\+ui.\+layout.\+Layout\+Manager.\+drawing\+Context\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_aa05b35a8b2820161aa10b00474d13fb0}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_aa05b35a8b2820161aa10b00474d13fb0}} 
+\index{ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}!frameHeight@{frameHeight}}
+\index{frameHeight@{frameHeight}!ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}}
+\doxysubsubsection{\texorpdfstring{frameHeight}{frameHeight}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+layout.\+Layout\+Manager.\+frame\+Height\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_ab2bd1504eb3d7c6a0f4f1a26efdc54dc}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_ab2bd1504eb3d7c6a0f4f1a26efdc54dc}} 
+\index{ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}!frameWidth@{frameWidth}}
+\index{frameWidth@{frameWidth}!ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}}
+\doxysubsubsection{\texorpdfstring{frameWidth}{frameWidth}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+layout.\+Layout\+Manager.\+frame\+Width\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a0df75b8a5f8a1340aaa4461f62efaa0d}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_a0df75b8a5f8a1340aaa4461f62efaa0d}} 
+\index{ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}!surfaces@{surfaces}}
+\index{surfaces@{surfaces}!ch.innovazion.arionide.ui.layout.LayoutManager@{ch.innovazion.arionide.ui.layout.LayoutManager}}
+\doxysubsubsection{\texorpdfstring{surfaces}{surfaces}}
+{\footnotesize\ttfamily final Map$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface}{Surface}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager_1_1_layout_configuration}{Layout\+Configuration}}$>$ ch.\+innovazion.\+arionide.\+ui.\+layout.\+Layout\+Manager.\+surfaces = new Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/ui/layout/\mbox{\hyperlink{_layout_manager_8java}{Layout\+Manager.\+java}}\end{DoxyCompactItemize}

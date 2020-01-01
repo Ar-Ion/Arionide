@@ -1,0 +1,165 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator}{}\doxysection{ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator}\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=310pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_af0d75198cc84980445ac109a671b48ac}{allocate}} ()
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a251028593622f4f7444918fea906eff3}{allocate}} (String label)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a099e19a2ca28d68833d7f96139de1713}{free}} (Integer unit)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a5e473a144b710c83829de38e9d53e3ba}{free}} (String label)
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_ab132a70f793cdb6d91fc9238466e5568}{retrieve}} (String label)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator}{G\+L\+Texture\+Allocator}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_aa6d254a3bef3d4db5543b551e5e2db42}{instance}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_ab1f33b46b07cb69187c3c477604ec754}{G\+L\+Texture\+Allocator}} ()
+\item 
+Optional$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_ac04a4e0fe56f176df75e0d2e88357576}{pop}} ()
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_af78b810915144f6b1be30ecdedd8d26b}{internal\+Alloc}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final Map$<$ String, Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_aa6d24a2997b6bfa4a0aa9506d2bf6d1e}{labelled\+Textures}} = new Hash\+Map$<$$>$()
+\item 
+final Stack$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a912d08259b09ed6754f82a41278c64d1}{freed}} = new Stack$<$$>$()
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a79dc909472cc4d00da74724d8abe6b64}{id}} = 0
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator}{G\+L\+Texture\+Allocator}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a8495a2faa04cea438de15789cfd67eb7}{singleton}} = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator}{G\+L\+Texture\+Allocator}}()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_ab1f33b46b07cb69187c3c477604ec754}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_ab1f33b46b07cb69187c3c477604ec754}} 
+\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}!GLTextureAllocator@{GLTextureAllocator}}
+\index{GLTextureAllocator@{GLTextureAllocator}!ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+\doxysubsubsection{\texorpdfstring{GLTextureAllocator()}{GLTextureAllocator()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator.\+G\+L\+Texture\+Allocator (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_af0d75198cc84980445ac109a671b48ac}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_af0d75198cc84980445ac109a671b48ac}} 
+\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}!allocate@{allocate}}
+\index{allocate@{allocate}!ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+\doxysubsubsection{\texorpdfstring{allocate()}{allocate()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator.\+allocate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_af0d75198cc84980445ac109a671b48ac_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a251028593622f4f7444918fea906eff3}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a251028593622f4f7444918fea906eff3}} 
+\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}!allocate@{allocate}}
+\index{allocate@{allocate}!ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+\doxysubsubsection{\texorpdfstring{allocate()}{allocate()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator.\+allocate (\begin{DoxyParamCaption}\item[{String}]{label }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a251028593622f4f7444918fea906eff3_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a099e19a2ca28d68833d7f96139de1713}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a099e19a2ca28d68833d7f96139de1713}} 
+\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}!free@{free}}
+\index{free@{free}!ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator.\+free (\begin{DoxyParamCaption}\item[{Integer}]{unit }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a5e473a144b710c83829de38e9d53e3ba}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a5e473a144b710c83829de38e9d53e3ba}} 
+\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}!free@{free}}
+\index{free@{free}!ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+\doxysubsubsection{\texorpdfstring{free()}{free()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator.\+free (\begin{DoxyParamCaption}\item[{String}]{label }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a5e473a144b710c83829de38e9d53e3ba_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_aa6d254a3bef3d4db5543b551e5e2db42}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_aa6d254a3bef3d4db5543b551e5e2db42}} 
+\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}!instance@{instance}}
+\index{instance@{instance}!ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+\doxysubsubsection{\texorpdfstring{instance()}{instance()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator}{G\+L\+Texture\+Allocator}} ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator.\+instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_af78b810915144f6b1be30ecdedd8d26b}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_af78b810915144f6b1be30ecdedd8d26b}} 
+\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}!internalAlloc@{internalAlloc}}
+\index{internalAlloc@{internalAlloc}!ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+\doxysubsubsection{\texorpdfstring{internalAlloc()}{internalAlloc()}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator.\+internal\+Alloc (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_ac04a4e0fe56f176df75e0d2e88357576}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_ac04a4e0fe56f176df75e0d2e88357576}} 
+\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}!pop@{pop}}
+\index{pop@{pop}!ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+\doxysubsubsection{\texorpdfstring{pop()}{pop()}}
+{\footnotesize\ttfamily Optional$<$Integer$>$ ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator.\+pop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_ab132a70f793cdb6d91fc9238466e5568}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_ab132a70f793cdb6d91fc9238466e5568}} 
+\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}!retrieve@{retrieve}}
+\index{retrieve@{retrieve}!ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+\doxysubsubsection{\texorpdfstring{retrieve()}{retrieve()}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator.\+retrieve (\begin{DoxyParamCaption}\item[{String}]{label }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a912d08259b09ed6754f82a41278c64d1}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a912d08259b09ed6754f82a41278c64d1}} 
+\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}!freed@{freed}}
+\index{freed@{freed}!ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+\doxysubsubsection{\texorpdfstring{freed}{freed}}
+{\footnotesize\ttfamily final Stack$<$Integer$>$ ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator.\+freed = new Stack$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a79dc909472cc4d00da74724d8abe6b64}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a79dc909472cc4d00da74724d8abe6b64}} 
+\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}!id@{id}}
+\index{id@{id}!ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+\doxysubsubsection{\texorpdfstring{id}{id}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator.\+id = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_aa6d24a2997b6bfa4a0aa9506d2bf6d1e}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_aa6d24a2997b6bfa4a0aa9506d2bf6d1e}} 
+\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}!labelledTextures@{labelledTextures}}
+\index{labelledTextures@{labelledTextures}!ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+\doxysubsubsection{\texorpdfstring{labelledTextures}{labelledTextures}}
+{\footnotesize\ttfamily final Map$<$String, Integer$>$ ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator.\+labelled\+Textures = new Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a8495a2faa04cea438de15789cfd67eb7}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator_a8495a2faa04cea438de15789cfd67eb7}} 
+\index{ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}!singleton@{singleton}}
+\index{singleton@{singleton}!ch.innovazion.arionide.ui.GLTextureAllocator@{ch.innovazion.arionide.ui.GLTextureAllocator}}
+\doxysubsubsection{\texorpdfstring{singleton}{singleton}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator}{G\+L\+Texture\+Allocator}} ch.\+innovazion.\+arionide.\+ui.\+G\+L\+Texture\+Allocator.\+singleton = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator}{G\+L\+Texture\+Allocator}}()\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/ui/\mbox{\hyperlink{_g_l_texture_allocator_8java}{G\+L\+Texture\+Allocator.\+java}}\end{DoxyCompactItemize}

@@ -247,7 +247,6 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	}
 		
 	public void moveCursor(int x, int y) {
-		this.window.warpPointer(x, y);
 	}
 	
 	public Size getWindowSize() {
@@ -299,10 +298,13 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	}
 
 	public void mouseMoved(MouseEvent event) {
-		this.dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.MOVE));
+		dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.MOVE));
 	
 		if(orchestrator.getController().isActive()) {
-			moveCursor(window.getWidth() / 2, window.getHeight() / 2);
+			window.warpPointer(window.getWidth() / 2, window.getHeight() / 2);
+			window.setPointerVisible(false);
+		} else {
+			window.setPointerVisible(true);
 		}
 	}
 	

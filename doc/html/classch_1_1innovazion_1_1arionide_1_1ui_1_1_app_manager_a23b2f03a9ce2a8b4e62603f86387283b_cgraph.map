@@ -1,0 +1,11 @@
+<map id="ch.innovazion.arionide.ui.AppManager.loadUI" name="ch.innovazion.arionide.ui.AppManager.loadUI">
+<area shape="rect" id="node1" title=" " alt="" coords="5,163,177,201"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager.html#aea12482ed05ce8cd7d05729d7a804c65" title=" " alt="" coords="256,5,467,44"/>
+<area shape="rect" id="node3" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#aa5f84407c43d1975f6c3a6d983be6c33" title=" " alt="" coords="225,68,497,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a09d0cee3370c7a91bd916eca48483967" title=" " alt="" coords="253,131,470,169"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_views.html#a4c9b7580017f19f9c6e23d339e370a84" title=" " alt="" coords="252,193,470,232"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_views.html#ae0d2dfd9e109e5cd8d69d7b212e5fa78" title=" " alt="" coords="252,256,470,295"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html#a66bae214e1a84b92be9ede87f3e5c095" title=" " alt="" coords="252,319,470,357"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_transition.html#a2047f48a03c43448b36d4d9d06b57ce6" title=" " alt="" coords="545,319,763,357"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface.html#a5f6ac191aa653ec97c8cecf3c34a5df4" title=" " alt="" coords="811,319,1022,357"/>
+</map>

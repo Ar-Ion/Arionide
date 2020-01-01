@@ -1,0 +1,12 @@
+<map id="ch.innovazion.arionide.menu.Browser" name="ch.innovazion.arionide.menu.Browser">
+<area shape="rect" id="node1" title=" " alt="" coords="530,100,725,139"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_code_appender.html" title=" " alt="" coords="784,5,1012,44"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_code_browser.html" title=" " alt="" coords="784,68,1012,107"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_language_selection.html" title=" " alt="" coords="773,131,1023,169"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_browser.html" title=" " alt="" coords="773,193,1023,232"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html" title=" " alt="" coords="254,107,482,132"/>
+<area shape="rect" id="node3" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1_event_handler.html" title=" " alt="" coords="5,100,206,139"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_core_code_browser.html" title=" " alt="" coords="1083,68,1310,107"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_core_structure_browser.html" title=" " alt="" coords="1071,161,1322,200"/>
+<area shape="rect" id="node10" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection.html" title=" " alt="" coords="1071,224,1322,263"/>
+</map>

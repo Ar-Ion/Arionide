@@ -1,0 +1,12 @@
+<map id="ch.innovazion.arionide.ArionideImpl" name="ch.innovazion.arionide.ArionideImpl">
+<area shape="rect" id="node1" title=" " alt="" coords="1074,91,1306,116"/>
+<area shape="rect" id="node2" href="$interfacech_1_1innovazion_1_1arionide_1_1_arionide.html" title=" " alt="" coords="717,5,923,31"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1threading_1_1_u_i_thread.html" title=" " alt="" coords="712,55,929,93"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html" title=" " alt="" coords="354,108,571,147"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1threading_1_1_event_dispatching_thread.html" title=" " alt="" coords="712,180,929,219"/>
+<area shape="rect" id="node5" title=" " alt="" coords="109,93,173,119"/>
+<area shape="rect" id="node6" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context.html" title=" " alt="" coords="377,39,548,77"/>
+<area shape="rect" id="node7" href="$interfacech_1_1innovazion_1_1arionide_1_1threading_1_1_purgeable.html" title=" " alt="" coords="33,143,250,181"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_abstract_threaded_event_dispatcher.html" title=" " alt="" coords="327,180,598,219"/>
+<area shape="rect" id="node10" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html" title=" " alt="" coords="5,205,277,244"/>
+</map>

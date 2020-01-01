@@ -1,0 +1,9 @@
+<map id="ch.innovazion.arionide.threading.Purgeable" name="ch.innovazion.arionide.threading.Purgeable">
+<area shape="rect" id="node1" title=" " alt="" coords="5,68,222,107"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_abstract_threaded_event_dispatcher.html" title=" " alt="" coords="270,5,542,44"/>
+<area shape="rect" id="node4" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context.html" title=" " alt="" coords="320,68,492,107"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html" title=" " alt="" coords="320,131,492,169"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher.html" title=" " alt="" coords="590,5,862,44"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_a_w_t_context.html" title=" " alt="" coords="640,68,812,107"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_open_g_l_context.html" title=" " alt="" coords="640,131,812,169"/>
+</map>

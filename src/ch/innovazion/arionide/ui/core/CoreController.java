@@ -101,13 +101,14 @@ public class CoreController {
 			scene = null;
 			active = false;
 			
-			project.getDataManager().getHostStack().reset();
 			codeGeometries.clear();
 			
-			user.reset();
+			project.save();
 		} 
 		
 		if(requestProjectInitialisation.compareAndSet(true, false)) {
+			project.getDataManager().getHostStack().reset();
+
 			long seed = project.getProperty("seed", Coder.integerDecoder);
 			
 			coreGeometry.updateSeed(seed);
@@ -117,7 +118,7 @@ public class CoreController {
 			
 			coreGeometry.requestReconstruction();
 			
-			onDiscontinuityCrossed();
+			setScene(RenderingScene.HIERARCHY);
 			
 			requestMenuReset.set(true);			
 		}
@@ -174,7 +175,7 @@ public class CoreController {
 			Debug.exception(exception);
 		}
 	}
-	
+		
 	public void updateUserDynamics() {
 		HostStructureStack stack = project.getDataManager().getHostStack();
 
@@ -188,12 +189,16 @@ public class CoreController {
 		WorldElement element = coreGeometry.getElementByID(currentStruct);
 	
 		if(element != null) {
-			translationVector = element.getCenter();
+			//translationVector = element.getCenter();
 		} else {
 			translationVector = new Vector3f();
 		}
 		
-		this.glPosition = new Vector3f(user.getPosition()).sub(translationVector);
+		computeGLPosition();
+	}
+
+	private void computeGLPosition() {
+		this.glPosition = user.getPosition().sub(translationVector);
 	}
 	
 	
@@ -225,8 +230,8 @@ public class CoreController {
 		if(scene != RenderingScene.HIERARCHY) {
 			user.setPosition(new Vector3f(0.0f, 0.0f, HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN * 5.0f));
 		} else {
-			CameraInfo info = this.project.getProperty("player", Coder.cameraDecoder);
-			
+			CameraInfo info = project.getProperty("player", Coder.cameraDecoder);
+						
 			user.setPosition(new Vector3f(info.getX(), info.getY(), info.getZ()));
 			
 			user.updateYaw(info.getYaw());
@@ -246,13 +251,15 @@ public class CoreController {
 	
 	void onProjectOpen(Project project) {
 		this.project = project;
+		requestProjectInitialisation.set(true);
 	}
 	
 	void onProjectClose() {
 		this.project = null;
+		requestProjectFinalisation.set(true);
 	}
 	
-	void onMouseMove() {
+	void onMove() {
 		user.normaliseCameraQuaternion();
 		
 		if(isActive() && scene == RenderingScene.HIERARCHY) {
@@ -353,20 +360,32 @@ public class CoreController {
 	
 	void onDiscontinuityCrossed() {
 		requestMenuReset.set(true);
+		
+		try {
+			coreGeometry.processEventQueue();
+		} catch (GeometryException exception) {
+			Debug.exception(exception);
+		}
 
 		List<CodeGeometry> buffer = new ArrayList<>();
 		List<WorldElement> geometry = coreGeometry.getElements();
 				
 		WorldElement current = coreGeometry.getElementByID(project.getDataManager().getHostStack().getCurrent());
-		float characteristicLength = current.getSize();
-
+		float characteristicLength;
+		
+		if(current != null) {
+			characteristicLength = current.getSize();
+		} else {
+			characteristicLength = coreGeometry.getSize(0);
+		}
+		
 		for(WorldElement element : geometry) {
 			if(isResolvable(element, characteristicLength, 100.0f)) {
 				CodeGeometry code = codeGeometries.stream() // Motion continuity: reuse geometries
 												  .filter(geom -> geom.getContainer().equals(element))
 												  .findAny()
 												  .orElseGet(() -> this.generateCodeGeometry(element));
-								
+
 				buffer.add(code);
 				
 				if(element.equals(current)) {
@@ -379,11 +398,14 @@ public class CoreController {
 		
 		user.resetAcceleration();
 		user.accelerate(Math.max(10E-17f, coreGeometry.getRelativeSize(project.getDataManager().getHostStack().getGeneration())));
+		
+		computeGLPosition();
 	}
 	
 	private boolean isResolvable(WorldElement element, float characteristicLength, float factor) {
 		float distance = element.getCenter().distance(user.getPosition());
-		return characteristicLength / factor < distance && distance < characteristicLength * factor;
+		float size = element.getSize();
+		return characteristicLength / factor < size && distance < characteristicLength * factor;
 	}
 
 	private CodeGeometry generateCodeGeometry(WorldElement container) {
@@ -402,6 +424,12 @@ public class CoreController {
 	
 	void toggleActivity() {
 		active = !active;
+		
+		if(!active) {
+			user.moveX(0);
+			user.moveY(0);
+			user.moveZ(0);
+		}
 	}
 	
 	void reset() {

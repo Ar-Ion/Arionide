@@ -21,6 +21,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.core;
 
+import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.debugging.IAm;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
@@ -48,43 +49,69 @@ public class CoreOrchestrator {
 	
 	@IAm("orchestrating the initialisation")
 	public void orchestrateInitialisation(AppDrawingContext context) {
-		renderer.init(context);
-		controller.reset();
+		try {
+			renderer.init(context);
+			controller.reset();
+		} catch(Exception exception) {
+			pauseController();
+			Debug.exception(exception);
+		}
 	}
 	
 	@IAm("orchestrating the main rendering/updating pipeline")
 	public void orchestrateMain(AppDrawingContext context) {
-		
-		UserController user = controller.getUserController();
-		
-		controller.updateStatic();
-		
-		if(controller.isReady()) {
-			controller.updateDynamics();
-		}
-		
-		renderer.updateCamera(controller.getGLPosition(), user.getYaw(), user.getPitch());
-		
-		if(controller.isActive()) {
-			controller.updateUserDynamics();
-		}
-		
-		dispatcher.fire(new MessageEvent(controller.getUserController().getUserDescription(), MessageType.DEBUG));
+		try {
+			UserController user = controller.getUserController();
+			
+			controller.updateStatic();
+			
+			if(controller.isReady()) {
+				user.setCameraDirection(renderer.getCameraDirection());
+				controller.updateDynamics();
+			}
+			
+			renderer.updateCamera(controller.getGLPosition(), user.getYaw(), user.getPitch());
+			
+			if(controller.isReady()) {
+				controller.updateUserDynamics();
+			}
+			
+			dispatcher.fire(new MessageEvent(controller.getUserController().getUserDescription(), MessageType.DEBUG));
 
-		renderer.render3D(context);
+			renderer.render3D(context);	
+		} catch(Exception exception) {
+			pauseController();
+			Debug.exception(exception);
+		}
 	}
 	
 	@IAm("orchestrating the overlay rendering/updating pipeline")
 	public void orchestrateOverlay(AppDrawingContext context) {
-		if(controller.isReady()) {
-			renderer.render2D(context);
+		try {
+			if(controller.isReady()) {
+				renderer.render2D(context);
+			}
+		} catch(Exception exception) {
+			pauseController();
+			Debug.exception(exception);
 		}
 	}
 	
 	@IAm("updating the viewport")
 	public void updateBounds(Bounds bounds) {
-		renderer.updateBounds(bounds);
-		controller.updateBounds(bounds);
+		try {
+			renderer.updateBounds(bounds);
+			controller.updateBounds(bounds);
+		} catch(Exception exception) {
+			pauseController();
+			Debug.exception(exception);
+		}
+	}
+	
+	private void pauseController() {
+		if(controller.isActive()) {
+			controller.toggleActivity();
+		}
 	}
 	
 	public CoreController getController() {

@@ -1,0 +1,214 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge}{}\doxysection{ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge}\index{ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_acf2be4e928fc0bdef58788a788d4b270}{G\+L\+Edge}} (int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_shape_a2549235841b6a11ec88f0cd8dd9c3aac}{rgb}}, int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_shape_aee7a5fb593d3ee39865dce3686d2f71e}{alpha}}, float \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a7a97b760ac33be5ca068b4895a76bf4a}{edge\+Radius}})
+\item 
+Big\+Integer \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_af699ced36fc932ad57c186d947eef0f2}{get\+State\+Fingerprint}} ()
+\item 
+\mbox{\hyperlink{enumch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_type}{Primitive\+Type}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a2a812b3e4f3f2762057858a8902df332}{get\+Type}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a5babce0c5d70d8fee580e8d3a1528266}{update\+Property}} (int identifier)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a3f8bff2fb3ef73814cb7f963c817b7d7}{render}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a7c06c1964e75a5322debddb0cc147948}{render\+Polygon}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a75777e5e32fe21f49cc4ce639a093a01}{get\+Position\+Attribute\+Divisor}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_aa6d69dd1453a65908c24615cd6de74d4}{update\+Buffers}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1cache_1_1_vertex_buffer}{Vertex\+Buffer}} main\+Position\+Buffer)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_context}{G\+L\+Edge\+Context}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_ae8a3c5b51a1c56b5e5190f89f0587011}{get\+Context}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1cache_1_1_vertex_buffer}{Vertex\+Buffer}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a9fa36bcbbecd3ca41696f8a763599863}{edge\+Factor\+Buffer}} = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1cache_1_1_vertex_buffer}{Vertex\+Buffer}}(Float.\+B\+Y\+T\+ES, new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1cache_1_1_attribute}{Attribute}}(this.\+get\+Context().get\+Edge\+Factor\+Attribute(), 2, G\+L4.\+G\+L\+\_\+\+F\+L\+O\+AT))
+\item 
+float \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a7a97b760ac33be5ca068b4895a76bf4a}{edge\+Radius}}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point}{Point}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a7170c8fd5e0ffcbfa1e60e810148694c}{radius}} = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point}{Point}}()
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_acf2be4e928fc0bdef58788a788d4b270}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_acf2be4e928fc0bdef58788a788d4b270}} 
+\index{ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}!GLEdge@{GLEdge}}
+\index{GLEdge@{GLEdge}!ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}}
+\doxysubsubsection{\texorpdfstring{GLEdge()}{GLEdge()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge.\+G\+L\+Edge (\begin{DoxyParamCaption}\item[{int}]{rgb,  }\item[{int}]{alpha,  }\item[{float}]{edge\+Radius }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_acf2be4e928fc0bdef58788a788d4b270_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_ae8a3c5b51a1c56b5e5190f89f0587011}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_ae8a3c5b51a1c56b5e5190f89f0587011}} 
+\index{ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}!getContext@{getContext}}
+\index{getContext@{getContext}!ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}}
+\doxysubsubsection{\texorpdfstring{getContext()}{getContext()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_context}{G\+L\+Edge\+Context}} ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge.\+get\+Context (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_polygon_a26b27c102ee93beda7ffd1bc302dd34a}{ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Polygon}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a75777e5e32fe21f49cc4ce639a093a01}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a75777e5e32fe21f49cc4ce639a093a01}} 
+\index{ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}!getPositionAttributeDivisor@{getPositionAttributeDivisor}}
+\index{getPositionAttributeDivisor@{getPositionAttributeDivisor}!ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}}
+\doxysubsubsection{\texorpdfstring{getPositionAttributeDivisor()}{getPositionAttributeDivisor()}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge.\+get\+Position\+Attribute\+Divisor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_polygon_abb17d32fd88d02eac244a646bbee7906}{ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Polygon}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_af699ced36fc932ad57c186d947eef0f2}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_af699ced36fc932ad57c186d947eef0f2}} 
+\index{ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}!getStateFingerprint@{getStateFingerprint}}
+\index{getStateFingerprint@{getStateFingerprint}!ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}}
+\doxysubsubsection{\texorpdfstring{getStateFingerprint()}{getStateFingerprint()}}
+{\footnotesize\ttfamily Big\+Integer ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge.\+get\+State\+Fingerprint (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_shape_a877774285acb2f55753eeea231d5963d}{ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Shape}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_af699ced36fc932ad57c186d947eef0f2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a2a812b3e4f3f2762057858a8902df332}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a2a812b3e4f3f2762057858a8902df332}} 
+\index{ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}!getType@{getType}}
+\index{getType@{getType}!ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}}
+\doxysubsubsection{\texorpdfstring{getType()}{getType()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{enumch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_type}{Primitive\+Type}} ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge.\+get\+Type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_polygon_a3b298111ee7b494e1df59186813f1699}{ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Polygon}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a3f8bff2fb3ef73814cb7f963c817b7d7}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a3f8bff2fb3ef73814cb7f963c817b7d7}} 
+\index{ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}!render@{render}}
+\index{render@{render}!ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge.\+render (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_polygon_a6e469000cdae20db6dc690f46168f1c6}{ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Polygon}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a3f8bff2fb3ef73814cb7f963c817b7d7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a7c06c1964e75a5322debddb0cc147948}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a7c06c1964e75a5322debddb0cc147948}} 
+\index{ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}!renderPolygon@{renderPolygon}}
+\index{renderPolygon@{renderPolygon}!ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}}
+\doxysubsubsection{\texorpdfstring{renderPolygon()}{renderPolygon()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge.\+render\+Polygon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_polygon_abb23d0e65ce4e1376fbf8bc316b583f9}{ch.\+innovazion.\+arionide.\+ui.\+render.\+Polygon}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a7c06c1964e75a5322debddb0cc147948_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_aa6d69dd1453a65908c24615cd6de74d4}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_aa6d69dd1453a65908c24615cd6de74d4}} 
+\index{ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}!updateBuffers@{updateBuffers}}
+\index{updateBuffers@{updateBuffers}!ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}}
+\doxysubsubsection{\texorpdfstring{updateBuffers()}{updateBuffers()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge.\+update\+Buffers (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1cache_1_1_vertex_buffer}{Vertex\+Buffer}}}]{main\+Position\+Buffer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_polygon_a1ee2d6ebc74f6fa97bf4ea455b28a2c0}{ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Polygon}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_aa6d69dd1453a65908c24615cd6de74d4_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a5babce0c5d70d8fee580e8d3a1528266}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a5babce0c5d70d8fee580e8d3a1528266}} 
+\index{ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}!updateProperty@{updateProperty}}
+\index{updateProperty@{updateProperty}!ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}}
+\doxysubsubsection{\texorpdfstring{updateProperty()}{updateProperty()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge.\+update\+Property (\begin{DoxyParamCaption}\item[{int}]{identifier }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_shape_a043898cef471fae509db5b55a34baeb7}{ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Shape}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a5babce0c5d70d8fee580e8d3a1528266_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a9fa36bcbbecd3ca41696f8a763599863}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a9fa36bcbbecd3ca41696f8a763599863}} 
+\index{ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}!edgeFactorBuffer@{edgeFactorBuffer}}
+\index{edgeFactorBuffer@{edgeFactorBuffer}!ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}}
+\doxysubsubsection{\texorpdfstring{edgeFactorBuffer}{edgeFactorBuffer}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1cache_1_1_vertex_buffer}{Vertex\+Buffer}} ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge.\+edge\+Factor\+Buffer = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1cache_1_1_vertex_buffer}{Vertex\+Buffer}}(Float.\+B\+Y\+T\+ES, new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1cache_1_1_attribute}{Attribute}}(this.\+get\+Context().get\+Edge\+Factor\+Attribute(), 2, G\+L4.\+G\+L\+\_\+\+F\+L\+O\+AT))\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a7a97b760ac33be5ca068b4895a76bf4a}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a7a97b760ac33be5ca068b4895a76bf4a}} 
+\index{ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}!edgeRadius@{edgeRadius}}
+\index{edgeRadius@{edgeRadius}!ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}}
+\doxysubsubsection{\texorpdfstring{edgeRadius}{edgeRadius}}
+{\footnotesize\ttfamily float ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge.\+edge\+Radius\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a7170c8fd5e0ffcbfa1e60e810148694c}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1_g_l_edge_a7170c8fd5e0ffcbfa1e60e810148694c}} 
+\index{ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}!radius@{radius}}
+\index{radius@{radius}!ch.innovazion.arionide.ui.render.gl.GLEdge@{ch.innovazion.arionide.ui.render.gl.GLEdge}}
+\doxysubsubsection{\texorpdfstring{radius}{radius}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point}{Point}} ch.\+innovazion.\+arionide.\+ui.\+render.\+gl.\+G\+L\+Edge.\+radius = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point}{Point}}()\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/ui/render/gl/\mbox{\hyperlink{_g_l_edge_8java}{G\+L\+Edge.\+java}}\end{DoxyCompactItemize}

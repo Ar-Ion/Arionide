@@ -1,0 +1,176 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation}{}\doxysection{ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation}\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=315pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a61223769c883cc3f986caf398ef31126}{Animation}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager}{App\+Manager}} manager)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a6b6a4b6005d1de1a676569d0a816710f}{start\+Animation}} (int duration, Consumer$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation}{Animation}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a4eb15c036b99541f8710a70a50a300f0}{animate\+After}}, Object... params)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a86e22ab279f26ad40025304dba8e7c3c}{start\+Animation}} (int duration, Object... params)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a831fa04ec501e10b9bd7350f3cfb7b59}{end\+Animation}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a4d7165c6e4bc7aae0bebe5b2f852aa1d}{stop\+Animation}} ()
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a844ca4152ff45dcd2ac39fed8b5242d0}{is\+Animating}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a3e8cec4850b5251ce5b160427cf90870}{do\+Tick}} ()
+\item 
+abstract void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_abea3c00ece16f698a4bf1e6079b761b1}{tick}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a95cb6257d5d6827805fb8ec802b4aca5}{get\+Progression}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a1c82a989f6453b3332dfbf992d5d51c0}{start\+Time}}
+\item 
+long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a19ee9e750250f60030ec649847148950}{stop\+Time}}
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a65fed321ee3ef232d5ba5caefaa4feb1}{ignore\+Ticks}} = true
+\item 
+Consumer$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation}{Animation}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a4eb15c036b99541f8710a70a50a300f0}{animate\+After}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a61223769c883cc3f986caf398ef31126}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a61223769c883cc3f986caf398ef31126}} 
+\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}!Animation@{Animation}}
+\index{Animation@{Animation}!ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+\doxysubsubsection{\texorpdfstring{Animation()}{Animation()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation.\+Animation (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager}{App\+Manager}}}]{manager }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a61223769c883cc3f986caf398ef31126_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a3e8cec4850b5251ce5b160427cf90870}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a3e8cec4850b5251ce5b160427cf90870}} 
+\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}!doTick@{doTick}}
+\index{doTick@{doTick}!ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+\doxysubsubsection{\texorpdfstring{doTick()}{doTick()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation.\+do\+Tick (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a3e8cec4850b5251ce5b160427cf90870_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a831fa04ec501e10b9bd7350f3cfb7b59}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a831fa04ec501e10b9bd7350f3cfb7b59}} 
+\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}!endAnimation@{endAnimation}}
+\index{endAnimation@{endAnimation}!ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+\doxysubsubsection{\texorpdfstring{endAnimation()}{endAnimation()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation.\+end\+Animation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a95cb6257d5d6827805fb8ec802b4aca5}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a95cb6257d5d6827805fb8ec802b4aca5}} 
+\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}!getProgression@{getProgression}}
+\index{getProgression@{getProgression}!ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+\doxysubsubsection{\texorpdfstring{getProgression()}{getProgression()}}
+{\footnotesize\ttfamily double ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation.\+get\+Progression (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a844ca4152ff45dcd2ac39fed8b5242d0}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a844ca4152ff45dcd2ac39fed8b5242d0}} 
+\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}!isAnimating@{isAnimating}}
+\index{isAnimating@{isAnimating}!ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+\doxysubsubsection{\texorpdfstring{isAnimating()}{isAnimating()}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation.\+is\+Animating (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a6b6a4b6005d1de1a676569d0a816710f}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a6b6a4b6005d1de1a676569d0a816710f}} 
+\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}!startAnimation@{startAnimation}}
+\index{startAnimation@{startAnimation}!ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+\doxysubsubsection{\texorpdfstring{startAnimation()}{startAnimation()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation.\+start\+Animation (\begin{DoxyParamCaption}\item[{int}]{duration,  }\item[{Consumer$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation}{Animation}} $>$}]{animate\+After,  }\item[{Object...}]{params }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a86e22ab279f26ad40025304dba8e7c3c}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a86e22ab279f26ad40025304dba8e7c3c}} 
+\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}!startAnimation@{startAnimation}}
+\index{startAnimation@{startAnimation}!ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+\doxysubsubsection{\texorpdfstring{startAnimation()}{startAnimation()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation.\+start\+Animation (\begin{DoxyParamCaption}\item[{int}]{duration,  }\item[{Object...}]{params }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_field_modifier_animation_a36842f596bf95c289822c0592f92d37d}{ch.\+innovazion.\+arionide.\+ui.\+animations.\+Field\+Modifier\+Animation}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a86e22ab279f26ad40025304dba8e7c3c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a4d7165c6e4bc7aae0bebe5b2f852aa1d}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a4d7165c6e4bc7aae0bebe5b2f852aa1d}} 
+\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}!stopAnimation@{stopAnimation}}
+\index{stopAnimation@{stopAnimation}!ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+\doxysubsubsection{\texorpdfstring{stopAnimation()}{stopAnimation()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation.\+stop\+Animation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_abea3c00ece16f698a4bf1e6079b761b1}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_abea3c00ece16f698a4bf1e6079b761b1}} 
+\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}!tick@{tick}}
+\index{tick@{tick}!ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+\doxysubsubsection{\texorpdfstring{tick()}{tick()}}
+{\footnotesize\ttfamily abstract void ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation.\+tick (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_field_modifier_animation_a00669d335b9366bdfb5e798222c7504c}{ch.\+innovazion.\+arionide.\+ui.\+animations.\+Field\+Modifier\+Animation}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a4eb15c036b99541f8710a70a50a300f0}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a4eb15c036b99541f8710a70a50a300f0}} 
+\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}!animateAfter@{animateAfter}}
+\index{animateAfter@{animateAfter}!ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+\doxysubsubsection{\texorpdfstring{animateAfter}{animateAfter}}
+{\footnotesize\ttfamily Consumer$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation}{Animation}}$>$ ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation.\+animate\+After\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a65fed321ee3ef232d5ba5caefaa4feb1}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a65fed321ee3ef232d5ba5caefaa4feb1}} 
+\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}!ignoreTicks@{ignoreTicks}}
+\index{ignoreTicks@{ignoreTicks}!ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+\doxysubsubsection{\texorpdfstring{ignoreTicks}{ignoreTicks}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation.\+ignore\+Ticks = true\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a1c82a989f6453b3332dfbf992d5d51c0}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a1c82a989f6453b3332dfbf992d5d51c0}} 
+\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}!startTime@{startTime}}
+\index{startTime@{startTime}!ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+\doxysubsubsection{\texorpdfstring{startTime}{startTime}}
+{\footnotesize\ttfamily long ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation.\+start\+Time\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a19ee9e750250f60030ec649847148950}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation_a19ee9e750250f60030ec649847148950}} 
+\index{ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}!stopTime@{stopTime}}
+\index{stopTime@{stopTime}!ch.innovazion.arionide.ui.animations.Animation@{ch.innovazion.arionide.ui.animations.Animation}}
+\doxysubsubsection{\texorpdfstring{stopTime}{stopTime}}
+{\footnotesize\ttfamily long ch.\+innovazion.\+arionide.\+ui.\+animations.\+Animation.\+stop\+Time\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/ui/animations/\mbox{\hyperlink{_animation_8java}{Animation.\+java}}\end{DoxyCompactItemize}

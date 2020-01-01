@@ -1,0 +1,24 @@
+<map id="ch.innovazion.arionide.menu.structure.specification.SpecificationEditor.show" name="ch.innovazion.arionide.menu.structure.specification.SpecificationEditor.show">
+<area shape="rect" id="node1" title=" " alt="" coords="5,444,333,483"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a9d7fbeeb0ce49e62bdfc21f6e043ad03" title=" " alt="" coords="407,55,601,93"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_display_utils.html#a441f28ceef1941adf2c369ab5957c79a" title=" " alt="" coords="407,224,601,263"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_specification.html#a47f3089dee9c3cb2fbcfe95458a9d7a1" title=" " alt="" coords="683,99,870,137"/>
+<area shape="rect" id="node14" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#ae698c0f117400346cf85a4fab5c8d94f" title=" " alt="" coords="407,287,601,325"/>
+<area shape="rect" id="node15" href="$interfacech_1_1innovazion_1_1arionide_1_1_workspace.html#a86d2c3af813225cf571830bd8c6ad379" title=" " alt="" coords="381,349,627,388"/>
+<area shape="rect" id="node16" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#aaf0e9ae8d4ade85a04e0856f17d46bb5" title=" " alt="" coords="407,412,601,451"/>
+<area shape="rect" id="node17" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_specification_element.html#a35d31353b0ad34d3f06c5d4709006851" title=" " alt="" coords="402,475,606,513"/>
+<area shape="rect" id="node18" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a1b574b99a0de37b992155439bcdb5629" title=" " alt="" coords="407,537,601,576"/>
+<area shape="rect" id="node19" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project.html#aedd78eae8515a9a88f720e85ca1bf7b0" title=" " alt="" coords="403,600,605,639"/>
+<area shape="rect" id="node20" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_storage.html#a559465a1beda0c5cd2ffaf15024641a6" title=" " alt="" coords="403,663,605,701"/>
+<area shape="rect" id="node21" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a420f3dd27cc235478a401db297348f74" title=" " alt="" coords="407,749,601,788"/>
+<area shape="rect" id="node22" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a25f07e086101717c4da4b7dcfc3abfac" title=" " alt="" coords="411,812,597,851"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#abceecd7d7b2b230be630bb1d7da4010e" title=" " alt="" coords="679,36,874,75"/>
+<area shape="rect" id="node4" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#aa5f84407c43d1975f6c3a6d983be6c33" title=" " alt="" coords="926,5,1198,44"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a09d0cee3370c7a91bd916eca48483967" title=" " alt="" coords="954,68,1171,107"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_description.html#a21f2423a6153725655def94be7b1abb0" title=" " alt="" coords="679,161,874,200"/>
+<area shape="rect" id="node8" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure_meta.html#abe184ed66c909221bc08e94f6bcab64c" title=" " alt="" coords="676,224,877,263"/>
+<area shape="rect" id="node10" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure_meta.html#acf98a03904729f36bde3daabca1b72b7" title=" " alt="" coords="676,287,877,325"/>
+<area shape="rect" id="node11" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure_meta.html#accac9ac54f5b8b7114286013e93b8a52" title=" " alt="" coords="675,349,878,388"/>
+<area shape="rect" id="node12" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_description.html#a42df52c1f82beffedc7e48de21a32d6d" title=" " alt="" coords="679,412,874,451"/>
+<area shape="rect" id="node13" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_description.html#aa49994294b0a43b9a7396f195afcdd90" title=" " alt="" coords="679,475,874,513"/>
+</map>

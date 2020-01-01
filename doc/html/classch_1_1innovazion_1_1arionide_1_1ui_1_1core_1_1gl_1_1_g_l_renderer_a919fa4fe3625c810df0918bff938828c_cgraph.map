@@ -1,0 +1,12 @@
+<map id="ch.innovazion.arionide.ui.core.gl.GLRenderer.renderLabel" name="ch.innovazion.arionide.ui.core.gl.GLRenderer.renderLabel">
+<area shape="rect" id="node1" title=" " alt="" coords="5,176,221,215"/>
+<area shape="rect" id="node2" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context.html#a150bfecc7963838f0f6a813219112bf1" title=" " alt="" coords="285,5,508,57"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_factory.html#a334bcea27b685f6d4c8c2a2784800784" title=" " alt="" coords="290,81,503,120"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_factory.html#a0b710a738de6f475c31abf0da9173cd5" title=" " alt="" coords="290,144,503,183"/>
+<area shape="rect" id="node5" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_preparable.html#a514a2cc646e65c1ccaae876c0da81bfc" title=" " alt="" coords="290,207,503,245"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system.html#a28dcae08b65b9a30990f3982cfd4f99c" title=" " alt="" coords="269,269,524,308"/>
+<area shape="rect" id="node10" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_u_i_mutable_bounds.html#afff453e6d3d0b68e92d9df5f043e4560" title=" " alt="" coords="288,332,505,371"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system.html#ab1e6180723b3e7b02f5f8b385fbf80cc" title=" " alt="" coords="572,269,804,308"/>
+<area shape="rect" id="node8" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_multicaster.html#a6a58dc5f14af8f1bbd85f8d9f0103117" title=" " alt="" coords="852,237,1068,276"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive.html#aef391208dc491d4edec20edbd02a5ec9" title=" " alt="" coords="854,300,1067,339"/>
+</map>

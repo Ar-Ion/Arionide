@@ -1,0 +1,10 @@
+<map id="ch.innovazion.arionide.events.ProjectOpenEvent" name="ch.innovazion.arionide.events.ProjectOpenEvent">
+<area shape="rect" id="node1" title=" " alt="" coords="813,52,1013,91"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1events_1_1_project_event.html" title=" " alt="" coords="563,52,763,91"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1events_1_1_event.html" title=" " alt="" coords="270,20,471,59"/>
+<area shape="rect" id="node4" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project.html" title=" " alt="" coords="269,83,471,121"/>
+<area shape="rect" id="node5" href="$interfacech_1_1innovazion_1_1arionide_1_1_resource.html" title=" " alt="" coords="5,5,220,31"/>
+<area shape="rect" id="node6" href="$interfacech_1_1innovazion_1_1arionide_1_1_mapped_structure.html" title=" " alt="" coords="10,55,216,93"/>
+<area shape="rect" id="node7" href="$interfacech_1_1innovazion_1_1arionide_1_1_loadable.html" title=" " alt="" coords="6,117,219,143"/>
+<area shape="rect" id="node8" href="$interfacech_1_1innovazion_1_1arionide_1_1_saveable.html" title=" " alt="" coords="6,167,219,192"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="ch.innovazion.arionide.threading.WorkingThread" name="ch.innovazion.arionide.threading.WorkingThread">
+<area shape="rect" id="node1" title=" " alt="" coords="117,68,334,107"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1threading_1_1_event_dispatching_thread.html" title=" " alt="" coords="382,5,599,44"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1threading_1_1_u_i_thread.html" title=" " alt="" coords="382,68,599,107"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread.html" title=" " alt="" coords="382,131,599,169"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,75,69,100"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1threading_1_1_drawing_thread.html" title=" " alt="" coords="647,37,864,76"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1threading_1_1_updating_thread.html" title=" " alt="" coords="647,100,864,139"/>
+</map>

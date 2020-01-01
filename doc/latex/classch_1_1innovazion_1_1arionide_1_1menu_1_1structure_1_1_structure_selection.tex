@@ -1,0 +1,210 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection}{}\doxysection{ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection}\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=268pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a957361c2497d785e5368937bc4abcaeb}{Structure\+Selection}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager}{App\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_a6a91c4ceb3c2fcac3bf1fdc8ab9e11a9}{manager}}, Consumer$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_af73cef5b2ce29c4f8272ce55c624a5cf}{delegate}})
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a42a144562c063769ebbca44d5c02b067}{reset\+Comparators}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a9e813ddd4d4cb40f01168493e6d36aff}{setup\+Comparator}} (Comparator$<$ Integer $>$ comparator)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a9514e31c05209295d6969f253aad6b49}{reset\+Filters}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_aa2c7a3532cc7b3004c9074bf2b6eae4a}{setup\+Filter}} (Predicate$<$ Integer $>$ other)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a8c9e496866ade61014861db5562d5b63}{show}} ()
+\item 
+List$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a0209625d6b65b835c71bd23231124526}{load\+Current\+Elements}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_af94a04f9e1741b3ec50a4898b6b41fd8}{on\+Click}} (int element)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a8b6a0ad9925c6920d12b713fadcbb7f7}{on\+Up}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a94982df04993bdc3503d7eb537c6ecae}{on\+Down}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final Consumer$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_af73cef5b2ce29c4f8272ce55c624a5cf}{delegate}}
+\item 
+final List$<$ Comparator$<$ Integer $>$ $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a48c7014d23ec0e8ddc12aa75ba0a2647}{comparators}} = new Array\+List$<$$>$()
+\item 
+final Stack$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_ac617eadab6a2deabaade2c2d2fb15fc3}{hierarchy}} = new Stack$<$$>$()
+\item 
+Predicate$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_aa5d1822f3c044591d1159f8442c0c9fd}{filter}} = \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_utils_a99812b7d5461e50e285912627be7f258}{Utils.\+identity\+Predicate}}()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a957361c2497d785e5368937bc4abcaeb}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a957361c2497d785e5368937bc4abcaeb}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!StructureSelection@{StructureSelection}}
+\index{StructureSelection@{StructureSelection}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{StructureSelection()}{StructureSelection()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+Structure\+Selection (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager}{App\+Manager}}}]{manager,  }\item[{Consumer$<$ Integer $>$}]{delegate }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a0209625d6b65b835c71bd23231124526}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a0209625d6b65b835c71bd23231124526}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!loadCurrentElements@{loadCurrentElements}}
+\index{loadCurrentElements@{loadCurrentElements}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{loadCurrentElements()}{loadCurrentElements()}}
+{\footnotesize\ttfamily List$<$Integer$>$ ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+load\+Current\+Elements (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_browser_ab4d2611d02be8309b69c400e1b26ec81}{ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Browser}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a0209625d6b65b835c71bd23231124526_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_af94a04f9e1741b3ec50a4898b6b41fd8}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_af94a04f9e1741b3ec50a4898b6b41fd8}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!onClick@{onClick}}
+\index{onClick@{onClick}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{onClick()}{onClick()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+on\+Click (\begin{DoxyParamCaption}\item[{int}]{element }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_afbc74abfc1492def706f39b8919633ea}{ch.\+innovazion.\+arionide.\+menu.\+Menu}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_af94a04f9e1741b3ec50a4898b6b41fd8_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a94982df04993bdc3503d7eb537c6ecae}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a94982df04993bdc3503d7eb537c6ecae}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!onDown@{onDown}}
+\index{onDown@{onDown}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{onDown()}{onDown()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+on\+Down (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_ae8a1efb6411441d84e211eba8231eab6}{ch.\+innovazion.\+arionide.\+menu.\+Menu}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a94982df04993bdc3503d7eb537c6ecae_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a8b6a0ad9925c6920d12b713fadcbb7f7}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a8b6a0ad9925c6920d12b713fadcbb7f7}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!onUp@{onUp}}
+\index{onUp@{onUp}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{onUp()}{onUp()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+on\+Up (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_a993cc836477297c73fb0b9b994813067}{ch.\+innovazion.\+arionide.\+menu.\+Menu}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a42a144562c063769ebbca44d5c02b067}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a42a144562c063769ebbca44d5c02b067}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!resetComparators@{resetComparators}}
+\index{resetComparators@{resetComparators}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{resetComparators()}{resetComparators()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+reset\+Comparators (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a9514e31c05209295d6969f253aad6b49}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a9514e31c05209295d6969f253aad6b49}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!resetFilters@{resetFilters}}
+\index{resetFilters@{resetFilters}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{resetFilters()}{resetFilters()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+reset\+Filters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a9514e31c05209295d6969f253aad6b49_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a9e813ddd4d4cb40f01168493e6d36aff}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a9e813ddd4d4cb40f01168493e6d36aff}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!setupComparator@{setupComparator}}
+\index{setupComparator@{setupComparator}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{setupComparator()}{setupComparator()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+setup\+Comparator (\begin{DoxyParamCaption}\item[{Comparator$<$ Integer $>$}]{comparator }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_aa2c7a3532cc7b3004c9074bf2b6eae4a}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_aa2c7a3532cc7b3004c9074bf2b6eae4a}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!setupFilter@{setupFilter}}
+\index{setupFilter@{setupFilter}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{setupFilter()}{setupFilter()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+setup\+Filter (\begin{DoxyParamCaption}\item[{Predicate$<$ Integer $>$}]{other }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a8c9e496866ade61014861db5562d5b63}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a8c9e496866ade61014861db5562d5b63}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!show@{show}}
+\index{show@{show}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{show()}{show()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+show (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ae64818f004f2faeac1bb1ecd32cd504d}{ch.\+innovazion.\+arionide.\+menu.\+Browser}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a8c9e496866ade61014861db5562d5b63_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a48c7014d23ec0e8ddc12aa75ba0a2647}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a48c7014d23ec0e8ddc12aa75ba0a2647}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!comparators@{comparators}}
+\index{comparators@{comparators}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{comparators}{comparators}}
+{\footnotesize\ttfamily final List$<$Comparator$<$Integer$>$ $>$ ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+comparators = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_af73cef5b2ce29c4f8272ce55c624a5cf}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_af73cef5b2ce29c4f8272ce55c624a5cf}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!delegate@{delegate}}
+\index{delegate@{delegate}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{delegate}{delegate}}
+{\footnotesize\ttfamily final Consumer$<$Integer$>$ ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+delegate\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_aa5d1822f3c044591d1159f8442c0c9fd}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_aa5d1822f3c044591d1159f8442c0c9fd}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!filter@{filter}}
+\index{filter@{filter}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{filter}{filter}}
+{\footnotesize\ttfamily Predicate$<$Integer$>$ ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+filter = \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_utils_a99812b7d5461e50e285912627be7f258}{Utils.\+identity\+Predicate}}()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_ac617eadab6a2deabaade2c2d2fb15fc3}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_ac617eadab6a2deabaade2c2d2fb15fc3}} 
+\index{ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}!hierarchy@{hierarchy}}
+\index{hierarchy@{hierarchy}!ch.innovazion.arionide.menu.structure.StructureSelection@{ch.innovazion.arionide.menu.structure.StructureSelection}}
+\doxysubsubsection{\texorpdfstring{hierarchy}{hierarchy}}
+{\footnotesize\ttfamily final Stack$<$Integer$>$ ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection.\+hierarchy = new Stack$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/menu/structure/\mbox{\hyperlink{_structure_selection_8java}{Structure\+Selection.\+java}}\end{DoxyCompactItemize}

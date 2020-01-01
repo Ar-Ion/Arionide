@@ -37,7 +37,7 @@ import ch.innovazion.arionide.project.StructureMeta;
 
 public abstract class HierarchicalGeometry extends Geometry {
 	
-	public static final float MAKE_THE_UNIVERSE_GREAT_AGAIN = 1E17f;
+	public static final float MAKE_THE_UNIVERSE_GREAT_AGAIN = 1E0f;
 	
 	private static final float initialSize = 1.0f * MAKE_THE_UNIVERSE_GREAT_AGAIN;
 	
