@@ -141,7 +141,9 @@ public class CoreEventHandler implements EventHandler {
 					if(action.getType() == ActionType.CLICK) {
 						if(action.isButton(ActionEvent.BUTTON_LEFT)) {
 							if(!controller.onLeftClick()) {
-								currentMenu.click(); // Trigger menu event if the event was not captured by the controller
+								if(currentMenu != null) {
+									currentMenu.click(); // Trigger menu event if the event was not captured by the controller
+								}
 							}
 						} else if(action.isButton(ActionEvent.BUTTON_RIGHT)) {
 							controller.onRightClick();

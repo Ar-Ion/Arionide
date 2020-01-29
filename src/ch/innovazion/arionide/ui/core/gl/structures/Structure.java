@@ -46,7 +46,7 @@ public class Structure extends BufferObject<StructureContext, StructureSettings>
 		this.tessellator = new StructureTessellator(layers);
 		this.indicesGenerator = new StructureIndicesGenerator(layers);
 		
-		setBufferInitializer(this.tessellator, (context) -> setupFloatAttribute(context.getPositionAttribute(), 3, 0, 0));
+		setBufferInitializer(tessellator, (context) -> setupFloatAttribute(context.getPositionAttribute(), 3, 0, 0));
 	}
 	
 	protected void update(GL4 gl, StructureContext context, StructureSettings settings) {
@@ -64,7 +64,7 @@ public class Structure extends BufferObject<StructureContext, StructureSettings>
 	}
 
 	protected List<BufferGenerator> getGenerators() {
-		return Arrays.asList(this.tessellator, this.indicesGenerator);
+		return Arrays.asList(tessellator, indicesGenerator);
 	}
 
 	protected int getBufferCount() {
