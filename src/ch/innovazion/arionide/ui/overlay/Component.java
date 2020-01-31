@@ -29,12 +29,12 @@ import ch.innovazion.arionide.ui.layout.Surface;
 
 public abstract class Component extends Surface {
 	
-	private final View parent;
+	private final Container parent;
 	
 	private boolean enabled;
 	
 	@IAm("initializing a component")
-	public Component(View parent) {
+	public Component(Container parent) {
 		this.parent = parent;
 	}
 	
@@ -43,7 +43,7 @@ public abstract class Component extends Surface {
 		return this;
 	}
 		
-	public View getParentView() {
+	public Container getParent() {
 		return this.parent;
 	}
 	

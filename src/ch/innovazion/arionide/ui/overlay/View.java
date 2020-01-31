@@ -22,7 +22,6 @@
 package ch.innovazion.arionide.ui.overlay;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import ch.innovazion.arionide.debugging.IAm;
@@ -31,21 +30,17 @@ import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.animations.Animation;
 import ch.innovazion.arionide.ui.animations.FieldModifierAnimation;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
-import ch.innovazion.arionide.ui.layout.Surface;
 import ch.innovazion.arionide.ui.render.PrimitiveFactory;
 import ch.innovazion.arionide.ui.render.Shape;
 import ch.innovazion.arionide.ui.topology.Bounds;
 
-public abstract class View extends Surface {
-		
-	private final AppManager appManager;
-	private final LayoutManager layoutManager;
-
-	private final List<Component> components = new ArrayList<>();
-	
+public abstract class View extends Container {
+			
 	private final Shape borders = PrimitiveFactory.instance().newRectangle();
 	private final Shape mask = PrimitiveFactory.instance().newSolid(0, 127);
 
+	
+	private final AppManager appManager;
 	private final Animation animation;
 	
 	private final int focusViewUID;
@@ -56,8 +51,9 @@ public abstract class View extends Surface {
 	private boolean hasBorders;
 	
 	public View(AppManager appManager, LayoutManager layoutManager) {
+		super(null, layoutManager);
+		
 		this.appManager = appManager;
-		this.layoutManager = layoutManager;
 		
 		this.animation = new FieldModifierAnimation(appManager, "alpha", View.class, this);
 		this.focusViewUID = getAppManager().getFocusManager().requestViewUID();
@@ -75,19 +71,9 @@ public abstract class View extends Surface {
 		borders.updateRGB(rgb);
 		hasBorders = rgb != -1;
 	}
-	
-	public void load() {
-		for(Component component : components) {
-			component.load();
-		}
-	}
-	
-	public AppManager getAppManager() {
-		return appManager;
-	}
 
 	public void drawSurface(AppDrawingContext context) {
-		int newAlpha = appManager.getAlphaLayering().push(AlphaLayer.VIEW, alpha);
+		int newAlpha = getAppManager().getAlphaLayering().push(AlphaLayer.VIEW, alpha);
 		
 		borders.updateAlpha(newAlpha);
 		mask.updateAlpha(getMaskAlpha(newAlpha));
@@ -100,29 +86,7 @@ public abstract class View extends Surface {
 				
 		drawComponents(context);
 		
-		appManager.getAlphaLayering().pop(AlphaLayer.VIEW);
-	}
-	
-	protected void drawComponents(AppDrawingContext context) {
-		for(Component component : components) {
-			component.draw(context);
-		}
-	}
-	
-	public void update() {
-		for(Component component : components) {
-			component.update();
-		}
-	}
-	
-	protected void add(Component component, float x1, float y1, float x2, float y2) {
-		components.add(component);
-		layoutManager.register(component, this, x1, y1, x2, y2);
-		getAppManager().getFocusManager().registerComponent(component);
-	}
-	
-	protected List<Component> getComponents() {
-		return Collections.unmodifiableList(components);
+		getAppManager().getAlphaLayering().pop(AlphaLayer.VIEW);
 	}
 	
 	protected void setupFocusCycle(int... elements) {
@@ -131,9 +95,9 @@ public abstract class View extends Surface {
 		if(elements.length == 0) {
 			int fillingIndex = 0;
 			
-			elements = new int[components.size()];
+			elements = new int[getComponents().size()];
 			
-			while(fillingIndex < components.size()) {
+			while(fillingIndex < getComponents().size()) {
 				elements[fillingIndex] = fillingIndex++;
 			}
 		}
@@ -143,6 +107,10 @@ public abstract class View extends Surface {
 		}
 				
 		getAppManager().getFocusManager().setupCycle(cycle);
+	}
+	
+	public AppManager getAppManager() {
+		return appManager;
 	}
 
 	@IAm("navigating to a view")

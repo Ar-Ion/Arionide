@@ -150,7 +150,7 @@ public class Input extends Button implements EventHandler {
 				
 				layering.push(AlphaLayer.COMPONENT, this.cursorAlpha);
 				this.cursor.updateAlpha(this.cursorAlpha);
-				getParentView().getPreferedRenderingSystem(context).renderLater(this.cursor);
+				getParent().getPreferedRenderingSystem(context).renderLater(this.cursor);
 				layering.pop(AlphaLayer.COMPONENT);
 	
 				if(this.highlighted) {
@@ -165,7 +165,7 @@ public class Input extends Button implements EventHandler {
 	
 	public void drawComponent(AppDrawingContext context) {
 		if(this.text.length() != 0) {
-			getParentView().getPreferedRenderingSystem(context).renderLater(this.getText());
+			getParent().getPreferedRenderingSystem(context).renderLater(this.getText());
 		} else {
 			AlphaLayeringSystem layering = this.getAppManager().getAlphaLayering();
 			
@@ -173,7 +173,7 @@ public class Input extends Button implements EventHandler {
 			
 			this.getText().updateAlpha(layering.getCurrentAlpha());
 			getText().updateRGB(ApplicationTints.PLACEHOLDER_COLOR);
-			getParentView().getPreferedRenderingSystem(context).renderLater(this.getText());
+			getParent().getPreferedRenderingSystem(context).renderLater(this.getText());
 			
 			layering.pop(AlphaLayer.COMPONENT);
 		}
