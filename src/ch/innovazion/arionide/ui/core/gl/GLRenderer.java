@@ -101,7 +101,7 @@ public class GLRenderer {
 	private final Structure[] structures = qualities.stream().map(Structure::new).toArray(Structure[]::new);
 	private final GeneralStructureSettings jointStructureSettings = Utils.bind(GeneralStructureSettings.class, Stream.of(structures).map(Structure::getSettings).toArray(GeneralStructureSettings[]::new));
 	
-	private final Link link = new Link();
+	private final Link link = new Link(64);
 	
 	private final FBOFrame fx = new FBOFrame();
 	
@@ -339,28 +339,48 @@ public class GLRenderer {
 		settings.setAmbientFactor(1.0f);
 		
 		gl.glEnable(GL4.GL_DEPTH_TEST);
-		
+
 		link.bind();
 		
 		for(Connection connection : connections) {
 			WorldElement first = connection.getFirstElement();
 			WorldElement second = connection.getSecondElement();
 			
-			Vector3f deltaFirst = second.getCenter().sub(first.getCenter()).normalize(first.getSize());
-			Vector3f deltaSecond = first.getCenter().sub(second.getCenter()).normalize(second.getSize());
+			Vector3f deltaFirst = second.getCenter().sub(first.getCenter()).normalize(first.getSize() * (1.0f - 0.5f / (float) Math.sqrt(2.0d)));
+			Vector3f deltaSecond = first.getCenter().sub(second.getCenter()).normalize(-second.getSize() * (1.0f - 0.5f / (float) Math.sqrt(2.0d)));
 			
-			this.connect(gl, first.getCenter().add(deltaFirst), second.getCenter().add(deltaSecond));
+			Vector4f color = first.getColor().add(second.getColor()).mul(0.5f);
+						
+			connect(gl, first.getCenter().add(deltaFirst), second.getCenter().add(deltaSecond), first.getSize(), second.getSize(), color);
 		}
 		
 		gl.glDisable(GL4.GL_DEPTH_TEST);
 	}
 	
-	private void connect(GL4 gl, Vector3f first, Vector3f second) {
-		first.sub(controller.getTranslationVector());
-		second.sub(controller.getTranslationVector());
+	private void connect(GL4 gl, Vector3f first, Vector3f second, float firstSize, float secondSize, Vector4f color) {
+		Vector3f center = new Vector3f(first).add(second).mul(0.5f);
 		
-		float[] data = new float[] {first.x, first.y, first.z, second.x, second.y, second.z};
-		link.updateData("position", FloatBuffer.wrap(data)); // "position" as defined in Link.java
+		LinkSettings settings = link.getSettings();
+
+		Vector3f unitVector = new Vector3f(0.0f, 1.0f, 0.0f);
+
+		Vector3f eigenvector = new Vector3f(second).sub(first).normalize();
+		Vector3f planeSpan = new Vector3f(unitVector).cross(eigenvector);
+		Vector3f planeNormal = new Vector3f(planeSpan).cross(eigenvector);
+		
+		
+		Matrix4f model = new Matrix4f(new Vector4f(eigenvector, 0.0f), new Vector4f(planeSpan, 0.0f), new Vector4f(planeNormal, 0.0f), new Vector4f(center.sub(controller.getTranslationVector()), 1.0f));
+
+		
+		model.scale(first.distance(second) * 0.5f);
+		
+		loadMatrix(model, modelData);
+		settings.setModel(modelData);
+
+		
+		settings.setColor(color);
+
+		
 		link.render();
 	}
 	

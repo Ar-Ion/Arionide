@@ -33,13 +33,20 @@ import ch.innovazion.arionide.ui.core.gl.BufferObject;
 
 public class Link extends BufferObject<LinkContext, LinkSettings> {
 
-	private final LinkGenerator generator = new LinkGenerator();
+	private final int layers;
 	
-	public Link() {
+	private final LinkTessellator tessellator;
+	private final LinkIndicesGenerator indicesGenerator;
+		
+	public Link(int layers) {
 		super(new LinkSettings());
 		
-		setBufferInitializer(generator, (context) -> setupFloatAttribute(context.getPositionAttribute(), 3, 0, 0));
-		setBufferLabel(generator, "position");
+		this.layers = layers;
+		
+		this.tessellator = new LinkTessellator(layers);
+		this.indicesGenerator = new LinkIndicesGenerator(layers);
+		
+		setBufferInitializer(tessellator, (context) -> setupFloatAttribute(context.getPositionAttribute(), 3, 0, 0));
 	}
 	
 	protected void update(GL4 gl, LinkContext context, LinkSettings settings) {
@@ -53,14 +60,14 @@ public class Link extends BufferObject<LinkContext, LinkSettings> {
 	}
 
 	protected void renderObject(GL4 gl) {
-		gl.glDrawArrays(GL4.GL_LINES, 0, 2);
+		gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * layers * (layers - 1), GL4.GL_UNSIGNED_INT, 0);		
 	}
 
 	protected List<BufferGenerator> getGenerators() {
-		return Arrays.asList(generator);
+		return Arrays.asList(tessellator, indicesGenerator);
 	}
 
 	protected int getBufferCount() {
-		return 1;
+		return 2;
 	}
 }
