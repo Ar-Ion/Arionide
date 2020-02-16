@@ -40,6 +40,7 @@ import ch.innovazion.arionide.ui.animations.FieldModifierAnimation;
 import ch.innovazion.arionide.ui.overlay.AlphaLayer;
 import ch.innovazion.arionide.ui.overlay.AlphaLayeringSystem;
 import ch.innovazion.arionide.ui.overlay.Component;
+import ch.innovazion.arionide.ui.overlay.Container;
 import ch.innovazion.arionide.ui.overlay.View;
 import ch.innovazion.arionide.ui.render.PrimitiveFactory;
 import ch.innovazion.arionide.ui.render.Shape;
@@ -142,7 +143,7 @@ public class Tab extends MultiComponent implements EventHandler {
 	}
 	
 	public void setComponents(String... tabs) {
-		this.setComponents(makeLabels(this.getParentView(), tabs));
+		this.setComponents(makeLabels(this.getParent(), tabs));
 	}
 	
 	public boolean isFocusable() {
@@ -168,7 +169,7 @@ public class Tab extends MultiComponent implements EventHandler {
 		this.borders.updateAlpha(layering.getCurrentAlpha());
 		this.borders.updateLightCenter(new Point(this.shadow, y));
 		
-		getParentView().getPreferedRenderingSystem(context).renderLater(this.borders);
+		getParent().getPreferedRenderingSystem(context).renderLater(this.borders);
 
 		int i = 0;
 		
@@ -303,7 +304,7 @@ public class Tab extends MultiComponent implements EventHandler {
 		return Utils.asSet(ActionEvent.class, InvalidateLayoutEvent.class);
 	}
 	
-	protected static List<Component> makeLabels(View parent, String[] tabs) {
+	protected static List<Component> makeLabels(Container parent, String[] tabs) {
 		List<Component> labels = new ArrayList<>();
 		
 		for(String tab : tabs) {

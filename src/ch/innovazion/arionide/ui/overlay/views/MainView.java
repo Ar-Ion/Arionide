@@ -106,7 +106,7 @@ public class MainView extends View implements EventHandler {
 		this.pageID = this.getMaxPage();
 	}
 	
-	private void loadWorkspace() {
+	private void loadWorkspace() {		
 		Workspace theWorkspace = this.getAppManager().getWorkspace();
 		
 		theWorkspace.load();
@@ -130,6 +130,7 @@ public class MainView extends View implements EventHandler {
 				if(scalar + displacement < projects.size()) {
 					Project project = (Project) projects.get(scalar + displacement);
 					button.setSignal("open", project).setLabel("Open " + project.getName());
+					button.setVisible(true);
 				} else {
 					button.setVisible(false);
 				}
@@ -137,11 +138,14 @@ public class MainView extends View implements EventHandler {
 				displacement++;
 			}
 		} else {
-			((Button) this.page.get(0)).setSignal("browse", "https://azentreprise.org").setLabel("AZEntreprise.org");
-			((Button) this.page.get(1)).setSignal("browse", "https://azentreprise.org/Arionide/bugreport.php").setLabel("Arionide bug report");
-			((Button) this.page.get(2)).setSignal("browse", "https://azentreprise.org/Arionide/tutorials.php").setLabel("Arionide tutorials");
-			((Button) this.page.get(3)).setSignal("browse", "https://azentreprise.org/Arionide").setLabel("Arionide community");
+			((Button) this.page.get(0)).setSignal("browse", "https://azentreprise.org").setLabel("AZEntreprise.org").setVisible(true);
+			((Button) this.page.get(1)).setSignal("browse", "https://azentreprise.org/Arionide/bugreport.php").setLabel("Arionide bug report").setVisible(true);
+			((Button) this.page.get(2)).setSignal("browse", "https://azentreprise.org/Arionide/tutorials.php").setLabel("Arionide tutorials").setVisible(true);
+			((Button) this.page.get(3)).setSignal("browse", "https://azentreprise.org/Arionide").setLabel("Arionide community").setVisible(true);
 		}
+		
+		setupFocusCycle();
+		setupFocus();
 	}
 	
 	private void setupFocus() {		
@@ -157,10 +161,7 @@ public class MainView extends View implements EventHandler {
 	}
 	
 	public void viewWillAppear() {				
-		this.loadWorkspace();
-
-		this.setupFocusCycle();
-		this.setupFocus();
+		loadWorkspace();
 	}
 	
 	public void drawSurface(AppDrawingContext context) {
@@ -204,20 +205,23 @@ public class MainView extends View implements EventHandler {
 	
 	private void makeHorizontalSwipe(SwipeDirection direction, Consumer<Void> completionHandler) {
 		if(this.transformWidth == 1.0d) {
-				this.getAppManager().getFocusManager().request(-1);
-						
-				float sign = direction.equals(SwipeDirection.LEFT) ? 1.0f : -1.0f;
-				
-				this.transformWidth *= sign;
-				
-				this.transformWidthAnimation.startAnimation(500, after -> {
-					this.transformWidth = 1.0f;
-				}, -sign);
-				
-				this.bodyAlphaAnimation.startAnimation(500, after -> {
+			this.getAppManager().getFocusManager().request(-1);
+					
+			float sign = direction.equals(SwipeDirection.LEFT) ? 1.0f : -1.0f;
+			
+			this.transformWidth *= sign;
+			
+			this.transformWidthAnimation.startAnimation(500, after -> {
+				this.transformWidth = 1.0f;
+			}, -sign);
+			
+			this.bodyAlphaAnimation.startAnimation(500, after -> {
+				if(completionHandler != null) {
 					completionHandler.accept(null);
-					this.bodyAlpha = 0xFF;
-				}, -0xFF);
+				}
+				
+				this.bodyAlpha = 0xFF;
+			}, -0xFF);
 		}
 	}
 
@@ -250,17 +254,17 @@ public class MainView extends View implements EventHandler {
 			} else if(click.isTargetting(this, "import")) {
 				// TODO
 			} else if(click.isTargetting(this, "prev")) {
-				this.makeHorizontalSwipe(SwipeDirection.RIGHT, nil -> this.setupFocus());
+				this.makeHorizontalSwipe(SwipeDirection.RIGHT, null);
 				this.getAppManager().getSystemTimer().schedule(this, 250L);
 				this.pageID--;
 			} else if(click.isTargetting(this, "next")) {
-				this.makeHorizontalSwipe(SwipeDirection.LEFT, nil -> this.setupFocus());
+				this.makeHorizontalSwipe(SwipeDirection.LEFT, null);
 				this.getAppManager().getSystemTimer().schedule(this, 250L);
 				this.pageID++;
 			}
 		} else if(event instanceof TimerEvent) {
 			if(((TimerEvent) event).isTargetting(this)) {
-				this.loadWorkspace();
+				loadWorkspace();
 			}
 		}
 	}

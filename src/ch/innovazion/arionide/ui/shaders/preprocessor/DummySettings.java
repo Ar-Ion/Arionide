@@ -23,8 +23,6 @@ package ch.innovazion.arionide.ui.shaders.preprocessor;
 
 import com.jogamp.opengl.GL4;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 public class DummySettings implements ShaderSettings {
 
 	public static final ShaderSettings VERTEX = new DummySettings(GL4.GL_VERTEX_SHADER);
@@ -37,11 +35,11 @@ public class DummySettings implements ShaderSettings {
 	}
 	
 	public String resolveConstant(String name) {
-		throw new NotImplementedException();
+		throw new RuntimeException("Not implemented");
 	}
 
 	public String resolveFunction(String name) {
-		throw new NotImplementedException();
+		throw new RuntimeException("Not implemented");
 	}
 
 	public int getType() {

@@ -29,7 +29,7 @@ import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.ApplicationTints;
 import ch.innovazion.arionide.ui.overlay.AlphaLayer;
 import ch.innovazion.arionide.ui.overlay.Component;
-import ch.innovazion.arionide.ui.overlay.View;
+import ch.innovazion.arionide.ui.overlay.Container;
 import ch.innovazion.arionide.ui.render.PrimitiveFactory;
 import ch.innovazion.arionide.ui.render.Text;
 import ch.innovazion.arionide.ui.render.UILighting;
@@ -41,7 +41,7 @@ public class Label extends Component implements Enlightenable {
 
 	private int alpha = ApplicationTints.ACTIVE_ALPHA;
 	
-	public Label(View parent, String label) {
+	public Label(Container parent, String label) {
 		super(parent);
 		
 		this.text = PrimitiveFactory.instance().newText(label, ApplicationTints.MAIN_COLOR, ApplicationTints.ACTIVE_ALPHA);
@@ -93,7 +93,7 @@ public class Label extends Component implements Enlightenable {
 	
 	
 	protected void drawComponent(AppDrawingContext context) {
-		getParentView().getPreferedRenderingSystem(context).renderLater(this.text);	
+		getParent().getPreferedRenderingSystem(context).renderLater(this.text);	
 	}
 	
 	public String toString() {

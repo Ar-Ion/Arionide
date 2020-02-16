@@ -108,7 +108,7 @@ public class GLRenderer {
 	
 	private final StaticAllocator allocator = new StaticAllocator(Utils.combine(RenderableObject.class, structures, link, smallStars, bigStars, fx));
 
-	private boolean fxEnabled = true;
+	private boolean fxEnabled = false;
 	
 	private Bounds bounds;
 

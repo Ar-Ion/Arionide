@@ -41,6 +41,6 @@ public abstract class ComponentEvent extends Event {
 	}
 	
 	public boolean isTargetting(View potential) {
-		return this.target != null && this.target.getParentView() == potential;
+		return this.target != null && this.target.getParent() == potential;
 	}
 }

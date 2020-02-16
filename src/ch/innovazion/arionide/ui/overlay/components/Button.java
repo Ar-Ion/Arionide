@@ -144,7 +144,7 @@ public class Button extends Label implements EventHandler, Deformable {
 	protected void drawBorders(AppDrawingContext context) {
 		if(this.hasBorders) {
 			this.borders.updateAlpha(getAppManager().getAlphaLayering().getCurrentAlpha());
-			getParentView().getPreferedRenderingSystem(context).renderLater(borders);
+			getParent().getPreferedRenderingSystem(context).renderLater(borders);
 		}
 	}
 	
