@@ -37,14 +37,22 @@ public class LinkIndicesGenerator implements BufferGenerator {
 	}
 	
 	public Buffer generate() {
-		IntBuffer indices = IntBuffer.allocate(2*layers * layers * 2);
-		
+		IntBuffer indices = IntBuffer.allocate(2 * (layers + 1) * layers + 2);
+				
 		for(int latitudeID = 0; latitudeID < layers; latitudeID++) {
-			for(int longitudeID = 0; longitudeID < 2*layers; longitudeID++) {
-				indices.put(latitudeID * 2*layers + longitudeID);
-				indices.put((latitudeID + 1) * 2*layers + longitudeID);
+			if(latitudeID % 2 == 0) {
+				for(int longitudeID = 0; longitudeID < layers; longitudeID++) {
+					indices.put(latitudeID * 2*layers + longitudeID);
+					indices.put(((latitudeID + 1) % layers) * 2*layers + longitudeID);
+				}
+			} else {
+				for(int longitudeID = layers - 1; longitudeID >= 0; longitudeID--) {
+					indices.put(latitudeID * 2*layers + longitudeID);
+					indices.put(((latitudeID + 1) % layers) * 2*layers + longitudeID);
+				}
 			}
 		}
+		
 				
 		return indices;
 	}

@@ -55,6 +55,7 @@ import ch.innovazion.arionide.ui.core.gl.fx.FBOFrameContext;
 import ch.innovazion.arionide.ui.core.gl.links.Link;
 import ch.innovazion.arionide.ui.core.gl.links.LinkContext;
 import ch.innovazion.arionide.ui.core.gl.links.LinkSettings;
+import ch.innovazion.arionide.ui.core.gl.links.LinkTessellator;
 import ch.innovazion.arionide.ui.core.gl.stars.GeneralStarsSettings;
 import ch.innovazion.arionide.ui.core.gl.stars.Stars;
 import ch.innovazion.arionide.ui.core.gl.stars.StarsContext;
@@ -274,8 +275,8 @@ public class GLRenderer {
 			Debug.exception(exception);
 		}
 		
-		renderConnections(gl, merged.getConnections());
 		renderStructures0(gl, merged.getElements());
+		renderConnections(gl, merged.getConnections());
 
 		gl.glDisable(GL4.GL_BLEND);
 	}
@@ -363,21 +364,48 @@ public class GLRenderer {
 		LinkSettings settings = link.getSettings();
 
 		Vector3f unitVector = new Vector3f(0.0f, 1.0f, 0.0f);
-
+		
 		Vector3f eigenvector = new Vector3f(second).sub(first).normalize();
 		Vector3f planeSpan = new Vector3f(unitVector).cross(eigenvector);
 		Vector3f planeNormal = new Vector3f(planeSpan).cross(eigenvector);
+				
+		float sqrt2 = (float) Math.sqrt(2.0);
+		
+		float scale = Math.min(firstSize, secondSize) / sqrt2;
+		
+		float normalizedFirst = firstSize * firstSize / scale;
+		float normalizedSecond = secondSize * secondSize / scale;
+		
+		float ratio = normalizedSecond / normalizedFirst;
+				
+		float firstDelta  = 1 - (float) Math.sqrt(1 - ratio * ratio / 2);
+		float secondDelta = 1 - 1/sqrt2;
+		
+		float multiplier = normalizedFirst * firstDelta + normalizedSecond * secondDelta;
+		float shift      = firstSize * firstDelta - secondSize * secondDelta;
+		
+		Vector3f shiftVector = new Vector3f(eigenvector).mul(shift * 0.62f);
+
+		
+		center.sub(shiftVector);
+		eigenvector.mul(1 + multiplier / scale * 2);
 		
 		
 		Matrix4f model = new Matrix4f(new Vector4f(eigenvector, 0.0f), new Vector4f(planeSpan, 0.0f), new Vector4f(planeNormal, 0.0f), new Vector4f(center.sub(controller.getTranslationVector()), 1.0f));
+		Vector3f delta = controller.getUserController().getPosition().sub(center);
+		float angle = delta.angle(unitVector);
 
 		
-		model.scale(first.distance(second) * 0.5f);
-		
+		if(angle > Math.ulp(0.0f)) {
+			model.rotate(Geometry.PI + angle, new Vector3f(1.0f, 0.0f, 0.0f)); // For vertices sorting
+		}
+				
+		model.scale((float) LinkTessellator.getModelScaleFactor(scale));
+				
 		loadMatrix(model, modelData);
 		settings.setModel(modelData);
 
-		
+		settings.setAmbientFactor(0.5f);
 		settings.setColor(color);
 
 		
