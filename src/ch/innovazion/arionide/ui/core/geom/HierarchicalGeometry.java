@@ -34,6 +34,7 @@ import ch.innovazion.arionide.menu.structure.Coloring;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.StructureMeta;
+import ch.innovazion.arionide.ui.core.Geometry;
 
 public abstract class HierarchicalGeometry extends Geometry {
 	

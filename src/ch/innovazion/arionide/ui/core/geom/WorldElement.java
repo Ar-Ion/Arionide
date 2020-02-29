@@ -30,11 +30,11 @@ public class WorldElement {
 	/* Data needed for tessellation, rendering and collision detection. */
 	
 	private final int id;
-	private final Vector3f center;
-	private final Vector3f base;
-	private final Vector3f axis;
-	private final float size;
-	private final boolean accessAllowed;
+	private Vector3f center;
+	private Vector3f base;
+	private Vector3f axis;
+	private float size;
+	private boolean accessAllowed;
 	
 	private String name;
 	private String desc;
@@ -52,6 +52,22 @@ public class WorldElement {
 		this.spotColor = spotColor;
 		this.size = size;
 		this.accessAllowed = accessAllowed;
+	}
+	
+	public WorldElement recycle(int id, WorldElement target) {
+		assert this.id == id;
+		
+		target.name = name;
+		target.desc = desc;
+		target.center = center;
+		target.base = base;
+		target.axis = axis;
+		target.color = color;
+		target.spotColor = spotColor;
+		target.size = size;
+		target.accessAllowed = accessAllowed;
+		
+		return target;
 	}
 	
 	public boolean collidesWith(Vector3f object) {

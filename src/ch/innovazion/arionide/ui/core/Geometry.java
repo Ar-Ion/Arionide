@@ -19,7 +19,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.ui.core.geom;
+package ch.innovazion.arionide.ui.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +31,9 @@ import java.util.stream.Collectors;
 import org.joml.Vector3f;
 
 import ch.innovazion.arionide.project.Project;
+import ch.innovazion.arionide.ui.core.geom.Connection;
+import ch.innovazion.arionide.ui.core.geom.GeometryException;
+import ch.innovazion.arionide.ui.core.geom.WorldElement;
 
 public abstract class Geometry {
 	
@@ -47,16 +50,16 @@ public abstract class Geometry {
 		this.project = project;
 	}
 	
+	public Project getProject() {
+		return this.project;
+	}
+	
 	public void updateSeed(long seed) {
 		this.seed = seed;
 	}
 	
 	public long getSeed() {
 		return seed;
-	}
-	
-	protected Project getProject() {
-		return this.project;
 	}
 	
 	public void sort(Vector3f camera) {
@@ -84,28 +87,35 @@ public abstract class Geometry {
 		this.contructionRequested = true;
 	}
 	
-	public void processEventQueue() throws GeometryException {
-		if(this.contructionRequested && this.project != null) {			
-			this.contructionRequested = false;
+	protected boolean processEventQueue() throws GeometryException {
+		if(this.contructionRequested && this.project != null) {
+			contructionRequested = false;
 			
-			this.clearAll();
+			connections.clear();
 			
-			this.construct(this.elements, this.connections);
+			List<WorldElement> updatedElements = new ArrayList<>();
+			construct(updatedElements, this.connections);
 			
-			this.reconstructMapping();
+			Map<Integer, WorldElement> updatedMapping = new HashMap<>();
+			constructMapping(updatedElements, updatedMapping);
+			
+			updatedElements.removeIf(updatedElement -> elementsByID.computeIfPresent(updatedElement.getID(), updatedElement::recycle) != null);
+			elements.removeIf(e -> !updatedMapping.containsKey(e.getID()));
+			elements.addAll(updatedElements);
+
+			elementsByID.clear();
+			constructMapping(elements, elementsByID);
+			
+			return true;
 		}
+		
+		return false;
 	}
 	
-	private void clearAll() {
-		this.elementsByID.clear();
-		this.elements.clear();
-		this.connections.clear();
-	}
-	
-	private void reconstructMapping() throws GeometryException {
-		for(WorldElement element : this.elements) {
+	private void constructMapping(List<WorldElement> source, Map<Integer, WorldElement> mapping) throws GeometryException {		
+		for(WorldElement element : source) {
 			if(element != null) {
-				this.elementsByID.put(element.getID(), element);
+				mapping.put(element.getID(), element);
 			} else {
 				throw new GeometryException("Geometry implementation generated at least one invalid vertex");
 			}

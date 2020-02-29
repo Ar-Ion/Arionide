@@ -31,7 +31,6 @@ import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.menu.MainMenus;
 import ch.innovazion.arionide.menu.code.CodeBrowser;
 import ch.innovazion.arionide.project.managers.HostStructureStack;
-import ch.innovazion.arionide.ui.core.geom.Geometry;
 import ch.innovazion.arionide.ui.core.geom.GeometryException;
 import ch.innovazion.arionide.ui.core.geom.HierarchicalGeometry;
 import ch.innovazion.arionide.ui.core.geom.MergedGeometry;
@@ -252,16 +251,18 @@ public class UserController {
 		pitch = 0.0f;
 	}
 	
-	protected void setFocus(WorldElement element) {
-		CodeBrowser menu = MainMenus.getCodeBrowser();
-		
-		menu.setSelectedID(element.getID());
-		menu.show();
+	protected void setFocus(WorldElement element) {		
+		if(!core.getHostStack().isEmpty()) {
+			CodeBrowser menu = MainMenus.getCodeBrowser();
+
+			menu.setSelectedID(element.getID());
+			menu.show();
+				
+			Vector3f focus = element.getCenter().sub(position).normalize();
 			
-		Vector3f focus = element.getCenter().sub(position).normalize();
-		
-		yaw = Geometry.PI - (float) Math.atan2(focus.x, focus.z);
-		pitch = (float) Math.asin(focus.y);
+			yaw = Geometry.PI - (float) Math.atan2(focus.x, focus.z);
+			pitch = (float) Math.asin(focus.y);	
+		}
 	}
 	
 	protected void reset() {

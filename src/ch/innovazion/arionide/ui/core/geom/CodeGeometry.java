@@ -39,11 +39,12 @@ import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.StructureMeta;
+import ch.innovazion.arionide.ui.core.Geometry;
 
 public class CodeGeometry extends Geometry {
 	
 	private static final float relativeSize = 0.05f;
-	private static final float relativeDistance = 0.1f;
+	private static final float relativeDistance = 0.12f;
 	private static final float axisEntropy = 1.0f;
 	private static final float axisCorrection = 0.2f;
 	private static final float axisCorrectionFlexibility = 5.0f;
@@ -86,6 +87,8 @@ public class CodeGeometry extends Geometry {
 	private void build(WorldElement parent, List<? extends HierarchyElement> input, List<WorldElement> outputElements, List<WorldElement> outputSpecification, List<Connection> outputConnections, Map<Integer, StructureMeta> meta, float size) {
 		Vector3f axis = parent.getAxis();
 		Vector3f position = parent.getCenter();
+		
+		WorldElement previous = null;
 				
 		for(HierarchyElement element : input) {
 			StructureMeta structMeta = meta.get(element.getID());
@@ -102,6 +105,13 @@ public class CodeGeometry extends Geometry {
 				this.factory.updateAxisGenerator(() -> current.cross(axis));
 				WorldElement output = this.factory.make(element.getID(), structMeta.getName(), structMeta.getComment(), new Vector3f(position), color, spotColor, size, structMeta.isAccessAllowed());
 				outputElements.add(output);
+				
+				/* Process connection to previous instruction */
+				if(previous != null) {
+					outputConnections.add(new Connection(previous, output));
+				}
+				
+				previous = output;
 				
 				/* Process specification */					
 				List<SpecificationElement> specification = structMeta.getSpecification().getElements();

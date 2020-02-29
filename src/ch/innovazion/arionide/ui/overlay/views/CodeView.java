@@ -224,7 +224,9 @@ public class CodeView extends View implements EventHandler {
 										
 			CodeChain code = storage.getCode().get(structID);
 			
+			controller.invalidateGeometries();
 			controller.requestTeleportation(structID);
+			controller.wake();
 			
 			if(!code.isAbstract()) {
 				int instructionID = code.list().get(0).getID();

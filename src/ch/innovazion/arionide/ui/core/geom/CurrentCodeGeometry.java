@@ -26,6 +26,8 @@ import java.util.List;
 
 import org.joml.Vector3f;
 
+import ch.innovazion.arionide.ui.core.Geometry;
+
 public class CurrentCodeGeometry extends Geometry {
 	
 	private Geometry geom;
@@ -76,7 +78,7 @@ public class CurrentCodeGeometry extends Geometry {
 		}
 	}
 	
-	public void processEventQueue() throws GeometryException {
+	public boolean processEventQueue() throws GeometryException {
 		throw new GeometryException("The current code geometry is just a shadow wrapper of a concrete Geometry");
 	}
 

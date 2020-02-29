@@ -73,11 +73,15 @@ public class StructureEditor extends Menu {
 		super.show();
 		
 		setMenuCursor(4);
-		
-		StructureMeta meta = getProject().getStorage().getStructureMeta().get(getTarget().getID());
-		
-		if(meta != null) {			
-			description = DisplayUtils.fullDescription(meta);
+				
+		if(getTarget() != null) {			
+			StructureMeta meta = getProject().getStorage().getStructureMeta().get(getTarget().getID());
+			
+			if(meta != null) {
+				description = DisplayUtils.fullDescription(meta);
+			} else {
+				back();
+			}
 		} else {
 			// When the structure is deleted
 			back();
@@ -150,8 +154,9 @@ public class StructureEditor extends Menu {
 		AppManager manager = getAppManager();
 		CoreController controller = manager.getCoreOrchestrator().getController();
 
-		controller.getCodeGeometry().requestReconstruction();
-		controller.requestTeleportation(dataManager.getHostStack().getCurrent());
+		controller.invalidateGeometries();
+		controller.invalidateMenu();
+				
 		manager.getEventDispatcher().fire(event);
 	}
 	

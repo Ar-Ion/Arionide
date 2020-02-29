@@ -24,6 +24,8 @@ package ch.innovazion.arionide.ui.core.geom;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.innovazion.arionide.ui.core.Geometry;
+
 public class MergedGeometry extends Geometry {
 
 	private final List<Geometry> geometries = new ArrayList<>();
@@ -38,6 +40,15 @@ public class MergedGeometry extends Geometry {
 	public void addGeometry(Geometry geom) {
 		geometries.add(geom);
 		setProject(geom.getProject());
+	}
+	
+	
+	/* 
+	 * This geometry is special insofar as it cannot be altered by another thread. 
+	 * So, there are no concurrent modifications possible for this geometry.
+	 */
+	public boolean processEventQueue() throws GeometryException {
+		return super.processEventQueue();
 	}
 
 	public float getSize(int generation) {

@@ -42,10 +42,11 @@ import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.ApplicationTints;
 import ch.innovazion.arionide.ui.OpenGLContext;
 import ch.innovazion.arionide.ui.core.CoreController;
+import ch.innovazion.arionide.ui.core.Geometry;
+import ch.innovazion.arionide.ui.core.Renderer;
 import ch.innovazion.arionide.ui.core.RenderingScene;
 import ch.innovazion.arionide.ui.core.UserController;
 import ch.innovazion.arionide.ui.core.geom.Connection;
-import ch.innovazion.arionide.ui.core.geom.Geometry;
 import ch.innovazion.arionide.ui.core.geom.GeometryException;
 import ch.innovazion.arionide.ui.core.geom.HierarchicalGeometry;
 import ch.innovazion.arionide.ui.core.geom.MergedGeometry;
@@ -69,7 +70,7 @@ import ch.innovazion.arionide.ui.shaders.Shaders;
 import ch.innovazion.arionide.ui.shaders.preprocessor.DummySettings;
 import ch.innovazion.arionide.ui.topology.Bounds;
 
-public class GLRenderer {
+public class GLRenderer extends Renderer {
 		
 	private static final List<Integer> qualities = Arrays.asList(16, 20, 24, 28, 32);
 
@@ -80,9 +81,7 @@ public class GLRenderer {
 	
 	private static final float skyDistance = 32.0f * HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN;
 		
-	
-	private final CoreController controller;
-	
+		
 	private final FloatBuffer modelData = FloatBuffer.allocate(16);
 	private final FloatBuffer viewData = FloatBuffer.allocate(16);
 	private final FloatBuffer projectionData = FloatBuffer.allocate(16);
@@ -108,7 +107,7 @@ public class GLRenderer {
 	
 	private final StaticAllocator allocator = new StaticAllocator(Utils.combine(RenderableObject.class, structures, link, smallStars, bigStars, fx));
 
-	private boolean fxEnabled = false;
+	private boolean fxEnabled = true;
 	
 	private Bounds bounds;
 
@@ -122,7 +121,7 @@ public class GLRenderer {
 	private int fxShader;
 
 	public GLRenderer(CoreController controller) {
-		this.controller = controller;
+		super(controller);
 	}
 	
 	public void init(AppDrawingContext context) {
@@ -351,7 +350,8 @@ public class GLRenderer {
 			Vector3f deltaSecond = first.getCenter().sub(second.getCenter()).normalize(-second.getSize() * (1.0f - 0.5f / (float) Math.sqrt(2.0d)));
 			
 			Vector4f color = first.getColor().add(second.getColor()).mul(0.5f);
-						
+			
+			
 			connect(gl, first.getCenter().add(deltaFirst), second.getCenter().add(deltaSecond), first.getSize(), second.getSize(), color);
 		}
 		

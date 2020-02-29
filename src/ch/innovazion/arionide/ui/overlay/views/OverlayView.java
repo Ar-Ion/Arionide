@@ -39,7 +39,7 @@ public abstract class OverlayView extends View implements EventHandler {
 	public OverlayView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
-		appManager.getEventDispatcher().registerHandler(this, 0.7f);
+		appManager.getEventDispatcher().registerHandler(this, 0.8f);
 	}
 	
 	public void drawSurface(AppDrawingContext context) {	

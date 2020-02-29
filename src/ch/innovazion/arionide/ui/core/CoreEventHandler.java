@@ -26,6 +26,7 @@ import java.util.Set;
 import com.jogamp.newt.event.KeyEvent;
 
 import ch.innovazion.arionide.Utils;
+import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.events.ActionEvent;
 import ch.innovazion.arionide.events.ActionType;
 import ch.innovazion.arionide.events.Event;
@@ -64,97 +65,105 @@ public class CoreEventHandler implements EventHandler {
 	}
 	
 	public <T extends Event> void handleEvent(T event) {
-		if(event instanceof ProjectEvent) {
-			if(event instanceof ProjectOpenEvent) {
-				controller.onProjectOpen(((ProjectEvent) event).getProject());
-			} else if(event instanceof ProjectCloseEvent) {
-				controller.onProjectClose();
-			}
-		}
-		
-		if(controller.isReady()) {
-			if(event instanceof PressureEvent) {
-				PressureEvent pressure = (PressureEvent) event;
-
-				if(pressure.isDown() && pressure.getKeycode() == worldToggle) {
-					controller.toggleActivity();
+		try {
+			if(event instanceof ProjectEvent) {
+				if(event instanceof ProjectOpenEvent) {
+					controller.onProjectOpen(((ProjectEvent) event).getProject());
+				} else if(event instanceof ProjectCloseEvent) {
+					controller.onProjectClose();
 				}
 			}
 			
-			if(controller.isActive()) {
-				if(event instanceof MoveEvent) {
-					if(controller.isActive()) {
-						Point position = ((MoveEvent) event).getPoint();
-						
-						controller.updateYaw((position.getX() - 1.0f) * mouseSensibility);
-						controller.updatePitch((1.0f - position.getY()) * mouseSensibility);
-						
-						controller.onMove();
-						
-						event.abortDispatching();
-					}
-				} else if(event instanceof PressureEvent) {
+			if(controller.isReady()) {
+				if(event instanceof PressureEvent) {
 					PressureEvent pressure = (PressureEvent) event;
-		
-					if(controller.isActive() || pressure.getKeycode() == worldToggle) {
-						switch(pressure.getKeycode()) {
-							case forward:
-								controller.moveX(pressure.isDown() ? 1 : 0);
-								break;
-							case backward:
-								controller.moveX(pressure.isDown() ? -1 : 0);
-								break;
-							case left:
-								controller.moveZ(pressure.isDown() ? 1 : 0);
-								break;
-							case right:
-								controller.moveZ(pressure.isDown() ? -1 : 0);
-								break;
-							case up:
-								controller.moveY(pressure.isDown() ? 1 : 0);
-								break;
-							case down:
-								controller.moveY(pressure.isDown() ? -1 : 0);
-								break;
-							case spawnKey:
-								if(isControlDown && pressure.isDown()) {
-									controller.reset();
-								}
-								
-								break;
-							case KeyEvent.VK_CONTROL:
-								this.isControlDown = pressure.isDown();
-								break;
+	
+					if(pressure.isDown() && pressure.getKeycode() == worldToggle) {
+						controller.toggleActivity();
+					}
+				}
+				
+				if(controller.isActive()) {
+					if(event instanceof MoveEvent) {
+						if(controller.isActive()) {
+							Point position = ((MoveEvent) event).getPoint();
+							
+							controller.updateYaw((position.getX() - 1.0f) * mouseSensibility);
+							controller.updatePitch((1.0f - position.getY()) * mouseSensibility);
+							
+							controller.onMove();
+							
+							event.abortDispatching();
 						}
-						
-						controller.onMove();
-					}
-				} else if(event instanceof WheelEvent) {
-					if(isControlDown) {
-						WheelEvent wheel = (WheelEvent) event;
-						controller.accelerate(Math.pow(1.01f, 2 * wheel.getDelta()));
-						wheel.abortDispatching();
-					}
-				} else if(event instanceof ActionEvent) {
-					ActionEvent action = (ActionEvent) event;
-					
-					if(action.getType() == ActionType.CLICK) {
-						if(action.isButton(ActionEvent.BUTTON_LEFT)) {
-							if(!controller.onLeftClick()) {
-								if(currentMenu != null) {
-									currentMenu.click(); // Trigger menu event if the event was not captured by the controller
-								}
+					} else if(event instanceof PressureEvent) {
+						PressureEvent pressure = (PressureEvent) event;
+			
+						if(controller.isActive() || pressure.getKeycode() == worldToggle) {
+							switch(pressure.getKeycode()) {
+								case forward:
+									controller.moveX(pressure.isDown() ? 1 : 0);
+									break;
+								case backward:
+									controller.moveX(pressure.isDown() ? -1 : 0);
+									break;
+								case left:
+									controller.moveZ(pressure.isDown() ? 1 : 0);
+									break;
+								case right:
+									controller.moveZ(pressure.isDown() ? -1 : 0);
+									break;
+								case up:
+									controller.moveY(pressure.isDown() ? 1 : 0);
+									break;
+								case down:
+									controller.moveY(pressure.isDown() ? -1 : 0);
+									break;
+								case spawnKey:
+									if(isControlDown && pressure.isDown()) {
+										controller.reset();
+									}
+									
+									break;
+								case KeyEvent.VK_CONTROL:
+									this.isControlDown = pressure.isDown();
+									break;
 							}
-						} else if(action.isButton(ActionEvent.BUTTON_RIGHT)) {
-							controller.onRightClick();
+							
+							controller.onMove();
 						}
+					} else if(event instanceof WheelEvent) {
+						if(isControlDown) {
+							WheelEvent wheel = (WheelEvent) event;
+							controller.accelerate(Math.pow(1.01f, 2 * wheel.getDelta()));
+							wheel.abortDispatching();
+						}
+					} else if(event instanceof ActionEvent) {
+						ActionEvent action = (ActionEvent) event;
 						
-						action.abortDispatching();
+						if(action.getType() == ActionType.CLICK) {
+							if(action.isButton(ActionEvent.BUTTON_LEFT)) {
+								if(!controller.onLeftClick()) {
+									if(currentMenu != null) {
+										currentMenu.click(); // Trigger menu event if the event was not captured by the controller
+									}
+								}
+							} else if(action.isButton(ActionEvent.BUTTON_RIGHT)) {
+								controller.onRightClick();
+							}
+							
+							action.abortDispatching();
+						}
+					} else if(event instanceof MenuEvent) {
+						this.currentMenu = ((MenuEvent) event).getMenu();
 					}
-				} else if(event instanceof MenuEvent) {
-					this.currentMenu = ((MenuEvent) event).getMenu();
 				}
 			}
+		} catch(Exception exception) {
+			if(controller.isActive()) {
+				controller.toggleActivity();
+			}
+			
+			Debug.exception(exception);
 		}
 	}
 	

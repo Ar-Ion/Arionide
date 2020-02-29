@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.joml.Vector3f;
 
@@ -47,7 +48,6 @@ import ch.innovazion.arionide.project.managers.HostStructureStack;
 import ch.innovazion.arionide.ui.core.geom.CodeGeometry;
 import ch.innovazion.arionide.ui.core.geom.CoreGeometry;
 import ch.innovazion.arionide.ui.core.geom.CurrentCodeGeometry;
-import ch.innovazion.arionide.ui.core.geom.Geometry;
 import ch.innovazion.arionide.ui.core.geom.GeometryException;
 import ch.innovazion.arionide.ui.core.geom.HierarchicalGeometry;
 import ch.innovazion.arionide.ui.core.geom.WorldElement;
@@ -68,8 +68,8 @@ public class CoreController {
 	private final AtomicBoolean requestMenuReset = new AtomicBoolean();
 	private final AtomicBoolean requestProjectInitialisation = new AtomicBoolean();
 	private final AtomicBoolean requestProjectFinalisation = new AtomicBoolean();
-	private final AtomicBoolean requestTeleportation = new AtomicBoolean();
-	private final AtomicBoolean requestFocus = new AtomicBoolean();
+	private final AtomicInteger requestTeleportation = new AtomicInteger(-1);
+	private final AtomicInteger requestFocus = new AtomicInteger(-1);
 
 	private int requestedDestination;
 	private int requestedFocus;
@@ -117,12 +117,26 @@ public class CoreController {
 			
 			setScene(RenderingScene.HIERARCHY);
 			
-			requestMenuReset.set(true);			
+			requestMenuReset.set(true);
+			
+			wake();
+		}
+		
+		try {
+			if(coreGeometry.processEventQueue()) {
+				onDiscontinuityCrossed();
+			}
+		
+			for(Geometry geometry : codeGeometries) {					
+				geometry.processEventQueue();
+			}
+		} catch (GeometryException exception) {
+			Debug.exception(exception);
 		}
 	}
 	
 	protected void updateDynamics() {		
-		if(requestTeleportation.compareAndSet(true, false)) {
+		if(requestTeleportation.compareAndSet(0, -1)) {
 			WorldElement destination = coreGeometry.getElementByID(requestedDestination);
 
 			Vector3f center = destination.getCenter();
@@ -131,9 +145,11 @@ public class CoreController {
 			user.setPosition(center.mul(1 + 0.5f * size / center.length()).add(0.0f, size * 0.125f, 0.0f));
 			
 			onDiscontinuityCrossed();
+		} else {
+			requestTeleportation.decrementAndGet();
 		}
 		
-		if(requestFocus.compareAndSet(true, false)) {
+		if(requestFocus.compareAndSet(0, -1)) {
 			WorldElement focus = coreGeometry.getElementByID(requestedFocus);
 
 			CodeManager manager = project.getDataManager().getCodeManager();
@@ -145,6 +161,8 @@ public class CoreController {
 					user.setFocus(mainCodeGeometry.getElementByID(e.getID()));
 				});
 			}
+		} else {
+			requestFocus.decrementAndGet();
 		}
 		
 		if(requestMenuReset.compareAndSet(true, false)) {
@@ -159,17 +177,6 @@ public class CoreController {
 				menu.show();
 				menu.select(0);
 			}
-		}
-		
-		
-		try {
-			coreGeometry.processEventQueue();
-		
-			for(Geometry geometry : codeGeometries) {					
-				geometry.processEventQueue();
-			}
-		} catch (GeometryException exception) {
-			Debug.exception(exception);
 		}
 	}
 		
@@ -198,27 +205,23 @@ public class CoreController {
 		this.glPosition = user.getPosition().sub(translationVector);
 	}
 	
-	
 	public void invalidateMenu() {
 		requestMenuReset.set(true);
 	}
 
 	public void invalidateGeometries() {
 		coreGeometry.requestReconstruction();
-				
-		for(CodeGeometry geometry : codeGeometries) {
-			geometry.requestReconstruction();
-		}
+		codeGeometries.forEach(Geometry::requestReconstruction);
 	}
 	
 	public void requestFocus(int target) {
 		this.requestedFocus = target;
-		requestFocus.set(true);
+		requestFocus.set(1);
 	}
 	
 	public void requestTeleportation(int target) {
 		this.requestedDestination = target;
-		requestTeleportation.set(true);
+		requestTeleportation.set(1);
 	}
 	
 	public void setScene(RenderingScene scene) {
@@ -266,7 +269,6 @@ public class CoreController {
 	}
 	
 	boolean onLeftClick() {
-		
 		WorldElement focus = user.getFocus();
 		
 		if(focus != null) {
@@ -418,6 +420,10 @@ public class CoreController {
 		this.bounds = bounds;
 	}
 	
+	public void wake() {
+		active = true;
+	}
+	
 	void toggleActivity() {
 		active = !active;
 		
@@ -468,7 +474,7 @@ public class CoreController {
 	public UserController getUserController() {
 		return user;
 	}
-	
+
 	public Geometry getCodeGeometry() {
 		return mainCodeGeometry;
 	}
