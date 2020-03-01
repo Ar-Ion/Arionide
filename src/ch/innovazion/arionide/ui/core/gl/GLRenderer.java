@@ -345,62 +345,49 @@ public class GLRenderer extends Renderer {
 		for(Connection connection : connections) {
 			WorldElement first = connection.getFirstElement();
 			WorldElement second = connection.getSecondElement();
-			
-			Vector3f deltaFirst = second.getCenter().sub(first.getCenter()).normalize(first.getSize() * (1.0f - 0.5f / (float) Math.sqrt(2.0d)));
-			Vector3f deltaSecond = first.getCenter().sub(second.getCenter()).normalize(-second.getSize() * (1.0f - 0.5f / (float) Math.sqrt(2.0d)));
-			
+						
 			Vector4f color = first.getColor().add(second.getColor()).mul(0.5f);
 			
 			
-			connect(gl, first.getCenter().add(deltaFirst), second.getCenter().add(deltaSecond), first.getSize(), second.getSize(), color);
+			connect(gl, first.getCenter(), second.getCenter(), first.getSize(), second.getSize(), color);
 		}
 		
 		gl.glDisable(GL4.GL_DEPTH_TEST);
 	}
 	
-	private void connect(GL4 gl, Vector3f first, Vector3f second, float firstSize, float secondSize, Vector4f color) {
-		Vector3f center = new Vector3f(first).add(second).mul(0.5f);
-		
+	private void connect(GL4 gl, Vector3f first, Vector3f second, float firstSize, float secondSize, Vector4f color) {		
 		LinkSettings settings = link.getSettings();
 
-		Vector3f unitVector = new Vector3f(0.0f, 1.0f, 0.0f);
+		assert firstSize >= secondSize;
 		
-		Vector3f eigenvector = new Vector3f(second).sub(first).normalize();
+		Vector3f unitVector = new Vector3f(0.0f, 1.0f, 0.0f);
+		Vector3f connection = new Vector3f(second).sub(first);
+		
+		float sqrt2 = (float) Math.sqrt(2.0);
+		float minSize = Math.min(firstSize, secondSize);
+		float distanceFromCenter1 = (float) Math.sqrt(firstSize * firstSize - minSize * minSize * 0.5f); 
+		float distanceFromCenter2 = (float) Math.sqrt(secondSize * secondSize - minSize * minSize * 0.5f); 
+		
+		float length = connection.length() - distanceFromCenter1 - distanceFromCenter2;
+
+		Vector3f eigenvector = new Vector3f(connection).normalize();
 		Vector3f planeSpan = new Vector3f(unitVector).cross(eigenvector);
 		Vector3f planeNormal = new Vector3f(planeSpan).cross(eigenvector);
-				
-		float sqrt2 = (float) Math.sqrt(2.0);
-		
-		float scale = Math.min(firstSize, secondSize) / sqrt2;
-		
-		float normalizedFirst = firstSize * firstSize / scale;
-		float normalizedSecond = secondSize * secondSize / scale;
-		
-		float ratio = normalizedSecond / normalizedFirst;
-				
-		float firstDelta  = 1 - (float) Math.sqrt(1 - ratio * ratio / 2);
-		float secondDelta = 1 - 1/sqrt2;
-		
-		float multiplier = normalizedFirst * firstDelta + normalizedSecond * secondDelta;
-		float shift      = firstSize * firstDelta - secondSize * secondDelta;
-		
-		Vector3f shiftVector = new Vector3f(eigenvector).mul(shift * 0.62f);
 
+		float scale = (float) LinkTessellator.getModelScaleFactor(minSize * (1 + eigenvector.y * eigenvector.y / Math.sqrt(1 - eigenvector.y * eigenvector.y) / sqrt2) / sqrt2); // Most of this was found empirically
 		
-		center.sub(shiftVector);
-		eigenvector.mul(1 + multiplier / scale * 2);
-		
-		
-		Matrix4f model = new Matrix4f(new Vector4f(eigenvector, 0.0f), new Vector4f(planeSpan, 0.0f), new Vector4f(planeNormal, 0.0f), new Vector4f(center.sub(controller.getTranslationVector()), 1.0f));
-		Vector3f delta = controller.getUserController().getPosition().sub(center);
+		Vector3f origin = new Vector3f(first).add(new Vector3f(eigenvector).mul(distanceFromCenter1));
+		Matrix4f model = new Matrix4f(new Vector4f(eigenvector.mul(length / scale), 0.0f), new Vector4f(planeSpan, 0.0f), new Vector4f(planeNormal, 0.0f), new Vector4f(origin.sub(controller.getTranslationVector()), 1.0f));
+		Vector3f delta = controller.getUserController().getPosition().sub(origin);
+
 		float angle = delta.angle(unitVector);
-
 		
 		if(angle > Math.ulp(0.0f)) {
 			model.rotate(Geometry.PI + angle, new Vector3f(1.0f, 0.0f, 0.0f)); // For vertices sorting
 		}
-				
-		model.scale((float) LinkTessellator.getModelScaleFactor(scale));
+		
+		
+		model.scale(scale);
 				
 		loadMatrix(model, modelData);
 		settings.setModel(modelData);

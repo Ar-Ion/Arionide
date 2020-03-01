@@ -145,15 +145,19 @@ public class CoreController {
 			user.setPosition(center.mul(1 + 0.5f * size / center.length()).add(0.0f, size * 0.125f, 0.0f));
 			
 			onDiscontinuityCrossed();
+			
+			if(requestFocus.compareAndSet(-1, 1)) {
+				requestedFocus = -1; // Focus on the first code element
+			}
 		} else {
-			requestTeleportation.decrementAndGet();
+			requestTeleportation.getAndUpdate(x -> x < 0 ? x : x-1);
 		}
 		
 		if(requestFocus.compareAndSet(0, -1)) {
 			WorldElement focus = coreGeometry.getElementByID(requestedFocus);
 
 			CodeManager manager = project.getDataManager().getCodeManager();
-			
+						
 			if(focus != null) {
 				user.setFocus(focus);
 			} else if(manager.hasCode()) {
@@ -162,7 +166,7 @@ public class CoreController {
 				});
 			}
 		} else {
-			requestFocus.decrementAndGet();
+			requestFocus.getAndUpdate(x -> x < 0 ? x : x-1);
 		}
 		
 		if(requestMenuReset.compareAndSet(true, false)) {
@@ -216,12 +220,12 @@ public class CoreController {
 	
 	public void requestFocus(int target) {
 		this.requestedFocus = target;
-		requestFocus.set(1);
+		requestFocus.set(2); // This request will be processed in two ticks
 	}
 	
 	public void requestTeleportation(int target) {
 		this.requestedDestination = target;
-		requestTeleportation.set(1);
+		requestTeleportation.set(1); // This request will be processed in one tick
 	}
 	
 	public void setScene(RenderingScene scene) {
