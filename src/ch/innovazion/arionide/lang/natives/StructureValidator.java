@@ -21,8 +21,8 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang.natives;
 
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.Validator;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class StructureValidator implements Validator {
 	public boolean validate(String data) {

@@ -31,7 +31,7 @@ import java.util.function.Function;
 
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
-import ch.innovazion.arionide.lang.Specification;
+import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.menu.structure.Coloring;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Manager;

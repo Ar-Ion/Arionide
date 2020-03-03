@@ -24,9 +24,9 @@ package ch.innovazion.arionide.lang.natives.instructions;
 import java.util.List;
 
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.natives.NativeTypes;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class Merge implements NativeInstruction {
 	
@@ -41,18 +41,18 @@ public class Merge implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(this.destination.getValue().startsWith(SpecificationElement.VAR)) {
-			String destVar = this.destination.getValue().substring(4);
+		if(this.destination.getDisplayValue().startsWith(SpecificationElement.VAR)) {
+			String destVar = this.destination.getDisplayValue().substring(4);
 			
-			String value1 = this.source1.getValue();
-			String value2 = this.source2.getValue();
+			String value1 = this.source1.getDisplayValue();
+			String value2 = this.source2.getDisplayValue();
 
 			if(value1.startsWith(SpecificationElement.VAR)) {
-				value1 = communicator.getVariable(value1).getValue();
+				value1 = communicator.getVariable(value1).getDisplayValue();
 			}
 			
 			if(value2.startsWith(SpecificationElement.VAR)) {
-				value2 = communicator.getVariable(value2).getValue();
+				value2 = communicator.getVariable(value2).getDisplayValue();
 			}
 			
 			communicator.setVariable(destVar, communicator.isDefined(destVar) && communicator.isLocal(destVar), new Data(destVar, value1 + value2, NativeTypes.TEXT));

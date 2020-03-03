@@ -36,7 +36,7 @@ public class SwipeableContainer extends Container {
 	}
 	
 	public void drawSurface(AppDrawingContext context) {
-		for(Component component : this.page) {
+		/*for(Component component : this.page) {
 			Bounds bounds = component.getBounds();
 			
 			if(bounds != null) {
@@ -53,7 +53,7 @@ public class SwipeableContainer extends Container {
 					}
 				}
 			}
-		}
+		}*/
 		
 		super.drawSurface(context);
 	}

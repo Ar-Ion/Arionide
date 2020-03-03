@@ -26,9 +26,9 @@ import javax.swing.JOptionPane;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Reference;
-import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.TypeManager;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.menu.Confirm;
 import ch.innovazion.arionide.menu.MainMenus;
 import ch.innovazion.arionide.menu.Menu;
@@ -67,8 +67,8 @@ public class ReferenceParameterDataEditor extends Menu {
 		this.type = this.getAppManager().getWorkspace().getCurrentProject().getLanguage().getTypes().getTypeManager(data.getType());			
 		this.description = data.getName() + " [" + this.type + "]";
 		
-		if(this.data.getValue() != null) {
-			this.description += " (default: " + data.getValue() + ")";
+		if(this.data.getDisplayValue() != null) {
+			this.description += " (default: " + data.getDisplayValue() + ")";
 		}
 	}
 	

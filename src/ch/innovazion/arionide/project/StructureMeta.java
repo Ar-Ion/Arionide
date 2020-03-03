@@ -23,7 +23,7 @@ package ch.innovazion.arionide.project;
 
 import java.io.Serializable;
 
-import ch.innovazion.arionide.lang.Specification;
+import ch.innovazion.arionide.lang.symbols.Specification;
 
 public interface StructureMeta extends Serializable {	
 	public String getName();
@@ -31,6 +31,7 @@ public interface StructureMeta extends Serializable {
 	public int getColorID();
 	public int getSpotColorID();
 	public boolean isAccessAllowed();
+	public boolean isLambda();
 	public Specification getSpecification();
 	public int getLanguage();
 }

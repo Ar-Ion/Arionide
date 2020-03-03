@@ -19,42 +19,43 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.lang;
+package ch.innovazion.arionide.lang.symbols;
 
+import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
-import ch.innovazion.arionide.lang.natives.NativeTypes;
-
-public class IntegerObject extends Object {
-
-	private String value;
+public class Number extends AtomicValue {
 	
-	protected IntegerObject(String value, String id) {
-		super(Arrays.asList(NativeTypes.INTEGER), id);
+	private static final long serialVersionUID = -7392411725390812250L;
+	
+	private Bit[] data = new Bit[0];
+	private String value = "NaN";
+	
+	public void parse(String value) throws InvalidValueException {
 		this.value = value;
-	}
-	
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
-	public String getValue() {
-		return this.value;
-	}
-	
-	public Bit[] getData() {
+		
 		char type = this.value.charAt(0);
 		String realValue = this.value.substring(1);
 		
 		switch(type) {
 			case 'b':
-				return Bit.fromInteger(Integer.parseInt(realValue, 2), realValue.length());
+				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(realValue, 2)), realValue.length());
 			case 'd':
-				return Bit.fromInteger(Integer.parseInt(realValue), 32);
+				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(realValue)), 32);
 			case 'h':
-				return Bit.fromInteger(Integer.parseInt(realValue, 16), realValue.length() * 4);
+				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(realValue, 16)), realValue.length() * 4);
 		}
 		
-		return new Bit[0];
+		data = new Bit[0];
+	}
+	
+	public Stream<Bit> getRawStream() {
+		return Stream.of(data);
+	}
+
+	public List<String> getDisplayValue() {
+		return Arrays.asList(value, "(" + data.length + " bit(s))");
 	}
 }

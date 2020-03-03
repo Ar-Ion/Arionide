@@ -24,22 +24,22 @@ package ch.innovazion.arionide.lang.natives.instructions;
 import java.util.List;
 
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class Print implements NativeInstruction {
 	
 	private final String message;
 	
 	public Print(Data data) {
-		this.message = data.getValue();
+		this.message = data.getDisplayValue();
 	}
 
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
 		String realMessage = this.message;
 		
 		if(realMessage.startsWith(SpecificationElement.VAR)) {
-			realMessage = communicator.getVariable(realMessage.substring(4)).getValue();
+			realMessage = communicator.getVariable(realMessage.substring(4)).getDisplayValue();
 		}
 		
 		communicator.info(realMessage, 0xFFFFFF);

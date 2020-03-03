@@ -21,6 +21,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang;
 
+import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.Project;
 
 public abstract class InstructionSet {

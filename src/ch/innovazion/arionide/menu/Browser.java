@@ -24,7 +24,7 @@ package ch.innovazion.arionide.menu;
 import java.util.List;
 import java.util.Map;
 
-import ch.innovazion.arionide.lang.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.StructureMeta;
 import ch.innovazion.arionide.ui.AppManager;

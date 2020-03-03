@@ -22,8 +22,8 @@
 package ch.innovazion.arionide.menu.structure.specification.reference;
 
 import ch.innovazion.arionide.events.Event;
-import ch.innovazion.arionide.lang.Reference;
-import ch.innovazion.arionide.lang.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.structure.specification.SpecificationElementEditor;

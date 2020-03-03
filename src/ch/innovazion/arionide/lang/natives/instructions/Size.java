@@ -24,10 +24,10 @@ package ch.innovazion.arionide.lang.natives.instructions;
 import java.util.List;
 
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Object;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.natives.NativeTypes;
+import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class Size implements NativeInstruction {
 	
@@ -40,19 +40,19 @@ public class Size implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(this.object.getValue().startsWith(SpecificationElement.VAR)) {
-			SpecificationElement element = communicator.getVariable(this.object.getValue().substring(4));
+		if(this.object.getDisplayValue().startsWith(SpecificationElement.VAR)) {
+			SpecificationElement element = communicator.getVariable(this.object.getDisplayValue().substring(4));
 			
 			if(element != null) {
-				String result = this.result.getValue();
+				String result = this.result.getDisplayValue();
 				
 				if(result.startsWith(SpecificationElement.VAR)) {
 					result = result.substring(4);
 					
-					Object object = communicator.getObject(element.getValue());
+					Information object = communicator.getObject(element.getDisplayValue());
 					
 					if(object != null) {
-						communicator.setVariable(result, communicator.isDefined(element.getValue()) && communicator.isLocal(element.getValue()), new Data(result, "d" + object.getSize(), NativeTypes.INTEGER));
+						communicator.setVariable(result, communicator.isDefined(element.getDisplayValue()) && communicator.isLocal(element.getDisplayValue()), new Data(result, "d" + object.getSize(), NativeTypes.INTEGER));
 						return true;
 					} else {
 						communicator.exception("Invalid object: " + result);
@@ -61,7 +61,7 @@ public class Size implements NativeInstruction {
 					communicator.exception("You can't use a direct value for this variable");
 				}
 			} else {
-				communicator.exception("Dead variable: " + this.object.getValue());
+				communicator.exception("Dead variable: " + this.object.getDisplayValue());
 			}
 		} else {
 			communicator.exception("You can't use a direct value for an object instance");

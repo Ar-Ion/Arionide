@@ -24,8 +24,8 @@ package ch.innovazion.arionide.lang.natives;
 import java.util.HashMap;
 import java.util.Map;
 
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.Validator;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class IntegerValidator implements Validator {
 	

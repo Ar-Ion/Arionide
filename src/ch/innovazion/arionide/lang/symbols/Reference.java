@@ -19,37 +19,43 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.lang;
+package ch.innovazion.arionide.lang.symbols;
 
-public class Data extends SpecificationElement {
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
-	private static final long serialVersionUID = -3387831385820354646L;
+public class Reference implements ParameterValue {
 
-	private int type;
+	private static final long serialVersionUID = 7287598499790357836L;
+	
+	private final int structureID;
+	private List<SpecificationElement> neededParameters;
+	private List<SpecificationElement> customParameters;
 
-	public Data(String name, String value, int type) {
-		super(name, value);
-		this.type = type;
+	public Reference(int structureID, List<SpecificationElement> neededParameters, List<SpecificationElement> customParameters) {
+		this.structureID = structureID;
+		this.neededParameters = neededParameters;
+		this.customParameters = customParameters;
 	}
 	
-	public int getType() {
-		return this.type;
+	public int getStructureID() {
+		return structureID;
 	}
 	
-	public void setType(int type) {
-		this.type = type;
+	public List<SpecificationElement> getBoundParameters() {
+		return neededParameters;
 	}
 	
-	public boolean equals(java.lang.Object other) {
-		if(other instanceof Data) {
-			Data casted = (Data) other;
-			return super.equals(other) && this.type == casted.type;
-		} else {
-			return false;
-		}
+	public List<SpecificationElement> getFreeParameters() {
+		return customParameters;
 	}
 	
-	public Data clone() {
-		return new Data(this.getName(), this.getRawValue(), this.type);
+	public void setCustomParameters(List<SpecificationElement> customParameters) {
+		this.customParameters = customParameters;
+	}
+	
+	public List<String> getDisplayValue() {
+		return Arrays.asList("Free parameters: " + String.join(", ", customParameters.stream().map(SpecificationElement::toString).collect(Collectors.toList())));
 	}
 }

@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import ch.innovazion.arionide.lang.Reference;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class Call implements NativeInstruction {
 	
@@ -38,7 +38,7 @@ public class Call implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		int refID = Integer.parseInt(this.reference.getValue());
+		int refID = Integer.parseInt(this.reference.getDisplayValue());
 		
 		if(references.contains(refID)) {
 			Stack<Integer> theStack = communicator.getStack();
@@ -51,7 +51,7 @@ public class Call implements NativeInstruction {
 			List<SpecificationElement> specVars = new ArrayList<>();
 			
 			for(SpecificationElement element : this.reference.getLazyParameters()) {
-				String value = element.getValue();
+				String value = element.getDisplayValue();
 												
 				if(value.startsWith(SpecificationElement.VAR)) {
 					SpecificationElement specElement = communicator.getVariable(value.substring(4)).clone();
@@ -63,7 +63,7 @@ public class Call implements NativeInstruction {
 			}
 			
 			for(SpecificationElement element : this.reference.getEagerParameters()) {
-				String value = element.getValue();
+				String value = element.getDisplayValue();
 					
 				if(value != null) {
 					if(value.startsWith(SpecificationElement.VAR)) {
@@ -98,8 +98,8 @@ public class Call implements NativeInstruction {
 			for(SpecificationElement newVar : newVars) {
 				for(SpecificationElement original : this.reference.getLazyParameters()) { // Rename variable according to the parent's context					
 					if(original.getName().equals(newVar.getName())) {
-						if(original.getValue().contains(SpecificationElement.VAR)) {
-							newVar.setName(original.getValue().substring(4));
+						if(original.getDisplayValue().contains(SpecificationElement.VAR)) {
+							newVar.setName(original.getDisplayValue().substring(4));
 						}
 						
 						break;

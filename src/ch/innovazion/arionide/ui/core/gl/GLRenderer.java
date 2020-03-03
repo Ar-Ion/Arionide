@@ -37,7 +37,6 @@ import com.jogamp.opengl.GLContext;
 
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.debugging.Debug;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.ApplicationTints;
 import ch.innovazion.arionide.ui.OpenGLContext;
@@ -72,7 +71,8 @@ import ch.innovazion.arionide.ui.topology.Bounds;
 
 public class GLRenderer extends Renderer {
 		
-	private static final List<Integer> qualities = Arrays.asList(16, 20, 24, 28, 32);
+	//private static final List<Integer> qualities = Arrays.asList(16, 20, 24, 28, 32);
+	private static final List<Integer> qualities = Arrays.asList(4);
 
 	private static final int smallStarsCount = 2048;
 	private static final int bigStarsCount = 128;
@@ -101,13 +101,13 @@ public class GLRenderer extends Renderer {
 	private final Structure[] structures = qualities.stream().map(Structure::new).toArray(Structure[]::new);
 	private final GeneralStructureSettings jointStructureSettings = Utils.bind(GeneralStructureSettings.class, Stream.of(structures).map(Structure::getSettings).toArray(GeneralStructureSettings[]::new));
 	
-	private final Link link = new Link(64);
+	private final Link link = new Link(5);
 	
 	private final FBOFrame fx = new FBOFrame();
 	
 	private final StaticAllocator allocator = new StaticAllocator(Utils.combine(RenderableObject.class, structures, link, smallStars, bigStars, fx));
 
-	private boolean fxEnabled = true;
+	private boolean fxEnabled = false;
 	
 	private Bounds bounds;
 
@@ -479,7 +479,7 @@ public class GLRenderer extends Renderer {
 			}
 			
 			if(renderSub && element.getDescription() != null && !element.getDescription().equals("?")) {
-				String description = element.getDescription().replace(SpecificationElement.VAR, "");
+				String description = element.getDescription();
 									
 				Vector2f screenAnchor = this.getHVCFrom3D(subSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
 

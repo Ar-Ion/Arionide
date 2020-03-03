@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import ch.innovazion.arionide.events.MessageEvent;
-import ch.innovazion.arionide.lang.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 import ch.innovazion.arionide.menu.Browser;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;

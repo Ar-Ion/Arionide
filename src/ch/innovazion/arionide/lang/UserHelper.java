@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.StructureMeta;

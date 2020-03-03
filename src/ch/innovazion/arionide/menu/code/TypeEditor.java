@@ -30,10 +30,10 @@ import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.Language;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.TypeManager;
 import ch.innovazion.arionide.lang.UserHelper;
 import ch.innovazion.arionide.lang.Validator;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.project.Project;
@@ -106,7 +106,7 @@ public class TypeEditor extends Menu {
 				}
 			}).start();
 		} else {
-			typeManager.getActions().get(id - 2).accept(element.getValue(), this::validateAction);
+			typeManager.getActions().get(id - 2).accept(element.getDisplayValue(), this::validateAction);
 		}
 	}
 	

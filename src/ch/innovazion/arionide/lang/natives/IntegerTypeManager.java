@@ -28,9 +28,9 @@ import java.util.function.Consumer;
 
 import javax.swing.JOptionPane;
 
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.TypeManager;
 import ch.innovazion.arionide.lang.UserHelper;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class IntegerTypeManager implements TypeManager {
 	

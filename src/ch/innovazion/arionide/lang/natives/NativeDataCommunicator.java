@@ -33,10 +33,10 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Object;
-import ch.innovazion.arionide.lang.Reference;
-import ch.innovazion.arionide.lang.Specification;
-import ch.innovazion.arionide.lang.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.Specification;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class NativeDataCommunicator {
 	
@@ -44,7 +44,7 @@ public class NativeDataCommunicator {
 	private final BiConsumer<String, Integer> channel;
 	private final Stack<Integer> stack = new Stack<>();
 	private final Map<Integer, Map<String, Entry<Boolean, SpecificationElement>>> variables = new HashMap<>();
-	private final List<Object> objects = new ArrayList<>();
+	private final List<Information> objects = new ArrayList<>();
 	private final Stack<String> boundObjects = new Stack<>();
 	
 	protected NativeDataCommunicator(NativeRuntime runtime, BiConsumer<String, Integer> channel) {
@@ -76,7 +76,7 @@ public class NativeDataCommunicator {
 		SpecificationElement element = this.getVariable(name);
 		
 		if(!local && element != null) {
-			element.setValue(value.getValue());
+			element.setValue(value.getDisplayValue());
 		} else {
 			this.variables.get(this.stack.peek()).put(name, new SimpleEntry<Boolean, SpecificationElement>(local, value));			
 		}
@@ -124,7 +124,7 @@ public class NativeDataCommunicator {
 	}
 	
 	public String allocObject(String structure) {
-		this.objects.add(new Object(Arrays.stream(structure.split("; ")).map(Integer::parseInt).collect(Collectors.toList()), "#@" + this.objects.size()));
+		this.objects.add(new Information(Arrays.stream(structure.split("; ")).map(Integer::parseInt).collect(Collectors.toList()), "#@" + this.objects.size()));
 		return "#@" + (this.objects.size() - 1);
 	}
 	
@@ -136,11 +136,11 @@ public class NativeDataCommunicator {
 		this.boundObjects.pop();
 	}
 
-	public Object getBoundObject() {
+	public Information getBoundObject() {
 		return this.getObject(this.boundObjects.peek());
 	}
 	
-	public Object getObject(String identifier) {
+	public Information getObject(String identifier) {
 		if(identifier != null && identifier.startsWith("#@")) {
 			return this.objects.get(Integer.parseInt(identifier.substring(2)));
 		} else {
@@ -150,7 +150,7 @@ public class NativeDataCommunicator {
 	
 	public String load(int object) {
 		String identifier = this.allocObject(Integer.toString(NativeTypes.STRUCTURE));
-		Object theObject = this.getObject(identifier);
+		Information theObject = this.getObject(identifier);
 		
 		List<Entry<String, Specification>> code = this.runtime.getCode(object);
 				
@@ -168,21 +168,21 @@ public class NativeDataCommunicator {
 			}
 			
 			String instrID = this.allocObject(String.join("; ", types));
-			Object instrObject = this.getObject(instrID);
+			Information instrObject = this.getObject(instrID);
 			
 			instrObject.add(instruction.getKey(), this);
 			
 			for(SpecificationElement element : instruction.getValue().getElements()) {
-				if(element.getValue().startsWith(SpecificationElement.VAR)) {
-					SpecificationElement real = this.getVariable(element.getValue().substring(4));
+				if(element.getDisplayValue().startsWith(SpecificationElement.VAR)) {
+					SpecificationElement real = this.getVariable(element.getDisplayValue().substring(4));
 					
 					if(real != null) {
-						instrObject.add(real.getValue(), this);	
+						instrObject.add(real.getDisplayValue(), this);	
 					} else {
-						instrObject.add(element.getValue(), this);
+						instrObject.add(element.getDisplayValue(), this);
 					}
 				} else {
-					instrObject.add(element.getValue(), this);
+					instrObject.add(element.getDisplayValue(), this);
 				}
 			}
 			

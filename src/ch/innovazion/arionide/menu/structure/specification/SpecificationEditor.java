@@ -29,9 +29,9 @@ import javax.swing.JOptionPane;
 
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Reference;
-import ch.innovazion.arionide.lang.Specification;
-import ch.innovazion.arionide.lang.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.Specification;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 import ch.innovazion.arionide.menu.DisplayUtils;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;

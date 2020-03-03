@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.innovazion.arionide.events.Event;
-import ch.innovazion.arionide.lang.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 import ch.innovazion.arionide.menu.Menu;
 
 public class ReferenceBinding extends Menu {
@@ -43,7 +43,7 @@ public class ReferenceBinding extends Menu {
 		
 		for(SpecificationElement poss : possible) {
 			if(element.getClass().isInstance(poss)) {
-				if(poss.getValue() == null) {
+				if(poss.getDisplayValue() == null) {
 					this.possible.add(poss);
 					getElements().add(poss.getName());
 				}

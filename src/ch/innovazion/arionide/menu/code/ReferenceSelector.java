@@ -27,9 +27,9 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import ch.innovazion.arionide.events.Event;
-import ch.innovazion.arionide.lang.Reference;
-import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.UserHelper;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.menu.Menu;
 
 class ReferenceSelector extends Menu {	
@@ -59,8 +59,8 @@ class ReferenceSelector extends Menu {
 		Collections.sort(suggestions);
 		getElements().addAll(suggestions);
 				
-		if(element.getValue() != null) {
-			int index = getElements().indexOf(element.getValue());
+		if(element.getDisplayValue() != null) {
+			int index = getElements().indexOf(element.getDisplayValue());
 		
 			if(index > -1) {
 				this.select(index);
@@ -74,7 +74,7 @@ class ReferenceSelector extends Menu {
 		if(index > -1) {
 			int id = Integer.parseInt(element.substring(index + 3));
 			Specification spec = getProject().getStorage().getStructureMeta().get(id).getSpecification();
-			this.element.setSpecificationParameters(spec.getElements());
+			this.element.setCustomParameters(spec.getElements());
 		}
 		
 		Event event = getProject().getDataManager().getSpecificationManager().setValue(this.element, element);

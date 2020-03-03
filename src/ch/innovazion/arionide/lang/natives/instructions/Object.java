@@ -24,10 +24,10 @@ package ch.innovazion.arionide.lang.natives.instructions;
 import java.util.List;
 
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Reference;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.natives.NativeTypes;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class Object implements NativeInstruction {
 
@@ -42,13 +42,13 @@ public class Object implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(this.result.getValue().contains(SpecificationElement.VAR)) {
-			String variable = this.result.getValue().substring(4);
+		if(this.result.getDisplayValue().contains(SpecificationElement.VAR)) {
+			String variable = this.result.getDisplayValue().substring(4);
 			
-			String structure = this.structure.getValue();
+			String structure = this.structure.getDisplayValue();
 			
 			if(structure.startsWith(SpecificationElement.VAR)) {
-				structure = communicator.getVariable(structure.substring(4)).getValue();
+				structure = communicator.getVariable(structure.substring(4)).getDisplayValue();
 			}
 			
 			String identifier = communicator.allocObject(structure);

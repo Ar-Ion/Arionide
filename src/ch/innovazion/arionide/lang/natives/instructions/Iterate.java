@@ -24,11 +24,11 @@ package ch.innovazion.arionide.lang.natives.instructions;
 import java.util.List;
 
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Object;
-import ch.innovazion.arionide.lang.Reference;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.natives.NativeTypes;
+import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class Iterate implements NativeInstruction {
 
@@ -48,43 +48,43 @@ public class Iterate implements NativeInstruction {
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
 		this.index = 0;
 		
-		if(this.object.getValue().startsWith(SpecificationElement.VAR)) {
-			SpecificationElement element = communicator.getVariable(this.object.getValue().substring(4));
+		if(this.object.getDisplayValue().startsWith(SpecificationElement.VAR)) {
+			SpecificationElement element = communicator.getVariable(this.object.getDisplayValue().substring(4));
 			
 			if(element != null) {
-				String selector = this.selector.getValue();
+				String selector = this.selector.getDisplayValue();
 				
 				if(selector == null) {
 					selector = new String();
 				}
 				
 				if(selector.startsWith(SpecificationElement.VAR)) {
-					selector = communicator.getVariable(selector.substring(4)).getValue();
+					selector = communicator.getVariable(selector.substring(4)).getDisplayValue();
 				}
 				
-				String layers = this.layers.getValue();
+				String layers = this.layers.getDisplayValue();
 				
 				if(layers.startsWith(SpecificationElement.VAR)) {
-					layers = communicator.getVariable(layers.substring(4)).getValue();
+					layers = communicator.getVariable(layers.substring(4)).getDisplayValue();
 				}
 				
 				if(layers != null) {
-					Object object = communicator.getObject(element.getValue());
+					Information object = communicator.getObject(element.getDisplayValue());
 					
 					if(object != null) {
-						for(Object obj : object.getObjects()) {
+						for(Information obj : object.getObjects()) {
 							this.scan(obj, selector, communicator, references, Integer.valueOf(layers.substring(1), layers.charAt(0) != 'd' ? layers.charAt(0) != 'b' ? 16 : 2 : 10));
 						}
 						
 						return true;
 					} else {
-						communicator.exception("Invalid object: " + element.getValue());
+						communicator.exception("Invalid object: " + element.getDisplayValue());
 					}
 				} else {
-					communicator.exception("Dead variable: " + this.selector.getValue());
+					communicator.exception("Dead variable: " + this.selector.getDisplayValue());
 				}
 			} else {
-				communicator.exception("Dead variable: " + this.object.getValue());
+				communicator.exception("Dead variable: " + this.object.getDisplayValue());
 			}
 		} else {
 			communicator.exception("You can't use a direct value for an object instance");
@@ -93,18 +93,18 @@ public class Iterate implements NativeInstruction {
 		return false;
 	}
 	
-	private void scan(Object obj, String selector, NativeDataCommunicator communicator, List<Integer> references, int layers) {
+	private void scan(Information obj, String selector, NativeDataCommunicator communicator, List<Integer> references, int layers) {
 		if(obj.getValue() != null && (selector.isEmpty() || obj.getValue().startsWith(selector))) {			
 			String value = obj.getValue().substring(selector.length());
 			
 			communicator.setVariable("value", true, new Data("value", value, NativeTypes.TEXT));
 			communicator.setVariable("index", true, new Data("index", "d" + this.index++, NativeTypes.INTEGER));
 			this.updater.execute(communicator, references);
-			obj.setValue(communicator.getVariable("value").getValue());
+			obj.setValue(communicator.getVariable("value").getDisplayValue());
 		}
 		
 		if(layers > 0) {
-			for(Object sub : obj.getObjects()) {
+			for(Information sub : obj.getObjects()) {
 				this.scan(sub, selector, communicator, references, layers - 1);
 			}
 		}

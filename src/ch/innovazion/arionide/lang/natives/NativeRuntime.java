@@ -28,10 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.Runtime;
-import ch.innovazion.arionide.lang.Specification;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.Validator;
 import ch.innovazion.arionide.lang.natives.instructions.Add;
 import ch.innovazion.arionide.lang.natives.instructions.Call;
@@ -48,6 +45,9 @@ import ch.innovazion.arionide.lang.natives.instructions.Print;
 import ch.innovazion.arionide.lang.natives.instructions.Redo;
 import ch.innovazion.arionide.lang.natives.instructions.Size;
 import ch.innovazion.arionide.lang.natives.instructions.Write;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.Specification;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Project;
@@ -168,13 +168,13 @@ public class NativeRuntime extends Runtime {
 			if(element instanceof Data) {
 				Validator validator = this.getProject().getLanguage().getTypes().getValidator(((Data) element).getType());
 				
-				if(validator == null || !validator.validate(element.getValue())) {
-					this.info("Couldn't validate '" + element.getValue() + "'", 0xFF6000);
+				if(validator == null || !validator.validate(element.getDisplayValue())) {
+					this.info("Couldn't validate '" + element.getDisplayValue() + "'", 0xFF6000);
 					return null;
 				}
 			} else if(element instanceof Reference) {
 				try {
-					nextElements.add(Integer.parseInt(element.getValue()));
+					nextElements.add(Integer.parseInt(element.getDisplayValue()));
 				} catch(NumberFormatException e) {
 					this.info("Invalid reference", 0xFF6000);
 					return null;

@@ -24,8 +24,8 @@ package ch.innovazion.arionide.menu.structure.specification;
 import javax.swing.JOptionPane;
 
 import ch.innovazion.arionide.events.Event;
-import ch.innovazion.arionide.lang.Specification;
-import ch.innovazion.arionide.lang.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Specification;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 import ch.innovazion.arionide.menu.Confirm;
 import ch.innovazion.arionide.menu.Menu;
 

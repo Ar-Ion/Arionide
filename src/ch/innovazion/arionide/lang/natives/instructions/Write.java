@@ -26,11 +26,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
-import ch.innovazion.arionide.lang.Bit;
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Object;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
+import ch.innovazion.arionide.lang.symbols.Bit;
+import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class Write implements NativeInstruction {
 
@@ -43,18 +43,18 @@ public class Write implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(this.object.getValue().startsWith(SpecificationElement.VAR)) {
-			SpecificationElement element = communicator.getVariable(this.object.getValue().substring(4));
+		if(this.object.getDisplayValue().startsWith(SpecificationElement.VAR)) {
+			SpecificationElement element = communicator.getVariable(this.object.getDisplayValue().substring(4));
 			
 			if(element != null) {
-				String file = this.path.getValue();
+				String file = this.path.getDisplayValue();
 				
 				if(file.startsWith(SpecificationElement.VAR)) {
-					file = communicator.getVariable(file.substring(4)).getValue();
+					file = communicator.getVariable(file.substring(4)).getDisplayValue();
 				}
 				
 				if(file != null) {
-					Object object = communicator.getObject(element.getValue());
+					Information object = communicator.getObject(element.getDisplayValue());
 					
 					if(object != null) {
 						Bit[] bits = object.getData();
@@ -82,13 +82,13 @@ public class Write implements NativeInstruction {
 							communicator.exception("Failed to write data to: " + file);
 						}
 					} else {
-						communicator.exception("Invalid object instance: " + element.getValue());
+						communicator.exception("Invalid object instance: " + element.getDisplayValue());
 					}
 				} else {
 					communicator.exception("Dead variable: " + file);
 				}
 			} else {
-				communicator.exception("Dead variable: " + this.object.getValue());
+				communicator.exception("Dead variable: " + this.object.getDisplayValue());
 			}
 		} else {
 			communicator.exception("You can't use a direct value for an object instance");

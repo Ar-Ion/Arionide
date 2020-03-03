@@ -23,10 +23,10 @@ package ch.innovazion.arionide.menu.structure.specification.reference;
 
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Reference;
-import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.TypeManager;
 import ch.innovazion.arionide.lang.Types;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.ui.AppManager;

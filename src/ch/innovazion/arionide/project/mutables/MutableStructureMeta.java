@@ -21,7 +21,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.project.mutables;
 
-import ch.innovazion.arionide.lang.Specification;
+import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.menu.structure.Coloring;
 import ch.innovazion.arionide.project.StructureMeta;
 
@@ -33,6 +33,7 @@ public class MutableStructureMeta implements StructureMeta {
 	private int colorID = Coloring.WHITE;
 	private int spotColorID = Coloring.WHITE;
 	private boolean accessAllowed = true;
+	private boolean lambda = false;
 	private Specification specification;
 	private int language = 0;
 
@@ -78,6 +79,14 @@ public class MutableStructureMeta implements StructureMeta {
 	
 	public void setAccessAllowed(boolean allowed) {
 		this.accessAllowed = allowed;
+	}
+	
+	public boolean isLambda() {
+		return this.lambda;
+	}
+	
+	public void setLambda(boolean isLambda) {
+		this.lambda = isLambda;
 	}
 
 	public Specification getSpecification() {

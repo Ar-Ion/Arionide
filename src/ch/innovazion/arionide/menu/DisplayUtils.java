@@ -23,7 +23,7 @@ package ch.innovazion.arionide.menu;
 
 import java.util.List;
 
-import ch.innovazion.arionide.lang.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 import ch.innovazion.arionide.project.StructureMeta;
 import ch.innovazion.arionide.ui.ApplicationTints;
 

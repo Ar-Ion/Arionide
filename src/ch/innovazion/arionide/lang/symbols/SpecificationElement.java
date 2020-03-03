@@ -19,21 +19,19 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.lang;
+package ch.innovazion.arionide.lang.symbols;
 
 import java.io.Serializable;
+import java.util.List;
 
 public abstract class SpecificationElement implements Serializable {
 
-	public static final String ALIAS = "$$$"; // Pseudo_name$$$Real_name
-	public static final String VAR = "var@"; // var@Var_name
-	
 	private static final long serialVersionUID = -2821188218676151203L;
 
 	private String name;
-	private String value;
+	private ParameterValue value;
 	
-	public SpecificationElement(String name, String value) {
+	public SpecificationElement(String name, ParameterValue value) {
 		this.name = name;
 		this.value = value;
 	}
@@ -46,47 +44,20 @@ public abstract class SpecificationElement implements Serializable {
 		this.name = name;
 	}
 	
-	public String getValue() {
-		String realValue = this.value;
-		
-		if(realValue != null) {
-			int index = realValue.indexOf(ALIAS);
-			if(index > -1) {
-				realValue = realValue.substring(index + 3);
-			}
-		}
-		
-		return realValue;
-	}
-	
-	protected String getRawValue() {
+	protected ParameterValue getValue() {
 		return this.value;
 	}
 	
-	public void setValue(String value) {
+	public void setValue(ParameterValue value) {
 		this.value = value;
 	}
 	
-	public String toString() {
-		String displayValue = this.value;
-		
-		if(displayValue == null) {
-			displayValue = "undefined";
-		}		
-				
-		int index = displayValue.indexOf(ALIAS);
-		
-		if(index > -1) {
-			displayValue = displayValue.substring(0, index);
-		}
-		
-		index = displayValue.indexOf(VAR);
-		
-		if(index > -1) {
-			displayValue = displayValue.substring(index + 4);
-		}
-		
-		return this.name + ": " + displayValue;
+	public List<String> getDisplayValue() {
+		return value.getDisplayValue();
+	}
+	
+	public String toString() {		
+		return name + ": <" + String.join("; ", value.getDisplayValue()) + ">";
 	}
 	
 	public boolean equals(java.lang.Object other) {

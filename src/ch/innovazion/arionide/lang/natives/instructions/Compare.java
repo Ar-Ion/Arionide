@@ -24,9 +24,9 @@ package ch.innovazion.arionide.lang.natives.instructions;
 import java.util.List;
 
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.natives.NativeTypes;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class Compare implements NativeInstruction {
 
@@ -41,15 +41,15 @@ public class Compare implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		String value1 = this.var1.getValue();
-		String value2 = this.var2.getValue();
+		String value1 = this.var1.getDisplayValue();
+		String value2 = this.var2.getDisplayValue();
 
 		if(value1.startsWith(SpecificationElement.VAR)) {
-			value1 = communicator.getVariable(value1.substring(4)).getValue();
+			value1 = communicator.getVariable(value1.substring(4)).getDisplayValue();
 		}
 		
 		if(value2.startsWith(SpecificationElement.VAR)) {
-			value2 = communicator.getVariable(value2.substring(4)).getValue();
+			value2 = communicator.getVariable(value2.substring(4)).getDisplayValue();
 		}
 		
 		if(this.var1.getType() == NativeTypes.INTEGER) {
@@ -62,8 +62,8 @@ public class Compare implements NativeInstruction {
 				
 		boolean equals = value1.equals(value2);
 		
-		if(this.result.getValue().contains(SpecificationElement.VAR)) {
-			String varName = this.result.getValue().substring(4);
+		if(this.result.getDisplayValue().contains(SpecificationElement.VAR)) {
+			String varName = this.result.getDisplayValue().substring(4);
 			communicator.setVariable(varName, communicator.isDefined(varName) ? communicator.isLocal(varName) : false, new Data(varName, equals ? "b1" : "b0", NativeTypes.INTEGER));
 		}
 		

@@ -19,7 +19,9 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.lang;
+package ch.innovazion.arionide.lang.symbols;
+
+import java.math.BigInteger;
 
 public class Bit {
 	
@@ -41,17 +43,17 @@ public class Bit {
 		Bit[] data = new Bit[8 * bytes.length];
 		
 		for(int i = 0; i < bytes.length; i++) {
-			System.arraycopy(fromInteger(bytes[i], 8), 0, data, 8 * i, 8);
+			System.arraycopy(fromInteger(BigInteger.valueOf(bytes[i]), 8), 0, data, 8 * i, 8);
 		}
 		
 		return data;
 	}
 	
-	public static Bit[] fromInteger(int integer, int bits) {
+	public static Bit[] fromInteger(BigInteger integer, int bits) {
 		Bit[] data = new Bit[bits];
 
 		for(int i = 0; i < bits; i++) {
-			data[i] = new Bit(integer & (0x1 << (bits - i - 1)));
+			data[i] = new Bit(integer.and(BigInteger.ONE.shiftLeft(bits - i - 1)).intValue());
 		}
 				
 		return data;

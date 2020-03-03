@@ -27,9 +27,9 @@ import java.util.function.Consumer;
 
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Reference;
-import ch.innovazion.arionide.lang.Specification;
-import ch.innovazion.arionide.lang.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.Specification;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 import ch.innovazion.arionide.project.Manager;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.StructureMeta;
@@ -83,7 +83,7 @@ public class SpecificationManager extends Manager {
 	}
 	
 	public MessageEvent bind(SpecificationElement sourceParam, SpecificationElement targetParam) {
-		sourceParam.setValue(targetParam.getValue());
+		sourceParam.setValue(targetParam.getDisplayValue());
 		saveMeta();
 									
 		return success();
@@ -91,9 +91,9 @@ public class SpecificationManager extends Manager {
 	
 	public MessageEvent toggleCallability(Reference reference) {
 		if(reference.getLazyParameters() != null) {
-			reference.setSpecificationParameters(null);
+			reference.setCustomParameters(null);
 		} else {
-			reference.setSpecificationParameters(new ArrayList<>());
+			reference.setCustomParameters(new ArrayList<>());
 		}
 		
 		saveMeta();

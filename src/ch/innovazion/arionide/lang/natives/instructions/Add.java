@@ -24,9 +24,9 @@ package ch.innovazion.arionide.lang.natives.instructions;
 import java.util.List;
 
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Object;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
+import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class Add implements NativeInstruction {
 
@@ -37,13 +37,13 @@ public class Add implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		Object object = communicator.getBoundObject();
+		Information object = communicator.getBoundObject();
 		
 		if(object != null) {
-			String value = this.data.getValue();
+			String value = this.data.getDisplayValue();
 			
 			if(value.startsWith(SpecificationElement.VAR)) {
-				value = communicator.getVariable(value.substring(4)).getValue();
+				value = communicator.getVariable(value.substring(4)).getDisplayValue();
 			}
 			
 			object.add(value, communicator);

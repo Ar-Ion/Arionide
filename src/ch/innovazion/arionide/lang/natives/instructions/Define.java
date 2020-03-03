@@ -24,8 +24,8 @@ package ch.innovazion.arionide.lang.natives.instructions;
 import java.util.List;
 
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class Define implements NativeInstruction {
 	
@@ -40,20 +40,20 @@ public class Define implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(!this.name.getValue().startsWith(SpecificationElement.VAR)) {
-			communicator.exception("The variable '" + this.name.getValue() + "' is not defined with the 'New variable' button but with the 'Custom string' one.");
+		if(!this.name.getDisplayValue().startsWith(SpecificationElement.VAR)) {
+			communicator.exception("The variable '" + this.name.getDisplayValue() + "' is not defined with the 'New variable' button but with the 'Custom string' one.");
 			return false;
 		}
 		
-		String value = this.value.getValue();
+		String value = this.value.getDisplayValue();
 		
 		if(value.startsWith(SpecificationElement.VAR)) {
-			value = communicator.getVariable(value.substring(4)).getValue();
+			value = communicator.getVariable(value.substring(4)).getDisplayValue();
 		}
 				
-		boolean local = this.local.getValue().substring(1).equals("1");
+		boolean local = this.local.getDisplayValue().substring(1).equals("1");
 		
-		Data data = new Data(this.name.getValue().substring(4), value, this.value.getType());
+		Data data = new Data(this.name.getDisplayValue().substring(4), value, this.value.getType());
 		
 		communicator.setVariable(data.getName(), local, data);
 		

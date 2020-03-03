@@ -26,8 +26,8 @@ import java.util.List;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Reference;
-import ch.innovazion.arionide.lang.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 import ch.innovazion.arionide.menu.MainMenus;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
@@ -65,8 +65,8 @@ public class ReferenceEditor extends Menu {
 		description = new MenuDescription();
 		elements.clear();
 		
-		if(element.getValue() != null) {
-			int resolved = Integer.parseInt(element.getValue());
+		if(element.getDisplayValue() != null) {
+			int resolved = Integer.parseInt(element.getDisplayValue());
 			String realName = getProject().getStorage().getStructureMeta().get(resolved).getName();
 			
 			description.add("Predicate: " + realName);
@@ -91,7 +91,7 @@ public class ReferenceEditor extends Menu {
 	public void onClick(int id) {
 		if(id == this.refIndex) {
 			selector.show();
-		} else if(element.getValue() != null) {
+		} else if(element.getDisplayValue() != null) {
 			if(id < this.refIndex) {
 				binding.setPossibleBindings(element.getEagerParameters().get(id), element.getLazyParameters());
 				binding.show();

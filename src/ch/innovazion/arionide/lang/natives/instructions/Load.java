@@ -24,9 +24,9 @@ package ch.innovazion.arionide.lang.natives.instructions;
 import java.util.List;
 
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.SpecificationElement;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.natives.NativeTypes;
+import ch.innovazion.arionide.lang.symbols.SpecificationElement;
 
 public class Load implements NativeInstruction {
 
@@ -39,12 +39,12 @@ public class Load implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(this.target.getValue().startsWith(SpecificationElement.VAR)) {
-			String refID = this.source.getValue();
-			String target = this.target.getValue().substring(4);
+		if(this.target.getDisplayValue().startsWith(SpecificationElement.VAR)) {
+			String refID = this.source.getDisplayValue();
+			String target = this.target.getDisplayValue().substring(4);
 			
 			if(refID.startsWith(SpecificationElement.VAR)) {
-				refID = communicator.getVariable(refID.substring(4)).getValue();
+				refID = communicator.getVariable(refID.substring(4)).getDisplayValue();
 			}
 			
 			String identifier = communicator.load(Integer.parseInt(refID.substring(1), refID.charAt(0) != 'd' ? refID.charAt(0) != 'b' ? 16 : 2 : 10));

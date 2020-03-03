@@ -24,9 +24,9 @@ package ch.innovazion.arionide.lang.natives.instructions;
 import java.util.List;
 
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Reference;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.natives.NativeTypes;
+import ch.innovazion.arionide.lang.symbols.Reference;
 
 public class Redo implements NativeInstruction {
 
@@ -39,7 +39,7 @@ public class Redo implements NativeInstruction {
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
 		communicator.setVariable("condition", true, new Data("condition", "b0", NativeTypes.INTEGER));
 		this.predicate.execute(communicator, references);
-		boolean redo = communicator.getVariable("condition").getValue().substring(1).equals("1");
+		boolean redo = communicator.getVariable("condition").getDisplayValue().substring(1).equals("1");
 		
 		if(redo) {
 			communicator.exec(references.indexOf(communicator.getStack().peek()));

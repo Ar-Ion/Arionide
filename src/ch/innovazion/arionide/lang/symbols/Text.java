@@ -19,31 +19,34 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.lang;
+package ch.innovazion.arionide.lang.symbols;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
-import ch.innovazion.arionide.lang.natives.NativeTypes;
+public class Text extends Information {
 
-public class TextObject extends Object {
-
-	private String value;
+	private static final long serialVersionUID = -4429297123778703745L;
 	
-	protected TextObject(String value, String id) {
-		super(Arrays.asList(NativeTypes.TEXT), id);
-		this.value = value;
+	private String textValue = "";
+	private Bit[] realValue = new Bit[8];
+	
+	public void parse(String value) throws InvalidValueException {
+		if(value != null) {
+			this.textValue = value;
+			Bit.fromByteArray(value.getBytes(Charset.forName("utf8")));
+		} else {
+			throw new InvalidValueException("Entered text cannot be null");
+		}
+	}
+
+	protected Stream<Bit> getRawStream() {
+		return Stream.of(realValue);
 	}
 	
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
-	public String getValue() {
-		return this.value;
-	}
-	
-	public Bit[] getData() {
-		return Bit.fromByteArray(this.value.getBytes(Charset.forName("utf8")));
+	public List<String> getDisplayValue() {
+		return Arrays.asList("'" + textValue + "'");
 	}
 }

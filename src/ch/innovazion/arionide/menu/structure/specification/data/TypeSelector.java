@@ -23,9 +23,9 @@ package ch.innovazion.arionide.menu.structure.specification.data;
 
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.Specification;
 import ch.innovazion.arionide.lang.TypeManager;
 import ch.innovazion.arionide.lang.Types;
+import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 
