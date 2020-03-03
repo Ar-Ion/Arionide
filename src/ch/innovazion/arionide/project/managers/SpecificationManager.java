@@ -29,7 +29,7 @@ import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Specification;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.project.Manager;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.StructureMeta;
@@ -40,7 +40,7 @@ public class SpecificationManager extends Manager {
 		super(storage);
 	}
 	
-	public MessageEvent addElement(Specification spec, SpecificationElement element) {
+	public MessageEvent addElement(Specification spec, Parameter element) {
 		doForeachConnectedSpecification(spec, other -> other.getElements().add(element));
 		saveMeta();
 		
@@ -82,7 +82,7 @@ public class SpecificationManager extends Manager {
 		return success();
 	}
 	
-	public MessageEvent bind(SpecificationElement sourceParam, SpecificationElement targetParam) {
+	public MessageEvent bind(Parameter sourceParam, Parameter targetParam) {
 		sourceParam.setValue(targetParam.getDisplayValue());
 		saveMeta();
 									
@@ -101,7 +101,7 @@ public class SpecificationManager extends Manager {
 		return success();
 	}
 	
-	public MessageEvent remove(Specification spec, SpecificationElement element) {
+	public MessageEvent remove(Specification spec, Parameter element) {
 		if(spec.getElements().remove(element)) {
 			saveMeta();
 			return success();
@@ -110,22 +110,22 @@ public class SpecificationManager extends Manager {
 		}
 	}
 	
-	public MessageEvent addParam(List<SpecificationElement> parameters, SpecificationElement newParam) {
+	public MessageEvent addParam(List<Parameter> parameters, Parameter newParam) {
 		parameters.add(newParam);
 		saveMeta();
 		
 		return success();
 	}
 	
-	public MessageEvent setValue(SpecificationElement element, String value) {
+	public MessageEvent setValue(Parameter element, String value) {
 		element.setValue(value);
 		saveMeta();
 		
 		return success();
 	}
 	
-	public MessageEvent bindParameter(SpecificationElement source, SpecificationElement target) {
-		target.setValue(SpecificationElement.VAR + source.getName());
+	public MessageEvent bindParameter(Parameter source, Parameter target) {
+		target.setValue(Parameter.VAR + source.getName());
 		source.setValue(null);
 		saveMeta();
 		

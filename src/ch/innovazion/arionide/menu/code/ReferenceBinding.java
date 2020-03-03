@@ -25,23 +25,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.innovazion.arionide.events.Event;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.Menu;
 
 public class ReferenceBinding extends Menu {
 	
-	private SpecificationElement element;
-	private List<SpecificationElement> possible;
+	private Parameter element;
+	private List<Parameter> possible;
 	
 	public ReferenceBinding(Menu parent) {
 		super(parent);
 	}
 	
-	protected void setPossibleBindings(SpecificationElement element, List<SpecificationElement> possible) {
+	protected void setPossibleBindings(Parameter element, List<Parameter> possible) {
 		this.element = element;
 		this.possible = new ArrayList<>();
 		
-		for(SpecificationElement poss : possible) {
+		for(Parameter poss : possible) {
 			if(element.getClass().isInstance(poss)) {
 				if(poss.getDisplayValue() == null) {
 					this.possible.add(poss);

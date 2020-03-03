@@ -36,14 +36,14 @@ import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Specification;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class NativeDataCommunicator {
 	
 	private final NativeRuntime runtime;
 	private final BiConsumer<String, Integer> channel;
 	private final Stack<Integer> stack = new Stack<>();
-	private final Map<Integer, Map<String, Entry<Boolean, SpecificationElement>>> variables = new HashMap<>();
+	private final Map<Integer, Map<String, Entry<Boolean, Parameter>>> variables = new HashMap<>();
 	private final List<Information> objects = new ArrayList<>();
 	private final Stack<String> boundObjects = new Stack<>();
 	
@@ -72,24 +72,24 @@ public class NativeDataCommunicator {
 		this.variables.remove(this.stack.peek());
 	}
 	
-	public void setVariable(String name, boolean local, SpecificationElement value) {
-		SpecificationElement element = this.getVariable(name);
+	public void setVariable(String name, boolean local, Parameter value) {
+		Parameter element = this.getVariable(name);
 		
 		if(!local && element != null) {
 			element.setValue(value.getDisplayValue());
 		} else {
-			this.variables.get(this.stack.peek()).put(name, new SimpleEntry<Boolean, SpecificationElement>(local, value));			
+			this.variables.get(this.stack.peek()).put(name, new SimpleEntry<Boolean, Parameter>(local, value));			
 		}
 	}
 	
-	public SpecificationElement getVariable(String name) {
+	public Parameter getVariable(String name) {
 		@SuppressWarnings("unchecked")
 		Stack<Integer> stack = (Stack<Integer>) this.stack.clone();		
 		
 		boolean first = true;
 				
 		while(!stack.isEmpty()) {
-			Entry<Boolean, SpecificationElement> variable = this.variables.get(stack.pop()).get(name);
+			Entry<Boolean, Parameter> variable = this.variables.get(stack.pop()).get(name);
 			
 			if(variable != null) {
 				if(first || !variable.getKey()) { // If it is the current scope or the variable is not local
@@ -108,7 +108,7 @@ public class NativeDataCommunicator {
 	}
 	
 	public boolean isLocal(String name) {
-		Entry<Boolean, SpecificationElement> var = this.variables.get(this.stack.peek()).get(name);
+		Entry<Boolean, Parameter> var = this.variables.get(this.stack.peek()).get(name);
 		return var != null ? var.getKey() : true;
 	}
 	
@@ -159,7 +159,7 @@ public class NativeDataCommunicator {
 			
 			types.add(Integer.toString(NativeTypes.TEXT));
 			
-			for(SpecificationElement element : instruction.getValue().getElements()) {
+			for(Parameter element : instruction.getValue().getElements()) {
 				if(element instanceof Reference || ((Data) element).getType() == NativeTypes.INTEGER) {
 					types.add(String.valueOf(NativeTypes.INTEGER));
 				} else {
@@ -172,9 +172,9 @@ public class NativeDataCommunicator {
 			
 			instrObject.add(instruction.getKey(), this);
 			
-			for(SpecificationElement element : instruction.getValue().getElements()) {
-				if(element.getDisplayValue().startsWith(SpecificationElement.VAR)) {
-					SpecificationElement real = this.getVariable(element.getDisplayValue().substring(4));
+			for(Parameter element : instruction.getValue().getElements()) {
+				if(element.getDisplayValue().startsWith(Parameter.VAR)) {
+					Parameter real = this.getVariable(element.getDisplayValue().substring(4));
 					
 					if(real != null) {
 						instrObject.add(real.getDisplayValue(), this);	

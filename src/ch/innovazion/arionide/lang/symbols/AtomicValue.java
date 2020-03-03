@@ -23,4 +23,5 @@ public abstract class AtomicValue extends Information {
 	}
 	
 	protected abstract Stream<Bit> getRawStream();
+	public abstract AtomicValue clone();
 }

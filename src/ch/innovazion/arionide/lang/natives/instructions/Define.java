@@ -25,7 +25,7 @@ import java.util.List;
 
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class Define implements NativeInstruction {
 	
@@ -40,14 +40,14 @@ public class Define implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(!this.name.getDisplayValue().startsWith(SpecificationElement.VAR)) {
+		if(!this.name.getDisplayValue().startsWith(Parameter.VAR)) {
 			communicator.exception("The variable '" + this.name.getDisplayValue() + "' is not defined with the 'New variable' button but with the 'Custom string' one.");
 			return false;
 		}
 		
 		String value = this.value.getDisplayValue();
 		
-		if(value.startsWith(SpecificationElement.VAR)) {
+		if(value.startsWith(Parameter.VAR)) {
 			value = communicator.getVariable(value.substring(4)).getDisplayValue();
 		}
 				

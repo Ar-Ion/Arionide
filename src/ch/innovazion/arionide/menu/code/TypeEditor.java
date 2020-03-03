@@ -33,7 +33,7 @@ import ch.innovazion.arionide.lang.Language;
 import ch.innovazion.arionide.lang.TypeManager;
 import ch.innovazion.arionide.lang.UserHelper;
 import ch.innovazion.arionide.lang.Validator;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.project.Project;
@@ -41,7 +41,7 @@ import ch.innovazion.arionide.project.managers.HostStructureStack;
 
 public class TypeEditor extends Menu {
 	
-	private SpecificationElement element;
+	private Parameter element;
 	private TypeManager typeManager;
 	private Validator validator;
 	private int separator;
@@ -102,7 +102,7 @@ public class TypeEditor extends Menu {
 				String name = JOptionPane.showInputDialog(null, "Please enter the name of the variable", "New variable", JOptionPane.PLAIN_MESSAGE);
 				
 				if(name != null) {
-					validateAction(SpecificationElement.VAR + name);
+					validateAction(Parameter.VAR + name);
 				}
 			}).start();
 		} else {
@@ -126,7 +126,7 @@ public class TypeEditor extends Menu {
 		}
 	}
 	
-	private void setValue(SpecificationElement element, String value) {
+	private void setValue(Parameter element, String value) {
 		Event event = getProject().getDataManager().getSpecificationManager().setValue(element, value);
 		getAppManager().getEventDispatcher().fire(event);
 		back();

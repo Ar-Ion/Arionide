@@ -27,7 +27,7 @@ import java.util.Stack;
 
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.symbols.Reference;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class Call implements NativeInstruction {
 	
@@ -48,13 +48,13 @@ public class Call implements NativeInstruction {
 				return false;
 			}
 			
-			List<SpecificationElement> specVars = new ArrayList<>();
+			List<Parameter> specVars = new ArrayList<>();
 			
-			for(SpecificationElement element : this.reference.getLazyParameters()) {
+			for(Parameter element : this.reference.getLazyParameters()) {
 				String value = element.getDisplayValue();
 												
-				if(value.startsWith(SpecificationElement.VAR)) {
-					SpecificationElement specElement = communicator.getVariable(value.substring(4)).clone();
+				if(value.startsWith(Parameter.VAR)) {
+					Parameter specElement = communicator.getVariable(value.substring(4)).clone();
 					specElement.setName(element.getName());
 					specVars.add(specElement);
 				} else {
@@ -62,12 +62,12 @@ public class Call implements NativeInstruction {
 				}
 			}
 			
-			for(SpecificationElement element : this.reference.getEagerParameters()) {
+			for(Parameter element : this.reference.getEagerParameters()) {
 				String value = element.getDisplayValue();
 					
 				if(value != null) {
-					if(value.startsWith(SpecificationElement.VAR)) {
-						SpecificationElement specElement = communicator.getVariable(value.substring(4)).clone();
+					if(value.startsWith(Parameter.VAR)) {
+						Parameter specElement = communicator.getVariable(value.substring(4)).clone();
 						specElement.setName(element.getName());
 						specVars.add(specElement);
 					} else {
@@ -80,25 +80,25 @@ public class Call implements NativeInstruction {
 			
 			communicator.initVariablePool();
 			
-			for(SpecificationElement specVar : specVars) {
+			for(Parameter specVar : specVars) {
 				communicator.setVariable(specVar.getName(), true, specVar);
 			}
 			
 			communicator.exec(references.indexOf(refID));
 			
-			List<SpecificationElement> newVars = new ArrayList<>();
+			List<Parameter> newVars = new ArrayList<>();
 			
-			for(SpecificationElement specVar : specVars) {
+			for(Parameter specVar : specVars) {
 				newVars.add(communicator.getVariable(specVar.getName())); // Variable might be redefined but not deleted
 			}
 						
 			communicator.clearVariablePool();
 			theStack.pop();
 						
-			for(SpecificationElement newVar : newVars) {
-				for(SpecificationElement original : this.reference.getLazyParameters()) { // Rename variable according to the parent's context					
+			for(Parameter newVar : newVars) {
+				for(Parameter original : this.reference.getLazyParameters()) { // Rename variable according to the parent's context					
 					if(original.getName().equals(newVar.getName())) {
-						if(original.getDisplayValue().contains(SpecificationElement.VAR)) {
+						if(original.getDisplayValue().contains(Parameter.VAR)) {
 							newVar.setName(original.getDisplayValue().substring(4));
 						}
 						

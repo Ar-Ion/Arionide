@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public abstract class Information implements ParameterValue {
+public class Information implements ParameterValue {
 
 	private static final long serialVersionUID = 4195840205787242630L;
 	
@@ -142,5 +142,25 @@ public abstract class Information implements ParameterValue {
 		return linear_map.stream().map(Information::getRawStream).reduce(Stream::concat).orElse(Stream.of());
 	}
 	
-	public abstract void parse(String value) throws InvalidValueException;
+	public Information clone() {
+		Information clone = new Information();
+		
+		for(Information child : linear_map) {
+			Information childClone = child.clone();
+			
+			clone.linear_map.add(childClone);
+			clone.symbolic_map.put(childClone.name, childClone);
+			childClone.parent = clone;
+		}
+		
+		clone.size = size;
+		clone.name = name;
+		clone.parent = null;
+		
+		return clone;
+	}
+	
+	public void parse(String value) throws InvalidValueException {
+		throw new InvalidValueException("Cannot parse an input for an 'Information' object");
+	}
 }

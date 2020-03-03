@@ -35,4 +35,8 @@ public class Alias implements ParameterValue {
 	public List<String> getDisplayValue() {
 		return Arrays.asList(alias);
 	}
+	
+	public Alias clone() {
+		return new Alias(alias, value);
+	}
 }

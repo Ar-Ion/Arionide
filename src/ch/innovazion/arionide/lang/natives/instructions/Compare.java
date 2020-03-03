@@ -26,7 +26,7 @@ import java.util.List;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.natives.NativeTypes;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class Compare implements NativeInstruction {
 
@@ -44,11 +44,11 @@ public class Compare implements NativeInstruction {
 		String value1 = this.var1.getDisplayValue();
 		String value2 = this.var2.getDisplayValue();
 
-		if(value1.startsWith(SpecificationElement.VAR)) {
+		if(value1.startsWith(Parameter.VAR)) {
 			value1 = communicator.getVariable(value1.substring(4)).getDisplayValue();
 		}
 		
-		if(value2.startsWith(SpecificationElement.VAR)) {
+		if(value2.startsWith(Parameter.VAR)) {
 			value2 = communicator.getVariable(value2.substring(4)).getDisplayValue();
 		}
 		
@@ -62,7 +62,7 @@ public class Compare implements NativeInstruction {
 				
 		boolean equals = value1.equals(value2);
 		
-		if(this.result.getDisplayValue().contains(SpecificationElement.VAR)) {
+		if(this.result.getDisplayValue().contains(Parameter.VAR)) {
 			String varName = this.result.getDisplayValue().substring(4);
 			communicator.setVariable(varName, communicator.isDefined(varName) ? communicator.isLocal(varName) : false, new Data(varName, equals ? "b1" : "b0", NativeTypes.INTEGER));
 		}

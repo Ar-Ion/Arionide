@@ -25,7 +25,7 @@ import java.util.List;
 
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class Print implements NativeInstruction {
 	
@@ -38,7 +38,7 @@ public class Print implements NativeInstruction {
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
 		String realMessage = this.message;
 		
-		if(realMessage.startsWith(SpecificationElement.VAR)) {
+		if(realMessage.startsWith(Parameter.VAR)) {
 			realMessage = communicator.getVariable(realMessage.substring(4)).getDisplayValue();
 		}
 		

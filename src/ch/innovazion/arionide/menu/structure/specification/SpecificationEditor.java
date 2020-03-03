@@ -31,7 +31,7 @@ import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Specification;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.DisplayUtils;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
@@ -69,7 +69,7 @@ public class SpecificationEditor extends Menu {
 			elements.clear();
 			elements.add("Add data");
 			elements.add("Add reference");
-			elements.addAll(specification.getElements().stream().map(SpecificationElement::getName).collect(Collectors.toList()));
+			elements.addAll(specification.getElements().stream().map(Parameter::getName).collect(Collectors.toList()));
 		}
 		
 		StructureMeta meta = getProject().getStorage().getStructureMeta().get(getTarget().getID());
@@ -90,7 +90,7 @@ public class SpecificationEditor extends Menu {
 				String name = JOptionPane.showInputDialog(null, "Enter the name for the new data", "New data", JOptionPane.PLAIN_MESSAGE);
 				
 				if(name != null) {
-					SpecificationElement element = new Data(name, null, -1);
+					Parameter element = new Data(name, null, -1);
 					Event event = getProject().getDataManager().getSpecificationManager().addElement(specification, element);
 					getAppManager().getEventDispatcher().fire(event);
 					
@@ -103,7 +103,7 @@ public class SpecificationEditor extends Menu {
 				String name = JOptionPane.showInputDialog(null, "Enter the name for the new reference", "New reference", JOptionPane.PLAIN_MESSAGE);
 				
 				if(name != null) {
-					SpecificationElement element = new Reference(name, null, new ArrayList<>(), new ArrayList<>());
+					Parameter element = new Reference(name, null, new ArrayList<>(), new ArrayList<>());
 					Event event = getProject().getDataManager().getSpecificationManager().addElement(specification, element);
 					getAppManager().getEventDispatcher().fire(event);
 					
@@ -111,7 +111,7 @@ public class SpecificationEditor extends Menu {
 				}
 			}).start();
 		} else {
-			SpecificationElement element = specification.getElements().get(id - 2);
+			Parameter element = specification.getElements().get(id - 2);
 			
 			if(element instanceof Data) {
 				dataEditor.setTarget(specification, id - 2);

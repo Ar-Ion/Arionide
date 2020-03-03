@@ -25,7 +25,7 @@ import javax.swing.JOptionPane;
 
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.lang.symbols.Specification;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.Confirm;
 import ch.innovazion.arionide.menu.Menu;
 
@@ -38,7 +38,7 @@ public abstract class SpecificationElementEditor extends Menu {
 	
 	private int id;
 	private Specification specification;
-	private SpecificationElement element;
+	private Parameter element;
 	
 	protected SpecificationElementEditor(Menu parent) {
 		super(parent, delete, setName);
@@ -64,7 +64,7 @@ public abstract class SpecificationElementEditor extends Menu {
 		super.show();
 	}
 
-	protected SpecificationElement getElement() {
+	protected Parameter getElement() {
 		return element;
 	}
 	

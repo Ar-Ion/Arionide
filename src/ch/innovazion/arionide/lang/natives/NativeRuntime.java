@@ -47,7 +47,7 @@ import ch.innovazion.arionide.lang.natives.instructions.Size;
 import ch.innovazion.arionide.lang.natives.instructions.Write;
 import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Specification;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Project;
@@ -164,7 +164,7 @@ public class NativeRuntime extends Runtime {
 	}
 	
 	private NativeInstruction compileInstruction(int symID, String instruction, Specification spec, List<Integer> nextElements) {
-		for(SpecificationElement element : spec.getElements()) {
+		for(Parameter element : spec.getElements()) {
 			if(element instanceof Data) {
 				Validator validator = this.getProject().getLanguage().getTypes().getValidator(((Data) element).getType());
 				

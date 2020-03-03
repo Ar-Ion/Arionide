@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.StructureMeta;
@@ -45,7 +45,7 @@ public class UserHelper {
 	public List<String> getVariables(int currentStructure, int type, String nameStartingWith) {
 		List<String> variables = new ArrayList<>();
 		
-		for(SpecificationElement element : this.storage.getStructureMeta().get(currentStructure).getSpecification().getElements()) {
+		for(Parameter element : this.storage.getStructureMeta().get(currentStructure).getSpecification().getElements()) {
 			variables.add(element.getName());
 		}
 		
@@ -104,10 +104,10 @@ public class UserHelper {
 		for(HierarchyElement element : elements) {
 			StructureMeta meta = this.storage.getStructureMeta().get(element.getID());
 			
-			for(SpecificationElement specElement : meta.getSpecification().getElements()) {
+			for(Parameter specElement : meta.getSpecification().getElements()) {
 				String value = specElement.getRawValue();
 				
-				if(value != null && value.startsWith(SpecificationElement.VAR)) {						
+				if(value != null && value.startsWith(Parameter.VAR)) {						
 					if(!variables.contains(value)) {
 						variables.add(value);
 					}

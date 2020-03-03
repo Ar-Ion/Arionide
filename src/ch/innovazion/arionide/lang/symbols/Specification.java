@@ -32,24 +32,24 @@ public class Specification implements Serializable, Cloneable {
 	private static final long serialVersionUID = -7857295906601141122L;
 	
 	private final int id;
-	private final List<SpecificationElement> elements;
+	private final List<Parameter> elements;
 	
 	public Specification(Specification model) {
 		this.id = model.id;
-		this.elements = Collections.synchronizedList(model.elements.stream().map(SpecificationElement::clone).collect(Collectors.toList()));
+		this.elements = Collections.synchronizedList(model.elements.stream().map(Parameter::clone).collect(Collectors.toList()));
 	}
 	
-	public Specification(int id, SpecificationElement... elements) {
+	public Specification(int id, Parameter... elements) {
 		this.id = id;
 		this.elements = Collections.synchronizedList(new ArrayList<>(Arrays.asList(elements)));
 	}
 	
-	public List<SpecificationElement> getElements() {
+	public List<Parameter> getElements() {
 		return this.elements;
 	}
 	
 	public String toString() {
-		return this.elements.stream().map(SpecificationElement::toString).reduce((a, b) -> a + ", " + b).orElse(new String());
+		return this.elements.stream().map(Parameter::toString).reduce((a, b) -> a + ", " + b).orElse(new String());
 	}
 	
 	public boolean hasSameOrigin(Specification other) {

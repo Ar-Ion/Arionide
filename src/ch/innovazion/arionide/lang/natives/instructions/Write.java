@@ -30,7 +30,7 @@ import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.symbols.Bit;
 import ch.innovazion.arionide.lang.symbols.Information;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class Write implements NativeInstruction {
 
@@ -43,13 +43,13 @@ public class Write implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(this.object.getDisplayValue().startsWith(SpecificationElement.VAR)) {
-			SpecificationElement element = communicator.getVariable(this.object.getDisplayValue().substring(4));
+		if(this.object.getDisplayValue().startsWith(Parameter.VAR)) {
+			Parameter element = communicator.getVariable(this.object.getDisplayValue().substring(4));
 			
 			if(element != null) {
 				String file = this.path.getDisplayValue();
 				
-				if(file.startsWith(SpecificationElement.VAR)) {
+				if(file.startsWith(Parameter.VAR)) {
 					file = communicator.getVariable(file.substring(4)).getDisplayValue();
 				}
 				

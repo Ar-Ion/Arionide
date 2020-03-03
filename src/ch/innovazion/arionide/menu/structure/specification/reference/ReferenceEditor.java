@@ -23,7 +23,7 @@ package ch.innovazion.arionide.menu.structure.specification.reference;
 
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.lang.symbols.Reference;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.structure.specification.SpecificationElementEditor;
@@ -69,11 +69,11 @@ public class ReferenceEditor extends SpecificationElementEditor {
 		
 		description.add(ref.getName());
 		
-		for(SpecificationElement element : ref.getEagerParameters()) {
+		for(Parameter element : ref.getEagerParameters()) {
 			description.add(element.toString(), ApplicationTints.SPECIFICATION_EAGER);
 		}
 		
-		for(SpecificationElement element : ref.getLazyParameters()) {
+		for(Parameter element : ref.getLazyParameters()) {
 			description.add(element.toString(), ApplicationTints.SPECIFICATION_LAZY);
 		}
 		

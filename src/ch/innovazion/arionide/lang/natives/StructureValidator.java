@@ -22,14 +22,14 @@
 package ch.innovazion.arionide.lang.natives;
 
 import ch.innovazion.arionide.lang.Validator;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class StructureValidator implements Validator {
 	public boolean validate(String data) {
-		if(data.startsWith(SpecificationElement.VAR)) {
+		if(data.startsWith(Parameter.VAR)) {
 			return true;
 		} else {
-			int index = data.indexOf(SpecificationElement.ALIAS);
+			int index = data.indexOf(Parameter.ALIAS);
 			
 			if(index > -1) {
 				data = data.substring(index + 3);

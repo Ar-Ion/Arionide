@@ -34,7 +34,7 @@ import ch.innovazion.arionide.coders.Coder;
 import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.symbols.Reference;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.Browser;
 import ch.innovazion.arionide.menu.MainMenus;
 import ch.innovazion.arionide.menu.code.CodeBrowser;
@@ -288,8 +288,8 @@ public class CoreController {
 					StructureMeta targetMeta = meta.get(user.getFocus().getID() & 0xFFFFFF);
 					
 					if(sourceMeta != null && targetMeta != null) {
-						SpecificationElement sourceParam = sourceMeta.getSpecification().getElements().get((selection.getID() >>> 24) - 1);
-						SpecificationElement targetParam = targetMeta.getSpecification().getElements().get((focus.getID() >>> 24) - 1);
+						Parameter sourceParam = sourceMeta.getSpecification().getElements().get((selection.getID() >>> 24) - 1);
+						Parameter targetParam = targetMeta.getSpecification().getElements().get((focus.getID() >>> 24) - 1);
 
 						project.getDataManager().getSpecificationManager().bind(sourceParam, targetParam);
 						
@@ -331,7 +331,7 @@ public class CoreController {
 					StructureMeta instructionMeta = project.getStorage().getStructureMeta().get(instructionID);
 			
 					if(instructionMeta != null) {							
-						SpecificationElement spec = instructionMeta.getSpecification().getElements().get(paramID);
+						Parameter spec = instructionMeta.getSpecification().getElements().get(paramID);
 					
 						if(spec != null) {
 							if(spec instanceof Data) {

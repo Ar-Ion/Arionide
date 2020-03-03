@@ -26,7 +26,7 @@ import java.util.List;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.natives.NativeTypes;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class Merge implements NativeInstruction {
 	
@@ -41,17 +41,17 @@ public class Merge implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(this.destination.getDisplayValue().startsWith(SpecificationElement.VAR)) {
+		if(this.destination.getDisplayValue().startsWith(Parameter.VAR)) {
 			String destVar = this.destination.getDisplayValue().substring(4);
 			
 			String value1 = this.source1.getDisplayValue();
 			String value2 = this.source2.getDisplayValue();
 
-			if(value1.startsWith(SpecificationElement.VAR)) {
+			if(value1.startsWith(Parameter.VAR)) {
 				value1 = communicator.getVariable(value1).getDisplayValue();
 			}
 			
-			if(value2.startsWith(SpecificationElement.VAR)) {
+			if(value2.startsWith(Parameter.VAR)) {
 				value2 = communicator.getVariable(value2).getDisplayValue();
 			}
 			

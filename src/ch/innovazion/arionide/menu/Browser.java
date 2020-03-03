@@ -24,7 +24,7 @@ package ch.innovazion.arionide.menu;
 import java.util.List;
 import java.util.Map;
 
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.StructureMeta;
 import ch.innovazion.arionide.ui.AppManager;
@@ -51,7 +51,7 @@ public abstract class Browser extends Menu {
 				getAppManager().getCoreOrchestrator().getController().select(id);
 							
 				StructureMeta meta = getProject().getStorage().getStructureMeta().get(id);
-				List<SpecificationElement> elements = meta.getSpecification().getElements();
+				List<Parameter> elements = meta.getSpecification().getElements();
 				
 				description = new MenuDescription(ApplicationTints.MENU_INFO_INACTIVE_COLOR, 0.5f);
 				
@@ -59,7 +59,7 @@ public abstract class Browser extends Menu {
 					description.add(meta.getComment(), ApplicationTints.COMMENT_COLOR);
 				}
 				
-				for(SpecificationElement element : elements) {
+				for(Parameter element : elements) {
 					description.add(element.toString());
 				}
 	

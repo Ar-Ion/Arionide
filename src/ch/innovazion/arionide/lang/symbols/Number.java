@@ -58,4 +58,15 @@ public class Number extends AtomicValue {
 	public List<String> getDisplayValue() {
 		return Arrays.asList(value, "(" + data.length + " bit(s))");
 	}
+	
+	public Number clone() {
+		Number clone = new Number();
+		
+		clone.data = new Bit[data.length];
+		clone.value = value;
+		
+		System.arraycopy(data, 0, clone.data, 0, data.length);
+		
+		return clone;
+	}
 }

@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ch.innovazion.arionide.lang.Validator;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class IntegerValidator implements Validator {
 	
@@ -38,10 +38,10 @@ public class IntegerValidator implements Validator {
 	}
 	
 	public boolean validate(String data) {
-		if(data.startsWith(SpecificationElement.VAR)) {
+		if(data.startsWith(Parameter.VAR)) {
 			return true;
 		} else if(data != null && data.length() > 0) {
-			int index = data.indexOf(SpecificationElement.ALIAS);
+			int index = data.indexOf(Parameter.ALIAS);
 			
 			if(index > -1) {
 				data = data.substring(index + 3);

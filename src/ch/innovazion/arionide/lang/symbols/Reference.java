@@ -22,40 +22,63 @@
 package ch.innovazion.arionide.lang.symbols;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class Reference implements ParameterValue {
 
 	private static final long serialVersionUID = 7287598499790357836L;
 	
-	private final int structureID;
-	private List<SpecificationElement> neededParameters;
-	private List<SpecificationElement> customParameters;
+	private final List<Parameter> lazyParameters;
+	private final Map<Parameter, Parameter> bindings = new HashMap<>();
+	private Callable target;
 
-	public Reference(int structureID, List<SpecificationElement> neededParameters, List<SpecificationElement> customParameters) {
-		this.structureID = structureID;
-		this.neededParameters = neededParameters;
-		this.customParameters = customParameters;
+	public Reference(List<Parameter> lazyParameters) { 
+		// Lazy parameters will be evaluated only when the target is called. (lambda input)
+		this.lazyParameters = Collections.unmodifiableList(lazyParameters);
 	}
 	
-	public int getStructureID() {
-		return structureID;
+	public void setTarget(Callable target) {
+		this.target = target;
 	}
 	
-	public List<SpecificationElement> getBoundParameters() {
-		return neededParameters;
+	public Callable getTarget() {
+		return target;
 	}
 	
-	public List<SpecificationElement> getFreeParameters() {
-		return customParameters;
+	public void bind(Parameter calleeParameter, Parameter callerParameter) throws SymbolResolutionException {
+		if(calleeParameter == null) {
+			throw new SymbolResolutionException("Cannot use empty callee parameter for caller '" + callerParameter.getName() + "'");
+		}
+		
+		if(callerParameter == null) {
+			throw new SymbolResolutionException("Cannot use empty caller parameter for callee '" + calleeParameter.getName() + "'");
+		}
+		
+		bindings.put(calleeParameter, callerParameter);
 	}
 	
-	public void setCustomParameters(List<SpecificationElement> customParameters) {
-		this.customParameters = customParameters;
+	public Parameter resolve(Parameter calleeParameter) throws SymbolResolutionException {
+		Parameter callerParameter = bindings.get(calleeParameter);
+		
+		if(callerParameter != null) {
+			return callerParameter;
+		} else {
+			throw new SymbolResolutionException("Failed to resolve callee parameter '" + calleeParameter.getName() + "'");
+		}
 	}
-	
+
 	public List<String> getDisplayValue() {
-		return Arrays.asList("Free parameters: " + String.join(", ", customParameters.stream().map(SpecificationElement::toString).collect(Collectors.toList())));
+		return Arrays.asList("Reference to '" + target.getName() + "'");
+	}
+	
+	public Reference clone() {
+		Reference clone = new Reference(lazyParameters);
+		
+		clone.target = target;
+		
+		return clone;
 	}
 }

@@ -27,7 +27,7 @@ import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.symbols.Reference;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.MainMenus;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
@@ -72,7 +72,7 @@ public class ReferenceEditor extends Menu {
 			description.add("Predicate: " + realName);
 		}
 		
-		for(SpecificationElement data : element.getEagerParameters()) {
+		for(Parameter data : element.getEagerParameters()) {
 			elements.add(data.getName());
 			description.add(data.toString(), ApplicationTints.SPECIFICATION_EAGER);
 		}
@@ -80,7 +80,7 @@ public class ReferenceEditor extends Menu {
 		this.refIndex = elements.size();
 		elements.add("Set referee");
 
-		for(SpecificationElement data : element.getLazyParameters()) {
+		for(Parameter data : element.getLazyParameters()) {
 			elements.add(data.getName());
 			description.add(data.toString(), ApplicationTints.SPECIFICATION_LAZY);
 		}

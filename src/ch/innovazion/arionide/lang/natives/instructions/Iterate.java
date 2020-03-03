@@ -28,7 +28,7 @@ import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.natives.NativeTypes;
 import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Reference;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class Iterate implements NativeInstruction {
 
@@ -48,8 +48,8 @@ public class Iterate implements NativeInstruction {
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
 		this.index = 0;
 		
-		if(this.object.getDisplayValue().startsWith(SpecificationElement.VAR)) {
-			SpecificationElement element = communicator.getVariable(this.object.getDisplayValue().substring(4));
+		if(this.object.getDisplayValue().startsWith(Parameter.VAR)) {
+			Parameter element = communicator.getVariable(this.object.getDisplayValue().substring(4));
 			
 			if(element != null) {
 				String selector = this.selector.getDisplayValue();
@@ -58,13 +58,13 @@ public class Iterate implements NativeInstruction {
 					selector = new String();
 				}
 				
-				if(selector.startsWith(SpecificationElement.VAR)) {
+				if(selector.startsWith(Parameter.VAR)) {
 					selector = communicator.getVariable(selector.substring(4)).getDisplayValue();
 				}
 				
 				String layers = this.layers.getDisplayValue();
 				
-				if(layers.startsWith(SpecificationElement.VAR)) {
+				if(layers.startsWith(Parameter.VAR)) {
 					layers = communicator.getVariable(layers.substring(4)).getDisplayValue();
 				}
 				

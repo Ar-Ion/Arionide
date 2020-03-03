@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import ch.innovazion.arionide.events.MessageEvent;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.Browser;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
@@ -53,7 +53,7 @@ public class CodeEditor extends Menu {
 		super.show();
 		
 		StructureMeta meta = getProject().getStorage().getStructureMeta().get(getTarget().getID());
-		List<SpecificationElement> elements = meta.getSpecification().getElements();
+		List<Parameter> elements = meta.getSpecification().getElements();
 		
 		description = new MenuDescription(ApplicationTints.MENU_INFO_INACTIVE_COLOR, 1.0f);
 		
@@ -65,7 +65,7 @@ public class CodeEditor extends Menu {
 		
 		description.add(name);
 		
-		for(SpecificationElement element : elements) {
+		for(Parameter element : elements) {
 			description.add(element.toString());
 		}
 

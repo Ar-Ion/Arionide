@@ -30,22 +30,22 @@ import javax.swing.JOptionPane;
 
 import ch.innovazion.arionide.lang.TypeManager;
 import ch.innovazion.arionide.lang.UserHelper;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class IntegerTypeManager implements TypeManager {
 	
-	public static final String ZERO = "0" + SpecificationElement.ALIAS + "b0";
-	public static final String ONE = "1" + SpecificationElement.ALIAS + "b1";
-	public static final String MINUS_ONE = "-1" + SpecificationElement.ALIAS + "d-1";
-	public static final String TRUE = "True" + SpecificationElement.ALIAS + "b1";
-	public static final String FALSE = "False" + SpecificationElement.ALIAS + "b0";
-	public static final String ERROR = "Error" + SpecificationElement.ALIAS + "d-1";
-	public static final String MAX_INTEGER = "Max Integer" + SpecificationElement.ALIAS + "h7FFFFFFF";
-	public static final String MIN_INTEGER = "Min Integer" + SpecificationElement.ALIAS + "h-7FFFFFFF";
-	public static final String MAX_BYTE = "Max Byte" + SpecificationElement.ALIAS + "h7F";
-	public static final String MIN_BYTE = "Min Byte" + SpecificationElement.ALIAS + "h-7F";
-	public static final String MAX_SHORT = "Max Short" + SpecificationElement.ALIAS + "h7FFF";
-	public static final String MIN_SHORT = "Min Short" + SpecificationElement.ALIAS + "h-7FFF";
+	public static final String ZERO = "0" + Parameter.ALIAS + "b0";
+	public static final String ONE = "1" + Parameter.ALIAS + "b1";
+	public static final String MINUS_ONE = "-1" + Parameter.ALIAS + "d-1";
+	public static final String TRUE = "True" + Parameter.ALIAS + "b1";
+	public static final String FALSE = "False" + Parameter.ALIAS + "b0";
+	public static final String ERROR = "Error" + Parameter.ALIAS + "d-1";
+	public static final String MAX_INTEGER = "Max Integer" + Parameter.ALIAS + "h7FFFFFFF";
+	public static final String MIN_INTEGER = "Min Integer" + Parameter.ALIAS + "h-7FFFFFFF";
+	public static final String MAX_BYTE = "Max Byte" + Parameter.ALIAS + "h7F";
+	public static final String MIN_BYTE = "Min Byte" + Parameter.ALIAS + "h-7F";
+	public static final String MAX_SHORT = "Max Short" + Parameter.ALIAS + "h7FFF";
+	public static final String MIN_SHORT = "Min Short" + Parameter.ALIAS + "h-7FFF";
 	
 	private static final String decimal = "Decimal";
 	private static final String binary = "Binary";

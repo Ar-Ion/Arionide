@@ -24,14 +24,14 @@ package ch.innovazion.arionide.lang.symbols;
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class SpecificationElement implements Serializable {
+public class Parameter implements Serializable {
 
-	private static final long serialVersionUID = -2821188218676151203L;
+	public static final long serialVersionUID = -2821188218676151203L;
 
 	private String name;
 	private ParameterValue value;
 	
-	public SpecificationElement(String name, ParameterValue value) {
+	public Parameter(String name, ParameterValue value) {
 		this.name = name;
 		this.value = value;
 	}
@@ -61,13 +61,15 @@ public abstract class SpecificationElement implements Serializable {
 	}
 	
 	public boolean equals(java.lang.Object other) {
-		if(other instanceof SpecificationElement) {
-			SpecificationElement casted = (SpecificationElement) other;
+		if(other instanceof Parameter) {
+			Parameter casted = (Parameter) other;
 			return this.name == casted.name;
 		} else {
 			return false;
 		}
 	}
 	
-	public abstract SpecificationElement clone();
+	public Parameter clone() {
+		return new Parameter(name, value.clone());
+	}
 }

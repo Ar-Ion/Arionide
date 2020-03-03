@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Specification;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.ui.AppManager;
 
@@ -38,10 +38,10 @@ public class ReferenceParameters extends Menu {
 	private final Menu parent;
 	private final Specification spec;
 	private final int id;
-	private final List<SpecificationElement> parameters;
+	private final List<Parameter> parameters;
 	private final ReferenceParameterDataEditor dataEditor;
 	
-	protected ReferenceParameters(AppManager manager, Menu parent, Specification spec, int id, List<SpecificationElement> parameters) {
+	protected ReferenceParameters(AppManager manager, Menu parent, Specification spec, int id, List<Parameter> parameters) {
 		super(manager, "Back", "Add data", "Add reference");
 		
 		this.parent = parent;
@@ -58,7 +58,7 @@ public class ReferenceParameters extends Menu {
 	protected void load() {
 		this.getElements().subList(2, this.getElements().size()).clear();
 		
-		for(SpecificationElement data : this.parameters) {
+		for(Parameter data : this.parameters) {
 			this.getElements().add(data.getName());
 		}
 	}
@@ -93,7 +93,7 @@ public class ReferenceParameters extends Menu {
 		} else {
 			id -= 2;
 			
-			SpecificationElement element = this.parameters.get(id);
+			Parameter element = this.parameters.get(id);
 			
 			if(element instanceof Data) {
 				this.dataEditor.setTarget(this.spec, this.id, id, (Data) element);

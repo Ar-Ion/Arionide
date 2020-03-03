@@ -26,7 +26,7 @@ import java.util.List;
 import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.symbols.Information;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class Add implements NativeInstruction {
 
@@ -42,7 +42,7 @@ public class Add implements NativeInstruction {
 		if(object != null) {
 			String value = this.data.getDisplayValue();
 			
-			if(value.startsWith(SpecificationElement.VAR)) {
+			if(value.startsWith(Parameter.VAR)) {
 				value = communicator.getVariable(value.substring(4)).getDisplayValue();
 			}
 			

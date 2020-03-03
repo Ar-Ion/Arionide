@@ -27,7 +27,7 @@ import ch.innovazion.arionide.lang.Data;
 import ch.innovazion.arionide.lang.natives.NativeDataCommunicator;
 import ch.innovazion.arionide.lang.natives.NativeTypes;
 import ch.innovazion.arionide.lang.symbols.Reference;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class Object implements NativeInstruction {
 
@@ -42,12 +42,12 @@ public class Object implements NativeInstruction {
 	}
 	
 	public boolean execute(NativeDataCommunicator communicator, List<Integer> references) {
-		if(this.result.getDisplayValue().contains(SpecificationElement.VAR)) {
+		if(this.result.getDisplayValue().contains(Parameter.VAR)) {
 			String variable = this.result.getDisplayValue().substring(4);
 			
 			String structure = this.structure.getDisplayValue();
 			
-			if(structure.startsWith(SpecificationElement.VAR)) {
+			if(structure.startsWith(Parameter.VAR)) {
 				structure = communicator.getVariable(structure.substring(4)).getDisplayValue();
 			}
 			
