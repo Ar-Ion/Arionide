@@ -159,7 +159,7 @@ public class NativeDataCommunicator {
 			
 			types.add(Integer.toString(NativeTypes.TEXT));
 			
-			for(Parameter element : instruction.getValue().getElements()) {
+			for(Parameter element : instruction.getValue().getParameters()) {
 				if(element instanceof Reference || ((Data) element).getType() == NativeTypes.INTEGER) {
 					types.add(String.valueOf(NativeTypes.INTEGER));
 				} else {
@@ -172,7 +172,7 @@ public class NativeDataCommunicator {
 			
 			instrObject.add(instruction.getKey(), this);
 			
-			for(Parameter element : instruction.getValue().getElements()) {
+			for(Parameter element : instruction.getValue().getParameters()) {
 				if(element.getDisplayValue().startsWith(Parameter.VAR)) {
 					Parameter real = this.getVariable(element.getDisplayValue().substring(4));
 					

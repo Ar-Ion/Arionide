@@ -45,7 +45,7 @@ public class UserHelper {
 	public List<String> getVariables(int currentStructure, int type, String nameStartingWith) {
 		List<String> variables = new ArrayList<>();
 		
-		for(Parameter element : this.storage.getStructureMeta().get(currentStructure).getSpecification().getElements()) {
+		for(Parameter element : this.storage.getStructureMeta().get(currentStructure).getSpecification().getParameters()) {
 			variables.add(element.getName());
 		}
 		
@@ -104,7 +104,7 @@ public class UserHelper {
 		for(HierarchyElement element : elements) {
 			StructureMeta meta = this.storage.getStructureMeta().get(element.getID());
 			
-			for(Parameter specElement : meta.getSpecification().getElements()) {
+			for(Parameter specElement : meta.getSpecification().getParameters()) {
 				String value = specElement.getRawValue();
 				
 				if(value != null && value.startsWith(Parameter.VAR)) {						

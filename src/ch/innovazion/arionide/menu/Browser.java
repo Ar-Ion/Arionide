@@ -51,7 +51,7 @@ public abstract class Browser extends Menu {
 				getAppManager().getCoreOrchestrator().getController().select(id);
 							
 				StructureMeta meta = getProject().getStorage().getStructureMeta().get(id);
-				List<Parameter> elements = meta.getSpecification().getElements();
+				List<Parameter> elements = meta.getSpecification().getParameters();
 				
 				description = new MenuDescription(ApplicationTints.MENU_INFO_INACTIVE_COLOR, 0.5f);
 				

@@ -69,7 +69,7 @@ public class SpecificationEditor extends Menu {
 			elements.clear();
 			elements.add("Add data");
 			elements.add("Add reference");
-			elements.addAll(specification.getElements().stream().map(Parameter::getName).collect(Collectors.toList()));
+			elements.addAll(specification.getParameters().stream().map(Parameter::getName).collect(Collectors.toList()));
 		}
 		
 		StructureMeta meta = getProject().getStorage().getStructureMeta().get(getTarget().getID());
@@ -94,7 +94,7 @@ public class SpecificationEditor extends Menu {
 					Event event = getProject().getDataManager().getSpecificationManager().addElement(specification, element);
 					getAppManager().getEventDispatcher().fire(event);
 					
-					typeSelector.setTarget(specification, specification.getElements().size() - 1);
+					typeSelector.setTarget(specification, specification.getParameters().size() - 1);
 					typeSelector.show();
 				}
 			}).start();
@@ -111,7 +111,7 @@ public class SpecificationEditor extends Menu {
 				}
 			}).start();
 		} else {
-			Parameter element = specification.getElements().get(id - 2);
+			Parameter element = specification.getParameters().get(id - 2);
 			
 			if(element instanceof Data) {
 				dataEditor.setTarget(specification, id - 2);

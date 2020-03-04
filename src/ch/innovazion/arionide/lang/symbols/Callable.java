@@ -4,4 +4,5 @@ public interface Callable {
 	public int getIdentifier();
 	public String getName();
 	public Specification getSpecification();
+	public boolean isLambda();
 }

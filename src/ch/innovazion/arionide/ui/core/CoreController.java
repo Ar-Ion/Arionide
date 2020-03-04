@@ -288,8 +288,8 @@ public class CoreController {
 					StructureMeta targetMeta = meta.get(user.getFocus().getID() & 0xFFFFFF);
 					
 					if(sourceMeta != null && targetMeta != null) {
-						Parameter sourceParam = sourceMeta.getSpecification().getElements().get((selection.getID() >>> 24) - 1);
-						Parameter targetParam = targetMeta.getSpecification().getElements().get((focus.getID() >>> 24) - 1);
+						Parameter sourceParam = sourceMeta.getSpecification().getParameters().get((selection.getID() >>> 24) - 1);
+						Parameter targetParam = targetMeta.getSpecification().getParameters().get((focus.getID() >>> 24) - 1);
 
 						project.getDataManager().getSpecificationManager().bind(sourceParam, targetParam);
 						
@@ -331,7 +331,7 @@ public class CoreController {
 					StructureMeta instructionMeta = project.getStorage().getStructureMeta().get(instructionID);
 			
 					if(instructionMeta != null) {							
-						Parameter spec = instructionMeta.getSpecification().getElements().get(paramID);
+						Parameter spec = instructionMeta.getSpecification().getParameters().get(paramID);
 					
 						if(spec != null) {
 							if(spec instanceof Data) {

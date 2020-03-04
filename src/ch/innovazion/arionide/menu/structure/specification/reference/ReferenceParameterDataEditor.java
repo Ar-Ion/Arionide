@@ -118,7 +118,7 @@ public class ReferenceParameterDataEditor extends Menu {
 	}
 	
 	private void delete() {
-		Reference ref = (Reference) this.spec.getElements().get(this.id);
+		Reference ref = (Reference) this.spec.getParameters().get(this.id);
 		ref.getEagerParameters().remove(this.dataID);
 		
 		this.getAppManager().getEventDispatcher().fire(new MessageEvent("Parameter successfully removed", MessageType.SUCCESS));

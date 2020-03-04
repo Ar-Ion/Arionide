@@ -46,12 +46,12 @@ public abstract class SpecificationElementEditor extends Menu {
 	}
 
 	protected void setTarget(Specification specification, int id) {
-		int size = specification.getElements().size();
+		int size = specification.getParameters().size();
 		
 		if(id < size) {
 			this.id = id;
 			this.specification = specification;
-			this.element = specification.getElements().get(id);
+			this.element = specification.getParameters().get(id);
 		} else if(size > 0){
 			setTarget(specification, size - 1);
 		} else {

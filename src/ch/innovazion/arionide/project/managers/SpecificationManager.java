@@ -41,42 +41,42 @@ public class SpecificationManager extends Manager {
 	}
 	
 	public MessageEvent addElement(Specification spec, Parameter element) {
-		doForeachConnectedSpecification(spec, other -> other.getElements().add(element));
+		doForeachConnectedSpecification(spec, other -> other.getParameters().add(element));
 		saveMeta();
 		
 		return success();
 	}
 	
 	public MessageEvent deleteElement(Specification spec, int id) {
-		doForeachConnectedSpecification(spec, l -> l.getElements().remove(id));
+		doForeachConnectedSpecification(spec, l -> l.getParameters().remove(id));
 		saveMeta();
 
 		return success();
 	}
 	
 	public MessageEvent refactorName(Specification spec, int id, String newName) {
-		doForeachConnectedSpecification(spec, l -> l.getElements().get(id).setName(newName));
+		doForeachConnectedSpecification(spec, l -> l.getParameters().get(id).setName(newName));
 		saveMeta();
 		
 		return success();
 	}
 
 	public MessageEvent refactorType(Specification spec, int id, int newType) {
-		doForeachConnectedSpecification(spec, l -> ((Data) l.getElements().get(id)).setType(newType));
+		doForeachConnectedSpecification(spec, l -> ((Data) l.getParameters().get(id)).setType(newType));
 		saveMeta();
 		
 		return success();
 	}
 	
 	public MessageEvent refactorParameterName(Specification spec, int id, int data, String newName) {
-		doForeachConnectedSpecification(spec, l -> ((Reference) l.getElements().get(id)).getEagerParameters().get(data).setName(newName));
+		doForeachConnectedSpecification(spec, l -> ((Reference) l.getParameters().get(id)).getEagerParameters().get(data).setName(newName));
 		saveMeta();
 		
 		return success();
 	}
 	
 	public MessageEvent refactorParameterType(Specification spec, int id, int data, int newType) {
-		doForeachConnectedSpecification(spec, l -> ((Data) ((Reference) l.getElements().get(id)).getEagerParameters().get(data)).setType(newType));
+		doForeachConnectedSpecification(spec, l -> ((Data) ((Reference) l.getParameters().get(id)).getEagerParameters().get(data)).setType(newType));
 		saveMeta();
 		
 		return success();
@@ -102,7 +102,7 @@ public class SpecificationManager extends Manager {
 	}
 	
 	public MessageEvent remove(Specification spec, Parameter element) {
-		if(spec.getElements().remove(element)) {
+		if(spec.getParameters().remove(element)) {
 			saveMeta();
 			return success();
 		} else {

@@ -50,7 +50,7 @@ public class TypeSelector extends Menu {
 		super.show();
 
 		Types types = getProject().getLanguage().getTypes();		
-		TypeManager typeManager = types.getTypeManager(((Data) specification.getElements().get(index)).getType());
+		TypeManager typeManager = types.getTypeManager(((Data) specification.getParameters().get(index)).getType());
 		
 		if(typeManager != null) {
 			currentType = typeManager.toString();

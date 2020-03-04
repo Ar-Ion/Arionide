@@ -30,7 +30,7 @@ import ch.innovazion.arionide.ui.ApplicationTints;
 public class DisplayUtils {
 	public static MenuDescription fullDescription(StructureMeta meta) {
 		MenuDescription description = new MenuDescription(ApplicationTints.MENU_INFO_INACTIVE_COLOR, 1.0f);
-		List<Parameter> elements = meta.getSpecification().getElements();
+		List<Parameter> elements = meta.getSpecification().getParameters();
 
 		String name = meta.getName();
 		

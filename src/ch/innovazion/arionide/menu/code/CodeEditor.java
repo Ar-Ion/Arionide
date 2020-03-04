@@ -53,7 +53,7 @@ public class CodeEditor extends Menu {
 		super.show();
 		
 		StructureMeta meta = getProject().getStorage().getStructureMeta().get(getTarget().getID());
-		List<Parameter> elements = meta.getSpecification().getElements();
+		List<Parameter> elements = meta.getSpecification().getParameters();
 		
 		description = new MenuDescription(ApplicationTints.MENU_INFO_INACTIVE_COLOR, 1.0f);
 		

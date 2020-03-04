@@ -74,7 +74,7 @@ class ReferenceSelector extends Menu {
 		if(index > -1) {
 			int id = Integer.parseInt(element.substring(index + 3));
 			Specification spec = getProject().getStorage().getStructureMeta().get(id).getSpecification();
-			this.element.setCustomParameters(spec.getElements());
+			this.element.setCustomParameters(spec.getParameters());
 		}
 		
 		Event event = getProject().getDataManager().getSpecificationManager().setValue(this.element, element);

@@ -164,7 +164,7 @@ public class NativeRuntime extends Runtime {
 	}
 	
 	private NativeInstruction compileInstruction(int symID, String instruction, Specification spec, List<Integer> nextElements) {
-		for(Parameter element : spec.getElements()) {
+		for(Parameter element : spec.getParameters()) {
 			if(element instanceof Data) {
 				Validator validator = this.getProject().getLanguage().getTypes().getValidator(((Data) element).getType());
 				
@@ -189,36 +189,36 @@ public class NativeRuntime extends Runtime {
 			case "init":
 				return new Init();
 			case "print":
-				return new Print((Data) spec.getElements().get(0));
+				return new Print((Data) spec.getParameters().get(0));
 			case "call":
-				return new Call((Reference) spec.getElements().get(0));
+				return new Call((Reference) spec.getParameters().get(0));
 			case "defineText":
 			case "defineInteger":
 			case "defineStructure":
-				return new Define((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Data) spec.getElements().get(2));
+				return new Define((Data) spec.getParameters().get(0), (Data) spec.getParameters().get(1), (Data) spec.getParameters().get(2));
 			case "redo":
-				return new Redo((Reference) spec.getElements().get(0));
+				return new Redo((Reference) spec.getParameters().get(0));
 			case "if":
-				return new If((Reference) spec.getElements().get(0), (Reference) spec.getElements().get(1), (Reference) spec.getElements().get(2));
+				return new If((Reference) spec.getParameters().get(0), (Reference) spec.getParameters().get(1), (Reference) spec.getParameters().get(2));
 			case "compareText":
 			case "compareInteger":
 			case "compareStructure":
-				return new Compare((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Data) spec.getElements().get(2));
+				return new Compare((Data) spec.getParameters().get(0), (Data) spec.getParameters().get(1), (Data) spec.getParameters().get(2));
 			case "object":
-				return new Object((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Reference) spec.getElements().get(2));
+				return new Object((Data) spec.getParameters().get(0), (Data) spec.getParameters().get(1), (Reference) spec.getParameters().get(2));
 			case "addInteger":
 			case "addComplex":
-				return new Add((Data) spec.getElements().get(0));
+				return new Add((Data) spec.getParameters().get(0));
 			case "write":
-				return new Write((Data) spec.getElements().get(0), (Data) spec.getElements().get(1));
+				return new Write((Data) spec.getParameters().get(0), (Data) spec.getParameters().get(1));
 			case "iterate":
-				return new Iterate((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Reference) spec.getElements().get(2), (Data) spec.getElements().get(3));
+				return new Iterate((Data) spec.getParameters().get(0), (Data) spec.getParameters().get(1), (Reference) spec.getParameters().get(2), (Data) spec.getParameters().get(3));
 			case "size":
-				return new Size((Data) spec.getElements().get(0), (Data) spec.getElements().get(1));
+				return new Size((Data) spec.getParameters().get(0), (Data) spec.getParameters().get(1));
 			case "merge":
-				return new Merge((Data) spec.getElements().get(0), (Data) spec.getElements().get(1), (Data) spec.getElements().get(2));
+				return new Merge((Data) spec.getParameters().get(0), (Data) spec.getParameters().get(1), (Data) spec.getParameters().get(2));
 			case "load":
-				return new Load((Data) spec.getElements().get(0), (Data) spec.getElements().get(1));
+				return new Load((Data) spec.getParameters().get(0), (Data) spec.getParameters().get(1));
 			default:
 				this.info("Instruction " + instruction + " is not compilable", 0xFF6000);
 				return null;

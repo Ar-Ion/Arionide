@@ -46,7 +46,7 @@ public class ReferenceParameterDataTypeSelector extends Menu {
 		this.data = data;
 		
 		Types types = manager.getWorkspace().getCurrentProject().getLanguage().getTypes();		
-		TypeManager typeManager = types.getTypeManager(((Data) ((Reference) this.specification.getElements().get(id)).getEagerParameters().get(id)).getType());
+		TypeManager typeManager = types.getTypeManager(((Data) ((Reference) this.specification.getParameters().get(id)).getEagerParameters().get(id)).getType());
 		
 		if(typeManager != null) {
 			this.currentType = typeManager.toString();
