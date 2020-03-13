@@ -21,6 +21,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.core.geom;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -30,10 +31,10 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import ch.innovazion.arionide.debugging.IAm;
-import ch.innovazion.arionide.menu.structure.Coloring;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
-import ch.innovazion.arionide.project.StructureMeta;
+import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.ui.ApplicationTints;
 import ch.innovazion.arionide.ui.core.Geometry;
 
 public abstract class HierarchicalGeometry extends Geometry {
@@ -63,14 +64,14 @@ public abstract class HierarchicalGeometry extends Geometry {
 		
 		this.factory.reset();
 
-		Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
+		Map<Integer, Structure> metaData = storage.getStructureMeta();
 		
 		WorldElement main = this.factory.makeRandomTrivial();
 						
 		this.construct0(main, this.getHierarchyElements(), elements, metaData, initialSize);
 	}
 			
-	private void construct0(WorldElement parent, List<HierarchyElement> input, List<WorldElement> output, Map<Integer, StructureMeta> metaData, float size) throws GeometryException {
+	private void construct0(WorldElement parent, List<HierarchyElement> input, List<WorldElement> output, Map<Integer, Structure> metaData, float size) throws GeometryException {
 		if(input != null && input.size() > 0) {
 			Quaternionf quaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / (input.size() - (input.contains(HierarchyElement.dummy) ? 1 : 0)), parent.getAxis()));
 			Vector3f base = input.size() > 1 || parent.getID() != -1 ? parent.getBaseVector() : new Vector3f();
@@ -78,14 +79,14 @@ public abstract class HierarchicalGeometry extends Geometry {
 			for(HierarchyElement element : input) {
 				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(this.relativeDistance * size / this.relativeSize).add(parent.getCenter());
 				
-				StructureMeta structMeta = metaData.get(element.getID());
+				Structure structMeta = metaData.get(element.getID());
 
 				if(structMeta != null && !structMeta.isLambda()) {
-					Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.3f);
-					Vector3f spotColor = new Vector3f(Coloring.getColorByID(structMeta.getSpotColorID()));
+					Vector4f color = new Vector4f(ApplicationTints.getColorByID(structMeta.getColorID()), 0.3f);
+					Vector3f spotColor = new Vector3f(ApplicationTints.getColorByID(structMeta.getSpotColorID()));
 					boolean access = structMeta.isAccessAllowed();
 					
-					WorldElement object = this.factory.make(element.getID(), structMeta.getName(), structMeta.getComment(), position, color, spotColor, size, access);
+					WorldElement object = this.factory.make(element.getID(), structMeta.getName(), Arrays.asList(structMeta.getComment()), position, color, spotColor, size, access);
 					output.add(object);
 					
 					this.construct0(object, element.getChildren(), output, metaData, this.relativeSize * size);

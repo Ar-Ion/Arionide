@@ -45,12 +45,12 @@ public class Information implements ParameterValue {
 		label(null);
 	}
 
-	public synchronized void connect(Information value) throws SymbolResolutionException {
+	public synchronized void connect(Information value, int position) throws SymbolResolutionException {
 		if(value != null) {	
 			if(!symbolic_map.containsKey(value.name)) {
 				value.parent = this;
 				
-				linear_map.add(value);
+				linear_map.add(position, value);
 				symbolic_map.put(value.name, value);
 
 				int oldSize = size;

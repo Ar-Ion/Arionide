@@ -475,11 +475,11 @@ public class GLRenderer extends Renderer {
 				Vector2f screenAnchor = this.getHVCFrom3D(mainSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
 				height = 1.0f - this.getHVCFrom3D(element.getCenter().sub(translation).add(0.0f, element.getSize(), 0.0f), proj).mul(1.0f).add(screenAnchor).y;
 				
-				this.renderLabel(context, element.getName(), ApplicationTints.WHITE, alpha, screenAnchor, height);
+				this.renderLabel(context, Arrays.asList(element.getName()), ApplicationTints.WHITE, alpha, screenAnchor, height);
 			}
 			
 			if(renderSub && element.getDescription() != null && !element.getDescription().equals("?")) {
-				String description = element.getDescription();
+				List<String> description = element.getDescription();
 									
 				Vector2f screenAnchor = this.getHVCFrom3D(subSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
 
@@ -494,15 +494,20 @@ public class GLRenderer extends Renderer {
 		}
 	}
 	
-	private void renderLabel(AppDrawingContext context, String label, int color, int alpha, Vector2f screenAnchor, float height) {
+	private void renderLabel(AppDrawingContext context, List<String> labels, int color, int alpha, Vector2f screenAnchor, float height) {
 		if(height > 0.01f) {
 			Vector2f dimensions = new Vector2f(0.5f, height);
+			float y = screenAnchor.y;
 
-			if(screenAnchor.x + dimensions.x > 0  && screenAnchor.y + dimensions.y > 0 && screenAnchor.x < 2.0f && screenAnchor.y < 2.0f) {
-				Text text = PrimitiveFactory.instance().newText(label, color, alpha);
-				text.updateBounds(new Bounds(screenAnchor.x, screenAnchor.y, dimensions.x, dimensions.y));
-				text.prepare(); // Although updating the bounds already toggles the "reprepare" bit, this may be useful for further implementations...
-				context.getRenderingSystem().renderDirect(text);
+			for(String label : labels) {
+				if(screenAnchor.x + dimensions.x > 0  && y + dimensions.y > 0 && screenAnchor.x < 2.0f && y < 2.0f) {
+					Text text = PrimitiveFactory.instance().newText(label, color, alpha);
+					text.updateBounds(new Bounds(screenAnchor.x, y, dimensions.x, dimensions.y));
+					text.prepare(); // Although updating the bounds already toggles the "reprepare" bit, this may be useful for further implementations...
+					context.getRenderingSystem().renderDirect(text);
+					
+					y -= height;
+				}
 			}
 		}
 	}

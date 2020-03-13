@@ -21,6 +21,8 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.core.geom;
 
+import java.util.List;
+
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -37,11 +39,11 @@ public class WorldElement {
 	private boolean accessAllowed;
 	
 	private String name;
-	private String desc;
+	private List<String> desc;
 	private Vector4f color;
 	private Vector3f spotColor;
 	
-	protected WorldElement(int id, String name, String desc, Vector3f center, Vector3f base, Vector3f axis, Vector4f color, Vector3f spotColor, float size, boolean accessAllowed) {
+	protected WorldElement(int id, String name, List<String> desc, Vector3f center, Vector3f base, Vector3f axis, Vector4f color, Vector3f spotColor, float size, boolean accessAllowed) {
 		this.id = id;
 		this.name = name;
 		this.desc = desc;
@@ -118,11 +120,11 @@ public class WorldElement {
 		this.name = name;
 	}
 
-	public String getDescription() {
+	public List<String> getDescription() {
 		return this.desc;
 	}
 
-	public void setDescription(String desc) {
+	public void setDescription(List<String> desc) {
 		this.desc = desc;
 	}
 	

@@ -21,6 +21,9 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.core.geom;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -86,25 +89,25 @@ public class WorldElementFactory {
 	}
 	
 	protected WorldElement makeRandomTrivial() {
-		return this.make(-1, "(null)", "(null)", new Vector3f(), new Vector4f(), new Vector3f(), -1.0f, false);
+		return this.make(-1, "(null)", Arrays.asList(), new Vector3f(), new Vector4f(), new Vector3f(), -1.0f, false);
 	}
 	
 	protected WorldElement makeBaseRandomTrivial() {
 		Vector3f virtual = this.axisGenerator.get();
 		Vector3f base = this.baseGenerator.apply(virtual);
-		return new WorldElement(-1, "(null)", "(null)", new Vector3f(), base, new Vector3f(0.0f, 1.0f, 0.0f), new Vector4f(), new Vector3f(), -1.0f, false);
+		return new WorldElement(-1, "(null)", Arrays.asList(), new Vector3f(), base, new Vector3f(0.0f, 1.0f, 0.0f), new Vector4f(), new Vector3f(), -1.0f, false);
 	}
 	
 	protected WorldElement makeAxisRandomTrivial() {
 		Vector3f axis = this.axisGenerator.get();
-		return new WorldElement(-1, "(null)", "(null)", new Vector3f(), new Vector3f(1.0f, 0.0f, 0.0f), axis, new Vector4f(), new Vector3f(), -1.0f, false);
+		return new WorldElement(-1, "(null)", Arrays.asList(), new Vector3f(), new Vector3f(1.0f, 0.0f, 0.0f), axis, new Vector4f(), new Vector3f(), -1.0f, false);
 	}
 	
-	protected WorldElement make(int id, String name, String desc, Vector3f center, Vector4f color, Vector3f spotColor, float size, boolean accessAllowed) {
+	protected WorldElement make(int id, String name, List<String> desc, Vector3f center, Vector4f color, Vector3f spotColor, float size, boolean accessAllowed) {
 		Vector3f axis = this.axisGenerator.get();
 		Vector3f base = this.baseGenerator.apply(axis).normalize();
 				
-		return new WorldElement(id, name, desc, center, base, axis, color, spotColor, size, accessAllowed);
+		return new WorldElement(id, name, Collections.unmodifiableList(desc), center, base, axis, color, spotColor, size, accessAllowed);
 	}
 	
 	protected static Function<Vector3f, Vector3f> getDefaultBaseGenerator(Random random) {
@@ -125,6 +128,6 @@ public class WorldElementFactory {
 	}
 	
 	protected static WorldElement makeTrivial() {
-		return new WorldElement(-1, "(null)", "(null)", new Vector3f(), new Vector3f(1.0f, 0.0f, 0.0f), new Vector3f(0.0f, 1.0f, 0.0f), new Vector4f(), new Vector3f(), -1.0f, false);
+		return new WorldElement(-1, "(null)", Arrays.asList(), new Vector3f(), new Vector3f(1.0f, 0.0f, 0.0f), new Vector3f(0.0f, 1.0f, 0.0f), new Vector4f(), new Vector3f(), -1.0f, false);
 	}
 }

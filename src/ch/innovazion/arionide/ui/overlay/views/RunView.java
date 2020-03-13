@@ -38,7 +38,7 @@ import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.events.WheelEvent;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
-import ch.innovazion.arionide.project.StructureMeta;
+import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.core.CoreController;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
@@ -78,7 +78,7 @@ public class RunView extends View implements EventHandler {
 		Storage storage = this.getAppManager().getWorkspace().getCurrentProject().getStorage();
 		
 		List<HierarchyElement> elements = storage.getHierarchy();
-		Map<Integer, StructureMeta> metaData = storage.getStructureMeta();
+		Map<Integer, Structure> metaData = storage.getStructureMeta();
 		String[] buffer = new String[elements.size()];
 		
 		int i = 0;
@@ -102,12 +102,7 @@ public class RunView extends View implements EventHandler {
 			} else if(click.isTargetting(this, "setSource")) {
 				this.sourceID = (int) click.getData()[0];
 			} else if(click.isTargetting(this, "run")) {				
-				ch.innovazion.arionide.lang.Runtime runtime = this.getAppManager().getWorkspace().getCurrentProject().getLanguage().getRuntime();
-				
-				this.consoleData.clear();
-
-				runtime.setupOutput(this::info);
-				runtime.run(this.sourceID);
+				// TODO
 			} else if(click.isTargetting(this, "console")) {
 				int row = (int) click.getData()[0];
 				

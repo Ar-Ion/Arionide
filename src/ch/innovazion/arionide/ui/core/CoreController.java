@@ -32,17 +32,9 @@ import org.joml.Vector3f;
 import ch.innovazion.arionide.coders.CameraInfo;
 import ch.innovazion.arionide.coders.Coder;
 import ch.innovazion.arionide.debugging.Debug;
-import ch.innovazion.arionide.lang.Data;
-import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Parameter;
-import ch.innovazion.arionide.menu.Browser;
-import ch.innovazion.arionide.menu.MainMenus;
-import ch.innovazion.arionide.menu.code.CodeBrowser;
-import ch.innovazion.arionide.menu.code.ReferenceEditor;
-import ch.innovazion.arionide.menu.code.TypeEditor;
-import ch.innovazion.arionide.menu.structure.StructureBrowser;
 import ch.innovazion.arionide.project.Project;
-import ch.innovazion.arionide.project.StructureMeta;
+import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.arionide.project.managers.CodeManager;
 import ch.innovazion.arionide.project.managers.HostStructureStack;
 import ch.innovazion.arionide.ui.core.geom.CodeGeometry;
@@ -171,15 +163,9 @@ public class CoreController {
 		
 		if(requestMenuReset.compareAndSet(true, false)) {
 			if(project.getDataManager().getCodeManager().hasCode()) {
-				CodeBrowser menu = MainMenus.getCodeBrowser();
-								
-				menu.show();
-				menu.select(-1);
+
 			} else {
-				StructureBrowser menu = MainMenus.getStructureList();
-				
-				menu.show();
-				menu.select(0);
+
 			}
 		}
 	}
@@ -234,7 +220,7 @@ public class CoreController {
 		if(scene != RenderingScene.HIERARCHY) {
 			user.setPosition(new Vector3f(0.0f, 0.0f, HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN * 5.0f));
 		} else {
-			CameraInfo info = project.getProperty("player", Coder.cameraDecoder);
+			CameraInfo info = project.getProperty("user", Coder.cameraDecoder);
 						
 			user.setPosition(new Vector3f(info.getX(), info.getY(), info.getZ()));
 			
@@ -279,19 +265,17 @@ public class CoreController {
 			List<WorldElement> elements = this.mainCodeGeometry.getElements();
 			
 			if(elements.contains(focus) && (focus.getID() & 0xFF000000) != 0) {
-				if(binding) {
-					MainMenus.getStructureList().show();
+				if(binding) {					
+					Map<Integer, Structure> meta = this.project.getStorage().getStructureMeta();
 					
-					Map<Integer, StructureMeta> meta = this.project.getStorage().getStructureMeta();
-					
-					StructureMeta sourceMeta = meta.get(selection.getID() & 0xFFFFFF);
-					StructureMeta targetMeta = meta.get(user.getFocus().getID() & 0xFFFFFF);
+					Structure sourceMeta = meta.get(selection.getID() & 0xFFFFFF);
+					Structure targetMeta = meta.get(user.getFocus().getID() & 0xFFFFFF);
 					
 					if(sourceMeta != null && targetMeta != null) {
 						Parameter sourceParam = sourceMeta.getSpecification().getParameters().get((selection.getID() >>> 24) - 1);
 						Parameter targetParam = targetMeta.getSpecification().getParameters().get((focus.getID() >>> 24) - 1);
 
-						project.getDataManager().getSpecificationManager().bind(sourceParam, targetParam);
+						project.getDataManager().getSpecificationManager().bindParameters(sourceParam, targetParam);
 						
 						mainCodeGeometry.requestReconstruction();
 					}
@@ -320,43 +304,27 @@ public class CoreController {
 				
 				if((id & 0xFF000000) == 0) {
 					// In the case of a code instruction
-					CodeBrowser menu = MainMenus.getCodeBrowser();
-					menu.setSelectedID(id);
-					menu.show();
+
 				} else {
 					// In the case of a specification element
 					int instructionID = selection.getID() & 0xFFFFFF;
 					int paramID = (selection.getID() >>> 24) - 1;
 					
-					StructureMeta instructionMeta = project.getStorage().getStructureMeta().get(instructionID);
+					Structure instructionMeta = project.getStorage().getStructureMeta().get(instructionID);
 			
 					if(instructionMeta != null) {							
-						Parameter spec = instructionMeta.getSpecification().getParameters().get(paramID);
+						Parameter param = instructionMeta.getSpecification().getParameters().get(paramID);
 					
-						if(spec != null) {
-							if(spec instanceof Data) {
-								TypeEditor menu = MainMenus.getTypeEditor();
-								menu.setTarget((Data) spec);
-								menu.show();
-							} else if(spec instanceof Reference) {
-								ReferenceEditor menu = MainMenus.getReferenceEditor();
-								menu.setTarget((Reference) spec);
-								menu.show();
-							} else {
-								throw new RuntimeException("Strange object found");
-							}		
+						if(param != null) {
+							// TODO
 						}
 					}
 				}
 			} else {				
-				Browser menu = MainMenus.getStructureList();
-				menu.setSelectedID(selection.getID());
-				menu.show();
+				// Select structure
 			}
 		} else {
-			Browser menu = MainMenus.getStructureList();
-			menu.select(0);
-			menu.show();
+			// Select structure 0
 		}
 	}
 	

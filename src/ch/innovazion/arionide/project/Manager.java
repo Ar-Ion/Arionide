@@ -31,7 +31,7 @@ import ch.innovazion.arionide.project.mutables.MutableCodeChain;
 import ch.innovazion.arionide.project.mutables.MutableHierarchyElement;
 import ch.innovazion.arionide.project.mutables.MutableHistoryElement;
 import ch.innovazion.arionide.project.mutables.MutableInheritanceElement;
-import ch.innovazion.arionide.project.mutables.MutableStructureMeta;
+import ch.innovazion.arionide.project.mutables.MutableStructure;
 
 public abstract class Manager {
 	
@@ -55,7 +55,7 @@ public abstract class Manager {
 		return storage.getMutableCallGraph();
 	}
 	
-	protected Map<Integer, MutableStructureMeta> getMeta() {
+	protected Map<Integer, MutableStructure> getStructures() {
 		return storage.getMutableStructureMeta();
 	}
 	
@@ -91,7 +91,7 @@ public abstract class Manager {
 		}
 	}
 	
-	protected void saveMeta() {
+	protected void saveStructures() {
 		try {
 			storage.saveStructureMeta();
 		} catch (StorageException exception) {
@@ -124,6 +124,6 @@ public abstract class Manager {
 	}
 	
 	protected MessageEvent warn() {
-		return new MessageEvent(ACK_STRING, MessageType.SUCCESS);
+		return new MessageEvent(ACK_STRING, MessageType.WARN);
 	}
 }

@@ -27,10 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import ch.innovazion.arionide.Utils;
 
-public class Reference implements ParameterValue {
+public class Reference extends AtomicValue {
 
 	private static final long serialVersionUID = 7287598499790357836L;
 	
@@ -38,6 +39,7 @@ public class Reference implements ParameterValue {
 	private final Map<String, ParameterValue> lazyMapping = new HashMap<>();
 	private final Map<Parameter, ParameterValue> bindings = new HashMap<>();
 	private Callable target;
+	private Number targetID;
 
 	public Reference(List<Parameter> lazyParameters) { 
 		// Lazy parameters will be evaluated only when the target is called. (lambda input)
@@ -50,6 +52,7 @@ public class Reference implements ParameterValue {
 	
 	public void setTarget(Callable target) {
 		this.target = target;
+		this.targetID = new Number(target.getIdentifier());
 		autobind();
 	}
 	
@@ -99,6 +102,10 @@ public class Reference implements ParameterValue {
 
 	public List<String> getDisplayValue() {
 		return Arrays.asList("Reference to '" + target.getName() + "'");
+	}
+
+	protected Stream<Bit> getRawStream() {
+		return targetID.getRawStream();
 	}
 	
 	public Reference clone() {

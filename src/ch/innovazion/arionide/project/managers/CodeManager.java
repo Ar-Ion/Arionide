@@ -28,9 +28,9 @@ import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.Manager;
 import ch.innovazion.arionide.project.Storage;
-import ch.innovazion.arionide.project.StructureMeta;
+import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.arionide.project.mutables.MutableCodeChain;
-import ch.innovazion.arionide.project.mutables.MutableCodeMeta;
+import ch.innovazion.arionide.project.mutables.MutableCode;
 import ch.innovazion.arionide.project.mutables.MutableHierarchyElement;
 
 public class CodeManager extends Manager {
@@ -54,11 +54,11 @@ public class CodeManager extends Manager {
 	
 	public MessageEvent insertCode(int previous, int instructionID) {
 		int structureID = allocator.allocStructure();
-		StructureMeta codeBase = storage.getStructureMeta().get(instructionID);
-		MutableCodeMeta meta = new MutableCodeMeta(codeBase);
+		Structure codeBase = storage.getStructureMeta().get(instructionID);
+		MutableCode meta = new MutableCode(codeBase);
 		
-		getMeta().put(structureID, meta);
-		saveMeta();
+		getStructures().put(structureID, meta);
+		saveStructures();
 		
 		CodeChain chain = getCurrentCode0();
 		int index = 0;
@@ -78,8 +78,8 @@ public class CodeManager extends Manager {
 		int index = chain.indexOf(id);
 				
 		if(index > 0) { 
-			getMeta().remove(id);
-			saveMeta();
+			getStructures().remove(id);
+			saveStructures();
 			
 			chain.getMutableList().remove(index);
 			saveCode();

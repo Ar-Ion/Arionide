@@ -13,15 +13,6 @@ public class Actor implements ParameterValue {
 	private final Set<Reference> actions = new HashSet<>();
 	private final Variable state = new Variable();
 	private Information props = new Information();
-	private String name;
-	
-	public Actor() {
-		label(null);
-	}
-	
-	public void label(String name) {
-		this.name = (name != null && !name.isEmpty()) ? name : "Lambda actor";
-	}
 	
 	public Information getProperties() {
 		return props;
@@ -35,12 +26,12 @@ public class Actor implements ParameterValue {
 		return parents;
 	}
 	
-	public Set<Reference> getActions() {
+	public Set<Reference> getAbilities() {
 		return actions;
 	}
 	
 	public List<String> getDisplayValue() {
-		return Arrays.asList(name);
+		return Arrays.asList("");
 	}
 
 	public ParameterValue clone() {
@@ -50,7 +41,6 @@ public class Actor implements ParameterValue {
 		clone.actions.addAll(actions);
 		clone.state.setInitialValue(state.getInitialValue().clone());
 		clone.props = props.clone();
-		clone.name = name;
 		
 		return null;
 	}

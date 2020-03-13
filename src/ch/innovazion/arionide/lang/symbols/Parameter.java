@@ -44,7 +44,7 @@ public class Parameter implements Serializable {
 		this.name = name;
 	}
 	
-	protected ParameterValue getValue() {
+	public ParameterValue getValue() {
 		return this.value;
 	}
 	

@@ -26,8 +26,7 @@ import ch.innovazion.arionide.MappedStructure;
 import ch.innovazion.arionide.Resource;
 import ch.innovazion.arionide.Saveable;
 import ch.innovazion.arionide.debugging.IAm;
-import ch.innovazion.arionide.lang.Language;
-import ch.innovazion.arionide.project.managers.DataManager;
+import ch.innovazion.arionide.project.managers.StructureManager;
 
 public interface Project extends Resource, MappedStructure, Loadable, Saveable {
 	
@@ -37,9 +36,10 @@ public interface Project extends Resource, MappedStructure, Loadable, Saveable {
 	@IAm("initializing the project file system")
 	public void initFS();
 	
+	@IAm("loading a project's metadata")
+	public void loadMeta();
+		
 	public Storage getStorage();
 	
-	public DataManager getDataManager();
-	
-	public Language getLanguage();
+	public StructureManager getDataManager();
 }

@@ -30,7 +30,6 @@ import ch.innovazion.arionide.Workspace;
 import ch.innovazion.arionide.debugging.IAm;
 import ch.innovazion.arionide.events.InvalidateLayoutEvent;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
-import ch.innovazion.arionide.menu.MainMenus;
 import ch.innovazion.arionide.resources.Resources;
 import ch.innovazion.arionide.threading.Purgeable;
 import ch.innovazion.arionide.threading.timing.Timer;
@@ -66,8 +65,6 @@ public class AppManager implements Purgeable {
 		this.focusManager = new FocusManager(dispatcher);
 		this.systemTimer = new Timer(dispatcher);
 		this.alphaLayering = new AlphaLayeringSystem();
-		
-		MainMenus.init(this);
 	}
 
 	@IAm("drawing the frame")

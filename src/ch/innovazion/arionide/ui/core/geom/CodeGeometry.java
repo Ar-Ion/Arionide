@@ -22,6 +22,7 @@
 package ch.innovazion.arionide.ui.core.geom;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -32,13 +33,12 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import ch.innovazion.arionide.debugging.IAm;
-import ch.innovazion.arionide.lang.symbols.Reference;
-import ch.innovazion.arionide.lang.symbols.SpecificationElement;
-import ch.innovazion.arionide.menu.structure.Coloring;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
-import ch.innovazion.arionide.project.StructureMeta;
+import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.ui.ApplicationTints;
 import ch.innovazion.arionide.ui.core.Geometry;
 
 public class CodeGeometry extends Geometry {
@@ -84,26 +84,26 @@ public class CodeGeometry extends Geometry {
 		elements.addAll(specification); // So that one can iterate through the code with the wheel having to pass through an instruction's specification.
 	}
 	
-	private void build(WorldElement parent, List<? extends HierarchyElement> input, List<WorldElement> outputElements, List<WorldElement> outputSpecification, List<Connection> outputConnections, Map<Integer, StructureMeta> meta, float size) {
+	private void build(WorldElement parent, List<? extends HierarchyElement> input, List<WorldElement> outputElements, List<WorldElement> outputSpecification, List<Connection> outputConnections, Map<Integer, Structure> mapping, float size) {
 		Vector3f axis = parent.getAxis();
 		Vector3f position = parent.getCenter();
 		
 		WorldElement previous = null;
 				
 		for(HierarchyElement element : input) {
-			StructureMeta structMeta = meta.get(element.getID());
+			Structure struct = mapping.get(element.getID());
 						
-			if(structMeta != null) {
-				Vector4f color = new Vector4f(Coloring.getColorByID(structMeta.getColorID()), 0.5f);
-				Vector3f spotColor = new Vector3f(Coloring.getColorByID(structMeta.getSpotColorID()));
+			if(struct != null) {
+				Vector4f color = new Vector4f(ApplicationTints.getColorByID(struct.getColorID()), 0.5f);
+				Vector3f spotColor = new Vector3f(ApplicationTints.getColorByID(struct.getSpotColorID()));
 				
 				/* Process instruction */
 				axis.normalize(parent.getSize() * relativeDistance);
 				
 				Vector3f current = this.factory.getAxisGenerator().get();
 				
-				this.factory.updateAxisGenerator(getDisplayValue);
-				WorldElement output = this.factory.make(element.getID(), structMeta.getName(), structMeta.getComment(), new Vector3f(position), color, spotColor, size, structMeta.isAccessAllowed());
+				factory.updateAxisGenerator(() -> current.cross(axis));
+				WorldElement output = this.factory.make(element.getID(), struct.getName(), Arrays.asList(struct.getComment()), new Vector3f(position), color, spotColor, size, struct.isAccessAllowed());
 				outputElements.add(output);
 				
 				/* Process connection to previous instruction */
@@ -114,24 +114,16 @@ public class CodeGeometry extends Geometry {
 				previous = output;
 				
 				/* Process specification */					
-				List<SpecificationElement> specification = structMeta.getSpecification().getElements();
+				List<Parameter> specification = struct.getSpecification().getParameters();
 									
 				Vector3f specPos = new Vector3f(axis).cross(0.0f, 1.0f, 0.0f).normalize(size * 1.5f);
 				
 				Quaternionf specQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / specification.size(), new Vector3f(axis).normalize()));
 				
 				for(int i = 0; i < specification.size(); i++) {
-					SpecificationElement specElement = specification.get(i);
+					Parameter param = specification.get(i);
 					
-					String value = specElement.getDisplayValue();
-					
-					if(value != null && specElement instanceof Reference) {
-						Integer id = Integer.parseInt(value);
-						value = meta.get(id).getName();
-						specElement.
-					}
-					
-					WorldElement specObject = this.factory.make((((i + 1) & 0xFF) << 24) | element.getID(), specElement.getName(), value, new Vector3f(specPos).add(position), color, spotColor, size / 5.0f, structMeta.isAccessAllowed());
+					WorldElement specObject = this.factory.make((((i + 1) & 0xFF) << 24) | element.getID(), param.getName(), param.getDisplayValue(), new Vector3f(specPos).add(position), color, spotColor, size / 5.0f, struct.isAccessAllowed());
 					
 					outputSpecification.add(specObject);
 					outputConnections.add(new Connection(output, specObject));
@@ -140,7 +132,7 @@ public class CodeGeometry extends Geometry {
 				}
 				
 				/* Process children and apply transformation */
-				this.build(parent, element.getChildren(), outputElements, outputSpecification, outputConnections, meta, size);
+				this.build(parent, element.getChildren(), outputElements, outputSpecification, outputConnections, mapping, size);
 				position.add(axis);
 				this.applyDerivation(axis, new Vector3f(position).sub(parent.getCenter()).div(parent.getSize()).mul(2.0f));
 			}

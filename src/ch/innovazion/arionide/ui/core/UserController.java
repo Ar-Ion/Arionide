@@ -28,8 +28,6 @@ import java.util.List;
 import org.joml.Vector3f;
 
 import ch.innovazion.arionide.debugging.Debug;
-import ch.innovazion.arionide.menu.MainMenus;
-import ch.innovazion.arionide.menu.code.CodeBrowser;
 import ch.innovazion.arionide.project.managers.HostStructureStack;
 import ch.innovazion.arionide.ui.core.geom.GeometryException;
 import ch.innovazion.arionide.ui.core.geom.HierarchicalGeometry;
@@ -253,10 +251,10 @@ public class UserController {
 	
 	protected void setFocus(WorldElement element) {		
 		if(!core.getHostStack().isEmpty()) {
-			CodeBrowser menu = MainMenus.getCodeBrowser();
+			/*CodeBrowser menu = MainMenus.getCodeBrowser();
 
 			menu.setSelectedID(element.getID());
-			menu.show();
+			menu.show();*/
 				
 			Vector3f focus = element.getCenter().sub(position).normalize();
 			

@@ -45,7 +45,7 @@ import ch.innovazion.arionide.project.mutables.MutableCodeChain;
 import ch.innovazion.arionide.project.mutables.MutableHierarchyElement;
 import ch.innovazion.arionide.project.mutables.MutableHistoryElement;
 import ch.innovazion.arionide.project.mutables.MutableInheritanceElement;
-import ch.innovazion.arionide.project.mutables.MutableStructureMeta;
+import ch.innovazion.arionide.project.mutables.MutableStructure;
 
 public class ZipStorage extends Storage {
 
@@ -93,7 +93,7 @@ public class ZipStorage extends Storage {
 			this.hierarchyPath = this.init(ArrayList<MutableHierarchyElement>::new, e -> this.setMutableHierarchy(e), "struct", "hierarchy");
 			this.inheritancePath = this.init(HashMap<Integer, MutableInheritanceElement>::new, e -> this.setMutableInheritance(e), "struct", "inheritance");
 			this.callGraphPath = this.init(ArrayList<MutableHierarchyElement>::new, e -> this.setMutableCallGraph(e), "struct", "callgraph");
-			this.structureMetaPath = this.init(HashMap<Integer, MutableStructureMeta>::new, e -> this.setMutableStructureMeta(e), "meta", "structures");
+			this.structureMetaPath = this.init(HashMap<Integer, MutableStructure>::new, e -> this.setMutableStructureMeta(e), "meta", "structures");
 			this.historyPath = this.init(ArrayList<MutableHistoryElement>::new, e -> this.setMutableHistory(e), "history");
 			this.dataPath = this.init(HashMap<Integer, MutableCodeChain>::new, e -> this.setMutableCode(e), "data");
 		} catch (IOException exception) {

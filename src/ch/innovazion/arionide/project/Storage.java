@@ -30,14 +30,14 @@ import ch.innovazion.arionide.project.mutables.MutableCodeChain;
 import ch.innovazion.arionide.project.mutables.MutableHierarchyElement;
 import ch.innovazion.arionide.project.mutables.MutableHistoryElement;
 import ch.innovazion.arionide.project.mutables.MutableInheritanceElement;
-import ch.innovazion.arionide.project.mutables.MutableStructureMeta;
+import ch.innovazion.arionide.project.mutables.MutableStructure;
 
 public abstract class Storage {
 	
 	private List<MutableHierarchyElement> hierarchy;
 	private Map<Integer, MutableInheritanceElement> inheritance;
 	private List<MutableHierarchyElement> callGraph;
-	private Map<Integer, MutableStructureMeta> structMeta;
+	private Map<Integer, MutableStructure> structMeta;
 	private List<MutableHistoryElement> history;
 	private Map<Integer, MutableCodeChain> code;
 	
@@ -54,7 +54,7 @@ public abstract class Storage {
 		return Collections.unmodifiableList(this.callGraph);
 	}
 	
-	public Map<Integer, StructureMeta> getStructureMeta() {
+	public Map<Integer, Structure> getStructureMeta() {
 		return Collections.unmodifiableMap(this.structMeta);
 	}
 	
@@ -79,7 +79,7 @@ public abstract class Storage {
 		return this.callGraph;
 	}
 	
-	protected Map<Integer, MutableStructureMeta> getMutableStructureMeta() {
+	protected Map<Integer, MutableStructure> getMutableStructureMeta() {
 		return this.structMeta;
 	}
 	
@@ -104,7 +104,7 @@ public abstract class Storage {
 		this.callGraph = callGraph;
 	}
 	
-	protected void setMutableStructureMeta(Map<Integer, MutableStructureMeta> structMeta) {
+	protected void setMutableStructureMeta(Map<Integer, MutableStructure> structMeta) {
 		this.structMeta = structMeta;
 	}
 	

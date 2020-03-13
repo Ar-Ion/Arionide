@@ -69,10 +69,10 @@ public class LocalWorkspace implements Workspace {
 		this.dispatcher = dispatcher;
 		
 		if(!this.configurationFile.exists()) {
-			this.save();
+			save();
 		}
 		
-		this.load();
+		load();
 	}
 		
 	@IAm("loading the workspace")
@@ -88,7 +88,7 @@ public class LocalWorkspace implements Workspace {
 					
 					if(!this.projects.contains(element)) {
 						element.initFS();
-						element.load();
+						element.loadMeta();
 						
 						if(element.checkVersionCompatibility()) {
 							this.projects.add(element);
@@ -141,6 +141,7 @@ public class LocalWorkspace implements Workspace {
 	public void loadProject(Project project) {
 		if(this.current != project) {
 			this.current = project;
+			project.load();
 			this.dispatcher.fire(new ProjectOpenEvent(project));
 		}
 	}

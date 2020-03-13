@@ -19,23 +19,19 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.comparators;
+package ch.innovazion.arionide.project;
 
-import java.util.Comparator;
-import java.util.Map;
+import java.io.Serializable;
 
-import ch.innovazion.arionide.project.Storage;
-import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.lang.symbols.Specification;
 
-public class AlphabeticalComparator implements Comparator<Integer> {
-	
-	private final Map<Integer, Structure> meta;
-	
-	public AlphabeticalComparator(Storage storage) {
-		this.meta = storage.getStructureMeta();
-	}
-	
-	public int compare(Integer o1, Integer o2) {
-		return this.meta.get(o1).getName().compareTo(this.meta.get(o2).getName());
-	}
+public interface Structure extends Serializable {	
+	public int getIdentifier();
+	public String getName();
+	public String getComment();
+	public int getColorID();
+	public int getSpotColorID();
+	public boolean isAccessAllowed();
+	public boolean isLambda();
+	public Specification getSpecification();
 }

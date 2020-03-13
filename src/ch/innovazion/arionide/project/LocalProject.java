@@ -37,16 +37,11 @@ import ch.innovazion.arionide.coders.Decoder;
 import ch.innovazion.arionide.coders.Encoder;
 import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.debugging.IAm;
-import ch.innovazion.arionide.lang.Language;
-import ch.innovazion.arionide.lang.UserHelper;
-import ch.innovazion.arionide.lang.natives.NativeInstructionSet;
-import ch.innovazion.arionide.lang.natives.NativeRuntime;
-import ch.innovazion.arionide.lang.natives.NativeTypes;
-import ch.innovazion.arionide.project.managers.DataManager;
+import ch.innovazion.arionide.project.managers.StructureManager;
 
 public class LocalProject implements Project {
 
-	public static final long versionUID = 300L;
+	public static final long versionUID = 420L;
 	
 	private static final Map<String, byte[]> projectProtocolMapping = new LinkedHashMap<>();
 	
@@ -56,18 +51,16 @@ public class LocalProject implements Project {
 		projectProtocolMapping.put("structureGen", Integer.toString(0).getBytes(Coder.charset));
 		projectProtocolMapping.put("specificationGen", Integer.toString(0).getBytes(Coder.charset));
 		projectProtocolMapping.put("seed", Long.toString(new Random().nextLong()).getBytes(Coder.charset));
-		projectProtocolMapping.put("player", new String("0.0|0.0|5.0E17|0.0|0.0").getBytes(Coder.charset));
+		projectProtocolMapping.put("user", new String("0.0|0.0|5.0|0.0|0.0").getBytes(Coder.charset));
 	}
 	
 	private final ZipStorage storage;
-	private final DataManager manager;
+	private final StructureManager manager;
 	private final Map<String, byte[]> properties = new LinkedHashMap<>();
-	
-	private Language language;
-	
+		
 	public LocalProject(File path) {
 		this.storage = new ZipStorage(path);
-		this.manager = new DataManager(this);
+		this.manager = new StructureManager(this);
 	}
 	
 	public void initFS() {
@@ -78,17 +71,6 @@ public class LocalProject implements Project {
 		this.storage.initFS();
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(this::closeFS));
-		
-		try {
-			this.storage.loadHierarchy();
-			this.storage.loadInheritance();
-			this.storage.loadCallGraph();
-			this.storage.loadStructureMeta();
-			this.storage.loadHistory();
-			this.storage.loadCode();
-		} catch (StorageException exception) {
-			Debug.exception(exception);
-		}
 	}
 	
 	private void closeFS() {
@@ -96,8 +78,7 @@ public class LocalProject implements Project {
 		this.storage.closeFS();
 	}
 	
-	@IAm("loading a project")
-	public void load() {
+	public void loadMeta() {
 		if(!this.properties.isEmpty()) {
 			return;
 		}
@@ -123,9 +104,21 @@ public class LocalProject implements Project {
 			}
 			
 			this.verifyProtocol();
-						
-			this.language = new Language(new UserHelper(this.storage), new NativeTypes(), new NativeInstructionSet(this), new NativeRuntime(this));
 		} catch (Exception exception) {
+			Debug.exception(exception);
+		}
+	}
+	
+	@IAm("loading a project")
+	public void load() {
+		try {
+			this.storage.loadHierarchy();
+			this.storage.loadInheritance();
+			this.storage.loadCallGraph();
+			this.storage.loadStructureMeta();
+			this.storage.loadHistory();
+			this.storage.loadCode();
+		} catch (StorageException exception) {
 			Debug.exception(exception);
 		}
 	}
@@ -206,12 +199,8 @@ public class LocalProject implements Project {
 		return this.storage;
 	}
 
-	public DataManager getDataManager() {
+	public StructureManager getDataManager() {
 		return this.manager;
-	}
-	
-	public Language getLanguage() {
-		return this.language;
 	}
 	
 	public boolean checkVersionCompatibility() {

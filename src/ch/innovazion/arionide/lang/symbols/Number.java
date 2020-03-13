@@ -33,6 +33,14 @@ public class Number extends AtomicValue {
 	private Bit[] data = new Bit[0];
 	private String value = "NaN";
 	
+	public Number() {
+		this(0L);
+	}
+	
+	public Number(long num) {
+		Bit.fromInteger(BigInteger.valueOf(num), 64);
+	}
+	
 	public void parse(String value) throws InvalidValueException {
 		this.value = value;
 		
