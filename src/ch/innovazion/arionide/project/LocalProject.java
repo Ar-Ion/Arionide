@@ -22,6 +22,7 @@
 package ch.innovazion.arionide.project;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -74,11 +75,15 @@ public class LocalProject implements Project {
 	}
 	
 	private void closeFS() {
-		this.save();
-		this.storage.closeFS();
+		try {
+			this.save();
+			this.storage.closeFS();
+		} catch(StorageException exception) {
+			Debug.exception(exception);
+		}
 	}
 	
-	public void loadMeta() {
+	public void loadMeta() throws StorageException {
 		if(!this.properties.isEmpty()) {
 			return;
 		}
@@ -105,13 +110,15 @@ public class LocalProject implements Project {
 			
 			this.verifyProtocol();
 		} catch (Exception exception) {
-			Debug.exception(exception);
+			throw new StorageException("Failed to load project metadata", exception);
 		}
 	}
 	
 	@IAm("loading a project")
-	public void load() {
+	public void load() throws StorageException {
 		try {
+			loadMeta();
+			
 			this.storage.loadHierarchy();
 			this.storage.loadInheritance();
 			this.storage.loadCallGraph();
@@ -119,12 +126,12 @@ public class LocalProject implements Project {
 			this.storage.loadHistory();
 			this.storage.loadCode();
 		} catch (StorageException exception) {
-			Debug.exception(exception);
+			throw new StorageException("Project loading failed", exception);
 		}
 	}
 
 	@IAm("saving a project")
-	public void save() {
+	public void save() throws StorageException {
 		try(OutputStream stream = Files.newOutputStream(this.storage.getMetaPath(), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)) {
 						
 			this.verifyProtocol();
@@ -151,8 +158,8 @@ public class LocalProject implements Project {
 				stream.write(Coder.windowsNewline);
 				stream.write(Coder.newline);
 			}
-		} catch(Exception exception) {
-			Debug.exception(exception);
+		} catch(IOException exception) {
+			throw new StorageException("Project saving failed", exception);
 		}
 	}
 	
@@ -199,7 +206,7 @@ public class LocalProject implements Project {
 		return this.storage;
 	}
 
-	public StructureManager getDataManager() {
+	public StructureManager getStructureManager() {
 		return this.manager;
 	}
 	

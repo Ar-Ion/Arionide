@@ -23,6 +23,7 @@ public class StateManager {
 		this.syncer = new StateSyncer();
 		this.debug = debug;
 		
+		hierarchy.reset();
 		hierarchy.registerStates(this);
 	}
 	
@@ -31,7 +32,6 @@ public class StateManager {
 		performStateTransition(null, identifier);
 	}
 	
-		
 	protected void performStateTransition(State current, String identifier) {
 		debug("Performing state transition from state '" + current + "' to identifier '" + identifier + "'");
 

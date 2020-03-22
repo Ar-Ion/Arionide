@@ -185,7 +185,7 @@ public class ZipStorage extends Storage {
 	}
 	
 	public void saveStructureMeta() throws StorageException {
-		this.save(this.structureMetaPath, this.getMutableStructureMeta());
+		this.save(this.structureMetaPath, this.getMutableStructures());
 	}
 	
 	public void loadHistory() throws StorageException {	

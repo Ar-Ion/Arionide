@@ -51,6 +51,7 @@ public class CoreOrchestrator {
 	public void orchestrateInitialisation(AppDrawingContext context) {
 		try {
 			renderer.init(context);
+			controller.initMenuManager(dispatcher);
 			controller.reset();
 		} catch(Exception exception) {
 			pauseController();

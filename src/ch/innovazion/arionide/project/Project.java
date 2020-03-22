@@ -37,9 +37,9 @@ public interface Project extends Resource, MappedStructure, Loadable, Saveable {
 	public void initFS();
 	
 	@IAm("loading a project's metadata")
-	public void loadMeta();
+	public void loadMeta() throws StorageException;
 		
 	public Storage getStorage();
 	
-	public StructureManager getDataManager();
+	public StructureManager getStructureManager();
 }

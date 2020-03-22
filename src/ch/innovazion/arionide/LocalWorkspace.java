@@ -141,7 +141,13 @@ public class LocalWorkspace implements Workspace {
 	public void loadProject(Project project) {
 		if(this.current != project) {
 			this.current = project;
-			project.load();
+			
+			try {
+				project.load();	
+			} catch(IOException exception) {
+				Debug.exception(exception);
+			}
+
 			this.dispatcher.fire(new ProjectOpenEvent(project));
 		}
 	}

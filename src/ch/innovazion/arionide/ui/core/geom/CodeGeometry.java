@@ -22,7 +22,6 @@
 package ch.innovazion.arionide.ui.core.geom;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -78,7 +77,7 @@ public class CodeGeometry extends Geometry {
 		CodeChain chain = storage.getCode().get(this.container.getID());
 		
 		if(chain != null) {
-			this.build(this.container, chain.list(), elements, specification, connections, storage.getStructureMeta(), this.container.getSize() * relativeSize);
+			this.build(this.container, chain.list(), elements, specification, connections, storage.getStructures(), this.container.getSize() * relativeSize);
 		}
 		
 		elements.addAll(specification); // So that one can iterate through the code with the wheel having to pass through an instruction's specification.
@@ -103,7 +102,7 @@ public class CodeGeometry extends Geometry {
 				Vector3f current = this.factory.getAxisGenerator().get();
 				
 				factory.updateAxisGenerator(() -> current.cross(axis));
-				WorldElement output = this.factory.make(element.getID(), struct.getName(), Arrays.asList(struct.getComment()), new Vector3f(position), color, spotColor, size, struct.isAccessAllowed());
+				WorldElement output = this.factory.make(element.getID(), struct.getName(), struct.getComment(), new Vector3f(position), color, spotColor, size, struct.isAccessAllowed());
 				outputElements.add(output);
 				
 				/* Process connection to previous instruction */

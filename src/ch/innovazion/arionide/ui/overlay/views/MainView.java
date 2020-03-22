@@ -22,6 +22,7 @@
 package ch.innovazion.arionide.ui.overlay.views;
 
 import java.awt.Desktop;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.function.Consumer;
 
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.Workspace;
+import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.events.ClickEvent;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
@@ -109,7 +111,11 @@ public class MainView extends View implements EventHandler {
 	private void loadWorkspace() {		
 		Workspace theWorkspace = this.getAppManager().getWorkspace();
 		
-		theWorkspace.load();
+		try {
+			theWorkspace.load();
+		} catch (IOException exception) {
+			Debug.exception(exception);
+		}
 		
 		List<? super Project> projects = theWorkspace.getProjectList();
 		

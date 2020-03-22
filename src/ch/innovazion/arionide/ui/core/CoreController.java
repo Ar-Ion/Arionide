@@ -32,7 +32,9 @@ import org.joml.Vector3f;
 import ch.innovazion.arionide.coders.CameraInfo;
 import ch.innovazion.arionide.coders.Coder;
 import ch.innovazion.arionide.debugging.Debug;
+import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.arionide.project.managers.CodeManager;
@@ -49,7 +51,6 @@ public class CoreController {
 	
 	
 	private final UserController user;
-
 	
 	private final Geometry coreGeometry;
 	private final CurrentCodeGeometry mainCodeGeometry;
@@ -74,6 +75,8 @@ public class CoreController {
 	private WorldElement selection;
 	private boolean binding;
 	
+	private MenuManager menu;
+	
 	private Vector3f translationVector = new Vector3f();
 	private Vector3f glPosition = new Vector3f();
 
@@ -85,6 +88,10 @@ public class CoreController {
 		this.mainCodeGeometry = new CurrentCodeGeometry();
 		this.codeGeometries = new ArrayList<>();
 	}
+
+	public void initMenuManager(IEventDispatcher dispatcher) {
+		menu = new MenuManager(dispatcher);
+	}
 	
 	protected void updateStatic() {
 		if(requestProjectFinalisation.compareAndSet(true, false)) {	// Close project
@@ -92,11 +99,14 @@ public class CoreController {
 			scene = null;
 			active = false;
 			
+			menu.go("/");
+			menu.setProject(null);
+			
 			codeGeometries.clear();
 		} 
 		
 		if(requestProjectInitialisation.compareAndSet(true, false)) { // Open project
-			project.getDataManager().getHostStack().reset();
+			project.getStructureManager().getHostStack().reset();
 
 			long seed = project.getProperty("seed", Coder.integerDecoder);
 			
@@ -110,6 +120,9 @@ public class CoreController {
 			setScene(RenderingScene.HIERARCHY);
 			
 			requestMenuReset.set(true);
+			
+			menu.go("/");
+			menu.setProject(project);
 			
 			wake();
 		}
@@ -148,7 +161,7 @@ public class CoreController {
 		if(requestFocus.compareAndSet(0, -1)) {
 			WorldElement focus = coreGeometry.getElementByID(requestedFocus);
 
-			CodeManager manager = project.getDataManager().getCodeManager();
+			CodeManager manager = project.getStructureManager().getCodeManager();
 						
 			if(focus != null) {
 				user.setFocus(focus);
@@ -162,16 +175,16 @@ public class CoreController {
 		}
 		
 		if(requestMenuReset.compareAndSet(true, false)) {
-			if(project.getDataManager().getCodeManager().hasCode()) {
-
+			if(project.getStructureManager().getCodeManager().hasCode()) {
+				menu.selectCode(null);
 			} else {
-
+				menu.selectStructure(null);
 			}
 		}
 	}
 		
 	public void updateUserDynamics() {
-		HostStructureStack stack = project.getDataManager().getHostStack();
+		HostStructureStack stack = project.getStructureManager().getHostStack();
 
 		user.updatePhysics();
 		user.detectCollisions(stack, coreGeometry, mainCodeGeometry);
@@ -179,7 +192,7 @@ public class CoreController {
 		
 		
 		/* Code to avoid floating-point precision issues (vertex jittering) */
-		int currentStruct = project.getDataManager().getHostStack().getCurrent();
+		int currentStruct = project.getStructureManager().getHostStack().getCurrent();
 		WorldElement element = coreGeometry.getElementByID(currentStruct);
 	
 		if(element != null) {
@@ -258,7 +271,7 @@ public class CoreController {
 		}
 	}
 	
-	boolean onLeftClick() {
+	void onLeftClick() {
 		WorldElement focus = user.getFocus();
 		
 		if(focus != null) {
@@ -266,7 +279,7 @@ public class CoreController {
 			
 			if(elements.contains(focus) && (focus.getID() & 0xFF000000) != 0) {
 				if(binding) {					
-					Map<Integer, Structure> meta = this.project.getStorage().getStructureMeta();
+					Map<Integer, Structure> meta = this.project.getStorage().getStructures();
 					
 					Structure sourceMeta = meta.get(selection.getID() & 0xFFFFFF);
 					Structure targetMeta = meta.get(user.getFocus().getID() & 0xFFFFFF);
@@ -275,7 +288,7 @@ public class CoreController {
 						Parameter sourceParam = sourceMeta.getSpecification().getParameters().get((selection.getID() >>> 24) - 1);
 						Parameter targetParam = targetMeta.getSpecification().getParameters().get((focus.getID() >>> 24) - 1);
 
-						project.getDataManager().getSpecificationManager().bindParameters(sourceParam, targetParam);
+						project.getStructureManager().getSpecificationManager().bindParameters(sourceParam, targetParam);
 						
 						mainCodeGeometry.requestReconstruction();
 					}
@@ -285,11 +298,9 @@ public class CoreController {
 				
 				this.binding = !binding;
 			}
-			
-			return true;
 		} else {
 			this.binding = false;
-			return false; // Do not capture the event
+			menu.click();
 		}
 	}
 	
@@ -298,10 +309,9 @@ public class CoreController {
 		
 		if(selection != null) {
 			List<WorldElement> code = this.mainCodeGeometry.getElements();
-			
-			if(code.contains(selection)) {
-				int id = selection.getID();
-				
+			int id = selection.getID();
+
+			if(code.contains(selection)) {				
 				if((id & 0xFF000000) == 0) {
 					// In the case of a code instruction
 
@@ -310,7 +320,7 @@ public class CoreController {
 					int instructionID = selection.getID() & 0xFFFFFF;
 					int paramID = (selection.getID() >>> 24) - 1;
 					
-					Structure instructionMeta = project.getStorage().getStructureMeta().get(instructionID);
+					Structure instructionMeta = project.getStorage().getStructures().get(instructionID);
 			
 					if(instructionMeta != null) {							
 						Parameter param = instructionMeta.getSpecification().getParameters().get(paramID);
@@ -320,11 +330,12 @@ public class CoreController {
 						}
 					}
 				}
-			} else {				
-				// Select structure
+			} else {
+				Structure struct = project.getStorage().getStructures().get(id);
+				menu.selectStructure(struct);
 			}
 		} else {
-			// Select structure 0
+			menu.selectStructure(null);
 		}
 	}
 	
@@ -340,7 +351,7 @@ public class CoreController {
 		List<CodeGeometry> buffer = new ArrayList<>();
 		List<WorldElement> geometry = coreGeometry.getElements();
 				
-		WorldElement current = coreGeometry.getElementByID(project.getDataManager().getHostStack().getCurrent());
+		WorldElement current = coreGeometry.getElementByID(project.getStructureManager().getHostStack().getCurrent());
 		float characteristicLength;
 		
 		if(current != null) {
@@ -367,7 +378,7 @@ public class CoreController {
 		this.codeGeometries = buffer;
 		
 		user.resetAcceleration();
-		user.accelerate(Math.max(10E-17f, coreGeometry.getRelativeSize(project.getDataManager().getHostStack().getGeneration())));
+		user.accelerate(Math.max(10E-17f, coreGeometry.getRelativeSize(project.getStructureManager().getHostStack().getGeneration())));
 		
 		computeGLPosition();
 	}
@@ -446,6 +457,10 @@ public class CoreController {
 	public UserController getUserController() {
 		return user;
 	}
+	
+	public MenuManager getMenuManager() {
+		return menu;
+	}
 
 	public Geometry getCodeGeometry() {
 		return mainCodeGeometry;
@@ -464,7 +479,7 @@ public class CoreController {
 	}
 	
 	public HostStructureStack getHostStack() {
-		return project.getDataManager().getHostStack();
+		return project.getStructureManager().getHostStack();
 	}
 	
 	public Vector3f getGLPosition() {

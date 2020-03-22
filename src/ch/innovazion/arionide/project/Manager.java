@@ -56,7 +56,7 @@ public abstract class Manager {
 	}
 	
 	protected Map<Integer, MutableStructure> getStructures() {
-		return storage.getMutableStructureMeta();
+		return storage.getMutableStructures();
 	}
 	
 	protected List<MutableHistoryElement> getHistory() {

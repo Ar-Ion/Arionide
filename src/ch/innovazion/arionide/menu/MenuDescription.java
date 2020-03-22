@@ -70,6 +70,10 @@ public class MenuDescription {
 		decrementHighlight();
 	}
 	
+	public int spacer() {
+		return add(new String());
+	}
+	
 	public int add(String line) {
 		return add(line, baseColor);
 	}

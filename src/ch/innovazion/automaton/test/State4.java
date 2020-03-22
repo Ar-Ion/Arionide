@@ -32,7 +32,7 @@ public class State4 extends State {
 	}
 
 	@Override
-	protected void onAction(String action) {
+	public void onAction(String action) {
 		field2 *= 2;
 		go(action);
 	}

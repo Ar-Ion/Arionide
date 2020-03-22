@@ -31,14 +31,13 @@ import ch.innovazion.arionide.events.ActionEvent;
 import ch.innovazion.arionide.events.ActionType;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
-import ch.innovazion.arionide.events.MenuEvent;
 import ch.innovazion.arionide.events.MoveEvent;
 import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.events.ProjectCloseEvent;
 import ch.innovazion.arionide.events.ProjectEvent;
 import ch.innovazion.arionide.events.ProjectOpenEvent;
+import ch.innovazion.arionide.events.TargetUpdateEvent;
 import ch.innovazion.arionide.events.WheelEvent;
-import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.ui.topology.Point;
 
 public class CoreEventHandler implements EventHandler {
@@ -57,9 +56,7 @@ public class CoreEventHandler implements EventHandler {
 	private final CoreController controller;
 	
 	private boolean isControlDown = false;
-	
-	private Menu currentMenu;
-	
+		
 	public CoreEventHandler(CoreController controller) {
 		this.controller = controller;
 	}
@@ -142,19 +139,17 @@ public class CoreEventHandler implements EventHandler {
 						
 						if(action.getType() == ActionType.CLICK) {
 							if(action.isButton(ActionEvent.BUTTON_LEFT)) {
-								if(!controller.onLeftClick()) {
-									if(currentMenu != null) {
-										currentMenu.click(); // Trigger menu event if the event was not captured by the controller
-									}
-								}
+								controller.onLeftClick();
 							} else if(action.isButton(ActionEvent.BUTTON_RIGHT)) {
 								controller.onRightClick();
 							}
 							
 							action.abortDispatching();
 						}
-					} else if(event instanceof MenuEvent) {
-						this.currentMenu = ((MenuEvent) event).getMenu();
+					} else if(event instanceof TargetUpdateEvent) {
+						TargetUpdateEvent targetUpdate = (TargetUpdateEvent) event;
+						
+						controller.select(targetUpdate.getTarget().getIdentifier());
 					}
 				}
 			}
@@ -168,6 +163,6 @@ public class CoreEventHandler implements EventHandler {
 	}
 	
 	public Set<Class<? extends Event>> getHandleableEvents() {
-		return Utils.asSet(MoveEvent.class, PressureEvent.class, WheelEvent.class, ActionEvent.class, ProjectOpenEvent.class, ProjectCloseEvent.class, MenuEvent.class);
+		return Utils.asSet(MoveEvent.class, PressureEvent.class, WheelEvent.class, ActionEvent.class, ProjectOpenEvent.class, ProjectCloseEvent.class, TargetUpdateEvent.class);
 	}
 }

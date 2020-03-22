@@ -21,7 +21,12 @@ public abstract class StateHierarchy {
 	protected void back() {
 		path.pop();
 	}
-		
+	
+	protected void reset() {
+		states.clear();
+		path.clear();
+	}
+
 	protected void register(String identifier, State state) {
 		if(state == null) {
 			throw new IllegalArgumentException("Cannot register a null-state");

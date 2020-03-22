@@ -32,7 +32,7 @@ public class AlphabeticalComparator implements Comparator<Integer> {
 	private final Map<Integer, Structure> meta;
 	
 	public AlphabeticalComparator(Storage storage) {
-		this.meta = storage.getStructureMeta();
+		this.meta = storage.getStructures();
 	}
 	
 	public int compare(Integer o1, Integer o2) {

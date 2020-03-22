@@ -87,7 +87,7 @@ public class StructureManager extends Manager {
 			getStructures().put(structureID, new MutableActor(structureID, allocator.allocSpecification()));
 			getCode().put(structureID, new MutableCodeChain());
 
-			MessageEvent message = setName(structureID, name);
+			MessageEvent message = rename(structureID, name);
 			
 			if(message.getMessageType() == MessageType.ERROR) {
 				return message;
@@ -192,7 +192,7 @@ public class StructureManager extends Manager {
 		}
 	}
 	
-	public MessageEvent setName(int id, String name) {
+	public MessageEvent rename(int id, String name) {
 		MutableStructure meta = getStructures().get(id);
 		
 		if(meta != null) {
@@ -209,7 +209,7 @@ public class StructureManager extends Manager {
 		}
 	}
 	
-	public MessageEvent setComment(int id, String comment) {
+	public MessageEvent setComment(int id, List<String> comment) {
 		MutableStructure meta = getStructures().get(id);
 		
 		if(meta != null) {

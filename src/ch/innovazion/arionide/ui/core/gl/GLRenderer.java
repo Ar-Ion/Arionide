@@ -107,7 +107,7 @@ public class GLRenderer extends Renderer {
 	
 	private final StaticAllocator allocator = new StaticAllocator(Utils.combine(RenderableObject.class, structures, link, smallStars, bigStars, fx));
 
-	private boolean fxEnabled = false;
+	private boolean fxEnabled = true;
 	
 	private Bounds bounds;
 
@@ -478,7 +478,7 @@ public class GLRenderer extends Renderer {
 				this.renderLabel(context, Arrays.asList(element.getName()), ApplicationTints.WHITE, alpha, screenAnchor, height);
 			}
 			
-			if(renderSub && element.getDescription() != null && !element.getDescription().equals("?")) {
+			if(renderSub && element.getDescription() != null) {
 				List<String> description = element.getDescription();
 									
 				Vector2f screenAnchor = this.getHVCFrom3D(subSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);

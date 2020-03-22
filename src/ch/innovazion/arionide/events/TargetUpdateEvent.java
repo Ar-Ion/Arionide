@@ -19,13 +19,19 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide;
+package ch.innovazion.arionide.events;
 
-import java.io.IOException;
+import ch.innovazion.arionide.project.Structure;
 
-import ch.innovazion.arionide.debugging.IAm;
-
-public interface Saveable {
-	@IAm("saving")
-	public void save() throws IOException;
+public class TargetUpdateEvent extends Event {
+	
+	private final Structure target;
+	
+	public TargetUpdateEvent(Structure target) {
+		this.target = target;
+	}
+	
+	public Structure getTarget() {
+		return this.target;
+	}
 }

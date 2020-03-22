@@ -54,7 +54,7 @@ public class CodeManager extends Manager {
 	
 	public MessageEvent insertCode(int previous, int instructionID) {
 		int structureID = allocator.allocStructure();
-		Structure codeBase = storage.getStructureMeta().get(instructionID);
+		Structure codeBase = storage.getStructures().get(instructionID);
 		MutableCode meta = new MutableCode(codeBase);
 		
 		getStructures().put(structureID, meta);

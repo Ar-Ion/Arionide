@@ -37,7 +37,7 @@ public abstract class Storage {
 	private List<MutableHierarchyElement> hierarchy;
 	private Map<Integer, MutableInheritanceElement> inheritance;
 	private List<MutableHierarchyElement> callGraph;
-	private Map<Integer, MutableStructure> structMeta;
+	private Map<Integer, MutableStructure> structures;
 	private List<MutableHistoryElement> history;
 	private Map<Integer, MutableCodeChain> code;
 	
@@ -54,8 +54,8 @@ public abstract class Storage {
 		return Collections.unmodifiableList(this.callGraph);
 	}
 	
-	public Map<Integer, Structure> getStructureMeta() {
-		return Collections.unmodifiableMap(this.structMeta);
+	public Map<Integer, Structure> getStructures() {
+		return Collections.unmodifiableMap(this.structures);
 	}
 	
 	public List<HistoryElement> getHistory() {
@@ -79,8 +79,8 @@ public abstract class Storage {
 		return this.callGraph;
 	}
 	
-	protected Map<Integer, MutableStructure> getMutableStructureMeta() {
-		return this.structMeta;
+	protected Map<Integer, MutableStructure> getMutableStructures() {
+		return this.structures;
 	}
 	
 	protected List<MutableHistoryElement> getMutableHistory() {
@@ -105,7 +105,7 @@ public abstract class Storage {
 	}
 	
 	protected void setMutableStructureMeta(Map<Integer, MutableStructure> structMeta) {
-		this.structMeta = structMeta;
+		this.structures = structMeta;
 	}
 	
 	protected void setMutableHistory(List<MutableHistoryElement> history) {

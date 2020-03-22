@@ -21,6 +21,10 @@
  *******************************************************************************/
 package ch.innovazion.arionide.project.mutables;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.Structure;
@@ -33,7 +37,7 @@ public abstract class MutableStructure implements Structure, Callable {
 	private final int identifier;
 	
 	private String name = new String("?");
-	private String comment = new String("?");
+	private List<String> comment = new ArrayList<>();
 	private int colorID = ApplicationTints.getColorIDByName("White");
 	private int spotColorID = ApplicationTints.getColorIDByName("White");
 	private boolean accessAllowed = true;
@@ -50,23 +54,23 @@ public abstract class MutableStructure implements Structure, Callable {
 	}
 	
 	public String getName() {
-		return this.name;
+		return name;
 	}
 	
 	public void setName(String name) {
 		this.name = name;
 	}
 	
-	public String getComment() {
-		return this.comment;
+	public List<String> getComment() {
+		return comment;
 	}
 	
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setComment(List<String> comment) {
+		this.comment = Collections.unmodifiableList(comment);
 	}
 	
 	public int getColorID() {
-		return this.colorID;
+		return colorID;
 	}
 	
 	public void setColorID(int colorID) {
@@ -74,7 +78,7 @@ public abstract class MutableStructure implements Structure, Callable {
 	}
 	
 	public int getSpotColorID() {
-		return this.spotColorID;
+		return spotColorID;
 	}
 	
 	public void setSpotColorID(int spotColorID) {
@@ -82,7 +86,7 @@ public abstract class MutableStructure implements Structure, Callable {
 	}
 	
 	public boolean isAccessAllowed() {
-		return this.accessAllowed;
+		return accessAllowed;
 	}
 	
 	public void setAccessAllowed(boolean allowed) {
@@ -90,7 +94,7 @@ public abstract class MutableStructure implements Structure, Callable {
 	}
 	
 	public boolean isLambda() {
-		return this.lambda;
+		return lambda;
 	}
 	
 	public void setLambda(boolean isLambda) {
@@ -98,7 +102,7 @@ public abstract class MutableStructure implements Structure, Callable {
 	}
 
 	public Specification getSpecification() {
-		return this.specification;
+		return specification;
 	}
 	
 	public void setSpecification(Specification specification) {
@@ -106,6 +110,6 @@ public abstract class MutableStructure implements Structure, Callable {
 	}
 	
 	public String toString() {
-		return "[Name: " + this.name + "; Comment: " + this.comment + "; Specification: [" + this.specification + "]]";
+		return "[Name: " + name + "; Comment: " + comment + "; Specification: [" + specification + "]]";
 	}
 }

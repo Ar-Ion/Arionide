@@ -21,7 +21,6 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.core.geom;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +63,7 @@ public abstract class HierarchicalGeometry extends Geometry {
 		
 		this.factory.reset();
 
-		Map<Integer, Structure> metaData = storage.getStructureMeta();
+		Map<Integer, Structure> metaData = storage.getStructures();
 		
 		WorldElement main = this.factory.makeRandomTrivial();
 						
@@ -86,7 +85,7 @@ public abstract class HierarchicalGeometry extends Geometry {
 					Vector3f spotColor = new Vector3f(ApplicationTints.getColorByID(structMeta.getSpotColorID()));
 					boolean access = structMeta.isAccessAllowed();
 					
-					WorldElement object = this.factory.make(element.getID(), structMeta.getName(), Arrays.asList(structMeta.getComment()), position, color, spotColor, size, access);
+					WorldElement object = this.factory.make(element.getID(), structMeta.getName(), structMeta.getComment(), position, color, spotColor, size, access);
 					output.add(object);
 					
 					this.construct0(object, element.getChildren(), output, metaData, this.relativeSize * size);

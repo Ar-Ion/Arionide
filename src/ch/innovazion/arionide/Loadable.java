@@ -21,9 +21,11 @@
  *******************************************************************************/
 package ch.innovazion.arionide;
 
+import java.io.IOException;
+
 import ch.innovazion.arionide.debugging.IAm;
 
 public interface Loadable {
 	@IAm("loading")
-	public void load();
+	public void load() throws IOException;
 }

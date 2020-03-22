@@ -4,7 +4,7 @@ public class StateSynchronizationException extends RuntimeException {
 
 	private static final long serialVersionUID = -5509092354920472260L;
 	
-	protected StateSynchronizationException(String message) {
-		super(message);
+	protected StateSynchronizationException(String message, Exception parent) {
+		super(message, parent);
 	}
 }

@@ -28,5 +28,5 @@ public abstract class State {
 	}
 
 	protected abstract List<String> getActions();
-	protected abstract void onAction(String action);
+	public abstract void onAction(String action);
 }

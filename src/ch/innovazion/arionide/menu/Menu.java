@@ -21,171 +21,106 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import ch.innovazion.arionide.Utils;
-import ch.innovazion.arionide.events.Event;
-import ch.innovazion.arionide.events.EventHandler;
-import ch.innovazion.arionide.events.MenuEvent;
-import ch.innovazion.arionide.events.ProjectCloseEvent;
-import ch.innovazion.arionide.events.ProjectOpenEvent;
+import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.project.Project;
-import ch.innovazion.arionide.ui.AppManager;
-import ch.innovazion.arionide.ui.core.geom.WorldElement;
+import ch.innovazion.automaton.Export;
+import ch.innovazion.automaton.Inherit;
+import ch.innovazion.automaton.State;
 
-public abstract class Menu implements EventHandler {
+public abstract class Menu extends State {
+
+	private final MenuManager manager;
 	
-	private final Menu parent;
-	private final AppManager manager;
-	private final List<String> elements = new ArrayList<>();
+	private final String[] staticElements;
+	private String[] elements;
 	
-	private Project currentProject = null;
-	private int menuCursor;
+
+
+	protected int cursor;
+	protected int id;
+	protected String selection;
 	
-	// Only for root menu
-	protected Menu(AppManager manager, String... elements) {
-		this(manager, null, elements);
-	}
 	
-	protected Menu(Menu parent, String... elements) {
-		this(parent.manager, parent, elements);
-	}
+	@Export
+	@Inherit
+	protected Project project;
+
+	@Export
+	@Inherit
+	protected MenuDescription description = new MenuDescription();
 	
-	private Menu(AppManager manager, Menu parent, String... elements) {
-		this.parent = parent;
+		
+	protected Menu(MenuManager manager, String... elements) {
+		super(manager);
+		
 		this.manager = manager;
-		this.elements.addAll(Arrays.asList(elements));
 		
-		manager.getEventDispatcher().registerHandler(this, 0.6f);
+		this.staticElements = elements;
+		this.elements = elements;
+		
+		ensureNonEmpty();
+		
+		selection = this.elements[0];
 	}
 	
-	public AppManager getAppManager() {
-		return manager;
+	private void ensureNonEmpty() {
+		if(elements.length == 0) {
+			elements = new String[] { "<Empty>" };
+		}
 	}
 	
-	protected List<String> getElements() {
-		return elements;
+	protected List<String> getActions() {
+		return Arrays.asList(elements);
 	}
 	
-	public List<String> getMenuElements() {
-		return Collections.unmodifiableList(elements);
+	protected void setDynamicElements(String[] dynamicElements) {
+		elements = Utils.combine(String.class, staticElements, dynamicElements);
+		ensureNonEmpty();
+		
+		selection = elements[0];
 	}
 	
-	protected void fire(Event event) {
-		manager.getEventDispatcher().fire(event);
+	protected void onEnter() {
+		manager.refresh(this);
 	}
 	
-	public void show() {
-		manager.getEventDispatcher().fire(new MenuEvent(this));
-	}
-	
-	public int getMenuCursor() {
-		return menuCursor;
-	}
-	
-	public int setMenuCursor(int index) {
-		if(index < 0) {
-			return menuCursor = elements.size() + index;
+	protected void updateCursor(int cursor) {
+		if(isCyclic()) {
+			id = cursor % elements.length;
+		} else if(cursor < elements.length && cursor >= 0) {
+			id = cursor;
 		} else {
-			return menuCursor = index;
+			id = 0;
 		}
-	}
-	
-	public void select(int index) {
-		int realIndex = setMenuCursor(index);
 		
-		if(currentProject != null && realIndex >= 0 && realIndex < elements.size()) {
-			onSelect(realIndex);
-			onSelect(elements.get(realIndex));
-		}
+		selection = elements[id];
 	}
 	
-	public void click() {		
-		if(currentProject != null && menuCursor >= 0 && menuCursor < elements.size()) {
-			onClick(menuCursor);
-			onClick(elements.get(menuCursor));
-		}
+	protected void dispatchMessage(MessageEvent event) {
+		manager.dispatchMessage(event);
 	}
 	
 	public void up() {
-		if(currentProject != null) {
-			onUp();
-		}
+		
 	}
 	
 	public void down() {
-		if(currentProject != null) {
-			onDown();
-		}
+		
 	}
 	
-	public void back() {
-		if(parent != null) {
-			parent.show();
-		} // else discard;
-	}
-
-	protected void onClick(String element) {
-		return;
-	}
-	
-	protected void onClick(int index) {
-		return;
-	}
-	
-	protected void onSelect(String element) {
-		return;
-	}
-	
-	protected void onSelect(int index) {
-		return;
-	}
-	
-	protected void onUp() {
-		return;
-	}
-	
-	protected void onDown() {
-		return;
-	}
-	
-	protected Project getProject() {
-		return currentProject;
-	}
-	
-	protected WorldElement getTarget() {
-		if(parent != null) {
-			return parent.getTarget();
-		} else {
-			throw new IllegalStateException("Target undefined for root menus");
-		}
+	public int getCursor() {
+		return cursor;
 	}
 	
 	public MenuDescription getDescription() {
-		if(parent != null) {
-			return parent.getDescription();
-		} else {
-			throw new IllegalStateException("Menu description undefined for root menus");
-		}
+		return description;
 	}
 	
 	public boolean isCyclic() {
 		return false;
-	}
-	
-	public <T extends Event> void handleEvent(T event) {
-		if(event instanceof ProjectOpenEvent) {
-			currentProject = ((ProjectOpenEvent) event).getProject();
-		} else if(event instanceof ProjectCloseEvent) {
-			currentProject = null;
-		}
-	}
-	
-	public Set<Class<? extends Event>> getHandleableEvents() {
-		return Utils.asSet(ProjectOpenEvent.class, ProjectCloseEvent.class);
 	}
 }

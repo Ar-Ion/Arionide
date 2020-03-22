@@ -21,7 +21,6 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.overlay.views;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -114,10 +113,11 @@ public class CodeView extends View implements EventHandler {
 			return;
 		}
 		
+		AppManager manager = this.getAppManager();
+		CoreController controller = manager.getCoreOrchestrator().getController();
+		
 		if(event instanceof ClickEvent) {
 			ClickEvent click = (ClickEvent) event;
-			AppManager manager = this.getAppManager();
-			CoreController controller = manager.getCoreOrchestrator().getController();
 			
 			if(click.isTargetting(this, "back")) {
 				manager.getWorkspace().closeProject(this.currentProject);
@@ -147,11 +147,6 @@ public class CodeView extends View implements EventHandler {
 						   .setResponder(this::createStructure)
 						   .stackOnto(this);
 				
-			} else if(click.isTargetting((Component) null, "menuScroll")) {
-				if(this.isVisible()) {
-					assert this.currentMenu != null;
-					this.currentMenu.click();
-				}
 			}
 		} else if(event instanceof MessageEvent) {
 			MessageEvent message = (MessageEvent) event;
@@ -164,8 +159,8 @@ public class CodeView extends View implements EventHandler {
 			}
 		} else if(event instanceof MenuEvent) {
 			this.currentMenu = ((MenuEvent) event).getMenu();
-			
-			List<String> elements = new ArrayList<>(currentMenu.getMenuElements());
+
+			List<String> elements = controller.getMenuManager().getAvailableActions();
 			
 			synchronized(elements) {
 				List<Component> components = elements.stream().map(menu.getGenerator()).collect(Collectors.toList());
@@ -177,7 +172,7 @@ public class CodeView extends View implements EventHandler {
 				}
 			}
 
-			menu.setActiveComponent(currentMenu.getMenuCursor());
+			menu.setActiveComponent(currentMenu.getCursor());
 			menu.updateAll();
 			
 			syncMenuDescription();
@@ -185,10 +180,7 @@ public class CodeView extends View implements EventHandler {
 			ScrollEvent scroll = (ScrollEvent) event;
 			
 			if(scroll.isTargetting(this)) {
-				assert this.currentMenu != null;
-
-				this.currentMenu.select(scroll.getSubComponentID());
-				
+				controller.getMenuManager().select(scroll.getSubComponentID());
 				syncMenuDescription();
 			}
 		} else if(event instanceof PressureEvent) {
@@ -197,7 +189,7 @@ public class CodeView extends View implements EventHandler {
 			if(currentMenu != null && pressure.isDown()) {
 				switch(pressure.getKeycode())  {
 				case KeyEvent.VK_ESCAPE:
-					currentMenu.back();
+					controller.getMenuManager().back();
 					event.abortDispatching();
 					break;
 				case KeyEvent.VK_UP:
@@ -214,7 +206,7 @@ public class CodeView extends View implements EventHandler {
 		AppManager manager = getAppManager();
 		CoreController controller = manager.getCoreOrchestrator().getController();
 		
-		MessageEvent message = this.currentProject.getDataManager().newStructure(name);
+		MessageEvent message = this.currentProject.getStructureManager().newStructure(name);
 		manager.getEventDispatcher().fire(message);
 		
 		if(message.getMessageType() != MessageType.ERROR) {

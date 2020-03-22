@@ -78,7 +78,7 @@ public class RunView extends View implements EventHandler {
 		Storage storage = this.getAppManager().getWorkspace().getCurrentProject().getStorage();
 		
 		List<HierarchyElement> elements = storage.getHierarchy();
-		Map<Integer, Structure> metaData = storage.getStructureMeta();
+		Map<Integer, Structure> metaData = storage.getStructures();
 		String[] buffer = new String[elements.size()];
 		
 		int i = 0;

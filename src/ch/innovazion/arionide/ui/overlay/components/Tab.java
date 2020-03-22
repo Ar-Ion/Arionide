@@ -270,7 +270,8 @@ public class Tab extends MultiComponent implements EventHandler {
 	public void updateAll() {
 		this.compute();
 
-		if(this.rectangles.size() > 0) {
+		
+		if(activeComponent >= 0 && activeComponent < rectangles.size() && rectangles.size() > 0) {
 			Bounds rect = this.rectangles.get(this.activeComponent);
 			this.shadow = rect.getCenter().getX();
 			
