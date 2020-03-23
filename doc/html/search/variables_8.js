@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * This file is part of Arionide.
+ *
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2020 Innovazion. All rights reserved.
+ *
+ * Arionide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Arionide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
+ *******************************************************************************/
 var searchData=
 [
   ['id_3943',['id',['../classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html#aca7df57d5295bc396e00b2856be62de3',1,'ch.innovazion.arionide.lang.symbols.Specification.id()'],['../classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a3866e8a167b2690be9c5489b4285fc88',1,'ch.innovazion.arionide.menu.Menu.id()'],['../classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_hierarchy_element.html#ab3c40422c3a10d537f3619deb190ba5f',1,'ch.innovazion.arionide.project.mutables.MutableHierarchyElement.id()'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_symbolic_hierarchy_element.html#a147832afa97e192e71c338ffe2e3a39e',1,'ch.innovazion.arionide.ui.core.geom.SymbolicHierarchyElement.id()'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element.html#a1a9077b17ef6d516bdb8d1eecf6a7416',1,'ch.innovazion.arionide.ui.core.geom.WorldElement.id()'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object.html#aada755e9b6665aafb3a1387700dd7178',1,'ch.innovazion.arionide.ui.core.gl.RenderableObject.id()'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1_g_l_texture_allocator.html#a79dc909472cc4d00da74724d8abe6b64',1,'ch.innovazion.arionide.ui.GLTextureAllocator.id()'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1cache_1_1_attribute.html#a9dffb54a383ac90bf20b1dd9a3fcccdb',1,'ch.innovazion.arionide.ui.render.gl.cache.Attribute.id()'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1cache_1_1_vertex_array.html#a1f688f3ea4c0959140a6872889221b83',1,'ch.innovazion.arionide.ui.render.gl.cache.VertexArray.id()'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1gl_1_1cache_1_1_vertex_buffer.html#a588ac5e53e279fbcc95f725d64ceb0f1',1,'ch.innovazion.arionide.ui.render.gl.cache.VertexBuffer.id()']]],

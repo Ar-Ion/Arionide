@@ -160,7 +160,7 @@ public class StructureManager extends Manager {
 			}
 		}
 		
-		return new MessageEvent("This structure doesn't exist anymore", MessageType.ERROR);			
+		return new MessageEvent("Structure deleted", MessageType.ERROR);			
 	}
 	
 	private void deleteMeta(HierarchyElement element) {

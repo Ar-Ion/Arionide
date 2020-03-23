@@ -487,7 +487,7 @@ public class GLRenderer extends Renderer {
 					height = 1.0f - this.getHVCFrom3D(element.getCenter().sub(translation).add(0.0f, element.getSize(), 0.0f), proj).mul(1.0f).add(screenAnchor).y;
 				}
 				
-				this.renderLabel(context, description, ApplicationTints.COMMENT_COLOR, alpha, screenAnchor, height * 0.5f);
+				this.renderLabel(context, description, ApplicationTints.COMMENT_COLOR, alpha, screenAnchor, height * 0.3f);
 			}
 			
 			gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
@@ -506,7 +506,7 @@ public class GLRenderer extends Renderer {
 					text.prepare(); // Although updating the bounds already toggles the "reprepare" bit, this may be useful for further implementations...
 					context.getRenderingSystem().renderDirect(text);
 					
-					y -= height;
+					y += height;
 				}
 			}
 		}

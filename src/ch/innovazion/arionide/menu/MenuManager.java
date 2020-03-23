@@ -23,7 +23,6 @@ package ch.innovazion.arionide.menu;
 
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.MenuEvent;
-import ch.innovazion.arionide.events.TargetUpdateEvent;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.Structure;
@@ -45,10 +44,10 @@ public class MenuManager extends StateManager {
 	}
 	
 	public void selectStructure(Structure structure) {
-		hierarchy.structureBrowser.target = structure;
-		
 		go("/");
 		triggerAction(RootMenu.structureBrowser);
+		
+		hierarchy.structureBrowser.select(structure);
 	}
 	
 	public void selectCode(Structure code) {
@@ -60,13 +59,7 @@ public class MenuManager extends StateManager {
 	
 	public void select(int cursor) {
 		Menu menu = hierarchy.resolveCurrentState();
-		
 		menu.updateCursor(cursor);
-				
-		if(menu instanceof Browser) {
-			Structure target = ((Browser) menu).target;			
-			dispatcher.fire(new TargetUpdateEvent(target));
-		}
 	}
 	
 	public void click() {

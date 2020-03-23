@@ -46,43 +46,57 @@ public abstract class Browser extends Menu {
 		browsables = elements.stream().map(HierarchyElement::getID).map(project.getStorage().getStructures()::get).collect(Collectors.toList());
 		
 		setDynamicElements(browsables.stream().map(Structure::getName).toArray(String[]::new));
-				
-		if(target != null) {
-			int index = browsables.indexOf(target);
-			
-			if(index != -1) {
-				this.cursor = index;
-				this.id = index;
-				this.selection = target.getName();
-			}
-		} else if(id < browsables.size()){
-			updateCursor(0);
-			dispatch(new TargetUpdateEvent(target));
-		}
 		
 		super.onEnter();
 	}
 	
 	protected void updateCursor(int cursor) {
-		super.updateCursor(cursor);		
-		
+		super.updateCursor(cursor);
+				
 		if(browsables != null && id < browsables.size()) {
 			this.target = browsables.get(id);
 			this.selection = target.getName();
 
-			this.description = new MenuDescription();
+			generateDescription();
+			dispatch(new TargetUpdateEvent(target));
+		}
+	}
+	
+	protected void select(Structure target) {
+		if(target != null) {
+			int index = browsables.indexOf(target);
 			
-			if(target != null) {
-				for(Parameter param : target.getSpecification().getParameters()) {
-					description.add(param.toString());
-				}
-				
-				description.spacer();
-				
-				for(String comment : target.getComment()) {
-					description.add(comment);
-				}
-			}	
+			if(index != -1) {
+				this.target = target;
+				this.cursor = index;
+				this.id = index;
+				this.selection = target.getName();
+			}
+		} else {
+			this.cursor = 0;
+			this.id = 0;
+			this.target = browsables.get(0);
+			this.selection = this.target.getName();
+			
+			dispatch(new TargetUpdateEvent(this.target));
+		}
+		
+		generateDescription();
+	}
+	
+	private void generateDescription() {
+		this.description = new MenuDescription();
+		
+		if(target != null) {
+			for(Parameter param : target.getSpecification().getParameters()) {
+				description.add(param.toString());
+			}
+			
+			description.spacer();
+			
+			for(String comment : target.getComment()) {
+				description.add(comment);
+			}
 		}
 	}
 

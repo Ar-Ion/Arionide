@@ -21,6 +21,75 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.structure;
 
-public class CommentEditor {
+import java.util.ArrayList;
+import java.util.List;
 
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
+import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
+import ch.innovazion.arionide.menu.MenuManager;
+import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.ui.ApplicationTints;
+import ch.innovazion.arionide.ui.overlay.Views;
+import ch.innovazion.automaton.Inherit;
+
+public class CommentEditor extends Menu {
+
+	@Inherit
+	private Structure target;
+	
+	public CommentEditor(MenuManager manager) {
+		super(manager, "Line 1", "Line 2", "Line 3", "Line 4");
+	}
+	
+	protected void onEnter() {
+		super.onEnter();
+		
+		this.description = new MenuDescription(ApplicationTints.MENU_INFO_INACTIVE_COLOR, 1.0f);
+
+		List<String> comment = target.getComment();
+		
+		for(int i = 0; i < 4; i++) {
+			if(i < comment.size() && !comment.get(i).isEmpty()) {
+				description.add(comment.get(i));
+			} else {
+				description.add("<Empty line>", ApplicationTints.MENU_INFO_EMPTY_COLOR);
+			}
+		}
+	}
+	
+	protected void updateCursor(int cursor) {
+		super.updateCursor(cursor);
+		
+		if(target != null) {
+			description.setHighlight(id);
+		}
+	}
+	
+	public void onAction(String action) {
+		String placeholder = new String();
+		
+		if(id < target.getComment().size()) {
+			placeholder = target.getComment().get(id);
+		}
+		
+		Views.input.setText(action)
+				   .setPlaceholder(placeholder)
+				   .setResponder(this::onLineUpdate)
+				   .stackOnto(Views.code);
+	}
+	
+	private void onLineUpdate(String line) {
+		List<String> copy = new ArrayList<>(target.getComment());
+		
+		do {
+			copy.add(new String());
+		} while(copy.size() <= id);
+		
+		copy.set(id, line);
+		
+		dispatch(project.getStructureManager().setComment(target.getIdentifier(), copy));
+		go(".");
+		dispatch(new GeometryInvalidateEvent(2));
+	}
 }

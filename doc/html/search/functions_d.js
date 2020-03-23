@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * This file is part of Arionide.
+ *
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2020 Innovazion. All rights reserved.
+ *
+ * Arionide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Arionide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
+ *******************************************************************************/
 var searchData=
 [
   ['onaction_3325',['onAction',['../classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser.html#a9c4d3c94d5f7c4c208379bd88fef2f80',1,'ch.innovazion.arionide.menu.Browser.onAction()'],['../classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_code_editor.html#ad34d71f71111f4ae34d53f8d5cc394d1',1,'ch.innovazion.arionide.menu.code.CodeEditor.onAction()'],['../classch_1_1innovazion_1_1arionide_1_1menu_1_1_root_menu.html#affed54e40e7f5cd0f38edcf2240a817b',1,'ch.innovazion.arionide.menu.RootMenu.onAction()'],['../classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_editor.html#a7b10793be20abd7ba9be8a77ce257d8f',1,'ch.innovazion.arionide.menu.structure.StructureEditor.onAction()'],['../classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_tint_selector.html#a37a100f4d814857b7c55b16cf5afcad5',1,'ch.innovazion.arionide.menu.structure.TintSelector.onAction()'],['../classch_1_1innovazion_1_1automaton_1_1_state.html#ac771f75c2505a75279752aebd757fe7e',1,'ch.innovazion.automaton.State.onAction()'],['../classch_1_1innovazion_1_1automaton_1_1test_1_1_state1.html#a9ac9e7c764e92c4fafe63e8658c1188c',1,'ch.innovazion.automaton.test.State1.onAction()'],['../classch_1_1innovazion_1_1automaton_1_1test_1_1_state2.html#a57371c0d7148616956d24a942c1614f7',1,'ch.innovazion.automaton.test.State2.onAction()'],['../classch_1_1innovazion_1_1automaton_1_1test_1_1_state3.html#a04b7f22d486ba11e8ea0e75cf10efa07',1,'ch.innovazion.automaton.test.State3.onAction()'],['../classch_1_1innovazion_1_1automaton_1_1test_1_1_state4.html#a3a005ee07f9e494b3b7ac0106ff16f00',1,'ch.innovazion.automaton.test.State4.onAction()'],['../classch_1_1innovazion_1_1automaton_1_1test_1_1_state5.html#a76c08a0439839da7a06362f2e3312fda',1,'ch.innovazion.automaton.test.State5.onAction()']]],

@@ -23,6 +23,7 @@ package ch.innovazion.arionide.menu;
 
 import ch.innovazion.arionide.menu.code.CodeBrowser;
 import ch.innovazion.arionide.menu.code.CodeEditor;
+import ch.innovazion.arionide.menu.structure.CommentEditor;
 import ch.innovazion.arionide.menu.structure.StructureBrowser;
 import ch.innovazion.arionide.menu.structure.StructureEditor;
 import ch.innovazion.arionide.menu.structure.TintSelector;
@@ -42,6 +43,7 @@ public class MenuHierarchy extends StateHierarchy {
 		
 		register("/structure", structureBrowser = new StructureBrowser((MenuManager) mgr));
 		register("/structure/edit", new StructureEditor((MenuManager) mgr));
+		register("/structure/edit/comment", new CommentEditor((MenuManager) mgr));
 		register("/structure/edit/tint", new TintSelector((MenuManager) mgr));
 
 		register("/code", codeBrowser = new CodeBrowser((MenuManager) mgr));

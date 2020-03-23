@@ -38,6 +38,7 @@ public class ApplicationTints {
 	public static final int DATA_TYPE = 0x00FFFF;
 	public static final int MENU_INFO_DEFAULT_COLOR = 0xFFFFFF;
 	public static final int MENU_INFO_INACTIVE_COLOR = 0x808080;
+	public static final int MENU_INFO_EMPTY_COLOR = 0x404040;
 	public static final int ACTIVE_ALPHA = 0xFF;
 	public static final int INACTIVE_ALPHA = 0x5F;
 	public static final int PLACEHOLDER_COLOR = 0xFFFFFF;

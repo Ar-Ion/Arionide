@@ -129,7 +129,7 @@ public class CoreController {
 		
 		try {
 			if(coreGeometry.processEventQueue()) {
-				onDiscontinuityCrossed();
+				// onDiscontinuityCrossed();
 			}
 		
 			for(Geometry geometry : codeGeometries) {					

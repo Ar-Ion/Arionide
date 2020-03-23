@@ -91,7 +91,7 @@ public class CodeView extends View implements EventHandler {
 		for(int i = 0; i < menuDescription.length; i++) {
 			menuDescription[i] = new Label(this, new String());
 			
-			float height = 0.35f / menuDescription.length;
+			float height = 0.25f / menuDescription.length;
 			
 			this.add(menuDescription[i], 0.0f, 0.85f - height * (i + 1), 1.0f, 0.85f - height * i);
 		}

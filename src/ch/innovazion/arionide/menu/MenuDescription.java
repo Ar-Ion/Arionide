@@ -83,6 +83,10 @@ public class MenuDescription {
 		return lines.size() - 1;
 	}
 	
+	public int length() {
+		return lines.size();
+	}
+	
 	public void setColor(int index, int color) {
 		lines.get(index).color = color;
 	}
@@ -105,7 +109,6 @@ public class MenuDescription {
 	
 	public void setHighlight(int index) {
 		highlight = index;
-		scrollBase = index;
 	}
 	
 	public void incrementHighlight() {
@@ -129,7 +132,7 @@ public class MenuDescription {
 		DescriptionLine[] display = new DescriptionLine[MAX_LINES];
 		
 		for(int i = 0; i < MAX_LINES; i++) {
-			if(i < lines.size()) {
+			if(scrollBase + i < lines.size()) {
 				DescriptionLine line = lines.get(scrollBase + i);
 				
 				if(line != null) {
