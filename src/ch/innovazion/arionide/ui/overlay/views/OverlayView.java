@@ -24,18 +24,22 @@ package ch.innovazion.arionide.ui.overlay.views;
 import java.util.Set;
 
 import ch.innovazion.arionide.Utils;
+import ch.innovazion.arionide.events.ActionEvent;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
 import ch.innovazion.arionide.events.MoveEvent;
 import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.AppManager;
+import ch.innovazion.arionide.ui.core.CoreController;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
 import ch.innovazion.arionide.ui.overlay.View;
 import ch.innovazion.arionide.ui.render.PrimitiveRenderingSystem;
 
 public abstract class OverlayView extends View implements EventHandler {
-		
+	
+	private boolean controllerWasActive = false;
+	
 	public OverlayView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
@@ -46,15 +50,31 @@ public abstract class OverlayView extends View implements EventHandler {
 		super.drawSurface(context);
 	}
 	
+	protected void viewWillAppear() {
+		super.viewWillAppear();
+		
+		CoreController controller = getAppManager().getCoreOrchestrator().getController();
+		this.controllerWasActive = controller.isActive();
+		controller.sleep();
+	}
+	
+	protected void viewWillDisappear() {
+		super.viewWillDisappear();
+		
+		if(controllerWasActive) {
+			getAppManager().getCoreOrchestrator().getController().wake();
+		}
+	}
+	
 	public PrimitiveRenderingSystem getPreferedRenderingSystem(AppDrawingContext context) {
 		return context.getOverlayRenderingSystem();
 	}
 	
 	public <T extends Event> void handleEvent(T event) {
-		event.abortDispatching(); // Block events below 0.7 priority (CoreController / Menu)
+		event.abortDispatching(); // Block events below 0.7 priority (CoreController)
 	}
 
 	public Set<Class<? extends Event>> getHandleableEvents() {
-		return Utils.asSet(PressureEvent.class, MoveEvent.class);
+		return Utils.asSet(ActionEvent.class, PressureEvent.class, MoveEvent.class);
 	}
 }

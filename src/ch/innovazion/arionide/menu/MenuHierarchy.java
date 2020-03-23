@@ -4,6 +4,7 @@ import ch.innovazion.arionide.menu.code.CodeBrowser;
 import ch.innovazion.arionide.menu.code.CodeEditor;
 import ch.innovazion.arionide.menu.structure.StructureBrowser;
 import ch.innovazion.arionide.menu.structure.StructureEditor;
+import ch.innovazion.arionide.menu.structure.TintSelector;
 import ch.innovazion.automaton.StateHierarchy;
 import ch.innovazion.automaton.StateManager;
 
@@ -20,6 +21,7 @@ public class MenuHierarchy extends StateHierarchy {
 		
 		register("/structure", structureBrowser = new StructureBrowser((MenuManager) mgr));
 		register("/structure/edit", new StructureEditor((MenuManager) mgr));
+		register("/structure/edit/tint", new TintSelector((MenuManager) mgr));
 
 		register("/code", codeBrowser = new CodeBrowser((MenuManager) mgr));
 		register("/code/edit", new CodeEditor((MenuManager) mgr));

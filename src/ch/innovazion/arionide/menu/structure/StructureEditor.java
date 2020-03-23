@@ -1,5 +1,7 @@
 package ch.innovazion.arionide.menu.structure;
 
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
+import ch.innovazion.arionide.events.TeleportEvent;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.Structure;
@@ -15,11 +17,14 @@ public class StructureEditor extends Menu {
 	protected Structure target;
 
 	public StructureEditor(MenuManager manager) {
-		super(manager, "Specify", "Comment", "Rename", "Abstractify", "Language", "Tint", "Delete");
+		super(manager, "Go", "Specify", "Comment", "Rename", "Abstractify", "Language", "Tint", "Delete");
 	}
 
-	public void onAction(String action) {
+	public void onAction(String action) {		
 		switch(action) {
+		case "Go":
+			dispatch(new TeleportEvent(target.getIdentifier()));
+			break;
 		case "Rename":
 			Views.input.setText("Please enter the new name of the new structure")
 					   .setPlaceholder("Structure name")
@@ -51,14 +56,19 @@ public class StructureEditor extends Menu {
 	}
 	
 	private void rename(String name) {
-		project.getStructureManager().rename(target.getIdentifier(), name);
+		dispatch(project.getStructureManager().rename(target.getIdentifier(), name));
+		dispatch(new GeometryInvalidateEvent(2));
 	}
 	
-	private void abstractify(View nil) {
-		project.getStructureManager().abstractifyStructure(target.getIdentifier());
+	private void abstractify(View view) {
+		dispatch(project.getStructureManager().abstractifyStructure(target.getIdentifier()));
+		dispatch(new GeometryInvalidateEvent(1));
+		view.discard();
 	}
 	
-	private void delete(View nil) {
-		project.getStructureManager().deleteStructure(target.getIdentifier());
+	private void delete(View view) {
+		dispatch(project.getStructureManager().deleteStructure(target.getIdentifier()));
+		dispatch(new GeometryInvalidateEvent(2));
+		view.discard();
 	}
 }

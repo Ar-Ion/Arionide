@@ -31,12 +31,14 @@ import ch.innovazion.arionide.events.ActionEvent;
 import ch.innovazion.arionide.events.ActionType;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.MoveEvent;
 import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.events.ProjectCloseEvent;
 import ch.innovazion.arionide.events.ProjectEvent;
 import ch.innovazion.arionide.events.ProjectOpenEvent;
 import ch.innovazion.arionide.events.TargetUpdateEvent;
+import ch.innovazion.arionide.events.TeleportEvent;
 import ch.innovazion.arionide.events.WheelEvent;
 import ch.innovazion.arionide.ui.topology.Point;
 
@@ -77,6 +79,16 @@ public class CoreEventHandler implements EventHandler {
 	
 					if(pressure.isDown() && pressure.getKeycode() == worldToggle) {
 						controller.toggleActivity();
+					}
+				} else if(event instanceof GeometryInvalidateEvent) {
+					GeometryInvalidateEvent invalidate = (GeometryInvalidateEvent) event;
+																
+					if(invalidate.shouldUpdateAllStructures()) {
+						controller.invalidateStructures();
+					} else if(invalidate.shouldUpdateAllCode()) {
+						controller.invalidateCode();
+					} else if(invalidate.shouldUpdateCurrentCode()) {
+						controller.invalidateCurrentCode();
 					}
 				}
 				
@@ -137,9 +149,10 @@ public class CoreEventHandler implements EventHandler {
 					} else if(event instanceof ActionEvent) {
 						ActionEvent action = (ActionEvent) event;
 						
-						if(action.getType() == ActionType.CLICK) {
+						if(action.getType() == ActionType.PRESS) {
 							if(action.isButton(ActionEvent.BUTTON_LEFT)) {
 								controller.onLeftClick();
+								System.out.println("left click");
 							} else if(action.isButton(ActionEvent.BUTTON_RIGHT)) {
 								controller.onRightClick();
 							}
@@ -150,6 +163,10 @@ public class CoreEventHandler implements EventHandler {
 						TargetUpdateEvent targetUpdate = (TargetUpdateEvent) event;
 						
 						controller.select(targetUpdate.getTarget().getIdentifier());
+					} else if(event instanceof TeleportEvent) {
+						TeleportEvent teleport = (TeleportEvent) event;
+						
+						controller.requestTeleportation(teleport.getTarget());
 					}
 				}
 			}
@@ -163,6 +180,6 @@ public class CoreEventHandler implements EventHandler {
 	}
 	
 	public Set<Class<? extends Event>> getHandleableEvents() {
-		return Utils.asSet(MoveEvent.class, PressureEvent.class, WheelEvent.class, ActionEvent.class, ProjectOpenEvent.class, ProjectCloseEvent.class, TargetUpdateEvent.class);
+		return Utils.asSet(MoveEvent.class, PressureEvent.class, WheelEvent.class, ActionEvent.class, ProjectOpenEvent.class, ProjectCloseEvent.class, TargetUpdateEvent.class, GeometryInvalidateEvent.class, TeleportEvent.class);
 	}
 }

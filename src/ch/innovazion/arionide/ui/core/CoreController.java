@@ -211,11 +211,6 @@ public class CoreController {
 	public void invalidateMenu() {
 		requestMenuReset.set(true);
 	}
-
-	public void invalidateGeometries() {
-		coreGeometry.requestReconstruction();
-		codeGeometries.forEach(Geometry::requestReconstruction);
-	}
 	
 	public void requestFocus(int target) {
 		this.requestedFocus = target;
@@ -250,6 +245,19 @@ public class CoreController {
 		if(selection == null) {
 			selection = coreGeometry.getElementByID(id);
 		}
+	}
+
+	void invalidateCurrentCode() {
+		mainCodeGeometry.requestReconstruction();
+	}
+	
+	void invalidateCode() {
+		codeGeometries.forEach(Geometry::requestReconstruction);
+	}
+	
+	void invalidateStructures() {
+		invalidateCode();
+		coreGeometry.requestReconstruction();
 	}
 	
 	void onProjectOpen(Project project) {
@@ -405,6 +413,10 @@ public class CoreController {
 	
 	public void wake() {
 		active = true;
+	}
+	
+	public void sleep() {
+		active = false;
 	}
 	
 	void toggleActivity() {

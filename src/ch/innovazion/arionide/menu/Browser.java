@@ -3,6 +3,7 @@ package ch.innovazion.arionide.menu;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ch.innovazion.arionide.events.TargetUpdateEvent;
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Structure;
@@ -33,6 +34,9 @@ public abstract class Browser extends Menu {
 				this.id = index;
 				this.selection = target.getName();
 			}
+		} else if(id < browsables.size()){
+			updateCursor(0);
+			dispatch(new TargetUpdateEvent(target));
 		}
 		
 		super.onEnter();
@@ -41,21 +45,23 @@ public abstract class Browser extends Menu {
 	protected void updateCursor(int cursor) {
 		super.updateCursor(cursor);		
 		
-		this.target = browsables.get(id);
-		this.selection = target.getName();
+		if(browsables != null && id < browsables.size()) {
+			this.target = browsables.get(id);
+			this.selection = target.getName();
 
-		this.description = new MenuDescription();
-		
-		if(target != null) {
-			for(Parameter param : target.getSpecification().getParameters()) {
-				description.add(param.toString());
-			}
+			this.description = new MenuDescription();
 			
-			description.spacer();
-			
-			for(String comment : target.getComment()) {
-				description.add(comment);
-			}
+			if(target != null) {
+				for(Parameter param : target.getSpecification().getParameters()) {
+					description.add(param.toString());
+				}
+				
+				description.spacer();
+				
+				for(String comment : target.getComment()) {
+					description.add(comment);
+				}
+			}	
 		}
 	}
 

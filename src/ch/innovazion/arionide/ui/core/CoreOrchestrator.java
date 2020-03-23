@@ -54,7 +54,6 @@ public class CoreOrchestrator {
 			controller.initMenuManager(dispatcher);
 			controller.reset();
 		} catch(Exception exception) {
-			pauseController();
 			Debug.exception(exception);
 		}
 	}
@@ -81,7 +80,6 @@ public class CoreOrchestrator {
 
 			renderer.render3D(context);	
 		} catch(Exception exception) {
-			pauseController();
 			Debug.exception(exception);
 		}
 	}
@@ -93,7 +91,6 @@ public class CoreOrchestrator {
 				renderer.render2D(context);
 			}
 		} catch(Exception exception) {
-			pauseController();
 			Debug.exception(exception);
 		}
 	}
@@ -104,14 +101,7 @@ public class CoreOrchestrator {
 			renderer.updateViewport(bounds);
 			controller.updateBounds(bounds);
 		} catch(Exception exception) {
-			pauseController();
 			Debug.exception(exception);
-		}
-	}
-	
-	private void pauseController() {
-		if(controller.isActive()) {
-			controller.toggleActivity();
 		}
 	}
 	

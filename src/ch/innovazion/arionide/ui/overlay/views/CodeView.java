@@ -31,6 +31,7 @@ import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.ClickEvent;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.MenuEvent;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
@@ -101,7 +102,6 @@ public class CodeView extends View implements EventHandler {
 	public void viewWillAppear() {
 		setupFocusCycle(2, 3, 5, 0);
 		currentProject = getAppManager().getWorkspace().getCurrentProject();
-		getAppManager().getEventDispatcher().fire(new MessageEvent("'" + currentProject.getName() + "' has been successfully loaded", MessageType.SUCCESS));
 	}
 	
 	protected int getMaskAlpha(int viewAlpha) {
@@ -216,9 +216,8 @@ public class CodeView extends View implements EventHandler {
 										
 			CodeChain code = storage.getCode().get(structID);
 			
-			controller.invalidateGeometries();
+			manager.getEventDispatcher().fire(new GeometryInvalidateEvent(2));
 			controller.requestTeleportation(structID);
-			controller.wake();
 			
 			if(!code.isAbstract()) {
 				int instructionID = code.list().get(0).getID();

@@ -1,7 +1,7 @@
 package ch.innovazion.arionide.menu;
 
+import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.MenuEvent;
-import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.TargetUpdateEvent;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.project.Project;
@@ -65,7 +65,7 @@ public class MenuManager extends StateManager {
 		dispatcher.fire(new MenuEvent(current));
 	}
 	
-	public void dispatchMessage(MessageEvent event) {
+	public void dispatch(Event event) {
 		dispatcher.fire(event);
 	}
 }

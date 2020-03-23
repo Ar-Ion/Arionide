@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import ch.innovazion.arionide.Utils;
-import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
@@ -63,8 +63,7 @@ public abstract class Menu extends State {
 		this.elements = elements;
 		
 		ensureNonEmpty();
-		
-		selection = this.elements[0];
+		updateCursor(0);
 	}
 	
 	private void ensureNonEmpty() {
@@ -80,8 +79,6 @@ public abstract class Menu extends State {
 	protected void setDynamicElements(String[] dynamicElements) {
 		elements = Utils.combine(String.class, staticElements, dynamicElements);
 		ensureNonEmpty();
-		
-		selection = elements[0];
 	}
 	
 	protected void onEnter() {
@@ -100,8 +97,8 @@ public abstract class Menu extends State {
 		selection = elements[id];
 	}
 	
-	protected void dispatchMessage(MessageEvent event) {
-		manager.dispatchMessage(event);
+	protected void dispatch(Event event) {
+		manager.dispatch(event);
 	}
 	
 	public void up() {

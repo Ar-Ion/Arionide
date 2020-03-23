@@ -222,6 +222,10 @@ public class ApplicationTints {
 		return getColorByID(getColorIDByName(id));
 	}
 	
+	public static List<String> getColorNames() {
+		return names;
+	}
+	
 	public static int getColorIDByName(String id) {
 		return names.indexOf(id);
 	}

@@ -64,7 +64,8 @@ public abstract class PromptView extends OverlayView implements EventHandler {
 		appManager.getEventDispatcher().registerHandler(this);
 	}
 	
-	public void viewWillAppear() {				
+	public void viewWillAppear() {
+		super.viewWillAppear();
 		setupFocusCycle();
 		getAppManager().getFocusManager().request(1);
 	}

@@ -5,7 +5,6 @@ import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Stack;
 
 public abstract class StateHierarchy {
@@ -37,7 +36,20 @@ public abstract class StateHierarchy {
 	
 	protected State resolveCurrentState() {
 		String combined = composePath(path);
-		return Optional.ofNullable(states.get(combined)).orElseThrow(() -> new StateResolutionError(combined));
+		
+		State current = states.get(combined);
+		
+		if(current != null) {
+			return current;
+		} else {
+			try {
+				path.pop();
+			} catch(EmptyStackException exception) {
+				System.err.println("Unable to restore a consistent state");
+			}
+
+			throw new StateResolutionError(combined);
+		}
 	}
 	
 	protected Stack<String> resolvePath(String identifier) {		
