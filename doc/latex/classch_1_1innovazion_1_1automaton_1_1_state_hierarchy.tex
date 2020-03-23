@@ -1,0 +1,158 @@
+\hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy}{}\doxysection{ch.\+innovazion.\+automaton.\+State\+Hierarchy Class Reference}
+\label{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy}\index{ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}}
+
+
+Inheritance diagram for ch.\+innovazion.\+automaton.\+State\+Hierarchy\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+automaton.\+State\+Hierarchy\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a286a560b90f56f3b03f83aec2ea62282}{enter\+State}} (Stack$<$ String $>$ new\+Path)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_aadfa28f6b66f1079fee4bcfdde761275}{back}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a65c539e438eaa2e5acd003d82ece40b0}{reset}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_ab5981de191696e01006b75d8a7a6b4ca}{register}} (String identifier, \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state}{State}} state)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state}{State}} \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a8c41652cced6912a46b7a0232313ceef}{resolve\+Current\+State}} ()
+\item 
+Stack$<$ String $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a71889cc5f02c175e08297696a602c985}{resolve\+Path}} (String identifier)
+\item 
+List$<$ String $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a3dd8bbbfc7f876476dd01a3a6fae722d}{decompose\+Path}} (String \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a17406314700ec0ffc289fd4e111b02a4}{path}})
+\item 
+String \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a23796a4258a38b9a479f1ebfbc32a910}{compose\+Path}} (List$<$ String $>$ components)
+\item 
+abstract void \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a75aaf12ff4118485d2bff3e94aa11cab}{register\+States}} (\mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager}{State\+Manager}} mgr)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+String \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a832aaefef0f1408e51520168ceda21e4}{normalize\+Identifier}} (String identifier)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final Map$<$ String, \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state}{State}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a7c406fde803b21d28002d636f638b610}{states}} = new Hash\+Map$<$$>$()
+\item 
+final Stack$<$ String $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a17406314700ec0ffc289fd4e111b02a4}{path}} = new Stack$<$$>$()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_aadfa28f6b66f1079fee4bcfdde761275}\label{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_aadfa28f6b66f1079fee4bcfdde761275}} 
+\index{ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}!back@{back}}
+\index{back@{back}!ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}}
+\doxysubsubsection{\texorpdfstring{back()}{back()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+automaton.\+State\+Hierarchy.\+back (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a23796a4258a38b9a479f1ebfbc32a910}\label{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a23796a4258a38b9a479f1ebfbc32a910}} 
+\index{ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}!composePath@{composePath}}
+\index{composePath@{composePath}!ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}}
+\doxysubsubsection{\texorpdfstring{composePath()}{composePath()}}
+{\footnotesize\ttfamily String ch.\+innovazion.\+automaton.\+State\+Hierarchy.\+compose\+Path (\begin{DoxyParamCaption}\item[{List$<$ String $>$}]{components }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a3dd8bbbfc7f876476dd01a3a6fae722d}\label{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a3dd8bbbfc7f876476dd01a3a6fae722d}} 
+\index{ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}!decomposePath@{decomposePath}}
+\index{decomposePath@{decomposePath}!ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}}
+\doxysubsubsection{\texorpdfstring{decomposePath()}{decomposePath()}}
+{\footnotesize\ttfamily List$<$String$>$ ch.\+innovazion.\+automaton.\+State\+Hierarchy.\+decompose\+Path (\begin{DoxyParamCaption}\item[{String}]{path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a286a560b90f56f3b03f83aec2ea62282}\label{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a286a560b90f56f3b03f83aec2ea62282}} 
+\index{ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}!enterState@{enterState}}
+\index{enterState@{enterState}!ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}}
+\doxysubsubsection{\texorpdfstring{enterState()}{enterState()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+automaton.\+State\+Hierarchy.\+enter\+State (\begin{DoxyParamCaption}\item[{Stack$<$ String $>$}]{new\+Path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a832aaefef0f1408e51520168ceda21e4}\label{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a832aaefef0f1408e51520168ceda21e4}} 
+\index{ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}!normalizeIdentifier@{normalizeIdentifier}}
+\index{normalizeIdentifier@{normalizeIdentifier}!ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}}
+\doxysubsubsection{\texorpdfstring{normalizeIdentifier()}{normalizeIdentifier()}}
+{\footnotesize\ttfamily String ch.\+innovazion.\+automaton.\+State\+Hierarchy.\+normalize\+Identifier (\begin{DoxyParamCaption}\item[{String}]{identifier }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_ab5981de191696e01006b75d8a7a6b4ca}\label{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_ab5981de191696e01006b75d8a7a6b4ca}} 
+\index{ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}!register@{register}}
+\index{register@{register}!ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}}
+\doxysubsubsection{\texorpdfstring{register()}{register()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+automaton.\+State\+Hierarchy.\+register (\begin{DoxyParamCaption}\item[{String}]{identifier,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state}{State}}}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a75aaf12ff4118485d2bff3e94aa11cab}\label{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a75aaf12ff4118485d2bff3e94aa11cab}} 
+\index{ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}!registerStates@{registerStates}}
+\index{registerStates@{registerStates}!ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}}
+\doxysubsubsection{\texorpdfstring{registerStates()}{registerStates()}}
+{\footnotesize\ttfamily abstract void ch.\+innovazion.\+automaton.\+State\+Hierarchy.\+register\+States (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager}{State\+Manager}}}]{mgr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}, {\ttfamily [protected]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_hierarchy_a608f84bcc57ab1367348be08561ceda3}{ch.\+innovazion.\+arionide.\+menu.\+Menu\+Hierarchy}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1test_1_1_test_hierarchy_a00aef8025ca7fcbd6901ded9e3a5a85a}{ch.\+innovazion.\+automaton.\+test.\+Test\+Hierarchy}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a65c539e438eaa2e5acd003d82ece40b0}\label{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a65c539e438eaa2e5acd003d82ece40b0}} 
+\index{ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}!reset@{reset}}
+\index{reset@{reset}!ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+automaton.\+State\+Hierarchy.\+reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a8c41652cced6912a46b7a0232313ceef}\label{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a8c41652cced6912a46b7a0232313ceef}} 
+\index{ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}!resolveCurrentState@{resolveCurrentState}}
+\index{resolveCurrentState@{resolveCurrentState}!ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}}
+\doxysubsubsection{\texorpdfstring{resolveCurrentState()}{resolveCurrentState()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state}{State}} ch.\+innovazion.\+automaton.\+State\+Hierarchy.\+resolve\+Current\+State (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_hierarchy_a54f69ae96c90ce8ecde35d0d963bd8b4}{ch.\+innovazion.\+arionide.\+menu.\+Menu\+Hierarchy}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a8c41652cced6912a46b7a0232313ceef_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a71889cc5f02c175e08297696a602c985}\label{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a71889cc5f02c175e08297696a602c985}} 
+\index{ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}!resolvePath@{resolvePath}}
+\index{resolvePath@{resolvePath}!ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}}
+\doxysubsubsection{\texorpdfstring{resolvePath()}{resolvePath()}}
+{\footnotesize\ttfamily Stack$<$String$>$ ch.\+innovazion.\+automaton.\+State\+Hierarchy.\+resolve\+Path (\begin{DoxyParamCaption}\item[{String}]{identifier }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a71889cc5f02c175e08297696a602c985_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a17406314700ec0ffc289fd4e111b02a4}\label{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a17406314700ec0ffc289fd4e111b02a4}} 
+\index{ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}!path@{path}}
+\index{path@{path}!ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}}
+\doxysubsubsection{\texorpdfstring{path}{path}}
+{\footnotesize\ttfamily final Stack$<$String$>$ ch.\+innovazion.\+automaton.\+State\+Hierarchy.\+path = new Stack$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a7c406fde803b21d28002d636f638b610}\label{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy_a7c406fde803b21d28002d636f638b610}} 
+\index{ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}!states@{states}}
+\index{states@{states}!ch.innovazion.automaton.StateHierarchy@{ch.innovazion.automaton.StateHierarchy}}
+\doxysubsubsection{\texorpdfstring{states}{states}}
+{\footnotesize\ttfamily final Map$<$String, \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state}{State}}$>$ ch.\+innovazion.\+automaton.\+State\+Hierarchy.\+states = new Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/automaton/\mbox{\hyperlink{_state_hierarchy_8java}{State\+Hierarchy.\+java}}\end{DoxyCompactItemize}

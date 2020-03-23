@@ -1,0 +1,318 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry}{}\doxysection{ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry}\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a5d2c885d4fc675663dab50a361595c14}{set\+Project}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a27666c05c0d446c657910bafcabac698}{project}})
+\item 
+\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a34f46090b226efbe61b8c1f344e74163}{get\+Project}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a7931c2fc772f09bab051dc682e90c1f1}{update\+Seed}} (long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a65eb51e9421631874ec7edeee5d85de0}{seed}})
+\item 
+long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aa1f1c4aaa8a4e93e8a64299d5edfbe65}{get\+Seed}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aadda3991d9f6a5ab3ec81c3efac16f59}{sort}} (Vector3f camera)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_af5500a4ac230a3a58ee529803be0aa17}{get\+Element\+By\+ID}} (int id)
+\item 
+List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_ae4c664af350f4f6a69b782f5d0b57d0a}{get\+Elements}} ()
+\item 
+List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_connection}{Connection}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a4b0544e99997bf04efe476442015b2f2}{get\+Connections}} ()
+\item 
+List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a585e0b1b0570b9e264f989fff85e3798}{get\+Collisions}} (Vector3f camera)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a363f5ca73e6de1264f1ecb87c8cbadb6}{request\+Reconstruction}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_ac4e659f7e86ab195069d15f91618138c}{sync}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry}{Geometry}} other)  throws Geometry\+Exception 
+\item 
+abstract float \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aaae5c5afcf10a7e44720094a04af0add}{get\+Size}} (int generation)
+\item 
+abstract float \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a7326e3bfc1d3285b00fc59eec82cf3c8}{get\+Relative\+Size}} (int generation)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static float \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_af69e5c944f7635584a25767ab360db3c}{distance}} (Vector3f camera, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} element)
+\item 
+static float \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a5bc5980c82d8fdf3fc0fddce30f58a25}{distance}} (Vector3f camera, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_connection}{Connection}} connection)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final float \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aeabc05e045ec0146fcf9eb9838d04c7f}{PI}} = 3.\+141592653589793f
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a5be23074ba7a977e37fb56bd12b5bdaf}{process\+Event\+Queue}} ()  throws Geometry\+Exception 
+\item 
+abstract void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aebc71780b1c02da3475f249ddd17cf63}{construct}} (List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a2b9e4d67567449fa07ab738810dd3afc}{elements}}, List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_connection}{Connection}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_ad15a35253b43fefe6a7fc61d07c6da8b}{connections}})  throws Geometry\+Exception
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a99b9112dbd4343a527a9602be22e995b}{construct\+Mapping}} (List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$ source, Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$ mapping)  throws Geometry\+Exception 
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aca17788ea9fda8846759e67109734619}{elements\+By\+ID}} = new Hash\+Map$<$$>$()
+\item 
+List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a2b9e4d67567449fa07ab738810dd3afc}{elements}} = new Array\+List$<$$>$()
+\item 
+List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_connection}{Connection}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_ad15a35253b43fefe6a7fc61d07c6da8b}{connections}} = new Array\+List$<$$>$()
+\item 
+\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a27666c05c0d446c657910bafcabac698}{project}}
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a4e6765dee9172ac644b00a62168c62ad}{contruction\+Requested}} = true
+\item 
+long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a65eb51e9421631874ec7edeee5d85de0}{seed}} = System.\+nano\+Time()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aebc71780b1c02da3475f249ddd17cf63}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aebc71780b1c02da3475f249ddd17cf63}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!construct@{construct}}
+\index{construct@{construct}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{construct()}{construct()}}
+{\footnotesize\ttfamily abstract void ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+construct (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$}]{elements,  }\item[{List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_connection}{Connection}} $>$}]{connections }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_geometry_exception}{Geometry\+Exception}}\hspace{0.3cm}{\ttfamily [abstract]}, {\ttfamily [protected]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_code_geometry_a6a89688b7d8112adc9ddb0891b525602}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Code\+Geometry}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry_a68ead204cb7f36208dd02f5d84ade55f}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Hierarchical\+Geometry}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry_a6c09c8b2b2451bf7ea1f5ac6b1a7768f}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Current\+Code\+Geometry}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_merged_geometry_a1b93998a14347a93ab175359ba03bfee}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Merged\+Geometry}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a99b9112dbd4343a527a9602be22e995b}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a99b9112dbd4343a527a9602be22e995b}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!constructMapping@{constructMapping}}
+\index{constructMapping@{constructMapping}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{constructMapping()}{constructMapping()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+construct\+Mapping (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$}]{source,  }\item[{Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$}]{mapping }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_geometry_exception}{Geometry\+Exception}}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a5bc5980c82d8fdf3fc0fddce30f58a25}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a5bc5980c82d8fdf3fc0fddce30f58a25}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!distance@{distance}}
+\index{distance@{distance}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{distance()}{distance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static float ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+distance (\begin{DoxyParamCaption}\item[{Vector3f}]{camera,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_connection}{Connection}}}]{connection }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a5bc5980c82d8fdf3fc0fddce30f58a25_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_af69e5c944f7635584a25767ab360db3c}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_af69e5c944f7635584a25767ab360db3c}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!distance@{distance}}
+\index{distance@{distance}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{distance()}{distance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static float ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+distance (\begin{DoxyParamCaption}\item[{Vector3f}]{camera,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}}}]{element }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_af69e5c944f7635584a25767ab360db3c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a585e0b1b0570b9e264f989fff85e3798}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a585e0b1b0570b9e264f989fff85e3798}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!getCollisions@{getCollisions}}
+\index{getCollisions@{getCollisions}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{getCollisions()}{getCollisions()}}
+{\footnotesize\ttfamily List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}}$>$ ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+get\+Collisions (\begin{DoxyParamCaption}\item[{Vector3f}]{camera }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry_a1d5139fca435e45d1e410496f51732c8}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Current\+Code\+Geometry}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a4b0544e99997bf04efe476442015b2f2}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a4b0544e99997bf04efe476442015b2f2}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!getConnections@{getConnections}}
+\index{getConnections@{getConnections}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{getConnections()}{getConnections()}}
+{\footnotesize\ttfamily List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_connection}{Connection}}$>$ ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+get\+Connections (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry_a1b712ebb712ce850b0e8d202d54f247a}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Current\+Code\+Geometry}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_af5500a4ac230a3a58ee529803be0aa17}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_af5500a4ac230a3a58ee529803be0aa17}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!getElementByID@{getElementByID}}
+\index{getElementByID@{getElementByID}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{getElementByID()}{getElementByID()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+get\+Element\+By\+ID (\begin{DoxyParamCaption}\item[{int}]{id }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry_a55142d04fda0053d9392510178fee1d5}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Current\+Code\+Geometry}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_ae4c664af350f4f6a69b782f5d0b57d0a}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_ae4c664af350f4f6a69b782f5d0b57d0a}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!getElements@{getElements}}
+\index{getElements@{getElements}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{getElements()}{getElements()}}
+{\footnotesize\ttfamily List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}}$>$ ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+get\+Elements (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry_a1e73892a598484bcb8044c5e4d181d88}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Current\+Code\+Geometry}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a34f46090b226efbe61b8c1f344e74163}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a34f46090b226efbe61b8c1f344e74163}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!getProject@{getProject}}
+\index{getProject@{getProject}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{getProject()}{getProject()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+get\+Project (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a7326e3bfc1d3285b00fc59eec82cf3c8}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a7326e3bfc1d3285b00fc59eec82cf3c8}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!getRelativeSize@{getRelativeSize}}
+\index{getRelativeSize@{getRelativeSize}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{getRelativeSize()}{getRelativeSize()}}
+{\footnotesize\ttfamily abstract float ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+get\+Relative\+Size (\begin{DoxyParamCaption}\item[{int}]{generation }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_code_geometry_a3a9010fe38fb9314db710e5e6c8c3f64}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Code\+Geometry}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry_a235d0d6a54c8956273b221a8fb720331}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Hierarchical\+Geometry}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry_a4b1514e21478c13323f3b8470004c0a8}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Current\+Code\+Geometry}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_merged_geometry_ace7f7b017ce46e31531d2059ee0d5609}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Merged\+Geometry}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aa1f1c4aaa8a4e93e8a64299d5edfbe65}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aa1f1c4aaa8a4e93e8a64299d5edfbe65}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!getSeed@{getSeed}}
+\index{getSeed@{getSeed}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{getSeed()}{getSeed()}}
+{\footnotesize\ttfamily long ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+get\+Seed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aaae5c5afcf10a7e44720094a04af0add}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aaae5c5afcf10a7e44720094a04af0add}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!getSize@{getSize}}
+\index{getSize@{getSize}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{getSize()}{getSize()}}
+{\footnotesize\ttfamily abstract float ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+get\+Size (\begin{DoxyParamCaption}\item[{int}]{generation }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_code_geometry_ad7973753ab6e7397bb9b3888560fe503}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Code\+Geometry}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry_a0b70b263320bc97245bc13c82233464a}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Hierarchical\+Geometry}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry_a26c5b6f70b2d7de92cd04b354c0beb9f}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Current\+Code\+Geometry}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_merged_geometry_aaabf9cb4c87cfc2a257b346585ca724a}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Merged\+Geometry}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a5be23074ba7a977e37fb56bd12b5bdaf}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a5be23074ba7a977e37fb56bd12b5bdaf}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!processEventQueue@{processEventQueue}}
+\index{processEventQueue@{processEventQueue}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{processEventQueue()}{processEventQueue()}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+process\+Event\+Queue (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_geometry_exception}{Geometry\+Exception}}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry_ad3589e64f0ba9ba6097cdd7a18034e07}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Current\+Code\+Geometry}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_merged_geometry_a3c788b0a4c84551651d03c7a210be67b}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Merged\+Geometry}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a5be23074ba7a977e37fb56bd12b5bdaf_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a363f5ca73e6de1264f1ecb87c8cbadb6}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a363f5ca73e6de1264f1ecb87c8cbadb6}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!requestReconstruction@{requestReconstruction}}
+\index{requestReconstruction@{requestReconstruction}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{requestReconstruction()}{requestReconstruction()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+request\+Reconstruction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry_a6f01e19559a589e5de2b6a2641a3d9e2}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Current\+Code\+Geometry}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a5d2c885d4fc675663dab50a361595c14}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a5d2c885d4fc675663dab50a361595c14}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!setProject@{setProject}}
+\index{setProject@{setProject}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{setProject()}{setProject()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+set\+Project (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}}}]{project }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aadda3991d9f6a5ab3ec81c3efac16f59}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aadda3991d9f6a5ab3ec81c3efac16f59}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!sort@{sort}}
+\index{sort@{sort}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{sort()}{sort()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+sort (\begin{DoxyParamCaption}\item[{Vector3f}]{camera }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aadda3991d9f6a5ab3ec81c3efac16f59_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_ac4e659f7e86ab195069d15f91618138c}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_ac4e659f7e86ab195069d15f91618138c}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!sync@{sync}}
+\index{sync@{sync}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{sync()}{sync()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+sync (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry}{Geometry}}}]{other }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_geometry_exception}{Geometry\+Exception}}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a7931c2fc772f09bab051dc682e90c1f1}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a7931c2fc772f09bab051dc682e90c1f1}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!updateSeed@{updateSeed}}
+\index{updateSeed@{updateSeed}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{updateSeed()}{updateSeed()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+update\+Seed (\begin{DoxyParamCaption}\item[{long}]{seed }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_code_geometry_a585d135e32f866639f40a3c84f6ad5b4}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Code\+Geometry}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry_a53d2c733a5023bfa38e715b97023a2d4}{ch.\+innovazion.\+arionide.\+ui.\+core.\+geom.\+Hierarchical\+Geometry}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_ad15a35253b43fefe6a7fc61d07c6da8b}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_ad15a35253b43fefe6a7fc61d07c6da8b}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!connections@{connections}}
+\index{connections@{connections}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{connections}{connections}}
+{\footnotesize\ttfamily List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_connection}{Connection}}$>$ ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+connections = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a4e6765dee9172ac644b00a62168c62ad}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a4e6765dee9172ac644b00a62168c62ad}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!contructionRequested@{contructionRequested}}
+\index{contructionRequested@{contructionRequested}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{contructionRequested}{contructionRequested}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+contruction\+Requested = true\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a2b9e4d67567449fa07ab738810dd3afc}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a2b9e4d67567449fa07ab738810dd3afc}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!elements@{elements}}
+\index{elements@{elements}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{elements}{elements}}
+{\footnotesize\ttfamily List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}}$>$ ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+elements = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aca17788ea9fda8846759e67109734619}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aca17788ea9fda8846759e67109734619}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!elementsByID@{elementsByID}}
+\index{elementsByID@{elementsByID}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{elementsByID}{elementsByID}}
+{\footnotesize\ttfamily Map$<$Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}}$>$ ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+elements\+By\+ID = new Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aeabc05e045ec0146fcf9eb9838d04c7f}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_aeabc05e045ec0146fcf9eb9838d04c7f}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!PI@{PI}}
+\index{PI@{PI}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{PI}{PI}}
+{\footnotesize\ttfamily final float ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+PI = 3.\+141592653589793f\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a27666c05c0d446c657910bafcabac698}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a27666c05c0d446c657910bafcabac698}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!project@{project}}
+\index{project@{project}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{project}{project}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project}{Project}} ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+project\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a65eb51e9421631874ec7edeee5d85de0}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry_a65eb51e9421631874ec7edeee5d85de0}} 
+\index{ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}!seed@{seed}}
+\index{seed@{seed}!ch.innovazion.arionide.ui.core.Geometry@{ch.innovazion.arionide.ui.core.Geometry}}
+\doxysubsubsection{\texorpdfstring{seed}{seed}}
+{\footnotesize\ttfamily long ch.\+innovazion.\+arionide.\+ui.\+core.\+Geometry.\+seed = System.\+nano\+Time()\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/ui/core/\mbox{\hyperlink{_geometry_8java}{Geometry.\+java}}\end{DoxyCompactItemize}

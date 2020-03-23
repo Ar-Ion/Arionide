@@ -1,9 +1,11 @@
 <map id="ch.innovazion.arionide.ui.overlay.views.InputPromptView" name="ch.innovazion.arionide.ui.overlay.views.InputPromptView">
-<area shape="rect" id="node1" title=" " alt="" coords="1383,35,1638,73"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_prompt_view.html" title=" " alt="" coords="1081,35,1335,73"/>
-<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view.html" title=" " alt="" coords="778,5,1033,44"/>
-<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html" title=" " alt="" coords="484,12,730,37"/>
-<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface.html" title=" " alt="" coords="225,5,436,44"/>
-<area shape="rect" id="node6" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_drawable.html" title=" " alt="" coords="5,5,177,44"/>
-<area shape="rect" id="node7" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1_event_handler.html" title=" " alt="" coords="507,61,708,100"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1915,35,2169,73"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_prompt_view.html" title=" " alt="" coords="1612,35,1867,73"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view.html" title=" " alt="" coords="1309,5,1564,44"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html" title=" " alt="" coords="1015,12,1261,37"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container.html" title=" " alt="" coords="750,5,967,44"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html" title=" " alt="" coords="484,5,702,44"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface.html" title=" " alt="" coords="225,5,436,44"/>
+<area shape="rect" id="node8" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_drawable.html" title=" " alt="" coords="5,5,177,44"/>
+<area shape="rect" id="node9" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1_event_handler.html" title=" " alt="" coords="1038,61,1239,100"/>
 </map>

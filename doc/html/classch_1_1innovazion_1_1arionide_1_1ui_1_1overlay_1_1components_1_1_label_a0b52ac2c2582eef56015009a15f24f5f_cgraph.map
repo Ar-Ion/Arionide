@@ -1,6 +1,6 @@
 <map id="ch.innovazion.arionide.ui.overlay.components.Label.drawComponent" name="ch.innovazion.arionide.ui.overlay.components.Label.drawComponent">
 <area shape="rect" id="node1" title=" " alt="" coords="5,68,299,107"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#a2e4765ff8540e2a0fc8e82e3062f9580" title=" " alt="" coords="364,5,581,44"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#ae7e45b320a08a247a21f9e074eac4144" title=" " alt="" coords="364,5,581,44"/>
 <area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface.html#a98efd355a144423cd135f3301a4355af" title=" " alt="" coords="349,68,596,107"/>
 <area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system.html#a95896e33dd006ac442413f4d74dc24bf" title=" " alt="" coords="347,132,598,171"/>
 <area shape="rect" id="node4" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context.html#a150bfecc7963838f0f6a813219112bf1" title=" " alt="" coords="650,59,874,111"/>

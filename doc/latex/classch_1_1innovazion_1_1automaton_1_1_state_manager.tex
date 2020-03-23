@@ -1,0 +1,201 @@
+\hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager}{}\doxysection{ch.\+innovazion.\+automaton.\+State\+Manager Class Reference}
+\label{classch_1_1innovazion_1_1automaton_1_1_state_manager}\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+
+
+Inheritance diagram for ch.\+innovazion.\+automaton.\+State\+Manager\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classch_1_1innovazion_1_1automaton_1_1_state_manager__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+automaton.\+State\+Manager\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1automaton_1_1_state_manager__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a4e1a0406eabe7153d74bed375d9e54e6}{State\+Manager}} (\mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy}{State\+Hierarchy}} \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a858bbb09e2b4833bb5265a391e3905b3}{hierarchy}})
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a1de32ca59f2efc872d9be5e45cec7d9d}{State\+Manager}} (\mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy}{State\+Hierarchy}} \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a858bbb09e2b4833bb5265a391e3905b3}{hierarchy}}, boolean \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a519c402287665fb382e8d7e0e472ba4d}{debug}})
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_ada7f5ccdcc642313407c93526f4df63d}{go}} (String identifier)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_ad75999c92aad0926fc72f27daef8c646}{register\+Notifiable}} (Consumer$<$ String $>$ notifiable)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a7e91965e8df4225d24a64fdc3aaf5d9a}{unregister\+Notifiable}} (Consumer$<$ String $>$ notifiable)
+\item 
+List$<$ String $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_ab2291073d45ff659e1ae41960e2bc89c}{get\+Available\+Actions}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a794406e8c2161940a5ab77cfd5f46b02}{trigger\+Action}} (String action)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a39d353cee18aa13472e6afd157a8d9b4}{perform\+State\+Transition}} (\mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state}{State}} current, String identifier)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Bi\+Consumer$<$ String, Object $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a53c2491c67820eeb1b345cdd9c7905d6}{debugable\+Synchonization\+Callback}} (Bi\+Consumer$<$ String, Object $>$ consumer)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a2382e9e51f4258c02cfb15f8e1dcf72c}{debug\+Synchronization}} (String field, Object prev\+Value)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a2dd1edf980552c30d184a03d7c3079cb}{debug}} (String msg)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final List$<$ Consumer$<$ String $>$ $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a99e514895992b75742e98f4c51291f0d}{notifiables}} = Collections.\+synchronized\+List(new Array\+List$<$$>$())
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy}{State\+Hierarchy}} \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a858bbb09e2b4833bb5265a391e3905b3}{hierarchy}}
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_syncer}{State\+Syncer}} \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a57640d74921dc5ba0c511986e2a058d8}{syncer}}
+\item 
+final boolean \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_manager_a519c402287665fb382e8d7e0e472ba4d}{debug}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_a4e1a0406eabe7153d74bed375d9e54e6}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_a4e1a0406eabe7153d74bed375d9e54e6}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!StateManager@{StateManager}}
+\index{StateManager@{StateManager}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{StateManager()}{StateManager()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily ch.\+innovazion.\+automaton.\+State\+Manager.\+State\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy}{State\+Hierarchy}}}]{hierarchy }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_a1de32ca59f2efc872d9be5e45cec7d9d}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_a1de32ca59f2efc872d9be5e45cec7d9d}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!StateManager@{StateManager}}
+\index{StateManager@{StateManager}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{StateManager()}{StateManager()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily ch.\+innovazion.\+automaton.\+State\+Manager.\+State\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy}{State\+Hierarchy}}}]{hierarchy,  }\item[{boolean}]{debug }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1automaton_1_1_state_manager_a1de32ca59f2efc872d9be5e45cec7d9d_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_a2dd1edf980552c30d184a03d7c3079cb}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_a2dd1edf980552c30d184a03d7c3079cb}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!debug@{debug}}
+\index{debug@{debug}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{debug()}{debug()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+automaton.\+State\+Manager.\+debug (\begin{DoxyParamCaption}\item[{String}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_a53c2491c67820eeb1b345cdd9c7905d6}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_a53c2491c67820eeb1b345cdd9c7905d6}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!debugableSynchonizationCallback@{debugableSynchonizationCallback}}
+\index{debugableSynchonizationCallback@{debugableSynchonizationCallback}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{debugableSynchonizationCallback()}{debugableSynchonizationCallback()}}
+{\footnotesize\ttfamily Bi\+Consumer$<$String, Object$>$ ch.\+innovazion.\+automaton.\+State\+Manager.\+debugable\+Synchonization\+Callback (\begin{DoxyParamCaption}\item[{Bi\+Consumer$<$ String, Object $>$}]{consumer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_a2382e9e51f4258c02cfb15f8e1dcf72c}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_a2382e9e51f4258c02cfb15f8e1dcf72c}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!debugSynchronization@{debugSynchronization}}
+\index{debugSynchronization@{debugSynchronization}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{debugSynchronization()}{debugSynchronization()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+automaton.\+State\+Manager.\+debug\+Synchronization (\begin{DoxyParamCaption}\item[{String}]{field,  }\item[{Object}]{prev\+Value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_ab2291073d45ff659e1ae41960e2bc89c}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_ab2291073d45ff659e1ae41960e2bc89c}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!getAvailableActions@{getAvailableActions}}
+\index{getAvailableActions@{getAvailableActions}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{getAvailableActions()}{getAvailableActions()}}
+{\footnotesize\ttfamily List$<$String$>$ ch.\+innovazion.\+automaton.\+State\+Manager.\+get\+Available\+Actions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1automaton_1_1_state_manager_ab2291073d45ff659e1ae41960e2bc89c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_ada7f5ccdcc642313407c93526f4df63d}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_ada7f5ccdcc642313407c93526f4df63d}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!go@{go}}
+\index{go@{go}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{go()}{go()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+automaton.\+State\+Manager.\+go (\begin{DoxyParamCaption}\item[{String}]{identifier }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1automaton_1_1_state_manager_ada7f5ccdcc642313407c93526f4df63d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_a39d353cee18aa13472e6afd157a8d9b4}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_a39d353cee18aa13472e6afd157a8d9b4}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!performStateTransition@{performStateTransition}}
+\index{performStateTransition@{performStateTransition}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{performStateTransition()}{performStateTransition()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+automaton.\+State\+Manager.\+perform\+State\+Transition (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state}{State}}}]{current,  }\item[{String}]{identifier }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1automaton_1_1_state_manager_a39d353cee18aa13472e6afd157a8d9b4_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_ad75999c92aad0926fc72f27daef8c646}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_ad75999c92aad0926fc72f27daef8c646}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!registerNotifiable@{registerNotifiable}}
+\index{registerNotifiable@{registerNotifiable}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{registerNotifiable()}{registerNotifiable()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+automaton.\+State\+Manager.\+register\+Notifiable (\begin{DoxyParamCaption}\item[{Consumer$<$ String $>$}]{notifiable }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_a794406e8c2161940a5ab77cfd5f46b02}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_a794406e8c2161940a5ab77cfd5f46b02}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!triggerAction@{triggerAction}}
+\index{triggerAction@{triggerAction}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{triggerAction()}{triggerAction()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+automaton.\+State\+Manager.\+trigger\+Action (\begin{DoxyParamCaption}\item[{String}]{action }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1automaton_1_1_state_manager_a794406e8c2161940a5ab77cfd5f46b02_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_a7e91965e8df4225d24a64fdc3aaf5d9a}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_a7e91965e8df4225d24a64fdc3aaf5d9a}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!unregisterNotifiable@{unregisterNotifiable}}
+\index{unregisterNotifiable@{unregisterNotifiable}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{unregisterNotifiable()}{unregisterNotifiable()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+automaton.\+State\+Manager.\+unregister\+Notifiable (\begin{DoxyParamCaption}\item[{Consumer$<$ String $>$}]{notifiable }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_a519c402287665fb382e8d7e0e472ba4d}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_a519c402287665fb382e8d7e0e472ba4d}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!debug@{debug}}
+\index{debug@{debug}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{debug}{debug}}
+{\footnotesize\ttfamily final boolean ch.\+innovazion.\+automaton.\+State\+Manager.\+debug\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_a858bbb09e2b4833bb5265a391e3905b3}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_a858bbb09e2b4833bb5265a391e3905b3}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!hierarchy@{hierarchy}}
+\index{hierarchy@{hierarchy}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{hierarchy}{hierarchy}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_hierarchy}{State\+Hierarchy}} ch.\+innovazion.\+automaton.\+State\+Manager.\+hierarchy\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_a99e514895992b75742e98f4c51291f0d}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_a99e514895992b75742e98f4c51291f0d}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!notifiables@{notifiables}}
+\index{notifiables@{notifiables}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{notifiables}{notifiables}}
+{\footnotesize\ttfamily final List$<$Consumer$<$String$>$ $>$ ch.\+innovazion.\+automaton.\+State\+Manager.\+notifiables = Collections.\+synchronized\+List(new Array\+List$<$$>$())\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1automaton_1_1_state_manager_a57640d74921dc5ba0c511986e2a058d8}\label{classch_1_1innovazion_1_1automaton_1_1_state_manager_a57640d74921dc5ba0c511986e2a058d8}} 
+\index{ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}!syncer@{syncer}}
+\index{syncer@{syncer}!ch.innovazion.automaton.StateManager@{ch.innovazion.automaton.StateManager}}
+\doxysubsubsection{\texorpdfstring{syncer}{syncer}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_syncer}{State\+Syncer}} ch.\+innovazion.\+automaton.\+State\+Manager.\+syncer\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/automaton/\mbox{\hyperlink{_state_manager_8java}{State\+Manager.\+java}}\end{DoxyCompactItemize}

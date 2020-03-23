@@ -2,6 +2,15 @@
 \label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer}\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
 
 
+Inheritance diagram for ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer__inherit__graph}
+\end{center}
+\end{figure}
+
+
 Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -12,7 +21,7 @@ Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Re
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6fea5bb0423c5a46ef047be59cd3119f}{G\+L\+Renderer}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_controller}{Core\+Controller}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_adb21e972dc6463ea1e8da26e356595dc}{controller}})
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6fea5bb0423c5a46ef047be59cd3119f}{G\+L\+Renderer}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_controller}{Core\+Controller}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_renderer_ac48576f99837f4b2e8c210593dc644da}{controller}})
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0851a9449f0e9fa47420fde0aa535ba4}{init}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} context)
 \item 
@@ -20,11 +29,11 @@ void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aceebfe5935c24e64189ab8ba94c9125e}{render2D}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} context)
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1401b72ce86493312f64553d6db0eeb}{update\+Camera}} (Vector3f position, float yaw, float pitch)
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a41a455b72189c0e37318563b626fc1a8}{update\+Viewport}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds}{Bounds}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa62c7fd8c6c6dc2d945b4b53a50868d3}{bounds}})
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6837e90789690b9a05f1e84185952946}{update\+Acceleration}} (float acceleration)
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4f35612ae742eee921a8aea927e25696}{update\+Camera}} ()
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1cb4b8dcd1924a974359e42d76e34f4}{update\+Bounds}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds}{Bounds}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa62c7fd8c6c6dc2d945b4b53a50868d3}{bounds}})
+Vector3f \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac9ca94e24ca06e74fd032d9aede8c889}{get\+Camera\+Direction}} ()
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
@@ -45,7 +54,7 @@ void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ae0033effa48e78a3c324a722e243e6aa}{render\+Connections}} (G\+L4 gl, List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_connection}{Connection}} $>$ connections)
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a98138f4333bb50d48648935b967b797a}{connect}} (G\+L4 gl, Vector3f first, Vector3f second)
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a68716f4ed748a4402901fe595da2a1dc}{connect}} (G\+L4 gl, Vector3f first, Vector3f second, float first\+Size, float second\+Size, Vector4f color)
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_af3b36bf11266fbc008248a54a10cf1ec}{setup\+FX}} (G\+L4 gl)
 \item 
@@ -53,24 +62,18 @@ void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac03409dfde29c84087d7b4dd6bde6944}{render\+Labels}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} context, List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element}{World\+Element}} $>$ elements)
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a919fa4fe3625c810df0918bff938828c}{render\+Label}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} context, String label, int color, int alpha, Vector2f screen\+Anchor, float height)
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a256ed2801dbd94fce53c61b599f2bdd8}{render\+Label}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} context, List$<$ String $>$ labels, int color, int alpha, Vector2f screen\+Anchor, float height)
 \item 
 boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a73fed4a61e5c8a361b4b9a137c3fb4fc}{check\+Renderability}} (Vector3f object)
 \item 
 Vector2f \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a2b041e0ebce1c2be7fe087a556f6e34b}{get\+H\+V\+C\+From3D}} (Vector3f input, Matrix4f projection)
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9cf9be7d2ccef26a18e1646d80b30417}{update\+Perspective}} ()
-\item 
-Vector3f \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9d474b52804c12a2bebfa1f72c41f8c6}{get\+D\+OF}} ()
-\item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0513a881e72ad516053a12c2cf12f44c}{load\+VP}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_general3_d_settings}{General3\+D\+Settings}} settings)
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6f5c16747ce45d604ff838c435e394ea}{load\+View\+Projection}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_general3_d_settings}{General3\+D\+Settings}} settings)
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4b36442dfb11888ebcabda69d365e920}{load\+Matrix}} (Matrix4f matrix, Float\+Buffer \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a32a4a61357b3207df70cd1782ad7cddb}{model\+Data}})
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
-\item 
-final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_controller}{Core\+Controller}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_adb21e972dc6463ea1e8da26e356595dc}{controller}}
 \item 
 final Float\+Buffer \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a32a4a61357b3207df70cd1782ad7cddb}{model\+Data}} = Float\+Buffer.\+allocate(16)
 \item 
@@ -100,7 +103,7 @@ final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1
 \item 
 final \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_general_structure_settings}{General\+Structure\+Settings}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab0b93291ce5b945058c8bbc3eab412d0}{joint\+Structure\+Settings}} = \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1_utils_a20459ac6f7d54c62d21fae8db37615a1}{Utils.\+bind}}(General\+Structure\+Settings.\+class, Stream.\+of(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_abd2bb0e2e7d6b95b189f52ebd925f82b}{structures}}).map(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object_acef7320795be9c06070f85fc00c0a082}{Structure\+::get\+Settings}}).to\+Array(\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_general_structure_settings}{General\+Structure\+Settings}}\mbox{[}$\,$\mbox{]}\+::new))
 \item 
-final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link}{Link}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aec2d4360eae53aa0e09dd82eed7787aa}{link}} = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link}{Link}}()
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link}{Link}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aec2d4360eae53aa0e09dd82eed7787aa}{link}} = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link}{Link}}(5)
 \item 
 final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1fx_1_1_f_b_o_frame}{F\+B\+O\+Frame}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_aa534cb2bb5b92e17725b0e393d547e0f}{fx}} = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1fx_1_1_f_b_o_frame}{F\+B\+O\+Frame}}()
 \item 
@@ -125,7 +128,7 @@ int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g
 \doxysubsection*{Static Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
-static final List$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab24395834c2123323dd16fdd4eefe537}{qualities}} = Arrays.\+as\+List(16, 20, 24, 28, 32)
+static final List$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab24395834c2123323dd16fdd4eefe537}{qualities}} = Arrays.\+as\+List(4)
 \item 
 static final int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a8c48f5ee953af920ca07d71d31964174}{small\+Stars\+Count}} = 2048
 \item 
@@ -135,6 +138,7 @@ static final float \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1c
 \item 
 static final float \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4878ca73e1b961a39090a4e07b95a43a}{sky\+Distance}} = 32.\+0f $\ast$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry_a16712ff0bd3ca2b83ba2573482850a0d}{Hierarchical\+Geometry.\+M\+A\+K\+E\+\_\+\+T\+H\+E\+\_\+\+U\+N\+I\+V\+E\+R\+S\+E\+\_\+\+G\+R\+E\+A\+T\+\_\+\+A\+G\+A\+IN}}
 \end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
@@ -160,24 +164,24 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a73fed4a61e5c8a361b4b9a137c3fb4fc_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a98138f4333bb50d48648935b967b797a}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a98138f4333bb50d48648935b967b797a}} 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a68716f4ed748a4402901fe595da2a1dc}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a68716f4ed748a4402901fe595da2a1dc}} 
 \index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!connect@{connect}}
 \index{connect@{connect}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
 \doxysubsubsection{\texorpdfstring{connect()}{connect()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+connect (\begin{DoxyParamCaption}\item[{G\+L4}]{gl,  }\item[{Vector3f}]{first,  }\item[{Vector3f}]{second }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+connect (\begin{DoxyParamCaption}\item[{G\+L4}]{gl,  }\item[{Vector3f}]{first,  }\item[{Vector3f}]{second,  }\item[{float}]{first\+Size,  }\item[{float}]{second\+Size,  }\item[{Vector4f}]{color }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a98138f4333bb50d48648935b967b797a_cgraph}
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a68716f4ed748a4402901fe595da2a1dc_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9d474b52804c12a2bebfa1f72c41f8c6}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9d474b52804c12a2bebfa1f72c41f8c6}} 
-\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!getDOF@{getDOF}}
-\index{getDOF@{getDOF}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
-\doxysubsubsection{\texorpdfstring{getDOF()}{getDOF()}}
-{\footnotesize\ttfamily Vector3f ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+get\+D\+OF (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac9ca94e24ca06e74fd032d9aede8c889}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac9ca94e24ca06e74fd032d9aede8c889}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!getCameraDirection@{getCameraDirection}}
+\index{getCameraDirection@{getCameraDirection}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{getCameraDirection()}{getCameraDirection()}}
+{\footnotesize\ttfamily Vector3f ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+get\+Camera\+Direction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a2b041e0ebce1c2be7fe087a556f6e34b}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a2b041e0ebce1c2be7fe087a556f6e34b}} 
 \index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!getHVCFrom3D@{getHVCFrom3D}}
@@ -217,17 +221,17 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{loadMatrix()}{loadMatrix()}}
 {\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+load\+Matrix (\begin{DoxyParamCaption}\item[{Matrix4f}]{matrix,  }\item[{Float\+Buffer}]{model\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0513a881e72ad516053a12c2cf12f44c}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0513a881e72ad516053a12c2cf12f44c}} 
-\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!loadVP@{loadVP}}
-\index{loadVP@{loadVP}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
-\doxysubsubsection{\texorpdfstring{loadVP()}{loadVP()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+load\+VP (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_general3_d_settings}{General3\+D\+Settings}}}]{settings }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6f5c16747ce45d604ff838c435e394ea}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6f5c16747ce45d604ff838c435e394ea}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!loadViewProjection@{loadViewProjection}}
+\index{loadViewProjection@{loadViewProjection}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{loadViewProjection()}{loadViewProjection()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+load\+View\+Projection (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_general3_d_settings}{General3\+D\+Settings}}}]{settings }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a0513a881e72ad516053a12c2cf12f44c_cgraph}
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6f5c16747ce45d604ff838c435e394ea_cgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac27a150fa037fab5082554ed4b906d11}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac27a150fa037fab5082554ed4b906d11}} 
@@ -275,24 +279,25 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{renderConnections()}{renderConnections()}}
 {\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+render\+Connections (\begin{DoxyParamCaption}\item[{G\+L4}]{gl,  }\item[{List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_connection}{Connection}} $>$}]{connections }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ae0033effa48e78a3c324a722e243e6aa_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a919fa4fe3625c810df0918bff938828c}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a919fa4fe3625c810df0918bff938828c}} 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a256ed2801dbd94fce53c61b599f2bdd8}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a256ed2801dbd94fce53c61b599f2bdd8}} 
 \index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!renderLabel@{renderLabel}}
 \index{renderLabel@{renderLabel}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
 \doxysubsubsection{\texorpdfstring{renderLabel()}{renderLabel()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+render\+Label (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}}}]{context,  }\item[{String}]{label,  }\item[{int}]{color,  }\item[{int}]{alpha,  }\item[{Vector2f}]{screen\+Anchor,  }\item[{float}]{height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+render\+Label (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}}}]{context,  }\item[{List$<$ String $>$}]{labels,  }\item[{int}]{color,  }\item[{int}]{alpha,  }\item[{Vector2f}]{screen\+Anchor,  }\item[{float}]{height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a919fa4fe3625c810df0918bff938828c_cgraph}
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a256ed2801dbd94fce53c61b599f2bdd8_cgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac03409dfde29c84087d7b4dd6bde6944}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ac03409dfde29c84087d7b4dd6bde6944}} 
@@ -327,7 +332,8 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{renderStructures()}{renderStructures()}}
 {\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+render\+Structures (\begin{DoxyParamCaption}\item[{G\+L4}]{gl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -399,49 +405,31 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a79628bbb614db6ab294d8315e96553eb_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6837e90789690b9a05f1e84185952946}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a6837e90789690b9a05f1e84185952946}} 
-\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!updateAcceleration@{updateAcceleration}}
-\index{updateAcceleration@{updateAcceleration}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
-\doxysubsubsection{\texorpdfstring{updateAcceleration()}{updateAcceleration()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+update\+Acceleration (\begin{DoxyParamCaption}\item[{float}]{acceleration }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1cb4b8dcd1924a974359e42d76e34f4}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1cb4b8dcd1924a974359e42d76e34f4}} 
-\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!updateBounds@{updateBounds}}
-\index{updateBounds@{updateBounds}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
-\doxysubsubsection{\texorpdfstring{updateBounds()}{updateBounds()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+update\+Bounds (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds}{Bounds}}}]{bounds }\end{DoxyParamCaption})}
-
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1cb4b8dcd1924a974359e42d76e34f4_cgraph}
-\end{center}
-\end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1401b72ce86493312f64553d6db0eeb}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1401b72ce86493312f64553d6db0eeb}} 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4f35612ae742eee921a8aea927e25696}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4f35612ae742eee921a8aea927e25696}} 
 \index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!updateCamera@{updateCamera}}
 \index{updateCamera@{updateCamera}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
 \doxysubsubsection{\texorpdfstring{updateCamera()}{updateCamera()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+update\+Camera (\begin{DoxyParamCaption}\item[{Vector3f}]{position,  }\item[{float}]{yaw,  }\item[{float}]{pitch }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+update\+Camera (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_ab1401b72ce86493312f64553d6db0eeb_cgraph}
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4f35612ae742eee921a8aea927e25696_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9cf9be7d2ccef26a18e1646d80b30417}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9cf9be7d2ccef26a18e1646d80b30417}} 
-\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!updatePerspective@{updatePerspective}}
-\index{updatePerspective@{updatePerspective}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
-\doxysubsubsection{\texorpdfstring{updatePerspective()}{updatePerspective()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+update\+Perspective (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a41a455b72189c0e37318563b626fc1a8}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a41a455b72189c0e37318563b626fc1a8}} 
+\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!updateViewport@{updateViewport}}
+\index{updateViewport@{updateViewport}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
+\doxysubsubsection{\texorpdfstring{updateViewport()}{updateViewport()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+update\+Viewport (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds}{Bounds}}}]{bounds }\end{DoxyParamCaption})}
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a9cf9be7d2ccef26a18e1646d80b30417_cgraph}
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a41a455b72189c0e37318563b626fc1a8_cgraph}
 \end{center}
 \end{figure}
 
@@ -482,12 +470,6 @@ Here is the call graph for this function\+:\nopagebreak
 \index{clearDepth@{clearDepth}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
 \doxysubsubsection{\texorpdfstring{clearDepth}{clearDepth}}
 {\footnotesize\ttfamily final Float\+Buffer ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+clear\+Depth = Float\+Buffer.\+allocate(1)\hspace{0.3cm}{\ttfamily [private]}}
-
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_adb21e972dc6463ea1e8da26e356595dc}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_adb21e972dc6463ea1e8da26e356595dc}} 
-\index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!controller@{controller}}
-\index{controller@{controller}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
-\doxysubsubsection{\texorpdfstring{controller}{controller}}
-{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_controller}{Core\+Controller}} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+controller\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a3f2f4d083443936e4770660934fb2746}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a3f2f4d083443936e4770660934fb2746}} 
 \index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!currentToPreviousViewportData@{currentToPreviousViewportData}}
@@ -535,7 +517,7 @@ Here is the call graph for this function\+:\nopagebreak
 \index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!link@{link}}
 \index{link@{link}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
 \doxysubsubsection{\texorpdfstring{link}{link}}
-{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link}{Link}} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+link = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link}{Link}}()\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link}{Link}} ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+link = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link}{Link}}(5)\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a32a4a61357b3207df70cd1782ad7cddb}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a32a4a61357b3207df70cd1782ad7cddb}} 
 \index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!modelData@{modelData}}
@@ -565,7 +547,7 @@ Here is the call graph for this function\+:\nopagebreak
 \index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!qualities@{qualities}}
 \index{qualities@{qualities}!ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}}
 \doxysubsubsection{\texorpdfstring{qualities}{qualities}}
-{\footnotesize\ttfamily final List$<$Integer$>$ ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+qualities = Arrays.\+as\+List(16, 20, 24, 28, 32)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+{\footnotesize\ttfamily final List$<$Integer$>$ ch.\+innovazion.\+arionide.\+ui.\+core.\+gl.\+G\+L\+Renderer.\+qualities = Arrays.\+as\+List(4)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4878ca73e1b961a39090a4e07b95a43a}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer_a4878ca73e1b961a39090a4e07b95a43a}} 
 \index{ch.innovazion.arionide.ui.core.gl.GLRenderer@{ch.innovazion.arionide.ui.core.gl.GLRenderer}!skyDistance@{skyDistance}}

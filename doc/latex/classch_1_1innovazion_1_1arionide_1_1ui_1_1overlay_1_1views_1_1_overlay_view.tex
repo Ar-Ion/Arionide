@@ -21,13 +21,25 @@ Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+overlay.\+views.\+Ov
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a780630ddd4a8a2e2ff3db23bd8fed193}{Overlay\+View}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager}{App\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view_a9c310379f2161da05c3df9aac99a32ab}{app\+Manager}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager}{Layout\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view_ac5f4e6b8b3c25c59b771ec45cf2a7f4a}{layout\+Manager}})
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a780630ddd4a8a2e2ff3db23bd8fed193}{Overlay\+View}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager}{App\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view_a9c310379f2161da05c3df9aac99a32ab}{app\+Manager}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager}{Layout\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container_a091a7892b8054949225948f2f6b3d6f0}{layout\+Manager}})
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_ad3e67c18710ae058ede8658abb5f882a}{draw\+Surface}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} context)
 \item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_rendering_system}{Primitive\+Rendering\+System}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_ab8cdd6a4607ada266d17660e38c8f03d}{get\+Prefered\+Rendering\+System}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} context)
 \item 
 Set$<$ Class$<$? extends \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_event}{Event}} $>$ $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a97df9c1150ead6bb6c0c1e53b12bf731}{get\+Handleable\+Events}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a2813edad3775ecb44cb1572fb59dcf66}{view\+Will\+Appear}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a47a596b54d3d037132cac600ccc0fe2a}{view\+Will\+Disappear}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a642c4a2dcecb1b15853f757c9b1339a0}{controller\+Was\+Active}} = false
 \end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
 
@@ -97,6 +109,53 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_ab8cdd6a4607ada266d17660e38c8f03d_cgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a2813edad3775ecb44cb1572fb59dcf66}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a2813edad3775ecb44cb1572fb59dcf66}} 
+\index{ch.innovazion.arionide.ui.overlay.views.OverlayView@{ch.innovazion.arionide.ui.overlay.views.OverlayView}!viewWillAppear@{viewWillAppear}}
+\index{viewWillAppear@{viewWillAppear}!ch.innovazion.arionide.ui.overlay.views.OverlayView@{ch.innovazion.arionide.ui.overlay.views.OverlayView}}
+\doxysubsubsection{\texorpdfstring{viewWillAppear()}{viewWillAppear()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+overlay.\+views.\+Overlay\+View.\+view\+Will\+Appear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view_a298ce8c1e134141f87e12d179abd39eb}{ch.\+innovazion.\+arionide.\+ui.\+overlay.\+View}}.
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_prompt_view_a39f5f4b98832a7586dc5e1c0025d520c}{ch.\+innovazion.\+arionide.\+ui.\+overlay.\+views.\+Prompt\+View}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_input_prompt_view_a820f195daa3807be1b638e7365780abf}{ch.\+innovazion.\+arionide.\+ui.\+overlay.\+views.\+Input\+Prompt\+View}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a2813edad3775ecb44cb1572fb59dcf66_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a47a596b54d3d037132cac600ccc0fe2a}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a47a596b54d3d037132cac600ccc0fe2a}} 
+\index{ch.innovazion.arionide.ui.overlay.views.OverlayView@{ch.innovazion.arionide.ui.overlay.views.OverlayView}!viewWillDisappear@{viewWillDisappear}}
+\index{viewWillDisappear@{viewWillDisappear}!ch.innovazion.arionide.ui.overlay.views.OverlayView@{ch.innovazion.arionide.ui.overlay.views.OverlayView}}
+\doxysubsubsection{\texorpdfstring{viewWillDisappear()}{viewWillDisappear()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+overlay.\+views.\+Overlay\+View.\+view\+Will\+Disappear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view_ae9e77b8591d7b0974bf5bb855ddc5c60}{ch.\+innovazion.\+arionide.\+ui.\+overlay.\+View}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a47a596b54d3d037132cac600ccc0fe2a_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a642c4a2dcecb1b15853f757c9b1339a0}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_overlay_view_a642c4a2dcecb1b15853f757c9b1339a0}} 
+\index{ch.innovazion.arionide.ui.overlay.views.OverlayView@{ch.innovazion.arionide.ui.overlay.views.OverlayView}!controllerWasActive@{controllerWasActive}}
+\index{controllerWasActive@{controllerWasActive}!ch.innovazion.arionide.ui.overlay.views.OverlayView@{ch.innovazion.arionide.ui.overlay.views.OverlayView}}
+\doxysubsubsection{\texorpdfstring{controllerWasActive}{controllerWasActive}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+ui.\+overlay.\+views.\+Overlay\+View.\+controller\+Was\+Active = false\hspace{0.3cm}{\ttfamily [private]}}
+
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}

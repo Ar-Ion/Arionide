@@ -1,52 +1,52 @@
 <map id="ch.innovazion.arionide.ui.AWTContext" name="ch.innovazion.arionide.ui.AWTContext">
-<area shape="rect" id="node1" title=" " alt="" coords="3076,407,3248,446"/>
-<area shape="rect" id="node2" title=" " alt="" coords="2814,165,2881,190"/>
-<area shape="rect" id="node3" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context.html" title=" " alt="" coords="1983,209,2154,247"/>
-<area shape="rect" id="node12" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html" title=" " alt="" coords="2761,614,2933,653"/>
-<area shape="rect" id="node41" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager.html" title=" " alt="" coords="2379,141,2590,179"/>
-<area shape="rect" id="node4" href="$interfacech_1_1innovazion_1_1arionide_1_1threading_1_1_purgeable.html" title=" " alt="" coords="1459,51,1676,90"/>
-<area shape="rect" id="node5" title=" " alt="" coords="2793,266,2902,291"/>
-<area shape="rect" id="node6" title=" " alt="" coords="2773,315,2922,341"/>
-<area shape="rect" id="node7" title=" " alt="" coords="2774,365,2921,390"/>
-<area shape="rect" id="node8" title=" " alt="" coords="2801,414,2893,439"/>
-<area shape="rect" id="node9" title=" " alt="" coords="2817,463,2877,489"/>
-<area shape="rect" id="node10" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html" title=" " alt="" coords="1933,614,2204,653"/>
-<area shape="rect" id="node15" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_orchestrator.html" title=" " alt="" coords="2384,739,2586,778"/>
-<area shape="rect" id="node47" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager.html" title=" " alt="" coords="2399,514,2571,553"/>
-<area shape="rect" id="node49" href="$classch_1_1innovazion_1_1arionide_1_1threading_1_1timing_1_1_timer.html" title=" " alt="" coords="2357,614,2613,653"/>
-<area shape="rect" id="node11" title=" " alt="" coords="2801,565,2893,590"/>
-<area shape="rect" id="node13" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_alpha_layering_system.html" title=" " alt="" coords="2376,1125,2594,1163"/>
-<area shape="rect" id="node14" href="$interfacech_1_1innovazion_1_1arionide_1_1_arionide.html" title=" " alt="" coords="2382,1187,2588,1213"/>
-<area shape="rect" id="node16" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_controller.html" title=" " alt="" coords="1467,426,1668,465"/>
-<area shape="rect" id="node28" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_user_controller.html" title=" " alt="" coords="1968,453,2169,491"/>
-<area shape="rect" id="node31" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer.html" title=" " alt="" coords="1961,769,2176,807"/>
-<area shape="rect" id="node17" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry.html" title=" " alt="" coords="969,87,1207,126"/>
-<area shape="rect" id="node18" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_geometry.html" title=" " alt="" coords="609,162,848,201"/>
-<area shape="rect" id="node19" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project.html" title=" " alt="" coords="281,725,482,763"/>
-<area shape="rect" id="node20" href="$interfacech_1_1innovazion_1_1arionide_1_1_resource.html" title=" " alt="" coords="5,718,220,743"/>
-<area shape="rect" id="node44" href="$interfacech_1_1innovazion_1_1arionide_1_1_workspace.html" title=" " alt="" coords="269,914,494,939"/>
-<area shape="rect" id="node21" href="$interfacech_1_1innovazion_1_1arionide_1_1_mapped_structure.html" title=" " alt="" coords="10,773,216,811"/>
-<area shape="rect" id="node22" href="$interfacech_1_1innovazion_1_1arionide_1_1_loadable.html" title=" " alt="" coords="6,845,219,870"/>
-<area shape="rect" id="node23" href="$interfacech_1_1innovazion_1_1arionide_1_1_saveable.html" title=" " alt="" coords="6,913,219,938"/>
-<area shape="rect" id="node24" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element.html" title=" " alt="" coords="969,565,1207,603"/>
-<area shape="rect" id="node25" title=" " alt="" coords="693,541,763,566"/>
-<area shape="rect" id="node26" href="$enumch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_rendering_scene.html" title=" " alt="" coords="987,263,1189,302"/>
-<area shape="rect" id="node27" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html" title=" " alt="" coords="976,627,1200,666"/>
-<area shape="rect" id="node29" title=" " alt="" coords="1032,326,1144,351"/>
-<area shape="rect" id="node30" title=" " alt="" coords="953,375,1223,414"/>
-<area shape="rect" id="node32" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator.html" title=" " alt="" coords="1460,807,1675,846"/>
-<area shape="rect" id="node33" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars.html" title=" " alt="" coords="1443,870,1691,909"/>
-<area shape="rect" id="node34" title=" " alt="" coords="1533,933,1602,958"/>
-<area shape="rect" id="node35" title=" " alt="" coords="1524,1006,1611,1031"/>
-<area shape="rect" id="node36" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link.html" title=" " alt="" coords="1432,1055,1703,1081"/>
-<area shape="rect" id="node37" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_general_structure_settings.html" title=" " alt="" coords="1428,1105,1706,1143"/>
-<area shape="rect" id="node38" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_general_stars_settings.html" title=" " alt="" coords="1443,745,1691,783"/>
-<area shape="rect" id="node39" title=" " alt="" coords="1514,579,1621,605"/>
-<area shape="rect" id="node40" title=" " alt="" coords="2349,451,2621,490"/>
-<area shape="rect" id="node42" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1_event_handler.html" title=" " alt="" coords="1968,146,2169,185"/>
-<area shape="rect" id="node43" title=" " alt="" coords="1936,70,2201,122"/>
-<area shape="rect" id="node45" href="$classch_1_1innovazion_1_1arionide_1_1resources_1_1_resources.html" title=" " alt="" coords="618,1231,838,1270"/>
-<area shape="rect" id="node46" title=" " alt="" coords="332,1246,431,1271"/>
-<area shape="rect" id="node48" title=" " alt="" coords="1944,390,2193,429"/>
-<area shape="rect" id="node50" title=" " alt="" coords="2757,677,2937,715"/>
+<area shape="rect" id="node1" title=" " alt="" coords="3473,331,3645,369"/>
+<area shape="rect" id="node2" title=" " alt="" coords="3212,5,3278,31"/>
+<area shape="rect" id="node3" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context.html" title=" " alt="" coords="2385,409,2557,448"/>
+<area shape="rect" id="node12" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html" title=" " alt="" coords="3159,436,3331,475"/>
+<area shape="rect" id="node42" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager.html" title=" " alt="" coords="2778,296,2989,335"/>
+<area shape="rect" id="node4" href="$interfacech_1_1innovazion_1_1arionide_1_1threading_1_1_purgeable.html" title=" " alt="" coords="1879,367,2096,405"/>
+<area shape="rect" id="node5" title=" " alt="" coords="3191,189,3299,215"/>
+<area shape="rect" id="node6" title=" " alt="" coords="3171,239,3319,264"/>
+<area shape="rect" id="node7" title=" " alt="" coords="3172,288,3318,313"/>
+<area shape="rect" id="node8" title=" " alt="" coords="3199,337,3291,363"/>
+<area shape="rect" id="node9" title=" " alt="" coords="3215,387,3275,412"/>
+<area shape="rect" id="node10" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html" title=" " alt="" coords="585,465,857,504"/>
+<area shape="rect" id="node15" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_orchestrator.html" title=" " alt="" coords="2783,801,2984,840"/>
+<area shape="rect" id="node31" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html" title=" " alt="" coords="1008,817,1203,856"/>
+<area shape="rect" id="node47" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager.html" title=" " alt="" coords="2385,104,2557,143"/>
+<area shape="rect" id="node49" href="$classch_1_1innovazion_1_1arionide_1_1threading_1_1timing_1_1_timer.html" title=" " alt="" coords="1265,445,1521,484"/>
+<area shape="rect" id="node11" title=" " alt="" coords="3199,499,3291,524"/>
+<area shape="rect" id="node13" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_alpha_layering_system.html" title=" " alt="" coords="2775,575,2992,613"/>
+<area shape="rect" id="node14" href="$interfacech_1_1innovazion_1_1arionide_1_1_arionide.html" title=" " alt="" coords="2780,637,2987,663"/>
+<area shape="rect" id="node16" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_controller.html" title=" " alt="" coords="1545,1093,1747,1132"/>
+<area shape="rect" id="node30" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_user_controller.html" title=" " alt="" coords="1886,1195,2088,1233"/>
+<area shape="rect" id="node35" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_renderer.html" title=" " alt="" coords="1886,1037,2088,1076"/>
+<area shape="rect" id="node17" title=" " alt="" coords="1054,1044,1158,1069"/>
+<area shape="rect" id="node18" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry.html" title=" " alt="" coords="987,1347,1225,1385"/>
+<area shape="rect" id="node19" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry.html" title=" " alt="" coords="621,1340,822,1379"/>
+<area shape="rect" id="node20" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project.html" title=" " alt="" coords="281,847,482,885"/>
+<area shape="rect" id="node21" href="$interfacech_1_1innovazion_1_1arionide_1_1_resource.html" title=" " alt="" coords="5,672,220,697"/>
+<area shape="rect" id="node45" href="$interfacech_1_1innovazion_1_1arionide_1_1_workspace.html" title=" " alt="" coords="269,655,494,680"/>
+<area shape="rect" id="node22" href="$interfacech_1_1innovazion_1_1arionide_1_1_mapped_structure.html" title=" " alt="" coords="10,829,216,868"/>
+<area shape="rect" id="node23" href="$interfacech_1_1innovazion_1_1arionide_1_1_loadable.html" title=" " alt="" coords="6,775,219,800"/>
+<area shape="rect" id="node24" href="$interfacech_1_1innovazion_1_1arionide_1_1_saveable.html" title=" " alt="" coords="6,723,219,748"/>
+<area shape="rect" id="node25" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element.html" title=" " alt="" coords="987,1093,1225,1132"/>
+<area shape="rect" id="node26" title=" " alt="" coords="671,775,771,800"/>
+<area shape="rect" id="node46" href="$classch_1_1innovazion_1_1arionide_1_1resources_1_1_resources.html" title=" " alt="" coords="996,621,1216,660"/>
+<area shape="rect" id="node27" title=" " alt="" coords="686,1143,756,1168"/>
+<area shape="rect" id="node34" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer.html" title=" " alt="" coords="2363,801,2578,840"/>
+<area shape="rect" id="node28" href="$enumch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_rendering_scene.html" title=" " alt="" coords="1005,1232,1207,1271"/>
+<area shape="rect" id="node29" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html" title=" " alt="" coords="993,755,1218,793"/>
+<area shape="rect" id="node32" title=" " alt="" coords="1050,880,1161,905"/>
+<area shape="rect" id="node33" title=" " alt="" coords="970,981,1241,1020"/>
+<area shape="rect" id="node36" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator.html" title=" " alt="" coords="1879,732,2095,771"/>
+<area shape="rect" id="node37" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars.html" title=" " alt="" coords="1863,795,2111,833"/>
+<area shape="rect" id="node38" title=" " alt="" coords="1953,857,2022,883"/>
+<area shape="rect" id="node39" title=" " alt="" coords="1944,936,2030,961"/>
+<area shape="rect" id="node40" title=" " alt="" coords="1934,285,2041,311"/>
+<area shape="rect" id="node41" title=" " alt="" coords="2747,687,3019,725"/>
+<area shape="rect" id="node43" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1_event_handler.html" title=" " alt="" coords="2370,347,2571,385"/>
+<area shape="rect" id="node44" title=" " alt="" coords="2338,271,2603,323"/>
+<area shape="rect" id="node48" title=" " alt="" coords="1862,88,2112,127"/>
+<area shape="rect" id="node50" title=" " alt="" coords="3155,801,3335,840"/>
 </map>

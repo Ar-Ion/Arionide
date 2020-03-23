@@ -1,0 +1,16 @@
+<map id="ch.innovazion.automaton.StateManager.performStateTransition" name="ch.innovazion.automaton.StateManager.performStateTransition">
+<area shape="rect" id="node1" title=" " alt="" coords="5,220,249,258"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a23796a4258a38b9a479f1ebfbc32a910" title=" " alt="" coords="631,121,824,160"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1automaton_1_1_state_manager.html#a53c2491c67820eeb1b345cdd9c7905d6" title=" " alt="" coords="297,49,557,101"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a286a560b90f56f3b03f83aec2ea62282" title=" " alt="" coords="340,125,514,164"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1automaton_1_1_state.html#a8270355f74b7164c014485201f0ffb4b" title=" " alt="" coords="340,188,514,226"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1automaton_1_1_state.html#a137df72996d70e54ce94b4ebf235eceb" title=" " alt="" coords="340,250,514,289"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a8c41652cced6912a46b7a0232313ceef" title=" " alt="" coords="312,313,542,352"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a71889cc5f02c175e08297696a602c985" title=" " alt="" coords="336,376,518,414"/>
+<area shape="rect" id="node11" href="$classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#a4352ac22b0761b900c07d799113e6a3a" title=" " alt="" coords="324,438,530,477"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a3dd8bbbfc7f876476dd01a3a6fae722d" title=" " alt="" coords="623,313,832,352"/>
+<area shape="rect" id="node10" href="$classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a832aaefef0f1408e51520168ceda21e4" title=" " alt="" coords="617,376,838,414"/>
+<area shape="rect" id="node12" href="$classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#ada8ded8161b255149804265d0693e4b5" title=" " alt="" coords="641,438,814,477"/>
+<area shape="rect" id="node14" href="$classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#a50ce7f3510aee4bb6ad29d6c220f680d" title=" " alt="" coords="605,501,850,540"/>
+<area shape="rect" id="node13" href="$interfacech_1_1innovazion_1_1automaton_1_1_export.html#af923e790d099e991b3dec969278b0d0a" title=" " alt="" coords="898,438,1071,477"/>
+</map>

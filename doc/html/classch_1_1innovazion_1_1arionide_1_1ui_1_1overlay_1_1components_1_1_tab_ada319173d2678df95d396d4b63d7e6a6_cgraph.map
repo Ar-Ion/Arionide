@@ -1,9 +1,8 @@
 <map id="ch.innovazion.arionide.ui.overlay.components.Tab.Tab" name="ch.innovazion.arionide.ui.overlay.components.Tab.Tab">
-<area shape="rect" id="node1" title=" " alt="" coords="5,152,299,191"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#a6797c323866a5d656aa70fc6e78afda1" title=" " alt="" coords="374,5,592,44"/>
-<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html#a43b19b9b0434accd2965cabe96415071" title=" " alt="" coords="667,35,885,73"/>
-<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a09d0cee3370c7a91bd916eca48483967" title=" " alt="" coords="375,120,592,159"/>
-<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_factory.html#a334bcea27b685f6d4c8c2a2784800784" title=" " alt="" coords="376,183,590,221"/>
-<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_factory.html#a36e1dfd4135a0e349a72083b935451c5" title=" " alt="" coords="376,245,590,284"/>
-<area shape="rect" id="node7" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#ab3b4329dbed53b4d9912a21e65bd2611" title=" " alt="" coords="347,308,619,347"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,155,299,193"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#a6797c323866a5d656aa70fc6e78afda1" title=" " alt="" coords="374,29,592,68"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a09d0cee3370c7a91bd916eca48483967" title=" " alt="" coords="375,92,592,131"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_factory.html#a334bcea27b685f6d4c8c2a2784800784" title=" " alt="" coords="376,155,590,193"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_factory.html#a36e1dfd4135a0e349a72083b935451c5" title=" " alt="" coords="376,217,590,256"/>
+<area shape="rect" id="node6" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#ab3b4329dbed53b4d9912a21e65bd2611" title=" " alt="" coords="347,280,619,319"/>
 </map>

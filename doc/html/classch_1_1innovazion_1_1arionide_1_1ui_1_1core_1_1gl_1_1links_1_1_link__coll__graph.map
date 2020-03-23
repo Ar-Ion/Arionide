@@ -1,10 +1,12 @@
 <map id="ch.innovazion.arionide.ui.core.gl.links.Link" name="ch.innovazion.arionide.ui.core.gl.links.Link">
-<area shape="rect" id="node1" title=" " alt="" coords="765,201,1036,227"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object.html" title=" " alt="" coords="436,124,631,176"/>
-<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object.html" title=" " alt="" coords="45,5,261,44"/>
-<area shape="rect" id="node4" title=" " alt="" coords="26,68,279,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="26,131,279,169"/>
-<area shape="rect" id="node6" title=" " alt="" coords="5,193,301,232"/>
-<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link_generator.html" title=" " alt="" coords="411,228,657,267"/>
-<area shape="rect" id="node8" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator.html" title=" " alt="" coords="45,256,261,295"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1218,263,1488,288"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_object.html" title=" " alt="" coords="885,124,1080,176"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_renderable_object.html" title=" " alt="" coords="310,5,526,44"/>
+<area shape="rect" id="node4" title=" " alt="" coords="291,68,544,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="291,131,544,169"/>
+<area shape="rect" id="node6" title=" " alt="" coords="270,193,565,232"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link_tessellator.html" title=" " alt="" coords="859,256,1105,295"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_tessellator.html" title=" " alt="" coords="310,256,526,295"/>
+<area shape="rect" id="node9" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator.html" title=" " alt="" coords="5,297,221,336"/>
+<area shape="rect" id="node10" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link_indices_generator.html" title=" " alt="" coords="589,313,835,352"/>
 </map>

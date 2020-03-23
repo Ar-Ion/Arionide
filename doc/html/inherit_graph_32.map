@@ -1,6 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_validator.html" title=" " alt="" coords="5,68,192,107"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_dummy_validator.html" title=" " alt="" coords="263,5,450,44"/>
-<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_integer_validator.html" title=" " alt="" coords="240,68,473,107"/>
-<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1natives_1_1_structure_validator.html" title=" " alt="" coords="240,131,473,169"/>
+<area shape="rect" id="node1" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="5,5,347,44"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html" title=" " alt="" coords="395,5,736,44"/>
 </map>

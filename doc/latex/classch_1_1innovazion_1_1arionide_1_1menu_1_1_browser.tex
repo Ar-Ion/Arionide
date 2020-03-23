@@ -21,156 +21,130 @@ Collaboration diagram for ch.\+innovazion.\+arionide.\+menu.\+Browser\+:\nopageb
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ae64818f004f2faeac1bb1ecd32cd504d}{show}} ()
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a4ca37e3f0056d744f8de4a56dee00dfe}{Browser}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager}{Menu\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_af58d5bcbd60a78133d5f3fdcd8adf4d2}{manager}})
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ac3eef5dfe86fda931c5b1a87b8c5ce4d}{set\+Selected\+ID}} (int id)
-\item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_description}{Menu\+Description}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a966f2edcb3e03e842e98e242ec719e7e}{get\+Description}} ()
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a9c4d3c94d5f7c4c208379bd88fef2f80}{on\+Action}} (String action)
 \end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_abea75f7e8e5fad527ba1347cefc09f2c}{Browser}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager}{App\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_a6a91c4ceb3c2fcac3bf1fdc8ab9e11a9}{manager}}, String... \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_af2dec659ff3bdf787e9c3c103f618b89}{elements}})
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ab3781ceaf276a1cd0d4fd24b9e81c568}{on\+Enter}} ()
 \item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a1d5606d4e33df41467f558bc420fee68}{Browser}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu}{Menu}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_a3fe23bf751f59f3c1b85bbff1ebc737c}{parent}}, String... \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_af2dec659ff3bdf787e9c3c103f618b89}{elements}})
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ac0cb65e0c923e73bb2e70c750aca4aac}{update\+Cursor}} (int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_a8d17bccafd90da8428bdfa225f14d07e}{cursor}})
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a47aacd47b46c29933ac110dde678bb36}{on\+Select}} (int index)
+abstract List$<$ \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_hierarchy_element}{Hierarchy\+Element}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a7f014423233ab8fbba392bd08e2253b4}{fetch\+Browsable\+I\+Ds}} ()
 \item 
-int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_aa7e428192ca5c175b50b1413b7d5a758}{get\+Selected\+ID}} ()
+abstract void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a5b4be5e146f1eb5db4e2076ccd25cd9f}{browse}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
 \item 
-abstract List$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a4df21f33fddeab5d9a58eddb63ffeffb}{load\+Current\+Elements}} ()
+\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure}{Structure}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a15d47f4d43434dccd6a99c2fa8b3b684}{target}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
-List$<$ Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a488e71e990c5891d9c84a04f5386ec25}{objects}}
-\item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_description}{Menu\+Description}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_acfbb72644d53a24ddd01533c5cf22825}{description}}
+List$<$ \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure}{Structure}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_af60c0e0f03f5bb9eaef00ea623ca5e41}{browsables}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_abea75f7e8e5fad527ba1347cefc09f2c}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_abea75f7e8e5fad527ba1347cefc09f2c}} 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a4ca37e3f0056d744f8de4a56dee00dfe}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a4ca37e3f0056d744f8de4a56dee00dfe}} 
 \index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!Browser@{Browser}}
 \index{Browser@{Browser}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
-\doxysubsubsection{\texorpdfstring{Browser()}{Browser()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+menu.\+Browser.\+Browser (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager}{App\+Manager}}}]{manager,  }\item[{String...}]{elements }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
-
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a1d5606d4e33df41467f558bc420fee68}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a1d5606d4e33df41467f558bc420fee68}} 
-\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!Browser@{Browser}}
-\index{Browser@{Browser}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
-\doxysubsubsection{\texorpdfstring{Browser()}{Browser()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+menu.\+Browser.\+Browser (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu}{Menu}}}]{parent,  }\item[{String...}]{elements }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+\doxysubsubsection{\texorpdfstring{Browser()}{Browser()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+menu.\+Browser.\+Browser (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager}{Menu\+Manager}}}]{manager }\end{DoxyParamCaption})}
 
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a966f2edcb3e03e842e98e242ec719e7e}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a966f2edcb3e03e842e98e242ec719e7e}} 
-\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!getDescription@{getDescription}}
-\index{getDescription@{getDescription}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
-\doxysubsubsection{\texorpdfstring{getDescription()}{getDescription()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_description}{Menu\+Description}} ch.\+innovazion.\+arionide.\+menu.\+Browser.\+get\+Description (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a5b4be5e146f1eb5db4e2076ccd25cd9f}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a5b4be5e146f1eb5db4e2076ccd25cd9f}} 
+\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!browse@{browse}}
+\index{browse@{browse}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
+\doxysubsubsection{\texorpdfstring{browse()}{browse()}}
+{\footnotesize\ttfamily abstract void ch.\+innovazion.\+arionide.\+menu.\+Browser.\+browse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}, {\ttfamily [protected]}}
 
 
 
-Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_ac82154a373d5498a9a8718f7173922d3}{ch.\+innovazion.\+arionide.\+menu.\+Menu}}.
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_code_browser_a5ec6099858b771a0fa7e641657c07ca7}{ch.\+innovazion.\+arionide.\+menu.\+code.\+Code\+Browser}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_browser_ace85237c99d721633c9f91ac528b6b16}{ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Browser}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a7f014423233ab8fbba392bd08e2253b4}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a7f014423233ab8fbba392bd08e2253b4}} 
+\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!fetchBrowsableIDs@{fetchBrowsableIDs}}
+\index{fetchBrowsableIDs@{fetchBrowsableIDs}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
+\doxysubsubsection{\texorpdfstring{fetchBrowsableIDs()}{fetchBrowsableIDs()}}
+{\footnotesize\ttfamily abstract List$<$\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_hierarchy_element}{Hierarchy\+Element}}$>$ ch.\+innovazion.\+arionide.\+menu.\+Browser.\+fetch\+Browsable\+I\+Ds (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}, {\ttfamily [protected]}}
 
 
 
-Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_code_appender_af08ee8cfcb06d750c860bb4b6f13874b}{ch.\+innovazion.\+arionide.\+menu.\+code.\+Code\+Appender}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_language_selection_a818bc2d8c3163357fb6163703395e897}{ch.\+innovazion.\+arionide.\+menu.\+structure.\+Language\+Selection}}.
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_code_browser_aee520865f966edb509bbf2f2260d5a98}{ch.\+innovazion.\+arionide.\+menu.\+code.\+Code\+Browser}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_browser_a64adfa4a7b4f833e9254cc3980307678}{ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Browser}}.
 
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_aa7e428192ca5c175b50b1413b7d5a758}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_aa7e428192ca5c175b50b1413b7d5a758}} 
-\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!getSelectedID@{getSelectedID}}
-\index{getSelectedID@{getSelectedID}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
-\doxysubsubsection{\texorpdfstring{getSelectedID()}{getSelectedID()}}
-{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+menu.\+Browser.\+get\+Selected\+ID (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a9c4d3c94d5f7c4c208379bd88fef2f80}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a9c4d3c94d5f7c4c208379bd88fef2f80}} 
+\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!onAction@{onAction}}
+\index{onAction@{onAction}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
+\doxysubsubsection{\texorpdfstring{onAction()}{onAction()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+Browser.\+on\+Action (\begin{DoxyParamCaption}\item[{String}]{action }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1automaton_1_1_state_ac771f75c2505a75279752aebd757fe7e}{ch.\+innovazion.\+automaton.\+State}}.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_aa7e428192ca5c175b50b1413b7d5a758_cgraph}
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a9c4d3c94d5f7c4c208379bd88fef2f80_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a4df21f33fddeab5d9a58eddb63ffeffb}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a4df21f33fddeab5d9a58eddb63ffeffb}} 
-\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!loadCurrentElements@{loadCurrentElements}}
-\index{loadCurrentElements@{loadCurrentElements}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
-\doxysubsubsection{\texorpdfstring{loadCurrentElements()}{loadCurrentElements()}}
-{\footnotesize\ttfamily abstract List$<$Integer$>$ ch.\+innovazion.\+arionide.\+menu.\+Browser.\+load\+Current\+Elements (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}, {\ttfamily [protected]}}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ab3781ceaf276a1cd0d4fd24b9e81c568}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ab3781ceaf276a1cd0d4fd24b9e81c568}} 
+\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!onEnter@{onEnter}}
+\index{onEnter@{onEnter}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
+\doxysubsubsection{\texorpdfstring{onEnter()}{onEnter()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+Browser.\+on\+Enter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
-Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a0209625d6b65b835c71bd23231124526}{ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_language_selection_a3462349a68b6f3800755606f31a3ebc8}{ch.\+innovazion.\+arionide.\+menu.\+structure.\+Language\+Selection}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_code_appender_a4ce1d1e781b4bac9506cda422ee1d252}{ch.\+innovazion.\+arionide.\+menu.\+code.\+Code\+Appender}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_code_browser_aa6d30cb92385203197082cae04f67ece}{ch.\+innovazion.\+arionide.\+menu.\+code.\+Code\+Browser}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_browser_ab4d2611d02be8309b69c400e1b26ec81}{ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Browser}}.
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_ac9b8b980cfa2effe500cc313e0031f83}{ch.\+innovazion.\+arionide.\+menu.\+Menu}}.
 
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a47aacd47b46c29933ac110dde678bb36}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a47aacd47b46c29933ac110dde678bb36}} 
-\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!onSelect@{onSelect}}
-\index{onSelect@{onSelect}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
-\doxysubsubsection{\texorpdfstring{onSelect()}{onSelect()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+Browser.\+on\+Select (\begin{DoxyParamCaption}\item[{int}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
-
-
-
-Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_a2164f23e189b09aa52ee1e8e9e89e48d}{ch.\+innovazion.\+arionide.\+menu.\+Menu}}.
-
-
-
-Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_code_appender_aac632dfe0da947f686c8da21faf8d238}{ch.\+innovazion.\+arionide.\+menu.\+code.\+Code\+Appender}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_language_selection_a03740bf28135b43087cbec15e3efddaf}{ch.\+innovazion.\+arionide.\+menu.\+structure.\+Language\+Selection}}.
-
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a47aacd47b46c29933ac110dde678bb36_cgraph}
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ab3781ceaf276a1cd0d4fd24b9e81c568_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ac3eef5dfe86fda931c5b1a87b8c5ce4d}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ac3eef5dfe86fda931c5b1a87b8c5ce4d}} 
-\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!setSelectedID@{setSelectedID}}
-\index{setSelectedID@{setSelectedID}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
-\doxysubsubsection{\texorpdfstring{setSelectedID()}{setSelectedID()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+Browser.\+set\+Selected\+ID (\begin{DoxyParamCaption}\item[{int}]{id }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ac0cb65e0c923e73bb2e70c750aca4aac}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ac0cb65e0c923e73bb2e70c750aca4aac}} 
+\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!updateCursor@{updateCursor}}
+\index{updateCursor@{updateCursor}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
+\doxysubsubsection{\texorpdfstring{updateCursor()}{updateCursor()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+Browser.\+update\+Cursor (\begin{DoxyParamCaption}\item[{int}]{cursor }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
-Here is the call graph for this function\+:\nopagebreak
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_ab2375d878c95a870742e683b38b279fb}{ch.\+innovazion.\+arionide.\+menu.\+Menu}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ac3eef5dfe86fda931c5b1a87b8c5ce4d_cgraph}
-\end{center}
-\end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ae64818f004f2faeac1bb1ecd32cd504d}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ae64818f004f2faeac1bb1ecd32cd504d}} 
-\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!show@{show}}
-\index{show@{show}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
-\doxysubsubsection{\texorpdfstring{show()}{show()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+Browser.\+show (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
-
-
-
-Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_abceecd7d7b2b230be630bb1d7da4010e}{ch.\+innovazion.\+arionide.\+menu.\+Menu}}.
-
-
-
-Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_selection_a8c9e496866ade61014861db5562d5b63}{ch.\+innovazion.\+arionide.\+menu.\+structure.\+Structure\+Selection}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_language_selection_ad724390968492b7e4cfbb637bb696476}{ch.\+innovazion.\+arionide.\+menu.\+structure.\+Language\+Selection}}.
-
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ae64818f004f2faeac1bb1ecd32cd504d_cgraph}
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_ac0cb65e0c923e73bb2e70c750aca4aac_cgraph}
 \end{center}
 \end{figure}
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_acfbb72644d53a24ddd01533c5cf22825}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_acfbb72644d53a24ddd01533c5cf22825}} 
-\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!description@{description}}
-\index{description@{description}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
-\doxysubsubsection{\texorpdfstring{description}{description}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_description}{Menu\+Description}} ch.\+innovazion.\+arionide.\+menu.\+Browser.\+description\hspace{0.3cm}{\ttfamily [private]}}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_af60c0e0f03f5bb9eaef00ea623ca5e41}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_af60c0e0f03f5bb9eaef00ea623ca5e41}} 
+\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!browsables@{browsables}}
+\index{browsables@{browsables}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
+\doxysubsubsection{\texorpdfstring{browsables}{browsables}}
+{\footnotesize\ttfamily List$<$\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure}{Structure}}$>$ ch.\+innovazion.\+arionide.\+menu.\+Browser.\+browsables\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a488e71e990c5891d9c84a04f5386ec25}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a488e71e990c5891d9c84a04f5386ec25}} 
-\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!objects@{objects}}
-\index{objects@{objects}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
-\doxysubsubsection{\texorpdfstring{objects}{objects}}
-{\footnotesize\ttfamily List$<$Integer$>$ ch.\+innovazion.\+arionide.\+menu.\+Browser.\+objects\hspace{0.3cm}{\ttfamily [private]}}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a15d47f4d43434dccd6a99c2fa8b3b684}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser_a15d47f4d43434dccd6a99c2fa8b3b684}} 
+\index{ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}!target@{target}}
+\index{target@{target}!ch.innovazion.arionide.menu.Browser@{ch.innovazion.arionide.menu.Browser}}
+\doxysubsubsection{\texorpdfstring{target}{target}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure}{Structure}} ch.\+innovazion.\+arionide.\+menu.\+Browser.\+target\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 

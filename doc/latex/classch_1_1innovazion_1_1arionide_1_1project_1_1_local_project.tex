@@ -25,9 +25,11 @@ Collaboration diagram for ch.\+innovazion.\+arionide.\+project.\+Local\+Project\
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_ab8ab45be29c43c612f3c02a885b4d640}{init\+FS}} ()
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a879d4711b98125197f4b36e13403259c}{load}} ()
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_ad3e39b8af3752b48bc70b75a1420c1df}{load\+Meta}} ()  throws Storage\+Exception 
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_aa03fb28d110b0561f2ee9a1440717704}{save}} ()
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a879d4711b98125197f4b36e13403259c}{load}} ()  throws Storage\+Exception 
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_aa03fb28d110b0561f2ee9a1440717704}{save}} ()  throws Storage\+Exception 
 \item 
 Map$<$ String, byte\mbox{[}$\,$\mbox{]}$>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a1119d0facc44de4a4b4f5ac7525a63ad}{get\+Protocol\+Mapping}} ()
 \item 
@@ -37,9 +39,7 @@ File \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_pro
 \item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage}{Storage}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_abc74b84c10d585a4b6a55511b5957bb0}{get\+Storage}} ()
 \item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_data_manager}{Data\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a34c743e352de1352163b828a81807594}{get\+Data\+Manager}} ()
-\item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_language}{Language}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_afe1413e4e82d140c7aae7bfdfa751ac5}{get\+Language}} ()
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager}{Structure\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a1aea4e62d538765dda7476cd104573db}{get\+Structure\+Manager}} ()
 \item 
 boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a9c94fac326401fe2b26cd76929b301cc}{check\+Version\+Compatibility}} ()
 \item 
@@ -50,7 +50,7 @@ int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_proj
 \doxysubsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-static final long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a853439a8475e12b88a9ce7bdf7f88e11}{version\+U\+ID}} = 300L
+static final long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a853439a8475e12b88a9ce7bdf7f88e11}{version\+U\+ID}} = 420L
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
@@ -64,11 +64,9 @@ void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_pro
 \item 
 final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_zip_storage}{Zip\+Storage}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_af50bd37c94889be0846df3e7b115185b}{storage}}
 \item 
-final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_data_manager}{Data\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a920e48c0ce13a1580fbc2c3ea8db99d4}{manager}}
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager}{Structure\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a69d7758a01b6c4de59675b93c57bba43}{manager}}
 \item 
 final Map$<$ String, byte\mbox{[}$\,$\mbox{]}$>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_ae67ebd9a13ee7f02598196f8843ae41a}{properties}} = new Linked\+Hash\+Map$<$$>$()
-\item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_language}{Language}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a9908984f6acce847016bff521de3f6ca}{language}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Static Private Attributes}
 \begin{DoxyCompactItemize}
@@ -123,26 +121,6 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a66408cbd1a16c5cf522abfb6fd79d96d_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a34c743e352de1352163b828a81807594}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a34c743e352de1352163b828a81807594}} 
-\index{ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}!getDataManager@{getDataManager}}
-\index{getDataManager@{getDataManager}!ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}}
-\doxysubsubsection{\texorpdfstring{getDataManager()}{getDataManager()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_data_manager}{Data\+Manager}} ch.\+innovazion.\+arionide.\+project.\+Local\+Project.\+get\+Data\+Manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
-
-
-
-Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project_af1904369a9f1faf79b0bb6012882c500}{ch.\+innovazion.\+arionide.\+project.\+Project}}.
-
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_afe1413e4e82d140c7aae7bfdfa751ac5}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_afe1413e4e82d140c7aae7bfdfa751ac5}} 
-\index{ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}!getLanguage@{getLanguage}}
-\index{getLanguage@{getLanguage}!ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}}
-\doxysubsubsection{\texorpdfstring{getLanguage()}{getLanguage()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_language}{Language}} ch.\+innovazion.\+arionide.\+project.\+Local\+Project.\+get\+Language (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
-
-
-
-Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project_aa74f1a1d32bbaeb63451d169ece13221}{ch.\+innovazion.\+arionide.\+project.\+Project}}.
-
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a2bc2734ca1fee332681735eea980531e}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a2bc2734ca1fee332681735eea980531e}} 
 \index{ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}!getName@{getName}}
 \index{getName@{getName}!ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}}
@@ -190,6 +168,16 @@ Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1_mapped_str
 
 Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project_aedd78eae8515a9a88f720e85ca1bf7b0}{ch.\+innovazion.\+arionide.\+project.\+Project}}.
 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a1aea4e62d538765dda7476cd104573db}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a1aea4e62d538765dda7476cd104573db}} 
+\index{ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}!getStructureManager@{getStructureManager}}
+\index{getStructureManager@{getStructureManager}!ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}}
+\doxysubsubsection{\texorpdfstring{getStructureManager()}{getStructureManager()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager}{Structure\+Manager}} ch.\+innovazion.\+arionide.\+project.\+Local\+Project.\+get\+Structure\+Manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project_af1efd5bf8b805af041e68d9961be5f5e}{ch.\+innovazion.\+arionide.\+project.\+Project}}.
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a94ea84a4b1fedd2319566d8a91bc53db}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a94ea84a4b1fedd2319566d8a91bc53db}} 
 \index{ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}!hashCode@{hashCode}}
 \index{hashCode@{hashCode}!ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}}
@@ -213,7 +201,8 @@ Here is the call graph for this function\+:\nopagebreak
 
 Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project_af61d5058416ba97cf7ba77199a7f2bb0}{ch.\+innovazion.\+arionide.\+project.\+Project}}.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -224,24 +213,43 @@ Here is the call graph for this function\+:\nopagebreak
 \index{ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}!load@{load}}
 \index{load@{load}!ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}}
 \doxysubsubsection{\texorpdfstring{load()}{load()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+Local\+Project.\+load (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+Local\+Project.\+load (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_exception}{Storage\+Exception}}}
 
 
 
 Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1_loadable_a85b9a9d6bca5df566f5c5eedbb1c0566}{ch.\+innovazion.\+arionide.\+Loadable}}.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a879d4711b98125197f4b36e13403259c_cgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_ad3e39b8af3752b48bc70b75a1420c1df}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_ad3e39b8af3752b48bc70b75a1420c1df}} 
+\index{ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}!loadMeta@{loadMeta}}
+\index{loadMeta@{loadMeta}!ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}}
+\doxysubsubsection{\texorpdfstring{loadMeta()}{loadMeta()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+Local\+Project.\+load\+Meta (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_exception}{Storage\+Exception}}}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project_a1565c682118531f0eb252766c008b87f}{ch.\+innovazion.\+arionide.\+project.\+Project}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_ad3e39b8af3752b48bc70b75a1420c1df_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_aa03fb28d110b0561f2ee9a1440717704}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_aa03fb28d110b0561f2ee9a1440717704}} 
 \index{ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}!save@{save}}
 \index{save@{save}!ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}}
 \doxysubsubsection{\texorpdfstring{save()}{save()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+Local\+Project.\+save (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+Local\+Project.\+save (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_exception}{Storage\+Exception}}}
 
 
 
@@ -263,17 +271,11 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a9908984f6acce847016bff521de3f6ca}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a9908984f6acce847016bff521de3f6ca}} 
-\index{ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}!language@{language}}
-\index{language@{language}!ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}}
-\doxysubsubsection{\texorpdfstring{language}{language}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_language}{Language}} ch.\+innovazion.\+arionide.\+project.\+Local\+Project.\+language\hspace{0.3cm}{\ttfamily [private]}}
-
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a920e48c0ce13a1580fbc2c3ea8db99d4}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a920e48c0ce13a1580fbc2c3ea8db99d4}} 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a69d7758a01b6c4de59675b93c57bba43}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a69d7758a01b6c4de59675b93c57bba43}} 
 \index{ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}!manager@{manager}}
 \index{manager@{manager}!ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}}
 \doxysubsubsection{\texorpdfstring{manager}{manager}}
-{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_data_manager}{Data\+Manager}} ch.\+innovazion.\+arionide.\+project.\+Local\+Project.\+manager\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager}{Structure\+Manager}} ch.\+innovazion.\+arionide.\+project.\+Local\+Project.\+manager\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a6ad16f37e7fcf8f1554dcca9a07c74f2}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_local_project_a6ad16f37e7fcf8f1554dcca9a07c74f2}} 
 \index{ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}!projectProtocolMapping@{projectProtocolMapping}}
@@ -297,7 +299,7 @@ Here is the call graph for this function\+:\nopagebreak
 \index{ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}!versionUID@{versionUID}}
 \index{versionUID@{versionUID}!ch.innovazion.arionide.project.LocalProject@{ch.innovazion.arionide.project.LocalProject}}
 \doxysubsubsection{\texorpdfstring{versionUID}{versionUID}}
-{\footnotesize\ttfamily final long ch.\+innovazion.\+arionide.\+project.\+Local\+Project.\+version\+U\+ID = 300L\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily final long ch.\+innovazion.\+arionide.\+project.\+Local\+Project.\+version\+U\+ID = 420L\hspace{0.3cm}{\ttfamily [static]}}
 
 
 

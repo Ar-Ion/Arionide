@@ -1,0 +1,197 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager}{}\doxysection{ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager}\index{ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a0a5c4281a2836743ca9887b68be5cb3d}{Specification\+Manager}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage}{Storage}} storage)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_ae9e891eb74c86c5c4982393e83348ef1}{add\+Parameter}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}} element)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a4aadd2b27e9419119b5299050bfa2e64}{remove\+Parameter}} (int id)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a80e5aa06131b951621773f5783b049eb}{refactor\+Parameter\+Name}} (int id, String new\+Name)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a95d1f853c41508e96e48e2f6934f8715}{bind\+Parameters}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}} source\+Param, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}} target\+Param)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager}{Information\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_ad3f9ed1e984ad369ef1c8121874efe1d}{load\+Information\+Manager}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter_value}{Parameter\+Value}} value)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_reference_manager}{Reference\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_aebcf7f2108706b6036d9cbef76e34360}{load\+Reference\+Manager}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter_value}{Parameter\+Value}} value)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_variable_manager}{Variable\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a5ccc0b3ae95dc6796706e893af58a0fd}{load\+Variable\+Manager}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter_value}{Parameter\+Value}} value)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a04f14f3769946ebc906da26465efd668}{do\+Foreach\+Connected\+Specification}} (Consumer$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}} $>$ action)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager}{Information\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_ac00708f2e416ff2cc2aec7e6bae0f5bf}{information\+Manager}}
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_reference_manager}{Reference\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a8206ee5a91e6d53df22e80dfe56243e7}{reference\+Manager}}
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_variable_manager}{Variable\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a3888b862d0df882519d710bbca8abc94}{variable\+Manager}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a0a5c4281a2836743ca9887b68be5cb3d}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a0a5c4281a2836743ca9887b68be5cb3d}} 
+\index{ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}!SpecificationManager@{SpecificationManager}}
+\index{SpecificationManager@{SpecificationManager}!ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}}
+\doxysubsubsection{\texorpdfstring{SpecificationManager()}{SpecificationManager()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager.\+Specification\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage}{Storage}}}]{storage }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_ae9e891eb74c86c5c4982393e83348ef1}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_ae9e891eb74c86c5c4982393e83348ef1}} 
+\index{ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}!addParameter@{addParameter}}
+\index{addParameter@{addParameter}!ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}}
+\doxysubsubsection{\texorpdfstring{addParameter()}{addParameter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager.\+add\+Parameter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}}}]{element }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_ae9e891eb74c86c5c4982393e83348ef1_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a95d1f853c41508e96e48e2f6934f8715}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a95d1f853c41508e96e48e2f6934f8715}} 
+\index{ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}!bindParameters@{bindParameters}}
+\index{bindParameters@{bindParameters}!ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}}
+\doxysubsubsection{\texorpdfstring{bindParameters()}{bindParameters()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager.\+bind\+Parameters (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}}}]{source\+Param,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}}}]{target\+Param }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a95d1f853c41508e96e48e2f6934f8715_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a04f14f3769946ebc906da26465efd668}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a04f14f3769946ebc906da26465efd668}} 
+\index{ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}!doForeachConnectedSpecification@{doForeachConnectedSpecification}}
+\index{doForeachConnectedSpecification@{doForeachConnectedSpecification}!ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}}
+\doxysubsubsection{\texorpdfstring{doForeachConnectedSpecification()}{doForeachConnectedSpecification()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager.\+do\+Foreach\+Connected\+Specification (\begin{DoxyParamCaption}\item[{Consumer$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}} $>$}]{action }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a04f14f3769946ebc906da26465efd668_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_ad3f9ed1e984ad369ef1c8121874efe1d}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_ad3f9ed1e984ad369ef1c8121874efe1d}} 
+\index{ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}!loadInformationManager@{loadInformationManager}}
+\index{loadInformationManager@{loadInformationManager}!ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}}
+\doxysubsubsection{\texorpdfstring{loadInformationManager()}{loadInformationManager()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager}{Information\+Manager}} ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager.\+load\+Information\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter_value}{Parameter\+Value}}}]{value }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_ad3f9ed1e984ad369ef1c8121874efe1d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_aebcf7f2108706b6036d9cbef76e34360}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_aebcf7f2108706b6036d9cbef76e34360}} 
+\index{ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}!loadReferenceManager@{loadReferenceManager}}
+\index{loadReferenceManager@{loadReferenceManager}!ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}}
+\doxysubsubsection{\texorpdfstring{loadReferenceManager()}{loadReferenceManager()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_reference_manager}{Reference\+Manager}} ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager.\+load\+Reference\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter_value}{Parameter\+Value}}}]{value }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_aebcf7f2108706b6036d9cbef76e34360_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a5ccc0b3ae95dc6796706e893af58a0fd}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a5ccc0b3ae95dc6796706e893af58a0fd}} 
+\index{ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}!loadVariableManager@{loadVariableManager}}
+\index{loadVariableManager@{loadVariableManager}!ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}}
+\doxysubsubsection{\texorpdfstring{loadVariableManager()}{loadVariableManager()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_variable_manager}{Variable\+Manager}} ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager.\+load\+Variable\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter_value}{Parameter\+Value}}}]{value }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a5ccc0b3ae95dc6796706e893af58a0fd_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a80e5aa06131b951621773f5783b049eb}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a80e5aa06131b951621773f5783b049eb}} 
+\index{ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}!refactorParameterName@{refactorParameterName}}
+\index{refactorParameterName@{refactorParameterName}!ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}}
+\doxysubsubsection{\texorpdfstring{refactorParameterName()}{refactorParameterName()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager.\+refactor\+Parameter\+Name (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{String}]{new\+Name }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a80e5aa06131b951621773f5783b049eb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a4aadd2b27e9419119b5299050bfa2e64}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a4aadd2b27e9419119b5299050bfa2e64}} 
+\index{ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}!removeParameter@{removeParameter}}
+\index{removeParameter@{removeParameter}!ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}}
+\doxysubsubsection{\texorpdfstring{removeParameter()}{removeParameter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager.\+remove\+Parameter (\begin{DoxyParamCaption}\item[{int}]{id }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a4aadd2b27e9419119b5299050bfa2e64_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_ac00708f2e416ff2cc2aec7e6bae0f5bf}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_ac00708f2e416ff2cc2aec7e6bae0f5bf}} 
+\index{ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}!informationManager@{informationManager}}
+\index{informationManager@{informationManager}!ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}}
+\doxysubsubsection{\texorpdfstring{informationManager}{informationManager}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager}{Information\+Manager}} ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager.\+information\+Manager\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a8206ee5a91e6d53df22e80dfe56243e7}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a8206ee5a91e6d53df22e80dfe56243e7}} 
+\index{ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}!referenceManager@{referenceManager}}
+\index{referenceManager@{referenceManager}!ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}}
+\doxysubsubsection{\texorpdfstring{referenceManager}{referenceManager}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_reference_manager}{Reference\+Manager}} ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager.\+reference\+Manager\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a3888b862d0df882519d710bbca8abc94}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager_a3888b862d0df882519d710bbca8abc94}} 
+\index{ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}!variableManager@{variableManager}}
+\index{variableManager@{variableManager}!ch.innovazion.arionide.project.managers.specification.SpecificationManager@{ch.innovazion.arionide.project.managers.specification.SpecificationManager}}
+\doxysubsubsection{\texorpdfstring{variableManager}{variableManager}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_variable_manager}{Variable\+Manager}} ch.\+innovazion.\+arionide.\+project.\+managers.\+specification.\+Specification\+Manager.\+variable\+Manager\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/project/managers/specification/\mbox{\hyperlink{_specification_manager_8java}{Specification\+Manager.\+java}}\end{DoxyCompactItemize}
