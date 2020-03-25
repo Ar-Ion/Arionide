@@ -23,6 +23,7 @@ package ch.innovazion.arionide.project;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.events.MessageEvent;
@@ -65,6 +66,10 @@ public abstract class Manager {
 	
 	protected Map<Integer, MutableCodeChain> getCode() {
 		return storage.getMutableCode();
+	}
+	
+	protected Set<String> getLanguages() {
+		return storage.getMutableLanguages();
 	}
 	
 	protected void saveHierarchy() {
@@ -110,6 +115,14 @@ public abstract class Manager {
 	protected void saveCode() {
 		try {
 			storage.saveCode();
+		} catch (StorageException exception) {
+			Debug.exception(exception);
+		}
+	}
+	
+	protected void saveLanguages() {
+		try {
+			storage.saveLanguages();
 		} catch (StorageException exception) {
 			Debug.exception(exception);
 		}

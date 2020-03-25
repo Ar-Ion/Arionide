@@ -72,7 +72,7 @@ public abstract class Browser extends Menu {
 				this.id = index;
 				this.selection = target.getName();
 			}
-		} else {
+		} else if(browsables.size() > 0) {
 			this.cursor = 0;
 			this.id = 0;
 			this.target = browsables.get(0);

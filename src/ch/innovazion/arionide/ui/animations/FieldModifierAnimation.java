@@ -22,6 +22,7 @@
 package ch.innovazion.arionide.ui.animations;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.ui.AppManager;
@@ -74,8 +75,15 @@ public class FieldModifierAnimation extends Animation {
 	}
 	
 	public void tick() {
+		int modifiers = field.getModifiers();
+		
+		if(Modifier.isFinal(modifiers)) {
+			this.endAnimation();
+			return;
+		}
+		
 		double t = this.getProgression();
-				
+		
 		if(t <= 1.0d) {
 			try {
 				double real = this.smoothingAlgorithm.compute(t);

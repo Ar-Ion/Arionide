@@ -21,6 +21,66 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang;
 
-public class Language {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+public abstract class Language implements Serializable {
+
+	private static final long serialVersionUID = 3353249857547492745L;
+	
+	private final short major;
+	private final short minor;
+	
+	private transient final List<Instruction> instructions = new ArrayList<>();
+	private transient final Set<Instruction> branchInstructions = new HashSet<>();
+	
+	public Language() {
+		this.major = getVersionMajor();
+		this.minor = getVersionMinor();
+	}
+	
+	protected void register(Instruction instruction) {
+		instructions.add(instruction);
+	}
+	
+	protected void registerBranch(Instruction instruction) {
+		branchInstructions.add(instruction);
+		instructions.add(instruction);
+	}
+	
+	protected void checkCompatibility() throws CompatibilityException {
+		if(major < getVersionMajor()) {
+			throw new CompatibilityException("Langugage version may be incompatible (backward compatibility not ensured: " + major + " < " + getVersionMajor() + ")");
+		}
+		
+		if(major > getVersionMajor() || minor > getVersionMinor()) {
+			throw new CompatibilityException("Language version  (" + getVersion() + ") is probably incompatible with the current language implementation");
+		}
+	}
+	
+	public boolean isBranch(Instruction instruction) {
+		return branchInstructions.contains(instruction);
+	}
+	
+	public List<Instruction> getInstructions() {
+		return Collections.unmodifiableList(instructions);
+	}
+	
+	protected String getVersion() {
+		return major + "." + minor;
+	}
+	
+	protected abstract void registerInstructions();
+	
+	protected abstract short getVersionMajor();
+	protected abstract short getVersionMinor();
+	public abstract String getVendorUID();
+	
+	public abstract boolean areStructureSpecificationsSupported();
+	public abstract Instruction getEntryPoint();
+	public abstract Instruction getDefaultCallInstruction();
 }

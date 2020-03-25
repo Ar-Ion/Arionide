@@ -21,6 +21,19 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang;
 
-public class Instruction {
+import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Specification;
+import ch.innovazion.arionide.project.StructureModel;
 
+public abstract class Instruction {
+	public String toString() {
+		return getStructureModel().getName();
+	}
+	
+	public abstract String validate(Specification spec);
+	public abstract void evaluate(Environment env, Specification spec) throws EvaluationException;
+	public abstract Information assemble(Specification spec) throws AssemblyException;
+	
+	public abstract StructureModel getStructureModel();
+	public abstract int getLength(); // In bits
 }

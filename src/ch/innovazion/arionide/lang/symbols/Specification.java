@@ -22,8 +22,6 @@
 package ch.innovazion.arionide.lang.symbols;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,9 +37,9 @@ public class Specification implements Serializable, Cloneable {
 		this.parameters = Collections.synchronizedList(model.parameters.stream().map(Parameter::clone).collect(Collectors.toList()));
 	}
 	
-	public Specification(int id, Parameter... elements) {
+	public Specification(int id, List<Parameter> elements) {
 		this.id = id;
-		this.parameters = Collections.synchronizedList(new ArrayList<>(Arrays.asList(elements)));
+		this.parameters = Collections.synchronizedList(elements);
 	}
 	
 	public List<Parameter> getParameters() {

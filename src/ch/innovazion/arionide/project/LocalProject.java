@@ -42,7 +42,7 @@ import ch.innovazion.arionide.project.managers.StructureManager;
 
 public class LocalProject implements Project {
 
-	public static final long versionUID = 420L;
+	public static final long versionUID = 500L;
 	
 	private static final Map<String, byte[]> projectProtocolMapping = new LinkedHashMap<>();
 	

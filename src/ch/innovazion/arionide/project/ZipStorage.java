@@ -35,6 +35,7 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -66,7 +67,8 @@ public class ZipStorage extends Storage {
 	private Path callGraphPath;
 	private Path historyPath;
 	private Path structureMetaPath;
-	private Path dataPath;
+	private Path codePath;
+	private Path languagesPath;
 		
 	@IAm("initializing the project storage")
 	public ZipStorage(File path) {
@@ -90,12 +92,13 @@ public class ZipStorage extends Storage {
 			this.initFS0();
 						
 			this.metaPath = this.init(null, null, "meta", "project");
-			this.hierarchyPath = this.init(ArrayList<MutableHierarchyElement>::new, e -> this.setMutableHierarchy(e), "struct", "hierarchy");
-			this.inheritancePath = this.init(HashMap<Integer, MutableInheritanceElement>::new, e -> this.setMutableInheritance(e), "struct", "inheritance");
-			this.callGraphPath = this.init(ArrayList<MutableHierarchyElement>::new, e -> this.setMutableCallGraph(e), "struct", "callgraph");
-			this.structureMetaPath = this.init(HashMap<Integer, MutableStructure>::new, e -> this.setMutableStructureMeta(e), "meta", "structures");
-			this.historyPath = this.init(ArrayList<MutableHistoryElement>::new, e -> this.setMutableHistory(e), "history");
-			this.dataPath = this.init(HashMap<Integer, MutableCodeChain>::new, e -> this.setMutableCode(e), "data");
+			this.hierarchyPath = this.init(ArrayList<MutableHierarchyElement>::new, this::setMutableHierarchy, "struct", "hierarchy");
+			this.inheritancePath = this.init(HashMap<Integer, MutableInheritanceElement>::new, this::setMutableInheritance, "struct", "inheritance");
+			this.callGraphPath = this.init(ArrayList<MutableHierarchyElement>::new, this::setMutableCallGraph, "struct", "callgraph");
+			this.structureMetaPath = this.init(HashMap<Integer, MutableStructure>::new, this::setMutableStructures, "meta", "structures");
+			this.historyPath = this.init(ArrayList<MutableHistoryElement>::new, this::setMutableHistory, "history");
+			this.codePath = this.init(HashMap<Integer, MutableCodeChain>::new, this::setMutableCode, "code");
+			this.languagesPath = this.init(HashSet<String>::new, this::setMutableLanguages, "lang");
 		} catch (IOException exception) {
 			Debug.exception(exception);
 		}
@@ -181,7 +184,7 @@ public class ZipStorage extends Storage {
 	}
 	
 	public void loadStructureMeta() throws StorageException {	
-		this.setMutableStructureMeta(this.load(this.structureMetaPath));
+		this.setMutableStructures(this.load(this.structureMetaPath));
 	}
 	
 	public void saveStructureMeta() throws StorageException {
@@ -197,11 +200,19 @@ public class ZipStorage extends Storage {
 	}
 	
 	public void loadCode() throws StorageException {
-		this.setMutableCode(this.load(this.dataPath));
+		this.setMutableCode(this.load(this.codePath));
 	}
 	
 	public void saveCode() throws StorageException {
-		this.save(this.dataPath, this.getMutableCode());
+		this.save(this.codePath, this.getMutableCode());
+	}
+
+	public void loadLanguages() throws StorageException {
+		this.setMutableLanguages(this.load(this.languagesPath));
+	}
+
+	public void saveLanguages() throws StorageException {
+		this.save(this.languagesPath, this.getMutableLanguages());
 	}
 	
 	@SuppressWarnings("unchecked")

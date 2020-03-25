@@ -31,13 +31,19 @@ import java.util.function.Function;
 
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
+import ch.innovazion.arionide.lang.Instruction;
+import ch.innovazion.arionide.lang.Language;
+import ch.innovazion.arionide.lang.LanguageManager;
 import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Manager;
 import ch.innovazion.arionide.project.Project;
+import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.arionide.project.managers.specification.SpecificationManager;
 import ch.innovazion.arionide.project.mutables.MutableActor;
+import ch.innovazion.arionide.project.mutables.MutableAtomicStructure;
+import ch.innovazion.arionide.project.mutables.MutableCode;
 import ch.innovazion.arionide.project.mutables.MutableCodeChain;
 import ch.innovazion.arionide.project.mutables.MutableHierarchyElement;
 import ch.innovazion.arionide.project.mutables.MutableInheritanceElement;
@@ -168,28 +174,90 @@ public class StructureManager extends Manager {
 		element.getChildren().stream().forEach(this::deleteMeta);
 	}
 	
-	public MessageEvent abstractifyStructure(int id) {		
+	public MessageEvent setLanguage(int id, String language) {		
 		getCode().get(id).getMutableList().clear();
 		
 		List<MutableHierarchyElement> list = getMutableCurrentGeneration();
 		
 		for(MutableHierarchyElement element : list) {
 			if(element.getID() == id) {
-				abstractify(element);
+				if(language != null) {
+
+					if(!getLanguages().contains(language)) {
+						Language lang = LanguageManager.get(language);
+						
+						try {
+							Structure entryCodeBase = installLanguage(lang);
+							getLanguages().add(language); // Register language in the project root
+							
+							setLanguage(element, language, entryCodeBase);
+						} catch(Exception e) {
+							e.printStackTrace();
+							return new MessageEvent("Failed to install language " + lang, MessageType.ERROR);
+						}
+					}
+				} else {
+					resetCodeChain(element);
+				}
 			}
 		}
 
 		saveCode();
+		saveStructures();
 		
 		return success();			
 	}
 	
-	private void abstractify(MutableHierarchyElement element) {		
+	private void setLanguage(MutableHierarchyElement element, String language, Structure entryCodeBase) {
+		int currentID = element.getID();
+		
+		getStructures().get(currentID).setLanguage(language);
+		
+		
+		int entryInstanceID = allocator.allocStructure();
+		
+		MutableCodeChain chain = new MutableCodeChain();
+		MutableCode entryPointInfo = new MutableCode(entryCodeBase);
+		MutableHierarchyElement entryPoint = new MutableHierarchyElement(entryInstanceID, new ArrayList<>());
+		
+		chain.getMutableList().add(entryPoint);
+		
+		getStructures().put(entryInstanceID, entryPointInfo);		
+		getCode().put(currentID, chain);
+		
+		
+		for(MutableHierarchyElement child : element.getMutableChildren()) {
+			setLanguage(child, language, entryCodeBase); // Recursion
+		}
+	}
+	
+	private void resetCodeChain(MutableHierarchyElement element) {		
 		codeManager.resetCodeChain(element.getID());
 
 		for(MutableHierarchyElement child : element.getMutableChildren()) {
-			abstractify(child);
+			resetCodeChain(child);
 		}
+	}
+	
+	// Returns the structure of the entry point
+	private Structure installLanguage(Language lang) {
+		if(lang != null) {
+			lang.getInstructions().forEach(this::installInstruction);
+			return installInstruction(lang.getEntryPoint());
+		} else {
+			throw new IllegalArgumentException("Unable to find requested language");
+		}
+	}
+	
+	private Structure installInstruction(Instruction instr) {
+		int structID = allocator.allocStructure();
+		int specID = allocator.allocSpecification();
+		
+		MutableStructure struct = new MutableAtomicStructure(structID, specID, instr.getStructureModel());
+		
+		getStructures().put(structID, struct);
+		
+		return struct;
 	}
 	
 	public MessageEvent rename(int id, String name) {

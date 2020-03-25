@@ -53,15 +53,6 @@ public class StructureEditor extends Menu {
 					   .stackOnto(Views.code);
 			
 			break;
-		case "Abstractify":
-			Views.confirm.setPrimaryText("Are you sure you want to abstractify this structure?")
-						 .setSecondaryText("All the code inside the structure will be deleted")
-					     .setButtons("Yes", "Cancel")
-					     .react("Yes", this::abstractify)
-					     .react("Cancel", View::discard)
-					     .stackOnto(Views.code);
-			
-			break;
 		case "Delete":
 			Views.confirm.setPrimaryText("Are you sure you want to delete this structure?")
 						 .setSecondaryText("Everything inside the structure will be deleted")
@@ -79,12 +70,6 @@ public class StructureEditor extends Menu {
 	private void rename(String name) {
 		dispatch(project.getStructureManager().rename(target.getIdentifier(), name));
 		dispatch(new GeometryInvalidateEvent(2));
-	}
-	
-	private void abstractify(View view) {
-		dispatch(project.getStructureManager().abstractifyStructure(target.getIdentifier()));
-		dispatch(new GeometryInvalidateEvent(1));
-		view.discard();
 	}
 	
 	private void delete(View view) {

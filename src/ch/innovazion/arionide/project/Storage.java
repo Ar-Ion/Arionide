@@ -22,8 +22,10 @@
 package ch.innovazion.arionide.project;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ch.innovazion.arionide.debugging.IAm;
 import ch.innovazion.arionide.project.mutables.MutableCodeChain;
@@ -40,6 +42,7 @@ public abstract class Storage {
 	private Map<Integer, MutableStructure> structures;
 	private List<MutableHistoryElement> history;
 	private Map<Integer, MutableCodeChain> code;
+	private Set<String> languages;
 	
 	
 	public List<HierarchyElement> getHierarchy() {
@@ -64,6 +67,10 @@ public abstract class Storage {
 	
 	public Map<Integer, CodeChain> getCode() {
 		return Collections.unmodifiableMap(this.code);
+	}
+	
+	public Set<String> getLanguages() {
+		return Collections.unmodifiableSet(this.languages);
 	}
 	
 	
@@ -91,6 +98,10 @@ public abstract class Storage {
 		return this.code;
 	}
 	
+	protected Set<String> getMutableLanguages() {
+		return this.languages;
+	}
+	
 	
 	protected void setMutableHierarchy(List<MutableHierarchyElement> hierarchy) {
 		this.hierarchy = hierarchy;
@@ -104,7 +115,7 @@ public abstract class Storage {
 		this.callGraph = callGraph;
 	}
 	
-	protected void setMutableStructureMeta(Map<Integer, MutableStructure> structMeta) {
+	protected void setMutableStructures(Map<Integer, MutableStructure> structMeta) {
 		this.structures = structMeta;
 	}
 	
@@ -114,6 +125,10 @@ public abstract class Storage {
 	
 	protected void setMutableCode(Map<Integer, MutableCodeChain> code) {
 		this.code = code;
+	}
+	
+	protected void setMutableLanguages(HashSet<String> languages) {
+		this.languages = languages;
 	}
 	
 	
@@ -146,4 +161,9 @@ public abstract class Storage {
 	public abstract void loadCode() throws StorageException;
 	@IAm("saving data")
 	public abstract void saveCode() throws StorageException;
+	
+	@IAm("loading languages")
+	public abstract void loadLanguages() throws StorageException;
+	@IAm("saving languages")
+	public abstract void saveLanguages() throws StorageException;
 }

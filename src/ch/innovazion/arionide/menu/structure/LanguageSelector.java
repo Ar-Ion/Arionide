@@ -21,6 +21,73 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.structure;
 
-public class LanguageSelector {
+import java.util.List;
 
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
+import ch.innovazion.arionide.lang.Language;
+import ch.innovazion.arionide.lang.LanguageManager;
+import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
+import ch.innovazion.arionide.menu.MenuManager;
+import ch.innovazion.arionide.project.mutables.MutableStructure;
+import ch.innovazion.arionide.ui.overlay.View;
+import ch.innovazion.arionide.ui.overlay.Views;
+import ch.innovazion.automaton.Inherit;
+
+public class LanguageSelector extends Menu {
+
+	@Inherit
+	protected MutableStructure target;
+	
+	public LanguageSelector(MenuManager manager) {
+		super(manager, "None");
+	}
+	
+	protected void onEnter() {
+		super.onEnter();
+		
+		List<String> languages = LanguageManager.getAvailableLanguages();
+		
+		setDynamicElements(languages.toArray(new String[0]));
+		updateCursor(languages.indexOf(target.getLanguage()));
+	}
+	
+	protected void updateCursor(int cursor) {
+		super.updateCursor(cursor);
+		
+		Language lang = LanguageManager.get(selection);
+		
+		if(id > 0) {
+			if(lang != null) {
+				this.description = new MenuDescription(lang.getVendorUID());
+			} else {
+				this.description = new MenuDescription("Invalid language");
+			}
+		} else {
+			this.description = new MenuDescription("Abstractify this structure");
+		}
+	}
+
+	public void onAction(String action) {
+		if(id == 0) {
+			Views.confirm.setPrimaryText("Are you sure you want to abstractify this structure?")
+						 .setSecondaryText("All the code inside the structure will be deleted")
+					     .setButtons("Yes", "Cancel")
+					     .react("Yes", this::abstractify)
+					     .react("Cancel", View::discard)
+					     .stackOnto(Views.code);
+		} else {
+			setLanguage(action);
+		}
+	}
+	
+	private void abstractify(View view) {
+		view.discard();
+		setLanguage(null);
+	}
+	
+	private void setLanguage(String language) {
+		dispatch(project.getStructureManager().setLanguage(target.getIdentifier(), language));
+		dispatch(new GeometryInvalidateEvent(2));
+	}
 }

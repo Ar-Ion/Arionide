@@ -21,17 +21,19 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.overlay.components;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import ch.innovazion.arionide.Utils;
-import ch.innovazion.arionide.events.ActionEvent;
-import ch.innovazion.arionide.events.ActionType;
 import ch.innovazion.arionide.events.DragEvent;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.InvalidateLayoutEvent;
 import ch.innovazion.arionide.events.ScrollEvent;
 import ch.innovazion.arionide.events.WheelEvent;
+import ch.innovazion.arionide.ui.animations.Animation;
+import ch.innovazion.arionide.ui.animations.ObjectModifierAnimation;
 import ch.innovazion.arionide.ui.overlay.Component;
 import ch.innovazion.arionide.ui.overlay.View;
 import ch.innovazion.arionide.ui.topology.Bounds;
@@ -44,8 +46,12 @@ public class Scroll extends Tab {
 	private boolean doubleFocusSystem = false;
 	private boolean globalWheelListening = true;
 	
-	private int anchor = 0;
+	private int numElements = 0;
 	private int cycle = 0;
+	private int selection = 0;
+	
+	private Animation animation;
+	private final List<Bounds> originalBounds = new LinkedList<>();
 	
 	public Scroll(View parent, String... labels) {
 		this(parent, Tab.makeLabels(parent, labels));
@@ -73,31 +79,32 @@ public class Scroll extends Tab {
 	}
 
 	protected void compute() {
-		synchronized(this.rectangles) {
-			this.rectangles.clear();
+		synchronized(rectangles) {
+			rectangles.clear();
+			originalBounds.clear();
 			
-			Bounds bounds = this.getBounds();
-			int count = this.getComponents().size();
+			Bounds bounds = getBounds();
 			
-			float initial = bounds.getWidth() / 3;
+			this.numElements = getComponents().size();
+			
+			float initialWidth = bounds.getWidth() / 3;
 			float initialHeight = bounds.getHeight();
 									
-			for(int i = -this.activeComponent; i < 1; i++) {
-				float power = (float) Math.pow(2, i);
-				float width = initial * power;
+			for(int i = 0; i < 2 * numElements; i++) {
+				float power = (float) Math.pow(2, -Math.abs(i - numElements));
+				float width = initialWidth * power;
 				float height = initialHeight * power;
-
-				this.rectangles.add(new Bounds(bounds.getX() + width, bounds.getCenter().getY() - height / 2, width, height));
+				 
+				Bounds elementBounds = new Bounds(bounds.getCenter().getX() + Math.signum(i - numElements) * 0.5f * (1 - power) - width/2, bounds.getCenter().getY() - height / 2, width, height);
+				originalBounds.add(elementBounds);
 			}
-						
-			for(int i = 1; i < count; i++) {
-				float power = (float) Math.pow(2, -i);
-				float x = initial * (1 - power) * 2;
-				float width = initial * power;
-				float height = initialHeight * power;
-	
-				this.rectangles.add(new Bounds(bounds.getX() + initial + x, bounds.getCenter().getY() - height / 2, width, height));
-			}
+			
+			rectangles.addAll(cut(originalBounds, numElements, 2 * numElements));
+			
+			System.out.println(rectangles);
+			
+			this.animation = new ObjectModifierAnimation(getAppManager(), LinkedList.class, rectangles);
+			
 		}
 	}
 	
@@ -123,19 +130,13 @@ public class Scroll extends Tab {
 			WheelEvent wheel = (WheelEvent) event;
 			
 			if(this.globalWheelListening || this.getBounds().contains(wheel.getPoint())) {
-				this.commitDelta(this.activeComponent + (int) wheel.getDelta());
-			}
-		} else if(event instanceof ActionEvent) {
-			ActionEvent action = (ActionEvent) event;
-			
-			if(action.getType().equals(ActionType.PRESS) && this.getBounds().contains(action.getPoint())) {
-				this.anchor = this.activeComponent;
+				this.commitDelta((int) wheel.getDelta());
 			}
 		} else if(event instanceof DragEvent) {
 			DragEvent drag = (DragEvent) event;
 			
 			if(this.getBounds().contains(drag.getAnchor())) {				
-				this.commitDelta((int) (this.anchor - 2 * MOUSE_DRAG_SENSIBILITY * this.getComponents().size() / this.getBounds().getWidth() * (int) Utils.fakeComplexPower(drag.getDeltaX(), MOUSE_DRAG_ACCELERATION)));
+				this.commitDelta((int) (-2 * MOUSE_DRAG_SENSIBILITY * this.getComponents().size() / this.getBounds().getWidth() * (int) Utils.fakeComplexPower(drag.getDeltaX(), MOUSE_DRAG_ACCELERATION)));
 			}
 		} else if(event instanceof InvalidateLayoutEvent) {
 			super.handleEvent(event);
@@ -143,33 +144,29 @@ public class Scroll extends Tab {
 	}
 	
 	private void commitDelta(int delta) {
-		if(cycle > 0) {
-			if(delta < cycle) {
-				commitDelta(delta + cycle);
-				return;
-			} else if(delta >= 2 * cycle) {
-				commitDelta(delta - cycle);
-				return;
-			}
-		} else {
-			if(delta < 0) {
-				delta = 0;
-			} else if(delta >= this.getComponents().size()) {
-				delta = this.getComponents().size() - 1;
-			}
+		selection += delta;
+		
+		if(selection >= numElements) {
+			selection = numElements - 1;
 		}
-				
-		if(this.activeComponent != delta) {
-			this.activeComponent = delta;
-			
+		
+		if(selection < 0) {
+			selection = 0;
+		}
+
+		animation.startAnimation(300, cut(originalBounds, numElements - selection, 2 * numElements - selection));
+		
+		if(delta != 0) {
 			if(cycle >= 0) {
-				this.getAppManager().getEventDispatcher().fire(new ScrollEvent(this, this.activeComponent - cycle));
+				this.getAppManager().getEventDispatcher().fire(new ScrollEvent(this, selection - cycle));
 			} else {
-				this.getAppManager().getEventDispatcher().fire(new ScrollEvent(this, this.activeComponent));
+				this.getAppManager().getEventDispatcher().fire(new ScrollEvent(this, selection));
 			}
-			
-			this.updateAll();
 		}
+	}
+	
+	private List<Bounds> cut(List<Bounds> input, int from, int to) {
+		return input.subList(from, to).stream().map(Bounds::copy).collect(Collectors.toCollection(LinkedList<Bounds>::new));
 	}
 	
 	public Tab setActiveComponent(int id) {
@@ -187,14 +184,15 @@ public class Scroll extends Tab {
 			System.arraycopy(tabs, 0, resulting, 2 * cycle, cycle);
 	
 			setComponents(resulting);
-					
-			activeComponent = cycle;
+			
+			selection = 0;
 		} else {
+			selection = 0;
 			cycle = 0;
 		}
 	}
 	
 	public Set<Class<? extends Event>> getHandleableEvents() {
-		return Utils.combine(super.getHandleableEvents(), WheelEvent.class, ActionEvent.class, DragEvent.class);
+		return Utils.combine(super.getHandleableEvents(), WheelEvent.class, DragEvent.class);
 	}
 }

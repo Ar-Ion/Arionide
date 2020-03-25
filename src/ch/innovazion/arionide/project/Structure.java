@@ -34,5 +34,6 @@ public interface Structure extends Serializable {
 	public int getSpotColorID();
 	public boolean isAccessAllowed();
 	public boolean isLambda();
+	public String getLanguage();
 	public Specification getSpecification();
 }

@@ -22,7 +22,7 @@
 package ch.innovazion.arionide.ui.overlay.components;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -58,10 +58,10 @@ public class Tab extends MultiComponent implements EventHandler {
 	private final Animation animation;
 	private final Shape borders;
 	
-	protected final List<Bounds> rectangles = Collections.synchronizedList(new ArrayList<>());
+	protected final List<Bounds> rectangles = new LinkedList<>();
 	
 	protected float shadow = 0.0f;
-	protected int activeComponent = 0;
+	private int activeComponent = 0;
 	private boolean renderSeparators;
 	private String signal;
 	private int alpha = ApplicationTints.INACTIVE_ALPHA;
@@ -176,7 +176,7 @@ public class Tab extends MultiComponent implements EventHandler {
 		synchronized(this.rectangles) {
 			for(Component component : components) {
 				Bounds rect = this.rectangles.get(i++);
-									
+				
 				if(rect.getWidth() > 0.0f) {
 					component.setBounds(rect);
 					

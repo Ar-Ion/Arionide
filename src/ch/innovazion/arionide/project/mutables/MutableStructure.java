@@ -21,32 +21,43 @@
  *******************************************************************************/
 package ch.innovazion.arionide.project.mutables;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.Structure;
-import ch.innovazion.arionide.ui.ApplicationTints;
+import ch.innovazion.arionide.project.StructureModel;
+import ch.innovazion.arionide.project.StructureModelFactory;
 
 public abstract class MutableStructure implements Structure, Callable {
 	
 	private static final long serialVersionUID = 1259382903286126347L;
+	private static final StructureModel defaultModel = StructureModelFactory.draft("?").build();
 	
 	private final int identifier;
 	
-	private String name = new String("?");
-	private List<String> comment = new ArrayList<>();
-	private int colorID = ApplicationTints.getColorIDByName("White");
-	private int spotColorID = ApplicationTints.getColorIDByName("White");
+	private String name;
+	private Specification specification;
+	private List<String> comment;
+	private int colorID;
+	private int spotColorID;
 	private boolean accessAllowed = true;
 	private boolean lambda = false;
-	private Specification specification;
+	private String language = null;
 
 	public MutableStructure(int structureID, int specID) {
+		this(structureID, specID, defaultModel);
+	}
+	
+	public MutableStructure(int structureID, int specID, StructureModel model) {
 		this.identifier = structureID;
-		this.specification = new Specification(specID);
+		this.specification = new Specification(specID, model.getParameters());
+		
+		this.name = model.getName();
+		this.comment = model.getComment();
+		this.colorID = model.getColorID();
+		this.spotColorID = model.getSpotColorID();
 	}
 	
 	public int getIdentifier() {
@@ -99,6 +110,14 @@ public abstract class MutableStructure implements Structure, Callable {
 	
 	public void setLambda(boolean isLambda) {
 		this.lambda = isLambda;
+	}
+	
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+	
+	public String getLanguage() {
+		return language;
 	}
 
 	public Specification getSpecification() {
