@@ -92,7 +92,7 @@ public class CodeManager extends Manager {
 	}
 	
 	public boolean hasCode() {
-		return hostStack.getCurrent() != -1;
+		return hostStack.getCurrent() != -1 && !getCurrentCode0().isAbstract();
 	}
 	
 	public CodeChain getCurrentCode() {

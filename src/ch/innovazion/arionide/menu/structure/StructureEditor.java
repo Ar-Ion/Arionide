@@ -38,7 +38,7 @@ public class StructureEditor extends Menu {
 	protected Structure target;
 
 	public StructureEditor(MenuManager manager) {
-		super(manager, "Go", "Specify", "Comment", "Rename", "Abstractify", "Language", "Tint", "Delete");
+		super(manager, "Go", "Specify", "Comment", "Rename", "Language", "Tint", "Delete");
 	}
 
 	public void onAction(String action) {		
@@ -76,5 +76,6 @@ public class StructureEditor extends Menu {
 		dispatch(project.getStructureManager().deleteStructure(target.getIdentifier()));
 		dispatch(new GeometryInvalidateEvent(2));
 		view.discard();
+		go("/structure");
 	}
 }

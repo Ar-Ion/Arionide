@@ -143,11 +143,11 @@ public class CoreController {
 	protected void updateDynamics() {		
 		if(requestTeleportation.compareAndSet(0, -1)) {
 			WorldElement destination = coreGeometry.getElementByID(requestedDestination);
-
+			
 			Vector3f center = destination.getCenter();
 			float size = destination.getSize();
 			
-			user.setPosition(center.mul(1 + 0.5f * size / center.length()).add(0.0f, size * 0.125f, 0.0f));
+			user.setPosition(center.add(size * 0.5f, size * 0.125f, 0.0f));
 			
 			onDiscontinuityCrossed();
 			
@@ -305,11 +305,13 @@ public class CoreController {
 				}
 				
 				this.binding = !binding;
+				
+				return;
 			}
-		} else {
-			this.binding = false;
-			menu.click();
 		}
+			
+		this.binding = false;
+		menu.click();
 	}
 	
 	void onRightClick() {

@@ -141,7 +141,6 @@ public class CodeView extends View implements EventHandler {
 			} else if(click.isTargetting(this, "run")) {
 				this.navigateTo(Views.run);
 			} else if(click.isTargetting(this, "add")) {
-				
 				Views.input.setText("Please enter the name of the new structure")
 						   .setPlaceholder("Structure name")
 						   .setResponder(this::createStructure)
@@ -213,7 +212,7 @@ public class CodeView extends View implements EventHandler {
 			Storage storage = this.currentProject.getStorage();
 			
 			int structID = storage.getCallGraph().get(storage.getCallGraph().size() - 1).getID();
-										
+
 			CodeChain code = storage.getCode().get(structID);
 			
 			manager.getEventDispatcher().fire(new GeometryInvalidateEvent(2));
@@ -224,6 +223,8 @@ public class CodeView extends View implements EventHandler {
 				controller.requestFocus(instructionID);
 			}
 		}
+		
+		controller.wake();
 	}
 	
 	private void syncMenuDescription() {		

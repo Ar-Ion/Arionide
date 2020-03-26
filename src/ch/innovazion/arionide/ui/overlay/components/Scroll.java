@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.DragEvent;
@@ -95,16 +96,13 @@ public class Scroll extends Tab {
 				float width = initialWidth * power;
 				float height = initialHeight * power;
 				 
-				Bounds elementBounds = new Bounds(bounds.getCenter().getX() + Math.signum(i - numElements) * 0.5f * (1 - power) - width/2, bounds.getCenter().getY() - height / 2, width, height);
+				Bounds elementBounds = new Bounds(bounds.getCenter().getX() + Math.signum(i - numElements) * 0.667f * (1 - power) - width/2, bounds.getCenter().getY() - height / 2, width, height);
 				originalBounds.add(elementBounds);
 			}
-			
-			rectangles.addAll(cut(originalBounds, numElements, 2 * numElements));
-			
-			System.out.println(rectangles);
-			
+						
+			IntStream.range(numElements, 2 * numElements).mapToObj(originalBounds::get).map(Bounds::copy).forEach(rectangles::add);
+						
 			this.animation = new ObjectModifierAnimation(getAppManager(), LinkedList.class, rectangles);
-			
 		}
 	}
 	
@@ -154,7 +152,7 @@ public class Scroll extends Tab {
 			selection = 0;
 		}
 
-		animation.startAnimation(300, cut(originalBounds, numElements - selection, 2 * numElements - selection));
+		animation.startAnimation(200, originalBounds.subList(numElements - selection, 2 * numElements - selection).stream().map(Bounds::copy).collect(Collectors.toCollection(LinkedList<Bounds>::new)));
 		
 		if(delta != 0) {
 			if(cycle >= 0) {
@@ -163,10 +161,6 @@ public class Scroll extends Tab {
 				this.getAppManager().getEventDispatcher().fire(new ScrollEvent(this, selection));
 			}
 		}
-	}
-	
-	private List<Bounds> cut(List<Bounds> input, int from, int to) {
-		return input.subList(from, to).stream().map(Bounds::copy).collect(Collectors.toCollection(LinkedList<Bounds>::new));
 	}
 	
 	public Tab setActiveComponent(int id) {
