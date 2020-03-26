@@ -35,7 +35,6 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -98,7 +97,7 @@ public class ZipStorage extends Storage {
 			this.structureMetaPath = this.init(HashMap<Integer, MutableStructure>::new, this::setMutableStructures, "meta", "structures");
 			this.historyPath = this.init(ArrayList<MutableHistoryElement>::new, this::setMutableHistory, "history");
 			this.codePath = this.init(HashMap<Integer, MutableCodeChain>::new, this::setMutableCode, "code");
-			this.languagesPath = this.init(HashSet<String>::new, this::setMutableLanguages, "lang");
+			this.languagesPath = this.init(HashMap<String, Integer>::new, this::setMutableLanguages, "lang");
 		} catch (IOException exception) {
 			Debug.exception(exception);
 		}

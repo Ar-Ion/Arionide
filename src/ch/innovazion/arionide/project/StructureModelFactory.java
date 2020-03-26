@@ -29,22 +29,22 @@ import ch.innovazion.arionide.ui.ApplicationTints;
 
 public class StructureModelFactory {
 	
-	public static IncompleteModel draft(String name) {
-		return new IncompleteModel(name);
+	public static IncompleteModel draft(String uniqueName) {
+		return new IncompleteModel(uniqueName);
 		
 	}
 	
 	public static class IncompleteModel {
 		
-		private final String name;
+		private final String uniqueName;
 		
 		private List<Parameter> parameters = new ArrayList<>();
 		private List<String> comment = new ArrayList<>();
 		private int colorID = ApplicationTints.getColorIDByName("White");
 		private int spotColorID = ApplicationTints.getColorIDByName("White");
 		
-		private IncompleteModel(String name) {
-			this.name = name;
+		private IncompleteModel(String uniqueName) {
+			this.uniqueName = uniqueName;
 		}
 		
 		public void withParameter(Parameter param) {
@@ -68,7 +68,7 @@ public class StructureModelFactory {
 		}
 		
 		public StructureModel build() {
-			return new StructureModel(name, parameters, comment, colorID, spotColorID);
+			return new StructureModel(uniqueName, parameters, comment, colorID, spotColorID);
 		}
 	}
 }

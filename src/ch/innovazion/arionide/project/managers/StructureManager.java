@@ -21,7 +21,6 @@
  *******************************************************************************/
 package ch.innovazion.arionide.project.managers;
 
-import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,8 +33,6 @@ import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Language;
 import ch.innovazion.arionide.lang.LanguageManager;
-import ch.innovazion.arionide.lang.symbols.Specification;
-import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Manager;
 import ch.innovazion.arionide.project.Project;
@@ -99,11 +96,14 @@ public class StructureManager extends Manager {
 				return message;
 			}
 			
-			CodeChain code = getCode().get(hostStack.getCurrent());
+			Structure current = getStructures().get(hostStack.getCurrent());
 			
-			if(code != null && !code.isAbstract()) {
+			if(current != null) {
+				Language lang = LanguageManager.get(current.getLanguage());
+			
+				getCodeManager().insertCode(-1, lang.getEntryPoint());
+				
 				// Saving is delegated to insertCode
-				getCodeManager().insertCode(-1, code.getID(0));
 			} else {
 				saveStructures();
 				saveCode();
@@ -111,39 +111,6 @@ public class StructureManager extends Manager {
 			
 			return success();
 		}
-	}
-	
-	public int addInstructionDefinition(String name, int color, Specification specification) {
-		if(getStructures().values().stream().filter(meta -> meta.getName().equals(name)).count() > 0) {
-			return -1;
-		} else {
-			int structureID = allocator.allocStructure();
-					
-			MutableHierarchyElement structure = new MutableHierarchyElement(structureID, new ArrayList<>());
-			List<MutableHierarchyElement> generation = getMutableCurrentGeneration();
-			
-			if(generation == null) {
-				return -1;
-			}
-			
-			generation.add(structure);
-			saveHierarchy();
-			
-			MutableStructure meta = new MutableActor(structureID, allocator.allocSpecification());
-			meta.setName(name);
-			meta.setColorID(color);
-			meta.setAccessAllowed(false);
-			meta.setSpecification(specification);
-			
-			getStructures().put(structureID, meta);
-			saveStructures();
-						
-			return structureID;
-		}
-	}
-	
-	public int retrieveInstructionDefinition(String name) {
-		return getStructures().entrySet().stream().filter(meta -> meta.getValue().getName().equals(name)).findAny().orElse(new SimpleEntry<Integer, MutableStructure>(-1, null)).getKey();
 	}
 	
 	public MessageEvent deleteStructure(int id) {
@@ -183,12 +150,12 @@ public class StructureManager extends Manager {
 			if(element.getID() == id) {
 				if(language != null) {
 
-					if(!getLanguages().contains(language)) {
+					if(!getLanguages().containsKey(language)) {
 						Language lang = LanguageManager.get(language);
 						
 						try {
 							Structure entryCodeBase = installLanguage(lang);
-							getLanguages().add(language); // Register language in the project root
+							getLanguages().put(language, entryCodeBase.getIdentifier()); // Register language in the project root
 							
 							setLanguage(element, language, entryCodeBase);
 						} catch(Exception e) {

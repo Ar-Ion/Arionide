@@ -21,8 +21,12 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.structure;
 
+import org.joml.Vector3f;
+
+import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.mutables.MutableStructure;
 import ch.innovazion.arionide.ui.ApplicationTints;
@@ -37,11 +41,18 @@ public class TintSelector extends Menu {
 		super(manager, ApplicationTints.getColorNames().toArray(new String[0]));
 	}
 	
-	protected void onEnter() {
+	protected void onEnter() {				
 		super.onEnter();
+		updateCursor(target.getColorID());
+	}
+	
+	public void updateCursor(int cursor) {
+		super.updateCursor(cursor);
 		
-		cursor = target.getColorID();
-		id = target.getColorID();
+		Vector3f color = ApplicationTints.getColorByID(id);
+		int rgb = Utils.packRGB((int) (color.x * 255), (int) (color.y * 255), (int) (color.z * 255));
+		
+		this.description = new MenuDescription(rgb, new String(), "Preview");
 	}
 
 	public void onAction(String action) {

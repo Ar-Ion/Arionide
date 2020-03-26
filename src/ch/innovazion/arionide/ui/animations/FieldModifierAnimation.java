@@ -83,11 +83,11 @@ public class FieldModifierAnimation extends Animation {
 		}
 		
 		double t = this.getProgression();
-		
+				
 		if(t <= 1.0d) {
 			try {
 				double real = this.smoothingAlgorithm.compute(t);
-
+				
 				if(Double.isInfinite(real) || Double.isNaN(real) || real < 0.0d || real > 1.0d) {
 					return; // silently ignore bug and do not commit the wrong value
 				}

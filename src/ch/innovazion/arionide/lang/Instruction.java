@@ -27,7 +27,7 @@ import ch.innovazion.arionide.project.StructureModel;
 
 public abstract class Instruction {
 	public String toString() {
-		return getStructureModel().getName();
+		return getStructureModel().getUniqueName();
 	}
 	
 	public abstract String validate(Specification spec);

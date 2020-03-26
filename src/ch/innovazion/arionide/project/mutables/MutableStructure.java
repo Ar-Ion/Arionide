@@ -54,7 +54,7 @@ public abstract class MutableStructure implements Structure, Callable {
 		this.identifier = structureID;
 		this.specification = new Specification(specID, model.getParameters());
 		
-		this.name = model.getName();
+		this.name = model.getUniqueName();
 		this.comment = model.getComment();
 		this.colorID = model.getColorID();
 		this.spotColorID = model.getSpotColorID();

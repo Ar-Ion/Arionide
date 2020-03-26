@@ -25,12 +25,13 @@ import java.util.ArrayList;
 
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
+import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.Manager;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.Structure;
-import ch.innovazion.arionide.project.mutables.MutableCodeChain;
 import ch.innovazion.arionide.project.mutables.MutableCode;
+import ch.innovazion.arionide.project.mutables.MutableCodeChain;
 import ch.innovazion.arionide.project.mutables.MutableHierarchyElement;
 
 public class CodeManager extends Manager {
@@ -52,10 +53,9 @@ public class CodeManager extends Manager {
 		return new MessageEvent("Code chain reset", MessageType.SUCCESS);
 	}
 	
-	public MessageEvent insertCode(int previous, int instructionID) {
+	public MessageEvent insertCode(int previous, Instruction instr) {
 		int structureID = allocator.allocStructure();
-		Structure codeBase = storage.getStructures().get(instructionID);
-		MutableCode meta = new MutableCode(codeBase);
+		MutableCode meta = new MutableCode(instr.getStructureModel());
 		
 		getStructures().put(structureID, meta);
 		saveStructures();

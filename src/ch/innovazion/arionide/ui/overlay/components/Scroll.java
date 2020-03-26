@@ -24,7 +24,6 @@ package ch.innovazion.arionide.ui.overlay.components;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import ch.innovazion.arionide.Utils;
@@ -49,9 +48,9 @@ public class Scroll extends Tab {
 	
 	private int numElements = 0;
 	private int cycle = 0;
-	private int selection = 0;
 	
 	private Animation animation;
+	
 	private final List<Bounds> originalBounds = new LinkedList<>();
 	
 	public Scroll(View parent, String... labels) {
@@ -92,18 +91,18 @@ public class Scroll extends Tab {
 			float initialHeight = bounds.getHeight();
 									
 			for(int i = 0; i < 2 * numElements; i++) {
-				float power = (float) Math.pow(2, -Math.abs(i - numElements));
+				float power = (float) Math.max((1.0d + Math.random()) * 0.01f, Math.pow(2, -Math.abs(i - numElements))); // The real way to mitigate a bug XD
 				float width = initialWidth * power;
 				float height = initialHeight * power;
-				 
-				Bounds elementBounds = new Bounds(bounds.getCenter().getX() + Math.signum(i - numElements) * 0.667f * (1 - power) - width/2, bounds.getCenter().getY() - height / 2, width, height);
+								 
+				Bounds elementBounds = new Bounds(bounds.getCenter().getX() + Math.signum(i - numElements) * 0.667f * (1 - power) - width/2, bounds.getCenter().getY() - height / 2, width, height);				
 				originalBounds.add(elementBounds);
 			}
-						
-			IntStream.range(numElements, 2 * numElements).mapToObj(originalBounds::get).map(Bounds::copy).forEach(rectangles::add);
-						
-			this.animation = new ObjectModifierAnimation(getAppManager(), LinkedList.class, rectangles);
 		}
+		
+		IntStream.range(numElements - activeComponent, 2 * numElements - activeComponent).mapToObj(originalBounds::get).map(Bounds::copy).forEach(rectangles::add);
+	
+		animation = new ObjectModifierAnimation(getAppManager(), LinkedList.class, rectangles);
 	}
 	
 	public void updateAll() {
@@ -142,23 +141,25 @@ public class Scroll extends Tab {
 	}
 	
 	private void commitDelta(int delta) {
-		selection += delta;
+		activeComponent += delta;
 		
-		if(selection >= numElements) {
-			selection = numElements - 1;
+		if(activeComponent >= numElements) {
+			activeComponent = numElements - 1;
 		}
 		
-		if(selection < 0) {
-			selection = 0;
+		if(activeComponent < 0) {
+			activeComponent = 0;
 		}
-
-		animation.startAnimation(200, originalBounds.subList(numElements - selection, 2 * numElements - selection).stream().map(Bounds::copy).collect(Collectors.toCollection(LinkedList<Bounds>::new)));
 		
+		System.out.println(originalBounds.subList(numElements - activeComponent, 2 * numElements - activeComponent));
+				
+		animation.startAnimation(200, new LinkedList<>(originalBounds.subList(numElements - activeComponent, 2 * numElements - activeComponent)));
+				
 		if(delta != 0) {
 			if(cycle >= 0) {
-				this.getAppManager().getEventDispatcher().fire(new ScrollEvent(this, selection - cycle));
+				this.getAppManager().getEventDispatcher().fire(new ScrollEvent(this, activeComponent - cycle));
 			} else {
-				this.getAppManager().getEventDispatcher().fire(new ScrollEvent(this, selection));
+				this.getAppManager().getEventDispatcher().fire(new ScrollEvent(this, activeComponent));
 			}
 		}
 	}
@@ -179,9 +180,9 @@ public class Scroll extends Tab {
 	
 			setComponents(resulting);
 			
-			selection = 0;
+			activeComponent = 0;
 		} else {
-			selection = 0;
+			activeComponent = 0;
 			cycle = 0;
 		}
 	}

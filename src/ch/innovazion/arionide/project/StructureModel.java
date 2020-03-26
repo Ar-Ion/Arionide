@@ -28,22 +28,22 @@ import ch.innovazion.arionide.lang.symbols.Parameter;
 
 public class StructureModel {
 						
-	private final String name;
+	private final String uniqueName;
 	private final List<Parameter> parameters;
 	private final List<String> comment;
 	private final int colorID;
 	private final int spotColorID;
 
-	StructureModel(String name, List<Parameter> parameters, List<String> comment, int colorID, int spotColorID) {
-		this.name = name;
+	StructureModel(String uniqueName, List<Parameter> parameters, List<String> comment, int colorID, int spotColorID) {
+		this.uniqueName = uniqueName;
 		this.parameters = parameters;
 		this.comment = comment;
 		this.colorID = colorID;
 		this.spotColorID = spotColorID;
 	}
 
-	public String getName() {
-		return name;
+	public String getUniqueName() {
+		return uniqueName;
 	}
 	
 	public List<Parameter> getParameters() {
@@ -63,6 +63,6 @@ public class StructureModel {
 	}
 	
 	public String toString() {
-		return "[Name: " + name + "; Comment: " + comment + "; Parameters: [" + parameters + "]]";
+		return "[Name: " + uniqueName + "; Comment: " + comment + "; Parameters: [" + parameters + "]]";
 	}
 }

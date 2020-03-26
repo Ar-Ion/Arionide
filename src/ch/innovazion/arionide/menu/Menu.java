@@ -86,6 +86,8 @@ public abstract class Menu extends State {
 	}
 	
 	protected void updateCursor(int cursor) {
+		this.cursor = cursor;
+		
 		if(isCyclic()) {
 			id = cursor % elements.length;
 		} else if(cursor < elements.length && cursor >= 0) {

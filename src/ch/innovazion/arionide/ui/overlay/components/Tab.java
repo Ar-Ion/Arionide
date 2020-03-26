@@ -61,7 +61,7 @@ public class Tab extends MultiComponent implements EventHandler {
 	protected final List<Bounds> rectangles = new LinkedList<>();
 	
 	protected float shadow = 0.0f;
-	private int activeComponent = 0;
+	protected int activeComponent = 0;
 	private boolean renderSeparators;
 	private String signal;
 	private int alpha = ApplicationTints.INACTIVE_ALPHA;
@@ -174,30 +174,32 @@ public class Tab extends MultiComponent implements EventHandler {
 		int i = 0;
 		
 		synchronized(this.rectangles) {
-			for(Component component : components) {
-				Bounds rect = this.rectangles.get(i++);
-				
-				if(rect.getWidth() > 0.0f) {
-					component.setBounds(rect);
+			if(rectangles.size() == components.size()) {
+				for(Component component : components) {
+					Bounds rect = this.rectangles.get(i++);
 					
-					if(component instanceof Enlightenable) {
-						for(UILighting primitive : ((Enlightenable) component).getEnlightenablePrimitives()) {
-							primitive.updateLightStrength(lightStrength);
-							primitive.updateLightCenter(new Point(this.shadow, y));
+					if(rect.getWidth() > 0.0f) {
+						component.setBounds(rect);
+						
+						if(component instanceof Enlightenable) {
+							for(UILighting primitive : ((Enlightenable) component).getEnlightenablePrimitives()) {
+								primitive.updateLightStrength(lightStrength);
+								primitive.updateLightCenter(new Point(this.shadow, y));
+							}
 						}
-					}
-					
-					component.drawSurface(context);
-					
-					try {
-						Bounds next = this.rectangles.get(i);
-							
-						if(next.getWidth() > 0 && this.renderSeparators) {
-							// TODO
-							// context.getPrimitives().drawLine(new Line(next.getX(), next.getY(), next.getX(), next.getY() + next.getHeight()));
+						
+						component.drawSurface(context);
+						
+						try {
+							Bounds next = this.rectangles.get(i);
+								
+							if(next.getWidth() > 0 && this.renderSeparators) {
+								// TODO
+								// context.getPrimitives().drawLine(new Line(next.getX(), next.getY(), next.getX(), next.getY() + next.getHeight()));
+							}
+						} catch(Exception e) {
+							break;
 						}
-					} catch(Exception e) {
-						break;
 					}
 				}
 			}

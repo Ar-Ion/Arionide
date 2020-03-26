@@ -23,7 +23,6 @@ package ch.innovazion.arionide.project;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.events.MessageEvent;
@@ -68,7 +67,7 @@ public abstract class Manager {
 		return storage.getMutableCode();
 	}
 	
-	protected Set<String> getLanguages() {
+	protected Map<String, Integer> getLanguages() {
 		return storage.getMutableLanguages();
 	}
 	

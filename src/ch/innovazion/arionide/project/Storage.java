@@ -22,10 +22,8 @@
 package ch.innovazion.arionide.project;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import ch.innovazion.arionide.debugging.IAm;
 import ch.innovazion.arionide.project.mutables.MutableCodeChain;
@@ -42,7 +40,7 @@ public abstract class Storage {
 	private Map<Integer, MutableStructure> structures;
 	private List<MutableHistoryElement> history;
 	private Map<Integer, MutableCodeChain> code;
-	private Set<String> languages;
+	private Map<String, Integer> languages;
 	
 	
 	public List<HierarchyElement> getHierarchy() {
@@ -69,8 +67,8 @@ public abstract class Storage {
 		return Collections.unmodifiableMap(this.code);
 	}
 	
-	public Set<String> getLanguages() {
-		return Collections.unmodifiableSet(this.languages);
+	public Map<String, Integer> getLanguages() {
+		return Collections.unmodifiableMap(this.languages);
 	}
 	
 	
@@ -98,7 +96,7 @@ public abstract class Storage {
 		return this.code;
 	}
 	
-	protected Set<String> getMutableLanguages() {
+	protected Map<String, Integer> getMutableLanguages() {
 		return this.languages;
 	}
 	
@@ -127,7 +125,7 @@ public abstract class Storage {
 		this.code = code;
 	}
 	
-	protected void setMutableLanguages(HashSet<String> languages) {
+	protected void setMutableLanguages(Map<String, Integer> languages) {
 		this.languages = languages;
 	}
 	
