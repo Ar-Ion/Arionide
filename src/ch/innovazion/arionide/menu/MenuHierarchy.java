@@ -23,6 +23,12 @@ package ch.innovazion.arionide.menu;
 
 import ch.innovazion.arionide.menu.code.CodeBrowser;
 import ch.innovazion.arionide.menu.code.CodeEditor;
+import ch.innovazion.arionide.menu.params.ParameterCreator;
+import ch.innovazion.arionide.menu.params.ParameterEditor;
+import ch.innovazion.arionide.menu.params.ParameterSelector;
+import ch.innovazion.arionide.menu.params.assign.InformationAssigner;
+import ch.innovazion.arionide.menu.params.assign.ReferenceAssigner;
+import ch.innovazion.arionide.menu.params.assign.VariableAssigner;
 import ch.innovazion.arionide.menu.structure.CommentEditor;
 import ch.innovazion.arionide.menu.structure.LanguageSelector;
 import ch.innovazion.arionide.menu.structure.StructureBrowser;
@@ -40,16 +46,26 @@ public class MenuHierarchy extends StateHierarchy {
 	protected void registerStates(StateManager mgr) {
 		assert mgr instanceof MenuManager;
 		
-		register("/", root = new RootMenu((MenuManager) mgr));
+		MenuManager manager = (MenuManager) mgr;
 		
-		register("/structure", structureBrowser = new StructureBrowser((MenuManager) mgr));
-		register("/structure/edit", new StructureEditor((MenuManager) mgr));
-		register("/structure/edit/comment", new CommentEditor((MenuManager) mgr));
-		register("/structure/edit/language", new LanguageSelector((MenuManager) mgr));
-		register("/structure/edit/tint", new TintSelector((MenuManager) mgr));
+		register("/", root = new RootMenu(manager));
+		
+		register("/structure", structureBrowser = new StructureBrowser(manager));
+		register("/structure/edit", new StructureEditor(manager));
+		register("/structure/edit/specify", new ParameterSelector(manager, true));
+		register("/structure/edit/specify/create", new ParameterCreator(manager));
+		register("/structure/edit/specify/edit", new ParameterEditor(manager));
+		register("/structure/edit/comment", new CommentEditor(manager));
+		register("/structure/edit/language", new LanguageSelector(manager));
+		register("/structure/edit/tint", new TintSelector(manager));
 
-		register("/code", codeBrowser = new CodeBrowser((MenuManager) mgr));
-		register("/code/edit", new CodeEditor((MenuManager) mgr));
+		register("/code", codeBrowser = new CodeBrowser(manager));
+		register("/code/append", new CodeEditor(manager));
+		register("/code/specify", new ParameterSelector(manager, false));
+		
+		register("/assign/information", new InformationAssigner(manager));
+		register("/assign/variable", new VariableAssigner(manager));
+		register("/assign/reference", new ReferenceAssigner(manager));
 	}
 	
 	protected Menu resolveCurrentState() {

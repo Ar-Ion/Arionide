@@ -19,38 +19,56 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.code;
+package ch.innovazion.arionide.menu.params;
 
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.ui.overlay.Views;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
 
-public class CodeEditor extends Menu {
-
-	@Export
+public class ParameterEditor extends Menu {
+	
 	@Inherit
 	protected Structure target;
 	
-	public CodeEditor(MenuManager manager) {
-		super(manager, "Delete", "Append", "Specify");
-		updateCursor(1);
+	@Export
+	@Inherit
+	protected Parameter param;
+
+	
+	public ParameterEditor(MenuManager manager) {
+		super(manager, "Rename", "Initialise", "Delete");
 	}
 
 	public void onAction(String action) {
 		switch(action) {
+		case "Rename":
+			Views.input.setText("Please enter the name of the parameter")
+			   .setPlaceholder("Parameter name")
+			   .setResponder(this::renameParameter)
+			   .stackOnto(Views.code);
+			
+			break;
+		case "Initialise":
+			go(EditorMultiplexer.findDestination(param.getValue()));
+			break;
 		case "Delete":
-			dispatch(project.getStructureManager().getCodeManager().deleteCode(target.getIdentifier()));
+			deleteParameter();
 			break;
-		case "Append":
-			go("append");
-			break;
-		case "Specify":
-			go("specify");
-			break;
-		default:
-			throw new IllegalArgumentException();
 		}
+	}
+	
+	private void renameParameter(String newName) {
+		dispatch(project.getStructureManager().getSpecificationManager().refactorParameterName(param, newName));
+		dispatch(new GeometryInvalidateEvent(1));
+	}
+	
+	private void deleteParameter() {
+		dispatch(project.getStructureManager().getSpecificationManager().removeParameter(param));
+		dispatch(new GeometryInvalidateEvent(1));
 	}
 }

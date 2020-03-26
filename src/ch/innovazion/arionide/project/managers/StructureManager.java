@@ -101,7 +101,9 @@ public class StructureManager extends Manager {
 			if(current != null) {
 				Language lang = LanguageManager.get(current.getLanguage());
 			
-				getCodeManager().insertCode(-1, lang.getEntryPoint());
+				hostStack.push(structureID);
+				getCodeManager().insertCode(0, lang.getEntryPoint());
+				hostStack.pop();
 				
 				// Saving is delegated to insertCode
 			} else {
@@ -172,15 +174,14 @@ public class StructureManager extends Manager {
 		saveCode();
 		saveStructures();
 		
-		return success();			
+		return success();
 	}
 	
 	private void setLanguage(MutableHierarchyElement element, String language, Structure entryCodeBase) {
 		int currentID = element.getID();
 		
 		getStructures().get(currentID).setLanguage(language);
-		
-		
+	
 		int entryInstanceID = allocator.allocStructure();
 		
 		MutableCodeChain chain = new MutableCodeChain();

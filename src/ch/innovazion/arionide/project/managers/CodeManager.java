@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.Instruction;
+import ch.innovazion.arionide.lang.Language;
+import ch.innovazion.arionide.lang.LanguageManager;
 import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.Manager;
 import ch.innovazion.arionide.project.Storage;
@@ -36,14 +38,12 @@ import ch.innovazion.arionide.project.mutables.MutableHierarchyElement;
 
 public class CodeManager extends Manager {
 	
-	private final Storage storage;
 	private final ResourceAllocator allocator;
 	private final HostStructureStack hostStack;
 	
 	protected CodeManager(Storage storage, ResourceAllocator allocator, HostStructureStack hostStack) {
 		super(storage);
 		
-		this.storage = storage;
 		this.allocator = allocator;
 		this.hostStack = hostStack;
 	}
@@ -53,24 +53,47 @@ public class CodeManager extends Manager {
 		return new MessageEvent("Code chain reset", MessageType.SUCCESS);
 	}
 	
-	public MessageEvent insertCode(int previous, Instruction instr) {
-		int structureID = allocator.allocStructure();
-		MutableCode meta = new MutableCode(instr.getStructureModel());
+	public MessageEvent insertCode(int index, Instruction instr) {
+		Structure host = getStructures().get(hostStack.getCurrent());
 		
-		getStructures().put(structureID, meta);
-		saveStructures();
+		if(host == null) {
+			return new MessageEvent("You have to be inside a structure to add instructions to the code", MessageType.ERROR);
+		}
+				
+		Language lang = LanguageManager.get(host.getLanguage());
 		
-		CodeChain chain = getCurrentCode0();
-		int index = 0;
-		
-		if(previous >= 0) {
-			index = chain.indexOf(previous) + 1;
+		if(lang == null) {
+			return new MessageEvent("The target language for this structure is invalid... Try updating Arionide", MessageType.ERROR);
 		}
 		
+		Integer entryID = getLanguages().get(host.getLanguage());
+		
+		if(entryID == null) {
+			return new MessageEvent("Specified language does not seem to be installed in the structure... Try reinstalling the target language", MessageType.ERROR);
+		}
+		
+		int offset = lang.getInstructions().indexOf(instr);
+		
+		if(offset < 0) {
+			return new MessageEvent("Invalid instruction for the target language", MessageType.ERROR);
+		}
+		
+		Structure resolvedDefinition = getStructures().get(entryID + offset + 1);
+		
+		if(resolvedDefinition == null || !resolvedDefinition.getName().equals(instr.getStructureModel().getUniqueName())) {
+			return new MessageEvent("Failed to retrieve the definition of this instruction... Try reinstalling the target language", MessageType.ERROR);
+		}
+				
+		int structureID = allocator.allocStructure();
+		MutableCode code = new MutableCode(resolvedDefinition);
+		
+		getStructures().put(structureID, code);
+		saveStructures();
+				
 		getCurrentCode0().getMutableList().add(index, new MutableHierarchyElement(structureID, new ArrayList<>()));
 		saveCode();
 			
-		return new MessageEvent("Added an instruction to the code", MessageType.SUCCESS);
+		return success();
 	}
 
 	public MessageEvent deleteCode(int id) {
@@ -84,9 +107,9 @@ public class CodeManager extends Manager {
 			chain.getMutableList().remove(index);
 			saveCode();
 			
-			return new MessageEvent("Removed an instruction from the code", MessageType.SUCCESS);
+			return success();
 		} else {
-			return new MessageEvent("Cannot remove the 'init' instruction", MessageType.ERROR);
+			return new MessageEvent("Cannot remove the entry point of this structure", MessageType.ERROR);
 		}
 
 	}

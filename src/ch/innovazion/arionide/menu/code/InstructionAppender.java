@@ -19,93 +19,83 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu;
+package ch.innovazion.arionide.menu.code;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.TargetUpdateEvent;
+import ch.innovazion.arionide.lang.Instruction;
+import ch.innovazion.arionide.lang.Language;
+import ch.innovazion.arionide.lang.LanguageManager;
 import ch.innovazion.arionide.lang.symbols.Parameter;
-import ch.innovazion.arionide.project.HierarchyElement;
+import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
+import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.automaton.Export;
+import ch.innovazion.automaton.Inherit;
 
-public abstract class Browser extends Menu {
+public class InstructionAppender extends Menu {
 
-	private List<Structure> browsables;
-	
 	@Export
+	@Inherit
 	protected Structure target;
+		
+	private List<Instruction> instructions = new ArrayList<>();
 	
-	public Browser(MenuManager manager) {
+	public InstructionAppender(MenuManager manager) {
 		super(manager);
 	}
 	
 	protected void onEnter() {
-		List<HierarchyElement> elements = fetchBrowsableIDs();
-		browsables = elements.stream().map(HierarchyElement::getID).map(project.getStorage().getStructures()::get).collect(Collectors.toList());
-		
-		setDynamicElements(browsables.stream().map(Structure::getName).toArray(String[]::new));
-				
 		super.onEnter();
+		
+		Language lang = LanguageManager.get(target.getLanguage());
+		
+		if(lang != null) {
+			instructions = lang.getInstructions();
+			setDynamicElements(instructions.stream().map(Instruction::toString).toArray(String[]::new));
+		}
 	}
 	
 	protected void updateCursor(int cursor) {
 		super.updateCursor(cursor);
-				
-		if(browsables != null && id < browsables.size()) {
-			this.target = browsables.get(id);
-			this.selection = target.getName();
-
-			generateDescription();
-			dispatch(new TargetUpdateEvent(target.getIdentifier()));
-		}
-	}
-	
-	protected void select(Structure target) {
-		if(target != null) {
-			int index = browsables.indexOf(target);
-			
-			if(index != -1) {
-				this.target = target;
-				this.cursor = index;
-				this.id = index;
-				this.selection = target.getName();
-			}
-		} else if(browsables.size() > 0) {
-			this.cursor = 0;
-			this.id = 0;
-			this.target = browsables.get(0);
-			this.selection = this.target.getName();
-			
-			dispatch(new TargetUpdateEvent(this.target.getIdentifier()));
-		}
 		
-		generateDescription();
+		Instruction instr = instructions.get(id);
+		generateDescription(instr.getStructureModel());
 	}
 	
-	private void generateDescription() {
+	private void generateDescription(StructureModel model) {
 		this.description = new MenuDescription();
 		
-		if(target != null) {
-			for(Parameter param : target.getSpecification().getParameters()) {
+		if(model != null) {
+			for(Parameter param : model.getParameters()) {
 				description.add(param.toString());
 			}
 			
 			description.spacer();
 			
-			for(String comment : target.getComment()) {
+			for(String comment : model.getComment()) {
 				description.add(comment);
 			}
 		}
 	}
 
 	public void onAction(String action) {
-		if(target != null) {
-			browse();
-		}
+		Instruction instr = instructions.get(id);
+		int index = project.getStructureManager().getCodeManager().getCurrentCode().indexOf(target.getIdentifier());
+		
+		dispatch(project.getStructureManager().getCodeManager().insertCode(index, instr));
+		
+		int newTargetID = project.getStructureManager().getCodeManager().getCurrentCode().getID(index + 1);
+		this.target = project.getStorage().getStructures().get(newTargetID);
+		
+		dispatch(new GeometryInvalidateEvent(0));
+		dispatch(new TargetUpdateEvent(target.getIdentifier()));
+		
+		go("/specify");
 	}
-
-	protected abstract List<HierarchyElement> fetchBrowsableIDs();
-	protected abstract void browse();
 }

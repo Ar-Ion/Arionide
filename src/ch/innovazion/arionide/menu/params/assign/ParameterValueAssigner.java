@@ -19,17 +19,45 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.events;
+package ch.innovazion.arionide.menu.params.assign;
 
-public class TargetUpdateEvent extends Event {
+import java.util.ArrayList;
+import java.util.List;
+
+import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
+import ch.innovazion.arionide.menu.MenuManager;
+import ch.innovazion.arionide.project.managers.specification.SpecificationManager;
+import ch.innovazion.automaton.Export;
+import ch.innovazion.automaton.Inherit;
+
+public abstract class ParameterValueAssigner extends Menu {
+		
+	@Export
+	@Inherit
+	protected Parameter parameter;
 	
-	private final int target;
+	private SpecificationManager specManager;
 	
-	public TargetUpdateEvent(int target) {
-		this.target = target;
+	public ParameterValueAssigner(MenuManager manager) {
+		super(manager);
 	}
 	
-	public int getTarget() {
-		return this.target;
+	protected SpecificationManager getManager() {
+		return specManager;
+	}
+	
+	protected void onEnter() {
+		super.onEnter();
+
+		this.specManager = project.getStructureManager().getSpecificationManager();
+		
+		List<String> elements = new ArrayList<>();
+		elements.add("Parameter name: " + parameter.getName());
+		elements.add("");
+		elements.addAll(parameter.getDisplayValue());
+		
+		this.description = new MenuDescription(elements.toArray(new String[0]));
 	}
 }

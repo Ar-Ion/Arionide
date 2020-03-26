@@ -21,6 +21,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang.symbols;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,21 +36,32 @@ public class Reference extends AtomicValue {
 
 	private static final long serialVersionUID = 7287598499790357836L;
 	
-	private final List<Parameter> lazyParameters;
+	private final List<Parameter> lazyParameters = new ArrayList<>();
 	private final Map<String, ParameterValue> lazyMapping = new HashMap<>();
 	private final Map<Parameter, ParameterValue> bindings = new HashMap<>();
 	private Callable target;
 	private Number targetID;
-
-	public Reference(List<Parameter> lazyParameters) { 
-		// Lazy parameters will be evaluated only when the target is called. (lambda input)
-		this.lazyParameters = Collections.unmodifiableList(lazyParameters);
-		
-		for(Parameter param : lazyParameters) {
-			lazyMapping.put(param.getName(), param.getValue());
-		}
+	
+	/*
+	 * The three following methods are used to CREATE a reference parameter inside a specification
+	 */
+	public void addLazyParameter(Parameter param) {
+		lazyParameters.add(param);
+		lazyMapping.put(param.getName(), param.getValue());
 	}
 	
+	public void removeLazyParameter(Parameter param) {
+		lazyParameters.remove(param);
+		lazyMapping.remove(param.getName());
+	}
+	
+	public List<Parameter> getLazyParameters() {
+		return Collections.unmodifiableList(lazyParameters);
+	}
+	
+	/*
+	 * The following methods are used to ASSIGN a reference parameter to a specification
+	 */
 	public void setTarget(Callable target) {
 		this.target = target;
 		this.targetID = new Number(target.getIdentifier());
@@ -109,9 +121,12 @@ public class Reference extends AtomicValue {
 	}
 	
 	public Reference clone() {
-		Reference clone = new Reference(lazyParameters);
+		Reference clone = new Reference();
 		
 		clone.target = target;
+		
+		lazyParameters.forEach(clone::addLazyParameter);
+		
 		clone.autobind();
 		
 		return clone;

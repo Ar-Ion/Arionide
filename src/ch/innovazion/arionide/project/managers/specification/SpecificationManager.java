@@ -54,15 +54,36 @@ public class SpecificationManager extends ContextualManager<Specification> {
 		return success();
 	}
 	
-	public MessageEvent removeParameter(int id) {
-		doForeachConnectedSpecification(l -> l.getParameters().remove(id));
+	public MessageEvent removeParameter(Parameter param) {
+		doForeachConnectedSpecification(other -> other.getParameters().remove(param));
 		saveStructures();
 
 		return success();
 	}
 	
-	public MessageEvent refactorParameterName(int id, String newName) {
-		doForeachConnectedSpecification(l -> l.getParameters().get(id).setName(newName));
+	public MessageEvent refactorParameterName(Parameter param, String newName) {
+		doForeachConnectedSpecification(other -> {
+			for(Parameter target : other.getParameters()) {
+				if(target.equals(param)) { // Name comparison
+					target.setName(newName);
+				}
+			}
+		});
+		
+		saveStructures();
+		
+		return success();
+	}
+	
+	public MessageEvent refactorParameterDefault(Parameter param, ParameterValue newDefault) {
+		doForeachConnectedSpecification(other -> {
+			for(Parameter target : other.getParameters()) {
+				if(target.equals(param) && param.getValue().equals(target.getValue())) { // Name comparison
+					target.setValue(newDefault.clone()); // Only refactor the default value if the target had the previous default value
+				}
+			}
+		});
+		
 		saveStructures();
 		
 		return success();

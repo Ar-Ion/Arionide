@@ -19,17 +19,23 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.events;
+package ch.innovazion.arionide.menu.params;
 
-public class TargetUpdateEvent extends Event {
-	
-	private final int target;
-	
-	public TargetUpdateEvent(int target) {
-		this.target = target;
-	}
-	
-	public int getTarget() {
-		return this.target;
+import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.ParameterValue;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.Variable;
+
+public class EditorMultiplexer {
+	protected static String findDestination(ParameterValue value) {
+		if(value instanceof Information) {
+			return "/assign/information";
+		} else if(value instanceof Variable) {
+			return "/assign/variable";
+		} else if(value instanceof Reference) {
+			return "/assign/reference";
+		} else {
+			throw new IllegalArgumentException();
+		}
 	}
 }

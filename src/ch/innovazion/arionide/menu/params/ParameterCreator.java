@@ -19,17 +19,44 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.events;
+package ch.innovazion.arionide.menu.params;
 
-public class TargetUpdateEvent extends Event {
+import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.Variable;
+import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
+import ch.innovazion.arionide.menu.MenuManager;
+import ch.innovazion.automaton.Export;
+import ch.innovazion.automaton.Inherit;
+
+public class ParameterCreator extends Menu {
 	
-	private final int target;
+	@Export
+	@Inherit
+	protected Parameter parameter;
 	
-	public TargetUpdateEvent(int target) {
-		this.target = target;
+	public ParameterCreator(MenuManager manager) {
+		super(manager, "Information", "Variable", "Reference");
+		this.description = new MenuDescription("Please select the type of the parameter you want to create");
 	}
-	
-	public int getTarget() {
-		return this.target;
+
+	public void onAction(String action) {
+		switch(action) {
+		case "Information":
+			project.getStructureManager().getSpecificationManager().refactorParameterDefault(parameter, new Information());
+			break;
+		case "Variable":
+			parameter.setValue(new Variable());
+			break;
+		case "Reference":
+			parameter.setValue(new Reference());
+			break;
+		default:
+			throw new IllegalArgumentException();
+		}
+		
+		go(EditorMultiplexer.findDestination(parameter.getValue()));
 	}
 }

@@ -19,38 +19,61 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.code;
+package ch.innovazion.arionide.menu.params;
 
+import ch.innovazion.arionide.events.TargetUpdateEvent;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
 
-public class CodeEditor extends Menu {
-
+public class ParameterSelector extends Menu {
+	
+	private final boolean mutable;
+	
 	@Export
 	@Inherit
 	protected Structure target;
 	
-	public CodeEditor(MenuManager manager) {
-		super(manager, "Delete", "Append", "Specify");
-		updateCursor(1);
+	@Export
+	protected Parameter parameter;
+		
+	public ParameterSelector(MenuManager manager, boolean mutable) {
+		super(manager, mutable ? "<Add>" : null);
+		
+		this.mutable = mutable;
 	}
+	
+	protected void onEnter() {		
+		setDynamicElements(target.getSpecification().getParameters().stream().map(Parameter::getName).toArray(String[]::new));
+		super.onEnter();
+	}
+	
+	protected void updateCursor(int cursor) {
+		super.updateCursor(cursor);
+		
+		if(mutable && id == 0) {
+			this.description = new MenuDescription("Add a new parameter to '" + target.getName() + "'");
+		} else {
+			this.parameter = target.getSpecification().getParameters().get(id);
+			this.description = new MenuDescription(parameter.getDisplayValue().toArray(new String[0]));
 
+			dispatch(new TargetUpdateEvent(((id + 1) << 24) | target.getIdentifier()));	
+		}
+	}
+	
 	public void onAction(String action) {
-		switch(action) {
-		case "Delete":
-			dispatch(project.getStructureManager().getCodeManager().deleteCode(target.getIdentifier()));
-			break;
-		case "Append":
-			go("append");
-			break;
-		case "Specify":
-			go("specify");
-			break;
-		default:
-			throw new IllegalArgumentException();
+		if(mutable) {
+			if(id == 0) {
+				go("create");
+			} else {
+				go("edit");
+			}
+		} else {
+			go(EditorMultiplexer.findDestination(parameter.getValue()));
 		}
 	}
 }

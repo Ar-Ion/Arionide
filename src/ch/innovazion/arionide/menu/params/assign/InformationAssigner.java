@@ -19,15 +19,17 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.project.managers.specification;
+package ch.innovazion.arionide.menu.params.assign;
 
-import ch.innovazion.arionide.lang.symbols.ParameterValue;
-import ch.innovazion.arionide.project.Storage;
+import ch.innovazion.arionide.menu.MenuManager;
 
-public class ParameterValueManager<T extends ParameterValue> extends ContextualManager<T> {
+public class InformationAssigner extends ParameterValueAssigner {
 
-	protected ParameterValueManager(Storage storage) {
-		super(storage);
+	public InformationAssigner(MenuManager manager) {
+		super(manager);
 	}
 
+	public void onAction(String action) {
+		
+	}
 }

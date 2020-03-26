@@ -162,7 +162,7 @@ public class CoreEventHandler implements EventHandler {
 					} else if(event instanceof TargetUpdateEvent) {
 						TargetUpdateEvent targetUpdate = (TargetUpdateEvent) event;
 						
-						controller.select(targetUpdate.getTarget().getIdentifier());
+						controller.select(targetUpdate.getTarget());
 					} else if(event instanceof TeleportEvent) {
 						TeleportEvent teleport = (TeleportEvent) event;
 						

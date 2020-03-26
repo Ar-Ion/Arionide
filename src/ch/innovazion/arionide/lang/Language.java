@@ -24,9 +24,7 @@ package ch.innovazion.arionide.lang;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public abstract class Language implements Serializable {
 
@@ -36,7 +34,6 @@ public abstract class Language implements Serializable {
 	private final short minor;
 	
 	private transient final List<Instruction> instructions = new ArrayList<>();
-	private transient final Set<Instruction> branchInstructions = new HashSet<>();
 	
 	public Language() {
 		this.major = getVersionMajor();
@@ -48,7 +45,6 @@ public abstract class Language implements Serializable {
 	}
 	
 	protected void registerBranch(Instruction instruction) {
-		branchInstructions.add(instruction);
 		instructions.add(instruction);
 	}
 	
@@ -60,10 +56,6 @@ public abstract class Language implements Serializable {
 		if(major > getVersionMajor() || minor > getVersionMinor()) {
 			throw new CompatibilityException("Language version  (" + getVersion() + ") is probably incompatible with the current language implementation");
 		}
-	}
-	
-	public boolean isBranch(Instruction instruction) {
-		return branchInstructions.contains(instruction);
 	}
 	
 	public List<Instruction> getInstructions() {

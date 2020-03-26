@@ -19,17 +19,17 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.events;
+package ch.innovazion.arionide.menu.params.assign;
 
-public class TargetUpdateEvent extends Event {
-	
-	private final int target;
-	
-	public TargetUpdateEvent(int target) {
-		this.target = target;
+import ch.innovazion.arionide.menu.MenuManager;
+
+public class VariableAssigner extends ParameterValueAssigner {
+
+	public VariableAssigner(MenuManager manager) {
+		super(manager);
 	}
-	
-	public int getTarget() {
-		return this.target;
+
+	public void onAction(String action) {
+		
 	}
 }
