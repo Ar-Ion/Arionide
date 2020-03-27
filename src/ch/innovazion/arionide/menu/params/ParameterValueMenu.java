@@ -21,42 +21,43 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params;
 
-import ch.innovazion.arionide.lang.symbols.Information;
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.innovazion.arionide.lang.symbols.Parameter;
-import ch.innovazion.arionide.lang.symbols.Reference;
-import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
+import ch.innovazion.arionide.project.managers.specification.SpecificationManager;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
 
-public class ParameterCreator extends Menu {
-	
+public abstract class ParameterValueMenu extends Menu {
+		
 	@Export
 	@Inherit
 	protected Parameter parameter;
 	
-	public ParameterCreator(MenuManager manager) {
-		super(manager, "Information", "Variable", "Reference");
-		this.description = new MenuDescription("Please select the type of the parameter you want to create");
+	private SpecificationManager specManager;
+	
+	public ParameterValueMenu(MenuManager manager) {
+		super(manager);
 	}
+	
+	protected SpecificationManager getManager() {
+		return specManager;
+	}
+	
+	protected void onEnter() {
+		super.onEnter();
 
-	public void onAction(String action) {
-		switch(action) {
-		case "Information":
-			project.getStructureManager().getSpecificationManager().refactorParameterDefault(parameter, new Information());
-			break;
-		case "Variable":
-			parameter.setValue(new Variable());
-			break;
-		case "Reference":
-			parameter.setValue(new Reference());
-			break;
-		default:
-			throw new IllegalArgumentException();
-		}
+		this.specManager = project.getStructureManager().getSpecificationManager();
 		
-		go(EditorMultiplexer.findDestination("/structure/edit", parameter.getValue()));
+		List<String> elements = new ArrayList<>();
+		elements.add("Parameter name: " + parameter.getName());
+		elements.add("");
+		elements.addAll(parameter.getDisplayValue());
+		
+		this.description = new MenuDescription(elements.toArray(new String[0]));
 	}
 }

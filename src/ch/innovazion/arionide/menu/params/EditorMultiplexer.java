@@ -28,15 +28,15 @@ import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Variable;
 
 public class EditorMultiplexer {
-	protected static String findDestination(ParameterValue value) {
+	protected static String findDestination(String base, ParameterValue value) {
 		if(value instanceof Information) {
-			return "/assign/information";
+			return base + "/specify/information";
 		} else if(value instanceof Variable) {
-			return "/assign/variable";
+			return base + "/specify/variable";
 		} else if(value instanceof Reference) {
-			return "/assign/reference";
+			return base + "/specify/reference";
 		} else if(value instanceof Enumeration) {
-			return "/assign/enumeration";
+			return base + "/specify/enumeration";
 		} else {
 			throw new IllegalArgumentException();
 		}

@@ -41,7 +41,7 @@ public class ParameterEditor extends Menu {
 
 	
 	public ParameterEditor(MenuManager manager) {
-		super(manager, "Rename", "Initialise", "Delete");
+		super(manager, "Rename", "Edit", "Delete");
 	}
 
 	public void onAction(String action) {
@@ -53,8 +53,8 @@ public class ParameterEditor extends Menu {
 			   .stackOnto(Views.code);
 			
 			break;
-		case "Initialise":
-			go(EditorMultiplexer.findDestination(param.getValue()));
+		case "Edit":
+			go(EditorMultiplexer.findDestination("/structure/edit", param.getValue()));
 			break;
 		case "Delete":
 			deleteParameter();

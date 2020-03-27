@@ -73,7 +73,7 @@ public class ParameterSelector extends Menu {
 				go("edit");
 			}
 		} else {
-			go(EditorMultiplexer.findDestination(parameter.getValue()));
+			go(EditorMultiplexer.findDestination("/code/edit", parameter.getValue()));
 		}
 	}
 }

@@ -22,6 +22,7 @@
 package ch.innovazion.arionide.lang.symbols;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,20 +37,31 @@ public class Enumeration extends AtomicValue {
 
 	private Information value;
 	
+	
+	/*
+	 * Those two methods should be accessed by a parameter creator
+	 */
 	public void addPossibleValue(String name) {
 		nameMapping.add(name);
 		possibleValues.put(name, new Information());
 	}
 	
-	/*
-	 * Method should be accessed only by EnumerationManager
-	 */
+	public void removePossibleValue(String name) {
+		nameMapping.remove(name);
+		possibleValues.remove(name);
+	}
+	
+
 	public Information getValue(String name) {
 		return possibleValues.get(name);
 	}
 	
 	public void setValue(String name) {
 		this.value = possibleValues.get(name);
+	}
+	
+	public List<String> getNames() {
+		return Collections.unmodifiableList(nameMapping);
 	}
 	
 	public Information getValue() {

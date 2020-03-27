@@ -19,45 +19,28 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.params.assign;
+package ch.innovazion.arionide.menu.params.edit;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ch.innovazion.arionide.lang.symbols.Parameter;
-import ch.innovazion.arionide.menu.Menu;
-import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.project.managers.specification.SpecificationManager;
-import ch.innovazion.automaton.Export;
-import ch.innovazion.automaton.Inherit;
+import ch.innovazion.arionide.menu.params.ParameterValueMenu;
+import ch.innovazion.arionide.project.managers.specification.EnumerationManager;
 
-public abstract class ParameterValueAssigner extends Menu {
-		
-	@Export
-	@Inherit
-	protected Parameter parameter;
+public class EnumerationEditor extends ParameterValueMenu {
+
+	private EnumerationManager enumManager;
 	
-	private SpecificationManager specManager;
-	
-	public ParameterValueAssigner(MenuManager manager) {
+	public EnumerationEditor(MenuManager manager) {
 		super(manager);
-	}
-	
-	protected SpecificationManager getManager() {
-		return specManager;
 	}
 	
 	protected void onEnter() {
 		super.onEnter();
+		this.enumManager = project.getStructureManager().getSpecificationManager().loadEnumerationManager(parameter.getValue());
+		setDynamicElements(enumManager.getNames().toArray(new String[0]));
+	}
 
-		this.specManager = project.getStructureManager().getSpecificationManager();
-		
-		List<String> elements = new ArrayList<>();
-		elements.add("Parameter name: " + parameter.getName());
-		elements.add("");
-		elements.addAll(parameter.getDisplayValue());
-		
-		this.description = new MenuDescription(elements.toArray(new String[0]));
+	public void onAction(String action) {
+		dispatch(enumManager.assignEnumValue(action));
+		go("..");
 	}
 }

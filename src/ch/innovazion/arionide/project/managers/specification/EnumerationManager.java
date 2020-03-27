@@ -21,11 +21,42 @@
  *******************************************************************************/
 package ch.innovazion.arionide.project.managers.specification;
 
+import java.util.List;
+
+import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.lang.symbols.Enumeration;
+import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.project.Storage;
 
 public class EnumerationManager extends ContextualManager<Enumeration> {
 	protected EnumerationManager(Storage storage) {
 		super(storage);
+	}
+	
+	public List<String> getNames() {
+		return getContext().getNames();
+	}
+	
+	public List<String> getEnumDescription(String name) {
+		return getContext().getValue(name).getDisplayValue();
+	}
+	
+	public MessageEvent addPossibleEnum(String name) {
+		getContext().addPossibleValue(name);
+		return success();
+	}
+	
+	public MessageEvent removePossibleEnum(String name) {
+		getContext().removePossibleValue(name);
+		return success();
+	}
+	
+	public Information getEnumValue(String name) {
+		return getContext().getValue(name);
+	}
+	
+	public MessageEvent assignEnumValue(String name) {
+		getContext().setValue(name);
+		return success();
 	}
 }

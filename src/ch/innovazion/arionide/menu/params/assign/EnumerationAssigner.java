@@ -22,14 +22,25 @@
 package ch.innovazion.arionide.menu.params.assign;
 
 import ch.innovazion.arionide.menu.MenuManager;
+import ch.innovazion.arionide.menu.params.ParameterValueMenu;
+import ch.innovazion.arionide.project.managers.specification.EnumerationManager;
 
-public class EnumerationAssigner extends ParameterValueAssigner {
+public class EnumerationAssigner extends ParameterValueMenu {
 
+	private EnumerationManager enumManager;
+	
 	public EnumerationAssigner(MenuManager manager) {
 		super(manager);
 	}
+	
+	protected void onEnter() {
+		super.onEnter();
+		this.enumManager = project.getStructureManager().getSpecificationManager().loadEnumerationManager(parameter.getValue());
+		setDynamicElements(enumManager.getNames().toArray(new String[0]));
+	}
 
 	public void onAction(String action) {
-		
+		dispatch(enumManager.assignEnumValue(action));
+		go("..");
 	}
 }

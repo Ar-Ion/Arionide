@@ -33,6 +33,8 @@ import ch.innovazion.arionide.menu.params.assign.EnumerationAssigner;
 import ch.innovazion.arionide.menu.params.assign.InformationAssigner;
 import ch.innovazion.arionide.menu.params.assign.ReferenceAssigner;
 import ch.innovazion.arionide.menu.params.assign.VariableAssigner;
+import ch.innovazion.arionide.menu.params.edit.EnumerationEditor;
+import ch.innovazion.arionide.menu.params.edit.ReferenceEditor;
 import ch.innovazion.arionide.menu.structure.CommentEditor;
 import ch.innovazion.arionide.menu.structure.LanguageSelector;
 import ch.innovazion.arionide.menu.structure.StructureBrowser;
@@ -59,6 +61,10 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/structure/edit/specify", new ParameterSelector(manager, true));
 		register("/structure/edit/specify/create", new ParameterCreator(manager));
 		register("/structure/edit/specify/edit", new ParameterEditor(manager));
+		register("/structure/edit/specify/information", new InformationAssigner(manager));
+		register("/structure/edit/specify/variable", new VariableAssigner(manager));
+		register("/structure/edit/specify/reference", new ReferenceEditor(manager));
+		register("/structure/edit/specify/enumeration", new EnumerationEditor(manager));
 		register("/structure/edit/comment", new CommentEditor(manager));
 		register("/structure/edit/language", new LanguageSelector(manager));
 		register("/structure/edit/tint", new TintSelector(manager));
@@ -70,11 +76,10 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/code/edit/append/operator", new OperatorAppender(manager));
 		register("/code/edit/append/operator/signature", new SignatureSelector(manager));
 		register("/code/edit/specify", new ParameterSelector(manager, false));
-
-		register("/assign/information", new InformationAssigner(manager));
-		register("/assign/variable", new VariableAssigner(manager));
-		register("/assign/reference", new ReferenceAssigner(manager));
-		register("/assign/enumeration", new EnumerationAssigner(manager));
+		register("/code/edit/specify/information", new InformationAssigner(manager));
+		register("/code/edit/specify/variable", new VariableAssigner(manager));
+		register("/code/edit/specify/reference", new ReferenceAssigner(manager));
+		register("/code/edit/specify/enumeration", new EnumerationAssigner(manager));
 	}
 	
 	protected Menu resolveCurrentState() {
