@@ -52,7 +52,7 @@ public abstract class MutableStructure implements Structure, Callable {
 	
 	public MutableStructure(int structureID, int specID, StructureModel model) {
 		this.identifier = structureID;
-		this.specification = new Specification(specID, model.getParameters());
+		this.specification = new Specification(specID, model.getPossibleSignatures().get(0).getParameters());
 		
 		this.name = model.getUniqueName();
 		this.comment = model.getComment();

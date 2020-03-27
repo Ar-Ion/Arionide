@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.Signature;
 import ch.innovazion.arionide.ui.ApplicationTints;
 
 public class StructureModelFactory {
@@ -38,17 +39,34 @@ public class StructureModelFactory {
 		
 		private final String uniqueName;
 		
-		private List<Parameter> parameters = new ArrayList<>();
+		private List<Signature> signatures = new ArrayList<>();
 		private List<String> comment = new ArrayList<>();
 		private int colorID = ApplicationTints.getColorIDByName("White");
 		private int spotColorID = ApplicationTints.getColorIDByName("White");
+		
+		private String signatureName;
+		private List<Parameter> currentSignature;
 		
 		private IncompleteModel(String uniqueName) {
 			this.uniqueName = uniqueName;
 		}
 		
+		public void beginSignature(String name) {
+			currentSignature = new ArrayList<>();
+		}
+		
 		public void withParameter(Parameter param) {
-			parameters.add(param);
+			if(currentSignature != null) {
+				currentSignature.add(param);
+			} else {
+				throw new IllegalStateException("You have to enclose calls to 'withParameter' between a 'beginSignature' and a 'endSignature'");
+			}
+		}
+		
+		public void endSignature() {
+			signatures.add(new Signature(signatureName, currentSignature));
+			currentSignature = null;
+			signatureName = null;
 		}
 		
 		public void withComment(String line) {
@@ -68,7 +86,7 @@ public class StructureModelFactory {
 		}
 		
 		public StructureModel build() {
-			return new StructureModel(uniqueName, parameters, comment, colorID, spotColorID);
+			return new StructureModel(uniqueName, signatures, comment, colorID, spotColorID);
 		}
 	}
 }
