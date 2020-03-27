@@ -34,6 +34,7 @@ import ch.innovazion.arionide.menu.params.assign.InformationAssigner;
 import ch.innovazion.arionide.menu.params.assign.ReferenceAssigner;
 import ch.innovazion.arionide.menu.params.assign.VariableAssigner;
 import ch.innovazion.arionide.menu.params.edit.EnumerationEditor;
+import ch.innovazion.arionide.menu.params.edit.EnumerationRemover;
 import ch.innovazion.arionide.menu.params.edit.ReferenceEditor;
 import ch.innovazion.arionide.menu.structure.CommentEditor;
 import ch.innovazion.arionide.menu.structure.LanguageSelector;
@@ -65,6 +66,7 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/structure/edit/specify/variable", new VariableAssigner(manager));
 		register("/structure/edit/specify/reference", new ReferenceEditor(manager));
 		register("/structure/edit/specify/enumeration", new EnumerationEditor(manager));
+		register("/structure/edit/specify/enumeration/remove", new EnumerationRemover(manager));
 		register("/structure/edit/comment", new CommentEditor(manager));
 		register("/structure/edit/language", new LanguageSelector(manager));
 		register("/structure/edit/tint", new TintSelector(manager));

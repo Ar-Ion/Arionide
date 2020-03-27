@@ -41,7 +41,7 @@ public class EnumerationEditor extends EnumerationAssigner {
 			   .setResponder(this::createPossibility)
 			   .stackOnto(Views.code);
 		} else if(id == 1) {
-			go()
+			go("./remove");
 		} else {
 			this.value = enumManager.getEnumValue(action);
 			go("./information");

@@ -45,6 +45,10 @@ public class Information implements ParameterValue {
 		label(null);
 	}
 
+	public synchronized void connect(Information value) throws SymbolResolutionException {
+		connect(value, linear_map.size());
+	}
+	
 	public synchronized void connect(Information value, int position) throws SymbolResolutionException {
 		if(value != null) {	
 			if(!symbolic_map.containsKey(value.name)) {
@@ -120,6 +124,10 @@ public class Information implements ParameterValue {
 		String oldName = this.name;
 		this.name = (name != null && !name.isEmpty()) ? name : "Lambda information";
 		notifyLabelUpdate(oldName);
+	}
+	
+	public String getLabel() {
+		return name;
 	}
 	
 	public int getSize() {

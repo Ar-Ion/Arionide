@@ -28,10 +28,15 @@ import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
+import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
 
 public class ParameterCreator extends Menu {
+	
+	@Export
+	@Inherit
+	protected Structure target;
 	
 	@Export
 	@Inherit

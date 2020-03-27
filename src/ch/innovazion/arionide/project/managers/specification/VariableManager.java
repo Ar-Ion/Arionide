@@ -21,11 +21,72 @@
  *******************************************************************************/
 package ch.innovazion.arionide.project.managers.specification;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.MessageType;
+import ch.innovazion.arionide.lang.symbols.Actor;
+import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.project.Storage;
+import ch.innovazion.arionide.project.Structure;
 
 public class VariableManager extends ContextualManager<Variable> {
 	protected VariableManager(Storage storage) {
 		super(storage);
+	}
+	
+	public Collection<Information> getVariables(Structure parent) {
+		if(parent instanceof Actor) {
+			return ((Actor) parent).getState().getInformation();
+		} else {
+			return Arrays.asList();
+		}
+	}
+	
+	public MessageEvent assignVariable(Variable var, Information value) {
+		var.setInitialValue(value);
+		saveCode();
+		return success();
+	}
+	
+	public MessageEvent newVariable(Structure parent, Variable var, String name) {
+		if(parent instanceof Actor) {
+			Information initialValue = new Information();
+			
+			initialValue.label(name);
+			
+			try {
+				((Actor) parent).getState().connect(initialValue);
+			} catch (SymbolResolutionException e) {
+				return new MessageEvent("Unable to connect a new variable to the structure's state", MessageType.ERROR);
+			}
+			
+			saveStructures();
+			
+			return success();
+		} else {
+			return new MessageEvent("This structure does not support variables", MessageType.ERROR);
+		}
+	}
+	
+	public MessageEvent deleteVariable(Structure parent, String name) {
+		if(parent instanceof Actor) {
+			try {
+				Information state = ((Actor) parent).getState();
+				Information resolved = state.resolve(name);
+				state.disconnect(resolved);
+			} catch (SymbolResolutionException e) {
+				return new MessageEvent("Unable to disconnect this variable from the structure's state", MessageType.ERROR);
+			}
+			
+			saveStructures();
+			
+			return success();
+		} else {
+			return new MessageEvent("This structure does not support variables", MessageType.ERROR);
+		}
 	}
 }

@@ -41,22 +41,25 @@ public class EnumerationManager extends ContextualManager<Enumeration> {
 		return getContext().getValue(name).getDisplayValue();
 	}
 	
+	public Information getEnumValue(String name) {
+		return getContext().getValue(name);
+	}
+	
 	public MessageEvent addPossibleEnum(String name) {
 		getContext().addPossibleValue(name);
+		saveStructures();
 		return success();
 	}
 	
 	public MessageEvent removePossibleEnum(String name) {
 		getContext().removePossibleValue(name);
+		saveStructures();
 		return success();
-	}
-	
-	public Information getEnumValue(String name) {
-		return getContext().getValue(name);
 	}
 	
 	public MessageEvent assignEnumValue(String name) {
 		getContext().setValue(name);
+		saveCode();
 		return success();
 	}
 }

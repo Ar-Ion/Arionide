@@ -32,6 +32,7 @@ import ch.innovazion.automaton.Inherit;
 
 public class ParameterEditor extends Menu {
 	
+	@Export
 	@Inherit
 	protected Structure target;
 	

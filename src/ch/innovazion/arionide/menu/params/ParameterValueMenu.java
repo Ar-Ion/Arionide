@@ -29,12 +29,16 @@ import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
+import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.arionide.project.managers.specification.SpecificationManager;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
 
 public abstract class ParameterValueMenu extends Menu {
 		
+	@Inherit
+	protected Structure target;
+	
 	@Inherit
 	private Parameter parameter;
 	

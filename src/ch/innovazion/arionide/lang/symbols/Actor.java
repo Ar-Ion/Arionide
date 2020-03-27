@@ -32,14 +32,14 @@ public class Actor implements ParameterValue {
 
 	private final Set<Actor> parents = new HashSet<>();
 	private final Set<Reference> actions = new HashSet<>();
-	private final Variable state = new Variable();
 	private Information props = new Information();
+	private Information state = new Information();
 	
 	public Information getProperties() {
 		return props;
 	}
 	
-	public Variable getState() {
+	public Information getState() {
 		return state;
 	}
 	
@@ -60,8 +60,8 @@ public class Actor implements ParameterValue {
 		
 		clone.parents.addAll(parents);
 		clone.actions.addAll(actions);
-		clone.state.setInitialValue(state.getInitialValue().clone());
 		clone.props = props.clone();
+		clone.state = state.clone();
 		
 		return null;
 	}
