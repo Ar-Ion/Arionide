@@ -1,0 +1,175 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender}{}\doxysection{ch.\+innovazion.\+arionide.\+menu.\+code.\+Instruction\+Appender Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender}\index{ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+menu.\+code.\+Instruction\+Appender\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+menu.\+code.\+Instruction\+Appender\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_ac4644c3dbd146045ad2a7bdb6798cd32}{Instruction\+Appender}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager}{Menu\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_af58d5bcbd60a78133d5f3fdcd8adf4d2}{manager}}, String... \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_af33e0b832748b53188342fa8adba2008}{static\+Elements}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a4bd8fef67f3afd50dc353bdb72aded0f}{on\+Enter}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a2343007527cde6d88691dee422ba52ef}{update\+Cursor}} (int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_a8d17bccafd90da8428bdfa225f14d07e}{cursor}})
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a49a69ff611b34922b6d93f249f325f9b}{append\+Instruction}} (int instruction\+ID)
+\item 
+abstract List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction}{Instruction}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_ad5efd6183bbfd69ca8897018c68bac54}{get\+Instructions}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure}{Structure}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_ac88a20dd4fed0bc484730e967f544870}{target}}
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a36f9fa28d2a9d7244c3c0a6f4d21ed74}{previous\+Index}}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction}{Instruction}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a2d978a3ebeca80735b1ab850400e4d16}{instruction}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_ad8b0ebb20f675c8a5d435926502bd3aa}{generate\+Description}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model}{Structure\+Model}} model)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction}{Instruction}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_aad4c98dd79d7ea0034bcab6f7b64cedf}{instructions}} = new Array\+List$<$$>$()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_ac4644c3dbd146045ad2a7bdb6798cd32}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_ac4644c3dbd146045ad2a7bdb6798cd32}} 
+\index{ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}!InstructionAppender@{InstructionAppender}}
+\index{InstructionAppender@{InstructionAppender}!ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}}
+\doxysubsubsection{\texorpdfstring{InstructionAppender()}{InstructionAppender()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+menu.\+code.\+Instruction\+Appender.\+Instruction\+Appender (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager}{Menu\+Manager}}}]{manager,  }\item[{String...}]{static\+Elements }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a49a69ff611b34922b6d93f249f325f9b}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a49a69ff611b34922b6d93f249f325f9b}} 
+\index{ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}!appendInstruction@{appendInstruction}}
+\index{appendInstruction@{appendInstruction}!ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}}
+\doxysubsubsection{\texorpdfstring{appendInstruction()}{appendInstruction()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+code.\+Instruction\+Appender.\+append\+Instruction (\begin{DoxyParamCaption}\item[{int}]{instruction\+ID }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a49a69ff611b34922b6d93f249f325f9b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_ad8b0ebb20f675c8a5d435926502bd3aa}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_ad8b0ebb20f675c8a5d435926502bd3aa}} 
+\index{ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}!generateDescription@{generateDescription}}
+\index{generateDescription@{generateDescription}!ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}}
+\doxysubsubsection{\texorpdfstring{generateDescription()}{generateDescription()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+code.\+Instruction\+Appender.\+generate\+Description (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model}{Structure\+Model}}}]{model }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_ad8b0ebb20f675c8a5d435926502bd3aa_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_ad5efd6183bbfd69ca8897018c68bac54}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_ad5efd6183bbfd69ca8897018c68bac54}} 
+\index{ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}!getInstructions@{getInstructions}}
+\index{getInstructions@{getInstructions}!ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}}
+\doxysubsubsection{\texorpdfstring{getInstructions()}{getInstructions()}}
+{\footnotesize\ttfamily abstract List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction}{Instruction}}$>$ ch.\+innovazion.\+arionide.\+menu.\+code.\+Instruction\+Appender.\+get\+Instructions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}, {\ttfamily [protected]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_default_instruction_appender_ac0e07bd8449a73e1f06f5424ef5a830f}{ch.\+innovazion.\+arionide.\+menu.\+code.\+Default\+Instruction\+Appender}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_operator_appender_aae3515c7898bd577e41fdf2ec8024bfb}{ch.\+innovazion.\+arionide.\+menu.\+code.\+Operator\+Appender}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a4bd8fef67f3afd50dc353bdb72aded0f}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a4bd8fef67f3afd50dc353bdb72aded0f}} 
+\index{ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}!onEnter@{onEnter}}
+\index{onEnter@{onEnter}!ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}}
+\doxysubsubsection{\texorpdfstring{onEnter()}{onEnter()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+code.\+Instruction\+Appender.\+on\+Enter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_ac9b8b980cfa2effe500cc313e0031f83}{ch.\+innovazion.\+arionide.\+menu.\+Menu}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a4bd8fef67f3afd50dc353bdb72aded0f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a2343007527cde6d88691dee422ba52ef}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a2343007527cde6d88691dee422ba52ef}} 
+\index{ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}!updateCursor@{updateCursor}}
+\index{updateCursor@{updateCursor}!ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}}
+\doxysubsubsection{\texorpdfstring{updateCursor()}{updateCursor()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+code.\+Instruction\+Appender.\+update\+Cursor (\begin{DoxyParamCaption}\item[{int}]{cursor }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_ab2375d878c95a870742e683b38b279fb}{ch.\+innovazion.\+arionide.\+menu.\+Menu}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a2343007527cde6d88691dee422ba52ef_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a2d978a3ebeca80735b1ab850400e4d16}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a2d978a3ebeca80735b1ab850400e4d16}} 
+\index{ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}!instruction@{instruction}}
+\index{instruction@{instruction}!ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}}
+\doxysubsubsection{\texorpdfstring{instruction}{instruction}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction}{Instruction}} ch.\+innovazion.\+arionide.\+menu.\+code.\+Instruction\+Appender.\+instruction\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_aad4c98dd79d7ea0034bcab6f7b64cedf}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_aad4c98dd79d7ea0034bcab6f7b64cedf}} 
+\index{ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}!instructions@{instructions}}
+\index{instructions@{instructions}!ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}}
+\doxysubsubsection{\texorpdfstring{instructions}{instructions}}
+{\footnotesize\ttfamily List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction}{Instruction}}$>$ ch.\+innovazion.\+arionide.\+menu.\+code.\+Instruction\+Appender.\+instructions = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a36f9fa28d2a9d7244c3c0a6f4d21ed74}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_a36f9fa28d2a9d7244c3c0a6f4d21ed74}} 
+\index{ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}!previousIndex@{previousIndex}}
+\index{previousIndex@{previousIndex}!ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}}
+\doxysubsubsection{\texorpdfstring{previousIndex}{previousIndex}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+menu.\+code.\+Instruction\+Appender.\+previous\+Index\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_ac88a20dd4fed0bc484730e967f544870}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_instruction_appender_ac88a20dd4fed0bc484730e967f544870}} 
+\index{ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}!target@{target}}
+\index{target@{target}!ch.innovazion.arionide.menu.code.InstructionAppender@{ch.innovazion.arionide.menu.code.InstructionAppender}}
+\doxysubsubsection{\texorpdfstring{target}{target}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure}{Structure}} ch.\+innovazion.\+arionide.\+menu.\+code.\+Instruction\+Appender.\+target\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/menu/code/\mbox{\hyperlink{_instruction_appender_8java}{Instruction\+Appender.\+java}}\end{DoxyCompactItemize}

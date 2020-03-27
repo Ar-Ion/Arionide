@@ -11,7 +11,8 @@ Inheritance diagram for ch.\+innovazion.\+arionide.\+project.\+managers.\+Code\+
 \end{figure}
 
 
-Collaboration diagram for ch.\+innovazion.\+arionide.\+project.\+managers.\+Code\+Manager\+:\nopagebreak
+Collaboration diagram for ch.\+innovazion.\+arionide.\+project.\+managers.\+Code\+Manager\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -23,7 +24,7 @@ Collaboration diagram for ch.\+innovazion.\+arionide.\+project.\+managers.\+Code
 \item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a836396894aca1d020768ce7b088b8767}{reset\+Code\+Chain}} (int id)
 \item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a7c29dc4fbbe8b5ce5a5ddcdcf05e3088}{insert\+Code}} (int previous, int instruction\+ID)
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a3649de2638fba1c13e140fd3090c05d6}{insert\+Code}} (int index, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction}{Instruction}} instr, int signature\+ID)
 \item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a6af99817fc38129bf12156a0afc10358}{delete\+Code}} (int id)
 \item 
@@ -34,7 +35,7 @@ boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1manager
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a919e345432ae227a5d8b6a28767f0701}{Code\+Manager}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage}{Storage}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_ab351334bb1e47b8ec2d108e30e82869f}{storage}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_resource_allocator}{Resource\+Allocator}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_ae1c02d79f959b9d87a59a50b33303b5f}{allocator}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack}{Host\+Structure\+Stack}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a612dbaa47b3b0413662853d89f101345}{host\+Stack}})
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a919e345432ae227a5d8b6a28767f0701}{Code\+Manager}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage}{Storage}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_manager_ab5fe711a2897a8d16bbbf9b99d951f28}{storage}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_resource_allocator}{Resource\+Allocator}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_ae1c02d79f959b9d87a59a50b33303b5f}{allocator}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack}{Host\+Structure\+Stack}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a612dbaa47b3b0413662853d89f101345}{host\+Stack}})
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
@@ -43,8 +44,6 @@ boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1manager
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
-\item 
-final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage}{Storage}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_ab351334bb1e47b8ec2d108e30e82869f}{storage}}
 \item 
 final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_resource_allocator}{Resource\+Allocator}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_ae1c02d79f959b9d87a59a50b33303b5f}{allocator}}
 \item 
@@ -108,24 +107,26 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{hasCode()}{hasCode()}}
 {\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+project.\+managers.\+Code\+Manager.\+has\+Code (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a041d4e895e4d4dfc14b86acbdb0e9ba1_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a7c29dc4fbbe8b5ce5a5ddcdcf05e3088}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a7c29dc4fbbe8b5ce5a5ddcdcf05e3088}} 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a3649de2638fba1c13e140fd3090c05d6}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a3649de2638fba1c13e140fd3090c05d6}} 
 \index{ch.innovazion.arionide.project.managers.CodeManager@{ch.innovazion.arionide.project.managers.CodeManager}!insertCode@{insertCode}}
 \index{insertCode@{insertCode}!ch.innovazion.arionide.project.managers.CodeManager@{ch.innovazion.arionide.project.managers.CodeManager}}
 \doxysubsubsection{\texorpdfstring{insertCode()}{insertCode()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} ch.\+innovazion.\+arionide.\+project.\+managers.\+Code\+Manager.\+insert\+Code (\begin{DoxyParamCaption}\item[{int}]{previous,  }\item[{int}]{instruction\+ID }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} ch.\+innovazion.\+arionide.\+project.\+managers.\+Code\+Manager.\+insert\+Code (\begin{DoxyParamCaption}\item[{int}]{index,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction}{Instruction}}}]{instr,  }\item[{int}]{signature\+ID }\end{DoxyParamCaption})}
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a7c29dc4fbbe8b5ce5a5ddcdcf05e3088_cgraph}
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a3649de2638fba1c13e140fd3090c05d6_cgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a836396894aca1d020768ce7b088b8767}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_a836396894aca1d020768ce7b088b8767}} 
@@ -155,12 +156,6 @@ Here is the call graph for this function\+:\nopagebreak
 \index{hostStack@{hostStack}!ch.innovazion.arionide.project.managers.CodeManager@{ch.innovazion.arionide.project.managers.CodeManager}}
 \doxysubsubsection{\texorpdfstring{hostStack}{hostStack}}
 {\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack}{Host\+Structure\+Stack}} ch.\+innovazion.\+arionide.\+project.\+managers.\+Code\+Manager.\+host\+Stack\hspace{0.3cm}{\ttfamily [private]}}
-
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_ab351334bb1e47b8ec2d108e30e82869f}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager_ab351334bb1e47b8ec2d108e30e82869f}} 
-\index{ch.innovazion.arionide.project.managers.CodeManager@{ch.innovazion.arionide.project.managers.CodeManager}!storage@{storage}}
-\index{storage@{storage}!ch.innovazion.arionide.project.managers.CodeManager@{ch.innovazion.arionide.project.managers.CodeManager}}
-\doxysubsubsection{\texorpdfstring{storage}{storage}}
-{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage}{Storage}} ch.\+innovazion.\+arionide.\+project.\+managers.\+Code\+Manager.\+storage\hspace{0.3cm}{\ttfamily [private]}}
 
 
 

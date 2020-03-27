@@ -2,8 +2,7 @@
 \label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager}\index{ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}}
 
 
-Inheritance diagram for ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager\+:
-\nopagebreak
+Inheritance diagram for ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -12,7 +11,8 @@ Inheritance diagram for ch.\+innovazion.\+arionide.\+project.\+managers.\+Struct
 \end{figure}
 
 
-Collaboration diagram for ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager\+:\nopagebreak
+Collaboration diagram for ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -26,13 +26,9 @@ Collaboration diagram for ch.\+innovazion.\+arionide.\+project.\+managers.\+Stru
 \item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_af8daad7abc348f3394904286ceff9eeb}{new\+Structure}} (String name)
 \item 
-int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a032089cebec8ec16f16460868e343351}{add\+Instruction\+Definition}} (String name, int color, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}} specification)
-\item 
-int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_af3bd89323ae7c0afe3722423f023c77b}{retrieve\+Instruction\+Definition}} (String name)
-\item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a9a8025a29cc6e02cf25bc7e057847532}{delete\+Structure}} (int id)
 \item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_abc2b94e055af0de01e814786c9efcde8}{abstractify\+Structure}} (int id)
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a40c7fd0badccef4511e507aa402a921a}{set\+Language}} (int id, String language)
 \item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a61307f19c368e8f61ead78db2143ef64}{rename}} (int id, String name)
 \item 
@@ -59,7 +55,13 @@ List$<$ \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_hi
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a74b9c05270c187f70db822cd14a6a298}{delete\+Meta}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_hierarchy_element}{Hierarchy\+Element}} element)
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a3573df48dcc2275b20ae3d873786b20b}{abstractify}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_hierarchy_element}{Mutable\+Hierarchy\+Element}} element)
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a053b49214e1f096ec2f5c464a1722c9f}{set\+Language}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_hierarchy_element}{Mutable\+Hierarchy\+Element}} element, String language, \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure}{Structure}} entry\+Code\+Base)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a35da2e6df598dc2b487e1dcb385f02a6}{reset\+Code\+Chain}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_hierarchy_element}{Mutable\+Hierarchy\+Element}} element)
+\item 
+\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure}{Structure}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_ad1f77c1b4d4e2a195e62766a43c519a2}{install\+Language}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_language}{Language}} lang)
+\item 
+\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure}{Structure}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a0455c20ce8026bf73fd833d47d9ed837}{install\+Instruction}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction}{Instruction}} instr)
 \item 
 List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_hierarchy_element}{Mutable\+Hierarchy\+Element}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a469b0d4d75e90996edb95e8843cbe859}{get\+Mutable\+Current\+Generation}} ()
 \end{DoxyCompactItemize}
@@ -96,46 +98,6 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a3573df48dcc2275b20ae3d873786b20b}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a3573df48dcc2275b20ae3d873786b20b}} 
-\index{ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}!abstractify@{abstractify}}
-\index{abstractify@{abstractify}!ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}}
-\doxysubsubsection{\texorpdfstring{abstractify()}{abstractify()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager.\+abstractify (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_hierarchy_element}{Mutable\+Hierarchy\+Element}}}]{element }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
-
-Here is the call graph for this function\+:
-\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a3573df48dcc2275b20ae3d873786b20b_cgraph}
-\end{center}
-\end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_abc2b94e055af0de01e814786c9efcde8}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_abc2b94e055af0de01e814786c9efcde8}} 
-\index{ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}!abstractifyStructure@{abstractifyStructure}}
-\index{abstractifyStructure@{abstractifyStructure}!ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}}
-\doxysubsubsection{\texorpdfstring{abstractifyStructure()}{abstractifyStructure()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager.\+abstractify\+Structure (\begin{DoxyParamCaption}\item[{int}]{id }\end{DoxyParamCaption})}
-
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_abc2b94e055af0de01e814786c9efcde8_cgraph}
-\end{center}
-\end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a032089cebec8ec16f16460868e343351}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a032089cebec8ec16f16460868e343351}} 
-\index{ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}!addInstructionDefinition@{addInstructionDefinition}}
-\index{addInstructionDefinition@{addInstructionDefinition}!ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}}
-\doxysubsubsection{\texorpdfstring{addInstructionDefinition()}{addInstructionDefinition()}}
-{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager.\+add\+Instruction\+Definition (\begin{DoxyParamCaption}\item[{String}]{name,  }\item[{int}]{color,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}}}]{specification }\end{DoxyParamCaption})}
-
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a032089cebec8ec16f16460868e343351_cgraph}
-\end{center}
-\end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a74b9c05270c187f70db822cd14a6a298}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a74b9c05270c187f70db822cd14a6a298}} 
 \index{ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}!deleteMeta@{deleteMeta}}
 \index{deleteMeta@{deleteMeta}!ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}}
@@ -231,13 +193,42 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{getSpecificationManager()}{getSpecificationManager()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager}{Specification\+Manager}} ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager.\+get\+Specification\+Manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a0455c20ce8026bf73fd833d47d9ed837}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a0455c20ce8026bf73fd833d47d9ed837}} 
+\index{ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}!installInstruction@{installInstruction}}
+\index{installInstruction@{installInstruction}!ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}}
+\doxysubsubsection{\texorpdfstring{installInstruction()}{installInstruction()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure}{Structure}} ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager.\+install\+Instruction (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction}{Instruction}}}]{instr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a0455c20ce8026bf73fd833d47d9ed837_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_ad1f77c1b4d4e2a195e62766a43c519a2}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_ad1f77c1b4d4e2a195e62766a43c519a2}} 
+\index{ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}!installLanguage@{installLanguage}}
+\index{installLanguage@{installLanguage}!ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}}
+\doxysubsubsection{\texorpdfstring{installLanguage()}{installLanguage()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure}{Structure}} ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager.\+install\+Language (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_language}{Language}}}]{lang }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_ad1f77c1b4d4e2a195e62766a43c519a2_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_af8daad7abc348f3394904286ceff9eeb}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_af8daad7abc348f3394904286ceff9eeb}} 
 \index{ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}!newStructure@{newStructure}}
 \index{newStructure@{newStructure}!ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}}
 \doxysubsubsection{\texorpdfstring{newStructure()}{newStructure()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager.\+new\+Structure (\begin{DoxyParamCaption}\item[{String}]{name }\end{DoxyParamCaption})}
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -250,26 +241,25 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{rename()}{rename()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager.\+rename (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{String}]{name }\end{DoxyParamCaption})}
 
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a61307f19c368e8f61ead78db2143ef64_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_af3bd89323ae7c0afe3722423f023c77b}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_af3bd89323ae7c0afe3722423f023c77b}} 
-\index{ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}!retrieveInstructionDefinition@{retrieveInstructionDefinition}}
-\index{retrieveInstructionDefinition@{retrieveInstructionDefinition}!ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}}
-\doxysubsubsection{\texorpdfstring{retrieveInstructionDefinition()}{retrieveInstructionDefinition()}}
-{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager.\+retrieve\+Instruction\+Definition (\begin{DoxyParamCaption}\item[{String}]{name }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a35da2e6df598dc2b487e1dcb385f02a6}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a35da2e6df598dc2b487e1dcb385f02a6}} 
+\index{ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}!resetCodeChain@{resetCodeChain}}
+\index{resetCodeChain@{resetCodeChain}!ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}}
+\doxysubsubsection{\texorpdfstring{resetCodeChain()}{resetCodeChain()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager.\+reset\+Code\+Chain (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_hierarchy_element}{Mutable\+Hierarchy\+Element}}}]{element }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 Here is the call graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_af3bd89323ae7c0afe3722423f023c77b_cgraph}
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a35da2e6df598dc2b487e1dcb385f02a6_cgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a52495e36eeae0273be62c9052e32dba8}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a52495e36eeae0273be62c9052e32dba8}} 
@@ -291,12 +281,39 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{setComment()}{setComment()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager.\+set\+Comment (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{List$<$ String $>$}]{comment }\end{DoxyParamCaption})}
 
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_ae33421f4b37e42bd058f2ab50e61da31_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a40c7fd0badccef4511e507aa402a921a}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a40c7fd0badccef4511e507aa402a921a}} 
+\index{ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}!setLanguage@{setLanguage}}
+\index{setLanguage@{setLanguage}!ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}}
+\doxysubsubsection{\texorpdfstring{setLanguage()}{setLanguage()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_message_event}{Message\+Event}} ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager.\+set\+Language (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{String}]{language }\end{DoxyParamCaption})}
+
 Here is the call graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_ae33421f4b37e42bd058f2ab50e61da31_cgraph}
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a40c7fd0badccef4511e507aa402a921a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a053b49214e1f096ec2f5c464a1722c9f}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a053b49214e1f096ec2f5c464a1722c9f}} 
+\index{ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}!setLanguage@{setLanguage}}
+\index{setLanguage@{setLanguage}!ch.innovazion.arionide.project.managers.StructureManager@{ch.innovazion.arionide.project.managers.StructureManager}}
+\doxysubsubsection{\texorpdfstring{setLanguage()}{setLanguage()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+managers.\+Structure\+Manager.\+set\+Language (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_hierarchy_element}{Mutable\+Hierarchy\+Element}}}]{element,  }\item[{String}]{language,  }\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure}{Structure}}}]{entry\+Code\+Base }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager_a053b49214e1f096ec2f5c464a1722c9f_cgraph}
 \end{center}
 \end{figure}
 

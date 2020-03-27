@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_user_controller.html" title=" " alt="" coords="5,5,207,44"/>
+<area shape="rect" id="node1" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_context.html" title=" " alt="" coords="5,100,221,139"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1fx_1_1_f_b_o_frame_context.html" title=" " alt="" coords="293,5,523,44"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link_context.html" title=" " alt="" coords="285,68,531,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars_context.html" title=" " alt="" coords="284,131,532,169"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_structure_context.html" title=" " alt="" coords="269,193,547,232"/>
 </map>

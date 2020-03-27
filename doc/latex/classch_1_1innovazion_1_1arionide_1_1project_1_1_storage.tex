@@ -11,7 +11,8 @@ Inheritance diagram for ch.\+innovazion.\+arionide.\+project.\+Storage\+:\nopage
 \end{figure}
 
 
-Collaboration diagram for ch.\+innovazion.\+arionide.\+project.\+Storage\+:\nopagebreak
+Collaboration diagram for ch.\+innovazion.\+arionide.\+project.\+Storage\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -32,6 +33,8 @@ Map$<$ Integer, \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1projec
 List$<$ \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_history_element}{History\+Element}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_ac9a5e52f993391b39a89c9f78f94dc5c}{get\+History}} ()
 \item 
 Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_code_chain}{Code\+Chain}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_add4a29a188f203e85a7224670cc23c62}{get\+Code}} ()
+\item 
+Map$<$ String, Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a947d3615edd6c9303f542e15e9a67581}{get\+Languages}} ()
 \item 
 abstract void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_adc1abc722d5c2f39f1ad7d10144fb6d8}{load\+Hierarchy}} ()  throws Storage\+Exception
 \item 
@@ -56,6 +59,10 @@ abstract void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_
 abstract void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_afc2c951443811e8db94b26b2452dd017}{load\+Code}} ()  throws Storage\+Exception
 \item 
 abstract void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a18896b602e25f9630cba6f4ff1597c29}{save\+Code}} ()  throws Storage\+Exception
+\item 
+abstract void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a4046aaf639ca4e4ad2c4901df2cf8cd7}{load\+Languages}} ()  throws Storage\+Exception
+\item 
+abstract void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_ae29261733a33d5a4364614a0f0a30e9a}{save\+Languages}} ()  throws Storage\+Exception
 \end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
@@ -72,17 +79,21 @@ List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutable
 \item 
 Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_code_chain}{Mutable\+Code\+Chain}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a1eae0ab8b1ac35091fc5f4bcbecdff09}{get\+Mutable\+Code}} ()
 \item 
+Map$<$ String, Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a6deb87b466f0ef89eb1eff82560a081a}{get\+Mutable\+Languages}} ()
+\item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a8ec3d79b10b2b09280762566f53adc8a}{set\+Mutable\+Hierarchy}} (List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_hierarchy_element}{Mutable\+Hierarchy\+Element}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_ad99a66d83ad2f70b10339e3cbe565f7c}{hierarchy}})
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_aa532dea8ebf1d726a88acff44d7a3da0}{set\+Mutable\+Inheritance}} (Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_inheritance_element}{Mutable\+Inheritance\+Element}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a156b69a06b03af53584b75331f5aea6b}{inheritance}})
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a8d57956c31ba9d5e3ede0ca92c8426bd}{set\+Mutable\+Call\+Graph}} (List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_hierarchy_element}{Mutable\+Hierarchy\+Element}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_afd97af3911f30ed608f651af6b1f73d3}{call\+Graph}})
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a5b0beb00d4f2db54a379760ae8706da8}{set\+Mutable\+Structure\+Meta}} (Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_structure}{Mutable\+Structure}} $>$ struct\+Meta)
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a592f06311964ddeead35ee27d75b132b}{set\+Mutable\+Structures}} (Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_structure}{Mutable\+Structure}} $>$ struct\+Meta)
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a753e3764501e428ae0cd7011706bae59}{set\+Mutable\+History}} (List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_history_element}{Mutable\+History\+Element}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a1404dce07aa927e923b622f0f7588eea}{history}})
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a0fbf325becffd324047e6863343ac82f}{set\+Mutable\+Code}} (Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_code_chain}{Mutable\+Code\+Chain}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_ab3bf0104c45381e310f10a3eae2b5aae}{code}})
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a0e881cefb41b564755a47bd30ff9f0dc}{set\+Mutable\+Languages}} (Map$<$ String, Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a6d4ec96abb18f26bd65425edb44a39e3}{languages}})
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
@@ -98,6 +109,8 @@ Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_
 List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_history_element}{Mutable\+History\+Element}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a1404dce07aa927e923b622f0f7588eea}{history}}
 \item 
 Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_code_chain}{Mutable\+Code\+Chain}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_ab3bf0104c45381e310f10a3eae2b5aae}{code}}
+\item 
+Map$<$ String, Integer $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a6d4ec96abb18f26bd65425edb44a39e3}{languages}}
 \end{DoxyCompactItemize}
 
 
@@ -132,6 +145,12 @@ Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_
 \doxysubsubsection{\texorpdfstring{getInheritance()}{getInheritance()}}
 {\footnotesize\ttfamily Map$<$Integer, \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1project_1_1_inheritance_element}{Inheritance\+Element}}$>$ ch.\+innovazion.\+arionide.\+project.\+Storage.\+get\+Inheritance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a947d3615edd6c9303f542e15e9a67581}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a947d3615edd6c9303f542e15e9a67581}} 
+\index{ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}!getLanguages@{getLanguages}}
+\index{getLanguages@{getLanguages}!ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}}
+\doxysubsubsection{\texorpdfstring{getLanguages()}{getLanguages()}}
+{\footnotesize\ttfamily Map$<$String, Integer$>$ ch.\+innovazion.\+arionide.\+project.\+Storage.\+get\+Languages (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a74541e249030b3a3b61da0b825088f40}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a74541e249030b3a3b61da0b825088f40}} 
 \index{ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}!getMutableCallGraph@{getMutableCallGraph}}
 \index{getMutableCallGraph@{getMutableCallGraph}!ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}}
@@ -161,6 +180,12 @@ Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_
 \index{getMutableInheritance@{getMutableInheritance}!ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}}
 \doxysubsubsection{\texorpdfstring{getMutableInheritance()}{getMutableInheritance()}}
 {\footnotesize\ttfamily Map$<$Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_inheritance_element}{Mutable\+Inheritance\+Element}}$>$ ch.\+innovazion.\+arionide.\+project.\+Storage.\+get\+Mutable\+Inheritance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a6deb87b466f0ef89eb1eff82560a081a}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a6deb87b466f0ef89eb1eff82560a081a}} 
+\index{ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}!getMutableLanguages@{getMutableLanguages}}
+\index{getMutableLanguages@{getMutableLanguages}!ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}}
+\doxysubsubsection{\texorpdfstring{getMutableLanguages()}{getMutableLanguages()}}
+{\footnotesize\ttfamily Map$<$String, Integer$>$ ch.\+innovazion.\+arionide.\+project.\+Storage.\+get\+Mutable\+Languages (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_abc60d6b5904df50bc2da0786d230c896}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_abc60d6b5904df50bc2da0786d230c896}} 
 \index{ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}!getMutableStructures@{getMutableStructures}}
@@ -224,6 +249,16 @@ Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1
 
 Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_zip_storage_a861ae7209ef337643255f760a669dfa1}{ch.\+innovazion.\+arionide.\+project.\+Zip\+Storage}}.
 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a4046aaf639ca4e4ad2c4901df2cf8cd7}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a4046aaf639ca4e4ad2c4901df2cf8cd7}} 
+\index{ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}!loadLanguages@{loadLanguages}}
+\index{loadLanguages@{loadLanguages}!ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}}
+\doxysubsubsection{\texorpdfstring{loadLanguages()}{loadLanguages()}}
+{\footnotesize\ttfamily abstract void ch.\+innovazion.\+arionide.\+project.\+Storage.\+load\+Languages (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_exception}{Storage\+Exception}}\hspace{0.3cm}{\ttfamily [abstract]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_zip_storage_a3f71329d6a58cf7c8716fd0f118c4418}{ch.\+innovazion.\+arionide.\+project.\+Zip\+Storage}}.
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a5e38e9ca2ab34d9a58e0ab563f838115}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a5e38e9ca2ab34d9a58e0ab563f838115}} 
 \index{ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}!loadStructureMeta@{loadStructureMeta}}
 \index{loadStructureMeta@{loadStructureMeta}!ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}}
@@ -284,6 +319,16 @@ Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1
 
 Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_zip_storage_ab8c5b7a7e79220e313968749c1c34ae4}{ch.\+innovazion.\+arionide.\+project.\+Zip\+Storage}}.
 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_ae29261733a33d5a4364614a0f0a30e9a}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_ae29261733a33d5a4364614a0f0a30e9a}} 
+\index{ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}!saveLanguages@{saveLanguages}}
+\index{saveLanguages@{saveLanguages}!ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}}
+\doxysubsubsection{\texorpdfstring{saveLanguages()}{saveLanguages()}}
+{\footnotesize\ttfamily abstract void ch.\+innovazion.\+arionide.\+project.\+Storage.\+save\+Languages (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_exception}{Storage\+Exception}}\hspace{0.3cm}{\ttfamily [abstract]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_zip_storage_a813e51aca1b1d00313fca793145a2899}{ch.\+innovazion.\+arionide.\+project.\+Zip\+Storage}}.
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a9a20e087045e8f91f3ca74174cb64989}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a9a20e087045e8f91f3ca74174cb64989}} 
 \index{ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}!saveStructureMeta@{saveStructureMeta}}
 \index{saveStructureMeta@{saveStructureMeta}!ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}}
@@ -324,11 +369,17 @@ Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1
 \doxysubsubsection{\texorpdfstring{setMutableInheritance()}{setMutableInheritance()}}
 {\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+Storage.\+set\+Mutable\+Inheritance (\begin{DoxyParamCaption}\item[{Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_inheritance_element}{Mutable\+Inheritance\+Element}} $>$}]{inheritance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a5b0beb00d4f2db54a379760ae8706da8}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a5b0beb00d4f2db54a379760ae8706da8}} 
-\index{ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}!setMutableStructureMeta@{setMutableStructureMeta}}
-\index{setMutableStructureMeta@{setMutableStructureMeta}!ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}}
-\doxysubsubsection{\texorpdfstring{setMutableStructureMeta()}{setMutableStructureMeta()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+Storage.\+set\+Mutable\+Structure\+Meta (\begin{DoxyParamCaption}\item[{Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_structure}{Mutable\+Structure}} $>$}]{struct\+Meta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a0e881cefb41b564755a47bd30ff9f0dc}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a0e881cefb41b564755a47bd30ff9f0dc}} 
+\index{ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}!setMutableLanguages@{setMutableLanguages}}
+\index{setMutableLanguages@{setMutableLanguages}!ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}}
+\doxysubsubsection{\texorpdfstring{setMutableLanguages()}{setMutableLanguages()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+Storage.\+set\+Mutable\+Languages (\begin{DoxyParamCaption}\item[{Map$<$ String, Integer $>$}]{languages }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a592f06311964ddeead35ee27d75b132b}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a592f06311964ddeead35ee27d75b132b}} 
+\index{ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}!setMutableStructures@{setMutableStructures}}
+\index{setMutableStructures@{setMutableStructures}!ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}}
+\doxysubsubsection{\texorpdfstring{setMutableStructures()}{setMutableStructures()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+project.\+Storage.\+set\+Mutable\+Structures (\begin{DoxyParamCaption}\item[{Map$<$ Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_structure}{Mutable\+Structure}} $>$}]{struct\+Meta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -362,6 +413,12 @@ Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1
 \index{inheritance@{inheritance}!ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}}
 \doxysubsubsection{\texorpdfstring{inheritance}{inheritance}}
 {\footnotesize\ttfamily Map$<$Integer, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_inheritance_element}{Mutable\+Inheritance\+Element}}$>$ ch.\+innovazion.\+arionide.\+project.\+Storage.\+inheritance\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a6d4ec96abb18f26bd65425edb44a39e3}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_a6d4ec96abb18f26bd65425edb44a39e3}} 
+\index{ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}!languages@{languages}}
+\index{languages@{languages}!ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}}
+\doxysubsubsection{\texorpdfstring{languages}{languages}}
+{\footnotesize\ttfamily Map$<$String, Integer$>$ ch.\+innovazion.\+arionide.\+project.\+Storage.\+languages\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_acee6b1186b1b8fabbb1418f8f3b52ba6}\label{classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_acee6b1186b1b8fabbb1418f8f3b52ba6}} 
 \index{ch.innovazion.arionide.project.Storage@{ch.innovazion.arionide.project.Storage}!structures@{structures}}

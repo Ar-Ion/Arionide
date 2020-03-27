@@ -1,7 +1,6 @@
 <map id="ch.innovazion.arionide.menu.MenuManager.select" name="ch.innovazion.arionide.menu.MenuManager.select">
-<area shape="rect" id="node1" title=" " alt="" coords="5,68,200,107"/>
-<area shape="rect" id="node2" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#aa5f84407c43d1975f6c3a6d983be6c33" title=" " alt="" coords="248,5,520,44"/>
-<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_hierarchy.html#a54f69ae96c90ce8ecde35d0d963bd8b4" title=" " alt="" coords="268,68,501,107"/>
-<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#ab2375d878c95a870742e683b38b279fb" title=" " alt="" coords="287,131,481,169"/>
-<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#ae80f0a97e3e0e57260d3e411af4d0757" title=" " alt="" coords="568,131,763,169"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,37,200,76"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_hierarchy.html#a54f69ae96c90ce8ecde35d0d963bd8b4" title=" " alt="" coords="248,5,481,44"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#ab2375d878c95a870742e683b38b279fb" title=" " alt="" coords="267,68,462,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#ae80f0a97e3e0e57260d3e411af4d0757" title=" " alt="" coords="529,68,724,107"/>
 </map>

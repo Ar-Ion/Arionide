@@ -21,7 +21,11 @@ Collaboration diagram for ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Referenc
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_ae077f0b914454f322dedfc54d0a9ca8d}{Reference}} (List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a3cc12982d6e9844912eda12314f4cad3}{lazy\+Parameters}})
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a55e5afcc96e23446abd9b2e4bd066b13}{add\+Lazy\+Parameter}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}} param)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a0868ee872714fe2d10196179e9011376}{remove\+Lazy\+Parameter}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}} param)
+\item 
+List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a85821b0bb7954b798a80ccc03b3321c1}{get\+Lazy\+Parameters}} ()
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a87bd3ad138280a779b315574c2504254}{set\+Target}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable}{Callable}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a6ac94a6df32dc002a8fcaedb3aac15a9}{target}})
 \item 
@@ -49,7 +53,7 @@ Stream$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
-final List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a3cc12982d6e9844912eda12314f4cad3}{lazy\+Parameters}}
+final List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a3cc12982d6e9844912eda12314f4cad3}{lazy\+Parameters}} = new Array\+List$<$$>$()
 \item 
 final Map$<$ String, \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter_value}{Parameter\+Value}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_ad0e37a99e18dbad69ae569890ee29572}{lazy\+Mapping}} = new Hash\+Map$<$$>$()
 \item 
@@ -66,16 +70,21 @@ static final long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1
 \end{DoxyCompactItemize}
 
 
-\doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_ae077f0b914454f322dedfc54d0a9ca8d}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_ae077f0b914454f322dedfc54d0a9ca8d}} 
-\index{ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}!Reference@{Reference}}
-\index{Reference@{Reference}!ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}}
-\doxysubsubsection{\texorpdfstring{Reference()}{Reference()}}
-{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference.\+Reference (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}} $>$}]{lazy\+Parameters }\end{DoxyParamCaption})}
-
-
-
 \doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a55e5afcc96e23446abd9b2e4bd066b13}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a55e5afcc96e23446abd9b2e4bd066b13}} 
+\index{ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}!addLazyParameter@{addLazyParameter}}
+\index{addLazyParameter@{addLazyParameter}!ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}}
+\doxysubsubsection{\texorpdfstring{addLazyParameter()}{addLazyParameter()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference.\+add\+Lazy\+Parameter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}}}]{param }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a55e5afcc96e23446abd9b2e4bd066b13_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a52501d5e6ef6eaa3e6597748715b69c7}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a52501d5e6ef6eaa3e6597748715b69c7}} 
 \index{ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}!autobind@{autobind}}
 \index{autobind@{autobind}!ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}}
@@ -105,7 +114,8 @@ Here is the call graph for this function\+:\nopagebreak
 
 Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_atomic_value_af88dd2aac40bb177d5d3ff8844a4d2a1}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Atomic\+Value}}.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -118,8 +128,7 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{getBoundParameters()}{getBoundParameters()}}
 {\footnotesize\ttfamily List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}}$>$ ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference.\+get\+Bound\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -149,14 +158,19 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{getFreeParameters()}{getFreeParameters()}}
 {\footnotesize\ttfamily List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}}$>$ ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference.\+get\+Free\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a1652ed2490bfd9729b4f79b49f758472_cgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a85821b0bb7954b798a80ccc03b3321c1}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a85821b0bb7954b798a80ccc03b3321c1}} 
+\index{ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}!getLazyParameters@{getLazyParameters}}
+\index{getLazyParameters@{getLazyParameters}!ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}}
+\doxysubsubsection{\texorpdfstring{getLazyParameters()}{getLazyParameters()}}
+{\footnotesize\ttfamily List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}}$>$ ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference.\+get\+Lazy\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a497dd6aaf87f7d1fdf0cfd159dea836b}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a497dd6aaf87f7d1fdf0cfd159dea836b}} 
 \index{ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}!getRawStream@{getRawStream}}
 \index{getRawStream@{getRawStream}!ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}}
@@ -180,6 +194,20 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{getTarget()}{getTarget()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable}{Callable}} ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference.\+get\+Target (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a0868ee872714fe2d10196179e9011376}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a0868ee872714fe2d10196179e9011376}} 
+\index{ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}!removeLazyParameter@{removeLazyParameter}}
+\index{removeLazyParameter@{removeLazyParameter}!ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}}
+\doxysubsubsection{\texorpdfstring{removeLazyParameter()}{removeLazyParameter()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference.\+remove\+Lazy\+Parameter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}}}]{param }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a0868ee872714fe2d10196179e9011376_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a6d82e459a0e1bcdb98491764094bb3b6}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a6d82e459a0e1bcdb98491764094bb3b6}} 
 \index{ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}!resolve@{resolve}}
 \index{resolve@{resolve}!ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}}
@@ -218,7 +246,7 @@ Here is the call graph for this function\+:\nopagebreak
 \index{ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}!lazyParameters@{lazyParameters}}
 \index{lazyParameters@{lazyParameters}!ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}}
 \doxysubsubsection{\texorpdfstring{lazyParameters}{lazyParameters}}
-{\footnotesize\ttfamily final List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}}$>$ ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference.\+lazy\+Parameters\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily final List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}}$>$ ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference.\+lazy\+Parameters = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a3fdd70d266e858a6f42ae8f58201fcdc}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a3fdd70d266e858a6f42ae8f58201fcdc}} 
 \index{ch.innovazion.arionide.lang.symbols.Reference@{ch.innovazion.arionide.lang.symbols.Reference}!serialVersionUID@{serialVersionUID}}

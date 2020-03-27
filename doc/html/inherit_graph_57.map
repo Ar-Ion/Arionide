@@ -1,8 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry.html" title=" " alt="" coords="5,100,207,139"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_code_geometry.html" title=" " alt="" coords="255,5,493,44"/>
-<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry.html" title=" " alt="" coords="255,68,493,107"/>
-<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry.html" title=" " alt="" coords="255,131,493,169"/>
-<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_merged_geometry.html" title=" " alt="" coords="255,193,493,232"/>
-<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_core_geometry.html" title=" " alt="" coords="541,131,780,169"/>
+<area shape="rect" id="node1" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_transformation_algorithm.html" title=" " alt="" coords="5,100,245,139"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_hermite_spline_algorithm.html" title=" " alt="" coords="293,5,533,44"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_hyperbolic_symmetry_algorithm.html" title=" " alt="" coords="293,68,533,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_no_transformation_algorithm.html" title=" " alt="" coords="293,131,533,169"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_parametric_smoothing_algorithm.html" title=" " alt="" coords="293,193,533,232"/>
 </map>

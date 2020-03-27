@@ -1,11 +1,12 @@
 <map id="ch.innovazion.arionide.project.managers.CodeManager.deleteCode" name="ch.innovazion.arionide.project.managers.CodeManager.deleteCode">
-<area shape="rect" id="node1" title=" " alt="" coords="5,225,270,264"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,256,270,295"/>
 <area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager.html#a74c229a367243e22f63484fbef172168" title=" " alt="" coords="318,68,582,107"/>
 <area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_code_chain.html#a72b5948764b3394c2d00aa1952dc6417" title=" " alt="" coords="320,131,580,169"/>
 <area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_manager.html#a89a4211cd18c077844b98d238c3a33ef" title=" " alt="" coords="349,193,551,232"/>
 <area shape="rect" id="node10" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_code_chain.html#a7408e763e66f469aa92d9a5e1995377e" title=" " alt="" coords="320,256,580,295"/>
 <area shape="rect" id="node11" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_manager.html#ac0bc3e98653faefc75988d2870d26ab2" title=" " alt="" coords="349,381,551,420"/>
 <area shape="rect" id="node30" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_manager.html#a3acdbea4e4aa27d230d0eec72995a491" title=" " alt="" coords="349,319,551,357"/>
+<area shape="rect" id="node32" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_manager.html#abd9ec6a71bc053eb9739a580228003ed" title=" " alt="" coords="349,444,551,483"/>
 <area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_manager.html#a108a33cfe192b76fb5f44b5fbcc004be" title=" " alt="" coords="662,5,863,44"/>
 <area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack.html#a01354c30c3a9f3b0fd393817a35836f7" title=" " alt="" coords="630,68,895,107"/>
 <area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_storage.html#a1eae0ab8b1ac35091fc5f4bcbecdff09" title=" " alt="" coords="974,5,1176,44"/>

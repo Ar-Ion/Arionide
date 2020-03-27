@@ -1,8 +1,9 @@
 <map id="ch.innovazion.arionide.project.mutables.MutableStructure" name="ch.innovazion.arionide.project.mutables.MutableStructure">
-<area shape="rect" id="node1" title=" " alt="" coords="431,37,690,76"/>
+<area shape="rect" id="node1" title=" " alt="" coords="431,68,690,107"/>
 <area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_actor.html" title=" " alt="" coords="738,5,997,44"/>
-<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_code.html" title=" " alt="" coords="738,68,997,107"/>
-<area shape="rect" id="node2" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure.html" title=" " alt="" coords="162,5,364,44"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,12,96,37"/>
-<area shape="rect" id="node4" href="$interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html" title=" " alt="" coords="144,68,383,107"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_atomic_structure.html" title=" " alt="" coords="738,68,997,107"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_code.html" title=" " alt="" coords="738,131,997,169"/>
+<area shape="rect" id="node2" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure.html" title=" " alt="" coords="162,36,364,75"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,43,96,68"/>
+<area shape="rect" id="node4" href="$interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html" title=" " alt="" coords="144,99,383,137"/>
 </map>

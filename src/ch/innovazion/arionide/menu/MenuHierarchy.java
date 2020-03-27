@@ -29,6 +29,7 @@ import ch.innovazion.arionide.menu.code.SignatureSelector;
 import ch.innovazion.arionide.menu.params.ParameterCreator;
 import ch.innovazion.arionide.menu.params.ParameterEditor;
 import ch.innovazion.arionide.menu.params.ParameterSelector;
+import ch.innovazion.arionide.menu.params.assign.EnumerationAssigner;
 import ch.innovazion.arionide.menu.params.assign.InformationAssigner;
 import ch.innovazion.arionide.menu.params.assign.ReferenceAssigner;
 import ch.innovazion.arionide.menu.params.assign.VariableAssigner;
@@ -73,6 +74,7 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/assign/information", new InformationAssigner(manager));
 		register("/assign/variable", new VariableAssigner(manager));
 		register("/assign/reference", new ReferenceAssigner(manager));
+		register("/assign/enumeration", new EnumerationAssigner(manager));
 	}
 	
 	protected Menu resolveCurrentState() {

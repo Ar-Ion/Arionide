@@ -102,7 +102,7 @@ public class StructureManager extends Manager {
 				Language lang = LanguageManager.get(current.getLanguage());
 			
 				hostStack.push(structureID);
-				getCodeManager().insertCode(0, lang.getEntryPoint());
+				getCodeManager().insertCode(0, lang.getEntryPoint(), 0);
 				hostStack.pop();
 				
 				// Saving is delegated to insertCode

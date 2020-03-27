@@ -21,6 +21,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params;
 
+import ch.innovazion.arionide.lang.symbols.Enumeration;
 import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.lang.symbols.Reference;
@@ -34,6 +35,8 @@ public class EditorMultiplexer {
 			return "/assign/variable";
 		} else if(value instanceof Reference) {
 			return "/assign/reference";
+		} else if(value instanceof Enumeration) {
+			return "/assign/enumeration";
 		} else {
 			throw new IllegalArgumentException();
 		}

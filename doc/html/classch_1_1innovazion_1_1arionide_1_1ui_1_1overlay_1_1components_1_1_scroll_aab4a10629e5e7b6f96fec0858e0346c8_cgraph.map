@@ -1,12 +1,17 @@
 <map id="ch.innovazion.arionide.ui.overlay.components.Scroll.compute" name="ch.innovazion.arionide.ui.overlay.components.Scroll.compute">
-<area shape="rect" id="node1" title=" " alt="" coords="5,183,299,221"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface.html#aa318b3dc2868cfbb0ebe3a4ba29b01c8" title=" " alt="" coords="389,5,600,44"/>
-<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#a43c6c5e5e9a90bc2c6af4df14e498928" title=" " alt="" coords="689,240,914,279"/>
-<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point.html#a5dcb638f1119723fad1547eb0681292e" title=" " alt="" coords="962,147,1187,185"/>
-<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_multi_component.html#a41826f9f9836c4e2d30a32c54754fe0b" title=" " alt="" coords="347,183,641,221"/>
-<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#a4dbcf0c252e515fd8ea5868192fcd04b" title=" " alt="" coords="382,120,607,159"/>
-<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#a7dba232d0b8bcdaacf1ab3363d14d812" title=" " alt="" coords="382,297,607,336"/>
-<area shape="rect" id="node10" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#a16c5a6a9a124bdf766d0f4919b78120c" title=" " alt="" coords="689,355,914,393"/>
-<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point.html#a912e17535a7cbedd5003b1e3c8da2750" title=" " alt="" coords="962,297,1187,336"/>
-<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#a93e61cc71d2cea797cd351b963cae6e8" title=" " alt="" coords="689,175,914,213"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,300,299,339"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#ac1e94beba82c7ffcd2c879873c295ae5" title=" " alt="" coords="382,36,607,75"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#a6797c323866a5d656aa70fc6e78afda1" title=" " alt="" coords="385,123,603,161"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface.html#aa318b3dc2868cfbb0ebe3a4ba29b01c8" title=" " alt="" coords="389,185,600,224"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#a43c6c5e5e9a90bc2c6af4df14e498928" title=" " alt="" coords="689,415,914,453"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point.html#a912e17535a7cbedd5003b1e3c8da2750" title=" " alt="" coords="962,497,1187,536"/>
+<area shape="rect" id="node10" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point.html#a5dcb638f1119723fad1547eb0681292e" title=" " alt="" coords="962,329,1187,368"/>
+<area shape="rect" id="node11" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_multi_component.html#a41826f9f9836c4e2d30a32c54754fe0b" title=" " alt="" coords="347,415,641,453"/>
+<area shape="rect" id="node12" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#a4dbcf0c252e515fd8ea5868192fcd04b" title=" " alt="" coords="382,300,607,339"/>
+<area shape="rect" id="node14" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#a7dba232d0b8bcdaacf1ab3363d14d812" title=" " alt="" coords="382,529,607,568"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#ad0d86fcafdd3a5f41ee6a42a4b918bb3" title=" " alt="" coords="689,68,914,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point.html#a629a2e34877224fe2e6ee125ef8d2e91" title=" " alt="" coords="689,5,914,44"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point.html#a58d381f5cb52082e1a92d1744014490a" title=" " alt="" coords="962,5,1187,44"/>
+<area shape="rect" id="node13" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#a93e61cc71d2cea797cd351b963cae6e8" title=" " alt="" coords="689,300,914,339"/>
+<area shape="rect" id="node15" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#a16c5a6a9a124bdf766d0f4919b78120c" title=" " alt="" coords="689,580,914,619"/>
 </map>

@@ -24,6 +24,7 @@ package ch.innovazion.arionide.project.managers.specification;
 import java.util.function.Consumer;
 
 import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.lang.symbols.Enumeration;
 import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
@@ -36,15 +37,17 @@ import ch.innovazion.arionide.project.Structure;
 public class SpecificationManager extends ContextualManager<Specification> {
 	
 	private final InformationManager informationManager;
-	private final ReferenceManager referenceManager;
 	private final VariableManager variableManager;
-	
+	private final ReferenceManager referenceManager;
+	private final EnumerationManager enumManager;
+
 	public SpecificationManager(Storage storage) {
 		super(storage);
 		
 		this.informationManager = new InformationManager(storage);
 		this.referenceManager = new ReferenceManager(storage);
 		this.variableManager = new VariableManager(storage);
+		this.enumManager = new EnumerationManager(storage);
 	}
 	
 	public MessageEvent addParameter(Parameter element) {
@@ -116,5 +119,10 @@ public class SpecificationManager extends ContextualManager<Specification> {
 	public VariableManager loadVariableManager(ParameterValue value) {
 		variableManager.setContext((Variable) value);
 		return variableManager;
+	}
+	
+	public EnumerationManager loadEnumerationManager(ParameterValue value) {
+		enumManager.setContext((Enumeration) value);
+		return enumManager;
 	}
 }
