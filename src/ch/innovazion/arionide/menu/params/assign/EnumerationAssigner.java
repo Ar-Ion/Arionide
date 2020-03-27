@@ -29,13 +29,13 @@ public class EnumerationAssigner extends ParameterValueMenu {
 
 	private EnumerationManager enumManager;
 	
-	public EnumerationAssigner(MenuManager manager) {
-		super(manager);
+	public EnumerationAssigner(MenuManager manager, String... staticElements) {
+		super(manager, staticElements);
 	}
 	
 	protected void onEnter() {
 		super.onEnter();
-		this.enumManager = project.getStructureManager().getSpecificationManager().loadEnumerationManager(parameter.getValue());
+		this.enumManager = project.getStructureManager().getSpecificationManager().loadEnumerationManager(value);
 		setDynamicElements(enumManager.getNames().toArray(new String[0]));
 	}
 

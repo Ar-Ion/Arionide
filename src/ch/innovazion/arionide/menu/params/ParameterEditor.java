@@ -37,7 +37,7 @@ public class ParameterEditor extends Menu {
 	
 	@Export
 	@Inherit
-	protected Parameter param;
+	protected Parameter parameter;
 
 	
 	public ParameterEditor(MenuManager manager) {
@@ -54,7 +54,7 @@ public class ParameterEditor extends Menu {
 			
 			break;
 		case "Edit":
-			go(EditorMultiplexer.findDestination("/structure/edit", param.getValue()));
+			go(EditorMultiplexer.findDestination("/structure/edit", parameter.getValue()));
 			break;
 		case "Delete":
 			deleteParameter();
@@ -63,12 +63,12 @@ public class ParameterEditor extends Menu {
 	}
 	
 	private void renameParameter(String newName) {
-		dispatch(project.getStructureManager().getSpecificationManager().refactorParameterName(param, newName));
+		dispatch(project.getStructureManager().getSpecificationManager().refactorParameterName(parameter, newName));
 		dispatch(new GeometryInvalidateEvent(1));
 	}
 	
 	private void deleteParameter() {
-		dispatch(project.getStructureManager().getSpecificationManager().removeParameter(param));
+		dispatch(project.getStructureManager().getSpecificationManager().removeParameter(parameter));
 		dispatch(new GeometryInvalidateEvent(1));
 	}
 }

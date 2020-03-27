@@ -21,12 +21,14 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params;
 
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.TargetUpdateEvent;
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.ui.overlay.Views;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
 
@@ -68,12 +70,21 @@ public class ParameterSelector extends Menu {
 	public void onAction(String action) {
 		if(mutable) {
 			if(id == 0) {
-				go("create");
+				Views.input.setText("Please enter the name of the parameter")
+				   .setPlaceholder("Parameter name")
+				   .setResponder(this::createParameter)
+				   .stackOnto(Views.code);
 			} else {
 				go("edit");
 			}
 		} else {
 			go(EditorMultiplexer.findDestination("/code/edit", parameter.getValue()));
 		}
+	}
+	
+	private void createParameter(String name) {
+		dispatch(project.getStructureManager().getSpecificationManager().refactorParameterName(parameter, name));
+		dispatch(new GeometryInvalidateEvent(1));
+		go("create");
 	}
 }

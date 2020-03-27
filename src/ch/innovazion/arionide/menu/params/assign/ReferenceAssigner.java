@@ -26,8 +26,8 @@ import ch.innovazion.arionide.menu.params.ParameterValueMenu;
 
 public class ReferenceAssigner extends ParameterValueMenu {
 
-	public ReferenceAssigner(MenuManager manager) {
-		super(manager);
+	public ReferenceAssigner(MenuManager manager, String... staticElements) {
+		super(manager, staticElements);
 	}
 
 	public void onAction(String action) {
