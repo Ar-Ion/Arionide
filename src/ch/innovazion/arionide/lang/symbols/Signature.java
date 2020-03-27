@@ -19,4 +19,8 @@ public class Signature {
 	public List<Parameter> getParameters() {
 		return Collections.unmodifiableList(parameters);
 	}
+	
+	public String toString() {
+		return name + ": " + parameters;
+	}
 }

@@ -23,6 +23,9 @@ package ch.innovazion.arionide.menu;
 
 import ch.innovazion.arionide.menu.code.CodeBrowser;
 import ch.innovazion.arionide.menu.code.CodeEditor;
+import ch.innovazion.arionide.menu.code.DefaultInstructionAppender;
+import ch.innovazion.arionide.menu.code.OperatorAppender;
+import ch.innovazion.arionide.menu.code.SignatureSelector;
 import ch.innovazion.arionide.menu.params.ParameterCreator;
 import ch.innovazion.arionide.menu.params.ParameterEditor;
 import ch.innovazion.arionide.menu.params.ParameterSelector;
@@ -60,9 +63,13 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/structure/edit/tint", new TintSelector(manager));
 
 		register("/code", codeBrowser = new CodeBrowser(manager));
-		register("/code/append", new CodeEditor(manager));
-		register("/code/specify", new ParameterSelector(manager, false));
-		
+		register("/code/edit", new CodeEditor(manager));
+		register("/code/edit/append", new DefaultInstructionAppender(manager));
+		register("/code/edit/append/signature", new SignatureSelector(manager));
+		register("/code/edit/append/operator", new OperatorAppender(manager));
+		register("/code/edit/append/operator/signature", new SignatureSelector(manager));
+		register("/code/edit/specify", new ParameterSelector(manager, false));
+
 		register("/assign/information", new InformationAssigner(manager));
 		register("/assign/variable", new VariableAssigner(manager));
 		register("/assign/reference", new ReferenceAssigner(manager));

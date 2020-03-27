@@ -27,9 +27,8 @@ import java.util.List;
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.TargetUpdateEvent;
 import ch.innovazion.arionide.lang.Instruction;
-import ch.innovazion.arionide.lang.Language;
-import ch.innovazion.arionide.lang.LanguageManager;
 import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.Signature;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
@@ -43,7 +42,13 @@ public abstract class InstructionAppender extends Menu {
 	@Export
 	@Inherit
 	protected Structure target;
-		
+	
+	@Export
+	protected int previousIndex;
+	
+	@Export
+	protected Instruction instruction;
+	
 	private List<Instruction> instructions = new ArrayList<>();
 	
 	public InstructionAppender(MenuManager manager, String... staticElements) {
@@ -60,16 +65,24 @@ public abstract class InstructionAppender extends Menu {
 	protected void updateCursor(int cursor) {
 		super.updateCursor(cursor);
 		
-		Instruction instr = instructions.get(id);
-		generateDescription(instr.getStructureModel());
+		if(instructions != null) {
+			Instruction instr = instructions.get(id);
+			generateDescription(instr.getStructureModel());	
+		}
 	}
 	
 	private void generateDescription(StructureModel model) {
 		this.description = new MenuDescription();
 		
 		if(model != null) {
-			for(Parameter param : model.getParameters()) {
-				description.add(param.toString());
+			if(model.hasUniqueSignature()) {
+				for(Parameter param : model.getSignature(0)) {
+					description.add(param.toString());
+				}
+			} else {
+				for(Signature signature : model.getPossibleSignatures()) {
+					description.add(signature.toString());
+				}
 			}
 			
 			description.spacer();
@@ -81,18 +94,22 @@ public abstract class InstructionAppender extends Menu {
 	}
 	
 	protected void appendInstruction(int instructionID) {
-		Instruction instr = instructions.get(instructionID);
-		int index = project.getStructureManager().getCodeManager().getCurrentCode().indexOf(target.getIdentifier());
+		this.instruction = instructions.get(instructionID);
+		this.previousIndex = project.getStructureManager().getCodeManager().getCurrentCode().indexOf(target.getIdentifier());
 		
-		dispatch(project.getStructureManager().getCodeManager().insertCode(index, instr));
-		
-		int newTargetID = project.getStructureManager().getCodeManager().getCurrentCode().getID(index + 1);
-		this.target = project.getStorage().getStructures().get(newTargetID);
-		
-		dispatch(new GeometryInvalidateEvent(0));
-		dispatch(new TargetUpdateEvent(target.getIdentifier()));
-		
-		go("../specify");
+		if(instruction.getStructureModel().hasUniqueSignature()) {
+			dispatch(project.getStructureManager().getCodeManager().insertCode(this.previousIndex, this.instruction, 0));
+			
+			int newTargetID = project.getStructureManager().getCodeManager().getCurrentCode().getID(previousIndex + 1);
+			this.target = project.getStorage().getStructures().get(newTargetID);
+			
+			dispatch(new GeometryInvalidateEvent(0));
+			dispatch(new TargetUpdateEvent(target.getIdentifier()));
+			
+			go("./specify");
+		} else {
+			go("signature");
+		}
 	}
 	
 	protected abstract List<Instruction> getInstructions();

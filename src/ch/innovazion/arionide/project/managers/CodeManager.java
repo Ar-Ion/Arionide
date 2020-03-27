@@ -53,7 +53,7 @@ public class CodeManager extends Manager {
 		return new MessageEvent("Code chain reset", MessageType.SUCCESS);
 	}
 	
-	public MessageEvent insertCode(int index, Instruction instr) {
+	public MessageEvent insertCode(int index, Instruction instr, int signatureID) {
 		Structure host = getStructures().get(hostStack.getCurrent());
 		
 		if(host == null) {
@@ -71,14 +71,25 @@ public class CodeManager extends Manager {
 		if(entryID == null) {
 			return new MessageEvent("Specified language does not seem to be installed in the structure... Try reinstalling the target language", MessageType.ERROR);
 		}
+				
+		int instructionIndex = lang.getInstructions().indexOf(instr);
 		
-		int offset = lang.getInstructions().indexOf(instr);
-		
-		if(offset < 0) {
+		if(instructionIndex < 0) {
 			return new MessageEvent("Invalid instruction for the target language", MessageType.ERROR);
 		}
 		
-		Structure resolvedDefinition = getStructures().get(entryID + offset + 1);
+		
+		int resolvedIndex = entryID + 1; // One for the entry point
+		
+		for(int i = 0; i < instructionIndex; i++) {
+			resolvedIndex += lang.getInstructions().get(i).getStructureModel().getPossibleSignatures().size(); 
+			// Each signature takes one structure slot
+		}
+		
+		resolvedIndex += signatureID; // Final offset
+		
+		
+		Structure resolvedDefinition = getStructures().get(resolvedIndex);
 		
 		if(resolvedDefinition == null || !resolvedDefinition.getName().equals(instr.getStructureModel().getUniqueName())) {
 			return new MessageEvent("Failed to retrieve the definition of this instruction... Try reinstalling the target language", MessageType.ERROR);
