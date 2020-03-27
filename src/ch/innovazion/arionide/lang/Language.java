@@ -33,8 +33,9 @@ public abstract class Language implements Serializable {
 	private final short major;
 	private final short minor;
 	
+	private transient final List<Instruction> operators = new ArrayList<>();
 	private transient final List<Instruction> instructions = new ArrayList<>();
-	
+
 	public Language() {
 		this.major = getVersionMajor();
 		this.minor = getVersionMinor();
@@ -44,8 +45,8 @@ public abstract class Language implements Serializable {
 		instructions.add(instruction);
 	}
 	
-	protected void registerBranch(Instruction instruction) {
-		instructions.add(instruction);
+	protected void registerOperator(Instruction instruction) {
+		operators.add(instruction);
 	}
 	
 	protected void checkCompatibility() throws CompatibilityException {
@@ -58,8 +59,12 @@ public abstract class Language implements Serializable {
 		}
 	}
 	
-	public List<Instruction> getInstructions() {
+	public List<Instruction> getStandardInstructions() {
 		return Collections.unmodifiableList(instructions);
+	}
+	
+	public List<Instruction> getOperators() {
+		return Collections.unmodifiableList(operators);
 	}
 	
 	protected String getVersion() {

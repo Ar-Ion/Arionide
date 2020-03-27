@@ -24,19 +24,19 @@ package ch.innovazion.arionide.project;
 import java.util.Collections;
 import java.util.List;
 
-import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.Signature;
 
 public class StructureModel {
 						
 	private final String uniqueName;
-	private final List<Parameter> parameters;
+	private final List<Signature> signatures;
 	private final List<String> comment;
 	private final int colorID;
 	private final int spotColorID;
 
-	StructureModel(String uniqueName, List<Parameter> parameters, List<String> comment, int colorID, int spotColorID) {
+	StructureModel(String uniqueName, List<Signature> signatures, List<String> comment, int colorID, int spotColorID) {
 		this.uniqueName = uniqueName;
-		this.parameters = parameters;
+		this.signatures = signatures;
 		this.comment = comment;
 		this.colorID = colorID;
 		this.spotColorID = spotColorID;
@@ -46,8 +46,8 @@ public class StructureModel {
 		return uniqueName;
 	}
 	
-	public List<Parameter> getParameters() {
-		return Collections.unmodifiableList(parameters);
+	public List<Signature> getPossibleSignatures() {
+		return Collections.unmodifiableList(signatures);
 	}
 	
 	public List<String> getComment() {
@@ -63,6 +63,6 @@ public class StructureModel {
 	}
 	
 	public String toString() {
-		return "[Name: " + uniqueName + "; Comment: " + comment + "; Parameters: [" + parameters + "]]";
+		return "[Name: " + uniqueName + "; Comment: " + comment + "; Signatures: [" + signatures + "]]";
 	}
 }

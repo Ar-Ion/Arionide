@@ -56,7 +56,7 @@ public class InstructionAppender extends Menu {
 		Language lang = LanguageManager.get(target.getLanguage());
 		
 		if(lang != null) {
-			instructions = lang.getInstructions();
+			instructions = lang.getStandardInstructions();
 			setDynamicElements(instructions.stream().map(Instruction::toString).toArray(String[]::new));
 		}
 	}

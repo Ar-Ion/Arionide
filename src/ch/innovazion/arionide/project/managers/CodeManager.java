@@ -72,7 +72,7 @@ public class CodeManager extends Manager {
 			return new MessageEvent("Specified language does not seem to be installed in the structure... Try reinstalling the target language", MessageType.ERROR);
 		}
 		
-		int offset = lang.getInstructions().indexOf(instr);
+		int offset = lang.getStandardInstructions().indexOf(instr);
 		
 		if(offset < 0) {
 			return new MessageEvent("Invalid instruction for the target language", MessageType.ERROR);
