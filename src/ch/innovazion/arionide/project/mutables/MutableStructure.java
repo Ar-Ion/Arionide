@@ -33,7 +33,7 @@ import ch.innovazion.arionide.project.StructureModelFactory;
 public abstract class MutableStructure implements Structure, Callable {
 	
 	private static final long serialVersionUID = 1259382903286126347L;
-	private static final StructureModel defaultModel = StructureModelFactory.draft("?").build();
+	private static final StructureModel defaultModel = StructureModelFactory.draft("?").beginSignature("?").endSignature().build();
 	
 	private final int identifier;
 	
@@ -47,12 +47,12 @@ public abstract class MutableStructure implements Structure, Callable {
 	private String language = null;
 
 	public MutableStructure(int structureID, int specID) {
-		this(structureID, specID, defaultModel);
+		this(structureID, specID, defaultModel, 0);
 	}
 	
-	public MutableStructure(int structureID, int specID, StructureModel model) {
+	public MutableStructure(int structureID, int specID, StructureModel model, int signatureID) {
 		this.identifier = structureID;
-		this.specification = new Specification(specID, model.getPossibleSignatures().get(0).getParameters());
+		this.specification = new Specification(specID, model.getSignature(signatureID));
 		
 		this.name = model.getUniqueName();
 		this.comment = model.getComment();

@@ -33,8 +33,8 @@ public abstract class Language implements Serializable {
 	private final short major;
 	private final short minor;
 	
-	private transient final List<Instruction> operators = new ArrayList<>();
 	private transient final List<Instruction> instructions = new ArrayList<>();
+	private transient final List<Instruction> operators = new ArrayList<>();
 
 	public Language() {
 		this.major = getVersionMajor();
@@ -46,6 +46,7 @@ public abstract class Language implements Serializable {
 	}
 	
 	protected void registerOperator(Instruction instruction) {
+		instructions.add(instruction);
 		operators.add(instruction);
 	}
 	
@@ -59,7 +60,7 @@ public abstract class Language implements Serializable {
 		}
 	}
 	
-	public List<Instruction> getStandardInstructions() {
+	public List<Instruction> getInstructions() {
 		return Collections.unmodifiableList(instructions);
 	}
 	
@@ -79,5 +80,4 @@ public abstract class Language implements Serializable {
 	
 	public abstract boolean areStructureSpecificationsSupported();
 	public abstract Instruction getEntryPoint();
-	public abstract Instruction getDefaultCallInstruction();
 }

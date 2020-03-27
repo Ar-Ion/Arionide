@@ -51,38 +51,47 @@ public class StructureModelFactory {
 			this.uniqueName = uniqueName;
 		}
 		
-		public void beginSignature(String name) {
-			currentSignature = new ArrayList<>();
+		public IncompleteModel beginSignature(String name) {
+			this.signatureName = name;
+			this.currentSignature = new ArrayList<>();
+			return this;
 		}
 		
-		public void withParameter(Parameter param) {
+		public IncompleteModel withParameter(Parameter param) {
 			if(currentSignature != null) {
 				currentSignature.add(param);
 			} else {
 				throw new IllegalStateException("You have to enclose calls to 'withParameter' between a 'beginSignature' and a 'endSignature'");
 			}
+			
+			return this;
 		}
 		
-		public void endSignature() {
+		public IncompleteModel endSignature() {
 			signatures.add(new Signature(signatureName, currentSignature));
-			currentSignature = null;
-			signatureName = null;
+			this.currentSignature = null;
+			this.signatureName = null;
+			return this;
 		}
 		
-		public void withComment(String line) {
+		public IncompleteModel withComment(String line) {
 			comment.add(line);
+			return this;
 		}
 		
-		public void withColor(int id) {
+		public IncompleteModel withColor(int id) {
 			this.colorID = id;
+			return this;
 		}
 		
-		public void withColor(float familyFactor) {
+		public IncompleteModel withColor(float familyFactor) {
 			this.colorID = (int) ((ApplicationTints.getColorNames().size() - 1) * familyFactor);
+			return this;
 		}
 		
-		public void withSpotColor(int id) {
+		public IncompleteModel withSpotColor(int id) {
 			this.spotColorID = id;
+			return this;
 		}
 		
 		public StructureModel build() {

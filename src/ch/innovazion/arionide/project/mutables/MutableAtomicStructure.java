@@ -31,8 +31,8 @@ public class MutableAtomicStructure extends MutableStructure {
 		super(structureID, specID);
 	}
 	
-	public MutableAtomicStructure(int structureID, int specID, StructureModel model) {
-		super(structureID, specID, model);
+	public MutableAtomicStructure(int structureID, int specID, StructureModel model, int signatureID) {
+		super(structureID, specID, model, signatureID);
 	}
 	
 	public boolean isAccessAllowed() {

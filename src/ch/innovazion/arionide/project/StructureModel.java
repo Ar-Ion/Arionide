@@ -24,6 +24,7 @@ package ch.innovazion.arionide.project;
 import java.util.Collections;
 import java.util.List;
 
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.lang.symbols.Signature;
 
 public class StructureModel {
@@ -40,6 +41,10 @@ public class StructureModel {
 		this.comment = comment;
 		this.colorID = colorID;
 		this.spotColorID = spotColorID;
+		
+		if(signatures.isEmpty()) {
+			throw new IllegalStateException("A structure must have at least one possible signature");
+		}
 	}
 
 	public String getUniqueName() {
@@ -48,6 +53,14 @@ public class StructureModel {
 	
 	public List<Signature> getPossibleSignatures() {
 		return Collections.unmodifiableList(signatures);
+	}
+	
+	public boolean hasUniqueSignature() {
+		return signatures.size() == 1;
+	}
+
+	public List<Parameter> getSignature(int signatureID) {
+		return getPossibleSignatures().get(signatureID).getParameters();
 	}
 	
 	public List<String> getComment() {

@@ -38,7 +38,7 @@ import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
 
-public class InstructionAppender extends Menu {
+public abstract class InstructionAppender extends Menu {
 
 	@Export
 	@Inherit
@@ -46,19 +46,15 @@ public class InstructionAppender extends Menu {
 		
 	private List<Instruction> instructions = new ArrayList<>();
 	
-	public InstructionAppender(MenuManager manager) {
-		super(manager);
+	public InstructionAppender(MenuManager manager, String... staticElements) {
+		super(manager, staticElements);
 	}
 	
 	protected void onEnter() {
 		super.onEnter();
 		
-		Language lang = LanguageManager.get(target.getLanguage());
-		
-		if(lang != null) {
-			instructions = lang.getStandardInstructions();
-			setDynamicElements(instructions.stream().map(Instruction::toString).toArray(String[]::new));
-		}
+		this.instructions = getInstructions();
+		setDynamicElements(instructions.stream().map(Instruction::toString).toArray(String[]::new));
 	}
 	
 	protected void updateCursor(int cursor) {
@@ -83,9 +79,9 @@ public class InstructionAppender extends Menu {
 			}
 		}
 	}
-
-	public void onAction(String action) {
-		Instruction instr = instructions.get(id);
+	
+	protected void appendInstruction(int instructionID) {
+		Instruction instr = instructions.get(instructionID);
 		int index = project.getStructureManager().getCodeManager().getCurrentCode().indexOf(target.getIdentifier());
 		
 		dispatch(project.getStructureManager().getCodeManager().insertCode(index, instr));
@@ -96,6 +92,8 @@ public class InstructionAppender extends Menu {
 		dispatch(new GeometryInvalidateEvent(0));
 		dispatch(new TargetUpdateEvent(target.getIdentifier()));
 		
-		go("/specify");
+		go("../specify");
 	}
+	
+	protected abstract List<Instruction> getInstructions();
 }

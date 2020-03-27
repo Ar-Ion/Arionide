@@ -207,24 +207,34 @@ public class StructureManager extends Manager {
 		}
 	}
 	
-	// Returns the structure of the entry point
+	/*
+	 *  Returns the structure of the entry point
+	 */
 	private Structure installLanguage(Language lang) {
 		if(lang != null) {
-			lang.getStandardInstructions().forEach(this::installInstruction);
+			lang.getInstructions().forEach(this::installInstruction);
 			return installInstruction(lang.getEntryPoint());
 		} else {
 			throw new IllegalArgumentException("Unable to find requested language");
 		}
 	}
 	
+	/*
+	 * Return the structure of the installed instruction (using the last signature)
+	 */
 	private Structure installInstruction(Instruction instr) {
-		int structID = allocator.allocStructure();
-		int specID = allocator.allocSpecification();
+		int size = instr.getStructureModel().getPossibleSignatures().size();
 		
-		MutableStructure struct = new MutableAtomicStructure(structID, specID, instr.getStructureModel());
+		MutableStructure struct = null;
 		
-		getStructures().put(structID, struct);
-		
+		for(int i = 0; i < size; i++) {
+			int structID = allocator.allocStructure();
+			int specID = allocator.allocSpecification();
+			
+			struct = new MutableAtomicStructure(structID, specID, instr.getStructureModel(), i);
+			getStructures().put(structID, struct);
+		}
+				
 		return struct;
 	}
 	
