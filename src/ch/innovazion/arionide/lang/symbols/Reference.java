@@ -40,7 +40,7 @@ public class Reference extends AtomicValue {
 	private final Map<String, ParameterValue> lazyMapping = new HashMap<>();
 	private final Map<Parameter, ParameterValue> bindings = new HashMap<>();
 	private Callable target;
-	private Number targetID;
+	private Numeric targetID;
 	
 	/*
 	 * The three following methods are used to CREATE a reference parameter inside a specification
@@ -67,7 +67,7 @@ public class Reference extends AtomicValue {
 	 */
 	public void setTarget(Callable target) {
 		this.target = target;
-		this.targetID = new Number(target.getIdentifier());
+		this.targetID = new Numeric(target.getIdentifier());
 		autobind();
 	}
 	

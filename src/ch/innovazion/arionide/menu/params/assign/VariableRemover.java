@@ -30,7 +30,7 @@ public class VariableRemover extends VariableSelector {
 	}
 
 	public void onAction(String action) {
-		dispatch(varManager.deleteVariable(target, action));
+		dispatch(varManager.delete(target, action));
 		dispatch(new GeometryInvalidateEvent(0));
 		go("..");
 	}

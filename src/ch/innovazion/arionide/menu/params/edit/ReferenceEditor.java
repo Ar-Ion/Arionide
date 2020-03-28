@@ -55,7 +55,7 @@ public class ReferenceEditor extends ParameterValueMenu {
 	}
 	
 	private void addParameter(String name) {
-		dispatch(refManager.addParameter(name));
+		dispatch(refManager.create(name));
 		this.value = refManager.getValue(refManager.getParameterNames().size() - 1);
 		go("edit");
 	}

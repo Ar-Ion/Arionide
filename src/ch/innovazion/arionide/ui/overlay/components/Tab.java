@@ -176,29 +176,31 @@ public class Tab extends MultiComponent implements EventHandler {
 		synchronized(this.rectangles) {
 			if(rectangles.size() == components.size()) {
 				for(Component component : components) {
-					Bounds rect = this.rectangles.get(i++);
-					
-					if(rect.getWidth() > 0.0f) {
-						component.setBounds(rect);
+					if(component != null) {
+						Bounds rect = this.rectangles.get(i++);
 						
-						if(component instanceof Enlightenable) {
-							for(UILighting primitive : ((Enlightenable) component).getEnlightenablePrimitives()) {
-								primitive.updateLightStrength(lightStrength);
-								primitive.updateLightCenter(new Point(this.shadow, y));
+						if(rect.getWidth() > 0.0f) {
+							component.setBounds(rect);
+							
+							if(component instanceof Enlightenable) {
+								for(UILighting primitive : ((Enlightenable) component).getEnlightenablePrimitives()) {
+									primitive.updateLightStrength(lightStrength);
+									primitive.updateLightCenter(new Point(this.shadow, y));
+								}
 							}
-						}
-						
-						component.drawSurface(context);
-						
-						try {
-							Bounds next = this.rectangles.get(i);
-								
-							if(next.getWidth() > 0 && this.renderSeparators) {
-								// TODO
-								// context.getPrimitives().drawLine(new Line(next.getX(), next.getY(), next.getX(), next.getY() + next.getHeight()));
+							
+							component.drawSurface(context);
+							
+							try {
+								Bounds next = this.rectangles.get(i);
+									
+								if(next.getWidth() > 0 && this.renderSeparators) {
+									// TODO
+									// context.getPrimitives().drawLine(new Line(next.getX(), next.getY(), next.getX(), next.getY() + next.getHeight()));
+								}
+							} catch(Exception e) {
+								break;
 							}
-						} catch(Exception e) {
-							break;
 						}
 					}
 				}
@@ -315,6 +317,8 @@ public class Tab extends MultiComponent implements EventHandler {
 				Label label = new Label(parent, tab);
 				label.load();
 				labels.add(label);
+			} else {
+				labels.add(null);
 			}
 		}
 				

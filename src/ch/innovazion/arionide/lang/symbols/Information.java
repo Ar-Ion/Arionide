@@ -23,7 +23,6 @@ package ch.innovazion.arionide.lang.symbols;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -31,12 +30,14 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.stream.Stream;
 
+import ch.innovazion.arionide.debugging.Debug;
+
 public class Information implements ParameterValue {
 
 	private static final long serialVersionUID = 4195840205787242630L;
 	
-	private final Map<String, Information> symbolic_map = new HashMap<>();
-	private final List<Information> linear_map = new ArrayList<>();
+	private final Map<String, Information> symbolicMap = new HashMap<>();
+	private final List<Information> linearMap = new ArrayList<>();
 	
 	private int size = 0;
 	private String name;
@@ -45,19 +46,32 @@ public class Information implements ParameterValue {
 	
 	public Information() {
 		label(null);
+		
+		Information root = new Information();
+		root.label("<root>");
+		
+		try {
+			connect(root);
+		} catch (SymbolResolutionException exception) {
+			Debug.exception(exception);
+		}
 	}
 
 	public synchronized void connect(Information value) throws SymbolResolutionException {
-		connect(value, linear_map.size());
+		connect(value, linearMap.size());
 	}
 	
 	public synchronized void connect(Information value, int position) throws SymbolResolutionException {
-		if(value != null) {	
-			if(!symbolic_map.containsKey(value.name)) {
+		if(value != null) {
+			if(value.getLabel().equals("<root>") && value.getInformation().size() == 1) {
+				value = value.getInformation().get(0);
+			}
+			
+			if(!symbolicMap.containsKey(value.name)) {
 				value.parent = this;
 				
-				linear_map.add(position, value);
-				symbolic_map.put(value.name, value);
+				linearMap.add(position, value);
+				symbolicMap.put(value.name, value);
 
 				int oldSize = size;
 				size += value.size;
@@ -72,10 +86,14 @@ public class Information implements ParameterValue {
 	
 	public synchronized void disconnect(Information value) throws SymbolResolutionException {
 		if(value != null) {
+			if(value.getLabel().equals("<root>") && value.getInformation().size() == 1) {
+				value = value.getInformation().get(0);
+			}
+			
 			value.parent = null;
 			
-			linear_map.remove(value);
-			symbolic_map.remove(value.name);
+			linearMap.remove(value);
+			symbolicMap.remove(value.name);
 			
 			int oldSize = size;
 			size -= value.size;
@@ -86,20 +104,30 @@ public class Information implements ParameterValue {
 	}
 	
 	public synchronized Information resolve(int id) throws SymbolResolutionException {
-		if(id >= 0 && id < linear_map.size()) {
-			return linear_map.get(id);
+		if(id >= 0 && id < linearMap.size()) {
+			return linearMap.get(id);
 		} else {
 			throw new SymbolResolutionException("Symbol identifier '" + id + "' is out of range");
 		}
 	}
 	
 	public synchronized Information resolve(String label) throws SymbolResolutionException {
-		Information info = symbolic_map.get(label);
+		Information info = symbolicMap.get(label);
 		
 		if(info != null) {
 			return info;
 		} else {
 			throw new SymbolResolutionException("Symbol label '" + label + "' could not be resolved");
+		}
+	}
+	
+	public synchronized int indexOf(Information info) throws SymbolResolutionException {
+		int index = linearMap.indexOf(info);
+		
+		if(index >= 0) {
+			return index;
+		} else {
+			throw new SymbolResolutionException("Symbol '" + info.getPath() + "' could not be resolved from '" + path + "'");
 		}
 	}
 	
@@ -117,15 +145,15 @@ public class Information implements ParameterValue {
 	
 	private void notifyLabelUpdate(String oldLabel) {
 		if(parent != null) {
-			parent.symbolic_map.remove(oldLabel);
-			parent.symbolic_map.put(name, this);
+			parent.symbolicMap.remove(oldLabel);
+			parent.symbolicMap.put(name, this);
 		}
 	}
 	
 	private void notifyPathUpdate() {
 		this.path = computePath();
 		
-		for(Information child : linear_map) {
+		for(Information child : linearMap) {
 			child.notifyPathUpdate();
 		}
 	}
@@ -163,8 +191,8 @@ public class Information implements ParameterValue {
 		return size;
 	}
 
-	public Collection<Information> getInformation() {
-		return Collections.unmodifiableCollection(linear_map);
+	public List<Information> getInformation() {
+		return Collections.unmodifiableList(linearMap);
 	}
 	
 	public Bit[] contract() {
@@ -176,17 +204,17 @@ public class Information implements ParameterValue {
 	}
 	
 	protected Stream<Bit> getRawStream() {
-		return linear_map.stream().map(Information::getRawStream).reduce(Stream::concat).orElse(Stream.of());
+		return linearMap.stream().map(Information::getRawStream).reduce(Stream::concat).orElse(Stream.of());
 	}
 	
 	public Information clone() {
 		Information clone = new Information();
 		
-		for(Information child : linear_map) {
+		for(Information child : linearMap) {
 			Information childClone = child.clone();
 			
-			clone.linear_map.add(childClone);
-			clone.symbolic_map.put(childClone.name, childClone);
+			clone.linearMap.add(childClone);
+			clone.symbolicMap.put(childClone.name, childClone);
 			childClone.parent = clone;
 		}
 		

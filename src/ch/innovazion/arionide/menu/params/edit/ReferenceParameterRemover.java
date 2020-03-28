@@ -48,7 +48,7 @@ public class ReferenceParameterRemover extends Menu {
 	}
 
 	public void onAction(String action) {
-		dispatch(refManager.removeParameter(id));
+		dispatch(refManager.remove(id));
 		go("..");
 	}
 }

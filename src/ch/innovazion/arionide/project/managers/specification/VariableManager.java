@@ -60,13 +60,13 @@ public class VariableManager extends ContextualManager<Variable> {
 		return Stream.concat(getState(parent).stream(), getProps(parent).stream()).collect(Collectors.toList());
 	}
 	
-	public MessageEvent assignVariable(Variable var, Information value) {
+	public MessageEvent assign(Variable var, Information value) {
 		var.setInitialValue(value);
 		saveCode();
 		return success();
 	}
 	
-	public MessageEvent newVariable(Structure parent, Variable var, String name) {
+	public MessageEvent create(Structure parent, Variable var, String name) {
 		if(parent instanceof Actor) {
 			Information initialValue = new Information();
 			
@@ -86,7 +86,7 @@ public class VariableManager extends ContextualManager<Variable> {
 		}
 	}
 	
-	public MessageEvent deleteVariable(Structure parent, String name) {
+	public MessageEvent delete(Structure parent, String name) {
 		if(parent instanceof Actor) {
 			try {
 				Information state = ((Actor) parent).getState();
@@ -104,7 +104,7 @@ public class VariableManager extends ContextualManager<Variable> {
 		}
 	}
 	
-	public MessageEvent renameVariable(Structure parent, String currentName, String newName) {
+	public MessageEvent rename(Structure parent, String currentName, String newName) {
 		if(parent instanceof Actor) {
 			try {
 				Information state = ((Actor) parent).getState();

@@ -57,7 +57,7 @@ public class EnumerationManager extends ContextualManager<Enumeration> {
 		return success();
 	}
 	
-	public MessageEvent assignEnumValue(String name) {
+	public MessageEvent assign(String name) {
 		getContext().setValue(name);
 		saveCode();
 		return success();

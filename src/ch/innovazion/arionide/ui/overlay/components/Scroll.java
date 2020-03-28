@@ -141,18 +141,26 @@ public class Scroll extends Tab {
 	}
 	
 	private void commitDelta(int delta) {
+		if(delta == 0) {
+			return;
+		}
+		
 		activeComponent += delta;
 		
 		if(activeComponent >= numElements) {
 			activeComponent = numElements - 1;
+		} else if(getComponents().get(activeComponent) == null) {
+			commitDelta(delta > 0 ? 1 : -1);
+			return;
 		}
 		
 		if(activeComponent < 0) {
 			activeComponent = 0;
+		} else if(getComponents().get(activeComponent) == null) {
+			commitDelta(delta > 0 ? 1 : -1);
+			return;
 		}
 		
-		System.out.println(originalBounds.subList(numElements - activeComponent, 2 * numElements - activeComponent));
-				
 		animation.startAnimation(200, new LinkedList<>(originalBounds.subList(numElements - activeComponent, 2 * numElements - activeComponent)));
 				
 		if(delta != 0) {

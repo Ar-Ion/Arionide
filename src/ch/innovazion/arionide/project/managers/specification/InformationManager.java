@@ -21,11 +21,61 @@
  *******************************************************************************/
 package ch.innovazion.arionide.project.managers.specification;
 
+import java.util.List;
+
+import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.MessageType;
+import ch.innovazion.arionide.lang.symbols.AtomicValue;
 import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.InvalidValueException;
+import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 import ch.innovazion.arionide.project.Storage;
 
 public class InformationManager extends ContextualManager<Information> {
 	protected InformationManager(Storage storage) {
 		super(storage);
+	}
+	
+	public List<Information> getChildren() {
+		return getContext().getInformation();
+	}
+	
+	public MessageEvent setLabel(String name) {
+		getContext().label(name);
+		return success();
+	}
+	
+	public MessageEvent setValue(String rawValue) {
+		try {
+			getContext().parse(rawValue);
+			return success();
+		} catch (InvalidValueException exception) {
+			return new MessageEvent(exception.getMessage(), MessageType.ERROR);
+		}
+	}
+	
+	public MessageEvent destroy(Information parent) {
+		try {
+			parent.disconnect(getContext());
+			return success();
+		} catch (SymbolResolutionException exception) {
+			return new MessageEvent(exception.getMessage(), MessageType.ERROR);
+		}
+	}
+	
+	public MessageEvent assign(Information parent, Information value) {
+		try {
+			if(parent instanceof AtomicValue) {
+				return new MessageEvent("Cannot assign a node value to an atomic information", MessageType.ERROR);
+			}
+			
+			int index = parent.indexOf(getContext());
+			parent.disconnect(getContext());
+			parent.connect(value, index);
+			
+			return success();
+		} catch (SymbolResolutionException exception) {
+			return new MessageEvent(exception.getMessage(), MessageType.ERROR);
+		}
 	}
 }

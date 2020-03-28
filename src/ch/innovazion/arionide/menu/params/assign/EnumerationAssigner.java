@@ -41,7 +41,7 @@ public class EnumerationAssigner extends ParameterValueAssigner {
 	}
 
 	public void onAction(String action) {
-		dispatch(enumManager.assignEnumValue(action));
+		dispatch(enumManager.assign(action));
 		dispatch(new GeometryInvalidateEvent(0));
 		go("..");
 	}

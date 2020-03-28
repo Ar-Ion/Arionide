@@ -43,7 +43,7 @@ public class VariableRenamer extends VariableSelector {
 	}
 	
 	private void renameVariable(String newName) {
-		dispatch(varManager.renameVariable(target, variableName, newName));
+		dispatch(varManager.rename(target, variableName, newName));
 		dispatch(new GeometryInvalidateEvent(0));
 		go("..");
 	}

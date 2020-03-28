@@ -33,7 +33,7 @@ public class Variable extends AtomicValue {
 	private static final long serialVersionUID = 8748976008265242711L;
 	
 	private String name;
-	private Information initialValue = new Number(); // Static variable allocation
+	private Information initialValue = new Numeric(); // Static variable allocation
 	
 	public Variable() {
 		label(null);

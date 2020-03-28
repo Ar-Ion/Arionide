@@ -26,19 +26,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Number extends AtomicValue {
+public class Numeric extends AtomicValue {
 	
 	private static final long serialVersionUID = -7392411725390812250L;
 	
 	private Bit[] data = new Bit[0];
 	private String value = "NaN";
 	
-	public Number() {
+	public Numeric() {
 		this(0L);
 	}
 	
-	public Number(long num) {
-		Bit.fromInteger(BigInteger.valueOf(num), 64);
+	public Numeric(long num) {
+		this.data = Bit.fromInteger(BigInteger.valueOf(num), 64);
 	}
 	
 	public void parse(String value) throws InvalidValueException {
@@ -67,8 +67,8 @@ public class Number extends AtomicValue {
 		return Arrays.asList(value, "(" + data.length + " bit(s))");
 	}
 	
-	public Number clone() {
-		Number clone = new Number();
+	public Numeric clone() {
+		Numeric clone = new Numeric();
 		
 		clone.data = new Bit[data.length];
 		clone.value = value;

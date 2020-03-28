@@ -68,13 +68,13 @@ public class ReferenceManager extends ContextualManager<Reference> {
 		return getContext().getLazyParameters().stream().map(Parameter::getName).collect(Collectors.toList());
 	}
 	
-	public MessageEvent addParameter(String name) {
+	public MessageEvent create(String name) {
 		getContext().addLazyParameter(new Parameter(name, new Information()));
 		saveStructures();
 		return success();
 	}
 	
-	public MessageEvent removeParameter(int paramID) {
+	public MessageEvent remove(int paramID) {
 		getContext().removeLazyParameter(paramID);
 		saveStructures();
 		return success();

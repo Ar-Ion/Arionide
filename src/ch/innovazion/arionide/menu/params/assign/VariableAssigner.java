@@ -38,7 +38,7 @@ public class VariableAssigner extends ParameterValueAssigner {
 	private Collection<Information> variables;
 	
 	public VariableAssigner(MenuManager manager) {
-		super(manager, "<New>", "<Remove>", "<Rename>");
+		super(manager, "New", "Remove", "Rename", null);
 	}
 	
 	protected void onEnter() {
@@ -60,14 +60,14 @@ public class VariableAssigner extends ParameterValueAssigner {
 			go("remove");
 		} else if(id == 2) {
 			go("rename");
-		} else {
+		} else if(id != 3) {
 			this.value = ((Variable) value).getInitialValue();
 			go("edit");
 		}
 	}
 	
 	private void createVariable(String name) {
-		dispatch(varManager.newVariable(target, ((Variable) value), name));
+		dispatch(varManager.create(target, ((Variable) value), name));
 		dispatch(new GeometryInvalidateEvent(0));
 		
 		go(".");
