@@ -21,7 +21,6 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.edit;
 
-import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
@@ -33,10 +32,7 @@ public class EnumerationPossibilityRemover extends Menu {
 	
 	@Inherit
 	protected ParameterValue value;
-	
-	@Inherit
-	protected Parameter parameter; // If the parameter is mutable
-	
+
 	private EnumerationManager enumManager;
 	
 	public EnumerationPossibilityRemover(MenuManager manager) {
@@ -48,7 +44,7 @@ public class EnumerationPossibilityRemover extends Menu {
 		this.enumManager = project.getStructureManager().getSpecificationManager().loadEnumerationManager(value);
 		setDynamicElements(enumManager.getNames().toArray(new String[0]));
 		
-		this.description = new MenuDescription("Select the enumeration possibilty you want to remove");
+		this.description = new MenuDescription("Select the enumeration possibility you want to remove");
 	}
 
 	public void onAction(String action) {

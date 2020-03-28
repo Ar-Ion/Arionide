@@ -21,6 +21,34 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.edit;
 
-public class ReferenceParameterRemover {
+import ch.innovazion.arionide.lang.symbols.ParameterValue;
+import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
+import ch.innovazion.arionide.menu.MenuManager;
+import ch.innovazion.arionide.project.managers.specification.ReferenceManager;
+import ch.innovazion.automaton.Inherit;
 
+public class ReferenceParameterRemover extends Menu {
+
+	@Inherit
+	protected ParameterValue value;
+
+	private ReferenceManager refManager;
+	
+	public ReferenceParameterRemover(MenuManager manager) {
+		super(manager);
+	}
+	
+	protected void onEnter() {
+		super.onEnter();
+		this.refManager = project.getStructureManager().getSpecificationManager().loadReferenceManager(value);
+		setDynamicElements(refManager.getParameterNames().toArray(new String[0]));
+		
+		this.description = new MenuDescription("Select the reference parameter you want to remove");
+	}
+
+	public void onAction(String action) {
+		dispatch(refManager.removeParameter(id));
+		go("..");
+	}
 }
