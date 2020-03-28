@@ -50,9 +50,12 @@ public class Reference extends AtomicValue {
 		lazyMapping.put(param.getName(), param.getValue());
 	}
 	
-	public void removeLazyParameter(Parameter param) {
-		lazyParameters.remove(param);
-		lazyMapping.remove(param.getName());
+	public void removeLazyParameter(int paramID) {
+		Parameter old = lazyParameters.remove(paramID);
+		
+		if(old != null) {
+			lazyMapping.remove(old.getName());
+		}
 	}
 	
 	public List<Parameter> getLazyParameters() {

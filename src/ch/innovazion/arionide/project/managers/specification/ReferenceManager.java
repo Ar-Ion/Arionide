@@ -21,11 +21,43 @@
  *******************************************************************************/
 package ch.innovazion.arionide.project.managers.specification;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.project.Storage;
 
 public class ReferenceManager extends ContextualManager<Reference> {
 	protected ReferenceManager(Storage storage) {
 		super(storage);
+	}
+
+	public List<String> getParameterNames() {
+		return getContext().getLazyParameters().stream().map(Parameter::getName).collect(Collectors.toList());
+	}
+	
+	public MessageEvent addParameter(String name) {
+		getContext().addLazyParameter(new Parameter(name, new Information()));
+		saveStructures();
+		return success();
+	}
+	
+	public MessageEvent removeParameter(int paramID) {
+		getContext().removeLazyParameter(paramID);
+		saveStructures();
+		return success();
+	}
+	
+	public ParameterValue getValue(int paramID) {
+		return getContext().getLazyParameters().get(paramID).getValue();
+	}
+	
+	public MessageEvent assignEnumValue(String name) {
+		
+		return success();
 	}
 }

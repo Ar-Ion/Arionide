@@ -23,14 +23,40 @@ package ch.innovazion.arionide.menu.params.edit;
 
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.menu.params.ParameterValueMenu;
+import ch.innovazion.arionide.project.managers.specification.ReferenceManager;
+import ch.innovazion.arionide.ui.overlay.Views;
 
 public class ReferenceEditor extends ParameterValueMenu {
 
+	private ReferenceManager refManager;
+	
 	public ReferenceEditor(MenuManager manager) {
-		super(manager);
+		super(manager, "<Add parameter>", "<Remove parameter>");
 	}
 
+	protected void onEnter() {
+		super.onEnter();
+		this.refManager = project.getStructureManager().getSpecificationManager().loadReferenceManager(value);
+		setDynamicElements(refManager.getParameterNames().toArray(new String[0]));
+	}
+	
 	public void onAction(String action) {
-		
+		if(id == 0) {
+			Views.input.setText("Please enter the name of the parameter")
+					   .setPlaceholder("Parameter name")
+					   .setResponder(this::addParameter)
+					   .stackOnto(Views.code);
+		} else if(id == 1) {
+			go("remove");
+		} else {
+			this.value = refManager.getValue(id - 2);
+			go("edit");
+		}
+	}
+	
+	private void addParameter(String name) {
+		dispatch(refManager.addParameter(name));
+		this.value = refManager.getValue(refManager.getParameterNames().size() - 1);
+		go("edit");
 	}
 }

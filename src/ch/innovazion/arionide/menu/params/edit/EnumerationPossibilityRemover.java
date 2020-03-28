@@ -29,7 +29,7 @@ import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.managers.specification.EnumerationManager;
 import ch.innovazion.automaton.Inherit;
 
-public class EnumerationRemover extends Menu {
+public class EnumerationPossibilityRemover extends Menu {
 	
 	@Inherit
 	protected ParameterValue value;
@@ -39,7 +39,7 @@ public class EnumerationRemover extends Menu {
 	
 	private EnumerationManager enumManager;
 	
-	public EnumerationRemover(MenuManager manager) {
+	public EnumerationPossibilityRemover(MenuManager manager) {
 		super(manager);
 	}
 	

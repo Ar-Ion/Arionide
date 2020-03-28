@@ -31,7 +31,7 @@ public class EnumerationEditor extends ParameterValueEditor {
 	private EnumerationManager enumManager;
 	
 	public EnumerationEditor(MenuManager manager) {
-		super(manager, "<Add possibility>", "<Remove possibilty>");
+		super(manager, "<Add element>", "<Remove element>");
 	}
 
 	protected void onEnter() {
@@ -43,9 +43,9 @@ public class EnumerationEditor extends ParameterValueEditor {
 	public void onAction(String action) {
 		if(id == 0) {
 			Views.input.setText("Please enter the name of the possibility")
-			   .setPlaceholder("Possibility name")
-			   .setResponder(this::createPossibility)
-			   .stackOnto(Views.code);
+					   .setPlaceholder("Possibility name")
+					   .setResponder(this::createPossibility)
+					   .stackOnto(Views.code);
 		} else if(id == 1) {
 			go("remove");
 		} else {
@@ -57,7 +57,6 @@ public class EnumerationEditor extends ParameterValueEditor {
 	private void createPossibility(String name) {
 		dispatch(enumManager.addPossibleEnum(name));
 		this.value = enumManager.getEnumValue(name);
-		updateParameter();
 		go("edit");
 	}
 }

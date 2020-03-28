@@ -23,6 +23,8 @@ package ch.innovazion.arionide.project.managers.specification;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
@@ -38,12 +40,24 @@ public class VariableManager extends ContextualManager<Variable> {
 		super(storage);
 	}
 	
-	public Collection<Information> getVariables(Structure parent) {
+	public Collection<Information> getState(Structure parent) {
 		if(parent instanceof Actor) {
 			return ((Actor) parent).getState().getInformation();
 		} else {
 			return Arrays.asList();
 		}
+	}
+	
+	public Collection<Information> getProps(Structure parent) {
+		if(parent instanceof Actor) {
+			return ((Actor) parent).getState().getInformation();
+		} else {
+			return Arrays.asList();
+		}
+	}
+	
+	public Collection<Information> getVariables(Structure parent) {
+		return Stream.concat(getState(parent).stream(), getProps(parent).stream()).collect(Collectors.toList());
 	}
 	
 	public MessageEvent assignVariable(Variable var, Information value) {
