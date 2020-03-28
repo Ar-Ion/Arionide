@@ -12,7 +12,8 @@ Inheritance diagram for ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Informatio
 \end{figure}
 
 
-Collaboration diagram for ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information\+:\nopagebreak
+Collaboration diagram for ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -24,6 +25,8 @@ Collaboration diagram for ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Informat
 \item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a2563becec2af8347fd3ec2cee36ebbc6}{Information}} ()
 \item 
+synchronized void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a2e73a049af5773c90e27becbfd49e043}{connect}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} value)  throws Symbol\+Resolution\+Exception 
+\item 
 synchronized void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a1a5bbae0a61b43c71c81d2290e9f86ed}{connect}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} value, int position)  throws Symbol\+Resolution\+Exception 
 \item 
 synchronized void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a118eaa14795c6ffcfbc72c8348204917}{disconnect}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} value)  throws Symbol\+Resolution\+Exception 
@@ -32,11 +35,17 @@ synchronized \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbo
 \item 
 synchronized \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_ac9676f08f2de8a1dc0a5d7af82c65545}{resolve}} (String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_aa5cf2d46700d83ab83a91e80c1ceda70}{label}})  throws Symbol\+Resolution\+Exception 
 \item 
+synchronized int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_abf41d46d1bd3918a1ebf6fb55c75b72f}{index\+Of}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} info)  throws Symbol\+Resolution\+Exception 
+\item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_aa5cf2d46700d83ab83a91e80c1ceda70}{label}} (String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a825d0fa67c61f6f1e8ce983946a0aa1d}{name}})
+\item 
+String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a5603705fc0a25e79195edfc3eeeef4d9}{get\+Label}} ()
+\item 
+String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a8397f38be03d9f57333ae86beb751567}{get\+Path}} ()
 \item 
 int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a541b9a529a30f5c3777a32a77affe79c}{get\+Size}} ()
 \item 
-Collection$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a402028067adf30d0569667839a5ab430}{get\+Information}} ()
+List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_af6ee43b9b88226ec77d189f4863b1d47}{get\+Information}} ()
 \item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_bit}{Bit}}\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a4e1aa6e9398e2328e1164baefeda44fd}{contract}} ()
 \item 
@@ -57,17 +66,23 @@ Stream$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_acc27ce54d9ec167c5635bc2839276f1d}{notify\+Size\+Update}} (int old\+Size)
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a919d7f3541a6a4cac7b90a54209a6396}{notify\+Label\+Update}} (String old\+Label)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a36b06aa6069620731864b6081abd59b1}{notify\+Path\+Update}} ()
+\item 
+String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_ad4f20e0092348af8f29ce46ebc02dc62}{compute\+Path}} ()
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
-final Map$<$ String, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a5d61f3cc4af0c2cb022866835de22fd2}{symbolic\+\_\+map}} = new Hash\+Map$<$$>$()
+final Map$<$ String, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a01377e0f3ebf434eebd36e71eb087561}{symbolic\+Map}} = new Hash\+Map$<$$>$()
 \item 
-final List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a8ad3af3d4b77ac180f952ffd26ccbce4}{linear\+\_\+map}} = new Array\+List$<$$>$()
+final List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a98fe7aa9c53ea79b83462aa64244b8ea}{linear\+Map}} = new Array\+List$<$$>$()
 \item 
 int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_ac9de99b8c4c8d1295ef8d073b4ae7584}{size}} = 0
 \item 
 String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a825d0fa67c61f6f1e8ce983946a0aa1d}{name}}
+\item 
+String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a0e11b51991afbf47343dd98fc16cc59e}{path}}
 \item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a97010cd0c1bbab0862e2aa54d60c89bb}{parent}}
 \end{DoxyCompactItemize}
@@ -85,7 +100,8 @@ static final long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1
 \doxysubsubsection{\texorpdfstring{Information()}{Information()}}
 {\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+Information (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -107,19 +123,36 @@ Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1sym
 
 
 
-Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_ab7bbae01f9dc20922a6cb29b82e22410}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_number_aaa2a16478448c7ef7ed43d1f02bfe60a}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Number}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_enumeration_a6d17c580bedccc52d6896166064faec0}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Enumeration}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_variable_a6741927a1f004b499f8506543479d74e}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Variable}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_atomic_value_af88dd2aac40bb177d5d3ff8844a4d2a1}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Atomic\+Value}}.
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_ab7bbae01f9dc20922a6cb29b82e22410}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_enumeration_a6d17c580bedccc52d6896166064faec0}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Enumeration}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_numeric_acbc87041692cf15c4de31de9225c16a7}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Numeric}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_variable_a6741927a1f004b499f8506543479d74e}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Variable}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_atomic_value_af88dd2aac40bb177d5d3ff8844a4d2a1}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Atomic\+Value}}.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a9b49c0458fd92723d596e7fdfa94c321_cgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_ad4f20e0092348af8f29ce46ebc02dc62}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_ad4f20e0092348af8f29ce46ebc02dc62}} 
+\index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!computePath@{computePath}}
+\index{computePath@{computePath}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
+\doxysubsubsection{\texorpdfstring{computePath()}{computePath()}}
+{\footnotesize\ttfamily String ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+compute\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a2e73a049af5773c90e27becbfd49e043}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a2e73a049af5773c90e27becbfd49e043}} 
+\index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!connect@{connect}}
+\index{connect@{connect}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
+\doxysubsubsection{\texorpdfstring{connect()}{connect()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily synchronized void ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+connect (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}}}]{value }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_symbol_resolution_exception}{Symbol\+Resolution\+Exception}}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_atomic_value_a5f808152787170ec454f44154052c67e}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Atomic\+Value}}.
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a1a5bbae0a61b43c71c81d2290e9f86ed}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a1a5bbae0a61b43c71c81d2290e9f86ed}} 
 \index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!connect@{connect}}
 \index{connect@{connect}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
-\doxysubsubsection{\texorpdfstring{connect()}{connect()}}
+\doxysubsubsection{\texorpdfstring{connect()}{connect()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily synchronized void ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+connect (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}}}]{value,  }\item[{int}]{position }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_symbol_resolution_exception}{Symbol\+Resolution\+Exception}}}
 
 Here is the call graph for this function\+:\nopagebreak
@@ -171,13 +204,25 @@ Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1sym
 
 
 
-Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a042c3aaf7bfbab2d505d8d2b315da583}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_number_a35ee6d84c78dae1c871be389a61aa529}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Number}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_variable_a593e1bba2dd6de39698051f14c39be7f}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Variable}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_text_a1590b94099cf6d9c36389326ae38756a}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Text}}.
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a042c3aaf7bfbab2d505d8d2b315da583}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_numeric_a95bf06d77df1e840213682a2ee90b3d4}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Numeric}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_variable_a593e1bba2dd6de39698051f14c39be7f}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Variable}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_text_a1590b94099cf6d9c36389326ae38756a}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Text}}.
 
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a402028067adf30d0569667839a5ab430}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a402028067adf30d0569667839a5ab430}} 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_af6ee43b9b88226ec77d189f4863b1d47}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_af6ee43b9b88226ec77d189f4863b1d47}} 
 \index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!getInformation@{getInformation}}
 \index{getInformation@{getInformation}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
 \doxysubsubsection{\texorpdfstring{getInformation()}{getInformation()}}
-{\footnotesize\ttfamily Collection$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}}$>$ ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+get\+Information (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}}$>$ ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+get\+Information (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a5603705fc0a25e79195edfc3eeeef4d9}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a5603705fc0a25e79195edfc3eeeef4d9}} 
+\index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!getLabel@{getLabel}}
+\index{getLabel@{getLabel}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
+\doxysubsubsection{\texorpdfstring{getLabel()}{getLabel()}}
+{\footnotesize\ttfamily String ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+get\+Label (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a8397f38be03d9f57333ae86beb751567}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a8397f38be03d9f57333ae86beb751567}} 
+\index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!getPath@{getPath}}
+\index{getPath@{getPath}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
+\doxysubsubsection{\texorpdfstring{getPath()}{getPath()}}
+{\footnotesize\ttfamily String ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+get\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a2572e5611ba5e494b4f61c0577ea1665}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a2572e5611ba5e494b4f61c0577ea1665}} 
 \index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!getRawStream@{getRawStream}}
@@ -187,13 +232,19 @@ Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1s
 
 
 
-Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a497dd6aaf87f7d1fdf0cfd159dea836b}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_enumeration_a9b27040dfa66a7135c261d0966cc3b9f}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Enumeration}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_number_a8e8966b66ae9eca36b87e5a46a36e7b1}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Number}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_variable_ac66c8044af242fe33ef2bc69eb09897f}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Variable}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_atomic_value_ab390e0ae532f62785e8678cb6fcd56d3}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Atomic\+Value}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_text_acdac1aaf9a6fe25596f7656e071620e2}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Text}}.
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_reference_a497dd6aaf87f7d1fdf0cfd159dea836b}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Reference}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_enumeration_a9b27040dfa66a7135c261d0966cc3b9f}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Enumeration}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_numeric_a73d64ac7a49a81244537c1ea54ce6ce1}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Numeric}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_variable_ac66c8044af242fe33ef2bc69eb09897f}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Variable}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_atomic_value_ab390e0ae532f62785e8678cb6fcd56d3}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Atomic\+Value}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_text_acdac1aaf9a6fe25596f7656e071620e2}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Text}}.
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a541b9a529a30f5c3777a32a77affe79c}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a541b9a529a30f5c3777a32a77affe79c}} 
 \index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!getSize@{getSize}}
 \index{getSize@{getSize}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
 \doxysubsubsection{\texorpdfstring{getSize()}{getSize()}}
 {\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+get\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_abf41d46d1bd3918a1ebf6fb55c75b72f}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_abf41d46d1bd3918a1ebf6fb55c75b72f}} 
+\index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!indexOf@{indexOf}}
+\index{indexOf@{indexOf}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
+\doxysubsubsection{\texorpdfstring{indexOf()}{indexOf()}}
+{\footnotesize\ttfamily synchronized int ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+index\+Of (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}}}]{info }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_symbol_resolution_exception}{Symbol\+Resolution\+Exception}}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_aa5cf2d46700d83ab83a91e80c1ceda70}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_aa5cf2d46700d83ab83a91e80c1ceda70}} 
 \index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!label@{label}}
@@ -205,7 +256,8 @@ Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1s
 
 Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_variable_a32ba17f0ff21aaa7b21e9e5cd6710afa}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Variable}}.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -218,6 +270,20 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{notifyLabelUpdate()}{notifyLabelUpdate()}}
 {\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+notify\+Label\+Update (\begin{DoxyParamCaption}\item[{String}]{old\+Label }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a36b06aa6069620731864b6081abd59b1}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a36b06aa6069620731864b6081abd59b1}} 
+\index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!notifyPathUpdate@{notifyPathUpdate}}
+\index{notifyPathUpdate@{notifyPathUpdate}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
+\doxysubsubsection{\texorpdfstring{notifyPathUpdate()}{notifyPathUpdate()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+notify\+Path\+Update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a36b06aa6069620731864b6081abd59b1_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_acc27ce54d9ec167c5635bc2839276f1d}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_acc27ce54d9ec167c5635bc2839276f1d}} 
 \index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!notifySizeUpdate@{notifySizeUpdate}}
 \index{notifySizeUpdate@{notifySizeUpdate}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
@@ -239,7 +305,7 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_number_aa58be445298e8b2d32f31fd72936232f}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Number}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_text_ad4ce26b54fae18e07ed2bae93edb7ba3}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Text}}.
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_numeric_a759736051eedc130c026b258e1032afd}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Numeric}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_text_ad4ce26b54fae18e07ed2bae93edb7ba3}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Text}}.
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_ae33e9af4a4ffadecf4dca70f2ed1cf71}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_ae33e9af4a4ffadecf4dca70f2ed1cf71}} 
 \index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!resolve@{resolve}}
@@ -261,7 +327,8 @@ Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1s
 
 Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_atomic_value_a7bbcf0af7f73204d953d133d1ae3b95c}{ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Atomic\+Value}}.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -271,11 +338,11 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 \doxysubsection{Member Data Documentation}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a8ad3af3d4b77ac180f952ffd26ccbce4}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a8ad3af3d4b77ac180f952ffd26ccbce4}} 
-\index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!linear\_map@{linear\_map}}
-\index{linear\_map@{linear\_map}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
-\doxysubsubsection{\texorpdfstring{linear\_map}{linear\_map}}
-{\footnotesize\ttfamily final List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}}$>$ ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+linear\+\_\+map = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a98fe7aa9c53ea79b83462aa64244b8ea}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a98fe7aa9c53ea79b83462aa64244b8ea}} 
+\index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!linearMap@{linearMap}}
+\index{linearMap@{linearMap}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
+\doxysubsubsection{\texorpdfstring{linearMap}{linearMap}}
+{\footnotesize\ttfamily final List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}}$>$ ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+linear\+Map = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a825d0fa67c61f6f1e8ce983946a0aa1d}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a825d0fa67c61f6f1e8ce983946a0aa1d}} 
 \index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!name@{name}}
@@ -289,6 +356,12 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{parent}{parent}}
 {\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+parent\hspace{0.3cm}{\ttfamily [private]}}
 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a0e11b51991afbf47343dd98fc16cc59e}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a0e11b51991afbf47343dd98fc16cc59e}} 
+\index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!path@{path}}
+\index{path@{path}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
+\doxysubsubsection{\texorpdfstring{path}{path}}
+{\footnotesize\ttfamily String ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+path\hspace{0.3cm}{\ttfamily [private]}}
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a545fdf3bcdb1a28565ea70bf0f28cede}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a545fdf3bcdb1a28565ea70bf0f28cede}} 
 \index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!serialVersionUID@{serialVersionUID}}
 \index{serialVersionUID@{serialVersionUID}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
@@ -301,11 +374,11 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{size}{size}}
 {\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+size = 0\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a5d61f3cc4af0c2cb022866835de22fd2}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a5d61f3cc4af0c2cb022866835de22fd2}} 
-\index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!symbolic\_map@{symbolic\_map}}
-\index{symbolic\_map@{symbolic\_map}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
-\doxysubsubsection{\texorpdfstring{symbolic\_map}{symbolic\_map}}
-{\footnotesize\ttfamily final Map$<$String, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}}$>$ ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+symbolic\+\_\+map = new Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a01377e0f3ebf434eebd36e71eb087561}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information_a01377e0f3ebf434eebd36e71eb087561}} 
+\index{ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}!symbolicMap@{symbolicMap}}
+\index{symbolicMap@{symbolicMap}!ch.innovazion.arionide.lang.symbols.Information@{ch.innovazion.arionide.lang.symbols.Information}}
+\doxysubsubsection{\texorpdfstring{symbolicMap}{symbolicMap}}
+{\footnotesize\ttfamily final Map$<$String, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}}$>$ ch.\+innovazion.\+arionide.\+lang.\+symbols.\+Information.\+symbolic\+Map = new Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
 
 
 

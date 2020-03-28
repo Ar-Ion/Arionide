@@ -68,6 +68,9 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ch.innovazion.arionide.menu.params.assign.InformationAssigner Class Reference</div>  </div>
@@ -78,8 +81,10 @@ Inheritance diagram for ch.innovazion.arionide.menu.params.assign.InformationAss
 <div class="dyncontent">
 <div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner__inherit__graph.png" border="0" usemap="#ch_8innovazion_8arionide_8menu_8params_8assign_8_information_assigner_inherit__map" alt="Inheritance graph"/></div>
 <map name="ch_8innovazion_8arionide_8menu_8params_8assign_8_information_assigner_inherit__map" id="ch_8innovazion_8arionide_8menu_8params_8assign_8_information_assigner_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,252,291,291"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner.html" title=" " alt="" coords="5,165,291,204"/>
+<area shape="rect" title=" " alt="" coords="5,339,291,377"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1edit_1_1_information_editor.html" title=" " alt="" coords="14,425,282,464"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_assigner.html" title=" " alt="" coords="26,252,269,291"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html" title=" " alt="" coords="26,165,269,204"/>
 <area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html" title=" " alt="" coords="34,92,262,117"/>
 <area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html" title=" " alt="" coords="61,5,235,44"/>
 </map>
@@ -89,45 +94,51 @@ Collaboration diagram for ch.innovazion.arionide.menu.params.assign.InformationA
 <div class="dyncontent">
 <div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner__coll__graph.png" border="0" usemap="#ch_8innovazion_8arionide_8menu_8params_8assign_8_information_assigner_coll__map" alt="Collaboration graph"/></div>
 <map name="ch_8innovazion_8arionide_8menu_8params_8assign_8_information_assigner_coll__map" id="ch_8innovazion_8arionide_8menu_8params_8assign_8_information_assigner_coll__map">
-<area shape="rect" title=" " alt="" coords="2680,500,2966,539"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner.html" title=" " alt="" coords="2153,500,2438,539"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html" title=" " alt="" coords="1735,176,1963,201"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_root_menu.html" title=" " alt="" coords="2462,169,2656,208"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser.html" title=" " alt="" coords="2198,279,2392,317"/>
-<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html" title=" " alt="" coords="1172,69,1345,108"/>
-<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_manager.html" title=" " alt="" coords="726,27,899,65"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html" title=" " alt="" coords="3503,141,3698,180"/>
-<area shape="rect" title=" " alt="" coords="346,5,530,31"/>
-<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html" title=" " alt="" coords="351,55,524,93"/>
-<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html" title=" " alt="" coords="351,223,524,261"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_hierarchy.html" title=" " alt="" coords="3157,203,3351,241"/>
-<area shape="rect" title=" " alt="" coords="5,195,258,233"/>
-<area shape="rect" title=" " alt="" coords="76,257,188,283"/>
-<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project.html" title=" " alt="" coords="1158,232,1359,271"/>
-<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_resource.html" title=" " alt="" coords="705,251,920,276"/>
-<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_mapped_structure.html" title=" " alt="" coords="709,300,915,339"/>
-<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_loadable.html" title=" " alt="" coords="706,152,919,177"/>
-<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_saveable.html" title=" " alt="" coords="706,201,919,227"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_description.html" title=" " alt="" coords="1161,169,1356,208"/>
-<area shape="rect" title=" " alt="" coords="698,89,927,128"/>
-<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html" title=" " alt="" coords="3118,265,3390,304"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_code_browser.html" title=" " alt="" coords="2709,237,2937,276"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_browser.html" title=" " alt="" coords="2698,300,2948,339"/>
-<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure.html" title=" " alt="" coords="1453,408,1654,447"/>
-<area shape="rect" title=" " alt="" coords="767,472,858,497"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter.html" title=" " alt="" coords="1730,500,1969,539"/>
-<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter_value.html" title=" " alt="" coords="1139,465,1378,504"/>
-<area shape="rect" title=" " alt="" coords="1732,279,1966,317"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager.html" title=" " alt="" coords="1678,675,2020,713"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="1088,768,1429,807"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_enumeration_manager.html" title=" " alt="" coords="1088,831,1429,869"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="642,831,983,869"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html" title=" " alt="" coords="1088,580,1429,619"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="642,580,983,619"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_reference_manager.html" title=" " alt="" coords="1088,643,1429,681"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="642,643,983,681"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_variable_manager.html" title=" " alt="" coords="1088,705,1429,744"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="642,705,983,744"/>
+<area shape="rect" title=" " alt="" coords="3113,448,3398,487"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_assigner.html" title=" " alt="" coords="2697,448,2940,487"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html" title=" " alt="" coords="2191,448,2434,487"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html" title=" " alt="" coords="1774,256,2002,281"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_root_menu.html" title=" " alt="" coords="2458,247,2653,285"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_browser.html" title=" " alt="" coords="2215,187,2410,225"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html" title=" " alt="" coords="1289,127,1462,165"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_manager.html" title=" " alt="" coords="837,93,1011,132"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html" title=" " alt="" coords="3512,247,3706,285"/>
+<area shape="rect" title=" " alt="" coords="401,97,586,123"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html" title=" " alt="" coords="407,147,580,185"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html" title=" " alt="" coords="407,24,580,63"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_hierarchy.html" title=" " alt="" coords="3158,187,3353,225"/>
+<area shape="rect" title=" " alt="" coords="5,5,258,44"/>
+<area shape="rect" title=" " alt="" coords="76,68,188,93"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project.html" title=" " alt="" coords="393,211,594,249"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_resource_allocator.html" title=" " alt="" coords="792,307,1056,345"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_resource.html" title=" " alt="" coords="24,124,239,149"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_mapped_structure.html" title=" " alt="" coords="29,173,235,212"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_loadable.html" title=" " alt="" coords="26,236,238,261"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_saveable.html" title=" " alt="" coords="25,285,238,311"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_description.html" title=" " alt="" coords="1278,281,1473,320"/>
+<area shape="rect" title=" " alt="" coords="810,244,1038,283"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html" title=" " alt="" coords="3120,511,3392,549"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1code_1_1_code_browser.html" title=" " alt="" coords="2705,124,2932,163"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1structure_1_1_structure_browser.html" title=" " alt="" coords="2693,187,2944,225"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure.html" title=" " alt="" coords="1787,376,1988,415"/>
+<area shape="rect" title=" " alt="" coords="1331,383,1421,408"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter_value.html" title=" " alt="" coords="1768,449,2007,488"/>
+<area shape="rect" title=" " alt="" coords="1771,172,2004,211"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager.html" title=" " alt="" coords="1717,528,2058,567"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="1205,683,1547,721"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_enumeration_manager.html" title=" " alt="" coords="1205,557,1547,596"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="753,557,1095,596"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html" title=" " alt="" coords="1205,620,1547,659"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="753,620,1095,659"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_reference_manager.html" title=" " alt="" coords="1205,432,1547,471"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="753,369,1095,408"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack.html" title=" " alt="" coords="792,432,1056,471"/>
+<area shape="rect" title=" " alt="" coords="431,411,556,436"/>
+<area shape="rect" title=" " alt="" coords="346,460,642,499"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_variable_manager.html" title=" " alt="" coords="1205,495,1547,533"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="753,495,1095,533"/>
+<area shape="rect" title=" " alt="" coords="2677,385,2961,424"/>
+<area shape="rect" title=" " alt="" coords="2683,511,2954,549"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -137,9 +148,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa784e53c6f140800f056aeab8572b0c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46e6dd67ffb7506b3231eaf94133fd60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a46e6dd67ffb7506b3231eaf94133fd60">onAction</a> (String action)</td></tr>
 <tr class="separator:a46e6dd67ffb7506b3231eaf94133fd60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner.html">ch.innovazion.arionide.menu.params.assign.ParameterValueAssigner</a></td></tr>
-<tr class="memitem:a17e7589842109014bf8b7b0c099bd2c2 inherit pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner.html#a17e7589842109014bf8b7b0c099bd2c2">ParameterValueAssigner</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html">MenuManager</a> <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#af58d5bcbd60a78133d5f3fdcd8adf4d2">manager</a>)</td></tr>
-<tr class="separator:a17e7589842109014bf8b7b0c099bd2c2 inherit pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_assigner"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_assigner')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_assigner.html">ch.innovazion.arionide.menu.params.ParameterValueAssigner</a></td></tr>
+<tr class="memitem:ac5708d5a406b6447bff459a062705a21 inherit pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_assigner"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_assigner.html#ac5708d5a406b6447bff459a062705a21">ParameterValueAssigner</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html">MenuManager</a> <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#af58d5bcbd60a78133d5f3fdcd8adf4d2">manager</a>, String... <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#af33e0b832748b53188342fa8adba2008">staticElements</a>)</td></tr>
+<tr class="separator:ac5708d5a406b6447bff459a062705a21 inherit pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_assigner"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html">ch.innovazion.arionide.menu.params.ParameterValueMenu</a></td></tr>
+<tr class="memitem:a2c856c4428b19ac736db22ce00cc7d20 inherit pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html#a2c856c4428b19ac736db22ce00cc7d20">ParameterValueMenu</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html">MenuManager</a> <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#af58d5bcbd60a78133d5f3fdcd8adf4d2">manager</a>, String... <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#af33e0b832748b53188342fa8adba2008">staticElements</a>)</td></tr>
+<tr class="separator:a2c856c4428b19ac736db22ce00cc7d20 inherit pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html">ch.innovazion.arionide.menu.Menu</a></td></tr>
 <tr class="memitem:a5593340b160d00d7aca2d6fb454c4f49 inherit pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a5593340b160d00d7aca2d6fb454c4f49">up</a> ()</td></tr>
 <tr class="separator:a5593340b160d00d7aca2d6fb454c4f49 inherit pub_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,13 +169,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7f8eda56d84ec2a362c124524a607783 inherit pub_methods_classch_1_1innovazion_1_1automaton_1_1_state"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a7f8eda56d84ec2a362c124524a607783">State</a> (<a class="el" href="classch_1_1innovazion_1_1automaton_1_1_state_manager.html">StateManager</a> <a class="el" href="classch_1_1innovazion_1_1automaton_1_1_state.html#acf312057f43d3de2dcc8c38b6228e74e">manager</a>)</td></tr>
 <tr class="separator:a7f8eda56d84ec2a362c124524a607783 inherit pub_methods_classch_1_1innovazion_1_1automaton_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner.html">ch.innovazion.arionide.menu.params.assign.ParameterValueAssigner</a></td></tr>
-<tr class="memitem:aee397d94e568df222c5151e18ed1a1a0 inherit pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager.html">SpecificationManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner.html#aee397d94e568df222c5151e18ed1a1a0">getManager</a> ()</td></tr>
-<tr class="separator:aee397d94e568df222c5151e18ed1a1a0 inherit pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a606babfd7396748582d71b9c5588cef1 inherit pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner.html#a606babfd7396748582d71b9c5588cef1">onEnter</a> ()</td></tr>
-<tr class="separator:a606babfd7396748582d71b9c5588cef1 inherit pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:ac57ffaf1936959f8959152750c16b056"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#ac57ffaf1936959f8959152750c16b056">onEnter</a> ()</td></tr>
+<tr class="separator:ac57ffaf1936959f8959152750c16b056"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html">ch.innovazion.arionide.menu.params.ParameterValueMenu</a></td></tr>
+<tr class="memitem:a7dc7045f861f6394e3e646a8d420dd01 inherit pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager.html">SpecificationManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html#a7dc7045f861f6394e3e646a8d420dd01">getManager</a> ()</td></tr>
+<tr class="separator:a7dc7045f861f6394e3e646a8d420dd01 inherit pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a261deb4b72e4dbecc54d5c84e5187626 inherit pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager.html">SpecificationManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html#a261deb4b72e4dbecc54d5c84e5187626">getSpecificationManager</a> ()</td></tr>
+<tr class="separator:a261deb4b72e4dbecc54d5c84e5187626 inherit pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html">ch.innovazion.arionide.menu.Menu</a></td></tr>
 <tr class="memitem:ab1301b1fe3f5f4828f9b20d0a1fdd29d inherit pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#ab1301b1fe3f5f4828f9b20d0a1fdd29d">Menu</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html">MenuManager</a> <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#af58d5bcbd60a78133d5f3fdcd8adf4d2">manager</a>, String... <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a82f53a5e0542c3ae28eff94f060eecd4">elements</a>)</td></tr>
 <tr class="separator:ab1301b1fe3f5f4828f9b20d0a1fdd29d inherit pro_methods_classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,9 +196,38 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:ad5b64b55dd6b212c5cf8dd6cb3573158 inherit pro_methods_classch_1_1innovazion_1_1automaton_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a137df72996d70e54ce94b4ebf235eceb inherit pro_methods_classch_1_1innovazion_1_1automaton_1_1_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a137df72996d70e54ce94b4ebf235eceb">onExit</a> ()</td></tr>
 <tr class="separator:a137df72996d70e54ce94b4ebf235eceb inherit pro_methods_classch_1_1innovazion_1_1automaton_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner.html">ch.innovazion.arionide.menu.params.assign.ParameterValueAssigner</a></td></tr>
-<tr class="memitem:a839d0539561d49d017465984e1631a4c inherit pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter.html">Parameter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner.html#a839d0539561d49d017465984e1631a4c">parameter</a></td></tr>
-<tr class="separator:a839d0539561d49d017465984e1631a4c inherit pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_parameter_value_assigner"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a8e0680dbc2999314b69dc81b00cf489f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a8e0680dbc2999314b69dc81b00cf489f">update</a> ()</td></tr>
+<tr class="separator:a8e0680dbc2999314b69dc81b00cf489f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a661e9394992b656c2c70f06646dd844c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a661e9394992b656c2c70f06646dd844c">reassign</a> (Supplier&lt; <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html">Information</a> &gt; valueAllocator)</td></tr>
+<tr class="separator:a661e9394992b656c2c70f06646dd844c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97008cfa03eceaf015fee839cc616500"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a97008cfa03eceaf015fee839cc616500">reassign0</a> (String rawValue, Supplier&lt; <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html">Information</a> &gt; valueAllocator)</td></tr>
+<tr class="separator:a97008cfa03eceaf015fee839cc616500"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fcd76545b605affbe8d0847d29ccb08"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a7fcd76545b605affbe8d0847d29ccb08">back</a> ()</td></tr>
+<tr class="separator:a7fcd76545b605affbe8d0847d29ccb08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a908194f6ec708e6c5ac2731a80876ccd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a908194f6ec708e6c5ac2731a80876ccd">label</a> (String name)</td></tr>
+<tr class="separator:a908194f6ec708e6c5ac2731a80876ccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25d6e3a1c9772cd2cb0ac80875927f8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a25d6e3a1c9772cd2cb0ac80875927f8a">destroy</a> ()</td></tr>
+<tr class="separator:a25d6e3a1c9772cd2cb0ac80875927f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a2df5cba0e5926a0f5f5a5b9ae9bd9a7e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html">InformationManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a2df5cba0e5926a0f5f5a5b9ae9bd9a7e">infoManager</a></td></tr>
+<tr class="separator:a2df5cba0e5926a0f5f5a5b9ae9bd9a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac908af4622243b5ef7e0a8c10643673e"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html">Information</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#ac908af4622243b5ef7e0a8c10643673e">children</a></td></tr>
+<tr class="separator:ac908af4622243b5ef7e0a8c10643673e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad43ea0e98573865beebfa4e8add7b6e3"><td class="memItemLeft" align="right" valign="top">Stack&lt; <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html">Information</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#ad43ea0e98573865beebfa4e8add7b6e3">path</a> = new Stack&lt;&gt;()</td></tr>
+<tr class="separator:ad43ea0e98573865beebfa4e8add7b6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html">ch.innovazion.arionide.menu.params.ParameterValueMenu</a></td></tr>
+<tr class="memitem:abae7aa3fe40f6f2dad963ca447a03a6b inherit pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html#abae7aa3fe40f6f2dad963ca447a03a6b">target</a></td></tr>
+<tr class="separator:abae7aa3fe40f6f2dad963ca447a03a6b inherit pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dc86b1ff9f4c37f7bc3cfb9da3b1538 inherit pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter_value.html">ParameterValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html#a7dc86b1ff9f4c37f7bc3cfb9da3b1538">value</a></td></tr>
+<tr class="separator:a7dc86b1ff9f4c37f7bc3cfb9da3b1538 inherit pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html">ch.innovazion.arionide.menu.Menu</a></td></tr>
 <tr class="memitem:a8d17bccafd90da8428bdfa225f14d07e inherit pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a8d17bccafd90da8428bdfa225f14d07e">cursor</a></td></tr>
 <tr class="separator:a8d17bccafd90da8428bdfa225f14d07e inherit pro_attribs_classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,6 +260,144 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7fcd76545b605affbe8d0847d29ccb08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fcd76545b605affbe8d0847d29ccb08">&#9670;&nbsp;</a></span>back()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ch.innovazion.arionide.menu.params.assign.InformationAssigner.back </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a7fcd76545b605affbe8d0847d29ccb08_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a7fcd76545b605affbe8d0847d29ccb08_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a7fcd76545b605affbe8d0847d29ccb08_cgraph" id="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a7fcd76545b605affbe8d0847d29ccb08_cgraph">
+<area shape="rect" title=" " alt="" coords="5,510,291,549"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a90668dec5b3175c92d3d18c459da8398" title=" " alt="" coords="394,399,568,438"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a8e0680dbc2999314b69dc81b00cf489f" title=" " alt="" coords="339,541,624,579"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_manager.html#a39d353cee18aa13472e6afd157a8d9b4" title=" " alt="" coords="721,258,964,297"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a23796a4258a38b9a479f1ebfbc32a910" title=" " alt="" coords="1476,129,1670,167"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_manager.html#a53c2491c67820eeb1b345cdd9c7905d6" title=" " alt="" coords="1102,57,1362,109"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a286a560b90f56f3b03f83aec2ea62282" title=" " alt="" coords="1145,133,1319,171"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a8270355f74b7164c014485201f0ffb4b" title=" " alt="" coords="1145,195,1319,234"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a137df72996d70e54ce94b4ebf235eceb" title=" " alt="" coords="1145,258,1319,297"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a8c41652cced6912a46b7a0232313ceef" title=" " alt="" coords="1117,321,1347,359"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a71889cc5f02c175e08297696a602c985" title=" " alt="" coords="1141,383,1323,422"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#a4352ac22b0761b900c07d799113e6a3a" title=" " alt="" coords="1129,446,1335,485"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a3dd8bbbfc7f876476dd01a3a6fae722d" title=" " alt="" coords="1469,321,1677,359"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a832aaefef0f1408e51520168ceda21e4" title=" " alt="" coords="1462,383,1684,422"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#ada8ded8161b255149804265d0693e4b5" title=" " alt="" coords="1486,446,1660,485"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#a50ce7f3510aee4bb6ad29d6c220f680d" title=" " alt="" coords="1451,509,1695,547"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1automaton_1_1_export.html#af923e790d099e991b3dec969278b0d0a" title=" " alt="" coords="1743,446,1916,485"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html#a975b94489e7dd8ae1bb6bbded914100a" title=" " alt="" coords="672,446,1013,485"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a5603705fc0a25e79195edfc3eeeef4d9" title=" " alt="" coords="723,509,962,547"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html#a261deb4b72e4dbecc54d5c84e5187626" title=" " alt="" coords="692,571,993,610"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager.html#ad3f9ed1e984ad369ef1c8121874efe1d" title=" " alt="" coords="672,634,1013,673"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a5247c97ec3ad6bff43e04fbed0b7af16" title=" " alt="" coords="745,697,940,735"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#a7150feb6fddca6502f54b154687d51ba" title=" " alt="" coords="1061,509,1403,547"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#aee56b8045f421de186885981f87adeea" title=" " alt="" coords="1061,634,1403,673"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1_utils.html#acd428894e41713fb157eee54fcb75543" title=" " alt="" coords="1113,699,1351,725"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#ad350b764e52482eb44af8946d49e2101" title=" " alt="" coords="1135,749,1329,787"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a25d6e3a1c9772cd2cb0ac80875927f8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25d6e3a1c9772cd2cb0ac80875927f8a">&#9670;&nbsp;</a></span>destroy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ch.innovazion.arionide.menu.params.assign.InformationAssigner.destroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a25d6e3a1c9772cd2cb0ac80875927f8a_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a25d6e3a1c9772cd2cb0ac80875927f8a_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a25d6e3a1c9772cd2cb0ac80875927f8a_cgraph" id="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a25d6e3a1c9772cd2cb0ac80875927f8a_cgraph">
+<area shape="rect" title=" " alt="" coords="5,155,291,193"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html#a02c595d2eb997f893a38a765ba274282" title=" " alt="" coords="339,123,680,161"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a7034ac8fa92169f474d489f2a25a363c" title=" " alt="" coords="412,185,607,224"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a118eaa14795c6ffcfbc72c8348204917" title=" " alt="" coords="779,60,1018,99"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#a7150feb6fddca6502f54b154687d51ba" title=" " alt="" coords="728,123,1070,161"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a3bee546b180a2b3d82e0066774ba6e51" title=" " alt="" coords="1134,5,1373,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#acc27ce54d9ec167c5635bc2839276f1d" title=" " alt="" coords="1134,92,1373,131"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html#ad501f580c6fdcba667322f4583c56055" title=" " alt="" coords="801,185,996,224"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#aa5f84407c43d1975f6c3a6d983be6c33" title=" " alt="" coords="1118,185,1389,224"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a908194f6ec708e6c5ac2731a80876ccd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a908194f6ec708e6c5ac2731a80876ccd">&#9670;&nbsp;</a></span>label()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ch.innovazion.arionide.menu.params.assign.InformationAssigner.label </td>
+          <td>(</td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a908194f6ec708e6c5ac2731a80876ccd_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a908194f6ec708e6c5ac2731a80876ccd_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a908194f6ec708e6c5ac2731a80876ccd_cgraph" id="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a908194f6ec708e6c5ac2731a80876ccd_cgraph">
+<area shape="rect" title=" " alt="" coords="5,37,291,76"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a7034ac8fa92169f474d489f2a25a363c" title=" " alt="" coords="412,5,607,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html#a19d43951c0f911a56da6640979fec5de" title=" " alt="" coords="339,68,680,107"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html#ad501f580c6fdcba667322f4583c56055" title=" " alt="" coords="801,5,996,44"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#aa5f84407c43d1975f6c3a6d983be6c33" title=" " alt="" coords="1118,5,1389,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#a7150feb6fddca6502f54b154687d51ba" title=" " alt="" coords="728,68,1070,107"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="a46e6dd67ffb7506b3231eaf94133fd60"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a46e6dd67ffb7506b3231eaf94133fd60">&#9670;&nbsp;</a></span>onAction()</h2>
 
@@ -232,6 +415,411 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="classch_1_1innovazion_1_1automaton_1_1_state.html#ac771f75c2505a75279752aebd757fe7e">ch.innovazion.automaton.State</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a46e6dd67ffb7506b3231eaf94133fd60_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a46e6dd67ffb7506b3231eaf94133fd60_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a46e6dd67ffb7506b3231eaf94133fd60_cgraph" id="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a46e6dd67ffb7506b3231eaf94133fd60_cgraph">
+<area shape="rect" title=" " alt="" coords="5,1008,291,1047"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a7fcd76545b605affbe8d0847d29ccb08" title=" " alt="" coords="672,721,957,760"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a90668dec5b3175c92d3d18c459da8398" title=" " alt="" coords="1089,659,1262,697"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a8e0680dbc2999314b69dc81b00cf489f" title=" " alt="" coords="1033,721,1318,760"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a25d6e3a1c9772cd2cb0ac80875927f8a" title=" " alt="" coords="672,957,957,996"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a661e9394992b656c2c70f06646dd844c" title=" " alt="" coords="339,1065,624,1104"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_input_prompt_view.html#ad17081dc715e78c617858bfa18f09ee0" title=" " alt="" coords="687,1117,942,1156"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_input_prompt_view.html#a75b0d1731ec2b784754cdaeac58e10a3" title=" " alt="" coords="687,1180,942,1219"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_input_prompt_view.html#a740e571849ff742e0ca1c1373c0b2c53" title=" " alt="" coords="687,1055,942,1093"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html#a1eba4a1f4f32771f62a4cd18644ec195" title=" " alt="" coords="706,1247,923,1285"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_manager.html#a39d353cee18aa13472e6afd157a8d9b4" title=" " alt="" coords="1444,259,1687,297"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a23796a4258a38b9a479f1ebfbc32a910" title=" " alt="" coords="2199,29,2393,68"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_manager.html#a53c2491c67820eeb1b345cdd9c7905d6" title=" " alt="" coords="1824,120,2085,172"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a286a560b90f56f3b03f83aec2ea62282" title=" " alt="" coords="1868,196,2042,235"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a8270355f74b7164c014485201f0ffb4b" title=" " alt="" coords="1868,259,2041,297"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a137df72996d70e54ce94b4ebf235eceb" title=" " alt="" coords="1868,321,2041,360"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a8c41652cced6912a46b7a0232313ceef" title=" " alt="" coords="1839,57,2070,96"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a71889cc5f02c175e08297696a602c985" title=" " alt="" coords="1863,384,2046,423"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#a4352ac22b0761b900c07d799113e6a3a" title=" " alt="" coords="1852,447,2058,485"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a3dd8bbbfc7f876476dd01a3a6fae722d" title=" " alt="" coords="2191,321,2400,360"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a832aaefef0f1408e51520168ceda21e4" title=" " alt="" coords="2185,384,2406,423"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#ada8ded8161b255149804265d0693e4b5" title=" " alt="" coords="2209,447,2382,485"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#a50ce7f3510aee4bb6ad29d6c220f680d" title=" " alt="" coords="2173,509,2418,548"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html#a975b94489e7dd8ae1bb6bbded914100a" title=" " alt="" coords="1394,721,1736,760"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a5603705fc0a25e79195edfc3eeeef4d9" title=" " alt="" coords="1446,533,1685,572"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html#a261deb4b72e4dbecc54d5c84e5187626" title=" " alt="" coords="1415,596,1715,635"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager.html#ad3f9ed1e984ad369ef1c8121874efe1d" title=" " alt="" coords="1394,471,1736,509"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a5247c97ec3ad6bff43e04fbed0b7af16" title=" " alt="" coords="1468,659,1663,697"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#a7150feb6fddca6502f54b154687d51ba" title=" " alt="" coords="1784,779,2125,817"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#aee56b8045f421de186885981f87adeea" title=" " alt="" coords="1784,509,2125,548"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1_utils.html#acd428894e41713fb157eee54fcb75543" title=" " alt="" coords="1836,637,2074,663"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#ad350b764e52482eb44af8946d49e2101" title=" " alt="" coords="1857,687,2052,725"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html#a02c595d2eb997f893a38a765ba274282" title=" " alt="" coords="1005,832,1346,871"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a7034ac8fa92169f474d489f2a25a363c" title=" " alt="" coords="1078,957,1273,996"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a118eaa14795c6ffcfbc72c8348204917" title=" " alt="" coords="1446,887,1685,925"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a3bee546b180a2b3d82e0066774ba6e51" title=" " alt="" coords="1835,939,2074,977"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#acc27ce54d9ec167c5635bc2839276f1d" title=" " alt="" coords="1835,876,2074,915"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html#ad501f580c6fdcba667322f4583c56055" title=" " alt="" coords="1468,1075,1663,1113"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#aa5f84407c43d1975f6c3a6d983be6c33" title=" " alt="" coords="1819,1075,2091,1113"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a97008cfa03eceaf015fee839cc616500" title=" " alt="" coords="672,895,957,933"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html#aa69bd973511029a15beefdf15e650ead" title=" " alt="" coords="1005,895,1346,933"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a2e73a049af5773c90e27becbfd49e043" title=" " alt="" coords="1446,1012,1685,1051"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#abf41d46d1bd3918a1ebf6fb55c75b72f" title=" " alt="" coords="1446,949,1685,988"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_input.html#a42b6f7747269ee0f7d53090419b3ddfe" title=" " alt="" coords="1029,1189,1323,1228"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_input.html#aadded5f0d76783efd97027109a28864c" title=" " alt="" coords="1418,1189,1712,1228"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html#a848534201c4030d6d9e6112f823b04db" title=" " alt="" coords="1808,1163,2102,1201"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_text.html#a89be25cb521ad7278a820035d44d9bd7" title=" " alt="" coords="2189,1163,2402,1201"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_transition.html#aaf74f2db0eac7a26a0753047cc26bfff" title=" " alt="" coords="1067,1252,1284,1291"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_transition.html#a2047f48a03c43448b36d4d9d06b57ce6" title=" " alt="" coords="1067,1315,1284,1353"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface.html#a5f6ac191aa653ec97c8cecf3c34a5df4" title=" " alt="" coords="1460,1283,1671,1321"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ac57ffaf1936959f8959152750c16b056"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac57ffaf1936959f8959152750c16b056">&#9670;&nbsp;</a></span>onEnter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ch.innovazion.arionide.menu.params.assign.InformationAssigner.onEnter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html#ad9bd041ed5993f5e7c68ff2aa2b1fbc1">ch.innovazion.arionide.menu.params.ParameterValueMenu</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_ac57ffaf1936959f8959152750c16b056_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_ac57ffaf1936959f8959152750c16b056_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_ac57ffaf1936959f8959152750c16b056_cgraph" id="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_ac57ffaf1936959f8959152750c16b056_cgraph">
+<area shape="rect" title=" " alt="" coords="5,625,291,664"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1debugging_1_1_debug.html#ace044edb52cdb2c8f149d4d8026c49be" title=" " alt="" coords="369,312,593,351"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a90668dec5b3175c92d3d18c459da8398" title=" " alt="" coords="394,593,568,632"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#ae33e9af4a4ffadecf4dca70f2ed1cf71" title=" " alt="" coords="361,656,601,695"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a8e0680dbc2999314b69dc81b00cf489f" title=" " alt="" coords="339,945,624,984"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1debugging_1_1_debug.html#a3f8981c136c02e547e86ab91013b1a24" title=" " alt="" coords="731,155,954,193"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html#a8048c1edf1547875722d40df119ed3d2" title=" " alt="" coords="734,217,951,256"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_views.html#a32654c52837c1f8a60b582a898816413" title=" " alt="" coords="734,405,951,444"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html#ac6e81515b2759befc3a3b844a0c80cc0" title=" " alt="" coords="734,468,951,507"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_prompt_view.html#a281c3f457994fa5d22119e363483392a" title=" " alt="" coords="715,531,970,569"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_text_prompt_view.html#adc6716111aba1ca96e83aa2d9c45d573" title=" " alt="" coords="715,343,970,381"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_text_prompt_view.html#a65091ec002e5bb053549b89e52d91442" title=" " alt="" coords="715,280,970,319"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html#a1eba4a1f4f32771f62a4cd18644ec195" title=" " alt="" coords="1123,5,1341,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1debugging_1_1_debug.html#a77b420fb65708965e7efc6d12c37febe" title=" " alt="" coords="1109,92,1355,131"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1debugging_1_1_i_am.html#a17d590b4aae2f24e2a464ffd06286f40" title=" " alt="" coords="1120,155,1344,193"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html#ac6c06acdd0126a219666dd317ce786c5" title=" " alt="" coords="1123,217,1341,256"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_transition.html#aaf74f2db0eac7a26a0753047cc26bfff" title=" " alt="" coords="1464,144,1682,183"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_transition.html#a2047f48a03c43448b36d4d9d06b57ce6" title=" " alt="" coords="1464,81,1682,120"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface.html#a5f6ac191aa653ec97c8cecf3c34a5df4" title=" " alt="" coords="1743,113,1954,152"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html#a848534201c4030d6d9e6112f823b04db" title=" " alt="" coords="1085,281,1379,320"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_text.html#a89be25cb521ad7278a820035d44d9bd7" title=" " alt="" coords="1466,281,1680,320"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_manager.html#a39d353cee18aa13472e6afd157a8d9b4" title=" " alt="" coords="721,593,964,632"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a23796a4258a38b9a479f1ebfbc32a910" title=" " alt="" coords="1476,597,1670,636"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_manager.html#a53c2491c67820eeb1b345cdd9c7905d6" title=" " alt="" coords="1102,651,1362,703"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a286a560b90f56f3b03f83aec2ea62282" title=" " alt="" coords="1145,727,1319,765"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a8270355f74b7164c014485201f0ffb4b" title=" " alt="" coords="1145,789,1319,828"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a137df72996d70e54ce94b4ebf235eceb" title=" " alt="" coords="1145,347,1319,385"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a8c41652cced6912a46b7a0232313ceef" title=" " alt="" coords="1117,536,1347,575"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a71889cc5f02c175e08297696a602c985" title=" " alt="" coords="1141,409,1323,448"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#a4352ac22b0761b900c07d799113e6a3a" title=" " alt="" coords="1129,473,1335,512"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a3dd8bbbfc7f876476dd01a3a6fae722d" title=" " alt="" coords="1469,347,1677,385"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a832aaefef0f1408e51520168ceda21e4" title=" " alt="" coords="1462,409,1684,448"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#ada8ded8161b255149804265d0693e4b5" title=" " alt="" coords="1486,472,1660,511"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#a50ce7f3510aee4bb6ad29d6c220f680d" title=" " alt="" coords="1451,535,1695,573"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1automaton_1_1_export.html#af923e790d099e991b3dec969278b0d0a" title=" " alt="" coords="1762,472,1935,511"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html#a975b94489e7dd8ae1bb6bbded914100a" title=" " alt="" coords="672,977,1013,1016"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a5603705fc0a25e79195edfc3eeeef4d9" title=" " alt="" coords="723,1040,962,1079"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html#a261deb4b72e4dbecc54d5c84e5187626" title=" " alt="" coords="692,1103,993,1141"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager.html#ad3f9ed1e984ad369ef1c8121874efe1d" title=" " alt="" coords="672,852,1013,891"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a5247c97ec3ad6bff43e04fbed0b7af16" title=" " alt="" coords="745,915,940,953"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#a7150feb6fddca6502f54b154687d51ba" title=" " alt="" coords="1061,1027,1403,1065"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#aee56b8045f421de186885981f87adeea" title=" " alt="" coords="1061,852,1403,891"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1_utils.html#acd428894e41713fb157eee54fcb75543" title=" " alt="" coords="1113,977,1351,1003"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#ad350b764e52482eb44af8946d49e2101" title=" " alt="" coords="1135,915,1329,953"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a661e9394992b656c2c70f06646dd844c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a661e9394992b656c2c70f06646dd844c">&#9670;&nbsp;</a></span>reassign()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ch.innovazion.arionide.menu.params.assign.InformationAssigner.reassign </td>
+          <td>(</td>
+          <td class="paramtype">Supplier&lt; <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html">Information</a> &gt;&#160;</td>
+          <td class="paramname"><em>valueAllocator</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a661e9394992b656c2c70f06646dd844c_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a661e9394992b656c2c70f06646dd844c_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a661e9394992b656c2c70f06646dd844c_cgraph" id="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a661e9394992b656c2c70f06646dd844c_cgraph">
+<area shape="rect" title=" " alt="" coords="5,1368,291,1407"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a97008cfa03eceaf015fee839cc616500" title=" " alt="" coords="339,559,624,597"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_input_prompt_view.html#ad17081dc715e78c617858bfa18f09ee0" title=" " alt="" coords="354,1305,608,1344"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_input_prompt_view.html#a75b0d1731ec2b784754cdaeac58e10a3" title=" " alt="" coords="354,1431,608,1469"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1views_1_1_input_prompt_view.html#a740e571849ff742e0ca1c1373c0b2c53" title=" " alt="" coords="354,1368,608,1407"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html#a1eba4a1f4f32771f62a4cd18644ec195" title=" " alt="" coords="372,1493,590,1532"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html#aa69bd973511029a15beefdf15e650ead" title=" " alt="" coords="672,125,1013,164"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a7034ac8fa92169f474d489f2a25a363c" title=" " alt="" coords="745,559,940,597"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a90668dec5b3175c92d3d18c459da8398" title=" " alt="" coords="756,716,929,755"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a8e0680dbc2999314b69dc81b00cf489f" title=" " alt="" coords="700,403,985,441"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a2e73a049af5773c90e27becbfd49e043" title=" " alt="" coords="1112,5,1352,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a118eaa14795c6ffcfbc72c8348204917" title=" " alt="" coords="1112,68,1352,107"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#a7150feb6fddca6502f54b154687d51ba" title=" " alt="" coords="1451,216,1792,255"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#abf41d46d1bd3918a1ebf6fb55c75b72f" title=" " alt="" coords="1112,183,1352,221"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a3bee546b180a2b3d82e0066774ba6e51" title=" " alt="" coords="1502,9,1741,48"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#acc27ce54d9ec167c5635bc2839276f1d" title=" " alt="" coords="1502,96,1741,135"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html#ad501f580c6fdcba667322f4583c56055" title=" " alt="" coords="1135,559,1329,597"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#aa5f84407c43d1975f6c3a6d983be6c33" title=" " alt="" coords="1486,559,1757,597"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_manager.html#a39d353cee18aa13472e6afd157a8d9b4" title=" " alt="" coords="1110,812,1354,851"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a23796a4258a38b9a479f1ebfbc32a910" title=" " alt="" coords="1854,645,2048,684"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_manager.html#a53c2491c67820eeb1b345cdd9c7905d6" title=" " alt="" coords="1491,736,1752,788"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a286a560b90f56f3b03f83aec2ea62282" title=" " alt="" coords="1535,812,1708,851"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a8270355f74b7164c014485201f0ffb4b" title=" " alt="" coords="1535,875,1708,913"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a137df72996d70e54ce94b4ebf235eceb" title=" " alt="" coords="1535,937,1708,976"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a8c41652cced6912a46b7a0232313ceef" title=" " alt="" coords="1506,673,1737,712"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a71889cc5f02c175e08297696a602c985" title=" " alt="" coords="1530,1000,1713,1039"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#a4352ac22b0761b900c07d799113e6a3a" title=" " alt="" coords="1519,1063,1724,1101"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a3dd8bbbfc7f876476dd01a3a6fae722d" title=" " alt="" coords="1847,937,2055,976"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a832aaefef0f1408e51520168ceda21e4" title=" " alt="" coords="1840,1000,2061,1039"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#ada8ded8161b255149804265d0693e4b5" title=" " alt="" coords="1864,1063,2037,1101"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html#a975b94489e7dd8ae1bb6bbded914100a" title=" " alt="" coords="1061,245,1403,284"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a5603705fc0a25e79195edfc3eeeef4d9" title=" " alt="" coords="1112,308,1352,347"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html#a261deb4b72e4dbecc54d5c84e5187626" title=" " alt="" coords="1082,371,1382,409"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager.html#ad3f9ed1e984ad369ef1c8121874efe1d" title=" " alt="" coords="1061,433,1403,472"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a5247c97ec3ad6bff43e04fbed0b7af16" title=" " alt="" coords="1135,496,1329,535"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#aee56b8045f421de186885981f87adeea" title=" " alt="" coords="1451,384,1792,423"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1_utils.html#acd428894e41713fb157eee54fcb75543" title=" " alt="" coords="1503,447,1740,472"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#ad350b764e52482eb44af8946d49e2101" title=" " alt="" coords="1524,496,1719,535"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_input.html#a42b6f7747269ee0f7d53090419b3ddfe" title=" " alt="" coords="696,1305,989,1344"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_input.html#aadded5f0d76783efd97027109a28864c" title=" " alt="" coords="1085,1305,1379,1344"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#a6797c323866a5d656aa70fc6e78afda1" title=" " alt="" coords="1513,1149,1730,1188"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a3906fa3d9513cca328145e0f376a5cb3" title=" " alt="" coords="1514,1212,1729,1251"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context.html#afa527fa84c772585459ef65a6dcc9c51" title=" " alt="" coords="1499,1275,1744,1313"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_font_renderer.html#a0aa9c3cb1c4c5fe681c156cc9d446699" title=" " alt="" coords="1502,1337,1741,1376"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_text_tessellator.html#ac3754401ea07b524bc1d574d8e083fd4" title=" " alt="" coords="1502,1400,1741,1439"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html#a848534201c4030d6d9e6112f823b04db" title=" " alt="" coords="1475,1463,1768,1501"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_text.html#a89be25cb521ad7278a820035d44d9bd7" title=" " alt="" coords="1844,1463,2058,1501"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_transition.html#aaf74f2db0eac7a26a0753047cc26bfff" title=" " alt="" coords="734,1461,951,1500"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_transition.html#a2047f48a03c43448b36d4d9d06b57ce6" title=" " alt="" coords="734,1524,951,1563"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface.html#a5f6ac191aa653ec97c8cecf3c34a5df4" title=" " alt="" coords="1126,1492,1338,1531"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a97008cfa03eceaf015fee839cc616500"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97008cfa03eceaf015fee839cc616500">&#9670;&nbsp;</a></span>reassign0()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ch.innovazion.arionide.menu.params.assign.InformationAssigner.reassign0 </td>
+          <td>(</td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>rawValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Supplier&lt; <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html">Information</a> &gt;&#160;</td>
+          <td class="paramname"><em>valueAllocator</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a97008cfa03eceaf015fee839cc616500_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a97008cfa03eceaf015fee839cc616500_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a97008cfa03eceaf015fee839cc616500_cgraph" id="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a97008cfa03eceaf015fee839cc616500_cgraph">
+<area shape="rect" title=" " alt="" coords="5,449,291,488"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html#aa69bd973511029a15beefdf15e650ead" title=" " alt="" coords="339,125,680,164"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a7034ac8fa92169f474d489f2a25a363c" title=" " alt="" coords="412,512,607,551"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a90668dec5b3175c92d3d18c459da8398" title=" " alt="" coords="423,669,596,708"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a8e0680dbc2999314b69dc81b00cf489f" title=" " alt="" coords="367,403,652,441"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a2e73a049af5773c90e27becbfd49e043" title=" " alt="" coords="779,5,1018,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a118eaa14795c6ffcfbc72c8348204917" title=" " alt="" coords="779,68,1018,107"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#a7150feb6fddca6502f54b154687d51ba" title=" " alt="" coords="1118,216,1459,255"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#abf41d46d1bd3918a1ebf6fb55c75b72f" title=" " alt="" coords="779,183,1018,221"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a3bee546b180a2b3d82e0066774ba6e51" title=" " alt="" coords="1169,9,1408,48"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#acc27ce54d9ec167c5635bc2839276f1d" title=" " alt="" coords="1169,96,1408,135"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html#ad501f580c6fdcba667322f4583c56055" title=" " alt="" coords="801,559,996,597"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#aa5f84407c43d1975f6c3a6d983be6c33" title=" " alt="" coords="1152,559,1424,597"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_manager.html#a39d353cee18aa13472e6afd157a8d9b4" title=" " alt="" coords="777,812,1020,851"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a23796a4258a38b9a479f1ebfbc32a910" title=" " alt="" coords="1532,645,1726,684"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_manager.html#a53c2491c67820eeb1b345cdd9c7905d6" title=" " alt="" coords="1158,736,1419,788"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a286a560b90f56f3b03f83aec2ea62282" title=" " alt="" coords="1201,812,1375,851"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a8270355f74b7164c014485201f0ffb4b" title=" " alt="" coords="1202,875,1375,913"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state.html#a137df72996d70e54ce94b4ebf235eceb" title=" " alt="" coords="1202,937,1375,976"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a8c41652cced6912a46b7a0232313ceef" title=" " alt="" coords="1173,673,1404,712"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a71889cc5f02c175e08297696a602c985" title=" " alt="" coords="1197,1000,1380,1039"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#a4352ac22b0761b900c07d799113e6a3a" title=" " alt="" coords="1185,1063,1391,1101"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a3dd8bbbfc7f876476dd01a3a6fae722d" title=" " alt="" coords="1525,937,1734,976"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_hierarchy.html#a832aaefef0f1408e51520168ceda21e4" title=" " alt="" coords="1519,1000,1740,1039"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#ada8ded8161b255149804265d0693e4b5" title=" " alt="" coords="1543,1063,1716,1101"/>
+<area shape="rect" href="classch_1_1innovazion_1_1automaton_1_1_state_syncer.html#a50ce7f3510aee4bb6ad29d6c220f680d" title=" " alt="" coords="1507,1125,1751,1164"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1automaton_1_1_export.html#af923e790d099e991b3dec969278b0d0a" title=" " alt="" coords="1799,1063,1973,1101"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html#a975b94489e7dd8ae1bb6bbded914100a" title=" " alt="" coords="728,245,1070,284"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a5603705fc0a25e79195edfc3eeeef4d9" title=" " alt="" coords="779,308,1018,347"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html#a261deb4b72e4dbecc54d5c84e5187626" title=" " alt="" coords="749,371,1049,409"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager.html#ad3f9ed1e984ad369ef1c8121874efe1d" title=" " alt="" coords="728,433,1070,472"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a5247c97ec3ad6bff43e04fbed0b7af16" title=" " alt="" coords="801,496,996,535"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#aee56b8045f421de186885981f87adeea" title=" " alt="" coords="1118,384,1459,423"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1_utils.html#acd428894e41713fb157eee54fcb75543" title=" " alt="" coords="1169,447,1407,472"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#ad350b764e52482eb44af8946d49e2101" title=" " alt="" coords="1191,496,1386,535"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a8e0680dbc2999314b69dc81b00cf489f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e0680dbc2999314b69dc81b00cf489f">&#9670;&nbsp;</a></span>update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ch.innovazion.arionide.menu.params.assign.InformationAssigner.update </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a8e0680dbc2999314b69dc81b00cf489f_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a8e0680dbc2999314b69dc81b00cf489f_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a8e0680dbc2999314b69dc81b00cf489f_cgraph" id="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner_a8e0680dbc2999314b69dc81b00cf489f_cgraph">
+<area shape="rect" title=" " alt="" coords="5,131,291,169"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html#a975b94489e7dd8ae1bb6bbded914100a" title=" " alt="" coords="339,5,680,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#a5603705fc0a25e79195edfc3eeeef4d9" title=" " alt="" coords="390,68,629,107"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html#a261deb4b72e4dbecc54d5c84e5187626" title=" " alt="" coords="359,131,660,169"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager.html#ad3f9ed1e984ad369ef1c8121874efe1d" title=" " alt="" coords="339,193,680,232"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#a5247c97ec3ad6bff43e04fbed0b7af16" title=" " alt="" coords="412,256,607,295"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#a7150feb6fddca6502f54b154687d51ba" title=" " alt="" coords="728,5,1070,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#aee56b8045f421de186885981f87adeea" title=" " alt="" coords="728,193,1070,232"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1_utils.html#acd428894e41713fb157eee54fcb75543" title=" " alt="" coords="780,259,1018,284"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html#ad350b764e52482eb44af8946d49e2101" title=" " alt="" coords="801,308,996,347"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ac908af4622243b5ef7e0a8c10643673e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac908af4622243b5ef7e0a8c10643673e">&#9670;&nbsp;</a></span>children</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt;<a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html">Information</a>&gt; ch.innovazion.arionide.menu.params.assign.InformationAssigner.children</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2df5cba0e5926a0f5f5a5b9ae9bd9a7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2df5cba0e5926a0f5f5a5b9ae9bd9a7e">&#9670;&nbsp;</a></span>infoManager</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html">InformationManager</a> ch.innovazion.arionide.menu.params.assign.InformationAssigner.infoManager</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad43ea0e98573865beebfa4e8add7b6e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad43ea0e98573865beebfa4e8add7b6e3">&#9670;&nbsp;</a></span>path</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Stack&lt;<a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html">Information</a>&gt; ch.innovazion.arionide.menu.params.assign.InformationAssigner.path = new Stack&lt;&gt;()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

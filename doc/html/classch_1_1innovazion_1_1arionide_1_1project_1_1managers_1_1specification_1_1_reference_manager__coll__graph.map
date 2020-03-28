@@ -1,4 +1,13 @@
 <map id="ch.innovazion.arionide.project.managers.specification.ReferenceManager" name="ch.innovazion.arionide.project.managers.specification.ReferenceManager">
-<area shape="rect" id="node1" title=" " alt="" coords="395,5,736,44"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="5,5,347,44"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1127,68,1469,107"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="676,5,1017,44"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack.html" title=" " alt="" coords="714,68,979,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="355,19,480,44"/>
+<area shape="rect" id="node5" title=" " alt="" coords="269,68,565,107"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_resource_allocator.html" title=" " alt="" coords="714,131,979,169"/>
+<area shape="rect" id="node7" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_project.html" title=" " alt="" coords="317,131,518,169"/>
+<area shape="rect" id="node8" href="$interfacech_1_1innovazion_1_1arionide_1_1_resource.html" title=" " alt="" coords="5,53,220,79"/>
+<area shape="rect" id="node9" href="$interfacech_1_1innovazion_1_1arionide_1_1_mapped_structure.html" title=" " alt="" coords="10,103,216,141"/>
+<area shape="rect" id="node10" href="$interfacech_1_1innovazion_1_1arionide_1_1_loadable.html" title=" " alt="" coords="6,165,219,191"/>
+<area shape="rect" id="node11" href="$interfacech_1_1innovazion_1_1arionide_1_1_saveable.html" title=" " alt="" coords="6,215,219,240"/>
 </map>

@@ -1,4 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_storage.html" title=" " alt="" coords="5,5,207,44"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_zip_storage.html" title=" " alt="" coords="255,5,456,44"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,75,99,100"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_storage_exception.html" title=" " alt="" coords="198,5,400,44"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1font_1_1_x_m_l_exception.html" title=" " alt="" coords="180,68,419,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1shaders_1_1preprocessor_1_1_preprocessor_exception.html" title=" " alt="" coords="147,131,451,169"/>
 </map>
