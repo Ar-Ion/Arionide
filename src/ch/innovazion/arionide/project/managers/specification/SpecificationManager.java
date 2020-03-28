@@ -33,6 +33,8 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.project.managers.HostStructureStack;
+import ch.innovazion.arionide.project.managers.ResourceAllocator;
 
 public class SpecificationManager extends ContextualManager<Specification> {
 	
@@ -41,11 +43,11 @@ public class SpecificationManager extends ContextualManager<Specification> {
 	private final ReferenceManager referenceManager;
 	private final EnumerationManager enumManager;
 
-	public SpecificationManager(Storage storage) {
+	public SpecificationManager(Storage storage, ResourceAllocator allocator, HostStructureStack hostStack) {
 		super(storage);
 		
 		this.informationManager = new InformationManager(storage);
-		this.referenceManager = new ReferenceManager(storage);
+		this.referenceManager = new ReferenceManager(storage, allocator, hostStack);
 		this.variableManager = new VariableManager(storage);
 		this.enumManager = new EnumerationManager(storage);
 	}

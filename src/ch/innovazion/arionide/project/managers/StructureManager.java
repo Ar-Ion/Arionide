@@ -61,7 +61,7 @@ public class StructureManager extends Manager {
 		hostStack = new HostStructureStack();
 		allocator = new ResourceAllocator(project);
 		codeManager = new CodeManager(getStorage(), allocator, hostStack);
-		specManager = new SpecificationManager(getStorage());
+		specManager = new SpecificationManager(getStorage(), allocator, hostStack);
 		inheritanceManager = new InheritanceManager(getStorage());
 	}
 
@@ -87,7 +87,8 @@ public class StructureManager extends Manager {
 			getCallGraph().add(structure);
 			saveCallGraph();
 			
-			getStructures().put(structureID, new MutableActor(structureID, allocator.allocSpecification()));
+			MutableStructure actor = new MutableActor(structureID, allocator.allocSpecification());
+			getStructures().put(structureID, actor);
 			getCode().put(structureID, new MutableCodeChain());
 
 			MessageEvent message = rename(structureID, name);
@@ -98,18 +99,22 @@ public class StructureManager extends Manager {
 			
 			Structure current = getStructures().get(hostStack.getCurrent());
 			
+			actor.setLanguage(current.getLanguage());
+			
 			if(current != null) {
 				Language lang = LanguageManager.get(current.getLanguage());
 			
-				hostStack.push(structureID);
-				getCodeManager().insertCode(0, lang.getEntryPoint(), 0);
-				hostStack.pop();
-				
-				// Saving is delegated to insertCode
-			} else {
-				saveStructures();
-				saveCode();
+				if(lang != null) {
+					hostStack.push(structureID);
+					getCodeManager().insertCode(0, lang.getEntryPoint(), 0);
+					hostStack.pop();
+					
+					// Saving is delegated to insertCode
+				}
 			}
+			
+			saveStructures();
+			saveCode();
 			
 			return success();
 		}

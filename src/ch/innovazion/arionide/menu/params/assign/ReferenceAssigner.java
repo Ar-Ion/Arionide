@@ -21,16 +21,37 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.assign;
 
+import java.util.List;
+
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
+import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.menu.params.ParameterValueAssigner;
+import ch.innovazion.arionide.project.managers.specification.ReferenceManager;
 
 public class ReferenceAssigner extends ParameterValueAssigner {
 
-	public ReferenceAssigner(MenuManager manager, String... staticElements) {
-		super(manager, staticElements);
+	private ReferenceManager refManager;
+	private List<Callable> callables;
+	
+	public ReferenceAssigner(MenuManager manager) {
+		super(manager, "<Lambda>");
+	}
+	
+	protected void onEnter() {
+		super.onEnter();
+		this.refManager = project.getStructureManager().getSpecificationManager().loadReferenceManager(value);
+		this.callables = refManager.getAccessibleCallables(target);
+		setDynamicElements(callables.stream().map(Callable::getName).toArray(String[]::new));
 	}
 
 	public void onAction(String action) {
-		
+		if(id == 0) {
+			dispatch(refManager.assignLambda());
+			dispatch(new GeometryInvalidateEvent(2));
+		} else {
+			dispatch(refManager.assignCallable(callables.get(id - 1)));
+			dispatch(new GeometryInvalidateEvent(0));
+		}
 	}
 }

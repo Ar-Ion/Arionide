@@ -116,7 +116,21 @@ public class Reference extends AtomicValue {
 	}
 
 	public List<String> getDisplayValue() {
-		return Arrays.asList("Reference to '" + target.getName() + "'");
+		List<String> display = new ArrayList<>();
+		
+		if(target != null) {
+			display.add("Reference to '" + target.getName() + "'");
+		} else {
+			display.add("Unbound reference");
+		}
+		
+		display.add(new String());
+		
+		for(Parameter param : lazyParameters) {
+			display.add(param.getName() + ": " + String.join(", ", param.getDisplayValue()));
+		}
+		
+		return Arrays.asList();
 	}
 
 	protected Stream<Bit> getRawStream() {
