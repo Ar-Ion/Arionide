@@ -22,9 +22,9 @@
 package ch.innovazion.arionide.menu.params.assign;
 
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.ParameterValueMenu;
+import ch.innovazion.arionide.menu.params.ParameterValueAssigner;
 
-public class InformationAssigner extends ParameterValueMenu {
+public class InformationAssigner extends ParameterValueAssigner {
 
 	public InformationAssigner(MenuManager manager) {
 		super(manager);

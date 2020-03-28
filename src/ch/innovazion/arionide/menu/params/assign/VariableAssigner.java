@@ -23,19 +23,22 @@ package ch.innovazion.arionide.menu.params.assign;
 
 import java.util.Collection;
 
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.ParameterValueMenu;
+import ch.innovazion.arionide.menu.params.ParameterValueAssigner;
 import ch.innovazion.arionide.project.managers.specification.VariableManager;
+import ch.innovazion.arionide.ui.overlay.Views;
 
-public class VariableAssigner extends ParameterValueMenu {
+public class VariableAssigner extends ParameterValueAssigner {
 
 	private VariableManager varManager;
 	
 	private Collection<Information> variables;
 	
 	public VariableAssigner(MenuManager manager) {
-		super(manager, "<New>", "<Remove>");
+		super(manager, "<New>", "<Remove>", "<Rename>");
 	}
 	
 	protected void onEnter() {
@@ -49,11 +52,24 @@ public class VariableAssigner extends ParameterValueMenu {
 
 	public void onAction(String action) {
 		if(id == 0) {
-			
+			Views.input.setText("Please enter the name of the new variable")
+					   .setPlaceholder("Variable name")
+					   .setResponder(this::createVariable)
+					   .stackOnto(Views.code);
 		} else if(id == 1) {
-			
+			go("remove");
+		} else if(id == 2) {
+			go("rename");
 		} else {
-			
+			this.value = ((Variable) value).getInitialValue();
+			go("edit");
 		}
+	}
+	
+	private void createVariable(String name) {
+		dispatch(varManager.newVariable(target, ((Variable) value), name));
+		dispatch(new GeometryInvalidateEvent(0));
+		
+		go(".");
 	}
 }

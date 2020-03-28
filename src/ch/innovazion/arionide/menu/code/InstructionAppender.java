@@ -106,7 +106,7 @@ public abstract class InstructionAppender extends Menu {
 			dispatch(new GeometryInvalidateEvent(0));
 			dispatch(new TargetUpdateEvent(target.getIdentifier()));
 			
-			go("./specify");
+			go("/code/edit/specify");
 		} else {
 			go("signature");
 		}

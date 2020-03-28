@@ -29,14 +29,14 @@ import ch.innovazion.arionide.lang.symbols.Variable;
 
 public class EditorMultiplexer {
 	protected static String findDestination(String base, ParameterValue value) {
-		if(value instanceof Information) {
-			return base + "/specify/information";
-		} else if(value instanceof Variable) {
+		if(value instanceof Variable) {
 			return base + "/specify/variable";
 		} else if(value instanceof Reference) {
 			return base + "/specify/reference";
 		} else if(value instanceof Enumeration) {
 			return base + "/specify/enumeration";
+		} else if(value instanceof Information) {
+			return base + "/specify/information"; // Information at the end of if-statement because all classes inherit from Information
 		} else {
 			throw new IllegalArgumentException();
 		}

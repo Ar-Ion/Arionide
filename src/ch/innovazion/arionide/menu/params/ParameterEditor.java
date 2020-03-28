@@ -23,6 +23,8 @@ package ch.innovazion.arionide.menu.params;
 
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.ParameterValue;
+import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.Structure;
@@ -39,10 +41,24 @@ public class ParameterEditor extends Menu {
 	@Export
 	@Inherit
 	protected Parameter parameter;
+	
+	// When we want to edit a variable as a specification parameter, we may only change its initial value
+	@Export
+	protected ParameterValue value;
 
 	
 	public ParameterEditor(MenuManager manager) {
-		super(manager, "Rename", "Edit", "Delete");
+		super(manager, "Rename", "Delete");
+	}
+	
+	protected void onEnter() {
+		super.onEnter();
+		
+		if(parameter.getValue() instanceof Variable) {
+			this.value = ((Variable) parameter.getValue()).getInitialValue();
+		} else {
+			this.value = parameter.getValue();
+		}
 	}
 
 	public void onAction(String action) {

@@ -22,11 +22,11 @@
 package ch.innovazion.arionide.menu.params.edit;
 
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.assign.EnumerationAssigner;
+import ch.innovazion.arionide.menu.params.ParameterValueEditor;
 import ch.innovazion.arionide.project.managers.specification.EnumerationManager;
 import ch.innovazion.arionide.ui.overlay.Views;
 
-public class EnumerationEditor extends EnumerationAssigner {
+public class EnumerationEditor extends ParameterValueEditor {
 
 	private EnumerationManager enumManager;
 	
@@ -34,6 +34,12 @@ public class EnumerationEditor extends EnumerationAssigner {
 		super(manager, "<Add possibility>", "<Remove possibilty>");
 	}
 
+	protected void onEnter() {
+		super.onEnter();
+		this.enumManager = project.getStructureManager().getSpecificationManager().loadEnumerationManager(value);
+		setDynamicElements(enumManager.getNames().toArray(new String[0]));
+	}
+	
 	public void onAction(String action) {
 		if(id == 0) {
 			Views.input.setText("Please enter the name of the possibility")
@@ -41,16 +47,17 @@ public class EnumerationEditor extends EnumerationAssigner {
 			   .setResponder(this::createPossibility)
 			   .stackOnto(Views.code);
 		} else if(id == 1) {
-			go("./remove");
+			go("remove");
 		} else {
 			this.value = enumManager.getEnumValue(action);
-			go("./information");
+			go("edit");
 		}
 	}
 	
 	private void createPossibility(String name) {
 		dispatch(enumManager.addPossibleEnum(name));
 		this.value = enumManager.getEnumValue(name);
-		go("./information");
+		updateParameter();
+		go("edit");
 	}
 }

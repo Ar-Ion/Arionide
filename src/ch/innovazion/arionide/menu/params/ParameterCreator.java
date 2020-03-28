@@ -23,6 +23,7 @@ package ch.innovazion.arionide.menu.params;
 
 import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.Menu;
@@ -38,9 +39,12 @@ public class ParameterCreator extends Menu {
 	@Inherit
 	protected Structure target;
 	
-	@Export
 	@Inherit
+	@Export
 	protected Parameter parameter;
+	
+	@Export
+	protected ParameterValue value;
 	
 	public ParameterCreator(MenuManager manager) {
 		super(manager, "Information", "Variable", "Reference");
@@ -50,18 +54,20 @@ public class ParameterCreator extends Menu {
 	public void onAction(String action) {
 		switch(action) {
 		case "Information":
-			project.getStructureManager().getSpecificationManager().refactorParameterDefault(parameter, new Information());
+			this.value = new Information();
 			break;
 		case "Variable":
-			parameter.setValue(new Variable());
+			this.value = new Variable();
 			break;
 		case "Reference":
-			parameter.setValue(new Reference());
+			this.value = new Reference();
 			break;
 		default:
 			throw new IllegalArgumentException();
 		}
 		
-		go(EditorMultiplexer.findDestination("/structure/edit", parameter.getValue()));
+		dispatch(project.getStructureManager().getSpecificationManager().refactorParameterDefault(parameter, value));
+		
+		go(EditorMultiplexer.findDestination("/structure/edit", value));
 	}
 }

@@ -23,7 +23,9 @@ package ch.innovazion.arionide.menu.params;
 
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.TargetUpdateEvent;
+import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
@@ -41,7 +43,10 @@ public class ParameterSelector extends Menu {
 	protected Structure target;
 	
 	@Export
-	protected Parameter parameter;
+	protected Parameter parameter; // If the selector has the mutable flag
+	
+	@Export
+	protected ParameterValue value; // If the selector has the immutable flag
 		
 	public ParameterSelector(MenuManager manager, boolean mutable) {
 		super(manager, mutable ? "<Add>" : null);
@@ -61,6 +66,7 @@ public class ParameterSelector extends Menu {
 			this.description = new MenuDescription("Add a new parameter to '" + target.getName() + "'");
 		} else {
 			this.parameter = target.getSpecification().getParameters().get(id);
+			this.value = parameter.getValue();
 			this.description = new MenuDescription(parameter.getDisplayValue().toArray(new String[0]));
 
 			dispatch(new TargetUpdateEvent(((id + 1) << 24) | target.getIdentifier()));	
@@ -71,9 +77,9 @@ public class ParameterSelector extends Menu {
 		if(mutable) {
 			if(id == 0) {
 				Views.input.setText("Please enter the name of the parameter")
-				   .setPlaceholder("Parameter name")
-				   .setResponder(this::createParameter)
-				   .stackOnto(Views.code);
+						   .setPlaceholder("Parameter name")
+						   .setResponder(this::createParameter)
+						   .stackOnto(Views.code);
 			} else {
 				go("edit");
 			}
@@ -83,8 +89,11 @@ public class ParameterSelector extends Menu {
 	}
 	
 	private void createParameter(String name) {
-		dispatch(project.getStructureManager().getSpecificationManager().refactorParameterName(parameter, name));
+		this.parameter = new Parameter(name, new Information());
+		
+		dispatch(project.getStructureManager().getSpecificationManager().addParameter(parameter));
 		dispatch(new GeometryInvalidateEvent(1));
+		
 		go("create");
 	}
 }

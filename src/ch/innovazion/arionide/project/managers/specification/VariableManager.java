@@ -89,4 +89,22 @@ public class VariableManager extends ContextualManager<Variable> {
 			return new MessageEvent("This structure does not support variables", MessageType.ERROR);
 		}
 	}
+	
+	public MessageEvent renameVariable(Structure parent, String currentName, String newName) {
+		if(parent instanceof Actor) {
+			try {
+				Information state = ((Actor) parent).getState();
+				Information resolved = state.resolve(currentName);
+				resolved.label(newName);
+			} catch (SymbolResolutionException e) {
+				return new MessageEvent("Unable to rename this variable", MessageType.ERROR);
+			}
+			
+			saveStructures();
+			
+			return success();
+		} else {
+			return new MessageEvent("This structure does not support variables", MessageType.ERROR);
+		}
+	}
 }

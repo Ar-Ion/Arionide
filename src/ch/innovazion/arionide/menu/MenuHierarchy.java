@@ -33,6 +33,8 @@ import ch.innovazion.arionide.menu.params.assign.EnumerationAssigner;
 import ch.innovazion.arionide.menu.params.assign.InformationAssigner;
 import ch.innovazion.arionide.menu.params.assign.ReferenceAssigner;
 import ch.innovazion.arionide.menu.params.assign.VariableAssigner;
+import ch.innovazion.arionide.menu.params.assign.VariableRemover;
+import ch.innovazion.arionide.menu.params.assign.VariableRenamer;
 import ch.innovazion.arionide.menu.params.edit.EnumerationEditor;
 import ch.innovazion.arionide.menu.params.edit.EnumerationRemover;
 import ch.innovazion.arionide.menu.params.edit.ReferenceEditor;
@@ -63,10 +65,11 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/structure/edit/specify/create", new ParameterCreator(manager));
 		register("/structure/edit/specify/edit", new ParameterEditor(manager));
 		register("/structure/edit/specify/information", new InformationAssigner(manager));
-		register("/structure/edit/specify/variable", new VariableAssigner(manager));
+		register("/structure/edit/specify/variable", new InformationAssigner(manager));
 		register("/structure/edit/specify/reference", new ReferenceEditor(manager));
 		register("/structure/edit/specify/enumeration", new EnumerationEditor(manager));
 		register("/structure/edit/specify/enumeration/remove", new EnumerationRemover(manager));
+		register("/structure/edit/specify/enumeration/edit", new InformationAssigner(manager));
 		register("/structure/edit/comment", new CommentEditor(manager));
 		register("/structure/edit/language", new LanguageSelector(manager));
 		register("/structure/edit/tint", new TintSelector(manager));
@@ -80,6 +83,9 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/code/edit/specify", new ParameterSelector(manager, false));
 		register("/code/edit/specify/information", new InformationAssigner(manager));
 		register("/code/edit/specify/variable", new VariableAssigner(manager));
+		register("/code/edit/specify/variable/remove", new VariableRemover(manager));
+		register("/code/edit/specify/variable/rename", new VariableRenamer(manager));
+		register("/code/edit/specify/variable/edit", new InformationAssigner(manager));
 		register("/code/edit/specify/reference", new ReferenceAssigner(manager));
 		register("/code/edit/specify/enumeration", new EnumerationAssigner(manager));
 	}

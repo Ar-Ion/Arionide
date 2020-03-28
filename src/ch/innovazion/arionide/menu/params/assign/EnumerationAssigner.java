@@ -21,16 +21,17 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.assign;
 
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.ParameterValueMenu;
+import ch.innovazion.arionide.menu.params.ParameterValueAssigner;
 import ch.innovazion.arionide.project.managers.specification.EnumerationManager;
 
-public class EnumerationAssigner extends ParameterValueMenu {
+public class EnumerationAssigner extends ParameterValueAssigner {
 
 	private EnumerationManager enumManager;
 	
-	public EnumerationAssigner(MenuManager manager, String... staticElements) {
-		super(manager, staticElements);
+	public EnumerationAssigner(MenuManager manager) {
+		super(manager);
 	}
 	
 	protected void onEnter() {
@@ -41,6 +42,7 @@ public class EnumerationAssigner extends ParameterValueMenu {
 
 	public void onAction(String action) {
 		dispatch(enumManager.assignEnumValue(action));
+		dispatch(new GeometryInvalidateEvent(0));
 		go("..");
 	}
 }

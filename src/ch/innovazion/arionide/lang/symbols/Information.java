@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.stream.Stream;
 
 public class Information implements ParameterValue {
@@ -39,6 +40,7 @@ public class Information implements ParameterValue {
 	
 	private int size = 0;
 	private String name;
+	private String path;
 	private Information parent;
 	
 	public Information() {
@@ -120,14 +122,41 @@ public class Information implements ParameterValue {
 		}
 	}
 	
+	private void notifyPathUpdate() {
+		this.path = computePath();
+		
+		for(Information child : linear_map) {
+			child.notifyPathUpdate();
+		}
+	}
+	
 	public void label(String name) {
 		String oldName = this.name;
 		this.name = (name != null && !name.isEmpty()) ? name : "Lambda information";
+		this.path = computePath();
 		notifyLabelUpdate(oldName);
+		notifyPathUpdate();
+	}
+	
+	private String computePath() {
+		Stack<String> stack = new Stack<>();
+		
+		Information current = this;
+		
+		do {
+			stack.add(current.name);
+			current = current.parent;
+		} while(current != null);
+		
+		return stack.stream().reduce((a, b) -> a + "->" + b).orElse("<mysterious information path>");
 	}
 	
 	public String getLabel() {
 		return name;
+	}
+	
+	public String getPath() {
+		return path;
 	}
 	
 	public int getSize() {
