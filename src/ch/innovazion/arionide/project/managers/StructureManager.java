@@ -217,7 +217,7 @@ public class StructureManager extends Manager {
 	 */
 	private Structure installLanguage(Language lang) {
 		if(lang != null) {
-			lang.getInstructions().forEach(this::installInstruction);
+			lang.getStandardInstructions().forEach(this::installInstruction);
 			return installInstruction(lang.getEntryPoint());
 		} else {
 			throw new IllegalArgumentException("Unable to find requested language");

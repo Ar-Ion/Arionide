@@ -34,14 +34,19 @@ import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.ClickEvent;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
+import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.events.WheelEvent;
+import ch.innovazion.arionide.lang.LanguageManager;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.core.CoreController;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
+import ch.innovazion.arionide.ui.overlay.Container;
 import ch.innovazion.arionide.ui.overlay.View;
 import ch.innovazion.arionide.ui.overlay.Views;
 import ch.innovazion.arionide.ui.overlay.components.Button;
@@ -52,9 +57,12 @@ public class RunView extends View implements EventHandler {
 
 	private final Tab sourceSelector;
 	private final Label[] console = new Label[15];
+	private final Container debuggerContainer;
 	private final List<Entry<String, Integer>> consoleData = new ArrayList<>();
 	
-	private int sourceID;
+	private Container debugger;
+	
+	private Structure source;
 	private double wheelPosition;
 	
 	public RunView(AppManager appManager, LayoutManager layoutManager) {
@@ -68,8 +76,18 @@ public class RunView extends View implements EventHandler {
 		this.add(new Button(this, "Run").setSignal("run"), 0.85f, 0.05f, 0.95f, 0.1f);
 		
 		for(int i = 0; i < this.console.length; i++) {
-			this.add(this.console[i] = new Button(this, new String()).setSignal("console", i).setBordered(false), 0.0f, 0.17f + i * 0.05f, 1.0f, 0.22f + i * 0.05f);
+			this.add(this.console[i] = new Button(this, new String()).setSignal("console", i).setBordered(false), 0.0f, 0.17f + i * 0.05f, 0.5f, 0.22f + i * 0.05f);
 		}
+		
+		this.debuggerContainer = new Container(this, layoutManager) {
+			public void drawSurface(AppDrawingContext context) {
+				if(debugger != null) {
+					debugger.drawSurface(context);
+				}
+			}
+		};
+		
+		this.add(this.debuggerContainer, 0.5f, 0.15f, 1.0f, 0.95f);
 
 		this.getAppManager().getEventDispatcher().registerHandler(this, 0.6f);
 	}
@@ -100,9 +118,16 @@ public class RunView extends View implements EventHandler {
 			if(click.isTargetting(this, "back")) {
 				this.navigateTo(Views.code);
 			} else if(click.isTargetting(this, "setSource")) {
-				this.sourceID = (int) click.getData()[0];
-			} else if(click.isTargetting(this, "run")) {				
-				// TODO
+				int sourceID = (int) click.getData()[0];
+				
+				this.source = getAppManager().getWorkspace().getCurrentProject().getStorage().getStructures().get(sourceID);
+				this.debugger = LanguageManager.get(source.getLanguage()).getEnvironment().create(getAppManager(), debuggerContainer.getBounds());
+			} else if(click.isTargetting(this, "run")) {
+				if(source != null) {
+					LanguageManager.get(source.getLanguage()).getDebugger().run(source.getIdentifier());
+				} else {
+					getAppManager().getEventDispatcher().fire(new MessageEvent("Please first select a source structure", MessageType.ERROR));
+				}
 			} else if(click.isTargetting(this, "console")) {
 				int row = (int) click.getData()[0];
 				

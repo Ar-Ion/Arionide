@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ch.innovazion.arionide.lang.programs.Debugger;
+
 public abstract class Language implements Serializable {
 
 	private static final long serialVersionUID = 3353249857547492745L;
@@ -46,7 +48,6 @@ public abstract class Language implements Serializable {
 	}
 	
 	protected void registerOperator(Instruction instruction) {
-		instructions.add(instruction);
 		operators.add(instruction);
 	}
 	
@@ -60,7 +61,7 @@ public abstract class Language implements Serializable {
 		}
 	}
 	
-	public List<Instruction> getInstructions() {
+	public List<Instruction> getStandardInstructions() {
 		return Collections.unmodifiableList(instructions);
 	}
 	
@@ -80,4 +81,7 @@ public abstract class Language implements Serializable {
 	
 	public abstract boolean areStructureSpecificationsSupported();
 	public abstract Instruction getEntryPoint();
+	
+	public abstract Environment getEnvironment();
+	public abstract Debugger getDebugger();
 }

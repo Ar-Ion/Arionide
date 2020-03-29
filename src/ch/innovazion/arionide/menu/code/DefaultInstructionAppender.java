@@ -39,7 +39,7 @@ public class DefaultInstructionAppender extends InstructionAppender {
 		Language lang = LanguageManager.get(target.getLanguage());
 
 		if(lang != null) {
-			return lang.getInstructions();
+			return lang.getStandardInstructions();
 		} else {
 			return Arrays.asList();
 		}

@@ -24,13 +24,12 @@ package ch.innovazion.arionide.project.mutables;
 import java.util.Collections;
 import java.util.List;
 
-import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public abstract class MutableStructure implements Structure, Callable {
+public abstract class MutableStructure implements Structure {
 	
 	private static final long serialVersionUID = 1259382903286126347L;
 	private static final StructureModel defaultModel = StructureModelFactory.draft("?").beginSignature("?").endSignature().build();

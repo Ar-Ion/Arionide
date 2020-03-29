@@ -21,6 +21,10 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang;
 
-public class Peripheral {
+import ch.innovazion.arionide.ui.overlay.Container;
 
+public interface Peripheral {
+	public void sample();
+	public void createDisplay(Container display);
+	public String getUID();
 }

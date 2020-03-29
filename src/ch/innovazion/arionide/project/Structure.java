@@ -24,9 +24,10 @@ package ch.innovazion.arionide.project;
 import java.io.Serializable;
 import java.util.List;
 
+import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.lang.symbols.Specification;
 
-public interface Structure extends Serializable {	
+public interface Structure extends Callable, Serializable {	
 	public int getIdentifier();
 	public String getName();
 	public List<String> getComment();

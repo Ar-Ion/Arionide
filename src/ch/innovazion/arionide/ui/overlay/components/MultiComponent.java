@@ -48,7 +48,7 @@ public abstract class MultiComponent extends Component {
 	}
 	
 	private Label generate(String str) {
-		Label label = new Label(this.getParent(), str.contains("$$$") ? str.substring(0, str.indexOf("$$$")) : str);
+		Label label = new Label(this.getParent(), str);
 		label.load();
 		return label;
 	}

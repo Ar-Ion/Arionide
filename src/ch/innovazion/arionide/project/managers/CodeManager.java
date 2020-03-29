@@ -72,7 +72,7 @@ public class CodeManager extends Manager {
 			return new MessageEvent("Specified language does not seem to be installed in the structure... Try reinstalling the target language", MessageType.ERROR);
 		}
 				
-		int instructionIndex = lang.getInstructions().indexOf(instr);
+		int instructionIndex = lang.getStandardInstructions().indexOf(instr);
 		
 		if(instructionIndex < 0) {
 			return new MessageEvent("Invalid instruction for the target language", MessageType.ERROR);
@@ -82,7 +82,7 @@ public class CodeManager extends Manager {
 		int resolvedIndex = entryID + 1; // One for the entry point
 		
 		for(int i = 0; i < instructionIndex; i++) {
-			resolvedIndex += lang.getInstructions().get(i).getStructureModel().getPossibleSignatures().size(); 
+			resolvedIndex += lang.getStandardInstructions().get(i).getStructureModel().getPossibleSignatures().size(); 
 			// Each signature takes one structure slot
 		}
 		
