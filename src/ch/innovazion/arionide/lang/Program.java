@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ch.innovazion.arionide.lang.symbols.Callable;
+import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.InheritanceElement;
 import ch.innovazion.arionide.project.Storage;
+import ch.innovazion.arionide.project.mutables.MutableActor;
 
 public abstract class Program<T> {
 	
@@ -22,6 +24,36 @@ public abstract class Program<T> {
 	
 	protected Callable getCallable(int id) {
 		return storage.getStructures().get(id);
+	}
+	
+	protected Information getState(int id) {
+		Callable callable = getCallable(id);
+		
+		if(callable != null && callable instanceof MutableActor) {
+			return ((MutableActor) callable).getWrapper().getState();
+		} else {
+			return new Information();
+		}
+	}
+	
+	protected Information getProperties(int id) {
+		Callable callable = getCallable(id);
+		
+		if(callable != null && callable instanceof MutableActor) {
+			return ((MutableActor) callable).getWrapper().getProperties();
+		} else {
+			return new Information();
+		}
+	}
+	
+	protected Information getConstants(int id) {
+		Callable callable = getCallable(id);
+		
+		if(callable != null && callable instanceof MutableActor) {
+			return ((MutableActor) callable).getWrapper().getConstants();
+		} else {
+			return new Information();
+		}
 	}
 	
 	protected List<Callable> getInstructions(int id) {

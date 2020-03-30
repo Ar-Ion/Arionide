@@ -21,6 +21,110 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang;
 
-public class Skeleton {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import ch.innovazion.arionide.lang.symbols.Callable;
+import ch.innovazion.arionide.lang.symbols.Information;
+
+public class Skeleton {
+	
+	private final List<Information> data = new ArrayList<>();
+	private final List<Information> rodata = new ArrayList<>();
+	private final List<Information> bss = new ArrayList<>();
+	private final List<Callable> text = new ArrayList<>();
+
+	private final Map<Information, Long> dataMap = new HashMap<>();
+	private final Map<Information, Long> rodataMap = new HashMap<>();
+	private final Map<Information, Long> bssMap = new HashMap<>();
+	private final Map<Callable, Long> textMap = new HashMap<>();
+
+	private long textLength = 0;
+
+	public void registerData(Information info) {
+		data.add(info);
+		dataMap.put(info, getDataLength());
+	}
+	
+	public void registerRodata(Information info) {
+		rodata.add(info);
+		rodataMap.put(info, getRodataLength());
+	}
+	
+	public void registerBSS(Information info) {
+		bss.add(info);
+		bssMap.put(info, getBSSLength());
+	}
+	
+	public void registerText(Callable target, int length) {
+		text.add(target);
+		textMap.put(target, textLength);
+		
+		textLength += length;
+	}
+	
+	public boolean hasData(Information info) {
+		return dataMap.containsKey(info);
+	}
+	
+	public boolean hasRodata(Information info) {
+		return rodataMap.containsKey(info);
+	}
+	
+	public boolean hasBSSAddress(Information info) {
+		return bssMap.containsKey(info);
+	}
+	
+	public boolean hasTextAddress(Callable target) {
+		return textMap.containsKey(target);
+	}
+	
+	public long getDataAddress(Information info) {
+		return dataMap.get(info);
+	}
+	
+	public long getRodataAddress(Information info) {
+		return rodataMap.get(info);
+	}
+	
+	public long getBSSAddress(Information info) {
+		return bssMap.get(info);
+	}
+	
+	public long getTextAddress(Callable target) {
+		return textMap.get(target);
+	}
+	
+	public long getDataLength() {
+		if(data.size() > 0) {
+			Information last = data.get(data.size() - 1);
+			return dataMap.get(last) + last.getSize();
+		} else {
+			return 0;
+		}
+	}
+	
+	public long getRodataLength() {
+		if(rodata.size() > 0) {
+			Information last = rodata.get(rodata.size() - 1);
+			return rodataMap.get(last) + last.getSize();
+		} else {
+			return 0;
+		}
+	}
+	
+	public long getBSSLength() {
+		if(bss.size() > 0) {
+			Information last = bss.get(bss.size() - 1);
+			return bssMap.get(last) + last.getSize();
+		} else {
+			return 0;
+		}
+	}
+	
+	public long getTextLength() {
+		return textLength;
+	}
 }

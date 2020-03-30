@@ -24,7 +24,9 @@ package ch.innovazion.arionide.lang;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ch.innovazion.arionide.lang.programs.Debugger;
 
@@ -37,7 +39,8 @@ public abstract class Language implements Serializable {
 	
 	private transient final List<Instruction> instructions = new ArrayList<>();
 	private transient final List<Instruction> operators = new ArrayList<>();
-
+	private transient final Map<String, Instruction> instructionSet = new HashMap<>();
+	
 	public Language() {
 		this.major = getVersionMajor();
 		this.minor = getVersionMinor();
@@ -45,10 +48,12 @@ public abstract class Language implements Serializable {
 	
 	protected void register(Instruction instruction) {
 		instructions.add(instruction);
+		instructionSet.put(instruction.toString(), instruction);
 	}
 	
 	protected void registerOperator(Instruction instruction) {
 		operators.add(instruction);
+		instructionSet.put(instruction.toString(), instruction);
 	}
 	
 	protected void checkCompatibility() throws CompatibilityException {
@@ -67,6 +72,10 @@ public abstract class Language implements Serializable {
 	
 	public List<Instruction> getOperators() {
 		return Collections.unmodifiableList(operators);
+	}
+	
+	public Map<String, Instruction> getInstructionSet() {
+		return Collections.unmodifiableMap(instructionSet);
 	}
 	
 	protected String getVersion() {

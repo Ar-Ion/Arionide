@@ -2,6 +2,7 @@ package ch.innovazion.arionide.lang;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
@@ -12,6 +13,8 @@ import ch.innovazion.arionide.ui.topology.Point;
 
 public class Environment {
 
+	private final AtomicInteger programCounter = new AtomicInteger();
+	
 	private final List<Peripheral> peripherals = new ArrayList<>();
 	
 	protected void registerPeripheral(Peripheral peripheral) {
@@ -50,5 +53,9 @@ public class Environment {
 		layoutManager.apply();
 		
 		return container;
+	}
+	
+	public AtomicInteger getProgramCounter() {
+		return programCounter;
 	}
 }
