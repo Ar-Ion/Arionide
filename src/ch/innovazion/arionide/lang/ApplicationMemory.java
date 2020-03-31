@@ -19,7 +19,35 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-var searchData=
-[
-  ['keycode_4346',['keycode',['../classch_1_1innovazion_1_1arionide_1_1events_1_1_write_event.html#a46779aed493ea4b4ac10a483b7a827cc',1,'ch::innovazion::arionide::events::WriteEvent']]]
-];
+package ch.innovazion.arionide.lang;
+
+import java.util.Map;
+
+import ch.innovazion.arionide.lang.symbols.Callable;
+import ch.innovazion.arionide.lang.symbols.Information;
+
+public class ApplicationMemory {
+	private final Map<Long, Callable> text;
+	private final Map<Long, Information> data;
+
+	public ApplicationMemory(Map<Long, Callable> text, Map<Long, Information> data) {
+		this.text = text;
+		this.data = data;
+	}
+	
+	public Callable textAt(long address) throws EvaluationException {
+		if(text.containsKey(address)) {
+			return text.get(address);
+		} else {
+			throw new EvaluationException("Text segmentation fault at " + address);
+		}
+	}
+	
+	public Information dataAt(long address) throws EvaluationException {
+		if(data.containsKey(address)) {
+			return data.get(address);
+		} else {
+			throw new EvaluationException("Data segmentation fault at " + address);	
+		}
+	}
+}

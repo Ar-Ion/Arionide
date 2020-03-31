@@ -22,6 +22,7 @@
 package ch.innovazion.arionide.lang;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,5 +127,21 @@ public class Skeleton {
 	
 	public long getTextLength() {
 		return textLength;
+	}
+	
+	public List<Information> getData() {
+		return Collections.unmodifiableList(data);
+	}
+	
+	public List<Information> getRodata() {
+		return Collections.unmodifiableList(rodata);
+	}
+	
+	public List<Information> getBSS() {
+		return Collections.unmodifiableList(rodata);
+	}
+	
+	public List<Callable> getText() {
+		return Collections.unmodifiableList(text);
 	}
 }

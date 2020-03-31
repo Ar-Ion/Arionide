@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * This file is part of Arionide.
+ *
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2020 Innovazion. All rights reserved.
+ *
+ * Arionide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Arionide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
+ *******************************************************************************/
 var searchData=
 [
   ['label_3560',['Label',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html#a481c5b6311c2545a92c16e19390a79ab',1,'ch.innovazion.arionide.ui.overlay.components.Label.Label()'],['../classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html#aa5cf2d46700d83ab83a91e80c1ceda70',1,'ch.innovazion.arionide.lang.symbols.Information.label()'],['../classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_variable.html#a32ba17f0ff21aaa7b21e9e5cd6710afa',1,'ch.innovazion.arionide.lang.symbols.Variable.label()'],['../classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html#a908194f6ec708e6c5ac2731a80876ccd',1,'ch.innovazion.arionide.menu.params.assign.InformationAssigner.label()']]],

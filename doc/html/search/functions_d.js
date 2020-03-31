@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * This file is part of Arionide.
+ *
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2020 Innovazion. All rights reserved.
+ *
+ * Arionide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Arionide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
+ *******************************************************************************/
 var searchData=
 [
   ['objectmodifieranimation_3656',['ObjectModifierAnimation',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_object_modifier_animation.html#adc05669d92a79929c0bcc6174e6080c3',1,'ch.innovazion.arionide.ui.animations.ObjectModifierAnimation.ObjectModifierAnimation(AppManager manager, Class&lt;?&gt; clazz, Object instance)'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_object_modifier_animation.html#a1a8a0df9b1efc4c2fb5accc41a1c51f0',1,'ch.innovazion.arionide.ui.animations.ObjectModifierAnimation.ObjectModifierAnimation(AppManager manager, Class&lt;?&gt; clazz, Object instance, TransformationAlgorithm smoothingAlgorithm, Set&lt; Object &gt; ignore)']]],

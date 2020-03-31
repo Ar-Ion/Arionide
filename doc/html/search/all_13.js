@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * This file is part of Arionide.
+ *
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2020 Innovazion. All rights reserved.
+ *
+ * Arionide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Arionide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
+ *******************************************************************************/
 var searchData=
 [
   ['tab_1933',['Tab',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_tab.html',1,'ch.innovazion.arionide.ui.overlay.components.Tab'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_tab.html#adad5c37a801522c564118a064d143bea',1,'ch.innovazion.arionide.ui.overlay.components.Tab.Tab(View parent, String... tabs)'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_tab.html#ada319173d2678df95d396d4b63d7e6a6',1,'ch.innovazion.arionide.ui.overlay.components.Tab.Tab(View parent, List&lt; Component &gt; components)'],['../interfacech_1_1innovazion_1_1arionide_1_1coders_1_1_coder.html#a497eabb94e8562aa0abdc652d172d081',1,'ch.innovazion.arionide.coders.Coder.tab()']]],

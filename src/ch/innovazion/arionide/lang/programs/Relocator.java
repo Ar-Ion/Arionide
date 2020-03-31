@@ -21,51 +21,52 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang.programs;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ch.innovazion.arionide.lang.ApplicationMemory;
-import ch.innovazion.arionide.lang.Environment;
-import ch.innovazion.arionide.lang.EvaluationException;
-import ch.innovazion.arionide.lang.Instruction;
-import ch.innovazion.arionide.lang.Language;
 import ch.innovazion.arionide.lang.Program;
+import ch.innovazion.arionide.lang.Skeleton;
 import ch.innovazion.arionide.lang.symbols.Callable;
+import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.project.Storage;
 
-public class Debugger extends Program {
+public class Relocator extends Program {
 
-	private final Environment env;
-	
-	public Debugger(Storage storage, Environment env) {
+	public Relocator(Storage storage) {
 		super(storage);
-		this.env = env;
 	}
-
-	public void run(int rootStructure, ProgramIO io) {
-		ApplicationMemory memory = io.in(ApplicationMemory.class);
 	
-		if(memory != null) {
-			try {
-				Language lang = env.getLanguage();
-				
-				while(true) {
-					Callable callable = memory.textAt(env.getProgramCounter().get());
-					Instruction instruction = lang.getInstructionSet().get(callable.getName());
-					
-					if(instruction != null) {
-						instruction.evaluate(env, callable.getSpecification());
-					} else {
-						io.fatal("Invalid instruction: " + callable.getName());
-						break;
-					}
-				}
-			} catch (EvaluationException e) {
-				io.fatal(e.getMessage());
+	public void run(int rootStructure, ProgramIO io) {
+		Skeleton skeleton = io.in(Skeleton.class);
+		
+		if(skeleton != null) {
+			Map<Long, Callable> text = new HashMap<>();
+			Map<Long, Information> data = new HashMap<>();
+			
+			for(Callable callable : skeleton.getText()) {
+				text.put(skeleton.getTextAddress(callable), callable);
 			}
+			
+			for(Information info : skeleton.getRodata()) {
+				data.put(skeleton.getRodataAddress(info), info);
+			}
+			
+			for(Information info : skeleton.getBSS()) {
+				data.put(skeleton.getBSSAddress(info), info);
+			}
+			
+			for(Information info : skeleton.getData()) {
+				data.put(skeleton.getDataAddress(info), info);
+			}
+			
+			io.out(new ApplicationMemory(text, data));
 		} else {
-			io.fatal("Cannot run debugger without having relocated the application skeleton");
-		}
+			io.fatal("Cannot run relocator without having built the application skeleton");
+		}		
 	}
 
 	public String getName() {
-		return "Built-in debugger";
+		return "Built-in relocator";
 	}
 }

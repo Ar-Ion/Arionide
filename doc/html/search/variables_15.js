@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * This file is part of Arionide.
+ *
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2020 Innovazion. All rights reserved.
+ *
+ * Arionide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Arionide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
+ *******************************************************************************/
 var searchData=
 [
   ['value_4635',['value',['../classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_alias.html#aebf2e6a047523ebed023ed921801fcca',1,'ch.innovazion.arionide.lang.symbols.Alias.value()'],['../classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_enumeration.html#a2ab55234491cc67814f6ae2b419b13af',1,'ch.innovazion.arionide.lang.symbols.Enumeration.value()'],['../classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_numeric.html#a65bad2fd6891f2be44dac46de75b21f7',1,'ch.innovazion.arionide.lang.symbols.Numeric.value()'],['../classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter.html#a4abdf441477add45eea951d421d4263c',1,'ch.innovazion.arionide.lang.symbols.Parameter.value()'],['../classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_variable_selector.html#a07fec4d5e1e9ffd14f6a8abefff7d35a',1,'ch.innovazion.arionide.menu.params.assign.VariableSelector.value()'],['../classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1edit_1_1_enumeration_possibility_remover.html#a391dcfd322d1623c076e0819884e328c',1,'ch.innovazion.arionide.menu.params.edit.EnumerationPossibilityRemover.value()'],['../classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1edit_1_1_reference_parameter_remover.html#a936b32d96140568105581be4af9bbe21',1,'ch.innovazion.arionide.menu.params.edit.ReferenceParameterRemover.value()'],['../classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_creator.html#acfcfd0eb85d60e083b144c8d047c943c',1,'ch.innovazion.arionide.menu.params.ParameterCreator.value()'],['../classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor.html#af0aa595fa048f3806bbd2ef568b6878a',1,'ch.innovazion.arionide.menu.params.ParameterEditor.value()'],['../classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_selector.html#a0ff34c4b292e84479aa36eea74c391ec',1,'ch.innovazion.arionide.menu.params.ParameterSelector.value()'],['../classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html#a7dc86b1ff9f4c37f7bc3cfb9da3b1538',1,'ch.innovazion.arionide.menu.params.ParameterValueMenu.value()']]],

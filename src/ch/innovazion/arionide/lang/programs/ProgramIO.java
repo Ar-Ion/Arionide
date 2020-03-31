@@ -19,7 +19,41 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-var searchData=
-[
-  ['keycode_4346',['keycode',['../classch_1_1innovazion_1_1arionide_1_1events_1_1_write_event.html#a46779aed493ea4b4ac10a483b7a827cc',1,'ch::innovazion::arionide::events::WriteEvent']]]
-];
+package ch.innovazion.arionide.lang.programs;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+
+public class ProgramIO {
+	
+	private final Map<Class<?>, Object> storage = new HashMap<>();
+	private final List<BiConsumer<String, Integer>> consoles = new ArrayList<>();
+	
+	public void registerConsole(BiConsumer<String, Integer> output) {
+		consoles.add(output);
+	}
+	
+	void error(String message) {
+		consoles.forEach(c -> c.accept("Error: " + message, 0xAA0000));
+	}
+	
+	void fatal(String message) {
+		consoles.forEach(c -> c.accept("Fatal: " + message, 0xFF0000));
+	}
+	
+	void log(String message) {
+		consoles.forEach(c -> c.accept(message, 0xFFFFFF));
+	}
+	
+	@SuppressWarnings("unchecked")
+	<T> T in(Class<T> clazz) {
+		return (T) storage.get(clazz);
+	}
+	
+	void out(Object obj) {
+		storage.put(obj.getClass(), obj);
+	}
+}

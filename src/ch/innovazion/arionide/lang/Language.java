@@ -28,8 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ch.innovazion.arionide.lang.programs.Debugger;
-
 public abstract class Language implements Serializable {
 
 	private static final long serialVersionUID = 3353249857547492745L;
@@ -37,6 +35,7 @@ public abstract class Language implements Serializable {
 	private final short major;
 	private final short minor;
 	
+	private transient final List<Program> programs = new ArrayList<>();
 	private transient final List<Instruction> instructions = new ArrayList<>();
 	private transient final List<Instruction> operators = new ArrayList<>();
 	private transient final Map<String, Instruction> instructionSet = new HashMap<>();
@@ -46,7 +45,11 @@ public abstract class Language implements Serializable {
 		this.minor = getVersionMinor();
 	}
 	
-	protected void register(Instruction instruction) {
+	protected void registerProgram(Program program) {
+		programs.add(program);
+	}
+	
+	protected void registerInstruction(Instruction instruction) {
 		instructions.add(instruction);
 		instructionSet.put(instruction.toString(), instruction);
 	}
@@ -92,5 +95,5 @@ public abstract class Language implements Serializable {
 	public abstract Instruction getEntryPoint();
 	
 	public abstract Environment getEnvironment();
-	public abstract Debugger getDebugger();
+	public abstract List<Program> getPrograms();
 }

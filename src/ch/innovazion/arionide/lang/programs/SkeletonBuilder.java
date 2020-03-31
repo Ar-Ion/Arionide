@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * This file is part of Arionide.
+ *
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2020 Innovazion. All rights reserved.
+ *
+ * Arionide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Arionide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
+ *******************************************************************************/
 package ch.innovazion.arionide.lang.programs;
 
 import java.util.ArrayList;
@@ -15,13 +36,13 @@ import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.project.Storage;
 
-public class SkeletonBuilder extends Program<Skeleton> {
+public class SkeletonBuilder extends Program {
 	
 	public SkeletonBuilder(Storage storage) {
 		super(storage);
 	}
 
-	public Skeleton run(int rootStructure) {
+	public void run(int rootStructure, ProgramIO io) {
 		Skeleton skeleton = new Skeleton();
 		
 		Callable root = getCallable(rootStructure);
@@ -29,14 +50,14 @@ public class SkeletonBuilder extends Program<Skeleton> {
 		Language lang = LanguageManager.get(root.getLanguage());
 		
 		if(lang != null) {
-			build(root, skeleton, lang.getInstructionSet());
-			return skeleton;
+			build(root, skeleton, lang.getInstructionSet(), io);
+			io.out(skeleton);
 		} else {
-			return null;
+			io.fatal("No language set for target structure");
 		}
 	}
 	
-	private void build(Callable target, Skeleton skeleton, Map<String, Instruction> instructionSet) {
+	private void build(Callable target, Skeleton skeleton, Map<String, Instruction> instructionSet, ProgramIO io) {
 		skeleton.registerData(getState(target.getIdentifier()));
 		skeleton.registerRodata(getConstants(target.getIdentifier()));
 		skeleton.registerBSS(getProperties(target.getIdentifier()));
@@ -46,6 +67,8 @@ public class SkeletonBuilder extends Program<Skeleton> {
 		int length = 0;
 		
 		List<Callable> next = new ArrayList<>();
+		
+		boolean failure = false;
 		
 		for(Callable codeElement : code) {
 			Instruction instr = instructionSet.get(codeElement.getName());
@@ -63,21 +86,29 @@ public class SkeletonBuilder extends Program<Skeleton> {
 						if(nextTarget != null) {
 							next.add(nextTarget);
 						} else {
-							System.err.println("Invalid reference: " + ref.toString());
-							throw new RuntimeException("See console for details");
+							io.error("Invalid reference: " + ref.toString() + "(" + target.getIdentifier() + ":" + codeElement.getIdentifier() + ")");
+							failure = true;
 						}
 					}
 				}
 			} else {
-				System.err.println("Invalid instruction: " + codeElement.toString());
-				throw new RuntimeException("See console for details");
+				io.error("Invalid instruction: " + codeElement.toString() + "(" + target.getIdentifier() + ":" + codeElement.getIdentifier() + ")");
+				failure = true;
 			}
 		}
 		
 		skeleton.registerText(target, length);
 		
 		for(Callable callable : next) {
-			build(callable, skeleton, instructionSet);
+			build(callable, skeleton, instructionSet, io);
 		}
+		
+		if(failure) {
+			io.error("Failed to build skeleton for structure '" + target.getName() + "' (" + target.getIdentifier() + ":?)");
+		}
+	}
+	
+	public String getName() {
+		return "Skeleton builder";
 	}
 }

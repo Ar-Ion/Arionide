@@ -38,7 +38,10 @@ import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.events.WheelEvent;
+import ch.innovazion.arionide.lang.Language;
 import ch.innovazion.arionide.lang.LanguageManager;
+import ch.innovazion.arionide.lang.Program;
+import ch.innovazion.arionide.lang.programs.ProgramIO;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.Structure;
@@ -54,8 +57,11 @@ import ch.innovazion.arionide.ui.overlay.components.Label;
 import ch.innovazion.arionide.ui.overlay.components.Tab;
 
 public class RunView extends View implements EventHandler {
-
+	
+	private final ProgramIO programIO = new ProgramIO();
+	
 	private final Tab sourceSelector;
+	private final Tab programSelector;
 	private final Label[] console = new Label[15];
 	private final Container debuggerContainer;
 	private final List<Entry<String, Integer>> consoleData = new ArrayList<>();
@@ -63,6 +69,8 @@ public class RunView extends View implements EventHandler {
 	private Container debugger;
 	
 	private Structure source;
+	private Program program;
+	private List<Program> programs;
 	private double wheelPosition;
 	
 	public RunView(AppManager appManager, LayoutManager layoutManager) {
@@ -71,6 +79,7 @@ public class RunView extends View implements EventHandler {
 		layoutManager.register(this, null, 0.0f, 0.0f, 1.0f, 1.0f);
 
 		this.add(this.sourceSelector = new Tab(this, "<No source available>").setSignal("setSource"), 0.2f, 0.05f, 0.8f, 0.1f);
+		this.add(this.programSelector = new Tab(this, "<No program available>").setSignal("setProgram"), 0.2f, 0.12f, 0.8f, 0.17f);
 		
 		this.add(new Button(this, "<").setSignal("back"), 0.05f, 0.05f, 0.15f, 0.1f);
 		this.add(new Button(this, "Run").setSignal("run"), 0.85f, 0.05f, 0.95f, 0.1f);
@@ -90,6 +99,8 @@ public class RunView extends View implements EventHandler {
 		this.add(this.debuggerContainer, 0.5f, 0.15f, 1.0f, 0.95f);
 
 		this.getAppManager().getEventDispatcher().registerHandler(this, 0.6f);
+		
+		programIO.registerConsole(this::info);
 	}
 
 	public void viewWillAppear() {		
@@ -98,7 +109,7 @@ public class RunView extends View implements EventHandler {
 		List<HierarchyElement> elements = storage.getHierarchy();
 		Map<Integer, Structure> metaData = storage.getStructures();
 		String[] buffer = new String[elements.size()];
-		
+				
 		int i = 0;
 		for(HierarchyElement element : elements) {
 			buffer[i++] = metaData.get(element.getID()).getName();
@@ -119,12 +130,20 @@ public class RunView extends View implements EventHandler {
 				this.navigateTo(Views.code);
 			} else if(click.isTargetting(this, "setSource")) {
 				int sourceID = (int) click.getData()[0];
-				
+
 				this.source = getAppManager().getWorkspace().getCurrentProject().getStorage().getStructures().get(sourceID);
-				this.debugger = LanguageManager.get(source.getLanguage()).getEnvironment().create(getAppManager(), debuggerContainer.getBounds());
+				
+				Language lang = LanguageManager.get(source.getLanguage());
+				
+				this.debugger = lang.getEnvironment().create(getAppManager(), debuggerContainer.getBounds());
+				this.programs = lang.getPrograms();
+				
+				programSelector.setComponents(programs.stream().map(Program::getName).toArray(String[]::new));
+			} else if(click.isTargetting(this, "setProgram")) {
+				this.program = programs.get((int) click.getData()[0]);
 			} else if(click.isTargetting(this, "run")) {
-				if(source != null) {
-					LanguageManager.get(source.getLanguage()).getDebugger().run(source.getIdentifier());
+				if(source != null && program != null) {
+					program.run(source.getIdentifier(), programIO);
 				} else {
 					getAppManager().getEventDispatcher().fire(new MessageEvent("Please first select a source structure", MessageType.ERROR));
 				}
