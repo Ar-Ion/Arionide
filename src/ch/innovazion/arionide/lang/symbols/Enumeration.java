@@ -33,9 +33,9 @@ public class Enumeration extends AtomicValue {
 	private static final long serialVersionUID = 1209877426348042694L;
 
 	private final List<String> nameMapping = new ArrayList<>();
-	private final Map<String, Information> possibleValues = new HashMap<>();
+	private final Map<String, Node> possibleValues = new HashMap<>();
 
-	private Information value;
+	private Node value;
 	
 	
 	/*
@@ -43,7 +43,7 @@ public class Enumeration extends AtomicValue {
 	 */
 	public void addPossibleValue(String name) {
 		nameMapping.add(name);
-		possibleValues.put(name, new Information());
+		possibleValues.put(name, new Node());
 	}
 	
 	public void removePossibleValue(String name) {
@@ -52,7 +52,7 @@ public class Enumeration extends AtomicValue {
 	}
 	
 
-	public Information getValue(String name) {
+	public Node getValue(String name) {
 		return possibleValues.get(name);
 	}
 	
@@ -64,7 +64,7 @@ public class Enumeration extends AtomicValue {
 		return Collections.unmodifiableList(nameMapping);
 	}
 	
-	public Information getValue() {
+	public Node getValue() {
 		if(value != null) {
 			return value;
 		} else if(!nameMapping.isEmpty()) {

@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Text extends Information {
+public class Text extends Node {
 
 	private static final long serialVersionUID = -4429297123778703745L;
 	

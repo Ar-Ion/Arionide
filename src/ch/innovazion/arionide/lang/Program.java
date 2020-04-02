@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 import ch.innovazion.arionide.lang.programs.ProgramIO;
 import ch.innovazion.arionide.lang.symbols.Callable;
-import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.InheritanceElement;
 import ch.innovazion.arionide.project.Storage;
@@ -48,33 +48,33 @@ public abstract class Program {
 		return storage.getStructures().get(id);
 	}
 	
-	protected Information getState(int id) {
+	protected Node getState(int id) {
 		Callable callable = getCallable(id);
 		
 		if(callable != null && callable instanceof MutableActor) {
 			return ((MutableActor) callable).getWrapper().getState();
 		} else {
-			return new Information();
+			return new Node();
 		}
 	}
 	
-	protected Information getProperties(int id) {
+	protected Node getProperties(int id) {
 		Callable callable = getCallable(id);
 		
 		if(callable != null && callable instanceof MutableActor) {
 			return ((MutableActor) callable).getWrapper().getProperties();
 		} else {
-			return new Information();
+			return new Node();
 		}
 	}
 	
-	protected Information getConstants(int id) {
+	protected Node getConstants(int id) {
 		Callable callable = getCallable(id);
 		
 		if(callable != null && callable instanceof MutableActor) {
 			return ((MutableActor) callable).getWrapper().getConstants();
 		} else {
-			return new Information();
+			return new Node();
 		}
 	}
 	

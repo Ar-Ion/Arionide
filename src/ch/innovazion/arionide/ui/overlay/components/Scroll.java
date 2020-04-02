@@ -55,7 +55,7 @@ public class Scroll extends Tab {
 	
 	public Scroll(View parent, String... labels) {
 		this(parent, Tab.makeLabels(parent, labels));
-		
+
 		this.setAlpha(0);
 		this.setSeparatorsRenderable(false);
 	}
@@ -78,7 +78,7 @@ public class Scroll extends Tab {
 		return this; // Ignore
 	}
 
-	protected void compute() {
+	protected void compute() {		
 		synchronized(rectangles) {
 			rectangles.clear();
 			originalBounds.clear();
@@ -148,15 +148,16 @@ public class Scroll extends Tab {
 		activeComponent += delta;
 		
 		if(activeComponent >= numElements) {
-			activeComponent = numElements - 1;
-		} else if(getComponents().get(activeComponent) == null) {
-			commitDelta(delta > 0 ? 1 : -1);
+			commitDelta(-1);
 			return;
 		}
 		
 		if(activeComponent < 0) {
-			activeComponent = 0;
-		} else if(getComponents().get(activeComponent) == null) {
+			commitDelta(1);
+			return;
+		}
+		
+		if(getComponents().get(activeComponent) == null) { // Inertia
 			commitDelta(delta > 0 ? 1 : -1);
 			return;
 		}

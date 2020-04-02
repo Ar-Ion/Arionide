@@ -180,7 +180,7 @@ public class GLFontRenderer implements FontRenderer {
 	}
 	
 	public GLTextCacheEntry getCacheEntry(String str) {
-		if(str.length() > FontRenderer.MAX_CHARS) {
+		if(str != null && str.length() > FontRenderer.MAX_CHARS) {
 			str = str.substring(0, FontRenderer.MAX_CHARS - 1);
 		}
 		

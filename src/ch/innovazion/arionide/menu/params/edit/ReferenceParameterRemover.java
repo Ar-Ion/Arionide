@@ -21,6 +21,8 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.edit;
 
+import java.util.function.Consumer;
+
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
@@ -32,6 +34,9 @@ public class ReferenceParameterRemover extends Menu {
 
 	@Inherit
 	protected ParameterValue value;
+	
+	@Inherit
+	protected Consumer<Void> onReferenceRemoval;
 
 	private ReferenceManager refManager;
 	
@@ -49,6 +54,7 @@ public class ReferenceParameterRemover extends Menu {
 
 	public void onAction(String action) {
 		dispatch(refManager.remove(id));
+		onReferenceRemoval.accept(null);
 		go("..");
 	}
 }

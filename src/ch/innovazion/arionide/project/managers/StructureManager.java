@@ -98,11 +98,10 @@ public class StructureManager extends Manager {
 			}
 			
 			Structure current = getStructures().get(hostStack.getCurrent());
-			
-			actor.setLanguage(current.getLanguage());
-			
+						
 			if(current != null) {
 				Language lang = LanguageManager.get(current.getLanguage());
+				actor.setLanguage(current.getLanguage());
 			
 				if(lang != null) {
 					hostStack.push(structureID);
@@ -306,12 +305,17 @@ public class StructureManager extends Manager {
 		return codeManager;
 	}
 	
+	public InheritanceManager getInheritanceManager() {
+		return inheritanceManager;
+	}
+	
 	public SpecificationManager getSpecificationManager() {
 		return specManager;
 	}
 	
-	public InheritanceManager getInheritanceManager() {
-		return inheritanceManager;
+	public SpecificationManager loadSpecificationManager(Structure context) {
+		specManager.setContext(context.getSpecification());
+		return specManager;
 	}
 	
 	private List<MutableHierarchyElement> getMutableCurrentGeneration() {

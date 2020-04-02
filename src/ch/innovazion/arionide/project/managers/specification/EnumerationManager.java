@@ -25,7 +25,7 @@ import java.util.List;
 
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.lang.symbols.Enumeration;
-import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.project.Storage;
 
 public class EnumerationManager extends ContextualManager<Enumeration> {
@@ -41,7 +41,7 @@ public class EnumerationManager extends ContextualManager<Enumeration> {
 		return getContext().getValue(name).getDisplayValue();
 	}
 	
-	public Information getEnumValue(String name) {
+	public Node getEnumValue(String name) {
 		return getContext().getValue(name);
 	}
 	

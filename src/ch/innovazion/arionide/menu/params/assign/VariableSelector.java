@@ -21,7 +21,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.assign;
 
-import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuManager;
@@ -48,6 +48,6 @@ public abstract class VariableSelector extends Menu {
 		
 		this.varManager = project.getStructureManager().getSpecificationManager().loadVariableManager(value);
 		
-		setDynamicElements(varManager.getVariables(target).stream().map(Information::getLabel).toArray(String[]::new));
+		setDynamicElements(varManager.getVariables(target).stream().map(Node::getLabel).toArray(String[]::new));
 	}
 }

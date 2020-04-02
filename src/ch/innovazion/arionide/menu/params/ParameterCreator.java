@@ -30,6 +30,7 @@ import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.project.managers.specification.SpecificationManager;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
 
@@ -46,9 +47,16 @@ public class ParameterCreator extends Menu {
 	@Export
 	protected ParameterValue value;
 	
+	private SpecificationManager specManager;
+	
 	public ParameterCreator(MenuManager manager) {
 		super(manager, "Information", "Variable", "Reference");
-		this.description = new MenuDescription("Please select the type of the parameter you want to create");
+	}
+	
+	protected void onEnter() {
+		super.onEnter();
+		this.specManager = project.getStructureManager().loadSpecificationManager(target);
+		this.description = new MenuDescription("Please select the type of '" + parameter.getName() + "'");
 	}
 
 	public void onAction(String action) {
@@ -66,7 +74,7 @@ public class ParameterCreator extends Menu {
 			throw new IllegalArgumentException();
 		}
 		
-		dispatch(project.getStructureManager().getSpecificationManager().refactorParameterDefault(parameter, value));
+		dispatch(specManager.refactorParameterDefault(parameter, value));
 		
 		go(EditorMultiplexer.findDestination("/structure/edit", value));
 	}

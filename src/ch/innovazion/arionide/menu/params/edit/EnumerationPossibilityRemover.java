@@ -21,6 +21,8 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.edit;
 
+import java.util.function.Consumer;
+
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
@@ -32,7 +34,10 @@ public class EnumerationPossibilityRemover extends Menu {
 	
 	@Inherit
 	protected ParameterValue value;
-
+	
+	@Inherit
+	protected Consumer<Void> onPossibilityRemoval;
+	
 	private EnumerationManager enumManager;
 	
 	public EnumerationPossibilityRemover(MenuManager manager) {
@@ -49,6 +54,7 @@ public class EnumerationPossibilityRemover extends Menu {
 
 	public void onAction(String action) {
 		dispatch(enumManager.removePossibleEnum(action));
+		onPossibilityRemoval.accept(null);
 		go("..");
 	}
 }

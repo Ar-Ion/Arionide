@@ -36,7 +36,7 @@ public class EnumerationAssigner extends ParameterValueAssigner {
 	
 	protected void onEnter() {
 		super.onEnter();
-		this.enumManager = project.getStructureManager().getSpecificationManager().loadEnumerationManager(value);
+		this.enumManager = getSpecificationManager().loadEnumerationManager(value);
 		setDynamicElements(enumManager.getNames().toArray(new String[0]));
 	}
 
@@ -44,5 +44,9 @@ public class EnumerationAssigner extends ParameterValueAssigner {
 		dispatch(enumManager.assign(action));
 		dispatch(new GeometryInvalidateEvent(0));
 		go("..");
+	}
+	
+	protected String getDescriptionTitle() {
+		return "Assigning an enumeration";
 	}
 }

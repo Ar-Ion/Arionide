@@ -22,7 +22,6 @@
 package ch.innovazion.arionide.lang.symbols;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -76,12 +75,14 @@ public class Reference extends AtomicValue {
 	}
 	
 	public void autobind() {
-		for(Parameter param : target.getSpecification().getParameters()) {
-			ParameterValue value = lazyMapping.get(param.getName());
-			
-			if(value != null) {
-				bindings.put(param, value);
-			}
+		if(target != null) {
+			for(Parameter param : target.getSpecification().getParameters()) {
+				ParameterValue value = lazyMapping.get(param.getName());
+				
+				if(value != null) {
+					bindings.put(param, value);
+				}
+			}	
 		}
 	}
 	
@@ -124,13 +125,15 @@ public class Reference extends AtomicValue {
 			display.add("Unbound reference");
 		}
 		
-		display.add(new String());
+		if(lazyParameters.size() > 0) {
+			display.add(new String());
+		}
 		
 		for(Parameter param : lazyParameters) {
 			display.add(param.getName() + ": " + String.join(", ", param.getDisplayValue()));
 		}
 		
-		return Arrays.asList();
+		return display;
 	}
 
 	protected Stream<Bit> getRawStream() {

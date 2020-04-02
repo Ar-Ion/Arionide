@@ -145,7 +145,7 @@ public class RunView extends View implements EventHandler {
 				if(source != null && program != null) {
 					program.run(source.getIdentifier(), programIO);
 				} else {
-					getAppManager().getEventDispatcher().fire(new MessageEvent("Please first select a source structure", MessageType.ERROR));
+					getAppManager().getEventDispatcher().fire(new MessageEvent("Please first select a source structure and a program to run", MessageType.ERROR));
 				}
 			} else if(click.isTargetting(this, "console")) {
 				int row = (int) click.getData()[0];

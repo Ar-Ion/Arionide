@@ -24,13 +24,13 @@ package ch.innovazion.arionide.lang;
 import java.util.Map;
 
 import ch.innovazion.arionide.lang.symbols.Callable;
-import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Node;
 
 public class ApplicationMemory {
 	private final Map<Long, Callable> text;
-	private final Map<Long, Information> data;
+	private final Map<Long, Node> data;
 
-	public ApplicationMemory(Map<Long, Callable> text, Map<Long, Information> data) {
+	public ApplicationMemory(Map<Long, Callable> text, Map<Long, Node> data) {
 		this.text = text;
 		this.data = data;
 	}
@@ -43,7 +43,7 @@ public class ApplicationMemory {
 		}
 	}
 	
-	public Information dataAt(long address) throws EvaluationException {
+	public Node dataAt(long address) throws EvaluationException {
 		if(data.containsKey(address)) {
 			return data.get(address);
 		} else {

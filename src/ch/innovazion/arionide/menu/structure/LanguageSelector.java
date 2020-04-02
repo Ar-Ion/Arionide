@@ -89,5 +89,6 @@ public class LanguageSelector extends Menu {
 	private void setLanguage(String language) {
 		dispatch(project.getStructureManager().setLanguage(target.getIdentifier(), language));
 		dispatch(new GeometryInvalidateEvent(2));
+		go("..");
 	}
 }

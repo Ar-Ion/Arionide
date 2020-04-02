@@ -48,9 +48,13 @@ public abstract class MultiComponent extends Component {
 	}
 	
 	private Label generate(String str) {
-		Label label = new Label(this.getParent(), str);
-		label.load();
-		return label;
+		if(str != null) {
+			Label label = new Label(this.getParent(), str);
+			label.load();
+			return label;
+		} else {
+			return null;
+		}
 	}
 	
 	public Function<String, Component> getGenerator() {

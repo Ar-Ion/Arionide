@@ -32,19 +32,19 @@ public class Actor implements ParameterValue {
 
 	private final Set<Actor> parents = new HashSet<>();
 	private final Set<Reference> actions = new HashSet<>();
-	private Information props = new Information();
-	private Information state = new Information();
-	private Information constants = new Information();
+	private Node props = new Node();
+	private Node state = new Node();
+	private Node constants = new Node();
 
-	public Information getProperties() {
+	public Node getProperties() {
 		return props;
 	}
 	
-	public Information getState() {
+	public Node getState() {
 		return state;
 	}
 	
-	public Information getConstants() {
+	public Node getConstants() {
 		return constants;
 	}
 	

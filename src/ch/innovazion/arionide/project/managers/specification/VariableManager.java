@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.project.Storage;
@@ -40,27 +41,27 @@ public class VariableManager extends ContextualManager<Variable> {
 		super(storage);
 	}
 	
-	public Collection<Information> getState(Structure parent) {
+	public Collection<Node> getState(Structure parent) {
 		if(parent instanceof MutableActor) {
-			return ((MutableActor) parent).getWrapper().getState().getInformation();
+			return ((MutableActor) parent).getWrapper().getState().getNodes();
 		} else {
 			return Arrays.asList();
 		}
 	}
 	
-	public Collection<Information> getProps(Structure parent) {
+	public Collection<Node> getProps(Structure parent) {
 		if(parent instanceof MutableActor) {
-			return ((MutableActor) parent).getWrapper().getProperties().getInformation();
+			return ((MutableActor) parent).getWrapper().getProperties().getNodes();
 		} else {
 			return Arrays.asList();
 		}
 	}
 	
-	public Collection<Information> getVariables(Structure parent) {
+	public Collection<Node> getVariables(Structure parent) {
 		return Stream.concat(getState(parent).stream(), getProps(parent).stream()).collect(Collectors.toList());
 	}
 	
-	public MessageEvent assign(Variable var, Information value) {
+	public MessageEvent assign(Variable var, Node value) {
 		var.setInitialValue(value);
 		saveCode();
 		return success();
@@ -69,11 +70,12 @@ public class VariableManager extends ContextualManager<Variable> {
 	public MessageEvent create(Structure parent, Variable var, String name) {
 		if(parent instanceof MutableActor) {
 			Information initialValue = new Information();
+			Node rootNode = initialValue.getRoot();
 			
-			initialValue.label(name);
+			rootNode.label(name);
 			
 			try {
-				((MutableActor) parent).getWrapper().getState().connect(initialValue);
+				((MutableActor) parent).getWrapper().getState().connect(rootNode);
 			} catch (SymbolResolutionException e) {
 				return new MessageEvent("Unable to connect a new variable to the structure's state", MessageType.ERROR);
 			}
@@ -89,8 +91,8 @@ public class VariableManager extends ContextualManager<Variable> {
 	public MessageEvent delete(Structure parent, String name) {
 		if(parent instanceof MutableActor) {
 			try {
-				Information state = ((MutableActor) parent).getWrapper().getState();
-				Information resolved = state.resolve(name);
+				Node state = ((MutableActor) parent).getWrapper().getState();
+				Node resolved = state.resolve(name);
 				state.disconnect(resolved);
 			} catch (SymbolResolutionException e) {
 				return new MessageEvent("Unable to disconnect this variable from the structure's state", MessageType.ERROR);
@@ -107,8 +109,8 @@ public class VariableManager extends ContextualManager<Variable> {
 	public MessageEvent rename(Structure parent, String currentName, String newName) {
 		if(parent instanceof MutableActor) {
 			try {
-				Information state = ((MutableActor) parent).getWrapper().getState();
-				Information resolved = state.resolve(currentName);
+				Node state = ((MutableActor) parent).getWrapper().getState();
+				Node resolved = state.resolve(currentName);
 				resolved.label(newName);
 			} catch (SymbolResolutionException e) {
 				return new MessageEvent("Unable to rename this variable", MessageType.ERROR);

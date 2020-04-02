@@ -84,7 +84,9 @@ public class Tab extends MultiComponent implements EventHandler {
 		this.borders.prepare();
 		
 		for(Component component : this.getComponents()) {
-			component.load();
+			if(component != null) {
+				component.load();
+			}
 		}
 	}
 	
@@ -176,9 +178,9 @@ public class Tab extends MultiComponent implements EventHandler {
 		synchronized(this.rectangles) {
 			if(rectangles.size() == components.size()) {
 				for(Component component : components) {
-					if(component != null) {
-						Bounds rect = this.rectangles.get(i++);
-						
+					Bounds rect = this.rectangles.get(i++);
+
+					if(component != null) {						
 						if(rect.getWidth() > 0.0f) {
 							component.setBounds(rect);
 							

@@ -71,6 +71,10 @@ public class GLTextTessellator implements TextTessellator {
 	}
 	
 	public TessellationOutput tessellateString(String input) {
+		if(input == null) {
+			input = new String();
+		}
+		
 		char[] data = input.toCharArray();
 		
 		FloatBuffer vertices = FloatBuffer.allocate(8 * data.length);

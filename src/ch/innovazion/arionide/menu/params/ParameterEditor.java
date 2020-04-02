@@ -28,6 +28,7 @@ import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.project.managers.specification.SpecificationManager;
 import ch.innovazion.arionide.ui.overlay.Views;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
@@ -46,13 +47,16 @@ public class ParameterEditor extends Menu {
 	@Export
 	protected ParameterValue value;
 
+	private SpecificationManager specManager;
 	
 	public ParameterEditor(MenuManager manager) {
-		super(manager, "Rename", "Delete");
+		super(manager, "Rename", "Edit", "Reset", "Delete");
 	}
 	
 	protected void onEnter() {
 		super.onEnter();
+		
+		this.specManager = project.getStructureManager().loadSpecificationManager(target);
 		
 		if(parameter.getValue() instanceof Variable) {
 			this.value = ((Variable) parameter.getValue()).getInitialValue();
@@ -73,6 +77,9 @@ public class ParameterEditor extends Menu {
 		case "Edit":
 			go(EditorMultiplexer.findDestination("/structure/edit", parameter.getValue()));
 			break;
+		case "Reset":
+			go("../create");
+			break;
 		case "Delete":
 			deleteParameter();
 			break;
@@ -80,12 +87,14 @@ public class ParameterEditor extends Menu {
 	}
 	
 	private void renameParameter(String newName) {
-		dispatch(project.getStructureManager().getSpecificationManager().refactorParameterName(parameter, newName));
+		dispatch(specManager.refactorParameterName(parameter, newName));
 		dispatch(new GeometryInvalidateEvent(1));
+		go("..");
 	}
 	
 	private void deleteParameter() {
-		dispatch(project.getStructureManager().getSpecificationManager().removeParameter(parameter));
+		dispatch(specManager.removeParameter(parameter));
 		dispatch(new GeometryInvalidateEvent(1));
+		go("..");
 	}
 }

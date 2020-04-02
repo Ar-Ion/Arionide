@@ -21,14 +21,20 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.edit;
 
+import java.util.function.Consumer;
+
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.ParameterValueMenu;
+import ch.innovazion.arionide.menu.params.ParameterValueEditor;
 import ch.innovazion.arionide.project.managers.specification.ReferenceManager;
 import ch.innovazion.arionide.ui.overlay.Views;
+import ch.innovazion.automaton.Export;
 
-public class ReferenceEditor extends ParameterValueMenu {
+public class ReferenceEditor extends ParameterValueEditor {
 
 	private ReferenceManager refManager;
+	
+	@Export
+	protected final Consumer<Void> onReferenceRemoval = (nil) -> updateParameter();
 	
 	public ReferenceEditor(MenuManager manager) {
 		super(manager, "<Add parameter>", "<Remove parameter>");
@@ -47,16 +53,24 @@ public class ReferenceEditor extends ParameterValueMenu {
 					   .setResponder(this::addParameter)
 					   .stackOnto(Views.code);
 		} else if(id == 1) {
-			go("remove");
+			if(refManager.getParameterNames().size() > 0) {
+				go("remove");
+			}
 		} else {
 			this.value = refManager.getValue(id - 2);
-			go("edit");
+			go("../information");
 		}
 	}
 	
 	private void addParameter(String name) {
 		dispatch(refManager.create(name));
+		updateParameter();
+		
 		this.value = refManager.getValue(refManager.getParameterNames().size() - 1);
-		go("edit");
+		go("../information");
+	}
+	
+	protected String getDescriptionTitle() {
+		return "Editing parameter '" + parameter.getName() + "' as a reference";
 	}
 }

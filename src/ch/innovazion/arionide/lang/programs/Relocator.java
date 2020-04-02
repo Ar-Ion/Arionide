@@ -28,7 +28,7 @@ import ch.innovazion.arionide.lang.ApplicationMemory;
 import ch.innovazion.arionide.lang.Program;
 import ch.innovazion.arionide.lang.Skeleton;
 import ch.innovazion.arionide.lang.symbols.Callable;
-import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.project.Storage;
 
 public class Relocator extends Program {
@@ -42,21 +42,21 @@ public class Relocator extends Program {
 		
 		if(skeleton != null) {
 			Map<Long, Callable> text = new HashMap<>();
-			Map<Long, Information> data = new HashMap<>();
+			Map<Long, Node> data = new HashMap<>();
 			
 			for(Callable callable : skeleton.getText()) {
 				text.put(skeleton.getTextAddress(callable), callable);
 			}
 			
-			for(Information info : skeleton.getRodata()) {
+			for(Node info : skeleton.getRodata()) {
 				data.put(skeleton.getRodataAddress(info), info);
 			}
 			
-			for(Information info : skeleton.getBSS()) {
+			for(Node info : skeleton.getBSS()) {
 				data.put(skeleton.getBSSAddress(info), info);
 			}
 			
-			for(Information info : skeleton.getData()) {
+			for(Node info : skeleton.getData()) {
 				data.put(skeleton.getDataAddress(info), info);
 			}
 			

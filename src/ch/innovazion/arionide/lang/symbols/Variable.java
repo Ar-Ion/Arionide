@@ -33,7 +33,7 @@ public class Variable extends AtomicValue {
 	private static final long serialVersionUID = 8748976008265242711L;
 	
 	private String name;
-	private Information initialValue = new Numeric(); // Static variable allocation
+	private Node initialValue = new Numeric(); // Static variable allocation
 	
 	public Variable() {
 		label(null);
@@ -43,11 +43,11 @@ public class Variable extends AtomicValue {
 		this.name = (name != null && !name.isEmpty()) ? name : "Lambda variable";
 	}
 	
-	public void setInitialValue(Information initialValue) {
+	public void setInitialValue(Node initialValue) {
 		this.initialValue = initialValue;
 	}
 	
-	public Information getInitialValue() {
+	public Node getInitialValue() {
 		return initialValue;
 	}
 	

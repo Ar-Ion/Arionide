@@ -22,18 +22,15 @@
 package ch.innovazion.arionide.menu.params.assign;
 
 import java.util.List;
-import java.util.Stack;
 import java.util.function.Supplier;
 
-import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
-import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.InvalidValueException;
+import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Numeric;
 import ch.innovazion.arionide.lang.symbols.Reference;
-import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 import ch.innovazion.arionide.lang.symbols.Text;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.menu.params.ParameterValueAssigner;
@@ -43,112 +40,130 @@ import ch.innovazion.arionide.ui.overlay.Views;
 public class InformationAssigner extends ParameterValueAssigner {
 
 	private InformationManager infoManager;
-	private List<Information> children;
-
-	private Stack<Information> path = new Stack<>();
+	private List<Node> children;
+	
+	private Node currentNode;
 	
 	public InformationAssigner(MenuManager manager) {
-		super(manager, "Node", "Number", "Text", "Reference", null, "Back", "Label", "Destroy", null);
+		super(manager, "New node", null, "Number", "Text", "Reference", null, "Parent", "Label", "Destroy", null);
 	}
 	
 	protected void onEnter() {
 		super.onEnter();
-		
-		Information root = (Information) value;
-		
-		try {
-			path.push(root);
-			path.push(root.resolve("<root>"));
-		} catch (SymbolResolutionException exception) {
-			Debug.exception(exception);
-			go("..");
-		}
-		
-		update();
+		this.infoManager = getSpecificationManager().loadInformationManager(value);
+		updateCurrentNode(null);
 	}
 	
-	private void update() {
-		this.infoManager = getSpecificationManager().loadInformationManager(path.peek());
-		this.children = infoManager.getChildren();
-		this.setDynamicElements(children.stream().map(Information::getLabel).toArray(String[]::new));
+	private void updateCurrentNode(Node currentNode) {
+		if(currentNode == null) {
+			currentNode = infoManager.getRootNode();
+		}
+		
+		this.currentNode = currentNode;
+		this.children = currentNode.getNodes();
+		this.setDynamicElements(children.stream().map(Node::getLabel).toArray(String[]::new));
+		
+		updateDescription();
 	}
 
 	public void onAction(String action) {
 		switch(id) {
 		case 0:
-			reassign(Information::new);
-			break;
-		case 1:
-			reassign(Numeric::new);
+			createNode();
 			break;
 		case 2:
-			reassign(Text::new);
+			reassignAsParseable(Numeric::new);
 			break;
 		case 3:
-			reassign(Reference::new);
+			reassignAsParseable(Text::new);
 			break;
-		case 5:
-			back();
+		case 4:
+			reassignAsReference();
 			break;
 		case 6:
+			back();
+			break;
+		case 7:
 			Views.input.setText("Please enter the label of the information")
 					   .setPlaceholder("Information label")
 					   .setResponder(this::label)
 					   .stackOnto(Views.code);
 			break;
-		case 7:
+		case 8:
 			destroy();
 			break;
-		case 4:
-		case 8:
+		case 1:
+		case 5:
+		case 9:
 			break;
 		default:
-			path.push(children.get(id - 9));
-			update();
+			updateCurrentNode(children.get(id - 9));
 			go(".");
 		}
 	}
 	
+	private void createNode() {
+		dispatch(infoManager.assign(currentNode, new Node()));
+		dispatch(new GeometryInvalidateEvent(0));
+		go(".");
+	}
 	
+	private void reassignAsReference() {
+		Reference ref = new Reference();
+		dispatch(infoManager.assign(currentNode, ref));
+		dispatch(new GeometryInvalidateEvent(0));
+		
+		this.value = ref;
+		
+		go("../reference");
+	}
 	
-	private void reassign(Supplier<Information> valueAllocator) {
+	private void reassignAsParseable(Supplier<Node> valueAllocator) {
 		Views.input.setText("Please enter the value of the information")
 				   .setPlaceholder("Information value")
-				   .setResponder(rawValue -> reassign0(rawValue, valueAllocator))
+				   .setResponder(rawValue -> reassignParseable0(rawValue, valueAllocator))
 				   .stackOnto(Views.code);
 	}
 	
-	private void reassign0(String rawValue, Supplier<Information> valueAllocator) {
-		Information value = valueAllocator.get();
+	private void reassignParseable0(String rawValue, Supplier<Node> valueAllocator) {
+		Node value = valueAllocator.get();
 		
 		try {
 			value.parse(rawValue);
-			dispatch(infoManager.assign(path.get(1), value));
+			dispatch(infoManager.assign(currentNode, value));
 			dispatch(new GeometryInvalidateEvent(0));
-			update();
-			go(".");
+			updateCurrentNode(value);
 		} catch (InvalidValueException e) {
 			dispatch(new MessageEvent(e.getMessage(), MessageType.ERROR));
 		}
+		
+		go(".");
 	}
 	
 	private void back() {
-		if(path.size() > 2) {
-			path.pop();
-			update();
-			go(".");
-		} else {
-			go("..");
+		if(currentNode != null) {
+			updateCurrentNode(currentNode.getParent());
 		}
 	}
 	
 	private void label(String name) {
-		dispatch(infoManager.setLabel(name));
+		dispatch(infoManager.setLabel(currentNode, name));
 		dispatch(new GeometryInvalidateEvent(0));
+		go(".");
 	}
 	
 	private void destroy() {
-		dispatch(infoManager.destroy(path.get(1)));
+		dispatch(infoManager.destroy(currentNode));
 		dispatch(new GeometryInvalidateEvent(0));
+		back();
+		go(".");
+	}
+	
+	protected String getDescriptionTitle() {
+		if(currentNode != null) {
+			return "Modifying structure of node '" + currentNode.getPath() + "'";
+		} else {
+			return "Modifying node structure";
+		}
 	}
 }

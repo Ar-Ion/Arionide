@@ -24,7 +24,6 @@ package ch.innovazion.arionide.menu.params;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
@@ -57,23 +56,25 @@ public abstract class ParameterValueMenu extends Menu {
 	protected void onEnter() {
 		super.onEnter();
 
-		this.specManager = project.getStructureManager().getSpecificationManager();
+		this.specManager = project.getStructureManager().loadSpecificationManager(target);
 		
+		updateDescription();
+	}
+	
+	protected void updateDescription() {
 		List<String> elements = new ArrayList<>();
-		
-		if(value instanceof Information) {
-			Information info = (Information) value;
-		
-			elements.add("Parameter path: " + info.getPath());
-			elements.add("");
-		}
+			
+		elements.add(getDescriptionTitle());
+		elements.add("");
 		
 		elements.addAll(value.getDisplayValue());
 		
 		this.description = new MenuDescription(elements.toArray(new String[0]));
 	}
-	
+		
 	protected SpecificationManager getSpecificationManager() {
 		return specManager;
 	}
+	
+	protected abstract String getDescriptionTitle();
 }

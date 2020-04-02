@@ -40,7 +40,7 @@ public class ReferenceAssigner extends ParameterValueAssigner {
 	
 	protected void onEnter() {
 		super.onEnter();
-		this.refManager = project.getStructureManager().getSpecificationManager().loadReferenceManager(value);
+		this.refManager = getSpecificationManager().loadReferenceManager(value);
 		this.callables = refManager.getAccessibleCallables(target);
 		setDynamicElements(callables.stream().map(Callable::getName).toArray(String[]::new));
 	}
@@ -53,5 +53,9 @@ public class ReferenceAssigner extends ParameterValueAssigner {
 			dispatch(refManager.assignCallable(callables.get(id - 1)));
 			dispatch(new GeometryInvalidateEvent(0));
 		}
+	}
+	
+	protected String getDescriptionTitle() {
+		return "Assigning a reference";
 	}
 }

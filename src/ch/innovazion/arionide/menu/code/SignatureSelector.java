@@ -60,10 +60,11 @@ public class SignatureSelector extends Menu {
 	
 	protected void updateCursor(int cursor) {
 		super.updateCursor(cursor);
-				
-		List<Signature> signatures = instruction.getStructureModel().getPossibleSignatures();
-
-		this.description = new MenuDescription(signatures.get(id).getParameters().toArray(new String[0]));
+			
+		if(target != null) {
+			List<Signature> signatures = instruction.getStructureModel().getPossibleSignatures();
+			this.description = new MenuDescription(signatures.get(id).getParameters().toArray(new String[0]));	
+		}
 	}
 	
 	public void onAction(String action) {

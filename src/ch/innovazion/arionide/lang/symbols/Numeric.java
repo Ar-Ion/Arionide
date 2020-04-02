@@ -44,19 +44,35 @@ public class Numeric extends AtomicValue {
 	public void parse(String value) throws InvalidValueException {
 		this.value = value;
 		
-		char type = this.value.charAt(0);
-		String realValue = this.value.substring(1);
-		
-		switch(type) {
-			case 'b':
-				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(realValue, 2)), realValue.length());
-			case 'd':
-				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(realValue)), 32);
-			case 'h':
-				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(realValue, 16)), realValue.length() * 4);
+		String type = value.substring(0, 2);
+		int separator = value.indexOf(":");
+		int numBits = 0;
+				
+		if(separator > 0) {
+			numBits = Integer.parseInt(value.substring(separator));
+		} else {
+			separator = value.length();
 		}
 		
-		data = new Bit[0];
+		String rawValue;
+		
+		switch(type) {
+			case "0b":
+				rawValue = value.substring(2, separator);
+				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(rawValue, 2)), numBits > 0 ? numBits : rawValue.length());
+				break;
+			case "0x":
+				rawValue = value.substring(2, separator);
+				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(rawValue, 16)), numBits > 0 ? numBits : rawValue.length() * 4);
+				break;
+			case "$":
+				rawValue = value.substring(1, separator);
+				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(rawValue, 16)), numBits > 0 ? numBits : rawValue.length() * 4);
+				break;
+			default:
+				rawValue = value.substring(0, separator);
+				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(rawValue)), numBits > 0 ? numBits : 32);
+		}
 	}
 	
 	public Stream<Bit> getRawStream() {
@@ -64,7 +80,7 @@ public class Numeric extends AtomicValue {
 	}
 
 	public List<String> getDisplayValue() {
-		return Arrays.asList(value, "(" + data.length + " bit(s))");
+		return Arrays.asList(value + "(" + data.length + " bit(s))");
 	}
 	
 	public Numeric clone() {

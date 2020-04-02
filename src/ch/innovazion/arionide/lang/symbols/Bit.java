@@ -21,9 +21,12 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang.symbols;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 
-public class Bit {
+public class Bit implements Serializable {
+
+	private static final long serialVersionUID = 3232953289986528460L;
 	
 	private final int bit;
 	

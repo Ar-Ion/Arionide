@@ -43,10 +43,4 @@ public abstract class ParameterValueEditor extends ParameterValueMenu {
 			dispatch(new GeometryInvalidateEvent(1));
 		}
 	}
-	
-	
-	protected void onExit() {
-		super.onExit();
-		updateParameter();
-	}
 }

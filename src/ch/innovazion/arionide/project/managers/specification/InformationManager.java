@@ -21,13 +21,11 @@
  *******************************************************************************/
 package ch.innovazion.arionide.project.managers.specification;
 
-import java.util.List;
-
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.symbols.AtomicValue;
 import ch.innovazion.arionide.lang.symbols.Information;
-import ch.innovazion.arionide.lang.symbols.InvalidValueException;
+import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 import ch.innovazion.arionide.project.Storage;
 
@@ -36,44 +34,49 @@ public class InformationManager extends ContextualManager<Information> {
 		super(storage);
 	}
 	
-	public List<Information> getChildren() {
-		return getContext().getInformation();
+	public Node getRootNode() {
+		return getContext().getRoot();
 	}
 	
-	public MessageEvent setLabel(String name) {
-		getContext().label(name);
+	public MessageEvent setLabel(Node target, String name) {
+		target.label(name);
 		return success();
 	}
 	
-	public MessageEvent setValue(String rawValue) {
+	public MessageEvent destroy(Node target) {
 		try {
-			getContext().parse(rawValue);
-			return success();
-		} catch (InvalidValueException exception) {
-			return new MessageEvent(exception.getMessage(), MessageType.ERROR);
-		}
-	}
-	
-	public MessageEvent destroy(Information parent) {
-		try {
-			parent.disconnect(getContext());
-			return success();
+			Node parent = target.getParent();
+			
+			if(parent != null) {
+				parent.disconnect(target);
+				return success();
+			} else {
+				getContext().resetRootNode(new Node());
+				return warn();
+			}
 		} catch (SymbolResolutionException exception) {
 			return new MessageEvent(exception.getMessage(), MessageType.ERROR);
 		}
 	}
 	
-	public MessageEvent assign(Information parent, Information value) {
+	public MessageEvent assign(Node prevValue, Node newValue) {
 		try {
-			if(parent instanceof AtomicValue) {
-				return new MessageEvent("Cannot assign a node value to an atomic information", MessageType.ERROR);
+			Node parent = prevValue.getParent();
+
+			if(parent != null) {
+				if(parent instanceof AtomicValue) {
+					return new MessageEvent("Cannot assign a node value to an atomic information", MessageType.ERROR);
+				}
+				
+				int index = parent.indexOf(prevValue);
+				parent.disconnect(prevValue);
+				parent.connect(newValue, index);
+				
+				return success();
+			} else {
+				getContext().resetRootNode(newValue);
+				return warn();
 			}
-			
-			int index = parent.indexOf(getContext());
-			parent.disconnect(getContext());
-			parent.connect(value, index);
-			
-			return success();
 		} catch (SymbolResolutionException exception) {
 			return new MessageEvent(exception.getMessage(), MessageType.ERROR);
 		}

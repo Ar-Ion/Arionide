@@ -28,33 +28,33 @@ import java.util.List;
 import java.util.Map;
 
 import ch.innovazion.arionide.lang.symbols.Callable;
-import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Node;
 
 public class Skeleton {
 	
-	private final List<Information> data = new ArrayList<>();
-	private final List<Information> rodata = new ArrayList<>();
-	private final List<Information> bss = new ArrayList<>();
+	private final List<Node> data = new ArrayList<>();
+	private final List<Node> rodata = new ArrayList<>();
+	private final List<Node> bss = new ArrayList<>();
 	private final List<Callable> text = new ArrayList<>();
 
-	private final Map<Information, Long> dataMap = new HashMap<>();
-	private final Map<Information, Long> rodataMap = new HashMap<>();
-	private final Map<Information, Long> bssMap = new HashMap<>();
+	private final Map<Node, Long> dataMap = new HashMap<>();
+	private final Map<Node, Long> rodataMap = new HashMap<>();
+	private final Map<Node, Long> bssMap = new HashMap<>();
 	private final Map<Callable, Long> textMap = new HashMap<>();
 
 	private long textLength = 0;
 
-	public void registerData(Information info) {
+	public void registerData(Node info) {
 		data.add(info);
 		dataMap.put(info, getDataLength());
 	}
 	
-	public void registerRodata(Information info) {
+	public void registerRodata(Node info) {
 		rodata.add(info);
 		rodataMap.put(info, getRodataLength());
 	}
 	
-	public void registerBSS(Information info) {
+	public void registerBSS(Node info) {
 		bss.add(info);
 		bssMap.put(info, getBSSLength());
 	}
@@ -66,15 +66,15 @@ public class Skeleton {
 		textLength += length;
 	}
 	
-	public boolean hasData(Information info) {
+	public boolean hasData(Node info) {
 		return dataMap.containsKey(info);
 	}
 	
-	public boolean hasRodata(Information info) {
+	public boolean hasRodata(Node info) {
 		return rodataMap.containsKey(info);
 	}
 	
-	public boolean hasBSSAddress(Information info) {
+	public boolean hasBSSAddress(Node info) {
 		return bssMap.containsKey(info);
 	}
 	
@@ -82,15 +82,15 @@ public class Skeleton {
 		return textMap.containsKey(target);
 	}
 	
-	public long getDataAddress(Information info) {
+	public long getDataAddress(Node info) {
 		return dataMap.get(info);
 	}
 	
-	public long getRodataAddress(Information info) {
+	public long getRodataAddress(Node info) {
 		return rodataMap.get(info);
 	}
 	
-	public long getBSSAddress(Information info) {
+	public long getBSSAddress(Node info) {
 		return bssMap.get(info);
 	}
 	
@@ -100,7 +100,7 @@ public class Skeleton {
 	
 	public long getDataLength() {
 		if(data.size() > 0) {
-			Information last = data.get(data.size() - 1);
+			Node last = data.get(data.size() - 1);
 			return dataMap.get(last) + last.getSize();
 		} else {
 			return 0;
@@ -109,7 +109,7 @@ public class Skeleton {
 	
 	public long getRodataLength() {
 		if(rodata.size() > 0) {
-			Information last = rodata.get(rodata.size() - 1);
+			Node last = rodata.get(rodata.size() - 1);
 			return rodataMap.get(last) + last.getSize();
 		} else {
 			return 0;
@@ -118,7 +118,7 @@ public class Skeleton {
 	
 	public long getBSSLength() {
 		if(bss.size() > 0) {
-			Information last = bss.get(bss.size() - 1);
+			Node last = bss.get(bss.size() - 1);
 			return bssMap.get(last) + last.getSize();
 		} else {
 			return 0;
@@ -129,15 +129,15 @@ public class Skeleton {
 		return textLength;
 	}
 	
-	public List<Information> getData() {
+	public List<Node> getData() {
 		return Collections.unmodifiableList(data);
 	}
 	
-	public List<Information> getRodata() {
+	public List<Node> getRodata() {
 		return Collections.unmodifiableList(rodata);
 	}
 	
-	public List<Information> getBSS() {
+	public List<Node> getBSS() {
 		return Collections.unmodifiableList(rodata);
 	}
 	

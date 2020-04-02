@@ -163,6 +163,7 @@ public class CodeView extends View implements EventHandler {
 			
 			synchronized(elements) {
 				List<Component> components = elements.stream().map(menu.getGenerator()).collect(Collectors.toList());
+				
 				if(currentMenu.isCyclic() && elements.size() > 1) {
 					menu.setCyclicComponents(elements.toArray(new String[0]));		
 				} else {

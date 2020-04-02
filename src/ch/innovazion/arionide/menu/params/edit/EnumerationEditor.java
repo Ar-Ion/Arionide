@@ -21,14 +21,20 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.edit;
 
+import java.util.function.Consumer;
+
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.menu.params.ParameterValueEditor;
 import ch.innovazion.arionide.project.managers.specification.EnumerationManager;
 import ch.innovazion.arionide.ui.overlay.Views;
+import ch.innovazion.automaton.Export;
 
 public class EnumerationEditor extends ParameterValueEditor {
 
 	private EnumerationManager enumManager;
+	
+	@Export
+	protected final Consumer<Void> onReferenceRemoval = (nil) -> updateParameter();
 	
 	public EnumerationEditor(MenuManager manager) {
 		super(manager, "<Add element>", "<Remove element>");
@@ -36,7 +42,7 @@ public class EnumerationEditor extends ParameterValueEditor {
 
 	protected void onEnter() {
 		super.onEnter();
-		this.enumManager = project.getStructureManager().getSpecificationManager().loadEnumerationManager(value);
+		this.enumManager = getSpecificationManager().loadEnumerationManager(value);
 		setDynamicElements(enumManager.getNames().toArray(new String[0]));
 	}
 	
@@ -58,5 +64,9 @@ public class EnumerationEditor extends ParameterValueEditor {
 		dispatch(enumManager.addPossibleEnum(name));
 		this.value = enumManager.getEnumValue(name);
 		go("edit");
+	}
+	
+	protected String getDescriptionTitle() {
+		return "Editing parameter '" + parameter.getName() + "' as an enumeration";
 	}
 }

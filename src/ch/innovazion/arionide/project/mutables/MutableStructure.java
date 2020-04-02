@@ -21,6 +21,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.project.mutables;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public abstract class MutableStructure implements Structure {
 	
 	public MutableStructure(int structureID, int specID, StructureModel model, int signatureID) {
 		this.identifier = structureID;
-		this.specification = new Specification(specID, model.getSignature(signatureID));
+		this.specification = new Specification(specID, new ArrayList<>(model.getSignature(signatureID)));
 		
 		this.name = model.getUniqueName();
 		this.comment = model.getComment();

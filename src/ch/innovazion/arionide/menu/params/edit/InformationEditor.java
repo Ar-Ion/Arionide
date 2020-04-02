@@ -47,4 +47,8 @@ public class InformationEditor extends InformationAssigner {
 			dispatch(new GeometryInvalidateEvent(1));
 		}
 	}
+	
+	protected String getDescriptionTitle() {
+		return "Editing parameter '" + parameter.getName() + "' as an information. " + super.getDescriptionTitle();
+	}
 }

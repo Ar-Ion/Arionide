@@ -53,7 +53,9 @@ public class SpecificationManager extends ContextualManager<Specification> {
 	}
 	
 	public MessageEvent addParameter(Parameter element) {
-		doForeachConnectedSpecification(other -> other.getParameters().add(element));
+		doForeachConnectedSpecification(other -> {
+			other.getParameters().add(element);
+		});
 		saveStructures();
 		
 		return success();

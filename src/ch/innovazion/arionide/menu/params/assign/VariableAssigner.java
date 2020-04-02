@@ -24,7 +24,7 @@ package ch.innovazion.arionide.menu.params.assign;
 import java.util.Collection;
 
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
-import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.menu.params.ParameterValueAssigner;
@@ -35,7 +35,7 @@ public class VariableAssigner extends ParameterValueAssigner {
 
 	private VariableManager varManager;
 	
-	private Collection<Information> variables;
+	private Collection<Node> variables;
 	
 	public VariableAssigner(MenuManager manager) {
 		super(manager, "New", "Remove", "Rename", null);
@@ -44,10 +44,10 @@ public class VariableAssigner extends ParameterValueAssigner {
 	protected void onEnter() {
 		super.onEnter();
 		
-		this.varManager = project.getStructureManager().getSpecificationManager().loadVariableManager(value);
+		this.varManager = getSpecificationManager().loadVariableManager(value);
 		this.variables = varManager.getVariables(target);
 		
-		setDynamicElements(variables.stream().map(Information::getLabel).toArray(String[]::new));
+		setDynamicElements(variables.stream().map(Node::getLabel).toArray(String[]::new));
 	}
 
 	public void onAction(String action) {
@@ -64,6 +64,10 @@ public class VariableAssigner extends ParameterValueAssigner {
 			this.value = ((Variable) value).getInitialValue();
 			go("edit");
 		}
+	}
+	
+	protected String getDescriptionTitle() {
+		return "Assigning a variable";
 	}
 	
 	private void createVariable(String name) {

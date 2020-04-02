@@ -30,6 +30,7 @@ import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.project.managers.specification.SpecificationManager;
 import ch.innovazion.arionide.ui.overlay.Views;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
@@ -47,7 +48,9 @@ public class ParameterSelector extends Menu {
 	
 	@Export
 	protected ParameterValue value; // If the selector has the immutable flag
-		
+	
+	private SpecificationManager specManager;
+	
 	public ParameterSelector(MenuManager manager, boolean mutable) {
 		super(manager, mutable ? "<Add>" : null);
 		
@@ -55,21 +58,25 @@ public class ParameterSelector extends Menu {
 	}
 	
 	protected void onEnter() {		
+		this.specManager = project.getStructureManager().loadSpecificationManager(target);
 		setDynamicElements(target.getSpecification().getParameters().stream().map(Parameter::getName).toArray(String[]::new));
+		updateCursor(0);
 		super.onEnter();
 	}
 	
 	protected void updateCursor(int cursor) {
 		super.updateCursor(cursor);
 		
-		if(mutable && id == 0) {
-			this.description = new MenuDescription("Add a new parameter to '" + target.getName() + "'");
-		} else {
-			this.parameter = target.getSpecification().getParameters().get(id);
-			this.value = parameter.getValue();
-			this.description = new MenuDescription(parameter.getDisplayValue().toArray(new String[0]));
+		if(target != null) {
+			if(mutable && id == 0) {
+				this.description = new MenuDescription("Add a new parameter to '" + target.getName() + "'");
+			} else {
+				this.parameter = target.getSpecification().getParameters().get(id - 1);
+				this.value = parameter.getValue();
+				this.description = new MenuDescription(parameter.getDisplayValue().toArray(new String[0]));
 
-			dispatch(new TargetUpdateEvent(((id + 1) << 24) | target.getIdentifier()));	
+				dispatch(new TargetUpdateEvent((id << 24) | target.getIdentifier()));	
+			}
 		}
 	}
 	
@@ -91,7 +98,7 @@ public class ParameterSelector extends Menu {
 	private void createParameter(String name) {
 		this.parameter = new Parameter(name, new Information());
 		
-		dispatch(project.getStructureManager().getSpecificationManager().addParameter(parameter));
+		dispatch(specManager.addParameter(parameter));
 		dispatch(new GeometryInvalidateEvent(1));
 		
 		go("create");
