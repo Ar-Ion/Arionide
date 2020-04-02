@@ -50,7 +50,7 @@ public class ParameterEditor extends Menu {
 	private SpecificationManager specManager;
 	
 	public ParameterEditor(MenuManager manager) {
-		super(manager, "Rename", "Edit", "Reset", "Delete");
+		super(manager, "Edit", "Rename", "Reset", "Delete");
 	}
 	
 	protected void onEnter() {
@@ -67,15 +67,15 @@ public class ParameterEditor extends Menu {
 
 	public void onAction(String action) {
 		switch(action) {
+		case "Edit":
+			go(EditorMultiplexer.findDestination("/structure/edit", parameter.getValue()));
+			break;
 		case "Rename":
 			Views.input.setText("Please enter the name of the parameter")
 			   .setPlaceholder("Parameter name")
 			   .setResponder(this::renameParameter)
 			   .stackOnto(Views.code);
 			
-			break;
-		case "Edit":
-			go(EditorMultiplexer.findDestination("/structure/edit", parameter.getValue()));
 			break;
 		case "Reset":
 			go("../create");

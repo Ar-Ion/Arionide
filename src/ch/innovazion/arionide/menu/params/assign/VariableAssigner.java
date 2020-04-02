@@ -25,17 +25,24 @@ import java.util.Collection;
 
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.lang.symbols.Node;
+import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.menu.params.ParameterValueAssigner;
 import ch.innovazion.arionide.project.managers.specification.VariableManager;
 import ch.innovazion.arionide.ui.overlay.Views;
+import ch.innovazion.automaton.Export;
+import ch.innovazion.automaton.Inherit;
 
 public class VariableAssigner extends ParameterValueAssigner {
 
 	private VariableManager varManager;
 	
 	private Collection<Node> variables;
+	
+	@Export
+	@Inherit
+	protected ParameterValue value;
 	
 	public VariableAssigner(MenuManager manager) {
 		super(manager, "New", "Remove", "Rename", null);

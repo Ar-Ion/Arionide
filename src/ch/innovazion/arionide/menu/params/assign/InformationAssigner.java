@@ -115,7 +115,7 @@ public class InformationAssigner extends ParameterValueAssigner {
 		
 		this.value = ref;
 		
-		go("../reference");
+		go("reference");
 	}
 	
 	private void reassignAsParseable(Supplier<Node> valueAllocator) {

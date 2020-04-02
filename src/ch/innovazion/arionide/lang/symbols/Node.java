@@ -189,11 +189,11 @@ public class Node implements ParameterValue {
 	}
 	
 	public List<String> getDisplayValue() {
-		return Arrays.asList(toString());
+		return Arrays.asList(getLabel() + " (" + getNumElements() + " element(s))");
 	}
 	
 	public String toString() {
-		return getLabel() + " (" + getNumElements() + " element(s))";
+		return String.join("; ", getDisplayValue());
 	}
 	 
 	protected Stream<Bit> getRawStream() {

@@ -67,6 +67,13 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/structure/edit/specify/create", new ParameterCreator(manager));
 		register("/structure/edit/specify/edit", new ParameterEditor(manager));
 		register("/structure/edit/specify/information", new InformationEditor(manager));
+		register("/structure/edit/specify/information/reference", new InformationAssigner(manager));
+		register("/structure/edit/specify/information/reference/edit", new ReferenceAssigner(manager));
+		register("/structure/edit/specify/information/reference/edit/reference", new ReferenceAssigner(manager));
+		register("/structure/edit/specify/information/reference/edit/reference/edit", new InformationAssigner(manager));
+		register("/structure/edit/specify/information/reference/edit/reference/edit/reference", new ReferenceAssigner(manager));
+		register("/structure/edit/specify/information/reference/edit/reference/edit/reference/edit", new InformationAssigner(manager));
+		register("/structure/edit/specify/information/reference/edit/reference/edit/reference/edit/reference", new ErrorMenu(manager, "Too much reference nesting"));
 		register("/structure/edit/specify/variable", new InformationEditor(manager));
 		register("/structure/edit/specify/reference", new ReferenceEditor(manager));
 		register("/structure/edit/specify/reference/remove", new ReferenceParameterRemover(manager));
@@ -86,6 +93,13 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/code/edit/append/operator/signature", new SignatureSelector(manager));
 		register("/code/edit/specify", new ParameterSelector(manager, false));
 		register("/code/edit/specify/information", new InformationAssigner(manager));
+		register("/code/edit/specify/information/reference", new InformationAssigner(manager));
+		register("/code/edit/specify/information/reference/edit", new ReferenceAssigner(manager));
+		register("/code/edit/specify/information/reference/edit/reference", new ReferenceAssigner(manager));
+		register("/code/edit/specify/information/reference/edit/reference/edit", new InformationAssigner(manager));
+		register("/code/edit/specify/information/reference/edit/reference/edit/reference", new ReferenceAssigner(manager));
+		register("/code/edit/specify/information/reference/edit/reference/edit/reference/edit", new InformationAssigner(manager));
+		register("/code/edit/specify/information/reference/edit/reference/edit/reference/edit/reference", new ErrorMenu(manager, "Too much reference nesting"));
 		register("/code/edit/specify/variable", new VariableAssigner(manager));
 		register("/code/edit/specify/variable/remove", new VariableRemover(manager));
 		register("/code/edit/specify/variable/rename", new VariableRenamer(manager));

@@ -28,7 +28,7 @@ public class Information implements ParameterValue {
 		return root.getDisplayValue();
 	}
 
-	public ParameterValue clone() {
+	public Information clone() {
 		Information clone = new Information();
 		
 		clone.root = this.root.clone();

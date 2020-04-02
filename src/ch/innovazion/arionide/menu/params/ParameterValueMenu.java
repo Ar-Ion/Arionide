@@ -39,7 +39,6 @@ public abstract class ParameterValueMenu extends Menu {
 	@Inherit
 	protected Structure target;
 
-	@Export
 	@Inherit
 	protected ParameterValue value;
 	

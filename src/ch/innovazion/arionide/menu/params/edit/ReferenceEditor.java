@@ -58,7 +58,7 @@ public class ReferenceEditor extends ParameterValueEditor {
 			}
 		} else {
 			this.value = refManager.getValue(id - 2);
-			go("../information");
+			go("edit");
 		}
 	}
 	

@@ -47,6 +47,8 @@ public abstract class Browser extends Menu {
 		
 		setDynamicElements(browsables.stream().map(Structure::getName).toArray(String[]::new));
 				
+		generateDescription();
+		
 		super.onEnter();
 	}
 	

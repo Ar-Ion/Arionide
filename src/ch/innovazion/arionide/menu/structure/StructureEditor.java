@@ -23,7 +23,9 @@ package ch.innovazion.arionide.menu.structure;
 
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.TeleportEvent;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.Menu;
+import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.arionide.ui.overlay.View;
@@ -39,6 +41,24 @@ public class StructureEditor extends Menu {
 
 	public StructureEditor(MenuManager manager) {
 		super(manager, "Go", "Specify", "Comment", "Rename", "Language", "Tint", "Delete");
+	}
+	
+	protected void onEnter() {
+		super.onEnter();
+		
+		this.description = new MenuDescription();
+		
+		if(target != null) {
+			for(Parameter param : target.getSpecification().getParameters()) {
+				description.add(param.toString());
+			}
+			
+			description.spacer();
+			
+			for(String comment : target.getComment()) {
+				description.add(comment);
+			}
+		}
 	}
 
 	public void onAction(String action) {		

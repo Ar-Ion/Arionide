@@ -44,7 +44,7 @@ public class Numeric extends AtomicValue {
 	public void parse(String value) throws InvalidValueException {
 		this.value = value;
 		
-		String type = value.substring(0, 2);
+		String type = value.length() >= 2 ? value.substring(0, 2) : "decimal";
 		int separator = value.indexOf(":");
 		int numBits = 0;
 				
@@ -80,7 +80,7 @@ public class Numeric extends AtomicValue {
 	}
 
 	public List<String> getDisplayValue() {
-		return Arrays.asList(value + "(" + data.length + " bit(s))");
+		return Arrays.asList(value + " (" + data.length + " bit(s))");
 	}
 	
 	public Numeric clone() {

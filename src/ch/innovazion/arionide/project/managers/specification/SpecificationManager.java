@@ -129,4 +129,20 @@ public class SpecificationManager extends ContextualManager<Specification> {
 		enumManager.setContext((Enumeration) value);
 		return enumManager;
 	}
+	
+	public InformationManager getInformationManager() {
+		return informationManager;
+	}
+	
+	public ReferenceManager getReferenceManager() {
+		return referenceManager;
+	}
+	
+	public VariableManager getVariableManager() {
+		return variableManager;
+	}
+	
+	public EnumerationManager getEnumerationManager() {
+		return enumManager;
+	}
 }

@@ -33,7 +33,7 @@ public class Variable extends AtomicValue {
 	private static final long serialVersionUID = 8748976008265242711L;
 	
 	private String name;
-	private Node initialValue = new Numeric(); // Static variable allocation
+	private Information initialValue = new Information(); // Static variable allocation
 	
 	public Variable() {
 		label(null);
@@ -43,20 +43,20 @@ public class Variable extends AtomicValue {
 		this.name = (name != null && !name.isEmpty()) ? name : "Lambda variable";
 	}
 	
-	public void setInitialValue(Node initialValue) {
+	public void setInitialValue(Information initialValue) {
 		this.initialValue = initialValue;
 	}
 	
-	public Node getInitialValue() {
+	public Information getInitialValue() {
 		return initialValue;
 	}
 	
 	public Stream<Bit> getRawStream() {
-		return initialValue.getRawStream();
+		return initialValue.getRoot().getRawStream();
 	}
 	
 	public List<String> getDisplayValue() {
-		return Arrays.asList(name, "(" + initialValue.getSize() + " bit(s))");
+		return Arrays.asList(name, "(" + initialValue.getRoot().getSize() + " bit(s))");
 	}
 	
 	public Variable clone() {
