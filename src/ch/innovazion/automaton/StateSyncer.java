@@ -23,6 +23,7 @@ package ch.innovazion.automaton;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -33,11 +34,13 @@ import java.util.stream.Stream;
 public class StateSyncer {
 	
 	protected void synchronizeStates(State source, State target, BiConsumer<String, Object> onUpdate) {
-		List<Field> syncables = scanFieldsForAnnotation(target.getClass(), Inherit.class).collect(Collectors.toList());
+		List<Field> syncables = scanFieldsForAnnotation(target.getClass(), Inherit.class).collect(Collectors.toList());		
 		Stream<Field> accessibleComponents = scanFieldsForAnnotation(source.getClass(), Export.class).filter(f -> isAccessible(f, target));
 				
 		Map<String, Field> lookupMap = accessibleComponents.collect(Collectors.toMap(f -> f.getName(), Function.identity()));
-				
+		
+		Map<String, Object> prevValues = new LinkedHashMap<>();
+		
 		for(Field syncable : syncables) {			
 			Field component = lookupMap.get(syncable.getName());
 			
@@ -52,22 +55,24 @@ public class StateSyncer {
 					if(pre == null) {
 						if(post != null) {
 							syncable.set(target, component.get(source));
-							onUpdate.accept(syncable.getName(), pre);
+							prevValues.put(syncable.getName(), pre);
 						}
 					} else if(!pre.equals(post)) {
 						syncable.set(target, component.get(source));
-						onUpdate.accept(syncable.getName(), pre);
+						prevValues.put(syncable.getName(), pre);
 					}
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 					throw new StateSynchronizationException("Given target state '" + target + "' is not compatible with current state '" + source + "'", e);
 				}
 			}
 		}
+		
+		prevValues.forEach(onUpdate);
 	}
 	
 	private Stream<Field> scanFieldsForAnnotation(Class<?> clazz, Class<? extends Annotation> annotationClass) {
 		if(clazz != Object.class) {
-			return Stream.concat(Stream.of(clazz.getDeclaredFields()).filter(e -> e.isAnnotationPresent(annotationClass)), scanFieldsForAnnotation(clazz.getSuperclass(), annotationClass));
+			return Stream.concat(scanFieldsForAnnotation(clazz.getSuperclass(), annotationClass), Stream.of(clazz.getDeclaredFields()).filter(e -> e.isAnnotationPresent(annotationClass)));
 		} else {
 			return Stream.empty();
 		}

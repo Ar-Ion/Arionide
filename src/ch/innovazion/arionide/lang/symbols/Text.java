@@ -30,8 +30,21 @@ public class Text extends Node {
 
 	private static final long serialVersionUID = -4429297123778703745L;
 	
-	private String textValue = "";
+	private String textValue = String.valueOf('\0');
 	private Bit[] realValue = new Bit[8];
+
+	public Text() {
+		super("text");
+	}
+	
+	private Text(Text parent) {
+		super(parent);
+		
+		this.textValue = parent.textValue;
+		this.realValue = new Bit[parent.realValue.length];
+
+		System.arraycopy(parent.realValue, 0, realValue, 0, realValue.length);
+	}
 	
 	public void parse(String value) throws InvalidValueException {
 		if(value != null) {
@@ -41,6 +54,10 @@ public class Text extends Node {
 			throw new InvalidValueException("Entered text cannot be null");
 		}
 	}
+	
+	public int getSize() {
+		return realValue.length;
+	}
 
 	protected Stream<Bit> getRawStream() {
 		return Stream.of(realValue);
@@ -48,5 +65,9 @@ public class Text extends Node {
 	
 	public List<String> getDisplayValue() {
 		return Arrays.asList("'" + textValue + "'");
+	}
+	
+	public Text clone() {
+		return new Text(this);
 	}
 }

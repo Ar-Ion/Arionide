@@ -41,6 +41,18 @@ public class Reference extends AtomicValue {
 	private Callable target;
 	private Numeric targetID;
 	
+	public Reference() {
+		super("reference");
+	}
+	
+	private Reference(Reference parent) {
+		super(parent);
+				
+		this.target = parent.target;
+		parent.lazyParameters.forEach(this::addLazyParameter);
+		autobind();
+	}
+	
 	/*
 	 * The three following methods are used to CREATE a reference parameter inside a specification
 	 */
@@ -135,20 +147,16 @@ public class Reference extends AtomicValue {
 		
 		return display;
 	}
+	
+	public int getSize() {
+		return 0;
+	}
 
 	protected Stream<Bit> getRawStream() {
 		return targetID.getRawStream();
 	}
 	
 	public Reference clone() {
-		Reference clone = new Reference();
-		
-		clone.target = target;
-		
-		lazyParameters.forEach(clone::addLazyParameter);
-		
-		clone.autobind();
-		
-		return clone;
+		return new Reference(this);
 	}
 }

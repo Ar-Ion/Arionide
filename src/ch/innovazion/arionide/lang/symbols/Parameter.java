@@ -57,7 +57,7 @@ public class Parameter implements Serializable {
 	}
 	
 	public String toString() {		
-		return name + ": <" + String.join("; ", value.getDisplayValue()) + ">";
+		return name + ": <" + String.join(", ", value.getDisplayValue()) + ">";
 	}
 	
 	public boolean equals(java.lang.Object other) {

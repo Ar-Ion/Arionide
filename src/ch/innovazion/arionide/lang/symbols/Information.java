@@ -8,16 +8,14 @@ public class Information implements ParameterValue {
 	
 	private Node root;
 	
-	public Information() {
-		this.root = new Node();
+	public Information(String rootName) {
+		this.root = new Node(rootName);
 	}
 	
-	public void resetRootNode(Node newRoot) {
-		if(newRoot == null) {
-			throw new IllegalArgumentException();
-		}
+	public Node resetRootNode() {
+		Node newRoot = new Node(root.getLabel());
 		
-		this.root = newRoot;
+		return this.root = newRoot;
 	}
 	
 	public Node getRoot() {
@@ -29,7 +27,7 @@ public class Information implements ParameterValue {
 	}
 
 	public Information clone() {
-		Information clone = new Information();
+		Information clone = new Information(root.getLabel());
 		
 		clone.root = this.root.clone();
 		

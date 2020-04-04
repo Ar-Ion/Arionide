@@ -21,17 +21,20 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.assign;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
+import ch.innovazion.arionide.lang.symbols.AtomicValue;
 import ch.innovazion.arionide.lang.symbols.InvalidValueException;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Numeric;
 import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Text;
+import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.menu.params.ParameterValueAssigner;
 import ch.innovazion.arionide.project.managers.specification.InformationManager;
@@ -43,6 +46,7 @@ public class InformationAssigner extends ParameterValueAssigner {
 	private List<Node> children;
 	
 	private Node currentNode;
+	private Node selectedNode;
 	
 	public InformationAssigner(MenuManager manager) {
 		super(manager, "New node", null, "Number", "Text", "Reference", null, "Parent", "Label", "Destroy", null);
@@ -50,8 +54,16 @@ public class InformationAssigner extends ParameterValueAssigner {
 	
 	protected void onEnter() {
 		super.onEnter();
-		this.infoManager = getSpecificationManager().loadInformationManager(value);
-		updateCurrentNode(null);
+		updateCurrentNode(currentNode);
+	}
+	
+	protected void onRefresh(String identifier, Object prevValue) {
+		super.onRefresh(identifier, prevValue);
+				
+		if(identifier.equals("value")) {
+			this.infoManager = getSpecificationManager().loadInformationManager(value);
+			updateCurrentNode(infoManager.getRootNode());	
+		}
 	}
 	
 	private void updateCurrentNode(Node currentNode) {
@@ -97,15 +109,24 @@ public class InformationAssigner extends ParameterValueAssigner {
 		case 9:
 			break;
 		default:
-			updateCurrentNode(children.get(id - 9));
+			updateCurrentNode(children.get(id - 10));
 			go(".");
 		}
 	}
 	
 	private void createNode() {
-		dispatch(infoManager.assign(currentNode, new Node()));
-		dispatch(new GeometryInvalidateEvent(0));
-		go(".");
+		MessageEvent result = infoManager.createNode(currentNode);
+		
+		dispatch(result);
+		
+		if(result.getMessageType() != MessageType.ERROR) {
+			dispatch(new GeometryInvalidateEvent(0));
+			int nodeIndex = currentNode.getNumElements();
+			
+			go(".");
+			
+			updateCursor(9 + nodeIndex);
+		}
 	}
 	
 	private void reassignAsReference() {
@@ -136,13 +157,14 @@ public class InformationAssigner extends ParameterValueAssigner {
 		} catch (InvalidValueException e) {
 			dispatch(new MessageEvent(e.getMessage(), MessageType.ERROR));
 		}
-		
+				
 		go(".");
 	}
 	
 	private void back() {
 		if(currentNode != null) {
 			updateCurrentNode(currentNode.getParent());
+			go(".");
 		}
 	}
 	
@@ -153,15 +175,57 @@ public class InformationAssigner extends ParameterValueAssigner {
 	}
 	
 	private void destroy() {
-		dispatch(infoManager.destroy(currentNode));
-		dispatch(new GeometryInvalidateEvent(0));
-		back();
-		go(".");
+		if(currentNode.getParent() != null) {
+			dispatch(infoManager.destroy(currentNode));
+			dispatch(new GeometryInvalidateEvent(0));
+			back();	
+		} else {
+			updateCurrentNode(infoManager.reset());
+			go(".");
+		}
+	}
+	
+	protected void updateCursor(int cursor) {
+		super.updateCursor(cursor);
+		
+		if(cursor >= 10) {
+			this.selectedNode = children.get(cursor - 10);
+		} else {
+			this.selectedNode = null;
+		}
+		
+		if(value != null) {
+			updateDescription();
+		}
+	}
+	
+	protected void updateDescription() {
+		List<String> elements = new ArrayList<>();
+			
+		elements.add(getDescriptionTitle());
+		
+		if(currentNode != null) {
+			elements.addAll(currentNode.getDisplayValue());
+		} else {
+			elements.addAll(value.getDisplayValue());
+		}
+
+		elements.add(new String());
+		
+		if(selectedNode != null) {
+			elements.addAll(selectedNode.getDisplayValue());
+		}
+		
+		this.description = new MenuDescription(elements.toArray(new String[0]));
 	}
 	
 	protected String getDescriptionTitle() {
 		if(currentNode != null) {
-			return "Modifying structure of node '" + currentNode.getPath() + "'";
+			if(currentNode instanceof AtomicValue) {
+				return "Setting value of '" + currentNode.getPath() + "'";
+			} else {
+				return "Modifying structure of node '" + currentNode.getPath() + "'";
+			}
 		} else {
 			return "Modifying node structure";
 		}

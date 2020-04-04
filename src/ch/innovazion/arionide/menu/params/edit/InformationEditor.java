@@ -41,7 +41,7 @@ public class InformationEditor extends InformationAssigner {
 		super.onExit();
 
 		if(parameter != null) {
-			dispatch(getSpecificationManager().refactorParameterDefault(parameter, value));
+			getSpecificationManager().refactorParameterDefault(parameter, value);
 			dispatch(new GeometryInvalidateEvent(1));
 		}
 	}

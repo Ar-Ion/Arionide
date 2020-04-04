@@ -90,7 +90,7 @@ public class CoreController {
 	}
 
 	public void initMenuManager(IEventDispatcher dispatcher) {
-		menu = new MenuManager(dispatcher);
+		this.menu = new MenuManager(dispatcher);
 	}
 	
 	protected void updateStatic() {

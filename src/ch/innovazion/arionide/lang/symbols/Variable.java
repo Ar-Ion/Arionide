@@ -33,14 +33,25 @@ public class Variable extends AtomicValue {
 	private static final long serialVersionUID = 8748976008265242711L;
 	
 	private String name;
-	private Information initialValue = new Information(); // Static variable allocation
+	private Information initialValue; // Static variable allocation
 	
 	public Variable() {
-		label(null);
+		this(null, new Information("Variable"));
+	}
+	
+	private Variable(Variable parent) {
+		super(parent);
+		this.name = parent.name;
+		this.initialValue = parent.initialValue;
+	}
+	
+	public Variable(String name, Information initialValue) {
+		super(name);
+		this.initialValue = initialValue;
 	}
 	
 	public void label(String name) {
-		this.name = (name != null && !name.isEmpty()) ? name : "Lambda variable";
+		this.name = (name != null && !name.isEmpty()) ? name : "Variable";
 	}
 	
 	public void setInitialValue(Information initialValue) {
@@ -56,14 +67,14 @@ public class Variable extends AtomicValue {
 	}
 	
 	public List<String> getDisplayValue() {
-		return Arrays.asList(name, "(" + initialValue.getRoot().getSize() + " bit(s))");
+		return Arrays.asList(name, initialValue.getRoot().toString());
+	}
+	
+	public int getSize() {
+		return initialValue.getRoot().getSize();
 	}
 	
 	public Variable clone() {
-		Variable clone = new Variable();
-		
-		clone.initialValue = initialValue.clone();
-		
-		return clone;
+		return new Variable(this);
 	}
 }

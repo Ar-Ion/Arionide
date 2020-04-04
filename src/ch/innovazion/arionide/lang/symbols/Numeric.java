@@ -38,7 +38,17 @@ public class Numeric extends AtomicValue {
 	}
 	
 	public Numeric(long num) {
+		super("number");
 		this.data = Bit.fromInteger(BigInteger.valueOf(num), 64);
+	}
+	
+	private Numeric(Numeric parent) {
+		super(parent);
+		
+		this.data = new Bit[parent.data.length];
+		this.value = parent.value;
+		
+		System.arraycopy(parent.data, 0, data, 0, data.length);
 	}
 	
 	public void parse(String value) throws InvalidValueException {
@@ -75,6 +85,10 @@ public class Numeric extends AtomicValue {
 		}
 	}
 	
+	public int getSize() {
+		return data.length;
+	}
+	
 	public Stream<Bit> getRawStream() {
 		return Stream.of(data);
 	}
@@ -84,13 +98,6 @@ public class Numeric extends AtomicValue {
 	}
 	
 	public Numeric clone() {
-		Numeric clone = new Numeric();
-		
-		clone.data = new Bit[data.length];
-		clone.value = value;
-		
-		System.arraycopy(data, 0, clone.data, 0, data.length);
-		
-		return clone;
+		return new Numeric(this);
 	}
 }

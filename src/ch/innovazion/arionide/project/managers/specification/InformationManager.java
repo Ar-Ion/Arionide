@@ -38,6 +38,10 @@ public class InformationManager extends ContextualManager<Information> {
 		return getContext().getRoot();
 	}
 	
+	public Node reset() {
+		return getContext().resetRootNode();
+	}
+		
 	public MessageEvent setLabel(Node target, String name) {
 		target.label(name);
 		return success();
@@ -46,14 +50,32 @@ public class InformationManager extends ContextualManager<Information> {
 	public MessageEvent destroy(Node target) {
 		try {
 			Node parent = target.getParent();
-			
+						
 			if(parent != null) {
 				parent.disconnect(target);
 				return success();
 			} else {
-				getContext().resetRootNode(new Node());
 				return warn();
 			}
+		} catch (SymbolResolutionException exception) {
+			return new MessageEvent(exception.getMessage(), MessageType.ERROR);
+		}
+	}
+	
+	public MessageEvent createNode(Node parent) {
+		try {
+			if(parent instanceof AtomicValue) {
+				return new MessageEvent("Cannot connect a node to an atomic information", MessageType.ERROR);
+			}
+			
+			Node node = new Node("lambda");
+			int nodeIndex = parent.getNumElements();
+
+			node.label(String.valueOf(nodeIndex));
+			
+			parent.connect(node);
+			
+			return success();
 		} catch (SymbolResolutionException exception) {
 			return new MessageEvent(exception.getMessage(), MessageType.ERROR);
 		}
@@ -65,16 +87,19 @@ public class InformationManager extends ContextualManager<Information> {
 
 			if(parent != null) {
 				if(parent instanceof AtomicValue) {
-					return new MessageEvent("Cannot assign a node value to an atomic information", MessageType.ERROR);
+					return new MessageEvent("Cannot assign a value to an atomic information", MessageType.ERROR);
 				}
 				
+				newValue.label(prevValue.getLabel());
+								
 				int index = parent.indexOf(prevValue);
 				parent.disconnect(prevValue);
 				parent.connect(newValue, index);
 				
+				System.out.println(getContext());
+				
 				return success();
 			} else {
-				getContext().resetRootNode(newValue);
 				return warn();
 			}
 		} catch (SymbolResolutionException exception) {

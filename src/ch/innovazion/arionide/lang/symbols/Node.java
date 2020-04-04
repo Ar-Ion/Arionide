@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import java.util.stream.Stream;
 
 public class Node implements ParameterValue {
@@ -41,11 +40,26 @@ public class Node implements ParameterValue {
 	private String name;
 	private String path;
 	private Node parent;
-	
-	public Node() {
-		label(null);
-	}
 
+	public Node(String name) {
+		label(name);
+	}
+	
+	protected Node(Node parent) {		
+		for(Node child : parent.linearMap) {
+			Node childClone = child.clone();
+			
+			linearMap.add(childClone);
+			symbolicMap.put(childClone.name, childClone);
+			childClone.parent = this;
+		}
+		
+		this.size = parent.size;
+		this.name = parent.name;
+		this.path = parent.path;
+		this.parent = null;
+	}
+	
 	public synchronized void connect(Node value) throws SymbolResolutionException {
 		connect(value, linearMap.size());
 	}
@@ -59,8 +73,10 @@ public class Node implements ParameterValue {
 				symbolicMap.put(value.name, value);
 
 				int oldSize = size;
-				size += value.size;
+				size += value.getSize();
 				notifySizeUpdate(oldSize);
+				
+				value.notifyPathUpdate();
 			} else {
 				throw new SymbolResolutionException("Information label '" + value.name + "' is already present in " + String.join("; ", getDisplayValue()));
 			}
@@ -78,6 +94,7 @@ public class Node implements ParameterValue {
 			
 			int oldSize = size;
 			size -= value.size;
+			
 			notifySizeUpdate(oldSize);
 		} else {
 			throw new SymbolResolutionException("Unable to disconnect an empty value from " + String.join("; ", getDisplayValue()));
@@ -148,16 +165,18 @@ public class Node implements ParameterValue {
 	}
 	
 	private String computePath() {
-		Stack<String> stack = new Stack<>();
+		List<String> path = new ArrayList<>();
 		
 		Node current = this;
 		
 		do {
-			stack.add(current.name);
+			path.add(current.name);
 			current = current.parent;
 		} while(current != null);
 		
-		return stack.stream().reduce((a, b) -> a + "->" + b).orElse("<mysterious information path>");
+		Collections.reverse(path);
+		
+		return path.stream().reduce((a, b) -> a + " -> " + b).orElse("<mysterious information path>");
 	}
 	
 	public String getLabel() {
@@ -189,11 +208,11 @@ public class Node implements ParameterValue {
 	}
 	
 	public List<String> getDisplayValue() {
-		return Arrays.asList(getLabel() + " (" + getNumElements() + " element(s))");
+		return Arrays.asList(getLabel() + " (" + getNumElements() + " element(s), " + size + " bit(s))");
 	}
 	
 	public String toString() {
-		return String.join("; ", getDisplayValue());
+		return String.join(", ", getDisplayValue());
 	}
 	 
 	protected Stream<Bit> getRawStream() {
@@ -201,21 +220,7 @@ public class Node implements ParameterValue {
 	}
 	
 	public Node clone() {
-		Node clone = new Node();
-		
-		for(Node child : linearMap) {
-			Node childClone = child.clone();
-			
-			clone.linearMap.add(childClone);
-			clone.symbolicMap.put(childClone.name, childClone);
-			childClone.parent = clone;
-		}
-		
-		clone.size = size;
-		clone.name = name;
-		clone.parent = null;
-		
-		return clone;
+		return new Node(this);
 	}
 	
 	public void parse(String value) throws InvalidValueException {

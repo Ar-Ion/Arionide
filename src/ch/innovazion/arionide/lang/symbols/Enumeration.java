@@ -37,13 +37,22 @@ public class Enumeration extends AtomicValue {
 
 	private Node value;
 	
+	public Enumeration() {
+		super("enum");
+	}
+	
+	private Enumeration(Enumeration parent) {
+		super(parent);
+		nameMapping.addAll(parent.nameMapping);
+		possibleValues.putAll(parent.possibleValues);
+	}
 	
 	/*
 	 * Those two methods should be accessed by a parameter creator
 	 */
 	public void addPossibleValue(String name) {
 		nameMapping.add(name);
-		possibleValues.put(name, new Node());
+		possibleValues.put(name, new Node(name));
 	}
 	
 	public void removePossibleValue(String name) {
@@ -74,14 +83,19 @@ public class Enumeration extends AtomicValue {
 		}
 	}
 	
+	public int getSize() {
+		if(value != null) {
+			return value.getSize();
+		} else {
+			return 0;
+		}
+	}
+	
 	protected Stream<Bit> getRawStream() {
 		return getValue().getRawStream();
 	}
 
-	public AtomicValue clone() {
-		Enumeration enumeration = new Enumeration();
-		enumeration.nameMapping.addAll(nameMapping);
-		enumeration.possibleValues.putAll(possibleValues);
-		return enumeration;
+	public Enumeration clone() {
+		return new Enumeration(this);
 	}
 }

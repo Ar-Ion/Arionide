@@ -69,7 +69,7 @@ public class ReferenceManager extends ContextualManager<Reference> {
 	}
 	
 	public MessageEvent create(String name) {
-		getContext().addLazyParameter(new Parameter(name, new Information()));
+		getContext().addLazyParameter(new Parameter(name, new Information("Information")));
 		saveStructures();
 		return success();
 	}

@@ -61,15 +61,9 @@ public class VariableManager extends ContextualManager<Variable> {
 		return Stream.concat(getState(parent).stream(), getProps(parent).stream()).collect(Collectors.toList());
 	}
 	
-	public MessageEvent assign(Variable var, Node value) {
-		var.setInitialValue(value);
-		saveCode();
-		return success();
-	}
-	
 	public MessageEvent create(Structure parent, Variable var, String name) {
 		if(parent instanceof MutableActor) {
-			Information initialValue = new Information();
+			Information initialValue = new Information("Variable");
 			Node rootNode = initialValue.getRoot();
 			
 			rootNode.label(name);

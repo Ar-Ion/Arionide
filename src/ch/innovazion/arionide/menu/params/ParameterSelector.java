@@ -96,7 +96,7 @@ public class ParameterSelector extends Menu {
 	}
 	
 	private void createParameter(String name) {
-		this.parameter = new Parameter(name, new Information());
+		this.parameter = new Parameter(name, new Information("Information"));
 		
 		dispatch(specManager.addParameter(parameter));
 		dispatch(new GeometryInvalidateEvent(1));

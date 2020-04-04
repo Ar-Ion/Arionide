@@ -52,12 +52,18 @@ public abstract class ParameterValueMenu extends Menu {
 		return specManager;
 	}
 	
-	protected void onEnter() {
-		super.onEnter();
-
-		this.specManager = project.getStructureManager().loadSpecificationManager(target);
+	protected void onRefresh(String identifier, Object prevValue) {
+		super.onRefresh(identifier, prevValue);
 		
-		updateDescription();
+		if(identifier.equals("target")) {
+			this.specManager = project.getStructureManager().loadSpecificationManager(target);
+			this.updateDescription();	
+		}
+	}
+	
+	protected void onEnter() {
+		this.updateDescription();
+		super.onEnter();
 	}
 	
 	protected void updateDescription() {

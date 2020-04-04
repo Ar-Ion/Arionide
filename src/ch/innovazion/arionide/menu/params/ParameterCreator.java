@@ -62,20 +62,21 @@ public class ParameterCreator extends Menu {
 	public void onAction(String action) {
 		switch(action) {
 		case "Information":
-			this.value = new Information();
+			dispatch(specManager.refactorParameterDefault(parameter, new Information("Information")));
+			this.value = new Information("info");
 			break;
 		case "Variable":
-			this.value = new Variable();
+			dispatch(specManager.refactorParameterDefault(parameter, new Variable()));
+			this.value = new Variable().getInitialValue();
 			break;
 		case "Reference":
+			dispatch(specManager.refactorParameterDefault(parameter, new Reference()));
 			this.value = new Reference();
 			break;
 		default:
 			throw new IllegalArgumentException();
 		}
-		
-		dispatch(specManager.refactorParameterDefault(parameter, value));
-		
+				
 		go(EditorMultiplexer.findDestination("/structure/edit", value));
 	}
 }

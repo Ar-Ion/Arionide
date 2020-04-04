@@ -26,6 +26,14 @@ import java.util.stream.Stream;
 public abstract class AtomicValue extends Node {
 
 	private static final long serialVersionUID = 3707550318915733897L;
+	
+	public AtomicValue(String name) {
+		super(name);
+	}
+	
+	public AtomicValue(AtomicValue parent) {
+		super(parent);
+	}
 
 	public synchronized void connect(Node value) throws SymbolResolutionException {
 		throw new SymbolResolutionException("Cannot connect information to an atomic value");
@@ -44,5 +52,6 @@ public abstract class AtomicValue extends Node {
 	}
 	
 	protected abstract Stream<Bit> getRawStream();
+	public abstract int getSize();
 	public abstract AtomicValue clone();
 }

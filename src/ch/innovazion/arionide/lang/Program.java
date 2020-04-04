@@ -54,7 +54,7 @@ public abstract class Program {
 		if(callable != null && callable instanceof MutableActor) {
 			return ((MutableActor) callable).getWrapper().getState();
 		} else {
-			return new Node();
+			return new Node("state");
 		}
 	}
 	
@@ -64,7 +64,7 @@ public abstract class Program {
 		if(callable != null && callable instanceof MutableActor) {
 			return ((MutableActor) callable).getWrapper().getProperties();
 		} else {
-			return new Node();
+			return new Node("props");
 		}
 	}
 	
@@ -74,7 +74,7 @@ public abstract class Program {
 		if(callable != null && callable instanceof MutableActor) {
 			return ((MutableActor) callable).getWrapper().getConstants();
 		} else {
-			return new Node();
+			return new Node("consts");
 		}
 	}
 	
