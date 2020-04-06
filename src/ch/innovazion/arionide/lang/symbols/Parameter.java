@@ -30,6 +30,7 @@ public class Parameter implements Serializable {
 
 	private String name;
 	private ParameterValue value;
+	private boolean frozen = true;
 	
 	public Parameter(String name, ParameterValue value) {
 		this.name = name;
@@ -50,6 +51,14 @@ public class Parameter implements Serializable {
 	
 	public void setValue(ParameterValue value) {
 		this.value = value;
+	}
+	
+	public void setFrozen(boolean frozen) {
+		this.frozen = frozen;
+	}
+	
+	public boolean isFrozen() {
+		return frozen;
 	}
 	
 	public List<String> getDisplayValue() {

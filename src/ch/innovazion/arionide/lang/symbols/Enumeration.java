@@ -38,7 +38,7 @@ public class Enumeration extends AtomicValue {
 	private Node value;
 	
 	public Enumeration() {
-		super("enum");
+		super("Enumeration");
 	}
 	
 	private Enumeration(Enumeration parent) {

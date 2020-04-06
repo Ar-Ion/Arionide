@@ -21,10 +21,12 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params;
 
+import java.util.function.Consumer;
+
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
-import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
@@ -45,12 +47,18 @@ public class ParameterCreator extends Menu {
 	protected Parameter parameter;
 	
 	@Export
+	protected boolean frozen;
+	
+	@Export
+	protected Consumer<Void> onUpdate;
+	
+	@Export
 	protected ParameterValue value;
 	
 	private SpecificationManager specManager;
 	
 	public ParameterCreator(MenuManager manager) {
-		super(manager, "Information", "Variable", "Reference");
+		super(manager, "Variable", "Constant");
 	}
 	
 	protected void onEnter() {
@@ -61,22 +69,25 @@ public class ParameterCreator extends Menu {
 
 	public void onAction(String action) {
 		switch(action) {
-		case "Information":
-			dispatch(specManager.refactorParameterDefault(parameter, new Information("Information")));
-			this.value = new Information("info");
-			break;
 		case "Variable":
-			dispatch(specManager.refactorParameterDefault(parameter, new Variable()));
-			this.value = new Variable().getInitialValue();
+			this.value = new Variable();
+			this.onUpdate = this::onUpdate;
+			this.frozen = false;
+			go("../variable");
 			break;
-		case "Reference":
-			dispatch(specManager.refactorParameterDefault(parameter, new Reference()));
-			this.value = new Reference();
+		case "Constant":
+			this.value = new Information();
+			this.onUpdate = this::onUpdate;
+			this.frozen = false;
+			go("../constant");
 			break;
 		default:
 			throw new IllegalArgumentException();
 		}
-				
-		go(EditorMultiplexer.findDestination("/structure/edit", value));
+	}
+
+	private void onUpdate(Void nil) {
+		dispatch(specManager.refactorParameterDefault(parameter, this.value));
+		dispatch(new GeometryInvalidateEvent(1));
 	}
 }

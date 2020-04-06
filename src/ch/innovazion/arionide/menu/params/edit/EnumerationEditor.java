@@ -21,39 +21,64 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.edit;
 
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.ParameterValueEditor;
+import ch.innovazion.arionide.menu.params.ParameterUpdater;
 import ch.innovazion.arionide.project.managers.specification.EnumerationManager;
 import ch.innovazion.arionide.ui.overlay.Views;
 import ch.innovazion.automaton.Export;
+import ch.innovazion.automaton.Inherit;
 
-public class EnumerationEditor extends ParameterValueEditor {
+public class EnumerationEditor extends ParameterUpdater {
 
 	private EnumerationManager enumManager;
 	
+	@Inherit
 	@Export
-	protected final Consumer<Void> onReferenceRemoval = (nil) -> updateParameter();
+	protected boolean frozen;
 	
 	public EnumerationEditor(MenuManager manager) {
-		super(manager, "<Add element>", "<Remove element>");
+		super(manager, "Assign");
 	}
 
 	protected void onEnter() {
 		super.onEnter();
 		this.enumManager = getSpecificationManager().loadEnumerationManager(value);
-		setDynamicElements(enumManager.getNames().toArray(new String[0]));
+		
+		List<String> elements = new ArrayList<>();
+		
+		if(!frozen) {
+			elements.add("Add element");
+			elements.add("Remove element");
+		}
+		
+		elements.add(null);
+		
+		elements.addAll(enumManager.getNames());
+		
+		setDynamicElements(elements.toArray(new String[0]));
 	}
 	
 	public void onAction(String action) {
-		if(id == 0) {
-			Views.input.setText("Please enter the name of the possibility")
-					   .setPlaceholder("Possibility name")
-					   .setResponder(this::createPossibility)
-					   .stackOnto(Views.code);
-		} else if(id == 1) {
-			go("remove");
+		if(id < 3) {
+			switch(action) {
+			case "Assign":
+				go("assign");
+				break;
+			case "Add element":
+				Views.input.setText("Please enter the name of the possibility")
+				   .setPlaceholder("Possibility name")
+				   .setResponder(this::createPossibility)
+				   .stackOnto(Views.code);
+				break;
+			case "Remove element":
+				if(enumManager.getNames().size() > 0) {
+					go("remove");
+				}
+				break;
+			}
 		} else {
 			this.value = enumManager.getEnumValue(action);
 			go("edit");
@@ -63,10 +88,11 @@ public class EnumerationEditor extends ParameterValueEditor {
 	private void createPossibility(String name) {
 		dispatch(enumManager.addPossibleEnum(name));
 		this.value = enumManager.getEnumValue(name);
+		updateParameter();
 		go("edit");
 	}
 	
 	protected String getDescriptionTitle() {
-		return "Editing parameter '" + parameter.getName() + "' as an enumeration";
+		return "Editing '" + value.toString() + "' as an enumeration";
 	}
 }

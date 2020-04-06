@@ -21,11 +21,14 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params;
 
+import java.util.function.Consumer;
+
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.TargetUpdateEvent;
 import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
+import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
@@ -39,20 +42,26 @@ public class ParameterSelector extends Menu {
 	
 	private final boolean mutable;
 	
-	@Export
 	@Inherit
+	@Export
 	protected Structure target;
 	
 	@Export
-	protected Parameter parameter; // If the selector has the mutable flag
+	protected Parameter parameter;
 	
 	@Export
 	protected ParameterValue value; // If the selector has the immutable flag
 	
+	@Export
+	protected Consumer<Void> onUpdate;
+	
+	@Export
+	protected boolean frozen;
+	
 	private SpecificationManager specManager;
 	
 	public ParameterSelector(MenuManager manager, boolean mutable) {
-		super(manager, mutable ? "<Add>" : null);
+		super(manager, mutable ? new String[] { "Add", null } : new String[0]);
 		
 		this.mutable = mutable;
 	}
@@ -91,7 +100,14 @@ public class ParameterSelector extends Menu {
 				go("edit");
 			}
 		} else {
-			go(EditorMultiplexer.findDestination("/code/edit", parameter.getValue()));
+			this.onUpdate = null;
+			this.frozen = parameter.isFrozen();
+			
+			if(value instanceof Variable) {
+				go("../variable");
+			} else if(value instanceof Information) {
+				go("../constant");
+			}
 		}
 	}
 	

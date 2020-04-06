@@ -49,14 +49,14 @@ public class Text extends Node {
 	public void parse(String value) throws InvalidValueException {
 		if(value != null) {
 			this.textValue = value;
-			Bit.fromByteArray(value.getBytes(Charset.forName("utf8")));
+			this.realValue = Bit.fromByteArray(value.getBytes(Charset.forName("utf8")));
 		} else {
 			throw new InvalidValueException("Entered text cannot be null");
 		}
 	}
 	
 	public int getSize() {
-		return realValue.length;
+		return realValue.length * 8;
 	}
 
 	protected Stream<Bit> getRawStream() {

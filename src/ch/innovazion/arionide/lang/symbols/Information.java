@@ -7,6 +7,10 @@ public class Information implements ParameterValue {
 	private static final long serialVersionUID = 6399415184230040034L;
 	
 	private Node root;
+
+	public Information() {
+		this("Information");
+	}
 	
 	public Information(String rootName) {
 		this.root = new Node(rootName);

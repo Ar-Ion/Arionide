@@ -82,6 +82,20 @@ public class SpecificationManager extends ContextualManager<Specification> {
 		return success();
 	}
 	
+	public MessageEvent setParameterFrozen(Parameter param, boolean frozen) {
+		doForeachConnectedSpecification(other -> {
+			for(Parameter target : other.getParameters()) {
+				if(target.equals(param)) { // Name comparison
+					target.setFrozen(frozen);
+				}
+			}
+		});
+		
+		saveStructures();
+		
+		return success();
+	}
+	
 	public MessageEvent refactorParameterDefault(Parameter param, ParameterValue newDefault) {
 		doForeachConnectedSpecification(other -> {
 			for(Parameter target : other.getParameters()) {

@@ -21,7 +21,10 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params;
 
+import java.util.function.Consumer;
+
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
+import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.lang.symbols.Variable;
@@ -35,17 +38,23 @@ import ch.innovazion.automaton.Inherit;
 
 public class ParameterEditor extends Menu {
 	
-	@Export
 	@Inherit
+	@Export
 	protected Structure target;
 	
-	@Export
 	@Inherit
+	@Export
 	protected Parameter parameter;
 	
 	// When we want to edit a variable as a specification parameter, we may only change its initial value
 	@Export
 	protected ParameterValue value;
+	
+	@Export
+	protected Consumer<Void> onUpdate;
+	
+	@Export
+	protected boolean frozen;
 
 	private SpecificationManager specManager;
 	
@@ -55,20 +64,32 @@ public class ParameterEditor extends Menu {
 	
 	protected void onEnter() {
 		super.onEnter();
-		
 		this.specManager = project.getStructureManager().loadSpecificationManager(target);
 		
-		if(parameter.getValue() instanceof Variable) {
-			this.value = ((Variable) parameter.getValue()).getInitialValue();
+		this.frozen = parameter.isFrozen();
+		
+		if(frozen) {
+			setDynamicElements("Unfreeze");
 		} else {
-			this.value = parameter.getValue();
+			setDynamicElements("Freeze");
 		}
+		
+		this.value = parameter.getValue();
+		
+		updateCursor(0);
 	}
 
 	public void onAction(String action) {
 		switch(action) {
 		case "Edit":
-			go(EditorMultiplexer.findDestination("/structure/edit", parameter.getValue()));
+			this.onUpdate = this::onUpdate;
+			
+			if(value instanceof Variable) {
+				go("../variable");
+			} else if(value instanceof Information) {
+				go("../constant");
+			}
+
 			break;
 		case "Rename":
 			Views.input.setText("Please enter the name of the parameter")
@@ -83,6 +104,16 @@ public class ParameterEditor extends Menu {
 		case "Delete":
 			deleteParameter();
 			break;
+		case "Unfreeze":
+			dispatch(specManager.setParameterFrozen(parameter, false));
+			dispatch(new GeometryInvalidateEvent(1));
+			go(".");
+			break;
+		case "Freeze":
+			dispatch(specManager.setParameterFrozen(parameter, true));
+			dispatch(new GeometryInvalidateEvent(1));
+			go(".");
+			break;
 		}
 	}
 	
@@ -96,5 +127,10 @@ public class ParameterEditor extends Menu {
 		dispatch(specManager.removeParameter(parameter));
 		dispatch(new GeometryInvalidateEvent(1));
 		go("..");
+	}
+	
+	private void onUpdate(Void nil) {
+		dispatch(specManager.refactorParameterDefault(parameter, this.value));
+		dispatch(new GeometryInvalidateEvent(1));
 	}
 }

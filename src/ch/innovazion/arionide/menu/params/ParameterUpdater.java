@@ -23,6 +23,7 @@ package ch.innovazion.arionide.menu.params;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.menu.Menu;
@@ -33,18 +34,22 @@ import ch.innovazion.arionide.project.managers.specification.SpecificationManage
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
 
-public abstract class ParameterValueMenu extends Menu {
+public abstract class ParameterUpdater extends Menu {
 		
 	@Export
 	@Inherit
 	protected Structure target;
+	
+	@Inherit
+	@Export
+	protected Consumer<Void> onUpdate;
 
 	@Inherit
 	protected ParameterValue value;
 	
 	private SpecificationManager specManager;
 	
-	public ParameterValueMenu(MenuManager manager, String... staticElements) {
+	public ParameterUpdater(MenuManager manager, String... staticElements) {
 		super(manager, staticElements);
 	}
 	
@@ -75,6 +80,14 @@ public abstract class ParameterValueMenu extends Menu {
 		elements.addAll(value.getDisplayValue());
 		
 		this.description = new MenuDescription(elements.toArray(new String[0]));
+	}
+	
+	protected void updateParameter() {
+		if(onUpdate != null) {
+			onUpdate.accept(null);
+		}
+		
+		go(".");
 	}
 		
 	protected SpecificationManager getSpecificationManager() {

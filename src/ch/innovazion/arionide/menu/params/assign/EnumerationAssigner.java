@@ -23,10 +23,10 @@ package ch.innovazion.arionide.menu.params.assign;
 
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.ParameterValueAssigner;
+import ch.innovazion.arionide.menu.params.ParameterUpdater;
 import ch.innovazion.arionide.project.managers.specification.EnumerationManager;
 
-public class EnumerationAssigner extends ParameterValueAssigner {
+public class EnumerationAssigner extends ParameterUpdater {
 
 	private EnumerationManager enumManager;
 	
@@ -43,6 +43,7 @@ public class EnumerationAssigner extends ParameterValueAssigner {
 	public void onAction(String action) {
 		dispatch(enumManager.assign(action));
 		dispatch(new GeometryInvalidateEvent(0));
+		updateParameter();
 		go("..");
 	}
 	

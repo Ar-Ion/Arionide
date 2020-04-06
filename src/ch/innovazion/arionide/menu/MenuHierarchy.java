@@ -21,16 +21,18 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu;
 
+import java.util.function.Function;
+
 import ch.innovazion.arionide.menu.code.CodeBrowser;
 import ch.innovazion.arionide.menu.code.CodeEditor;
 import ch.innovazion.arionide.menu.code.DefaultInstructionAppender;
 import ch.innovazion.arionide.menu.code.OperatorAppender;
 import ch.innovazion.arionide.menu.code.SignatureSelector;
+import ch.innovazion.arionide.menu.params.InformationUpdater;
 import ch.innovazion.arionide.menu.params.ParameterCreator;
 import ch.innovazion.arionide.menu.params.ParameterEditor;
 import ch.innovazion.arionide.menu.params.ParameterSelector;
 import ch.innovazion.arionide.menu.params.assign.EnumerationAssigner;
-import ch.innovazion.arionide.menu.params.assign.InformationAssigner;
 import ch.innovazion.arionide.menu.params.assign.ReferenceAssigner;
 import ch.innovazion.arionide.menu.params.assign.VariableAssigner;
 import ch.innovazion.arionide.menu.params.assign.VariableRemover;
@@ -67,28 +69,14 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/structure/edit/specify", new ParameterSelector(manager, true));
 		register("/structure/edit/specify/create", new ParameterCreator(manager));
 		register("/structure/edit/specify/edit", new ParameterEditor(manager));
-		register("/structure/edit/specify/information", new InformationEditor(manager));
-		register("/structure/edit/specify/information/reference", new ReferenceAssigner(manager));
-		register("/structure/edit/specify/information/reference/edit", new InformationAssigner(manager));
-		register("/structure/edit/specify/information/reference/edit/reference", new ReferenceAssigner(manager));
-		register("/structure/edit/specify/information/reference/edit/reference/edit", new InformationAssigner(manager));
-		register("/structure/edit/specify/information/reference/edit/reference/edit/reference", new ErrorMenu(manager, "Too much reference nesting"));
+		registerInformationUpdater("/structure/edit/specify/constant", manager, InformationEditor::new, 8);
 		register("/structure/edit/specify/variable", new VariableEditor(manager));
-		register("/structure/edit/specify/variable/reference", new ReferenceAssigner(manager));
-		register("/structure/edit/specify/variable/reference/edit", new InformationAssigner(manager));
-		register("/structure/edit/specify/variable/reference/edit/reference", new ReferenceAssigner(manager));
-		register("/structure/edit/specify/variable/reference/edit/reference/edit", new InformationAssigner(manager));
-		register("/structure/edit/specify/variable/reference/edit/reference/edit/reference", new ErrorMenu(manager, "Too much reference nesting"));
-		register("/structure/edit/specify/reference", new ReferenceEditor(manager));
-		register("/structure/edit/specify/reference/remove", new ReferenceParameterRemover(manager));
-		register("/structure/edit/specify/reference/edit", new InformationAssigner(manager));
-		register("/structure/edit/specify/enumeration", new EnumerationEditor(manager));
-		register("/structure/edit/specify/enumeration/remove", new EnumerationPossibilityRemover(manager));
-		register("/structure/edit/specify/enumeration/edit", new InformationAssigner(manager));
+		register("/structure/edit/specify/variable/assign", new VariableAssigner(manager));
+		registerInformationUpdater("/structure/edit/specify/variable/edit", manager, InformationUpdater::new, 8);
 		register("/structure/edit/comment", new CommentEditor(manager));
 		register("/structure/edit/language", new LanguageSelector(manager));
 		register("/structure/edit/tint", new TintSelector(manager));
-
+		
 		register("/code", codeBrowser = new CodeBrowser(manager));
 		register("/code/edit", new CodeEditor(manager));
 		register("/code/edit/append", new DefaultInstructionAppender(manager));
@@ -96,18 +84,33 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/code/edit/append/operator", new OperatorAppender(manager));
 		register("/code/edit/append/operator/signature", new SignatureSelector(manager));
 		register("/code/edit/specify", new ParameterSelector(manager, false));
-		register("/code/edit/specify/information", new InformationAssigner(manager));
-		register("/code/edit/specify/information/reference", new ReferenceAssigner(manager));
-		register("/code/edit/specify/information/reference/edit", new InformationAssigner(manager));
-		register("/code/edit/specify/information/reference/edit/reference", new ReferenceAssigner(manager));
-		register("/code/edit/specify/information/reference/edit/reference/edit", new InformationAssigner(manager));
-		register("/code/edit/specify/information/reference/edit/reference/edit/reference", new ErrorMenu(manager, "Too much reference nesting"));
-		register("/code/edit/specify/variable", new VariableAssigner(manager));
-		register("/code/edit/specify/variable/remove", new VariableRemover(manager));
-		register("/code/edit/specify/variable/rename", new VariableRenamer(manager));
-		register("/code/edit/specify/variable/edit", new InformationAssigner(manager));
-		register("/code/edit/specify/reference", new ReferenceAssigner(manager));
-		register("/code/edit/specify/enumeration", new EnumerationAssigner(manager));
+		registerInformationUpdater("/code/edit/specify/constant", manager, InformationEditor::new, 8);
+		register("/code/edit/specify/variable", new VariableEditor(manager));
+		register("/code/edit/specify/variable/assign", new VariableAssigner(manager));
+		registerInformationUpdater("/code/edit/specify/variable/edit", manager, InformationUpdater::new, 8);
+	}
+	
+	private void registerInformationUpdater(String source, MenuManager manager, Function<MenuManager, InformationUpdater> supplier, int nesting) {
+		if(nesting > 0) {
+			register(source, supplier.apply(manager));
+			register(source + "/enum", new EnumerationEditor(manager));
+			register(source + "/enum/assign", new EnumerationAssigner(manager));
+			register(source + "/enum/remove", new EnumerationPossibilityRemover(manager));
+			register(source + "/var", new VariableEditor(manager));
+			register(source + "/var/assign", new VariableAssigner(manager));
+			register(source + "/var/assign/remove", new VariableRemover(manager));
+			register(source + "/var/assign/rename", new VariableRenamer(manager));
+			register(source + "/ref", new ReferenceEditor(manager));
+			register(source + "/ref/assign", new ReferenceAssigner(manager));
+			register(source + "/ref/remove", new ReferenceParameterRemover(manager));
+			
+			registerInformationUpdater(source + "/enum/edit", manager, supplier, nesting - 1);
+			registerInformationUpdater(source + "/var/edit", manager, supplier, nesting - 1);
+			registerInformationUpdater(source + "/ref/edit", manager, supplier, nesting - 1);
+		} else {
+			register(source, new ErrorMenu(manager, "Nesting limit reached"));
+			return;
+		}
 	}
 	
 	protected Menu resolveCurrentState() {

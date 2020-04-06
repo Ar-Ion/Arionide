@@ -76,7 +76,7 @@ public abstract class Menu extends State {
 		return Arrays.asList(elements);
 	}
 	
-	protected void setDynamicElements(String[] dynamicElements) {
+	protected void setDynamicElements(String... dynamicElements) {
 		elements = Utils.combine(String.class, staticElements, dynamicElements);
 		ensureNonEmpty();
 	}

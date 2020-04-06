@@ -21,19 +21,13 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.edit;
 
-import java.util.function.Consumer;
-
-import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
+import ch.innovazion.arionide.menu.params.ParameterUpdater;
 import ch.innovazion.arionide.project.managers.specification.EnumerationManager;
-import ch.innovazion.automaton.Inherit;
 
-public class EnumerationPossibilityRemover extends Menu {
+public class EnumerationPossibilityRemover extends ParameterUpdater {
 
-	@Inherit
-	protected Consumer<Void> onPossibilityRemoval;
-	
 	private EnumerationManager enumManager;
 	
 	public EnumerationPossibilityRemover(MenuManager manager) {
@@ -50,7 +44,11 @@ public class EnumerationPossibilityRemover extends Menu {
 
 	public void onAction(String action) {
 		dispatch(enumManager.removePossibleEnum(action));
-		onPossibilityRemoval.accept(null);
+		updateParameter();
 		go("..");
+	}
+
+	protected String getDescriptionTitle() {
+		return "Removing possibility from enumeration";
 	}
 }

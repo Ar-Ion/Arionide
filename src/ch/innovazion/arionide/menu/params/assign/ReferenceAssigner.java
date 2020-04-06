@@ -26,10 +26,10 @@ import java.util.List;
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.ParameterValueAssigner;
+import ch.innovazion.arionide.menu.params.ParameterUpdater;
 import ch.innovazion.arionide.project.managers.specification.ReferenceManager;
 
-public class ReferenceAssigner extends ParameterValueAssigner {
+public class ReferenceAssigner extends ParameterUpdater {
 
 	private ReferenceManager refManager;
 	private List<Callable> callables;
@@ -49,9 +49,11 @@ public class ReferenceAssigner extends ParameterValueAssigner {
 		if(id == 0) {
 			dispatch(refManager.assignLambda());
 			dispatch(new GeometryInvalidateEvent(2));
+			updateParameter();
 		} else {
 			dispatch(refManager.assignCallable(callables.get(id - 1)));
 			dispatch(new GeometryInvalidateEvent(0));
+			updateParameter();
 		}
 	}
 	

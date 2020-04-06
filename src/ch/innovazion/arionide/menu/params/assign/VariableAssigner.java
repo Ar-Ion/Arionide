@@ -21,25 +21,25 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.assign;
 
-import java.util.Collection;
+import java.util.List;
 
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.ParameterValueAssigner;
+import ch.innovazion.arionide.menu.params.ParameterUpdater;
 import ch.innovazion.arionide.project.managers.specification.VariableManager;
 import ch.innovazion.arionide.ui.overlay.Views;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
 
-public class VariableAssigner extends ParameterValueAssigner {
+public class VariableAssigner extends ParameterUpdater {
 
 	private VariableManager varManager;
 	
-	private Collection<Node> variables;
-	
+	private List<Node> variables;
+
 	@Export
 	@Inherit
 	protected ParameterValue value;
@@ -68,8 +68,8 @@ public class VariableAssigner extends ParameterValueAssigner {
 		} else if(id == 2) {
 			go("rename");
 		} else if(id != 3) {
-			this.value = ((Variable) value).getInitialValue();
-			go("edit");
+			dispatch(varManager.bind((Variable) variables.get(id - 4)));
+			updateParameter();
 		}
 	}
 	
@@ -78,9 +78,8 @@ public class VariableAssigner extends ParameterValueAssigner {
 	}
 	
 	private void createVariable(String name) {
-		dispatch(varManager.create(target, ((Variable) value), name));
+		dispatch(varManager.createAndBind(target, name));
 		dispatch(new GeometryInvalidateEvent(0));
-		
 		go(".");
 	}
 }

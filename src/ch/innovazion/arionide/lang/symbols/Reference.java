@@ -42,7 +42,7 @@ public class Reference extends AtomicValue {
 	private Numeric targetID;
 	
 	public Reference() {
-		super("reference");
+		super("Reference");
 	}
 	
 	private Reference(Reference parent) {

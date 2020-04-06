@@ -21,14 +21,12 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.edit;
 
-import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.assign.InformationAssigner;
+import ch.innovazion.arionide.menu.params.InformationUpdater;
 import ch.innovazion.automaton.Inherit;
 
-// Warning: this class should extend both InformationAssigner and ParameterValueEditor. There is a design flaw...
-public class InformationEditor extends InformationAssigner {
+public class InformationEditor extends InformationUpdater {
 
 	@Inherit
 	protected Parameter parameter; // If the parameter is mutable
@@ -37,16 +35,11 @@ public class InformationEditor extends InformationAssigner {
 		super(manager);
 	}
 
-	protected void onExit() {
-		super.onExit();
-
-		if(parameter != null) {
-			getSpecificationManager().refactorParameterDefault(parameter, value);
-			dispatch(new GeometryInvalidateEvent(1));
-		}
-	}
-	
 	protected String getDescriptionTitle() {
-		return "Editing parameter '" + parameter.getName() + "' as an information. " + super.getDescriptionTitle();
+		if(parameter != null) {
+			return "Setting structure and content of constant parameter '" + parameter.getName() + "'. " + super.getDescriptionTitle();
+		} else {
+			return super.getDescriptionTitle();
+		}
 	}
 }

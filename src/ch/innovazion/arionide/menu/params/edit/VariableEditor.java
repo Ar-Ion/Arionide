@@ -1,32 +1,36 @@
 package ch.innovazion.arionide.menu.params.edit;
 
-import ch.innovazion.arionide.events.GeometryInvalidateEvent;
-import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Parameter;
-import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.assign.InformationAssigner;
+import ch.innovazion.arionide.menu.params.ParameterUpdater;
 import ch.innovazion.automaton.Inherit;
 
-public class VariableEditor extends InformationAssigner {
+public class VariableEditor extends ParameterUpdater {
 	
 	@Inherit
-	protected Parameter parameter; // If the parameter is mutable
+	protected Parameter parameter;
 
 	public VariableEditor(MenuManager manager) {
-		super(manager);
+		super(manager, "Assign", "Initialise");
 	}
-
-	protected void onExit() {
-		super.onExit();
-
-		if(parameter != null) {
-			getSpecificationManager().refactorParameterDefault(parameter, new Variable(parameter.getName(), (Information) value));
-			dispatch(new GeometryInvalidateEvent(1));
+	
+	@Override
+	public void onAction(String action) {
+		switch(action) {
+		case "Assign":
+			go("assign");
+			break;
+		case "Initialise":
+			go("edit");
+			break;
 		}
 	}
 	
 	protected String getDescriptionTitle() {
-		return "Setting initial value of variable parameter '" + parameter.getName() + "'. " + super.getDescriptionTitle();
+		if(parameter != null) {
+			return "Setting initial value of variable parameter '" + parameter.getName() + "'";
+		} else {
+			return "Setting initial value of variable";
+		}
 	}
 }

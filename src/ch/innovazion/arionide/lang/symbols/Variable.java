@@ -34,6 +34,7 @@ public class Variable extends AtomicValue {
 	
 	private String name;
 	private Information initialValue; // Static variable allocation
+	private Variable binding;
 	
 	public Variable() {
 		this(null, new Information("Variable"));
@@ -62,12 +63,22 @@ public class Variable extends AtomicValue {
 		return initialValue;
 	}
 	
+	public void bind(Variable var) {
+		this.binding = var;
+	}
+	
 	public Stream<Bit> getRawStream() {
 		return initialValue.getRoot().getRawStream();
 	}
 	
 	public List<String> getDisplayValue() {
-		return Arrays.asList(name, initialValue.getRoot().toString());
+		String bindDisplay = new String("Unbound variable");
+		
+		if(binding != null) {
+			bindDisplay = "Bound to " + binding.name;
+		}
+		
+		return Arrays.asList(name, bindDisplay, initialValue.getRoot().toString());
 	}
 	
 	public int getSize() {

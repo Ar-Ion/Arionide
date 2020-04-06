@@ -21,18 +21,12 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.edit;
 
-import java.util.function.Consumer;
-
-import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
+import ch.innovazion.arionide.menu.params.ParameterUpdater;
 import ch.innovazion.arionide.project.managers.specification.ReferenceManager;
-import ch.innovazion.automaton.Inherit;
 
-public class ReferenceParameterRemover extends Menu {
-
-	@Inherit
-	protected Consumer<Void> onReferenceRemoval;
+public class ReferenceParameterRemover extends ParameterUpdater {
 
 	private ReferenceManager refManager;
 	
@@ -50,7 +44,13 @@ public class ReferenceParameterRemover extends Menu {
 
 	public void onAction(String action) {
 		dispatch(refManager.remove(id));
-		onReferenceRemoval.accept(null);
+		
+		updateParameter();
+		
 		go("..");
+	}
+
+	protected String getDescriptionTitle() {
+		return "Removing parameter from reference";
 	}
 }

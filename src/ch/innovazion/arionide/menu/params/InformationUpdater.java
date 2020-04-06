@@ -19,9 +19,10 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.params.assign;
+package ch.innovazion.arionide.menu.params;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -29,27 +30,34 @@ import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.symbols.AtomicValue;
+import ch.innovazion.arionide.lang.symbols.Enumeration;
 import ch.innovazion.arionide.lang.symbols.InvalidValueException;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Numeric;
 import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Text;
+import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.ParameterValueAssigner;
 import ch.innovazion.arionide.project.managers.specification.InformationManager;
 import ch.innovazion.arionide.ui.overlay.Views;
+import ch.innovazion.automaton.Export;
+import ch.innovazion.automaton.Inherit;
 
-public class InformationAssigner extends ParameterValueAssigner {
+public class InformationUpdater extends ParameterUpdater {
 
 	private InformationManager infoManager;
 	private List<Node> children;
 	
+	@Inherit
+	@Export
+	protected boolean frozen;
+	
 	private Node currentNode;
 	private Node selectedNode;
 	
-	public InformationAssigner(MenuManager manager) {
-		super(manager, "New node", null, "Number", "Text", "Reference", null, "Parent", "Label", "Destroy", null);
+	public InformationUpdater(MenuManager manager) {
+		super(manager);
 	}
 	
 	protected void onEnter() {
@@ -73,12 +81,119 @@ public class InformationAssigner extends ParameterValueAssigner {
 		
 		this.currentNode = currentNode;
 		this.children = currentNode.getNodes();
-		this.setDynamicElements(children.stream().map(Node::getLabel).toArray(String[]::new));
+		
+		List<String> elements = new ArrayList<>();
+		
+		if(value instanceof Number) {
+			elements.add("Set number");
+			
+			if(!frozen) {
+				elements.add(null);
+				elements.addAll(Arrays.asList("As node", "As text", "As enumeration", "As variable", "As reference"));
+			}
+		} else if(value instanceof Text) {
+			elements.add("Set text");
+			
+			if(!frozen) {
+				elements.add(null);
+				elements.addAll(Arrays.asList("As node", "As number", "As enumeration", "As variable", "As reference"));
+			}
+		} else if(value instanceof Enumeration) {
+			elements.add("Setup enumeration");
+		
+			if(!frozen) {
+				elements.add(null);
+				elements.addAll(Arrays.asList("As node", "As number", "As text", "As variable", "As reference"));
+			}
+		} else if(value instanceof Variable) {
+			elements.add("Setup variable");
+
+			if(!frozen) {
+				elements.add(null);
+				elements.addAll(Arrays.asList("As node", "As number", "As text", "As enumeration", "As reference"));
+			}
+		} else if(value instanceof Reference) {
+			elements.add("Setup reference");
+
+			if(!frozen) {
+				elements.add(null);
+				elements.addAll(Arrays.asList("As node", "As number", "As text", "As variable", "As enumeration"));
+			}
+		} else {
+			elements.add("New node");
+			elements.add(null);
+			children.stream().map(Node::getLabel).forEach(elements::add);
+			elements.add(null);
+			elements.addAll(Arrays.asList("As number", "As text", "As reference", "As enumeration"));
+		}		
+		
+		elements.add(null);
+		elements.addAll(Arrays.asList("Parent", "Label", "Destroy"));
+		
+		setDynamicElements(elements.toArray(new String[0]));
+		
+		updateCursor(0);
 		
 		updateDescription();
 	}
 
 	public void onAction(String action) {
+		if(id < 10) {
+			switch(action) {
+			case "New node":
+				createNode();
+				break;
+			case "As node":
+				reassignAsNode();
+				break;
+			case "As number":
+			case "Set number":
+				reassignAsParseable(Numeric::new);
+				break;
+			case "As text":
+			case "Set text":
+				reassignAsParseable(Text::new);
+				break;
+			case "As variable":
+				reassignAsVariable();
+				break;
+			case "Setup variable":
+				this.value = currentNode;
+				go("var");
+				break;
+			case "As reference":
+				reassignAsReference();
+				break;
+			case "Setup reference":
+				this.value = currentNode;
+				go("ref");
+				break;
+			case "As enumeration":
+				reassignAsEnumeration();
+				break;
+			case "Setup enumeration":
+				this.value = currentNode;
+				go("enum");
+				break;
+			case "Parent":
+				back();
+				break;
+			case "Label":
+				Views.input.setText("Please enter the label of the information")
+						   .setPlaceholder("Information label")
+						   .setResponder(this::label)
+						   .stackOnto(Views.code);				
+				break;
+			case "Destroy":
+				destroy();
+				break;
+			}
+		} else {
+			updateCurrentNode(children.get(id - 10));
+			go(".");
+		}
+		
+		
 		switch(id) {
 		case 0:
 			createNode();
@@ -95,12 +210,6 @@ public class InformationAssigner extends ParameterValueAssigner {
 		case 6:
 			back();
 			break;
-		case 7:
-			Views.input.setText("Please enter the label of the information")
-					   .setPlaceholder("Information label")
-					   .setResponder(this::label)
-					   .stackOnto(Views.code);
-			break;
 		case 8:
 			destroy();
 			break;
@@ -109,8 +218,7 @@ public class InformationAssigner extends ParameterValueAssigner {
 		case 9:
 			break;
 		default:
-			updateCurrentNode(children.get(id - 10));
-			go(".");
+
 		}
 	}
 	
@@ -123,10 +231,37 @@ public class InformationAssigner extends ParameterValueAssigner {
 			dispatch(new GeometryInvalidateEvent(0));
 			int nodeIndex = currentNode.getNumElements();
 			
-			go(".");
-			
+			updateParameter();			
 			updateCursor(9 + nodeIndex);
 		}
+	}
+	
+	private void reassignAsNode() {
+		Node node = new Node("new_node");
+		dispatch(infoManager.assign(currentNode, node));
+		dispatch(new GeometryInvalidateEvent(0));
+		updateParameter();			
+	}
+	
+	private void reassignAsEnumeration() {
+		Enumeration enumeration = new Enumeration();
+		dispatch(infoManager.assign(currentNode, enumeration));
+		dispatch(new GeometryInvalidateEvent(0));
+		
+		updateParameter();
+		
+		this.value = enumeration;
+		go("enum");
+	}
+	
+	private void reassignAsVariable() {
+		Variable variable = new Variable();
+		dispatch(infoManager.assign(currentNode, variable));
+		dispatch(new GeometryInvalidateEvent(0));
+		updateParameter();
+		
+		this.value = variable;
+		go("var");
 	}
 	
 	private void reassignAsReference() {
@@ -134,9 +269,10 @@ public class InformationAssigner extends ParameterValueAssigner {
 		dispatch(infoManager.assign(currentNode, ref));
 		dispatch(new GeometryInvalidateEvent(0));
 		
-		this.value = ref;
+		updateParameter();
 		
-		go("reference");
+		this.value = ref;		
+		go("ref");
 	}
 	
 	private void reassignAsParseable(Supplier<Node> valueAllocator) {
@@ -158,7 +294,7 @@ public class InformationAssigner extends ParameterValueAssigner {
 			dispatch(new MessageEvent(e.getMessage(), MessageType.ERROR));
 		}
 				
-		go(".");
+		updateParameter();
 	}
 	
 	private void back() {
@@ -171,17 +307,18 @@ public class InformationAssigner extends ParameterValueAssigner {
 	private void label(String name) {
 		dispatch(infoManager.setLabel(currentNode, name));
 		dispatch(new GeometryInvalidateEvent(0));
-		go(".");
+		updateParameter();
 	}
 	
 	private void destroy() {
 		if(currentNode.getParent() != null) {
 			dispatch(infoManager.destroy(currentNode));
 			dispatch(new GeometryInvalidateEvent(0));
+			updateParameter();
 			back();	
 		} else {
 			updateCurrentNode(infoManager.reset());
-			go(".");
+			updateParameter();
 		}
 	}
 	
@@ -206,7 +343,7 @@ public class InformationAssigner extends ParameterValueAssigner {
 		
 		if(currentNode != null) {
 			elements.addAll(currentNode.getDisplayValue());
-		} else {
+		} else if(value != null) {
 			elements.addAll(value.getDisplayValue());
 		}
 

@@ -21,56 +21,80 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.edit;
 
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.ParameterValueEditor;
+import ch.innovazion.arionide.menu.params.ParameterUpdater;
 import ch.innovazion.arionide.project.managers.specification.ReferenceManager;
 import ch.innovazion.arionide.ui.overlay.Views;
 import ch.innovazion.automaton.Export;
+import ch.innovazion.automaton.Inherit;
 
-public class ReferenceEditor extends ParameterValueEditor {
+public class ReferenceEditor extends ParameterUpdater {
 
 	private ReferenceManager refManager;
 	
+	@Inherit
 	@Export
-	protected final Consumer<Void> onReferenceRemoval = (nil) -> updateParameter();
+	protected boolean frozen;
 	
 	public ReferenceEditor(MenuManager manager) {
-		super(manager, "<Add parameter>", "<Remove parameter>");
+		super(manager, "Assign");
 	}
 
 	protected void onEnter() {
 		super.onEnter();
 		this.refManager = project.getStructureManager().getSpecificationManager().loadReferenceManager(value);
-		setDynamicElements(refManager.getParameterNames().toArray(new String[0]));
+		
+		List<String> elements = new ArrayList<>();
+		
+		if(!frozen) {
+			elements.add("Add parameter");
+			elements.add("Remove parameter");
+		}
+		
+		elements.add(null);
+		
+		elements.addAll(refManager.getParameterNames());
+		
+		setDynamicElements(elements.toArray(new String[0]));
 	}
 	
 	public void onAction(String action) {
-		if(id == 0) {
-			Views.input.setText("Please enter the name of the parameter")
-					   .setPlaceholder("Parameter name")
-					   .setResponder(this::addParameter)
-					   .stackOnto(Views.code);
-		} else if(id == 1) {
-			if(refManager.getParameterNames().size() > 0) {
-				go("remove");
+		if(id < 3) {
+			switch(action) {
+			case "Assign":
+				go("assign");
+				break;
+			case "Add parameter":
+				Views.input.setText("Please enter the name of the parameter")
+				   .setPlaceholder("Parameter name")
+				   .setResponder(this::addParameter)
+				   .stackOnto(Views.code);
+				break;
+			case "Remove parameter":
+				if(refManager.getParameterNames().size() > 0) {
+					go("remove");
+				}
+				break;
 			}
 		} else {
-			this.value = refManager.getValue(id - 2);
+			this.value = refManager.getValue(id - 3);
 			go("edit");
 		}
 	}
 	
 	private void addParameter(String name) {
 		dispatch(refManager.create(name));
+		
 		updateParameter();
 		
 		this.value = refManager.getValue(refManager.getParameterNames().size() - 1);
-		go("../information");
+		go("edit");
 	}
 	
 	protected String getDescriptionTitle() {
-		return "Editing parameter '" + parameter.getName() + "' as a reference";
+		return "Editing parameter '" + value.toString() + "' as a reference";
 	}
 }
