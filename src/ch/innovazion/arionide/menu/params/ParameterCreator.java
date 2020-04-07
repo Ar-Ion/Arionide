@@ -73,12 +73,14 @@ public class ParameterCreator extends Menu {
 			this.value = new Variable();
 			this.onUpdate = this::onUpdate;
 			this.frozen = false;
+			onUpdate(null);
 			go("../variable");
 			break;
 		case "Constant":
 			this.value = new Information();
 			this.onUpdate = this::onUpdate;
 			this.frozen = false;
+			onUpdate(null);
 			go("../constant");
 			break;
 		default:

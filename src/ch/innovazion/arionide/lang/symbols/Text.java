@@ -56,7 +56,7 @@ public class Text extends Node {
 	}
 	
 	public int getSize() {
-		return realValue.length * 8;
+		return realValue.length;
 	}
 
 	protected Stream<Bit> getRawStream() {

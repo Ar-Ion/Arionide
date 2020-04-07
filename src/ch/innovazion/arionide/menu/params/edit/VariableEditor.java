@@ -1,6 +1,7 @@
 package ch.innovazion.arionide.menu.params.edit;
 
 import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.menu.params.ParameterUpdater;
 import ch.innovazion.automaton.Inherit;
@@ -21,6 +22,7 @@ public class VariableEditor extends ParameterUpdater {
 			go("assign");
 			break;
 		case "Initialise":
+			this.value = ((Variable) value).getInitialValue();
 			go("edit");
 			break;
 		}
@@ -28,9 +30,9 @@ public class VariableEditor extends ParameterUpdater {
 	
 	protected String getDescriptionTitle() {
 		if(parameter != null) {
-			return "Setting initial value of variable parameter '" + parameter.getName() + "'";
+			return "Setting up variable parameter '" + parameter.getName() + "'";
 		} else {
-			return "Setting initial value of variable";
+			return "Setting up variable";
 		}
 	}
 }

@@ -69,9 +69,15 @@ public class InformationManager extends ContextualManager<Information> {
 			}
 			
 			Node node = new Node("lambda");
-			int nodeIndex = parent.getNumElements();
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append(parent.getNumElements());
 
-			node.label(String.valueOf(nodeIndex));
+			while(node.has(sb.toString())) {
+				sb.append('\'');
+			}
+			
+			node.label(sb.toString());
 			
 			parent.connect(node);
 			

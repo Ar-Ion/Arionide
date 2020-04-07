@@ -48,6 +48,7 @@ public class InformationUpdater extends ParameterUpdater {
 
 	private InformationManager infoManager;
 	private List<Node> children;
+	private int separator;
 	
 	@Inherit
 	@Export
@@ -91,6 +92,8 @@ public class InformationUpdater extends ParameterUpdater {
 				elements.add(null);
 				elements.addAll(Arrays.asList("As node", "As text", "As enumeration", "As variable", "As reference"));
 			}
+			
+			this.separator = elements.size();
 		} else if(value instanceof Text) {
 			elements.add("Set text");
 			
@@ -98,6 +101,8 @@ public class InformationUpdater extends ParameterUpdater {
 				elements.add(null);
 				elements.addAll(Arrays.asList("As node", "As number", "As enumeration", "As variable", "As reference"));
 			}
+			
+			this.separator = elements.size();
 		} else if(value instanceof Enumeration) {
 			elements.add("Setup enumeration");
 		
@@ -105,6 +110,8 @@ public class InformationUpdater extends ParameterUpdater {
 				elements.add(null);
 				elements.addAll(Arrays.asList("As node", "As number", "As text", "As variable", "As reference"));
 			}
+			
+			this.separator = elements.size();
 		} else if(value instanceof Variable) {
 			elements.add("Setup variable");
 
@@ -112,6 +119,8 @@ public class InformationUpdater extends ParameterUpdater {
 				elements.add(null);
 				elements.addAll(Arrays.asList("As node", "As number", "As text", "As enumeration", "As reference"));
 			}
+			
+			this.separator = elements.size();
 		} else if(value instanceof Reference) {
 			elements.add("Setup reference");
 
@@ -119,12 +128,19 @@ public class InformationUpdater extends ParameterUpdater {
 				elements.add(null);
 				elements.addAll(Arrays.asList("As node", "As number", "As text", "As variable", "As enumeration"));
 			}
+			
+			this.separator = elements.size();
 		} else {
 			elements.add("New node");
+			
 			elements.add(null);
+			this.separator = elements.size();
 			children.stream().map(Node::getLabel).forEach(elements::add);
-			elements.add(null);
-			elements.addAll(Arrays.asList("As number", "As text", "As reference", "As enumeration"));
+			
+			if(!frozen) {
+				elements.add(null);
+				elements.addAll(Arrays.asList("As number", "As text", "As variable", "As reference", "As enumeration"));
+			}
 		}		
 		
 		elements.add(null);
@@ -137,8 +153,8 @@ public class InformationUpdater extends ParameterUpdater {
 		updateDescription();
 	}
 
-	public void onAction(String action) {
-		if(id < 10) {
+	public void onAction(String action) {		
+		if(id < separator || id >= separator + children.size()) {
 			switch(action) {
 			case "New node":
 				createNode();
@@ -189,37 +205,13 @@ public class InformationUpdater extends ParameterUpdater {
 				break;
 			}
 		} else {
-			updateCurrentNode(children.get(id - 10));
+			updateCurrentNode(children.get(id - separator));
 			go(".");
 		}
-		
-		
-		switch(id) {
-		case 0:
-			createNode();
-			break;
-		case 2:
-			reassignAsParseable(Numeric::new);
-			break;
-		case 3:
-			reassignAsParseable(Text::new);
-			break;
-		case 4:
-			reassignAsReference();
-			break;
-		case 6:
-			back();
-			break;
-		case 8:
-			destroy();
-			break;
-		case 1:
-		case 5:
-		case 9:
-			break;
-		default:
-
-		}
+	}
+	
+	public void up() {
+		back();
 	}
 	
 	private void createNode() {
@@ -229,10 +221,10 @@ public class InformationUpdater extends ParameterUpdater {
 		
 		if(result.getMessageType() != MessageType.ERROR) {
 			dispatch(new GeometryInvalidateEvent(0));
-			int nodeIndex = currentNode.getNumElements();
+			int nodeIndex = currentNode.getNumElements() - 1;
 			
 			updateParameter();			
-			updateCursor(9 + nodeIndex);
+			updateCursor(separator + nodeIndex);
 		}
 	}
 	
@@ -240,7 +232,7 @@ public class InformationUpdater extends ParameterUpdater {
 		Node node = new Node("new_node");
 		dispatch(infoManager.assign(currentNode, node));
 		dispatch(new GeometryInvalidateEvent(0));
-		updateParameter();			
+		updateParameter();
 	}
 	
 	private void reassignAsEnumeration() {
@@ -325,10 +317,12 @@ public class InformationUpdater extends ParameterUpdater {
 	protected void updateCursor(int cursor) {
 		super.updateCursor(cursor);
 		
-		if(cursor >= 10) {
-			this.selectedNode = children.get(cursor - 10);
-		} else {
-			this.selectedNode = null;
+		if(children != null) {
+			if(id >= separator && id < separator + children.size()) {
+				this.selectedNode = children.get(id - separator);
+			} else {
+				this.selectedNode = null;
+			}	
 		}
 		
 		if(value != null) {

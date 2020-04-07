@@ -93,7 +93,7 @@ public class Node implements ParameterValue {
 			symbolicMap.remove(value.name);
 			
 			int oldSize = size;
-			size -= value.size;
+			size -= value.getSize();
 			
 			notifySizeUpdate(oldSize);
 		} else {
@@ -117,6 +117,10 @@ public class Node implements ParameterValue {
 		} else {
 			throw new SymbolResolutionException("Symbol label '" + label + "' could not be resolved");
 		}
+	}
+	
+	public synchronized boolean has(String label) {
+		return symbolicMap.containsKey(label);
 	}
 	
 	public synchronized int indexOf(Node info) throws SymbolResolutionException {

@@ -76,15 +76,23 @@ public class ParameterSelector extends Menu {
 	protected void updateCursor(int cursor) {
 		super.updateCursor(cursor);
 		
+		int realID = id;
+		
 		if(target != null) {
-			if(mutable && id == 0) {
-				this.description = new MenuDescription("Add a new parameter to '" + target.getName() + "'");
-			} else {
-				this.parameter = target.getSpecification().getParameters().get(id - 1);
+			if(mutable) {
+				if(id == 0) {
+					this.description = new MenuDescription("Add a new parameter to '" + target.getName() + "'");
+				}
+				
+				realID -= 2;
+			}
+			
+			if(realID >= 0) {
+				this.parameter = target.getSpecification().getParameters().get(realID);
 				this.value = parameter.getValue();
 				this.description = new MenuDescription(parameter.getDisplayValue().toArray(new String[0]));
 
-				dispatch(new TargetUpdateEvent((id << 24) | target.getIdentifier()));	
+				dispatch(new TargetUpdateEvent(((realID + 1) << 24) | target.getIdentifier()));	
 			}
 		}
 	}
@@ -112,7 +120,7 @@ public class ParameterSelector extends Menu {
 	}
 	
 	private void createParameter(String name) {
-		this.parameter = new Parameter(name, new Information("Information"));
+		this.parameter = new Parameter(name, new Information("Constant"));
 		
 		dispatch(specManager.addParameter(parameter));
 		dispatch(new GeometryInvalidateEvent(1));

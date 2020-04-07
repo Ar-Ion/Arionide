@@ -45,6 +45,7 @@ public abstract class ParameterUpdater extends Menu {
 	protected Consumer<Void> onUpdate;
 
 	@Inherit
+	@Export
 	protected ParameterValue value;
 	
 	private SpecificationManager specManager;
