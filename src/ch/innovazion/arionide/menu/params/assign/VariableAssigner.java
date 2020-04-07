@@ -40,10 +40,6 @@ public class VariableAssigner extends ParameterUpdater {
 	
 	private List<Node> variables;
 
-	@Export
-	@Inherit
-	protected ParameterValue value;
-	
 	public VariableAssigner(MenuManager manager) {
 		super(manager, "New", "Remove", "Rename", null);
 	}

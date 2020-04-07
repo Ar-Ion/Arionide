@@ -152,7 +152,6 @@ public class CoreEventHandler implements EventHandler {
 						if(action.getType() == ActionType.PRESS) {
 							if(action.isButton(ActionEvent.BUTTON_LEFT)) {
 								controller.onLeftClick();
-								System.out.println("left click");
 							} else if(action.isButton(ActionEvent.BUTTON_RIGHT)) {
 								controller.onRightClick();
 							}
@@ -162,7 +161,7 @@ public class CoreEventHandler implements EventHandler {
 					} else if(event instanceof TargetUpdateEvent) {
 						TargetUpdateEvent targetUpdate = (TargetUpdateEvent) event;
 						
-						controller.select(targetUpdate.getTarget());
+						controller.requestFocus(targetUpdate.getTarget());
 					} else if(event instanceof TeleportEvent) {
 						TeleportEvent teleport = (TeleportEvent) event;
 						

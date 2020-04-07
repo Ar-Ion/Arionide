@@ -50,11 +50,11 @@ public class MenuManager extends StateManager {
 		hierarchy.structureBrowser.select(structure);
 	}
 	
-	public void selectCode(Structure code) {
-		hierarchy.codeBrowser.target = code;
-		
+	public void selectCode(Structure code) {		
 		go("/");
 		triggerAction(RootMenu.codeBrowser);
+		
+		hierarchy.codeBrowser.select(code);
 	}
 	
 	public void select(int cursor) {

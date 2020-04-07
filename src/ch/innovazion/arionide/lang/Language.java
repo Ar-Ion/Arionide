@@ -43,6 +43,8 @@ public abstract class Language implements Serializable {
 	public Language() {
 		this.major = getVersionMajor();
 		this.minor = getVersionMinor();
+		
+		registerInstructions();
 	}
 	
 	protected void registerProgram(Program program) {
@@ -91,7 +93,6 @@ public abstract class Language implements Serializable {
 	protected abstract short getVersionMinor();
 	public abstract String getVendorUID();
 	
-	public abstract boolean areStructureSpecificationsSupported();
 	public abstract Instruction getEntryPoint();
 	
 	public abstract Environment getEnvironment();

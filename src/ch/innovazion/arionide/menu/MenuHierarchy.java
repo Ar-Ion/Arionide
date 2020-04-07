@@ -53,6 +53,8 @@ import ch.innovazion.automaton.StateManager;
 
 public class MenuHierarchy extends StateHierarchy {
 	
+	private static final int nestingDepth = 8; // O(3^n)
+	
 	protected RootMenu root;
 	protected StructureBrowser structureBrowser;
 	protected CodeBrowser codeBrowser;
@@ -69,10 +71,10 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/structure/edit/specify", new ParameterSelector(manager, true));
 		register("/structure/edit/specify/create", new ParameterCreator(manager));
 		register("/structure/edit/specify/edit", new ParameterEditor(manager));
-		registerInformationUpdater("/structure/edit/specify/constant", manager, InformationEditor::new, 8);
+		registerInformationUpdater("/structure/edit/specify/constant", manager, InformationEditor::new, nestingDepth);
 		register("/structure/edit/specify/variable", new VariableEditor(manager));
 		register("/structure/edit/specify/variable/assign", new VariableAssigner(manager));
-		registerInformationUpdater("/structure/edit/specify/variable/edit", manager, InformationUpdater::new, 8);
+		registerInformationUpdater("/structure/edit/specify/variable/edit", manager, InformationUpdater::new, nestingDepth);
 		register("/structure/edit/comment", new CommentEditor(manager));
 		register("/structure/edit/language", new LanguageSelector(manager));
 		register("/structure/edit/tint", new TintSelector(manager));
@@ -84,10 +86,10 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/code/edit/append/operator", new OperatorAppender(manager));
 		register("/code/edit/append/operator/signature", new SignatureSelector(manager));
 		register("/code/edit/specify", new ParameterSelector(manager, false));
-		registerInformationUpdater("/code/edit/specify/constant", manager, InformationEditor::new, 8);
+		registerInformationUpdater("/code/edit/specify/constant", manager, InformationEditor::new, nestingDepth);
 		register("/code/edit/specify/variable", new VariableEditor(manager));
 		register("/code/edit/specify/variable/assign", new VariableAssigner(manager));
-		registerInformationUpdater("/code/edit/specify/variable/edit", manager, InformationUpdater::new, 8);
+		registerInformationUpdater("/code/edit/specify/variable/edit", manager, InformationUpdater::new, nestingDepth);
 	}
 	
 	private void registerInformationUpdater(String source, MenuManager manager, Function<MenuManager, InformationUpdater> supplier, int nesting) {

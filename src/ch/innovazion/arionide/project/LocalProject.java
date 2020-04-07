@@ -119,12 +119,13 @@ public class LocalProject implements Project {
 		try {
 			loadMeta();
 			
-			this.storage.loadHierarchy();
-			this.storage.loadInheritance();
-			this.storage.loadCallGraph();
-			this.storage.loadStructureMeta();
-			this.storage.loadHistory();
-			this.storage.loadCode();
+			storage.loadHierarchy();
+			storage.loadInheritance();
+			storage.loadCallGraph();
+			storage.loadStructureMeta();
+			storage.loadHistory();
+			storage.loadCode();
+			storage.loadLanguages();
 		} catch (StorageException exception) {
 			throw new StorageException("Project loading failed", exception);
 		}
@@ -133,7 +134,7 @@ public class LocalProject implements Project {
 	@IAm("saving a project")
 	public void save() throws StorageException {
 		try(OutputStream stream = Files.newOutputStream(this.storage.getMetaPath(), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)) {
-						
+
 			this.verifyProtocol();
 						
 			for(Entry<String, byte[]> property : this.properties.entrySet()) {
@@ -158,6 +159,14 @@ public class LocalProject implements Project {
 				stream.write(Coder.windowsNewline);
 				stream.write(Coder.newline);
 			}
+			
+			storage.saveHierarchy();
+			storage.saveInheritance();
+			storage.saveCallGraph();
+			storage.saveStructureMeta();
+			storage.saveHistory();
+			storage.saveCode();
+			storage.saveLanguages();
 		} catch(IOException exception) {
 			throw new StorageException("Project saving failed", exception);
 		}

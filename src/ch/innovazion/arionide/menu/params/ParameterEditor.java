@@ -65,15 +65,14 @@ public class ParameterEditor extends Menu {
 	protected void onEnter() {
 		super.onEnter();
 		this.specManager = project.getStructureManager().loadSpecificationManager(target);
-		
-		this.frozen = parameter.isFrozen();
-		
-		if(frozen) {
+				
+		if(parameter.isFrozen()) {
 			setDynamicElements("Unfreeze");
 		} else {
 			setDynamicElements("Freeze");
 		}
 		
+		this.frozen = false;
 		this.value = parameter.getValue();
 		
 		updateCursor(0);

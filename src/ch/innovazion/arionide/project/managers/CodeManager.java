@@ -96,7 +96,9 @@ public class CodeManager extends Manager {
 		}
 				
 		int structureID = allocator.allocStructure();
-		MutableCode code = new MutableCode(resolvedDefinition);
+		MutableCode code = new MutableCode(structureID, resolvedDefinition);
+		
+		code.setLanguage(host.getLanguage());
 		
 		getStructures().put(structureID, code);
 		saveStructures();

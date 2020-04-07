@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ch.innovazion.arionide.lang.avr.AVRLanguage;
+
 public class LanguageManager {
 	
 	private static final List<String> names = new ArrayList<>();
@@ -33,7 +35,7 @@ public class LanguageManager {
 	
 	
 	static {
-		register("AVR", null);
+		register("AVR", new AVRLanguage());
 	}
 	
 	

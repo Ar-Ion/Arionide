@@ -155,29 +155,35 @@ public class StructureManager extends Manager {
 		for(MutableHierarchyElement element : list) {
 			if(element.getID() == id) {
 				if(language != null) {
-
-					if(!getLanguages().containsKey(language)) {
-						Language lang = LanguageManager.get(language);
+					Language lang = LanguageManager.get(language);
+					Integer installationPoint = getLanguages().get(language);
+					Structure entryCodeBase = null;
+					
+					if(installationPoint == null) {
+						System.out.println("Installing language " + language + " onto project...");
 						
 						try {
-							Structure entryCodeBase = installLanguage(lang);
+							entryCodeBase = installLanguage(lang);
 							getLanguages().put(language, entryCodeBase.getIdentifier()); // Register language in the project root
-							
-							setLanguage(element, language, entryCodeBase);
 						} catch(Exception e) {
 							e.printStackTrace();
 							return new MessageEvent("Failed to install language " + lang, MessageType.ERROR);
 						}
+					} else {
+						entryCodeBase = getStructures().get(installationPoint);
 					}
+					
+					setLanguage(element, language, entryCodeBase);
 				} else {
 					resetCodeChain(element);
 				}
 			}
 		}
-
+		
 		saveCode();
 		saveStructures();
-		
+		saveLanguages();
+				
 		return success();
 	}
 	
@@ -185,16 +191,18 @@ public class StructureManager extends Manager {
 		int currentID = element.getID();
 		
 		getStructures().get(currentID).setLanguage(language);
-	
+			
 		int entryInstanceID = allocator.allocStructure();
 		
 		MutableCodeChain chain = new MutableCodeChain();
-		MutableCode entryPointInfo = new MutableCode(entryCodeBase);
+		MutableCode entryPointInfo = new MutableCode(entryInstanceID, entryCodeBase);
 		MutableHierarchyElement entryPoint = new MutableHierarchyElement(entryInstanceID, new ArrayList<>());
+		
+		entryPointInfo.setLanguage(language);
 		
 		chain.getMutableList().add(entryPoint);
 		
-		getStructures().put(entryInstanceID, entryPointInfo);		
+		getStructures().put(entryInstanceID, entryPointInfo);	
 		getCode().put(currentID, chain);
 		
 		
@@ -216,8 +224,9 @@ public class StructureManager extends Manager {
 	 */
 	private Structure installLanguage(Language lang) {
 		if(lang != null) {
+			Structure entry = installInstruction(lang.getEntryPoint());
 			lang.getStandardInstructions().forEach(this::installInstruction);
-			return installInstruction(lang.getEntryPoint());
+			return entry;
 		} else {
 			throw new IllegalArgumentException("Unable to find requested language");
 		}

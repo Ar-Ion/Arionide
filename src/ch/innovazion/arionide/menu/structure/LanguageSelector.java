@@ -47,9 +47,9 @@ public class LanguageSelector extends Menu {
 		super.onEnter();
 		
 		List<String> languages = LanguageManager.getAvailableLanguages();
-		
+				
 		setDynamicElements(languages.toArray(new String[0]));
-		updateCursor(languages.indexOf(target.getLanguage()));
+		updateCursor(1 + languages.indexOf(target.getLanguage()));
 	}
 	
 	protected void updateCursor(int cursor) {

@@ -46,9 +46,7 @@ public abstract class Browser extends Menu {
 		browsables = elements.stream().map(HierarchyElement::getID).map(project.getStorage().getStructures()::get).collect(Collectors.toList());
 		
 		setDynamicElements(browsables.stream().map(Structure::getName).toArray(String[]::new));
-				
-		generateDescription();
-		
+						
 		super.onEnter();
 	}
 	

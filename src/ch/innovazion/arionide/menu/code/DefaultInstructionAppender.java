@@ -27,21 +27,30 @@ import java.util.List;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Language;
 import ch.innovazion.arionide.lang.LanguageManager;
+import ch.innovazion.arionide.menu.MenuDescription;
 import ch.innovazion.arionide.menu.MenuManager;
 
 public class DefaultInstructionAppender extends InstructionAppender {
 
 	public DefaultInstructionAppender(MenuManager manager) {
-		super(manager, "<Operator>");
+		super(manager, "Operator");
 	}
 
 	protected List<Instruction> getInstructions() {
 		Language lang = LanguageManager.get(target.getLanguage());
-
+				
 		if(lang != null) {
 			return lang.getStandardInstructions();
 		} else {
 			return Arrays.asList();
+		}
+	}
+	
+	protected void updateCursor(int cursor) {
+		super.updateCursor(cursor);
+		
+		if(id == 0) {
+			this.description = new MenuDescription("Append an operator");
 		}
 	}
 

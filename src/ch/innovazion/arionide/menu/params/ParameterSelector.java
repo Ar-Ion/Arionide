@@ -69,8 +69,8 @@ public class ParameterSelector extends Menu {
 	protected void onEnter() {		
 		this.specManager = project.getStructureManager().loadSpecificationManager(target);
 		setDynamicElements(target.getSpecification().getParameters().stream().map(Parameter::getName).toArray(String[]::new));
-		updateCursor(0);
 		super.onEnter();
+		updateCursor(0);
 	}
 	
 	protected void updateCursor(int cursor) {
@@ -87,12 +87,14 @@ public class ParameterSelector extends Menu {
 				realID -= 2;
 			}
 			
-			if(realID >= 0) {
+			if(realID >= 0 && realID < target.getSpecification().getParameters().size()) {
 				this.parameter = target.getSpecification().getParameters().get(realID);
 				this.value = parameter.getValue();
 				this.description = new MenuDescription(parameter.getDisplayValue().toArray(new String[0]));
 
 				dispatch(new TargetUpdateEvent(((realID + 1) << 24) | target.getIdentifier()));	
+			} else {
+				this.description = new MenuDescription("No parameter");
 			}
 		}
 	}

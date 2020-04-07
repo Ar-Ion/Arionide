@@ -15,7 +15,6 @@ public class VariableEditor extends ParameterUpdater {
 		super(manager, "Assign", "Initialise");
 	}
 	
-	@Override
 	public void onAction(String action) {
 		switch(action) {
 		case "Assign":

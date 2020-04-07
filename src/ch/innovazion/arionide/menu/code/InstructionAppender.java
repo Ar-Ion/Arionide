@@ -39,6 +39,9 @@ import ch.innovazion.automaton.Inherit;
 
 public abstract class InstructionAppender extends Menu {
 
+	private final MenuManager manager;
+	private final int numStaticElements;
+
 	@Export
 	@Inherit
 	protected Structure target;
@@ -50,14 +53,16 @@ public abstract class InstructionAppender extends Menu {
 	protected Instruction instruction;
 	
 	private List<Instruction> instructions = new ArrayList<>();
-	
+		
 	public InstructionAppender(MenuManager manager, String... staticElements) {
 		super(manager, staticElements);
+		this.manager = manager;
+		this.numStaticElements = staticElements.length;
 	}
 	
 	protected void onEnter() {
 		super.onEnter();
-		
+				
 		this.instructions = getInstructions();
 		setDynamicElements(instructions.stream().map(Instruction::toString).toArray(String[]::new));
 	}
@@ -65,9 +70,11 @@ public abstract class InstructionAppender extends Menu {
 	protected void updateCursor(int cursor) {
 		super.updateCursor(cursor);
 		
-		if(instructions != null) {
-			Instruction instr = instructions.get(id);
+		if(instructions != null && id >= numStaticElements && id < numStaticElements + instructions.size()) {
+			Instruction instr = instructions.get(id - numStaticElements);
 			generateDescription(instr.getStructureModel());	
+		} else {
+			this.description = new MenuDescription();
 		}
 	}
 	
@@ -96,17 +103,18 @@ public abstract class InstructionAppender extends Menu {
 	protected void appendInstruction(int instructionID) {
 		this.instruction = instructions.get(instructionID);
 		this.previousIndex = project.getStructureManager().getCodeManager().getCurrentCode().indexOf(target.getIdentifier());
-		
+						
 		if(instruction.getStructureModel().hasUniqueSignature()) {
-			dispatch(project.getStructureManager().getCodeManager().insertCode(this.previousIndex, this.instruction, 0));
+			dispatch(project.getStructureManager().getCodeManager().insertCode(previousIndex + 1, this.instruction, 0));
 			
 			int newTargetID = project.getStructureManager().getCodeManager().getCurrentCode().getID(previousIndex + 1);
 			this.target = project.getStorage().getStructures().get(newTargetID);
 			
 			dispatch(new GeometryInvalidateEvent(0));
 			dispatch(new TargetUpdateEvent(target.getIdentifier()));
+			manager.selectCode(target);
 			
-			go("/code/edit/specify");
+			go("edit");
 		} else {
 			go("signature");
 		}

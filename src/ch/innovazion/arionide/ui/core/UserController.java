@@ -250,12 +250,7 @@ public class UserController {
 	}
 	
 	protected void setFocus(WorldElement element) {		
-		if(!core.getHostStack().isEmpty()) {
-			/*CodeBrowser menu = MainMenus.getCodeBrowser();
-
-			menu.setSelectedID(element.getID());
-			menu.show();*/
-				
+		if(!core.getHostStack().isEmpty()) {				
 			Vector3f focus = element.getCenter().sub(position).normalize();
 			
 			yaw = Geometry.PI - (float) Math.atan2(focus.x, focus.z);

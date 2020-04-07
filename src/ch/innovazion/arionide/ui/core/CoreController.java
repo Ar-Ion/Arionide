@@ -164,11 +164,15 @@ public class CoreController {
 			CodeManager manager = project.getStructureManager().getCodeManager();
 						
 			if(focus != null) {
-				user.setFocus(focus);
+				this.selection = focus;
 			} else if(manager.hasCode()) {
 				manager.getCurrentCode().list().stream().findFirst().ifPresent((e) -> {
-					user.setFocus(mainCodeGeometry.getElementByID(e.getID()));
+					this.selection = mainCodeGeometry.getElementByID(requestedFocus);
 				});
+			}
+			
+			if(selection != null) {
+				// user.setFocus(selection);
 			}
 		} else {
 			requestFocus.getAndUpdate(x -> x < 0 ? x : x-1);
@@ -323,8 +327,8 @@ public class CoreController {
 
 			if(code.contains(selection)) {				
 				if((id & 0xFF000000) == 0) {
-					// In the case of a code instruction
-
+					Structure struct = project.getStorage().getStructures().get(id);
+					menu.selectCode(struct);
 				} else {
 					// In the case of a specification element
 					int instructionID = selection.getID() & 0xFFFFFF;

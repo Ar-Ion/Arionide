@@ -42,7 +42,7 @@ public class MutableCodeChain extends CodeChain {
 		int chainID = code.indexOf(new MutableHierarchyElement(id, null));
 		
 		if(chainID < 0) {
-			throw new NoSuchElementException();
+			throw new NoSuchElementException("Code object not found: " + id);
 		} else {
 			return chainID;
 		}

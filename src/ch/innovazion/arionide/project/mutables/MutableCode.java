@@ -29,8 +29,8 @@ public class MutableCode extends MutableStructure {
 	
 	private final Structure codeBase;
 
-	public MutableCode(Structure codeBase) {
-		super(codeBase.getIdentifier(), -1);
+	public MutableCode(int id, Structure codeBase) {
+		super(id, -1);
 		
 		this.codeBase = codeBase;
 		setSpecification(new Specification(codeBase.getSpecification()));

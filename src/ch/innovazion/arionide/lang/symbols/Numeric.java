@@ -85,6 +85,13 @@ public class Numeric extends AtomicValue {
 		}
 	}
 	
+	public Numeric cast(int length) {
+		Bit[] buffer = new Bit[length];
+		System.arraycopy(data, 0, buffer, 0, length);
+		this.data = buffer;
+		return this;
+	}
+	
 	public int getSize() {
 		return data.length;
 	}

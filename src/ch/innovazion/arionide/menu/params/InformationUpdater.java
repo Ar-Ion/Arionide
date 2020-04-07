@@ -71,7 +71,6 @@ public class InformationUpdater extends ParameterUpdater {
 				
 		if(identifier.equals("value")) {
 			this.infoManager = getSpecificationManager().loadInformationManager(value);
-			updateCurrentNode(infoManager.getRootNode());	
 		}
 	}
 	
@@ -84,8 +83,8 @@ public class InformationUpdater extends ParameterUpdater {
 		this.children = currentNode.getNodes();
 		
 		List<String> elements = new ArrayList<>();
-		
-		if(value instanceof Number) {
+				
+		if(currentNode instanceof Numeric) {
 			elements.add("Set number");
 			
 			if(!frozen) {
@@ -94,7 +93,7 @@ public class InformationUpdater extends ParameterUpdater {
 			}
 			
 			this.separator = elements.size();
-		} else if(value instanceof Text) {
+		} else if(currentNode instanceof Text) {
 			elements.add("Set text");
 			
 			if(!frozen) {
@@ -103,7 +102,7 @@ public class InformationUpdater extends ParameterUpdater {
 			}
 			
 			this.separator = elements.size();
-		} else if(value instanceof Enumeration) {
+		} else if(currentNode instanceof Enumeration) {
 			elements.add("Setup enumeration");
 		
 			if(!frozen) {
@@ -112,7 +111,7 @@ public class InformationUpdater extends ParameterUpdater {
 			}
 			
 			this.separator = elements.size();
-		} else if(value instanceof Variable) {
+		} else if(currentNode instanceof Variable) {
 			elements.add("Setup variable");
 
 			if(!frozen) {
@@ -121,7 +120,7 @@ public class InformationUpdater extends ParameterUpdater {
 			}
 			
 			this.separator = elements.size();
-		} else if(value instanceof Reference) {
+		} else if(currentNode instanceof Reference) {
 			elements.add("Setup reference");
 
 			if(!frozen) {
@@ -232,6 +231,8 @@ public class InformationUpdater extends ParameterUpdater {
 		Node node = new Node("new_node");
 		dispatch(infoManager.assign(currentNode, node));
 		dispatch(new GeometryInvalidateEvent(0));
+		
+		updateCurrentNode(node);
 		updateParameter();
 	}
 	
@@ -240,6 +241,7 @@ public class InformationUpdater extends ParameterUpdater {
 		dispatch(infoManager.assign(currentNode, enumeration));
 		dispatch(new GeometryInvalidateEvent(0));
 		
+		updateCurrentNode(enumeration);
 		updateParameter();
 		
 		this.value = enumeration;
@@ -250,6 +252,8 @@ public class InformationUpdater extends ParameterUpdater {
 		Variable variable = new Variable();
 		dispatch(infoManager.assign(currentNode, variable));
 		dispatch(new GeometryInvalidateEvent(0));
+		
+		updateCurrentNode(variable);
 		updateParameter();
 		
 		this.value = variable;
@@ -261,6 +265,7 @@ public class InformationUpdater extends ParameterUpdater {
 		dispatch(infoManager.assign(currentNode, ref));
 		dispatch(new GeometryInvalidateEvent(0));
 		
+		updateCurrentNode(ref);
 		updateParameter();
 		
 		this.value = ref;		

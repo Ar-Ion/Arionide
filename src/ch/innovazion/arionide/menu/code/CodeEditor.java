@@ -21,6 +21,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.code;
 
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.Structure;
@@ -35,6 +36,10 @@ public class CodeEditor extends Menu {
 	
 	public CodeEditor(MenuManager manager) {
 		super(manager, "Delete", "Append", "Specify");
+	}
+	
+	protected void onEnter() {
+		super.onEnter();
 		updateCursor(1);
 	}
 
@@ -42,6 +47,7 @@ public class CodeEditor extends Menu {
 		switch(action) {
 		case "Delete":
 			dispatch(project.getStructureManager().getCodeManager().deleteCode(target.getIdentifier()));
+			dispatch(new GeometryInvalidateEvent(0));
 			break;
 		case "Append":
 			go("append");

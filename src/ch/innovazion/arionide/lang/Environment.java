@@ -34,9 +34,21 @@ import ch.innovazion.arionide.ui.topology.Point;
 
 public abstract class Environment {
 
-	private final AtomicLong programCounter = new AtomicLong();
+	private final long frequency;
 	
+	private final AtomicLong programCounter = new AtomicLong();
+	private final AtomicLong clock = new AtomicLong();
+	private final AtomicLong timer = new AtomicLong();
+
 	private final List<Peripheral> peripherals = new ArrayList<>();
+	
+	private Label pcLabel;
+	private Label clkLabel;
+	private Label timLabel;
+
+	protected Environment(long frequency) {
+		this.frequency = frequency;
+	}
 	
 	protected void registerPeripheral(Peripheral peripheral) {
 		peripherals.add(peripheral);
@@ -44,8 +56,20 @@ public abstract class Environment {
 	
 	public void sample() {
 		peripherals.forEach(Peripheral::sample);
+		
+		if(pcLabel != null) {
+			pcLabel.setLabel("Program Counter: " + pcLabel);
+		}
+		
+		if(clkLabel != null) {
+			clkLabel.setLabel("Clock: " + clock + " [ticks] (" + (1000.0f * clock.get() / frequency) + "ms)");
+		}
+		
+		if(timLabel != null) {
+			timLabel.setLabel("Timer: " + timer + " [ticks] (" + (1000.0f * timer.get() / frequency) + "ms)");
+		}
 	}
-	
+		
 	public Container create(AppManager manager, Bounds renderBounds) {
 		LayoutManager layoutManager = new LayoutManager(manager.getDrawingContext(), manager.getEventDispatcher());
 		
@@ -56,28 +80,38 @@ public abstract class Environment {
 		
 		layoutManager.register(container, null, firstPoint.getX(), firstPoint.getY(), secondPoint.getX(), secondPoint.getY());
 		
-		float height = 1.0f / peripherals.size();
-		float x = 0.0f;
+		float height = 0.9f / peripherals.size();
+		float y = 0.1f;
+		
+		container.add(this.pcLabel = new Label(container, null), 0.0f, 0.0f, 0.05f, 0.0f);
+		container.add(this.clkLabel = new Label(container, null), 0.05f, 0.0f, 0.075f, 0.0f);
+		container.add(this.timLabel = new Label(container, null), 0.075f, 0.0f, 0.1f, 0.0f);
 		
 		for(Peripheral peripheral : peripherals) {
 			Container display = new Container(container, layoutManager);
 
-			container.add(new Label(container, peripheral.getUID()), x, 0.0f, x + 0.2f * height, 1.0f);
-			container.add(display, x + 0.2f * height, 0.0f, x + height, 1.0f);
+			container.add(new Label(container, peripheral.getUID()), y, 0.0f, y + 0.2f * height, 1.0f);
+			container.add(display, 0.0f, y + 0.2f * height, 1.0f, y + height);
 			
-			x += height;
+			y += height;
 			
 			peripheral.createDisplay(display);
 		}
-		
+				
 		layoutManager.compute();
 		layoutManager.apply();
+		
+		sample();
 		
 		return container;
 	}
 	
 	public AtomicLong getProgramCounter() {
 		return programCounter;
+	}
+	
+	public AtomicLong getClock() {
+		return clock;
 	}
 	
 	public abstract Language getLanguage();

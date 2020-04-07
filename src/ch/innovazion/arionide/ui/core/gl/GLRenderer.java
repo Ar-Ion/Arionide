@@ -71,8 +71,8 @@ import ch.innovazion.arionide.ui.topology.Bounds;
 
 public class GLRenderer extends Renderer {
 		
-	//private static final List<Integer> qualities = Arrays.asList(16, 20, 24, 28, 32);
-	private static final List<Integer> qualities = Arrays.asList(4);
+	private static final List<Integer> qualities = Arrays.asList(16, 20, 24, 28, 32);
+	//private static final List<Integer> qualities = Arrays.asList(4);
 
 	private static final int smallStarsCount = 2048;
 	private static final int bigStarsCount = 128;
@@ -101,7 +101,7 @@ public class GLRenderer extends Renderer {
 	private final Structure[] structures = qualities.stream().map(Structure::new).toArray(Structure[]::new);
 	private final GeneralStructureSettings jointStructureSettings = Utils.bind(GeneralStructureSettings.class, Stream.of(structures).map(Structure::getSettings).toArray(GeneralStructureSettings[]::new));
 	
-	private final Link link = new Link(5);
+	private final Link link = new Link(32);
 	
 	private final FBOFrame fx = new FBOFrame();
 	
@@ -347,7 +347,6 @@ public class GLRenderer extends Renderer {
 			WorldElement second = connection.getSecondElement();
 						
 			Vector4f color = first.getColor().add(second.getColor()).mul(0.5f);
-			
 			
 			connect(gl, first.getCenter(), second.getCenter(), first.getSize(), second.getSize(), color);
 		}
