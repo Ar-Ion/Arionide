@@ -142,6 +142,12 @@ public class Tab extends MultiComponent implements EventHandler {
 	public void setComponents(List<Component> components) {
 		super.setComponents(components);
 		this.updateAll();
+		
+		if(components.size() > 0) {
+			if(this.signal != null) {
+				this.getAppManager().getEventDispatcher().fire(new ClickEvent(this, this.signal, 0));
+			}
+		}
 	}
 	
 	public void setComponents(String... tabs) {

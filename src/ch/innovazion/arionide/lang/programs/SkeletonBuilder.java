@@ -58,6 +58,8 @@ public class SkeletonBuilder extends Program {
 	}
 	
 	private void build(Callable target, Skeleton skeleton, Map<String, Instruction> instructionSet, ProgramIO io) {
+		io.log("Building skeleton for structure '" + target.getName() + "'");
+
 		skeleton.registerData(getState(target.getIdentifier()));
 		skeleton.registerRodata(getConstants(target.getIdentifier()));
 		skeleton.registerBSS(getProperties(target.getIdentifier()));
@@ -86,25 +88,29 @@ public class SkeletonBuilder extends Program {
 						if(nextTarget != null) {
 							next.add(nextTarget);
 						} else {
-							io.error("Invalid reference: " + ref.toString() + "(" + target.getIdentifier() + ":" + codeElement.getIdentifier() + ")");
+							io.error("Invalid reference: " + ref.toString() + " (" + target.getIdentifier() + ":" + codeElement.getIdentifier() + ")");
 							failure = true;
 						}
 					}
 				}
 			} else {
-				io.error("Invalid instruction: " + codeElement.toString() + "(" + target.getIdentifier() + ":" + codeElement.getIdentifier() + ")");
+				io.error("Invalid instruction: " + codeElement.toString() + " (" + target.getIdentifier() + ":" + codeElement.getIdentifier() + ")");
 				failure = true;
 			}
 		}
-		
+				
 		skeleton.registerText(target, length);
 		
 		for(Callable callable : next) {
 			build(callable, skeleton, instructionSet, io);
 		}
 		
+		System.out.println(skeleton.getText());
+		
 		if(failure) {
 			io.error("Failed to build skeleton for structure '" + target.getName() + "' (" + target.getIdentifier() + ":?)");
+		} else {
+			io.success("Skeleton built for structure '" + target.getName() + "'");
 		}
 	}
 	

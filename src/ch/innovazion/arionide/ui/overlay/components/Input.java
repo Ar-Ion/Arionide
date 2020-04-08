@@ -21,7 +21,6 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.overlay.components;
 
-import java.awt.Cursor;
 import java.util.Set;
 
 import com.jogamp.newt.event.KeyEvent;
@@ -77,8 +76,6 @@ public class Input extends Button implements EventHandler {
 		
 		this.placeholder = placeholder;
 		this.animation = new FieldModifierAnimation(parent.getAppManager(), "cursorAlpha", Input.class, this);
-		
-		this.setOverCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 	}
 	
 	public void load() {

@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ch.innovazion.arionide.project.Storage;
+
 public abstract class Language implements Serializable {
 
 	private static final long serialVersionUID = 3353249857547492745L;
@@ -47,12 +49,21 @@ public abstract class Language implements Serializable {
 		registerInstructions();
 	}
 	
+	public void loadPrograms(Storage storage) {
+		programs.clear();
+		registerPrograms(storage);
+	}
+	
 	protected void registerProgram(Program program) {
 		programs.add(program);
 	}
-	
+
 	protected void registerInstruction(Instruction instruction) {
 		instructions.add(instruction);
+		instructionSet.put(instruction.toString(), instruction);
+	}
+	
+	protected void registerShadowInstruction(Instruction instruction) {
 		instructionSet.put(instruction.toString(), instruction);
 	}
 	
@@ -83,12 +94,17 @@ public abstract class Language implements Serializable {
 		return Collections.unmodifiableMap(instructionSet);
 	}
 	
+	public List<Program> getPrograms() {
+		return Collections.unmodifiableList(programs);
+	}
+	
 	protected String getVersion() {
 		return major + "." + minor;
 	}
 	
 	protected abstract void registerInstructions();
-	
+	protected abstract void registerPrograms(Storage storage);
+
 	protected abstract short getVersionMajor();
 	protected abstract short getVersionMinor();
 	public abstract String getVendorUID();
@@ -96,5 +112,4 @@ public abstract class Language implements Serializable {
 	public abstract Instruction getEntryPoint();
 	
 	public abstract Environment getEnvironment();
-	public abstract List<Program> getPrograms();
 }

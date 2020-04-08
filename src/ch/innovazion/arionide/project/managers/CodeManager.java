@@ -94,7 +94,7 @@ public class CodeManager extends Manager {
 		if(resolvedDefinition == null || !resolvedDefinition.getName().equals(instr.getStructureModel().getUniqueName())) {
 			return new MessageEvent("Failed to retrieve the definition of this instruction... Try reinstalling the target language", MessageType.ERROR);
 		}
-				
+						
 		int structureID = allocator.allocStructure();
 		MutableCode code = new MutableCode(structureID, resolvedDefinition);
 		

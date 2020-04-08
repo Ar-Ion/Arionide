@@ -29,7 +29,7 @@ public abstract class WorkingThread extends Thread {
 	
 	private boolean running = false;
 	private long initTime = System.currentTimeMillis();
-	private int ticks = 0;
+	private long ticks = 0;
 	
 	public void run() {
 		while(true) {
@@ -63,8 +63,8 @@ public abstract class WorkingThread extends Thread {
 		this.initTime = System.currentTimeMillis();
 	}
 	
-	public int pollTicks() {
-		int buffer = this.ticks;
+	public long pollTicks() {
+		long buffer = this.ticks;
 		this.ticks = 0;
 		return buffer;
 	}

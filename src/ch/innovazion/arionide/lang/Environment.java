@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
 import ch.innovazion.arionide.ui.overlay.Container;
@@ -58,7 +59,7 @@ public abstract class Environment {
 		peripherals.forEach(Peripheral::sample);
 		
 		if(pcLabel != null) {
-			pcLabel.setLabel("Program Counter: " + pcLabel);
+			pcLabel.setLabel("Program Counter: 0x" + Long.toHexString(programCounter.get()));
 		}
 		
 		if(clkLabel != null) {
@@ -70,25 +71,32 @@ public abstract class Environment {
 		}
 	}
 		
-	public Container create(AppManager manager, Bounds renderBounds) {
-		LayoutManager layoutManager = new LayoutManager(manager.getDrawingContext(), manager.getEventDispatcher());
-		
-		Container container = new Container(null, layoutManager);
+	public Container create(AppManager manager, Bounds renderBounds, LayoutManager dedicatedLayoutManager) {				
+		Container container = new Container(null, dedicatedLayoutManager) {
+			public void drawComponents(AppDrawingContext context) {
+				sample();
+				super.drawComponents(context);
+			}
+			
+			public AppManager getAppManager() {
+				return manager;
+			}
+		};
 		
 		Point firstPoint = renderBounds.getFirstPoint();
 		Point secondPoint = renderBounds.getSecondPoint();
 		
-		layoutManager.register(container, null, firstPoint.getX(), firstPoint.getY(), secondPoint.getX(), secondPoint.getY());
+		dedicatedLayoutManager.register(container, null, firstPoint.getX(), firstPoint.getY(), secondPoint.getX(), secondPoint.getY());
 		
 		float height = 0.9f / peripherals.size();
 		float y = 0.1f;
 		
-		container.add(this.pcLabel = new Label(container, null), 0.0f, 0.0f, 0.05f, 0.0f);
-		container.add(this.clkLabel = new Label(container, null), 0.05f, 0.0f, 0.075f, 0.0f);
-		container.add(this.timLabel = new Label(container, null), 0.075f, 0.0f, 0.1f, 0.0f);
-		
+		container.add(this.pcLabel = new Label(container, new String()), 0.0f, 0.0f, 0.3f, 0.1f);
+		container.add(this.clkLabel = new Label(container, new String()), 0.4f, 0.0f, 0.6f, 0.1f);
+		container.add(this.timLabel = new Label(container, new String()), 0.7f, 0.0f, 0.9f, 0.1f);
+				
 		for(Peripheral peripheral : peripherals) {
-			Container display = new Container(container, layoutManager);
+			Container display = new Container(container, dedicatedLayoutManager);
 
 			container.add(new Label(container, peripheral.getUID()), y, 0.0f, y + 0.2f * height, 1.0f);
 			container.add(display, 0.0f, y + 0.2f * height, 1.0f, y + height);
@@ -97,12 +105,11 @@ public abstract class Environment {
 			
 			peripheral.createDisplay(display);
 		}
-				
-		layoutManager.compute();
-		layoutManager.apply();
 		
-		sample();
-		
+		pcLabel.setVisible(true);
+		clkLabel.setVisible(true);
+		timLabel.setVisible(true);
+						
 		return container;
 	}
 	

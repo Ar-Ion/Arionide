@@ -172,7 +172,7 @@ public class CoreController {
 			}
 			
 			if(selection != null) {
-				// user.setFocus(selection);
+				user.setFocus(selection);
 			}
 		} else {
 			requestFocus.getAndUpdate(x -> x < 0 ? x : x-1);

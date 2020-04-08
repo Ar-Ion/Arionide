@@ -26,6 +26,7 @@ import java.util.List;
 
 import ch.innovazion.arionide.debugging.IAm;
 import ch.innovazion.arionide.project.Project;
+import ch.innovazion.arionide.threading.ProgramThread;
 
 public interface Workspace extends Resource, MappedStructure, Saveable, Loadable {
 	
@@ -34,6 +35,7 @@ public interface Workspace extends Resource, MappedStructure, Saveable, Loadable
 	@IAm("getting the list of available projects")
 	public Project getCurrentProject();
 	
+	public ProgramThread getProgramThread();
 	
 	@IAm("loading a project")
 	public void loadProject(Project project);

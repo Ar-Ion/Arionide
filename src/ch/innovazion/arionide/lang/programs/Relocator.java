@@ -22,9 +22,12 @@
 package ch.innovazion.arionide.lang.programs;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ch.innovazion.arionide.lang.ApplicationMemory;
+import ch.innovazion.arionide.lang.Language;
+import ch.innovazion.arionide.lang.LanguageManager;
 import ch.innovazion.arionide.lang.Program;
 import ch.innovazion.arionide.lang.Skeleton;
 import ch.innovazion.arionide.lang.symbols.Callable;
@@ -38,15 +41,32 @@ public class Relocator extends Program {
 	}
 	
 	public void run(int rootStructure, ProgramIO io) {
+		io.log("Relocating application memory...");
+
 		Skeleton skeleton = io.in(Skeleton.class);
 		
 		if(skeleton != null) {
 			Map<Long, Callable> text = new HashMap<>();
 			Map<Long, Node> data = new HashMap<>();
 			
+			Callable root = getCallable(rootStructure);
+			Language lang = LanguageManager.get(root.getLanguage());
+			
 			for(Callable callable : skeleton.getText()) {
-				text.put(skeleton.getTextAddress(callable), callable);
+				List<Callable> instructions = getInstructions(callable.getIdentifier());
+				long address = skeleton.getTextAddress(callable);
+				
+				for(Callable instr : instructions) {					
+					long length = lang.getInstructionSet().get(instr.getName()).getLength();
+
+					if(length > 0) {
+						text.put(address, instr);
+						address += length;	
+					}
+				}
 			}
+			
+			System.out.println(text);
 			
 			for(Node info : skeleton.getRodata()) {
 				data.put(skeleton.getRodataAddress(info), info);
@@ -59,11 +79,12 @@ public class Relocator extends Program {
 			for(Node info : skeleton.getData()) {
 				data.put(skeleton.getDataAddress(info), info);
 			}
-			
+						
 			io.out(new ApplicationMemory(text, data));
+			io.success("Relocation succeeded.");
 		} else {
 			io.fatal("Cannot run relocator without having built the application skeleton");
-		}		
+		}
 	}
 
 	public String getName() {

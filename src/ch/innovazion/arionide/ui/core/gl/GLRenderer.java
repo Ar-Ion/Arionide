@@ -338,7 +338,7 @@ public class GLRenderer extends Renderer {
 		settings.setColor(new Vector4f(1.0f));
 		settings.setAmbientFactor(1.0f);
 		
-		gl.glEnable(GL4.GL_DEPTH_TEST);
+		gl.glDisable(GL4.GL_DEPTH_TEST);
 
 		link.bind();
 		
@@ -347,11 +347,12 @@ public class GLRenderer extends Renderer {
 			WorldElement second = connection.getSecondElement();
 						
 			Vector4f color = first.getColor().add(second.getColor()).mul(0.5f);
+			color.w = 0.25f;
 			
 			connect(gl, first.getCenter(), second.getCenter(), first.getSize(), second.getSize(), color);
 		}
 		
-		gl.glDisable(GL4.GL_DEPTH_TEST);
+		gl.glEnable(GL4.GL_DEPTH_TEST);
 	}
 	
 	private void connect(GL4 gl, Vector3f first, Vector3f second, float firstSize, float secondSize, Vector4f color) {		

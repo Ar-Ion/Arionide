@@ -41,6 +41,7 @@ import ch.innovazion.arionide.events.ProjectOpenEvent;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.project.LocalProject;
 import ch.innovazion.arionide.project.Project;
+import ch.innovazion.arionide.threading.ProgramThread;
 
 public class LocalWorkspace implements Workspace {
 	
@@ -57,16 +58,18 @@ public class LocalWorkspace implements Workspace {
 	private final File configurationFile;
 
 	private final IEventDispatcher dispatcher;
+	private final ProgramThread programThread;
 	
 	private final Map<String, String> properties = new LinkedHashMap<>();
 	
 	private final List<? super Project> projects = new ArrayList<>();
 	private Project current = null;
 	
-	public LocalWorkspace(File path, IEventDispatcher dispatcher) {
+	public LocalWorkspace(File path, IEventDispatcher dispatcher, ProgramThread programThread) {
 		this.path = path;
 		this.configurationFile = new File(this.path, "workspace.config");
 		this.dispatcher = dispatcher;
+		this.programThread = programThread;
 		
 		if(!this.configurationFile.exists()) {
 			save();
@@ -136,6 +139,10 @@ public class LocalWorkspace implements Workspace {
 
 	public Project getCurrentProject() {
 		return this.current;
+	}
+	
+	public ProgramThread getProgramThread() {
+		return this.programThread;
 	}
 
 	public void loadProject(Project project) {

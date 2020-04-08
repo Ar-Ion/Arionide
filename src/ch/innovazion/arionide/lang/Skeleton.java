@@ -45,24 +45,24 @@ public class Skeleton {
 	private long textLength = 0;
 
 	public void registerData(Node info) {
-		data.add(info);
 		dataMap.put(info, getDataLength());
+		data.add(info);
 	}
 	
 	public void registerRodata(Node info) {
-		rodata.add(info);
 		rodataMap.put(info, getRodataLength());
+		rodata.add(info);
 	}
 	
 	public void registerBSS(Node info) {
-		bss.add(info);
 		bssMap.put(info, getBSSLength());
+		bss.add(info);
 	}
 	
 	public void registerText(Callable target, int length) {
-		text.add(target);
 		textMap.put(target, textLength);
-		
+		text.add(target);
+
 		textLength += length;
 	}
 	
@@ -138,7 +138,7 @@ public class Skeleton {
 	}
 	
 	public List<Node> getBSS() {
-		return Collections.unmodifiableList(rodata);
+		return Collections.unmodifiableList(bss);
 	}
 	
 	public List<Callable> getText() {

@@ -21,7 +21,6 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.overlay.components;
 
-import java.awt.Cursor;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -43,7 +42,7 @@ import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.ApplicationTints;
 import ch.innovazion.arionide.ui.animations.Animation;
 import ch.innovazion.arionide.ui.animations.FieldModifierAnimation;
-import ch.innovazion.arionide.ui.overlay.View;
+import ch.innovazion.arionide.ui.overlay.Container;
 import ch.innovazion.arionide.ui.render.AffineTransformable;
 import ch.innovazion.arionide.ui.render.PrimitiveFactory;
 import ch.innovazion.arionide.ui.render.Shape;
@@ -53,9 +52,9 @@ import ch.innovazion.arionide.ui.topology.Bounds;
 public class Button extends Label implements EventHandler, Deformable {
 		
 	private static final int ANIMATION_TIME = 200;
-	private static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
 	
 	private final Shape borders = PrimitiveFactory.instance().newRectangle(ApplicationTints.MAIN_COLOR, ApplicationTints.INACTIVE_ALPHA);
+	private final int inactiveAlpha;
 	protected final Animation animation;
 	
 	protected boolean hasFocus;
@@ -63,18 +62,22 @@ public class Button extends Label implements EventHandler, Deformable {
 	private boolean hasBorders = true;
 	
 	private boolean mouseOver = false;
-	private Cursor overCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 	
 	private int color = ApplicationTints.MAIN_COLOR;
 	
 	private ClickEvent event;
 	
-	public Button(View parent, String label) {
+	public Button(Container container, String label) {
+		this(container, label, ApplicationTints.INACTIVE_ALPHA);
+	}
+	
+	public Button(Container parent, String label, int inactiveAlpha) {
 		super(parent, label);
 		
+		this.inactiveAlpha = inactiveAlpha;
 		this.animation = new FieldModifierAnimation(this.getAppManager(), "alpha", Label.class, this);
 		
-		setAlpha(ApplicationTints.INACTIVE_ALPHA);
+		setAlpha(inactiveAlpha);
 		
 		getAppManager().getEventDispatcher().registerHandler(this, 0.8f);
 	}
@@ -114,13 +117,12 @@ public class Button extends Label implements EventHandler, Deformable {
 		super.setEnabled(enabled);
 		
 		if(enabled) {
-			setAlpha(ApplicationTints.INACTIVE_ALPHA);
+			setAlpha(inactiveAlpha);
 			
 			if(hasFocus) {
 				getAppManager().getFocusManager().next();
 			}
 		} else {
-			// getAppManager().getDrawingContext().setCursorVisible(DEFAULT_CURSOR);
 			onFocusLost();
 		}
 				
@@ -130,10 +132,6 @@ public class Button extends Label implements EventHandler, Deformable {
 	public Button setBordered(boolean bordered) {
 		this.hasBorders = bordered;
 		return this;
-	}
-
-	protected void setOverCursor(Cursor cursor) {
-		this.overCursor = cursor;
 	}
 		
 	public void drawComponent(AppDrawingContext context) {
@@ -164,8 +162,6 @@ public class Button extends Label implements EventHandler, Deformable {
 				if(!mouseOver) {
 					mouseOver = true;
 					
-					// this.getAppManager().getDrawingContext().setCursorVisible(this.overCursor);
-
 					if(!hasFocus) {
 						animation.startAnimation(ANIMATION_TIME, 0xFF);
 					}
@@ -174,10 +170,8 @@ public class Button extends Label implements EventHandler, Deformable {
 				if(mouseOver) {
 					mouseOver = false;
 					
-					// this.getAppManager().getDrawingContext().setCursorVisible(DEFAULT_CURSOR);
-
 					if(!hasFocus) {
-						animation.startAnimation(ANIMATION_TIME, ApplicationTints.INACTIVE_ALPHA);
+						animation.startAnimation(ANIMATION_TIME, inactiveAlpha);
 					}
 				}
 			}
@@ -217,7 +211,7 @@ public class Button extends Label implements EventHandler, Deformable {
 	
 	protected void onFocusLost() {
 		hasFocus = false;
-		animation.startAnimation(ANIMATION_TIME, ApplicationTints.INACTIVE_ALPHA);
+		animation.startAnimation(ANIMATION_TIME, inactiveAlpha);
 	}
 
 	public List<UILighting> getEnlightenablePrimitives() {

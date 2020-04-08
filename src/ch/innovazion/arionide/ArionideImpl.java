@@ -32,6 +32,7 @@ import ch.innovazion.arionide.events.dispatching.MainEventDispatcher;
 import ch.innovazion.arionide.resources.Resources;
 import ch.innovazion.arionide.threading.DrawingThread;
 import ch.innovazion.arionide.threading.EventDispatchingThread;
+import ch.innovazion.arionide.threading.ProgramThread;
 import ch.innovazion.arionide.threading.UIThread;
 import ch.innovazion.arionide.threading.UpdatingThread;
 import ch.innovazion.arionide.threading.UserHelpingThread;
@@ -49,17 +50,20 @@ public class ArionideImpl implements Arionide {
 	private WorkingThread userThread;
 	private UIThread drawingThread;
 	private UIThread updatingThread;
+	private ProgramThread programThread;
 	
 	public void startThreads() {
 		this.eventThread = new EventDispatchingThread();
 		this.userThread = new UserHelpingThread();
 		this.drawingThread = new DrawingThread();
 		this.updatingThread = new UpdatingThread();
+		this.programThread = new ProgramThread();
 		
 		this.eventThread.start();
 		this.userThread.start();
 		this.drawingThread.start();
 		this.updatingThread.start();
+		this.programThread.start();
 	}
 
 	public IEventDispatcher setupEventDispatcher() {
@@ -69,7 +73,7 @@ public class ArionideImpl implements Arionide {
 	public Workspace setupWorkspace(IEventDispatcher dispatcher) {
 		File path = new File(System.getProperty("user.home") + File.separator + "Arionide Workspace");
 		path.mkdirs();
-		return new LocalWorkspace(path, dispatcher);
+		return new LocalWorkspace(path, dispatcher, programThread);
 	}
 
 	public AppDrawingContext setupAppDrawingContext(IEventDispatcher dispatcher) {
@@ -102,12 +106,12 @@ public class ArionideImpl implements Arionide {
 	
 	// note: this list is not mutable
 	private List<WorkingThread> getSystemThreads() {
-		return Arrays.asList(this.eventThread, this.userThread, this.drawingThread, this.updatingThread);
+		return Arrays.asList(this.eventThread, this.userThread, this.drawingThread, this.updatingThread, this.programThread);
 	}
 
 	public WatchdogState runWatchdog() {
 		for(WorkingThread thread : this.getSystemThreads()) {
-			int ticks = thread.pollTicks();
+			long ticks = thread.pollTicks();
 			System.out.println("Thread '" + thread.getDescriptor() + "' is running at " + (1000 * ticks / Arionide.WATCHDOG_TIMER) + " TPS.");
 			
 			if(ticks == 0) {

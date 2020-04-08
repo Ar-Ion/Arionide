@@ -59,14 +59,15 @@ import ch.innovazion.arionide.ui.overlay.components.Tab;
 public class RunView extends View implements EventHandler {
 	
 	private final ProgramIO programIO = new ProgramIO();
-	
+	private final LayoutManager environmentLayoutManager;
+
 	private final Tab sourceSelector;
 	private final Tab programSelector;
 	private final Label[] console = new Label[15];
-	private final Container debuggerContainer;
+	private final Container environmentContainer;
 	private final List<Entry<String, Integer>> consoleData = new ArrayList<>();
 	
-	private Container debugger;
+	private Container environment;
 	
 	private Structure source;
 	private Program program;
@@ -75,6 +76,8 @@ public class RunView extends View implements EventHandler {
 	
 	public RunView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
+		
+		this.environmentLayoutManager = new LayoutManager(appManager.getDrawingContext());
 		
 		layoutManager.register(this, null, 0.0f, 0.0f, 1.0f, 1.0f);
 
@@ -85,18 +88,22 @@ public class RunView extends View implements EventHandler {
 		this.add(new Button(this, "Run").setSignal("run"), 0.85f, 0.05f, 0.95f, 0.1f);
 		
 		for(int i = 0; i < this.console.length; i++) {
-			this.add(this.console[i] = new Button(this, new String()).setSignal("console", i).setBordered(false), 0.0f, 0.17f + i * 0.05f, 0.5f, 0.22f + i * 0.05f);
+			this.add(this.console[i] = new Button(this, new String(), 0xAF).setSignal("console", i).setBordered(false), 0.0f, 0.2f + i * 0.05f, 0.4f, 0.25f + i * 0.05f);
 		}
 		
-		this.debuggerContainer = new Container(this, layoutManager) {
-			public void drawSurface(AppDrawingContext context) {
-				if(debugger != null) {
-					debugger.drawSurface(context);
+		this.environmentContainer = new Container(this, layoutManager) {
+			public void drawComponents(AppDrawingContext context) {
+				super.drawComponents(context);
+				
+				if(environment != null) {
+					environment.drawSurface(context);
 				}
 			}
 		};
 		
-		this.add(this.debuggerContainer, 0.5f, 0.15f, 1.0f, 0.95f);
+		
+		
+		this.add(this.environmentContainer, 0.4f, 0.2f, 0.98f, 0.95f);
 
 		this.getAppManager().getEventDispatcher().registerHandler(this, 0.6f);
 		
@@ -117,7 +124,7 @@ public class RunView extends View implements EventHandler {
 				
 		this.sourceSelector.setComponents(buffer);
 	}
-	
+
 	public <T extends Event> void handleEvent(T event) {
 		if(!isVisible()) {
 			return;
@@ -125,25 +132,42 @@ public class RunView extends View implements EventHandler {
 		
 		if(event instanceof ClickEvent) {
 			ClickEvent click = (ClickEvent) event;
-			
+						
 			if(click.isTargetting(this, "back")) {
 				this.navigateTo(Views.code);
 			} else if(click.isTargetting(this, "setSource")) {
 				int sourceID = (int) click.getData()[0];
 
-				this.source = getAppManager().getWorkspace().getCurrentProject().getStorage().getStructures().get(sourceID);
+				Storage storage = getAppManager().getWorkspace().getCurrentProject().getStorage();
+				
+				this.source = storage.getStructures().get(sourceID);
 				
 				Language lang = LanguageManager.get(source.getLanguage());
 				
-				this.debugger = lang.getEnvironment().create(getAppManager(), debuggerContainer.getBounds());
+				lang.loadPrograms(storage);
+
+				environmentLayoutManager.reset();
+				
+				this.environment = lang.getEnvironment().create(getAppManager(), environmentContainer.getBounds(), environmentLayoutManager);
+				
+				environmentLayoutManager.compute();
+				environmentLayoutManager.apply();
+						
+				environment.setVisible(true);
+				
 				this.programs = lang.getPrograms();
+				
+				if(programs.size() > 0) {
+					this.program = programs.get(0);
+				}
 				
 				programSelector.setComponents(programs.stream().map(Program::getName).toArray(String[]::new));
 			} else if(click.isTargetting(this, "setProgram")) {
 				this.program = programs.get((int) click.getData()[0]);
 			} else if(click.isTargetting(this, "run")) {
 				if(source != null && program != null) {
-					program.run(source.getIdentifier(), programIO);
+					
+					getAppManager().getWorkspace().getProgramThread().launch(program, source.getIdentifier(), programIO);
 				} else {
 					getAppManager().getEventDispatcher().fire(new MessageEvent("Please first select a source structure and a program to run", MessageType.ERROR));
 				}
@@ -161,15 +185,22 @@ public class RunView extends View implements EventHandler {
 						String[] identifiers = data.substring(start + 1, end).split(":");
 						
 						if(identifiers.length == 2) {
-							int structID = Integer.parseInt(identifiers[0]);
-							int instructionID = Integer.parseInt(identifiers[1]);
-							
-							navigateTo(Views.code);
-							
 							CoreController controller = getAppManager().getCoreOrchestrator().getController();
+							navigateTo(Views.code);
+
+							try {
+								int structID = Integer.parseInt(identifiers[0]);
+								controller.requestTeleportation(structID);
+							} catch(NumberFormatException e) {
+								;
+							}
 							
-							controller.requestTeleportation(structID);
-							controller.requestFocus(instructionID);
+							try {
+								int instructionID = Integer.parseInt(identifiers[1]);
+								controller.requestFocus(instructionID);
+							} catch(NumberFormatException e) {
+								;
+							}						
 						}
 					}
 				}

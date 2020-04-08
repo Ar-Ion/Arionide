@@ -41,13 +41,15 @@ public class Debugger extends Program {
 
 	public void run(int rootStructure, ProgramIO io) {
 		ApplicationMemory memory = io.in(ApplicationMemory.class);
-	
+
+		io.log("Running program using built-in debugger.");
+		
 		if(memory != null) {
 			try {
 				Language lang = env.getLanguage();
 				
 				while(true) {
-					Callable callable = memory.textAt(env.getProgramCounter().get());
+					Callable callable = memory.textAt(2 * env.getProgramCounter().get());
 					Instruction instruction = lang.getInstructionSet().get(callable.getName());
 					
 					if(instruction != null) {
@@ -63,6 +65,8 @@ public class Debugger extends Program {
 		} else {
 			io.fatal("Cannot run debugger without having relocated the application skeleton");
 		}
+		
+		io.log("Program execution terminated.");
 	}
 
 	public String getName() {

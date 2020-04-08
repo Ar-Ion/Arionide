@@ -41,6 +41,6 @@ public class NoOperation extends Instruction {
 	}
 
 	public int getLength() {
-		return 16;
+		return 2;
 	}
 }

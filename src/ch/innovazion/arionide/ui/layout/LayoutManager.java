@@ -54,12 +54,23 @@ public class LayoutManager implements EventHandler {
 		dispatcher.registerHandler(this);
 	}
 	
+	public LayoutManager(AppDrawingContext context) {
+		this.drawingContext = context;
+		
+		this.frameWidth = 1;
+		this.frameHeight = 1;
+	}
+	
 	public synchronized void register(Surface surface, Surface parent, float x1, float y1, float x2, float y2) {
 		if(parent == null || this.surfaces.containsKey(parent)) {
 			this.surfaces.put(surface, new LayoutConfiguration(parent, x1, y1, x2, y2));
 		} else {
 			throw new RuntimeException("Parent surface is not registered");
 		}
+	}
+	
+	public synchronized void reset() {
+		surfaces.clear();
 	}
 
 	@IAm("computing the layout")

@@ -48,6 +48,10 @@ public class ProgramIO {
 		consoles.forEach(c -> c.accept(message, 0xFFFFFF));
 	}
 	
+	void success(String message) {
+		consoles.forEach(c -> c.accept(message, 0x00FF00));
+	}
+	
 	@SuppressWarnings("unchecked")
 	<T> T in(Class<T> clazz) {
 		return (T) storage.get(clazz);

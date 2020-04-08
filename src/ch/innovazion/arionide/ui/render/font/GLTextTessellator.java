@@ -110,16 +110,16 @@ public class GLTextTessellator implements TextTessellator {
 	}
 	
 	private int generateVertices(CharMeta meta, FloatBuffer vertices, float factor, float xOrigin, float yOrigin, int cursor) {
-		vertices.put(xOrigin + cursor * factor);
+		vertices.put(xOrigin + (cursor + 0.5f) * factor);
 		vertices.put(yOrigin - meta.getDescent() * factor);
 
-		vertices.put(xOrigin + cursor * factor);
+		vertices.put(xOrigin + (cursor + 0.5f) * factor);
 		vertices.put(yOrigin + meta.getAscent() * factor);
 		
-		vertices.put(xOrigin + (cursor + meta.getWidth()) * factor);
+		vertices.put(xOrigin + (cursor + 0.5f + meta.getWidth()) * factor);
 		vertices.put(yOrigin - meta.getDescent() * factor);
 		
-		vertices.put(xOrigin + (cursor + meta.getWidth()) * factor);
+		vertices.put(xOrigin + (cursor + 0.5f + meta.getWidth()) * factor);
 		vertices.put(yOrigin + meta.getAscent() * factor);
 
 		return cursor + meta.getAdvance();
