@@ -211,7 +211,7 @@ dvec4 normalizeHVC(dvec4 hvc) {
 vec4 motionBlur() {
 	double z = texture(depthTexture, textureCoords).r;
 
-	dvec4 viewportPosition = dvec4(textureCoords.x, textureCoords.y, z, 1.0) * 2 - 1;
+	dvec4 viewportPosition = dvec4(textureCoords.x, textureCoords.y, sqrt(z), 1.0) * 2 - 1;
 	dvec4 previousViewportPosition = normalizeHVC(currentToPreviousViewportMatrix * viewportPosition);
 
 	dvec2 velocity = previousViewportPosition.xy - viewportPosition.xy;

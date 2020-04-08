@@ -39,7 +39,7 @@ public class ApplicationMemory {
 		if(text.containsKey(address)) {
 			return text.get(address);
 		} else {
-			throw new EvaluationException("Text segmentation fault at " + address);
+			throw new EvaluationException("Text segmentation fault at 0x" + Long.toHexString(address));
 		}
 	}
 	
@@ -47,7 +47,7 @@ public class ApplicationMemory {
 		if(data.containsKey(address)) {
 			return data.get(address);
 		} else {
-			throw new EvaluationException("Data segmentation fault at " + address);	
+			throw new EvaluationException("Data segmentation fault at 0x" + Long.toHexString(address));	
 		}
 	}
 }

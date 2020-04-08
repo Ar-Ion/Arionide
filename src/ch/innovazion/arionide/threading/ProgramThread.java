@@ -26,7 +26,7 @@ public class ProgramThread extends WorkingThread {
 	}
 
 	public long getRefreshDelay() {
-		return 500;
+		return 20;
 	}
 
 	public String getDescriptor() {

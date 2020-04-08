@@ -19,7 +19,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.ui.overlay;
+/*package ch.innovazion.arionide.ui.overlay;
 
 import java.util.function.Consumer;
 
@@ -57,7 +57,7 @@ public class SwipeableContainer extends Container {
 	}
 	
 	public void drawSurface(AppDrawingContext context) {
-		/*for(Component component : this.page) {
+		for(Component component : this.page) {
 			Bounds bounds = component.getBounds();
 			
 			if(bounds != null) {
@@ -74,7 +74,7 @@ public class SwipeableContainer extends Container {
 					}
 				}
 			}
-		}*/
+		}
 		
 		super.drawSurface(context);
 	}
@@ -100,4 +100,4 @@ public class SwipeableContainer extends Container {
 			}, -0xFF);
 		}
 	}
-}
+}*/
