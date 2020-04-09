@@ -21,17 +21,56 @@
  *******************************************************************************/
 package ch.innovazion.arionide.menu.params.assign;
 
-import ch.innovazion.arionide.events.GeometryInvalidateEvent;
-import ch.innovazion.arionide.menu.MenuManager;
+import java.util.List;
 
-public class VariableRemover extends VariableSelector {
-	public VariableRemover(MenuManager manager) {
-		super(manager);
+import ch.innovazion.arionide.events.GeometryInvalidateEvent;
+import ch.innovazion.arionide.lang.symbols.Constant;
+import ch.innovazion.arionide.lang.symbols.Node;
+import ch.innovazion.arionide.menu.MenuManager;
+import ch.innovazion.arionide.menu.params.ParameterUpdater;
+import ch.innovazion.arionide.project.managers.specification.ConstantManager;
+import ch.innovazion.arionide.ui.overlay.Views;
+
+public class ConstantAssigner extends ParameterUpdater {
+
+	private ConstantManager constManager;
+	
+	private List<Node> constants;
+
+	public ConstantAssigner(MenuManager manager) {
+		super(manager, "New", null);
+	}
+	
+	protected void onEnter() {
+		super.onEnter();
+		
+		this.constManager = getSpecificationManager().loadConstantManager(value);
+		this.constants = constManager.getConstants(target);
+		
+		setDynamicElements(constants.stream().map(Node::getLabel).toArray(String[]::new));
 	}
 
 	public void onAction(String action) {
-		dispatch(varManager.delete(target, action));
+		if(id == 0) {
+			Views.input.setText("Please enter the name of the new constant")
+					   .setPlaceholder("Constant name")
+					   .setResponder(this::createConstant)
+					   .stackOnto(Views.code);
+		} else if(id != 1) {
+			dispatch(constManager.assign((Constant) constants.get(id - 2)));
+			this.value = constManager.getContext();
+			updateParameter();
+		}
+	}
+	
+	protected String getDescriptionTitle() {
+		return "Assigning a constant";
+	}
+	
+	private void createConstant(String name) {
+		dispatch(constManager.createAndAssign(target, name));
 		dispatch(new GeometryInvalidateEvent(0));
-		go("..");
+		this.value = constManager.getContext();
+		go(".");
 	}
 }

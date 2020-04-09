@@ -30,6 +30,7 @@ import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.symbols.AtomicValue;
+import ch.innovazion.arionide.lang.symbols.Constant;
 import ch.innovazion.arionide.lang.symbols.Enumeration;
 import ch.innovazion.arionide.lang.symbols.InvalidValueException;
 import ch.innovazion.arionide.lang.symbols.Node;
@@ -89,7 +90,7 @@ public class InformationUpdater extends ParameterUpdater {
 			
 			if(!frozen) {
 				elements.add(null);
-				elements.addAll(Arrays.asList("As node", "As text", "As enumeration", "As variable", "As reference"));
+				elements.addAll(Arrays.asList("As node", "As text", "As enumeration", "As constant", "As variable", "As reference"));
 			}
 			
 			this.separator = elements.size();
@@ -98,7 +99,7 @@ public class InformationUpdater extends ParameterUpdater {
 			
 			if(!frozen) {
 				elements.add(null);
-				elements.addAll(Arrays.asList("As node", "As number", "As enumeration", "As variable", "As reference"));
+				elements.addAll(Arrays.asList("As node", "As number", "As enumeration", "As constant", "As variable", "As reference"));
 			}
 			
 			this.separator = elements.size();
@@ -107,7 +108,16 @@ public class InformationUpdater extends ParameterUpdater {
 		
 			if(!frozen) {
 				elements.add(null);
-				elements.addAll(Arrays.asList("As node", "As number", "As text", "As variable", "As reference"));
+				elements.addAll(Arrays.asList("As node", "As number", "As text", "As constant", "As variable", "As reference"));
+			}
+			
+			this.separator = elements.size();
+		} else if(currentNode instanceof Constant) {
+			elements.add("Set constant");
+
+			if(!frozen) {
+				elements.add(null);
+				elements.addAll(Arrays.asList("As node", "As number", "As text", "As enumeration", "As variable", "As reference"));
 			}
 			
 			this.separator = elements.size();
@@ -116,7 +126,7 @@ public class InformationUpdater extends ParameterUpdater {
 
 			if(!frozen) {
 				elements.add(null);
-				elements.addAll(Arrays.asList("As node", "As number", "As text", "As enumeration", "As reference"));
+				elements.addAll(Arrays.asList("As node", "As number", "As text", "As constant", "As enumeration", "As reference"));
 			}
 			
 			this.separator = elements.size();
@@ -125,7 +135,7 @@ public class InformationUpdater extends ParameterUpdater {
 
 			if(!frozen) {
 				elements.add(null);
-				elements.addAll(Arrays.asList("As node", "As number", "As text", "As variable", "As enumeration"));
+				elements.addAll(Arrays.asList("As node", "As number", "As text", "As enumeration", "As constant", "As variable"));
 			}
 			
 			this.separator = elements.size();
@@ -138,7 +148,7 @@ public class InformationUpdater extends ParameterUpdater {
 			
 			if(!frozen) {
 				elements.add(null);
-				elements.addAll(Arrays.asList("As number", "As text", "As variable", "As reference", "As enumeration"));
+				elements.addAll(Arrays.asList("As number", "As text", "As variable", "As constant", "As reference", "As enumeration"));
 			}
 		}		
 		
@@ -168,6 +178,13 @@ public class InformationUpdater extends ParameterUpdater {
 			case "As text":
 			case "Set text":
 				reassignAsParseable(Text::new);
+				break;
+			case "As constant":
+				reassignAsConstant();
+				break;
+			case "Setup constant":
+				this.value = currentNode;
+				go("const");
 				break;
 			case "As variable":
 				reassignAsVariable();
@@ -246,6 +263,18 @@ public class InformationUpdater extends ParameterUpdater {
 		
 		this.value = enumeration;
 		go("enum");
+	}
+	
+	private void reassignAsConstant() {
+		Constant constant = new Constant();
+		dispatch(infoManager.assign(currentNode, constant));
+		dispatch(new GeometryInvalidateEvent(0));
+		
+		updateCurrentNode(constant);
+		updateParameter();
+		
+		this.value = constant;
+		go("const");
 	}
 	
 	private void reassignAsVariable() {

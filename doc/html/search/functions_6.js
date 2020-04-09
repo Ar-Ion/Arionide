@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * This file is part of Arionide.
+ *
+ * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
+ * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
+ * Copyright (C) 2016-2020 Innovazion. All rights reserved.
+ *
+ * Arionide is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Arionide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
+ *******************************************************************************/
 var searchData=
 [
   ['generate_3320',['generate',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_inheritance_generator.html#a70d59a5856abf37042b35210c6970251',1,'ch.innovazion.arionide.ui.core.geom.InheritanceGenerator.generate()'],['../interfacech_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_buffer_generator.html#a2dd135f683bad3e3576d95337e7cbc0a',1,'ch.innovazion.arionide.ui.core.gl.BufferGenerator.generate()'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1links_1_1_link_indices_generator.html#a5f9c15872014db0dd3ca6731aba24500',1,'ch.innovazion.arionide.ui.core.gl.links.LinkIndicesGenerator.generate()'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1stars_1_1_stars_generator.html#aacdb07d61c622846d9dcb2377f601ac5',1,'ch.innovazion.arionide.ui.core.gl.stars.StarsGenerator.generate()'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_static_allocator.html#ad23b28693c32aa26bf0b1eab14550d19',1,'ch.innovazion.arionide.ui.core.gl.StaticAllocator.generate()'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1structures_1_1_structure_indices_generator.html#a91eca5eff81d79d614c3074340bd1d5f',1,'ch.innovazion.arionide.ui.core.gl.structures.StructureIndicesGenerator.generate()'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_tessellator.html#aff001d6a675be6aeaff82fa9cd840a8a',1,'ch.innovazion.arionide.ui.core.gl.Tessellator.generate()'],['../classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_multi_component.html#abf137f9a3ac22d2f24de1e8d7dd76497',1,'ch.innovazion.arionide.ui.overlay.components.MultiComponent.generate()']]],

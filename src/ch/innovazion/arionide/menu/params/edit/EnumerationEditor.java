@@ -87,8 +87,8 @@ public class EnumerationEditor extends ParameterUpdater {
 	
 	private void createPossibility(String name) {
 		dispatch(enumManager.addPossibleEnum(name));
-		this.value = enumManager.getEnumValue(name);
 		updateParameter();
+		this.value = enumManager.getEnumValue(name);
 		go("edit");
 	}
 	

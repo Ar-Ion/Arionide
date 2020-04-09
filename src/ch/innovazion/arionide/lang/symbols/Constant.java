@@ -19,32 +19,13 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.params.assign;
+package ch.innovazion.arionide.lang.symbols;
 
-import ch.innovazion.arionide.events.GeometryInvalidateEvent;
-import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.ui.overlay.Views;
+public class Constant extends Node {
 
-public class VariableRenamer extends VariableSelector {
-	
-	private String variableName;
-	
-	public VariableRenamer(MenuManager manager) {
-		super(manager);
-	}
+	private static final long serialVersionUID = 1837897698230843099L;
 
-	public void onAction(String action) {
-		this.variableName = action;
-		
-		Views.input.setText("Please enter the new name of the variable")
-				   .setPlaceholder("Variable name")
-				   .setResponder(this::renameVariable)
-				   .stackOnto(Views.code);
-	}
-	
-	private void renameVariable(String newName) {
-		dispatch(varManager.rename(target, variableName, newName));
-		dispatch(new GeometryInvalidateEvent(0));
-		go("..");
+	public Constant() {
+		super("Constant");
 	}
 }

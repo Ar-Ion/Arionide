@@ -101,9 +101,7 @@ public class InformationManager extends ContextualManager<Information> {
 				int index = parent.indexOf(prevValue);
 				parent.disconnect(prevValue);
 				parent.connect(newValue, index);
-				
-				System.out.println(getContext());
-				
+								
 				return success();
 			} else {
 				return warn();

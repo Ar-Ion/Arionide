@@ -82,6 +82,7 @@ public class ParameterSelector extends Menu {
 			if(mutable) {
 				if(id == 0) {
 					this.description = new MenuDescription("Add a new parameter to '" + target.getName() + "'");
+					return;
 				}
 				
 				realID -= 2;

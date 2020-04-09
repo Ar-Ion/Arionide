@@ -24,6 +24,7 @@ package ch.innovazion.arionide.project.managers.specification;
 import java.util.function.Consumer;
 
 import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.lang.symbols.Constant;
 import ch.innovazion.arionide.lang.symbols.Enumeration;
 import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Parameter;
@@ -39,6 +40,7 @@ import ch.innovazion.arionide.project.managers.ResourceAllocator;
 public class SpecificationManager extends ContextualManager<Specification> {
 	
 	private final InformationManager informationManager;
+	private final ConstantManager constantManager;
 	private final VariableManager variableManager;
 	private final ReferenceManager referenceManager;
 	private final EnumerationManager enumManager;
@@ -47,8 +49,9 @@ public class SpecificationManager extends ContextualManager<Specification> {
 		super(storage);
 		
 		this.informationManager = new InformationManager(storage);
-		this.referenceManager = new ReferenceManager(storage, allocator, hostStack);
+		this.constantManager = new ConstantManager(storage);
 		this.variableManager = new VariableManager(storage);
+		this.referenceManager = new ReferenceManager(storage, allocator, hostStack);
 		this.enumManager = new EnumerationManager(storage);
 	}
 	
@@ -129,14 +132,19 @@ public class SpecificationManager extends ContextualManager<Specification> {
 		return informationManager;
 	}
 	
-	public ReferenceManager loadReferenceManager(ParameterValue value) {
-		referenceManager.setContext((Reference) value);
-		return referenceManager;
+	public ConstantManager loadConstantManager(ParameterValue value) {
+		constantManager.setContext((Constant) value);
+		return constantManager;
 	}
 	
 	public VariableManager loadVariableManager(ParameterValue value) {
 		variableManager.setContext((Variable) value);
 		return variableManager;
+	}
+	
+	public ReferenceManager loadReferenceManager(ParameterValue value) {
+		referenceManager.setContext((Reference) value);
+		return referenceManager;
 	}
 	
 	public EnumerationManager loadEnumerationManager(ParameterValue value) {
@@ -148,12 +156,16 @@ public class SpecificationManager extends ContextualManager<Specification> {
 		return informationManager;
 	}
 	
-	public ReferenceManager getReferenceManager() {
-		return referenceManager;
+	public ConstantManager getConstantManager() {
+		return constantManager;
 	}
 	
 	public VariableManager getVariableManager() {
 		return variableManager;
+	}
+	
+	public ReferenceManager getReferenceManager() {
+		return referenceManager;
 	}
 	
 	public EnumerationManager getEnumerationManager() {

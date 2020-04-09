@@ -38,7 +38,7 @@ public class VariableAssigner extends ParameterUpdater {
 	private List<Node> variables;
 
 	public VariableAssigner(MenuManager manager) {
-		super(manager, "New", "Remove", "Rename", null);
+		super(manager, "New", null);
 	}
 	
 	protected void onEnter() {
@@ -56,12 +56,8 @@ public class VariableAssigner extends ParameterUpdater {
 					   .setPlaceholder("Variable name")
 					   .setResponder(this::createVariable)
 					   .stackOnto(Views.code);
-		} else if(id == 1) {
-			go("remove");
-		} else if(id == 2) {
-			go("rename");
-		} else if(id != 3) {
-			dispatch(varManager.bind((Variable) variables.get(id - 4)));
+		} else if(id != 1) {
+			dispatch(varManager.bind((Variable) variables.get(id - 2)));
 			updateParameter();
 		}
 	}
