@@ -1,8 +1,10 @@
 <map id="ch.innovazion.arionide.events.dispatching.MainEventDispatcher" name="ch.innovazion.arionide.events.dispatching.MainEventDispatcher">
-<area shape="rect" id="node1" title=" " alt="" coords="733,99,1005,137"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_abstract_threaded_event_dispatcher.html" title=" " alt="" coords="343,36,615,75"/>
+<area shape="rect" id="node1" title=" " alt="" coords="799,161,1071,200"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_abstract_threaded_event_dispatcher.html" title=" " alt="" coords="352,36,624,75"/>
 <area shape="rect" id="node3" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html" title=" " alt="" coords="5,5,277,44"/>
 <area shape="rect" id="node4" href="$interfacech_1_1innovazion_1_1arionide_1_1threading_1_1_purgeable.html" title=" " alt="" coords="33,68,250,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="352,99,605,137"/>
-<area shape="rect" id="node6" title=" " alt="" coords="327,161,631,200"/>
+<area shape="rect" id="node5" title=" " alt="" coords="337,99,640,137"/>
+<area shape="rect" id="node6" title=" " alt="" coords="327,161,650,200"/>
+<area shape="rect" id="node7" title=" " alt="" coords="362,224,614,263"/>
+<area shape="rect" id="node8" title=" " alt="" coords="336,287,640,325"/>
 </map>

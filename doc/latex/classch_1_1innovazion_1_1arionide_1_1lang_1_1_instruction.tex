@@ -1,15 +1,25 @@
 \hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction}{}\doxysection{ch.\+innovazion.\+arionide.\+lang.\+Instruction Class Reference}
 \label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction}\index{ch.innovazion.arionide.lang.Instruction@{ch.innovazion.arionide.lang.Instruction}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+lang.\+Instruction\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction__inherit__graph}
+\end{center}
+\end{figure}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_abd6f7aae4c37289963d543c3f53a2a3a}{to\+String}} ()
 \item 
-abstract String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a6b6fe7b228eb36ddd0ccb1680f035644}{validate}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}} spec)
+abstract void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_ad21e8028e0fde57be3a5117816c8550d}{validate}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}} spec, List$<$ String $>$ validation\+Errors)
 \item 
 abstract void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_af3f86c53f67cdad374d3ce8bdcbcadc1}{evaluate}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment}{Environment}} env, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}} spec)  throws Evaluation\+Exception
 \item 
-abstract \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a610c79e9b5d4b59aee02c994a7035fdd}{assemble}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}} spec)  throws Assembly\+Exception
+abstract \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_node}{Node}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_ac9de3fb4b7247cba90e3e429d3028954}{assemble}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}} spec, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_skeleton}{Skeleton}} skeleton, List$<$ String $>$ assembly\+Errors)
 \item 
 abstract \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model}{Structure\+Model}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a79a3121bbbd45452a389d8e655f7e6d9}{get\+Structure\+Model}} ()
 \item 
@@ -18,11 +28,15 @@ abstract int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_inst
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a610c79e9b5d4b59aee02c994a7035fdd}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a610c79e9b5d4b59aee02c994a7035fdd}} 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_ac9de3fb4b7247cba90e3e429d3028954}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_ac9de3fb4b7247cba90e3e429d3028954}} 
 \index{ch.innovazion.arionide.lang.Instruction@{ch.innovazion.arionide.lang.Instruction}!assemble@{assemble}}
 \index{assemble@{assemble}!ch.innovazion.arionide.lang.Instruction@{ch.innovazion.arionide.lang.Instruction}}
 \doxysubsubsection{\texorpdfstring{assemble()}{assemble()}}
-{\footnotesize\ttfamily abstract \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information}{Information}} ch.\+innovazion.\+arionide.\+lang.\+Instruction.\+assemble (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}}}]{spec }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_assembly_exception}{Assembly\+Exception}}\hspace{0.3cm}{\ttfamily [abstract]}}
+{\footnotesize\ttfamily abstract \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_node}{Node}} ch.\+innovazion.\+arionide.\+lang.\+Instruction.\+assemble (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}}}]{spec,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_skeleton}{Skeleton}}}]{skeleton,  }\item[{List$<$ String $>$}]{assembly\+Errors }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation_a47b1673c7b1a8f96faa12b459fcddb70}{ch.\+innovazion.\+arionide.\+lang.\+avr.\+No\+Operation}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point_ad482c76c4008ff617194639b96cf4ac3}{ch.\+innovazion.\+arionide.\+lang.\+avr.\+A\+V\+R\+Entry\+Point}}.
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_af3f86c53f67cdad374d3ce8bdcbcadc1}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_af3f86c53f67cdad374d3ce8bdcbcadc1}} 
 \index{ch.innovazion.arionide.lang.Instruction@{ch.innovazion.arionide.lang.Instruction}!evaluate@{evaluate}}
@@ -30,11 +44,19 @@ abstract int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_inst
 \doxysubsubsection{\texorpdfstring{evaluate()}{evaluate()}}
 {\footnotesize\ttfamily abstract void ch.\+innovazion.\+arionide.\+lang.\+Instruction.\+evaluate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment}{Environment}}}]{env,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}}}]{spec }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_evaluation_exception}{Evaluation\+Exception}}\hspace{0.3cm}{\ttfamily [abstract]}}
 
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation_afc3c8f75d8cf6f7bd4afb96964340607}{ch.\+innovazion.\+arionide.\+lang.\+avr.\+No\+Operation}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point_ab4ea27393bc6cb16b1ea0795ab5749fd}{ch.\+innovazion.\+arionide.\+lang.\+avr.\+A\+V\+R\+Entry\+Point}}.
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a38e51c8cd655343d0ec470e7ba783a68}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a38e51c8cd655343d0ec470e7ba783a68}} 
 \index{ch.innovazion.arionide.lang.Instruction@{ch.innovazion.arionide.lang.Instruction}!getLength@{getLength}}
 \index{getLength@{getLength}!ch.innovazion.arionide.lang.Instruction@{ch.innovazion.arionide.lang.Instruction}}
 \doxysubsubsection{\texorpdfstring{getLength()}{getLength()}}
 {\footnotesize\ttfamily abstract int ch.\+innovazion.\+arionide.\+lang.\+Instruction.\+get\+Length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation_a0acfe5489ff5a5aa1580f5166d5f8e4e}{ch.\+innovazion.\+arionide.\+lang.\+avr.\+No\+Operation}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point_a1dd069ef09652a59c248a7fdda292780}{ch.\+innovazion.\+arionide.\+lang.\+avr.\+A\+V\+R\+Entry\+Point}}.
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a79a3121bbbd45452a389d8e655f7e6d9}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a79a3121bbbd45452a389d8e655f7e6d9}} 
 \index{ch.innovazion.arionide.lang.Instruction@{ch.innovazion.arionide.lang.Instruction}!getStructureModel@{getStructureModel}}
@@ -42,24 +64,33 @@ abstract int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_inst
 \doxysubsubsection{\texorpdfstring{getStructureModel()}{getStructureModel()}}
 {\footnotesize\ttfamily abstract \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model}{Structure\+Model}} ch.\+innovazion.\+arionide.\+lang.\+Instruction.\+get\+Structure\+Model (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
 
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation_acc37d0eafa79e40e9425f401f52ccae5}{ch.\+innovazion.\+arionide.\+lang.\+avr.\+No\+Operation}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point_a319cce6346acc38b2c10865ce94572cd}{ch.\+innovazion.\+arionide.\+lang.\+avr.\+A\+V\+R\+Entry\+Point}}.
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_abd6f7aae4c37289963d543c3f53a2a3a}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_abd6f7aae4c37289963d543c3f53a2a3a}} 
 \index{ch.innovazion.arionide.lang.Instruction@{ch.innovazion.arionide.lang.Instruction}!toString@{toString}}
 \index{toString@{toString}!ch.innovazion.arionide.lang.Instruction@{ch.innovazion.arionide.lang.Instruction}}
 \doxysubsubsection{\texorpdfstring{toString()}{toString()}}
 {\footnotesize\ttfamily String ch.\+innovazion.\+arionide.\+lang.\+Instruction.\+to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_abd6f7aae4c37289963d543c3f53a2a3a_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a6b6fe7b228eb36ddd0ccb1680f035644}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a6b6fe7b228eb36ddd0ccb1680f035644}} 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_ad21e8028e0fde57be3a5117816c8550d}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_ad21e8028e0fde57be3a5117816c8550d}} 
 \index{ch.innovazion.arionide.lang.Instruction@{ch.innovazion.arionide.lang.Instruction}!validate@{validate}}
 \index{validate@{validate}!ch.innovazion.arionide.lang.Instruction@{ch.innovazion.arionide.lang.Instruction}}
 \doxysubsubsection{\texorpdfstring{validate()}{validate()}}
-{\footnotesize\ttfamily abstract String ch.\+innovazion.\+arionide.\+lang.\+Instruction.\+validate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}}}]{spec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
+{\footnotesize\ttfamily abstract void ch.\+innovazion.\+arionide.\+lang.\+Instruction.\+validate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification}{Specification}}}]{spec,  }\item[{List$<$ String $>$}]{validation\+Errors }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation_a854868e6c6fdf9b4be2cfc31b55cbbdb}{ch.\+innovazion.\+arionide.\+lang.\+avr.\+No\+Operation}}, and \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point_a32e4435e4d327c63a911198069ad7b61}{ch.\+innovazion.\+arionide.\+lang.\+avr.\+A\+V\+R\+Entry\+Point}}.
 
 
 

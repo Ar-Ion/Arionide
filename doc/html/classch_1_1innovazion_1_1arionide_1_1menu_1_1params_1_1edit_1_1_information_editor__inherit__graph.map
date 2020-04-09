@@ -1,8 +1,7 @@
 <map id="ch.innovazion.arionide.menu.params.edit.InformationEditor" name="ch.innovazion.arionide.menu.params.edit.InformationEditor">
-<area shape="rect" id="node1" title=" " alt="" coords="14,425,282,464"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1assign_1_1_information_assigner.html" title=" " alt="" coords="5,339,291,377"/>
-<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_assigner.html" title=" " alt="" coords="26,252,269,291"/>
-<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_value_menu.html" title=" " alt="" coords="26,165,269,204"/>
-<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html" title=" " alt="" coords="34,92,262,117"/>
-<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1automaton_1_1_state.html" title=" " alt="" coords="61,5,235,44"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,339,273,377"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_information_updater.html" title=" " alt="" coords="18,252,261,291"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_updater.html" title=" " alt="" coords="18,165,261,204"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu.html" title=" " alt="" coords="25,92,253,117"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1automaton_1_1_state.html" title=" " alt="" coords="53,5,226,44"/>
 </map>

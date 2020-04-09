@@ -66,10 +66,932 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ch.innovazion.arionide.lang.Environment Class Reference</div>  </div>
+<div class="title">ch.innovazion.arionide.lang.Environment Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="dynheader">
+Inheritance diagram for ch.innovazion.arionide.lang.Environment:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment__inherit__graph.png" border="0" usemap="#ch_8innovazion_8arionide_8lang_8_environment_inherit__map" alt="Inheritance graph"/></div>
+<map name="ch_8innovazion_8arionide_8lang_8_environment_inherit__map" id="ch_8innovazion_8arionide_8lang_8_environment_inherit__map">
+<area shape="rect" title=" " alt="" coords="16,92,203,131"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment.html" title=" " alt="" coords="5,179,213,217"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1_event_handler.html" title=" " alt="" coords="9,5,210,44"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for ch.innovazion.arionide.lang.Environment:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment__coll__graph.png" border="0" usemap="#ch_8innovazion_8arionide_8lang_8_environment_coll__map" alt="Collaboration graph"/></div>
+<map name="ch_8innovazion_8arionide_8lang_8_environment_coll__map" id="ch_8innovazion_8arionide_8lang_8_environment_coll__map">
+<area shape="rect" title=" " alt="" coords="3273,881,3460,919"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1_event_handler.html" title=" " alt="" coords="304,289,504,327"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager.html" title=" " alt="" coords="772,534,983,573"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button.html" title=" " alt="" coords="2782,307,3076,346"/>
+<area shape="rect" title=" " alt="" coords="2884,966,2974,991"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html" title=" " alt="" coords="2378,458,2672,497"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html" title=" " alt="" coords="1566,395,1783,434"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container.html" title=" " alt="" coords="1185,346,1402,385"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1events_1_1_component_event.html" title=" " alt="" coords="1994,395,2195,434"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_surface.html" title=" " alt="" coords="772,601,983,639"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_drawable.html" title=" " alt="" coords="318,601,490,639"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html" title=" " alt="" coords="291,914,516,953"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_controller.html" title=" " alt="" coords="776,1031,978,1070"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer.html" title=" " alt="" coords="769,949,985,987"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html" title=" " alt="" coords="1589,849,1761,887"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context.html" title=" " alt="" coords="318,663,490,702"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1threading_1_1_purgeable.html" title=" " alt="" coords="5,541,222,579"/>
+<area shape="rect" title=" " alt="" coords="272,525,536,577"/>
+<area shape="rect" title=" " alt="" coords="752,471,1002,510"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager.html" title=" " alt="" coords="1208,749,1379,787"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_enlightenable.html" title=" " alt="" coords="1948,458,2242,497"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_text.html" title=" " alt="" coords="1976,346,2213,371"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_shape.html" title=" " alt="" coords="1568,150,1781,189"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_u_i_lighting.html" title=" " alt="" coords="1187,43,1400,82"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_affine_transformable.html" title=" " alt="" coords="1187,106,1400,145"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_u_i_mutable_bounds.html" title=" " alt="" coords="1187,169,1400,207"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_preparable.html" title=" " alt="" coords="1187,231,1400,270"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_alpha_layering_system.html" title=" " alt="" coords="1185,511,1402,550"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html" title=" " alt="" coords="741,834,1013,873"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_orchestrator.html" title=" " alt="" coords="1193,1025,1394,1063"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1timing_1_1_timer.html" title=" " alt="" coords="1165,849,1422,887"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_arionide.html" title=" " alt="" coords="1190,637,1397,662"/>
+<area shape="rect" title=" " alt="" coords="352,1066,456,1091"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry.html" title=" " alt="" coords="285,1002,523,1041"/>
+<area shape="rect" title=" " alt="" coords="348,1137,459,1162"/>
+<area shape="rect" title=" " alt="" coords="351,803,457,829"/>
+<area shape="rect" title=" " alt="" coords="1157,686,1430,725"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_workspace.html" title=" " alt="" coords="765,1241,989,1266"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1resources_1_1_resources.html" title=" " alt="" coords="1184,1087,1404,1126"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_resource.html" title=" " alt="" coords="297,1347,511,1373"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_mapped_structure.html" title=" " alt="" coords="301,1186,507,1225"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_saveable.html" title=" " alt="" coords="297,1249,511,1274"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1_loadable.html" title=" " alt="" coords="298,1298,510,1323"/>
+<area shape="rect" title=" " alt="" coords="827,1094,927,1119"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_deformable.html" title=" " alt="" coords="2378,250,2672,289"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation.html" title=" " alt="" coords="2405,187,2645,226"/>
+<area shape="rect" title=" " alt="" coords="1938,187,2251,226"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1events_1_1_click_event.html" title=" " alt="" coords="2425,366,2626,405"/>
+<area shape="rect" title=" " alt="" coords="2883,1015,2975,1041"/>
+<area shape="rect" title=" " alt="" coords="2819,1065,3038,1103"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a1de143569ec6c9f51f99e90f4aeee4c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a1de143569ec6c9f51f99e90f4aeee4c2">sample</a> ()</td></tr>
+<tr class="separator:a1de143569ec6c9f51f99e90f4aeee4c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acce11996a861ecaa3355d4218e539530"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container.html">Container</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#acce11996a861ecaa3355d4218e539530">create</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html">AppManager</a> <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a0f585360eacb06a32e068eaead4ea819">manager</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html">Bounds</a> renderBounds, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager.html">LayoutManager</a> dedicatedLayoutManager)</td></tr>
+<tr class="separator:acce11996a861ecaa3355d4218e539530"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfc27c78b5b9bde88d9f4a8d114ff692"><td class="memItemLeft" align="right" valign="top">Set&lt; Class&lt;? extends <a class="el" href="classch_1_1innovazion_1_1arionide_1_1events_1_1_event.html">Event</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#acfc27c78b5b9bde88d9f4a8d114ff692">getHandleableEvents</a> ()</td></tr>
+<tr class="separator:acfc27c78b5b9bde88d9f4a8d114ff692"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb937d1a2c3956656e76ae683cc61ae2"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#afb937d1a2c3956656e76ae683cc61ae2">formatTimestamp</a> (long timestamp)</td></tr>
+<tr class="separator:afb937d1a2c3956656e76ae683cc61ae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b71c125b9ba5aa0a18faf9b52022ac6"><td class="memItemLeft" align="right" valign="top">AtomicLong&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a3b71c125b9ba5aa0a18faf9b52022ac6">getProgramCounter</a> ()</td></tr>
+<tr class="separator:a3b71c125b9ba5aa0a18faf9b52022ac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e55620655aaedb1d366622d9b3bd5dd"><td class="memItemLeft" align="right" valign="top">AtomicLong&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a7e55620655aaedb1d366622d9b3bd5dd">getClock</a> ()</td></tr>
+<tr class="separator:a7e55620655aaedb1d366622d9b3bd5dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae99b221f7ccafe49ef61e0f1127c76e2"><td class="memItemLeft" align="right" valign="top">AtomicBoolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#ae99b221f7ccafe49ef61e0f1127c76e2">isManual</a> ()</td></tr>
+<tr class="separator:ae99b221f7ccafe49ef61e0f1127c76e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4960c7a2e3b8b4b67c8676584a6f64b"><td class="memItemLeft" align="right" valign="top">AtomicBoolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#ad4960c7a2e3b8b4b67c8676584a6f64b">getTimerStepRequest</a> ()</td></tr>
+<tr class="separator:ad4960c7a2e3b8b4b67c8676584a6f64b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cb322bd854d95e4a4c12dac32f3bdff"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a9cb322bd854d95e4a4c12dac32f3bdff">readTimer</a> ()</td></tr>
+<tr class="separator:a9cb322bd854d95e4a4c12dac32f3bdff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79f4586d6501d301fa8f8ea47aa646bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a79f4586d6501d301fa8f8ea47aa646bc">setNextInstruction</a> (<a class="el" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html">Callable</a> target)</td></tr>
+<tr class="separator:a79f4586d6501d301fa8f8ea47aa646bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe433d2f876b9cff05a669dd3aa0cbd6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#abe433d2f876b9cff05a669dd3aa0cbd6">setNextFrame</a> (<a class="el" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html">Callable</a> target)</td></tr>
+<tr class="separator:abe433d2f876b9cff05a669dd3aa0cbd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab9b5dd11ab46a6fbd5e568c32156d00"><td class="memItemLeft" align="right" valign="top">Semaphore&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#aab9b5dd11ab46a6fbd5e568c32156d00">getManualModeSemaphore</a> ()</td></tr>
+<tr class="separator:aab9b5dd11ab46a6fbd5e568c32156d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f89b244500df596c48d76e14bb9df64"><td class="memItemLeft" align="right" valign="top">abstract <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_language.html">Language</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a5f89b244500df596c48d76e14bb9df64">getLanguage</a> ()</td></tr>
+<tr class="separator:a5f89b244500df596c48d76e14bb9df64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a7e4b564d56ae4a951fd76311cae1ccaa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a7e4b564d56ae4a951fd76311cae1ccaa">Environment</a> (long <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a789de76432c95ce887b419722a17687c">frequency</a>)</td></tr>
+<tr class="separator:a7e4b564d56ae4a951fd76311cae1ccaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae597e10f8584d7bf0a9a51fc7010e8df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#ae597e10f8584d7bf0a9a51fc7010e8df">registerPeripheral</a> (<a class="el" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral.html">Peripheral</a> peripheral)</td></tr>
+<tr class="separator:ae597e10f8584d7bf0a9a51fc7010e8df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a789de76432c95ce887b419722a17687c"><td class="memItemLeft" align="right" valign="top">final long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a789de76432c95ce887b419722a17687c">frequency</a></td></tr>
+<tr class="separator:a789de76432c95ce887b419722a17687c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72e54ebaaff8d809f4e8644eaba0da10"><td class="memItemLeft" align="right" valign="top">final AtomicLong&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a72e54ebaaff8d809f4e8644eaba0da10">programCounter</a> = new AtomicLong()</td></tr>
+<tr class="separator:a72e54ebaaff8d809f4e8644eaba0da10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40315984caa0bd245e2c8c11b1aad4f0"><td class="memItemLeft" align="right" valign="top">final AtomicLong&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a40315984caa0bd245e2c8c11b1aad4f0">clock</a> = new AtomicLong()</td></tr>
+<tr class="separator:a40315984caa0bd245e2c8c11b1aad4f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a759d9b5164c4af1d84a6fbf6192f96"><td class="memItemLeft" align="right" valign="top">final AtomicBoolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a2a759d9b5164c4af1d84a6fbf6192f96">manualMode</a> = new AtomicBoolean()</td></tr>
+<tr class="separator:a2a759d9b5164c4af1d84a6fbf6192f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d38ef0a048048762ecfd102450ebdbc"><td class="memItemLeft" align="right" valign="top">final Semaphore&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a2d38ef0a048048762ecfd102450ebdbc">manualModeSemaphore</a> = new Semaphore(0)</td></tr>
+<tr class="separator:a2d38ef0a048048762ecfd102450ebdbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab596fb8342b2a96a1b9f0dd6bc2fa81a"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#ab596fb8342b2a96a1b9f0dd6bc2fa81a">timerStart</a> = 0L</td></tr>
+<tr class="separator:ab596fb8342b2a96a1b9f0dd6bc2fa81a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad239c6a26cd8b6e2ccb632a3cc730338"><td class="memItemLeft" align="right" valign="top">final AtomicBoolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#ad239c6a26cd8b6e2ccb632a3cc730338">timerStepRequest</a> = new AtomicBoolean()</td></tr>
+<tr class="separator:ad239c6a26cd8b6e2ccb632a3cc730338"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aecf67327384d06cf42f7075544263b"><td class="memItemLeft" align="right" valign="top">final AtomicBoolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a5aecf67327384d06cf42f7075544263b">timerState</a> = new AtomicBoolean()</td></tr>
+<tr class="separator:a5aecf67327384d06cf42f7075544263b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ea1146f137d47be2feea78cccdb81ae"><td class="memItemLeft" align="right" valign="top">final List&lt; <a class="el" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral.html">Peripheral</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a9ea1146f137d47be2feea78cccdb81ae">peripherals</a> = new ArrayList&lt;&gt;()</td></tr>
+<tr class="separator:a9ea1146f137d47be2feea78cccdb81ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f585360eacb06a32e068eaead4ea819"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html">AppManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a0f585360eacb06a32e068eaead4ea819">manager</a></td></tr>
+<tr class="separator:a0f585360eacb06a32e068eaead4ea819"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a914e323daf99dbc6816b1b10ec052163"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html">Label</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a914e323daf99dbc6816b1b10ec052163">pcLabel</a></td></tr>
+<tr class="separator:a914e323daf99dbc6816b1b10ec052163"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeebc144d809ad8aec45bd6a5fc1994e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html">Label</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#aeebc144d809ad8aec45bd6a5fc1994e6">clkLabel</a></td></tr>
+<tr class="separator:aeebc144d809ad8aec45bd6a5fc1994e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7618bea6722d1c505f863ae2368896f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html">Label</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#ad7618bea6722d1c505f863ae2368896f">timLabel</a></td></tr>
+<tr class="separator:ad7618bea6722d1c505f863ae2368896f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a962dba6be43cda1790f0463b4ddf7618"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button.html">Button</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a962dba6be43cda1790f0463b4ddf7618">runModeButton</a></td></tr>
+<tr class="separator:a962dba6be43cda1790f0463b4ddf7618"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96183698b932cbc5eba785b48185389e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button.html">Button</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a96183698b932cbc5eba785b48185389e">resetButton</a></td></tr>
+<tr class="separator:a96183698b932cbc5eba785b48185389e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85451d4576068edfdb00ee7dda999f69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button.html">Button</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a85451d4576068edfdb00ee7dda999f69">timerStateButton</a></td></tr>
+<tr class="separator:a85451d4576068edfdb00ee7dda999f69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c4d4b008ffed3c5c95372435aa7acea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button.html">Button</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a7c4d4b008ffed3c5c95372435aa7acea">timerStepButton</a></td></tr>
+<tr class="separator:a7c4d4b008ffed3c5c95372435aa7acea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a7e4b564d56ae4a951fd76311cae1ccaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e4b564d56ae4a951fd76311cae1ccaa">&#9670;&nbsp;</a></span>Environment()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ch.innovazion.arionide.lang.Environment.Environment </td>
+          <td>(</td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>frequency</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="acce11996a861ecaa3355d4218e539530"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acce11996a861ecaa3355d4218e539530">&#9670;&nbsp;</a></span>create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container.html">Container</a> ch.innovazion.arionide.lang.Environment.create </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html">AppManager</a>&#160;</td>
+          <td class="paramname"><em>manager</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html">Bounds</a>&#160;</td>
+          <td class="paramname"><em>renderBounds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager.html">LayoutManager</a>&#160;</td>
+          <td class="paramname"><em>dedicatedLayoutManager</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acce11996a861ecaa3355d4218e539530_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acce11996a861ecaa3355d4218e539530_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acce11996a861ecaa3355d4218e539530_cgraph" id="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acce11996a861ecaa3355d4218e539530_cgraph">
+<area shape="rect" title=" " alt="" coords="5,585,192,624"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container.html#a5fc94d855f106e615a029533f0f395fc" title=" " alt="" coords="278,345,496,384"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager.html#ae4100ffe56b9f90d3f937b70c26692fb" title=" " alt="" coords="623,468,834,507"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a09d0cee3370c7a91bd916eca48483967" title=" " alt="" coords="278,460,495,499"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#ad6abc77afda8bc1a1f481b177a5c868a" title=" " alt="" coords="274,585,499,624"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds.html#a762e97a2837623d586593d8c234e2ca8" title=" " alt="" coords="274,523,499,561"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point.html#a912e17535a7cbedd5003b1e3c8da2750" title=" " alt="" coords="274,648,499,687"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point.html#a5dcb638f1119723fad1547eb0681292e" title=" " alt="" coords="274,711,499,749"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#ab3b4329dbed53b4d9912a21e65bd2611" title=" " alt="" coords="251,773,523,812"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a1de143569ec6c9f51f99e90f4aeee4c2" title=" " alt="" coords="294,836,480,875"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button.html#a06f362f263a4ef3af75cffc7bab0f727" title=" " alt="" coords="240,277,534,316"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#acd21eecacc72b5451effc0ebcdb1978f" title=" " alt="" coords="278,956,496,995"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#a6797c323866a5d656aa70fc6e78afda1" title=" " alt="" coords="620,280,837,319"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a3d00c2f35a8ca7a00f38f722545d1378" title=" " alt="" coords="625,343,833,381"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager.html#a9c3e1a89a35268c4361570e910315920" title=" " alt="" coords="615,405,842,444"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point.html#a629a2e34877224fe2e6ee125ef8d2e91" title=" " alt="" coords="616,559,841,597"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_point.html#a58d381f5cb52082e1a92d1744014490a" title=" " alt="" coords="931,559,1156,597"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#afb937d1a2c3956656e76ae683cc61ae2" title=" " alt="" coords="942,867,1145,905"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a9cb322bd854d95e4a4c12dac32f3bdff" title=" " alt="" coords="635,893,822,932"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral.html#a21194dc3871e78db0fe9b473d4f0ce59" title=" " alt="" coords="635,716,822,755"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html#a848534201c4030d6d9e6112f823b04db" title=" " alt="" coords="582,779,876,817"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_text.html#a89be25cb521ad7278a820035d44d9bd7" title=" " alt="" coords="937,779,1150,817"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager.html#ac0af1fa453aa7b499609a29ae16a5438" title=" " alt="" coords="643,68,815,107"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button.html#a19be484c26b963e144a1ce6a8d9fd650" title=" " alt="" coords="582,131,876,169"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html#a9bf40e669d9d3d65ea3f9e5c5bc8cbdc" title=" " alt="" coords="582,193,876,232"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager.html#a70e7904c5d8399af559213b671e5bef1" title=" " alt="" coords="957,5,1131,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager.html#ad78daaf422787704b035862af1b611ae" title=" " alt="" coords="927,68,1161,107"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager.html#a628ade52b8b6dbb99f613eef4c9e5751" title=" " alt="" coords="1246,5,1449,44"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#aa5f84407c43d1975f6c3a6d983be6c33" title=" " alt="" coords="1212,68,1484,107"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_animation.html#a6b6a4b6005d1de1a676569d0a816710f" title=" " alt="" coords="924,131,1164,169"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1_utils.html#ab099a137d90e3cd5e348bfc139fd5e1d" title=" " alt="" coords="933,193,1155,232"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1_utils.html#a22b24862deacb379cdc92109ff1007d6" title=" " alt="" coords="1236,193,1459,232"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#a27c3b13173c9da1dbbc6b2bcd8b6ee28" title=" " alt="" coords="617,956,841,995"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#ac68f5f8ea7bfb9dbf8742789680a0e36" title=" " alt="" coords="608,1019,850,1057"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="afb937d1a2c3956656e76ae683cc61ae2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb937d1a2c3956656e76ae683cc61ae2">&#9670;&nbsp;</a></span>formatTimestamp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">String ch.innovazion.arionide.lang.Environment.formatTimestamp </td>
+          <td>(</td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>timestamp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7e55620655aaedb1d366622d9b3bd5dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e55620655aaedb1d366622d9b3bd5dd">&#9670;&nbsp;</a></span>getClock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">AtomicLong ch.innovazion.arionide.lang.Environment.getClock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acfc27c78b5b9bde88d9f4a8d114ff692"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfc27c78b5b9bde88d9f4a8d114ff692">&#9670;&nbsp;</a></span>getHandleableEvents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Set&lt;Class&lt;? extends <a class="el" href="classch_1_1innovazion_1_1arionide_1_1events_1_1_event.html">Event</a>&gt; &gt; ch.innovazion.arionide.lang.Environment.getHandleableEvents </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1_event_handler.html#a9fec9f2e677f15352317af0b04fddde5">ch.innovazion.arionide.events.EventHandler</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acfc27c78b5b9bde88d9f4a8d114ff692_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acfc27c78b5b9bde88d9f4a8d114ff692_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acfc27c78b5b9bde88d9f4a8d114ff692_cgraph" id="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acfc27c78b5b9bde88d9f4a8d114ff692_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,232,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1_utils.html#a8f2731a580f793b2b61dffac64da05d7" title=" " alt="" coords="280,12,501,37"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a5f89b244500df596c48d76e14bb9df64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f89b244500df596c48d76e14bb9df64">&#9670;&nbsp;</a></span>getLanguage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">abstract <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_language.html">Language</a> ch.innovazion.arionide.lang.Environment.getLanguage </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">abstract</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment.html#adc3be1b78649f94c5b4e29597e131b52">ch.innovazion.arionide.lang.avr.AVREnvironment</a>.</p>
+
+</div>
+</div>
+<a id="aab9b5dd11ab46a6fbd5e568c32156d00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab9b5dd11ab46a6fbd5e568c32156d00">&#9670;&nbsp;</a></span>getManualModeSemaphore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Semaphore ch.innovazion.arionide.lang.Environment.getManualModeSemaphore </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3b71c125b9ba5aa0a18faf9b52022ac6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b71c125b9ba5aa0a18faf9b52022ac6">&#9670;&nbsp;</a></span>getProgramCounter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">AtomicLong ch.innovazion.arionide.lang.Environment.getProgramCounter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad4960c7a2e3b8b4b67c8676584a6f64b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4960c7a2e3b8b4b67c8676584a6f64b">&#9670;&nbsp;</a></span>getTimerStepRequest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">AtomicBoolean ch.innovazion.arionide.lang.Environment.getTimerStepRequest </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae99b221f7ccafe49ef61e0f1127c76e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae99b221f7ccafe49ef61e0f1127c76e2">&#9670;&nbsp;</a></span>isManual()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">AtomicBoolean ch.innovazion.arionide.lang.Environment.isManual </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9cb322bd854d95e4a4c12dac32f3bdff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cb322bd854d95e4a4c12dac32f3bdff">&#9670;&nbsp;</a></span>readTimer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">String ch.innovazion.arionide.lang.Environment.readTimer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a9cb322bd854d95e4a4c12dac32f3bdff_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a9cb322bd854d95e4a4c12dac32f3bdff_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a9cb322bd854d95e4a4c12dac32f3bdff_cgraph" id="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a9cb322bd854d95e4a4c12dac32f3bdff_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,192,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#afb937d1a2c3956656e76ae683cc61ae2" title=" " alt="" coords="240,5,443,44"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ae597e10f8584d7bf0a9a51fc7010e8df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae597e10f8584d7bf0a9a51fc7010e8df">&#9670;&nbsp;</a></span>registerPeripheral()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ch.innovazion.arionide.lang.Environment.registerPeripheral </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral.html">Peripheral</a>&#160;</td>
+          <td class="paramname"><em>peripheral</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1de143569ec6c9f51f99e90f4aeee4c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1de143569ec6c9f51f99e90f4aeee4c2">&#9670;&nbsp;</a></span>sample()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ch.innovazion.arionide.lang.Environment.sample </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a1de143569ec6c9f51f99e90f4aeee4c2_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a1de143569ec6c9f51f99e90f4aeee4c2_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a1de143569ec6c9f51f99e90f4aeee4c2_cgraph" id="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a1de143569ec6c9f51f99e90f4aeee4c2_cgraph">
+<area shape="rect" title=" " alt="" coords="5,68,192,107"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#afb937d1a2c3956656e76ae683cc61ae2" title=" " alt="" coords="587,8,790,47"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a9cb322bd854d95e4a4c12dac32f3bdff" title=" " alt="" coords="294,36,480,75"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral.html#a21194dc3871e78db0fe9b473d4f0ce59" title=" " alt="" coords="294,99,480,137"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html#a848534201c4030d6d9e6112f823b04db" title=" " alt="" coords="240,161,534,200"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_text.html#a89be25cb521ad7278a820035d44d9bd7" title=" " alt="" coords="582,161,795,200"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="abe433d2f876b9cff05a669dd3aa0cbd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe433d2f876b9cff05a669dd3aa0cbd6">&#9670;&nbsp;</a></span>setNextFrame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ch.innovazion.arionide.lang.Environment.setNextFrame </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html">Callable</a>&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_abe433d2f876b9cff05a669dd3aa0cbd6_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_abe433d2f876b9cff05a669dd3aa0cbd6_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_abe433d2f876b9cff05a669dd3aa0cbd6_cgraph" id="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_abe433d2f876b9cff05a669dd3aa0cbd6_cgraph">
+<area shape="rect" title=" " alt="" coords="5,68,192,107"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#aa5f84407c43d1975f6c3a6d983be6c33" title=" " alt="" coords="240,5,512,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a09d0cee3370c7a91bd916eca48483967" title=" " alt="" coords="267,68,484,107"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html#a599b0207e13072e964ea72c1abb2fa6b" title=" " alt="" coords="256,131,496,169"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a79f4586d6501d301fa8f8ea47aa646bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79f4586d6501d301fa8f8ea47aa646bc">&#9670;&nbsp;</a></span>setNextInstruction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ch.innovazion.arionide.lang.Environment.setNextInstruction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html">Callable</a>&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a79f4586d6501d301fa8f8ea47aa646bc_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a79f4586d6501d301fa8f8ea47aa646bc_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a79f4586d6501d301fa8f8ea47aa646bc_cgraph" id="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a79f4586d6501d301fa8f8ea47aa646bc_cgraph">
+<area shape="rect" title=" " alt="" coords="5,68,212,107"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#aa5f84407c43d1975f6c3a6d983be6c33" title=" " alt="" coords="260,5,532,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a09d0cee3370c7a91bd916eca48483967" title=" " alt="" coords="287,68,504,107"/>
+<area shape="rect" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html#a599b0207e13072e964ea72c1abb2fa6b" title=" " alt="" coords="276,131,515,169"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aeebc144d809ad8aec45bd6a5fc1994e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeebc144d809ad8aec45bd6a5fc1994e6">&#9670;&nbsp;</a></span>clkLabel</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html">Label</a> ch.innovazion.arionide.lang.Environment.clkLabel</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a40315984caa0bd245e2c8c11b1aad4f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40315984caa0bd245e2c8c11b1aad4f0">&#9670;&nbsp;</a></span>clock</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">final AtomicLong ch.innovazion.arionide.lang.Environment.clock = new AtomicLong()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a789de76432c95ce887b419722a17687c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a789de76432c95ce887b419722a17687c">&#9670;&nbsp;</a></span>frequency</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">final long ch.innovazion.arionide.lang.Environment.frequency</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0f585360eacb06a32e068eaead4ea819"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f585360eacb06a32e068eaead4ea819">&#9670;&nbsp;</a></span>manager</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html">AppManager</a> ch.innovazion.arionide.lang.Environment.manager</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2a759d9b5164c4af1d84a6fbf6192f96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a759d9b5164c4af1d84a6fbf6192f96">&#9670;&nbsp;</a></span>manualMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">final AtomicBoolean ch.innovazion.arionide.lang.Environment.manualMode = new AtomicBoolean()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2d38ef0a048048762ecfd102450ebdbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d38ef0a048048762ecfd102450ebdbc">&#9670;&nbsp;</a></span>manualModeSemaphore</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">final Semaphore ch.innovazion.arionide.lang.Environment.manualModeSemaphore = new Semaphore(0)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a914e323daf99dbc6816b1b10ec052163"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a914e323daf99dbc6816b1b10ec052163">&#9670;&nbsp;</a></span>pcLabel</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html">Label</a> ch.innovazion.arionide.lang.Environment.pcLabel</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9ea1146f137d47be2feea78cccdb81ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ea1146f137d47be2feea78cccdb81ae">&#9670;&nbsp;</a></span>peripherals</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">final List&lt;<a class="el" href="interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral.html">Peripheral</a>&gt; ch.innovazion.arionide.lang.Environment.peripherals = new ArrayList&lt;&gt;()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a72e54ebaaff8d809f4e8644eaba0da10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72e54ebaaff8d809f4e8644eaba0da10">&#9670;&nbsp;</a></span>programCounter</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">final AtomicLong ch.innovazion.arionide.lang.Environment.programCounter = new AtomicLong()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a96183698b932cbc5eba785b48185389e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96183698b932cbc5eba785b48185389e">&#9670;&nbsp;</a></span>resetButton</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button.html">Button</a> ch.innovazion.arionide.lang.Environment.resetButton</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a962dba6be43cda1790f0463b4ddf7618"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a962dba6be43cda1790f0463b4ddf7618">&#9670;&nbsp;</a></span>runModeButton</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button.html">Button</a> ch.innovazion.arionide.lang.Environment.runModeButton</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab596fb8342b2a96a1b9f0dd6bc2fa81a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab596fb8342b2a96a1b9f0dd6bc2fa81a">&#9670;&nbsp;</a></span>timerStart</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">long ch.innovazion.arionide.lang.Environment.timerStart = 0L</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5aecf67327384d06cf42f7075544263b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5aecf67327384d06cf42f7075544263b">&#9670;&nbsp;</a></span>timerState</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">final AtomicBoolean ch.innovazion.arionide.lang.Environment.timerState = new AtomicBoolean()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a85451d4576068edfdb00ee7dda999f69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85451d4576068edfdb00ee7dda999f69">&#9670;&nbsp;</a></span>timerStateButton</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button.html">Button</a> ch.innovazion.arionide.lang.Environment.timerStateButton</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7c4d4b008ffed3c5c95372435aa7acea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c4d4b008ffed3c5c95372435aa7acea">&#9670;&nbsp;</a></span>timerStepButton</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button.html">Button</a> ch.innovazion.arionide.lang.Environment.timerStepButton</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad239c6a26cd8b6e2ccb632a3cc730338"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad239c6a26cd8b6e2ccb632a3cc730338">&#9670;&nbsp;</a></span>timerStepRequest</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">final AtomicBoolean ch.innovazion.arionide.lang.Environment.timerStepRequest = new AtomicBoolean()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad7618bea6722d1c505f863ae2368896f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7618bea6722d1c505f863ae2368896f">&#9670;&nbsp;</a></span>timLabel</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html">Label</a> ch.innovazion.arionide.lang.Environment.timLabel</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/ch/innovazion/arionide/lang/<a class="el" href="_environment_8java.html">Environment.java</a></li>
 </ul>

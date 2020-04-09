@@ -39,6 +39,10 @@ void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_pa
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a6223c2c768e9c874c8807f0cc3c5798e}{parameter}}
 \item 
 \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter_value}{Parameter\+Value}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_af0aa595fa048f3806bbd2ef568b6878a}{value}}
+\item 
+Consumer$<$ Void $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a1a2300bcaf6f6d17bcf16bde8008f502}{on\+Update}}
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a421c3a01c148cac40725345613196f9a}{frozen}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
@@ -46,6 +50,13 @@ void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_pa
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a6e862c3806983bfc5ce79cc79232be57}{rename\+Parameter}} (String new\+Name)
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a0ee9c485cc76b0acdf48fc0c599ee88c}{delete\+Parameter}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a12544cf4301a91556dba87175f3b2bc5}{on\+Update}} (Void nil)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager}{Specification\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a7fb02f0bd9d2bc2e21e5c87366f92ff2}{spec\+Manager}}
 \end{DoxyCompactItemize}
 
 
@@ -65,7 +76,8 @@ void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_pa
 \doxysubsubsection{\texorpdfstring{deleteParameter()}{deleteParameter()}}
 {\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+params.\+Parameter\+Editor.\+delete\+Parameter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -108,13 +120,28 @@ Here is the call graph for this function\+:
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_ae4fd0a44050a376948ff59d3b546f77c_cgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a12544cf4301a91556dba87175f3b2bc5}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a12544cf4301a91556dba87175f3b2bc5}} 
+\index{ch.innovazion.arionide.menu.params.ParameterEditor@{ch.innovazion.arionide.menu.params.ParameterEditor}!onUpdate@{onUpdate}}
+\index{onUpdate@{onUpdate}!ch.innovazion.arionide.menu.params.ParameterEditor@{ch.innovazion.arionide.menu.params.ParameterEditor}}
+\doxysubsubsection{\texorpdfstring{onUpdate()}{onUpdate()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+params.\+Parameter\+Editor.\+on\+Update (\begin{DoxyParamCaption}\item[{Void}]{nil }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a12544cf4301a91556dba87175f3b2bc5_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a6e862c3806983bfc5ce79cc79232be57}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a6e862c3806983bfc5ce79cc79232be57}} 
 \index{ch.innovazion.arionide.menu.params.ParameterEditor@{ch.innovazion.arionide.menu.params.ParameterEditor}!renameParameter@{renameParameter}}
 \index{renameParameter@{renameParameter}!ch.innovazion.arionide.menu.params.ParameterEditor@{ch.innovazion.arionide.menu.params.ParameterEditor}}
 \doxysubsubsection{\texorpdfstring{renameParameter()}{renameParameter()}}
 {\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+menu.\+params.\+Parameter\+Editor.\+rename\+Parameter (\begin{DoxyParamCaption}\item[{String}]{new\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -124,11 +151,29 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 \doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a421c3a01c148cac40725345613196f9a}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a421c3a01c148cac40725345613196f9a}} 
+\index{ch.innovazion.arionide.menu.params.ParameterEditor@{ch.innovazion.arionide.menu.params.ParameterEditor}!frozen@{frozen}}
+\index{frozen@{frozen}!ch.innovazion.arionide.menu.params.ParameterEditor@{ch.innovazion.arionide.menu.params.ParameterEditor}}
+\doxysubsubsection{\texorpdfstring{frozen}{frozen}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+menu.\+params.\+Parameter\+Editor.\+frozen\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a1a2300bcaf6f6d17bcf16bde8008f502}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a1a2300bcaf6f6d17bcf16bde8008f502}} 
+\index{ch.innovazion.arionide.menu.params.ParameterEditor@{ch.innovazion.arionide.menu.params.ParameterEditor}!onUpdate@{onUpdate}}
+\index{onUpdate@{onUpdate}!ch.innovazion.arionide.menu.params.ParameterEditor@{ch.innovazion.arionide.menu.params.ParameterEditor}}
+\doxysubsubsection{\texorpdfstring{onUpdate}{onUpdate}}
+{\footnotesize\ttfamily Consumer$<$Void$>$ ch.\+innovazion.\+arionide.\+menu.\+params.\+Parameter\+Editor.\+on\+Update\hspace{0.3cm}{\ttfamily [protected]}}
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a6223c2c768e9c874c8807f0cc3c5798e}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a6223c2c768e9c874c8807f0cc3c5798e}} 
 \index{ch.innovazion.arionide.menu.params.ParameterEditor@{ch.innovazion.arionide.menu.params.ParameterEditor}!parameter@{parameter}}
 \index{parameter@{parameter}!ch.innovazion.arionide.menu.params.ParameterEditor@{ch.innovazion.arionide.menu.params.ParameterEditor}}
 \doxysubsubsection{\texorpdfstring{parameter}{parameter}}
 {\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter}{Parameter}} ch.\+innovazion.\+arionide.\+menu.\+params.\+Parameter\+Editor.\+parameter\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a7fb02f0bd9d2bc2e21e5c87366f92ff2}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_a7fb02f0bd9d2bc2e21e5c87366f92ff2}} 
+\index{ch.innovazion.arionide.menu.params.ParameterEditor@{ch.innovazion.arionide.menu.params.ParameterEditor}!specManager@{specManager}}
+\index{specManager@{specManager}!ch.innovazion.arionide.menu.params.ParameterEditor@{ch.innovazion.arionide.menu.params.ParameterEditor}}
+\doxysubsubsection{\texorpdfstring{specManager}{specManager}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager}{Specification\+Manager}} ch.\+innovazion.\+arionide.\+menu.\+params.\+Parameter\+Editor.\+spec\+Manager\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_ae35b35103f6855e7622c043859dbda52}\label{classch_1_1innovazion_1_1arionide_1_1menu_1_1params_1_1_parameter_editor_ae35b35103f6855e7622c043859dbda52}} 
 \index{ch.innovazion.arionide.menu.params.ParameterEditor@{ch.innovazion.arionide.menu.params.ParameterEditor}!target@{target}}

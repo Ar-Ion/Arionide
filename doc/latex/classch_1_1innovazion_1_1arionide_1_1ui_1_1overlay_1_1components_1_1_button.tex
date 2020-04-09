@@ -11,7 +11,8 @@ Inheritance diagram for ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components.\
 \end{figure}
 
 
-Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components.\+Button\+:\nopagebreak
+Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components.\+Button\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -21,7 +22,9 @@ Collaboration diagram for ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_aa6732ba070c88913fc93bb59415b6198}{Button}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view}{View}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component_a8de4bf136d419e0234d25f1694944b91}{parent}}, String label)
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a233e51db6732f4a91b4528b586dfa58d}{Button}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container}{Container}} container, String label)
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a5d683d39263db06ab9cf00fb7679f875}{Button}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container}{Container}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component_a8de4bf136d419e0234d25f1694944b91}{parent}}, String label, int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a30d501fe64d3009a417f64a4d733f258}{inactive\+Alpha}})
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a4f0f4f8870c10e20fb06915a18f6e1d2}{load}} ()
 \item 
@@ -52,8 +55,6 @@ Set$<$ Class$<$? extends \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1e
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_add0a1eee63f15d001e9eab735469989a}{set\+Over\+Cursor}} (Cursor cursor)
-\item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_ac8985380452bbad36ac8ce94faa91f23}{draw\+Borders}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1_app_drawing_context}{App\+Drawing\+Context}} context)
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a6b952728fad39eeed4fe1cfa01499252}{fire\+Mouse\+Click}} ()
@@ -74,11 +75,11 @@ boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1c
 \item 
 final \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_shape}{Shape}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_ac843de31d726d5c718ddc87c769fb63b}{borders}} = \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_primitive_factory_a334bcea27b685f6d4c8c2a2784800784}{Primitive\+Factory.\+instance}}().new\+Rectangle(\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_application_tints_aae87151146812f7c2c24d8e1bbee5767}{Application\+Tints.\+M\+A\+I\+N\+\_\+\+C\+O\+L\+OR}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_application_tints_a374a8186102b5958f9a0ee2bf7c67d80}{Application\+Tints.\+I\+N\+A\+C\+T\+I\+V\+E\+\_\+\+A\+L\+P\+HA}})
 \item 
+final int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a30d501fe64d3009a417f64a4d733f258}{inactive\+Alpha}}
+\item 
 boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a20da0cca380e663bbd91e92ded9263a1}{has\+Borders}} = true
 \item 
 boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a36af4a8487ca7468a0a8b49a1a234696}{mouse\+Over}} = false
-\item 
-Cursor \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_ac530ddba604e180e5e019eed13ed20d3}{over\+Cursor}} = Cursor.\+get\+Predefined\+Cursor(Cursor.\+H\+A\+N\+D\+\_\+\+C\+U\+R\+S\+OR)
 \item 
 int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a350d12e5703fb2d5a86a1bd20e49af4c}{color}} = \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_application_tints_aae87151146812f7c2c24d8e1bbee5767}{Application\+Tints.\+M\+A\+I\+N\+\_\+\+C\+O\+L\+OR}}
 \item 
@@ -88,23 +89,28 @@ int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1compo
 \begin{DoxyCompactItemize}
 \item 
 static final int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a0e014d95ef3d7a3832d3ba35d3e56c5b}{A\+N\+I\+M\+A\+T\+I\+O\+N\+\_\+\+T\+I\+ME}} = 200
-\item 
-static final Cursor \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a1809d2a54945e415713c46c0414d950d}{D\+E\+F\+A\+U\+L\+T\+\_\+\+C\+U\+R\+S\+OR}} = Cursor.\+get\+Default\+Cursor()
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_aa6732ba070c88913fc93bb59415b6198}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_aa6732ba070c88913fc93bb59415b6198}} 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a233e51db6732f4a91b4528b586dfa58d}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a233e51db6732f4a91b4528b586dfa58d}} 
 \index{ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}!Button@{Button}}
 \index{Button@{Button}!ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}}
-\doxysubsubsection{\texorpdfstring{Button()}{Button()}}
-{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components.\+Button.\+Button (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view}{View}}}]{parent,  }\item[{String}]{label }\end{DoxyParamCaption})}
+\doxysubsubsection{\texorpdfstring{Button()}{Button()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components.\+Button.\+Button (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container}{Container}}}]{container,  }\item[{String}]{label }\end{DoxyParamCaption})}
 
-Here is the call graph for this function\+:\nopagebreak
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a5d683d39263db06ab9cf00fb7679f875}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a5d683d39263db06ab9cf00fb7679f875}} 
+\index{ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}!Button@{Button}}
+\index{Button@{Button}!ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}}
+\doxysubsubsection{\texorpdfstring{Button()}{Button()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components.\+Button.\+Button (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container}{Container}}}]{parent,  }\item[{String}]{label,  }\item[{int}]{inactive\+Alpha }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_aa6732ba070c88913fc93bb59415b6198_cgraph}
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a5d683d39263db06ab9cf00fb7679f875_cgraph}
 \end{center}
 \end{figure}
 
@@ -353,12 +359,6 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a06f362f263a4ef3af75cffc7bab0f727_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_add0a1eee63f15d001e9eab735469989a}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_add0a1eee63f15d001e9eab735469989a}} 
-\index{ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}!setOverCursor@{setOverCursor}}
-\index{setOverCursor@{setOverCursor}!ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}}
-\doxysubsubsection{\texorpdfstring{setOverCursor()}{setOverCursor()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components.\+Button.\+set\+Over\+Cursor (\begin{DoxyParamCaption}\item[{Cursor}]{cursor }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
-
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_acb7e48fb8c6660563b741101f7b93aaf}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_acb7e48fb8c6660563b741101f7b93aaf}} 
 \index{ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}!setSignal@{setSignal}}
 \index{setSignal@{setSignal}!ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}}
@@ -392,12 +392,6 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{color}{color}}
 {\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components.\+Button.\+color = \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_application_tints_aae87151146812f7c2c24d8e1bbee5767}{Application\+Tints.\+M\+A\+I\+N\+\_\+\+C\+O\+L\+OR}}\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a1809d2a54945e415713c46c0414d950d}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a1809d2a54945e415713c46c0414d950d}} 
-\index{ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}!DEFAULT\_CURSOR@{DEFAULT\_CURSOR}}
-\index{DEFAULT\_CURSOR@{DEFAULT\_CURSOR}!ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}}
-\doxysubsubsection{\texorpdfstring{DEFAULT\_CURSOR}{DEFAULT\_CURSOR}}
-{\footnotesize\ttfamily final Cursor ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components.\+Button.\+D\+E\+F\+A\+U\+L\+T\+\_\+\+C\+U\+R\+S\+OR = Cursor.\+get\+Default\+Cursor()\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
-
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a749f95af058ddc5bbec75fd71e0eb4cf}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a749f95af058ddc5bbec75fd71e0eb4cf}} 
 \index{ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}!event@{event}}
 \index{event@{event}!ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}}
@@ -416,17 +410,17 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{hasFocus}{hasFocus}}
 {\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components.\+Button.\+has\+Focus\hspace{0.3cm}{\ttfamily [protected]}}
 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a30d501fe64d3009a417f64a4d733f258}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a30d501fe64d3009a417f64a4d733f258}} 
+\index{ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}!inactiveAlpha@{inactiveAlpha}}
+\index{inactiveAlpha@{inactiveAlpha}!ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}}
+\doxysubsubsection{\texorpdfstring{inactiveAlpha}{inactiveAlpha}}
+{\footnotesize\ttfamily final int ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components.\+Button.\+inactive\+Alpha\hspace{0.3cm}{\ttfamily [private]}}
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a36af4a8487ca7468a0a8b49a1a234696}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_a36af4a8487ca7468a0a8b49a1a234696}} 
 \index{ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}!mouseOver@{mouseOver}}
 \index{mouseOver@{mouseOver}!ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}}
 \doxysubsubsection{\texorpdfstring{mouseOver}{mouseOver}}
 {\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components.\+Button.\+mouse\+Over = false\hspace{0.3cm}{\ttfamily [private]}}
-
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_ac530ddba604e180e5e019eed13ed20d3}\label{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button_ac530ddba604e180e5e019eed13ed20d3}} 
-\index{ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}!overCursor@{overCursor}}
-\index{overCursor@{overCursor}!ch.innovazion.arionide.ui.overlay.components.Button@{ch.innovazion.arionide.ui.overlay.components.Button}}
-\doxysubsubsection{\texorpdfstring{overCursor}{overCursor}}
-{\footnotesize\ttfamily Cursor ch.\+innovazion.\+arionide.\+ui.\+overlay.\+components.\+Button.\+over\+Cursor = Cursor.\+get\+Predefined\+Cursor(Cursor.\+H\+A\+N\+D\+\_\+\+C\+U\+R\+S\+OR)\hspace{0.3cm}{\ttfamily [private]}}
 
 
 

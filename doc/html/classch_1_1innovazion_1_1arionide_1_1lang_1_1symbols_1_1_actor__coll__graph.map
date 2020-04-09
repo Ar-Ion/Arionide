@@ -1,10 +1,10 @@
 <map id="ch.innovazion.arionide.lang.symbols.Actor" name="ch.innovazion.arionide.lang.symbols.Actor">
-<area shape="rect" id="node1" title=" " alt="" coords="960,175,1199,213"/>
+<area shape="rect" id="node1" title=" " alt="" coords="973,175,1212,213"/>
 <area shape="rect" id="node2" href="$interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter_value.html" title=" " alt="" coords="185,137,424,176"/>
-<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_information.html" title=" " alt="" coords="609,76,848,115"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_node.html" title=" " alt="" coords="593,83,864,108"/>
 <area shape="rect" id="node3" title=" " alt="" coords="5,144,96,169"/>
-<area shape="rect" id="node5" title=" " alt="" coords="145,5,464,44"/>
-<area shape="rect" id="node6" title=" " alt="" coords="169,68,440,107"/>
-<area shape="rect" id="node7" title=" " alt="" coords="593,203,864,241"/>
-<area shape="rect" id="node8" title=" " alt="" coords="593,265,864,304"/>
+<area shape="rect" id="node5" title=" " alt="" coords="169,5,440,44"/>
+<area shape="rect" id="node6" title=" " alt="" coords="145,68,464,107"/>
+<area shape="rect" id="node7" title=" " alt="" coords="594,203,864,241"/>
+<area shape="rect" id="node8" title=" " alt="" coords="594,265,864,304"/>
 </map>

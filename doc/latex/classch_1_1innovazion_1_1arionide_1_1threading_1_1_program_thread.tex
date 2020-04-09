@@ -1,0 +1,136 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread}{}\doxysection{ch.\+innovazion.\+arionide.\+threading.\+Program\+Thread Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread}\index{ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+threading.\+Program\+Thread\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=243pt]{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+threading.\+Program\+Thread\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a275f0562d5b8b5d456b30a1fb029b851}{tick}} ()
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a83eaecf75ad3166d48eb9f51069186ad}{launch}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_program}{Program}} program, int target, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1programs_1_1_program_i_o}{Program\+IO}} io)
+\item 
+long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a0391121294454db0ae660299759f830a}{get\+Refresh\+Delay}} ()
+\item 
+String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_adc0790bf9d8b71df0906ff4ff20d929e}{get\+Descriptor}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_aa68932c0dce34f40462b702a0c1c6df3}{reset}} ()
+\item 
+boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a29bda3633e229eba380daf38b5c1fe0e}{respawn}} (int attempt)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final Atomic\+Reference$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_program}{Program}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a2ac7312297fa97046ac3634915da5cdd}{current\+Program}} = new Atomic\+Reference$<$$>$()
+\item 
+int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a19d60aadbd9012e199055e30612b8848}{current\+Target}}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1programs_1_1_program_i_o}{Program\+IO}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_ae11a4f9cbd352db251b771fa3fa3ad8a}{current\+IO}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_adc0790bf9d8b71df0906ff4ff20d929e}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_adc0790bf9d8b71df0906ff4ff20d929e}} 
+\index{ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}!getDescriptor@{getDescriptor}}
+\index{getDescriptor@{getDescriptor}!ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}}
+\doxysubsubsection{\texorpdfstring{getDescriptor()}{getDescriptor()}}
+{\footnotesize\ttfamily String ch.\+innovazion.\+arionide.\+threading.\+Program\+Thread.\+get\+Descriptor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread_aa11c7a257182ebe9a0af73e6e5df067e}{ch.\+innovazion.\+arionide.\+threading.\+Working\+Thread}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a0391121294454db0ae660299759f830a}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a0391121294454db0ae660299759f830a}} 
+\index{ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}!getRefreshDelay@{getRefreshDelay}}
+\index{getRefreshDelay@{getRefreshDelay}!ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}}
+\doxysubsubsection{\texorpdfstring{getRefreshDelay()}{getRefreshDelay()}}
+{\footnotesize\ttfamily long ch.\+innovazion.\+arionide.\+threading.\+Program\+Thread.\+get\+Refresh\+Delay (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread_a975e0ffe100fe78f5009322e24f85c7d}{ch.\+innovazion.\+arionide.\+threading.\+Working\+Thread}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a83eaecf75ad3166d48eb9f51069186ad}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a83eaecf75ad3166d48eb9f51069186ad}} 
+\index{ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}!launch@{launch}}
+\index{launch@{launch}!ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}}
+\doxysubsubsection{\texorpdfstring{launch()}{launch()}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+threading.\+Program\+Thread.\+launch (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_program}{Program}}}]{program,  }\item[{int}]{target,  }\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1programs_1_1_program_i_o}{Program\+IO}}}]{io }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_aa68932c0dce34f40462b702a0c1c6df3}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_aa68932c0dce34f40462b702a0c1c6df3}} 
+\index{ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}!reset@{reset}}
+\index{reset@{reset}!ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+threading.\+Program\+Thread.\+reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a29bda3633e229eba380daf38b5c1fe0e}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a29bda3633e229eba380daf38b5c1fe0e}} 
+\index{ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}!respawn@{respawn}}
+\index{respawn@{respawn}!ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}}
+\doxysubsubsection{\texorpdfstring{respawn()}{respawn()}}
+{\footnotesize\ttfamily boolean ch.\+innovazion.\+arionide.\+threading.\+Program\+Thread.\+respawn (\begin{DoxyParamCaption}\item[{int}]{attempt }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread_a3979e2af050b5e03ca103d7db23eae55}{ch.\+innovazion.\+arionide.\+threading.\+Working\+Thread}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a275f0562d5b8b5d456b30a1fb029b851}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a275f0562d5b8b5d456b30a1fb029b851}} 
+\index{ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}!tick@{tick}}
+\index{tick@{tick}!ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}}
+\doxysubsubsection{\texorpdfstring{tick()}{tick()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+threading.\+Program\+Thread.\+tick (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread_a0f13e1911f910b85a5e92e5a6eded7f3}{ch.\+innovazion.\+arionide.\+threading.\+Working\+Thread}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a275f0562d5b8b5d456b30a1fb029b851_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_ae11a4f9cbd352db251b771fa3fa3ad8a}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_ae11a4f9cbd352db251b771fa3fa3ad8a}} 
+\index{ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}!currentIO@{currentIO}}
+\index{currentIO@{currentIO}!ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}}
+\doxysubsubsection{\texorpdfstring{currentIO}{currentIO}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1programs_1_1_program_i_o}{Program\+IO}} ch.\+innovazion.\+arionide.\+threading.\+Program\+Thread.\+current\+IO\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a2ac7312297fa97046ac3634915da5cdd}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a2ac7312297fa97046ac3634915da5cdd}} 
+\index{ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}!currentProgram@{currentProgram}}
+\index{currentProgram@{currentProgram}!ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}}
+\doxysubsubsection{\texorpdfstring{currentProgram}{currentProgram}}
+{\footnotesize\ttfamily final Atomic\+Reference$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_program}{Program}}$>$ ch.\+innovazion.\+arionide.\+threading.\+Program\+Thread.\+current\+Program = new Atomic\+Reference$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a19d60aadbd9012e199055e30612b8848}\label{classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread_a19d60aadbd9012e199055e30612b8848}} 
+\index{ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}!currentTarget@{currentTarget}}
+\index{currentTarget@{currentTarget}!ch.innovazion.arionide.threading.ProgramThread@{ch.innovazion.arionide.threading.ProgramThread}}
+\doxysubsubsection{\texorpdfstring{currentTarget}{currentTarget}}
+{\footnotesize\ttfamily int ch.\+innovazion.\+arionide.\+threading.\+Program\+Thread.\+current\+Target\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/threading/\mbox{\hyperlink{_program_thread_8java}{Program\+Thread.\+java}}\end{DoxyCompactItemize}

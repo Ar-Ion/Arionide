@@ -11,7 +11,8 @@ Inheritance diagram for ch.\+innovazion.\+arionide.\+events.\+dispatching.\+Main
 \end{figure}
 
 
-Collaboration diagram for ch.\+innovazion.\+arionide.\+events.\+dispatching.\+Main\+Event\+Dispatcher\+:\nopagebreak
+Collaboration diagram for ch.\+innovazion.\+arionide.\+events.\+dispatching.\+Main\+Event\+Dispatcher\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -28,9 +29,9 @@ class \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatchin
 \item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a877988edde0b0e1800dd01da43b57a9b}{Main\+Event\+Dispatcher}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1threading_1_1_event_dispatching_thread}{Event\+Dispatching\+Thread}} thread)
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a4dfc888c8d64e5a6d381556467042325}{fire}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_event}{Event}} event)
+synchronized void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_aca21aa2a7f30d07641e800da3d65edf5}{fire}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_event}{Event}} event)
 \item 
-void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a3955345437bb8f2d070897f047b81b3c}{purge}} ()
+synchronized void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a68438ce15ed663d17adc7e6b5fe30a64}{purge}} ()
 \item 
 synchronized void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_af854492251c1b087c302ddadde0cec7e}{dispatch\+Events}} ()
 \item 
@@ -47,7 +48,11 @@ void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
-final List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a5dc9c4a00a1ed899ad9d85dbb85c9247}{handlers}} = Collections.\+synchronized\+List(new Array\+List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}}$>$())
+final Queue$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a091a6a1b3ccadc740d152ab57d3fbd8d}{queued\+Handlers}} = new Concurrent\+Linked\+Queue$<$$>$()
+\item 
+final List$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a5dc9c4a00a1ed899ad9d85dbb85c9247}{handlers}} = new Array\+List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}}$>$()
+\item 
+final Set$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a308d59fbd4b1709c35564aaea33a3207}{handlers2}} = new Tree\+Set$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}}$>$()
 \item 
 final Queue$<$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_event}{Event}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a4930784269b366bde4f23504496c008c}{events}} = new Concurrent\+Linked\+Queue$<$$>$()
 \item 
@@ -91,11 +96,11 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_af854492251c1b087c302ddadde0cec7e_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a4dfc888c8d64e5a6d381556467042325}\label{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a4dfc888c8d64e5a6d381556467042325}} 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_aca21aa2a7f30d07641e800da3d65edf5}\label{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_aca21aa2a7f30d07641e800da3d65edf5}} 
 \index{ch.innovazion.arionide.events.dispatching.MainEventDispatcher@{ch.innovazion.arionide.events.dispatching.MainEventDispatcher}!fire@{fire}}
 \index{fire@{fire}!ch.innovazion.arionide.events.dispatching.MainEventDispatcher@{ch.innovazion.arionide.events.dispatching.MainEventDispatcher}}
 \doxysubsubsection{\texorpdfstring{fire()}{fire()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+events.\+dispatching.\+Main\+Event\+Dispatcher.\+fire (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_event}{Event}}}]{event }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily synchronized void ch.\+innovazion.\+arionide.\+events.\+dispatching.\+Main\+Event\+Dispatcher.\+fire (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_event}{Event}}}]{event }\end{DoxyParamCaption})}
 
 
 
@@ -121,11 +126,11 @@ Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1d
 
 Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher_a5165fdaf611b2972480f48355c39d9da}{ch.\+innovazion.\+arionide.\+events.\+dispatching.\+I\+Event\+Dispatcher}}.
 
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a3955345437bb8f2d070897f047b81b3c}\label{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a3955345437bb8f2d070897f047b81b3c}} 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a68438ce15ed663d17adc7e6b5fe30a64}\label{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a68438ce15ed663d17adc7e6b5fe30a64}} 
 \index{ch.innovazion.arionide.events.dispatching.MainEventDispatcher@{ch.innovazion.arionide.events.dispatching.MainEventDispatcher}!purge@{purge}}
 \index{purge@{purge}!ch.innovazion.arionide.events.dispatching.MainEventDispatcher@{ch.innovazion.arionide.events.dispatching.MainEventDispatcher}}
 \doxysubsubsection{\texorpdfstring{purge()}{purge()}}
-{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+events.\+dispatching.\+Main\+Event\+Dispatcher.\+purge (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily synchronized void ch.\+innovazion.\+arionide.\+events.\+dispatching.\+Main\+Event\+Dispatcher.\+purge (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 
 
@@ -174,13 +179,25 @@ Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1events_1_1d
 \index{ch.innovazion.arionide.events.dispatching.MainEventDispatcher@{ch.innovazion.arionide.events.dispatching.MainEventDispatcher}!handlers@{handlers}}
 \index{handlers@{handlers}!ch.innovazion.arionide.events.dispatching.MainEventDispatcher@{ch.innovazion.arionide.events.dispatching.MainEventDispatcher}}
 \doxysubsubsection{\texorpdfstring{handlers}{handlers}}
-{\footnotesize\ttfamily final List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}}$>$ ch.\+innovazion.\+arionide.\+events.\+dispatching.\+Main\+Event\+Dispatcher.\+handlers = Collections.\+synchronized\+List(new Array\+List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}}$>$())\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily final List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}}$>$ ch.\+innovazion.\+arionide.\+events.\+dispatching.\+Main\+Event\+Dispatcher.\+handlers = new Array\+List$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}}$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a308d59fbd4b1709c35564aaea33a3207}\label{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a308d59fbd4b1709c35564aaea33a3207}} 
+\index{ch.innovazion.arionide.events.dispatching.MainEventDispatcher@{ch.innovazion.arionide.events.dispatching.MainEventDispatcher}!handlers2@{handlers2}}
+\index{handlers2@{handlers2}!ch.innovazion.arionide.events.dispatching.MainEventDispatcher@{ch.innovazion.arionide.events.dispatching.MainEventDispatcher}}
+\doxysubsubsection{\texorpdfstring{handlers2}{handlers2}}
+{\footnotesize\ttfamily final Set$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}}$>$ ch.\+innovazion.\+arionide.\+events.\+dispatching.\+Main\+Event\+Dispatcher.\+handlers2 = new Tree\+Set$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}}$>$()\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a063550fbf824b125cb0c8012e2f68bae}\label{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a063550fbf824b125cb0c8012e2f68bae}} 
 \index{ch.innovazion.arionide.events.dispatching.MainEventDispatcher@{ch.innovazion.arionide.events.dispatching.MainEventDispatcher}!paused@{paused}}
 \index{paused@{paused}!ch.innovazion.arionide.events.dispatching.MainEventDispatcher@{ch.innovazion.arionide.events.dispatching.MainEventDispatcher}}
 \doxysubsubsection{\texorpdfstring{paused}{paused}}
 {\footnotesize\ttfamily volatile boolean ch.\+innovazion.\+arionide.\+events.\+dispatching.\+Main\+Event\+Dispatcher.\+paused = false\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a091a6a1b3ccadc740d152ab57d3fbd8d}\label{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_a091a6a1b3ccadc740d152ab57d3fbd8d}} 
+\index{ch.innovazion.arionide.events.dispatching.MainEventDispatcher@{ch.innovazion.arionide.events.dispatching.MainEventDispatcher}!queuedHandlers@{queuedHandlers}}
+\index{queuedHandlers@{queuedHandlers}!ch.innovazion.arionide.events.dispatching.MainEventDispatcher@{ch.innovazion.arionide.events.dispatching.MainEventDispatcher}}
+\doxysubsubsection{\texorpdfstring{queuedHandlers}{queuedHandlers}}
+{\footnotesize\ttfamily final Queue$<$\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container}{Handler\+Container}}$>$ ch.\+innovazion.\+arionide.\+events.\+dispatching.\+Main\+Event\+Dispatcher.\+queued\+Handlers = new Concurrent\+Linked\+Queue$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_ad6f3c66d06a8c692cba543332356cfd7}\label{classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_ad6f3c66d06a8c692cba543332356cfd7}} 
 \index{ch.innovazion.arionide.events.dispatching.MainEventDispatcher@{ch.innovazion.arionide.events.dispatching.MainEventDispatcher}!waiting@{waiting}}

@@ -1,0 +1,21 @@
+<map id="ch.innovazion.arionide.lang.programs.Debugger.run" name="ch.innovazion.arionide.lang.programs.Debugger.run">
+<area shape="rect" id="node1" title=" " alt="" coords="5,413,252,452"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#af3f86c53f67cdad374d3ce8bdcbcadc1" title=" " alt="" coords="339,5,526,44"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_language.html#a37a8856e555f390837cc27e5b669f2b1" title=" " alt="" coords="339,68,526,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a5f89b244500df596c48d76e14bb9df64" title=" " alt="" coords="339,131,526,169"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#aab9b5dd11ab46a6fbd5e568c32156d00" title=" " alt="" coords="300,193,564,232"/>
+<area shape="rect" id="node6" href="$interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html#a629aacaedfaace627e0aff94d15c4931" title=" " alt="" coords="313,256,552,295"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a3b71c125b9ba5aa0a18faf9b52022ac6" title=" " alt="" coords="324,319,541,357"/>
+<area shape="rect" id="node8" href="$interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html#a6e71c9e136d22f7bd8723b282324f9e4" title=" " alt="" coords="313,381,552,420"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_skeleton.html#a046a7e5e2ccde045cb9e5040495e7231" title=" " alt="" coords="339,444,526,483"/>
+<area shape="rect" id="node10" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#ad4960c7a2e3b8b4b67c8676584a6f64b" title=" " alt="" coords="318,507,547,545"/>
+<area shape="rect" id="node11" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#ae99b221f7ccafe49ef61e0f1127c76e2" title=" " alt="" coords="339,569,526,608"/>
+<area shape="rect" id="node12" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a9cb322bd854d95e4a4c12dac32f3bdff" title=" " alt="" coords="339,632,526,671"/>
+<area shape="rect" id="node14" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#abe433d2f876b9cff05a669dd3aa0cbd6" title=" " alt="" coords="339,695,526,733"/>
+<area shape="rect" id="node18" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#a79f4586d6501d301fa8f8ea47aa646bc" title=" " alt="" coords="329,757,536,796"/>
+<area shape="rect" id="node19" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_application_memory.html#a29448a3e6916a4deba6c43ea72b7f43d" title=" " alt="" coords="339,820,526,859"/>
+<area shape="rect" id="node13" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html#afb937d1a2c3956656e76ae683cc61ae2" title=" " alt="" coords="647,632,850,671"/>
+<area shape="rect" id="node15" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html#aa5f84407c43d1975f6c3a6d983be6c33" title=" " alt="" coords="612,695,884,733"/>
+<area shape="rect" id="node16" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a09d0cee3370c7a91bd916eca48483967" title=" " alt="" coords="640,757,857,796"/>
+<area shape="rect" id="node17" href="$interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html#a599b0207e13072e964ea72c1abb2fa6b" title=" " alt="" coords="629,820,868,859"/>
+</map>

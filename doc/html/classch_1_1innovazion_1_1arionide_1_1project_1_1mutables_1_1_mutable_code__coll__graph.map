@@ -1,13 +1,13 @@
 <map id="ch.innovazion.arionide.project.mutables.MutableCode" name="ch.innovazion.arionide.project.mutables.MutableCode">
-<area shape="rect" id="node1" title=" " alt="" coords="1072,48,1331,87"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_structure.html" title=" " alt="" coords="763,105,1022,144"/>
-<area shape="rect" id="node3" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure.html" title=" " alt="" coords="415,5,616,44"/>
-<area shape="rect" id="node4" title=" " alt="" coords="96,12,186,37"/>
-<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html" title=" " alt="" coords="396,68,635,107"/>
-<area shape="rect" id="node5" href="$interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html" title=" " alt="" coords="396,131,635,169"/>
-<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html" title=" " alt="" coords="415,193,616,232"/>
-<area shape="rect" id="node7" title=" " alt="" coords="5,181,277,220"/>
-<area shape="rect" id="node8" title=" " alt="" coords="91,260,191,285"/>
-<area shape="rect" id="node10" title=" " alt="" coords="100,69,182,95"/>
-<area shape="rect" id="node11" title=" " alt="" coords="5,119,277,157"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1072,88,1331,127"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1mutables_1_1_mutable_structure.html" title=" " alt="" coords="763,121,1022,160"/>
+<area shape="rect" id="node3" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure.html" title=" " alt="" coords="415,53,616,92"/>
+<area shape="rect" id="node4" href="$interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html" title=" " alt="" coords="21,5,261,44"/>
+<area shape="rect" id="node5" title=" " alt="" coords="96,68,186,93"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html" title=" " alt="" coords="396,120,635,159"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html" title=" " alt="" coords="415,220,616,259"/>
+<area shape="rect" id="node7" title=" " alt="" coords="5,229,277,268"/>
+<area shape="rect" id="node8" title=" " alt="" coords="91,299,191,324"/>
+<area shape="rect" id="node10" title=" " alt="" coords="100,117,182,143"/>
+<area shape="rect" id="node11" title=" " alt="" coords="5,167,277,205"/>
 </map>

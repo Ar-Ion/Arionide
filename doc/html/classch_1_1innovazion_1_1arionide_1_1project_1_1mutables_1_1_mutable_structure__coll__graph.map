@@ -1,12 +1,12 @@
 <map id="ch.innovazion.arionide.project.mutables.MutableStructure" name="ch.innovazion.arionide.project.mutables.MutableStructure">
-<area shape="rect" id="node1" title=" " alt="" coords="763,133,1022,172"/>
-<area shape="rect" id="node2" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure.html" title=" " alt="" coords="415,5,616,44"/>
-<area shape="rect" id="node3" title=" " alt="" coords="96,15,186,40"/>
-<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html" title=" " alt="" coords="396,71,635,109"/>
-<area shape="rect" id="node4" href="$interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html" title=" " alt="" coords="396,133,635,172"/>
-<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html" title=" " alt="" coords="415,196,616,235"/>
-<area shape="rect" id="node6" title=" " alt="" coords="5,184,277,223"/>
-<area shape="rect" id="node7" title=" " alt="" coords="91,263,191,288"/>
-<area shape="rect" id="node9" title=" " alt="" coords="100,72,182,97"/>
-<area shape="rect" id="node10" title=" " alt="" coords="5,121,277,160"/>
+<area shape="rect" id="node1" title=" " alt="" coords="763,180,1022,219"/>
+<area shape="rect" id="node2" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure.html" title=" " alt="" coords="415,53,616,92"/>
+<area shape="rect" id="node3" href="$interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_callable.html" title=" " alt="" coords="21,5,261,44"/>
+<area shape="rect" id="node4" title=" " alt="" coords="96,68,186,93"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html" title=" " alt="" coords="396,139,635,177"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html" title=" " alt="" coords="415,220,616,259"/>
+<area shape="rect" id="node6" title=" " alt="" coords="5,229,277,268"/>
+<area shape="rect" id="node7" title=" " alt="" coords="91,299,191,324"/>
+<area shape="rect" id="node9" title=" " alt="" coords="100,117,182,143"/>
+<area shape="rect" id="node10" title=" " alt="" coords="5,167,277,205"/>
 </map>

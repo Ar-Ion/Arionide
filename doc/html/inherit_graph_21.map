@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html" title=" " alt="" coords="5,5,192,44"/>
+<area shape="rect" id="node1" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html" title=" " alt="" coords="5,37,192,76"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html" title=" " alt="" coords="240,5,448,44"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation.html" title=" " alt="" coords="240,68,448,107"/>
 </map>
