@@ -76,6 +76,10 @@ public class SpecificationManager extends ContextualManager<Specification> {
 			for(Parameter target : other.getParameters()) {
 				if(target.equals(param)) { // Name comparison
 					target.setName(newName);
+					
+					if(target.getValue() instanceof Information) {
+						((Information) target.getValue()).getRoot().label(newName);
+					}
 				}
 			}
 		});

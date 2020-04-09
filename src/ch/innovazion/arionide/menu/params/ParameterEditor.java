@@ -129,7 +129,7 @@ public class ParameterEditor extends Menu {
 	}
 	
 	private void onUpdate(Void nil) {
-		dispatch(specManager.refactorParameterDefault(parameter, this.value));
+		dispatch(specManager.refactorParameterDefault(parameter, specManager.getInformationManager().getContext()));
 		dispatch(new GeometryInvalidateEvent(1));
 	}
 }

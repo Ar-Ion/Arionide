@@ -32,6 +32,7 @@ import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.symbols.AtomicValue;
 import ch.innovazion.arionide.lang.symbols.Constant;
 import ch.innovazion.arionide.lang.symbols.Enumeration;
+import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.InvalidValueException;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Numeric;
@@ -71,19 +72,38 @@ public class InformationUpdater extends ParameterUpdater {
 		super.onRefresh(identifier, prevValue);
 				
 		if(identifier.equals("value")) {
-			this.infoManager = getSpecificationManager().loadInformationManager(value);
+			if(value instanceof Information) {
+				this.infoManager = getSpecificationManager().loadInformationManager(value);
+			} else if(value instanceof Node) {
+				this.infoManager = getSpecificationManager().loadInformationManager(null);
+				updateCurrentNode((Node) value);
+			}
 		}
 	}
 	
 	private void updateCurrentNode(Node currentNode) {
 		if(currentNode == null) {
-			currentNode = infoManager.getRootNode();
+			if(infoManager != null) {
+				currentNode = infoManager.getRootNode();
+			} else {
+				go("..");
+			}
 		}
 		
 		this.currentNode = currentNode;
 		this.children = currentNode.getNodes();
 		
 		List<String> elements = new ArrayList<>();
+		
+		boolean frozen = this.frozen;
+		
+		if(value instanceof Node) {
+			Node current = (Node) value;
+			
+			do {
+				frozen |= currentNode.equals(current);
+			} while((current = current.getParent()) != null);
+		}
 				
 		if(currentNode instanceof Numeric) {
 			elements.add("Set number");
@@ -342,7 +362,7 @@ public class InformationUpdater extends ParameterUpdater {
 			dispatch(new GeometryInvalidateEvent(0));
 			updateParameter();
 			back();	
-		} else {
+		} else if(infoManager.hasContext()) {
 			updateCurrentNode(infoManager.reset());
 			updateParameter();
 		}

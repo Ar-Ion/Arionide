@@ -69,6 +69,7 @@ public class VariableManager extends ContextualManager<Variable> {
 			try {
 				((MutableActor) parent).getWrapper().getState().connect(var);
 			} catch (SymbolResolutionException e) {
+				e.printStackTrace();
 				return new MessageEvent("Unable to connect a new variable to the structure's state", MessageType.ERROR);
 			}
 			

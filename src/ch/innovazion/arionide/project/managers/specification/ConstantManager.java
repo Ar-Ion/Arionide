@@ -135,8 +135,4 @@ public class ConstantManager extends ContextualManager<Constant> {
 			return new MessageEvent(exception.getMessage(), MessageType.ERROR);
 		}
 	}
-	
-	public Constant getContext() {
-		return super.getContext();
-	}
 }

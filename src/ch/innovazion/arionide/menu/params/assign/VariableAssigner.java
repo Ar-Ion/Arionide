@@ -68,7 +68,7 @@ public class VariableAssigner extends ParameterUpdater {
 	
 	private void createVariable(String name) {
 		dispatch(varManager.createAndBind(target, name));
-		dispatch(new GeometryInvalidateEvent(0));
+		dispatch(new GeometryInvalidateEvent(2));
 		go(".");
 	}
 }

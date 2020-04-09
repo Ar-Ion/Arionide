@@ -24,7 +24,9 @@ package ch.innovazion.arionide.menu;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.MenuEvent;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
+import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Node;
+import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.automaton.StateManager;
@@ -58,10 +60,11 @@ public class MenuManager extends StateManager {
 		hierarchy.codeBrowser.select(code);
 	}
 	
-	public void selectNode(Node node) {		
+	public void selectNode(Structure actor, Node node) {		
 		go("/");
 		triggerAction(RootMenu.genericUpdater);
 		
+		hierarchy.genericUpdater.setGenericTarget(actor);
 		hierarchy.genericUpdater.setGenericParameterValue(node);
 		hierarchy.genericUpdater.setGenericParameterFrozen(false);
 		

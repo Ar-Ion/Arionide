@@ -37,18 +37,20 @@ public class Information implements ParameterValue {
 		this.root = new Node(rootName);
 	}
 	
-	public Node resetRootNode() {
-		Node newRoot = new Node(root.getLabel());
-		
-		return this.root = newRoot;
+	public void setRootNode(Node newRoot) {		
+		this.root = newRoot;
 	}
-	
+		
 	public Node getRoot() {
 		return root;
 	}
 
 	public List<String> getDisplayValue() {
 		return root.getDisplayValue();
+	}
+	
+	public String toString() {
+		return root.toString();
 	}
 
 	public Information clone() {

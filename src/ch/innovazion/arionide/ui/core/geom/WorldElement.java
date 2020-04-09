@@ -41,9 +41,9 @@ public class WorldElement {
 	private String name;
 	private List<String> desc;
 	private Vector4f color;
-	private Vector3f spotColor;
+	private Vector4f spotColor;
 	
-	protected WorldElement(int id, String name, List<String> desc, Vector3f center, Vector3f base, Vector3f axis, Vector4f color, Vector3f spotColor, float size, boolean accessAllowed) {
+	protected WorldElement(int id, String name, List<String> desc, Vector3f center, Vector3f base, Vector3f axis, Vector4f color, Vector4f spotColor, float size, boolean accessAllowed) {
 		this.id = id;
 		this.name = name;
 		this.desc = desc;
@@ -92,7 +92,7 @@ public class WorldElement {
 		return new Vector3f(this.axis);
 	}
 	
-	public Vector3f getSpotColor() {
+	public Vector4f getSpotColor() {
 		return this.spotColor;
 	}
 	

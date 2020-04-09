@@ -33,12 +33,15 @@ import ch.innovazion.arionide.coders.CameraInfo;
 import ch.innovazion.arionide.coders.Coder;
 import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
+import ch.innovazion.arionide.lang.symbols.Actor;
 import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.arionide.project.managers.CodeManager;
 import ch.innovazion.arionide.project.managers.HostStructureStack;
+import ch.innovazion.arionide.project.mutables.MutableActor;
 import ch.innovazion.arionide.ui.core.geom.CodeGeometry;
 import ch.innovazion.arionide.ui.core.geom.CoreGeometry;
 import ch.innovazion.arionide.ui.core.geom.CurrentCodeGeometry;
@@ -129,7 +132,7 @@ public class CoreController {
 		
 		try {
 			if(coreGeometry.processEventQueue()) {
-				// onDiscontinuityCrossed();
+				onDiscontinuityCrossed();
 			}
 		
 			for(Geometry geometry : codeGeometries) {					
@@ -329,19 +332,51 @@ public class CoreController {
 				if((id & 0xFF000000) == 0) {
 					Structure struct = project.getStorage().getStructures().get(id);
 					menu.selectCode(struct);
-				} else {
-					// In the case of a specification element
+				} else if((id & 0xFF000000) != 0) {
+					// In the case of a parameter
 					int instructionID = selection.getID() & 0xFFFFFF;
 					int paramID = (selection.getID() >>> 24) - 1;
 					
-					Structure instructionMeta = project.getStorage().getStructures().get(instructionID);
+					Structure struct = project.getStorage().getStructures().get(instructionID);
 			
-					if(instructionMeta != null) {							
-						Parameter param = instructionMeta.getSpecification().getParameters().get(paramID);
+					if(struct != null) {							
+						Parameter param = struct.getSpecification().getParameters().get(paramID);
 					
 						if(param != null) {
 							// TODO
+
 						}
+					}
+				}
+			} else if((id & 0xFF000000) != 0) {
+				// In the case of a const/prop/state
+				int structureID = selection.getID() & 0xFFFFFF;
+				int objectID = (selection.getID() >>> 24) & 0x7F;
+				
+				Structure struct = project.getStorage().getStructures().get(structureID);
+				
+				if(struct != null && struct instanceof MutableActor) {
+					Actor actor = ((MutableActor) struct).getWrapper();
+					
+					int numConsts = actor.getConstants().getNumElements();
+					int numProps = actor.getProperties().getNumElements();
+					int numSV = actor.getState().getNumElements();
+					
+					try {
+						if(objectID < numConsts) {
+							// The object is a constant
+							menu.selectNode(struct, actor.getConstants().resolve(objectID));
+						} else if((objectID -= numConsts) < numProps) {
+							// The object is a property
+							menu.selectNode(struct, actor.getProperties().resolve(objectID));
+						} else if((objectID -= numProps) < numSV) {
+							// The object is a state variable
+							menu.selectNode(struct, actor.getState().resolve(objectID));
+						} else {
+							// Well, unknown object...
+						}
+					} catch(SymbolResolutionException exception) {
+						Debug.exception(exception);
 					}
 				}
 			} else {

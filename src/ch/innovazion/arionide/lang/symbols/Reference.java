@@ -133,8 +133,6 @@ public class Reference extends AtomicValue {
 		
 		if(target != null) {
 			display.add("Reference to '" + target.getName() + "'");
-		} else {
-			display.add("Unbound reference");
 		}
 		
 		if(lazyParameters.size() > 0) {

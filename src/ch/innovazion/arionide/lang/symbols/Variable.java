@@ -32,27 +32,21 @@ public class Variable extends AtomicValue {
 
 	private static final long serialVersionUID = 8748976008265242711L;
 	
-	private String name;
 	private Information initialValue; // Static variable allocation
 	private Variable binding;
 	
 	public Variable() {
-		this(null, new Information("Variable"));
+		this("Variable", new Information("Constant"));
 	}
 	
 	private Variable(Variable parent) {
 		super(parent);
-		this.name = parent.name;
 		this.initialValue = parent.initialValue;
 	}
 	
 	public Variable(String name, Information initialValue) {
 		super(name);
 		this.initialValue = initialValue;
-	}
-	
-	public void label(String name) {
-		this.name = (name != null && !name.isEmpty()) ? name : "Variable";
 	}
 	
 	public void setInitialValue(Information initialValue) {
@@ -71,14 +65,16 @@ public class Variable extends AtomicValue {
 		return initialValue.getRoot().getRawStream();
 	}
 	
-	public List<String> getDisplayValue() {
-		String bindDisplay = new String("Unbound variable");
-		
+	public List<String> getDisplayValue() {		
 		if(binding != null) {
-			bindDisplay = "Bound to " + binding.name;
+			return Arrays.asList(getLabel(), toString());
 		}
-		
-		return Arrays.asList(name, bindDisplay, initialValue.getRoot().toString());
+	
+		return Arrays.asList(getLabel(), toString());
+	}
+	
+	public String toString() {
+		return "Initial value: " + initialValue.getRoot().toString();
 	}
 	
 	public int getSize() {

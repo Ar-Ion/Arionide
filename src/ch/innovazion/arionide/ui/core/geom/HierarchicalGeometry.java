@@ -45,7 +45,7 @@ public abstract class HierarchicalGeometry extends Geometry {
 	private final float relativeSize;
 	private final float relativeDistance;
 	
-	private WorldElementFactory factory = new WorldElementFactory();
+	protected WorldElementFactory factory = new WorldElementFactory();
 	
 	public HierarchicalGeometry(float relativeSize, float relativeDistance) {
 		this.relativeSize = relativeSize;
@@ -78,22 +78,26 @@ public abstract class HierarchicalGeometry extends Geometry {
 			for(HierarchyElement element : input) {
 				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(this.relativeDistance * size / this.relativeSize).add(parent.getCenter());
 				
-				Structure structMeta = metaData.get(element.getID());
+				Structure structure = metaData.get(element.getID());
 
-				if(structMeta != null && !structMeta.isLambda()) {
-					Vector4f color = new Vector4f(ApplicationTints.getColorByID(structMeta.getColorID()), 0.3f);
-					Vector3f spotColor = new Vector3f(ApplicationTints.getColorByID(structMeta.getSpotColorID()));
-					boolean access = structMeta.isAccessAllowed();
-					
-					WorldElement object = this.factory.make(element.getID(), structMeta.getName(), structMeta.getComment(), position, color, spotColor, size, access);
-					output.add(object);
-					
+				if(structure != null && !structure.isLambda()) {
+					WorldElement object = constructElement(structure, position, size, output);
 					this.construct0(object, element.getChildren(), output, metaData, this.relativeSize * size);
 				} else {
 					throw new GeometryException("Invalid element ID " + element.getID());
 				}
 			}
 		}
+	}
+	
+	protected WorldElement constructElement(Structure struct, Vector3f position, float size, List<WorldElement> output) {
+		Vector4f color = new Vector4f(ApplicationTints.getColorByID(struct.getColorID()), 0.3f);
+		Vector4f spotColor = new Vector4f(ApplicationTints.getColorByID(struct.getSpotColorID()), 0.5f);
+		boolean access = struct.isAccessAllowed();
+		
+		WorldElement element = factory.make(struct.getIdentifier(), struct.getName(), struct.getComment(), position, color, spotColor, size, access);
+		output.add(element);
+		return element;
 	}
 	
 	public float getSize(int generation) {

@@ -70,14 +70,14 @@ public class ParameterCreator extends Menu {
 	public void onAction(String action) {
 		switch(action) {
 		case "Variable":
-			this.value = new Variable();
+			this.value = new Variable(parameter.getName(), new Information("Initial value"));
 			this.onUpdate = this::onUpdate;
 			this.frozen = false;
 			onUpdate(null);
 			go("../variable");
 			break;
 		case "Constant":
-			this.value = new Information();
+			this.value = new Information(parameter.getName());
 			this.onUpdate = this::onUpdate;
 			this.frozen = false;
 			onUpdate(null);

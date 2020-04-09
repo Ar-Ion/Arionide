@@ -214,8 +214,9 @@ public class UserController {
 		for(WorldElement element : coreGeometry.getElements()) {
 			boolean isInsideSameStruct = generation == 0 || current.getCenter().distance(element.getCenter()) < parentSize;
 			boolean isSameSize = Math.abs(element.getSize() - currentSize) < Math.ulp(currentSize);
-						
-			if(isSameSize && isInsideSameStruct) {
+			boolean isSizeOfActorObject = Math.abs(element.getSize() - parentSize / 40.0f) < Math.ulp(currentSize);
+		
+			if((isSameSize || isSizeOfActorObject) && isInsideSameStruct) {
 				float currentDistance = this.position.distance(element.getCenter());
 				
 				if(currentDistance < distance) {

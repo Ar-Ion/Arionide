@@ -36,7 +36,11 @@ public abstract class ContextualManager<T> extends Manager {
 		this.context = context;
 	}
 	
-	protected T getContext() {
+	public boolean hasContext() {
+		return context != null;
+	}
+	
+	public T getContext() {
 		if(context != null) {
 			return context;
 		} else {

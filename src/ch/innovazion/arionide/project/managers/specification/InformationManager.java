@@ -39,7 +39,9 @@ public class InformationManager extends ContextualManager<Information> {
 	}
 	
 	public Node reset() {
-		return getContext().resetRootNode();
+		Node root = new Node("Constant");
+		assign(getRootNode(), root);
+		return root;
 	}
 		
 	public MessageEvent setLabel(Node target, String name) {
@@ -53,6 +55,9 @@ public class InformationManager extends ContextualManager<Information> {
 						
 			if(parent != null) {
 				parent.disconnect(target);
+				return success();
+			} else if(hasContext()) {
+				reset();
 				return success();
 			} else {
 				return warn();
@@ -97,11 +102,16 @@ public class InformationManager extends ContextualManager<Information> {
 				}
 				
 				newValue.label(prevValue.getLabel());
-								
+												
 				int index = parent.indexOf(prevValue);
 				parent.disconnect(prevValue);
 				parent.connect(newValue, index);
-								
+				
+				return success();
+			} else if(hasContext()) {
+				newValue.label(getRootNode().getLabel());
+				getContext().setRootNode(newValue);
+				
 				return success();
 			} else {
 				return warn();

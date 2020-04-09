@@ -94,7 +94,7 @@ public class CodeGeometry extends Geometry {
 						
 			if(struct != null) {
 				Vector4f color = new Vector4f(ApplicationTints.getColorByID(struct.getColorID()), 0.5f);
-				Vector3f spotColor = new Vector3f(ApplicationTints.getColorByID(struct.getSpotColorID()));
+				Vector4f spotColor = new Vector4f(ApplicationTints.getColorByID(struct.getSpotColorID()), 1.0f);
 				
 				/* Process instruction */
 				axis.normalize(parent.getSize() * relativeDistance);
@@ -122,7 +122,7 @@ public class CodeGeometry extends Geometry {
 				for(int i = 0; i < specification.size(); i++) {
 					Parameter param = specification.get(i);
 					
-					WorldElement specObject = this.factory.make((((i + 1) & 0xFF) << 24) | element.getID(), param.getName(), param.getDisplayValue(), new Vector3f(specPos).add(position), color, spotColor, size / 5.0f, struct.isAccessAllowed());
+					WorldElement specObject = this.factory.make((((i + 1) & 0x7F) << 24) | element.getID(), param.getName(), param.getDisplayValue(), new Vector3f(specPos).add(position), color, spotColor, size / 5.0f, struct.isAccessAllowed());
 					
 					outputSpecification.add(specObject);
 					outputConnections.add(new Connection(output, specObject));

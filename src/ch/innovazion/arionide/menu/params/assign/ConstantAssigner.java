@@ -69,7 +69,7 @@ public class ConstantAssigner extends ParameterUpdater {
 	
 	private void createConstant(String name) {
 		dispatch(constManager.createAndAssign(target, name));
-		dispatch(new GeometryInvalidateEvent(0));
+		dispatch(new GeometryInvalidateEvent(2));
 		this.value = constManager.getContext();
 		go(".");
 	}
