@@ -45,6 +45,7 @@ public class Label extends Component implements Enlightenable {
 		super(parent);
 		
 		this.text = PrimitiveFactory.instance().newText(label, ApplicationTints.MAIN_COLOR, ApplicationTints.ACTIVE_ALPHA);
+		text.updateText(label);
 	}
 	
 	public void load() {

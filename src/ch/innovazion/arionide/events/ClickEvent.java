@@ -44,7 +44,7 @@ public class ClickEvent extends ComponentEvent {
 		return super.isTargetting(potential) && this.isTargettingSignal(signal);
 	}
 	
-	private boolean isTargettingSignal(String signal) {
+	public boolean isTargettingSignal(String signal) {
 		return this.signal == signal;
 	}
 	

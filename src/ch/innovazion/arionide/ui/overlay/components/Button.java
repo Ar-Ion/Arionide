@@ -73,7 +73,7 @@ public class Button extends Label implements EventHandler, Deformable {
 	
 	public Button(Container parent, String label, int inactiveAlpha) {
 		super(parent, label);
-		
+				
 		this.inactiveAlpha = inactiveAlpha;
 		this.animation = new FieldModifierAnimation(this.getAppManager(), "alpha", Label.class, this);
 		

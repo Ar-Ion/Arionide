@@ -49,6 +49,18 @@ public class Debugger extends Program {
 				Language lang = env.getLanguage();
 				
 				while(true) {
+					if(env.isManual().get()) {
+						try {
+							env.getManualModeSemaphore().acquire();
+						} catch (InterruptedException e) {
+							break;
+						}
+					}
+					
+					if(env.getTimerStepRequest().compareAndSet(true, false)) {
+						io.log("Timer step: " + env.readTimer());
+					}
+					
 					Callable callable = memory.textAt(2 * env.getProgramCounter().get());
 					Instruction instruction = lang.getInstructionSet().get(callable.getName());
 					

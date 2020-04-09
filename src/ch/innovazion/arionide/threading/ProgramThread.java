@@ -32,8 +32,12 @@ public class ProgramThread extends WorkingThread {
 	public String getDescriptor() {
 		return "Program execution thread";
 	}
+	
+	public void reset() {
+		interrupt();
+	}
 
 	public boolean respawn(int attempt) {
-		return false;
+		return true;
 	}
 }

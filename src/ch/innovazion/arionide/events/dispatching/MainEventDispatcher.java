@@ -23,8 +23,11 @@ package ch.innovazion.arionide.events.dispatching;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import ch.innovazion.arionide.events.Event;
@@ -33,7 +36,9 @@ import ch.innovazion.arionide.threading.EventDispatchingThread;
 
 public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	
-	private final List<HandlerContainer> handlers = Collections.synchronizedList(new ArrayList<HandlerContainer>());
+	private final Queue<HandlerContainer> queuedHandlers = new ConcurrentLinkedQueue<>();
+	private final List<HandlerContainer> handlers = new ArrayList<HandlerContainer>();
+	private final Set<HandlerContainer> handlers2 = new TreeSet<HandlerContainer>();
 	private final Queue<Event> events = new ConcurrentLinkedQueue<>();
 	
 	private volatile boolean paused = false;
@@ -43,20 +48,28 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 		thread.setup(this);
 	}
 	
-	public void fire(Event event) {
+	public synchronized void fire(Event event) {
 		events.add(event);
 	}
 	
-	public void purge() {
+	public synchronized void purge() {
 		events.clear();
 	}
 	
 	public synchronized void dispatchEvents() {
 		while(!paused && !events.isEmpty()) {
 			Event event = events.poll();
-
-			for(HandlerContainer container : handlers) {
-				EventHandler handler = container.handler;
+			HandlerContainer queuedHandler;
+			
+			while((queuedHandler = queuedHandlers.poll()) != null) {
+				handlers.add(queuedHandler);
+				Collections.sort(handlers);
+			}
+						
+			Iterator<HandlerContainer> it = handlers.iterator();
+			
+			while(it.hasNext()) {
+				EventHandler handler = it.next().handler;
 				
 				if(event.hasBeenAborted()) {
 					break;
@@ -79,8 +92,7 @@ public class MainEventDispatcher extends AbstractThreadedEventDispatcher {
 	}
 	
 	public synchronized void registerHandler(EventHandler handler, float priority) {
-		handlers.add(new HandlerContainer(handler, priority));
-		Collections.sort(handlers);
+		queuedHandlers.add(new HandlerContainer(handler, priority));
 	}
 	
 	public synchronized void flush() { // Acquire lock (terminate current event dispatching) and wait for a complete event dispatching

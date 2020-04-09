@@ -63,7 +63,8 @@ public class RunView extends View implements EventHandler {
 
 	private final Tab sourceSelector;
 	private final Tab programSelector;
-	private final Label[] console = new Label[15];
+	private final Label consoleLine;
+	private final Label[] console = new Label[20];
 	private final Container environmentContainer;
 	private final List<Entry<String, Integer>> consoleData = new ArrayList<>();
 	
@@ -87,8 +88,12 @@ public class RunView extends View implements EventHandler {
 		this.add(new Button(this, "<").setSignal("back"), 0.05f, 0.05f, 0.15f, 0.1f);
 		this.add(new Button(this, "Run").setSignal("run"), 0.85f, 0.05f, 0.95f, 0.1f);
 		
+		float rowHeight = 0.8f / console.length;
+				
+		this.add(this.consoleLine = new Label(this, new String()), 0.0f, 0.2f, rowHeight, 0.2f + rowHeight);
+		
 		for(int i = 0; i < this.console.length; i++) {
-			this.add(this.console[i] = new Button(this, new String(), 0xAF).setSignal("console", i).setBordered(false), 0.0f, 0.2f + i * 0.05f, 0.4f, 0.25f + i * 0.05f);
+			this.add(this.console[i] = new Button(this, new String(), 0xAF).setSignal("console", i).setBordered(false), 0.0f, 0.2f + i * rowHeight, 0.4f, 0.2f + (i + 1) * rowHeight);
 		}
 		
 		this.environmentContainer = new Container(this, layoutManager) {
@@ -208,12 +213,12 @@ public class RunView extends View implements EventHandler {
 		} else if(event instanceof WheelEvent) {
 			WheelEvent wheel = (WheelEvent) event;
 			
-			this.wheelPosition += wheel.getDelta();
+			this.wheelPosition += (int) wheel.getDelta();
 			
 			if(this.wheelPosition < 0.0f) {
 				this.wheelPosition = 0.0f;
-			} else if(this.wheelPosition > this.consoleData.size() - 15) {
-				this.wheelPosition = this.consoleData.size() - 15;
+			} else if(this.wheelPosition > this.consoleData.size() - console.length) {
+				this.wheelPosition = this.consoleData.size() - console.length;
 			}
 			
 			this.updateConsole();
@@ -241,23 +246,21 @@ public class RunView extends View implements EventHandler {
 		List<Entry<String, Integer>> toRender;
 		int realID = 0;
 		
-		if(this.consoleData.size() < 15) {
+		if(this.consoleData.size() < console.length) {
 			toRender = this.consoleData;
 		} else {
 			int offset = (int) this.wheelPosition;
-			toRender = this.consoleData.subList(this.consoleData.size() - offset - 15, this.consoleData.size() - offset);
-			realID = this.consoleData.size() - offset - 15;
+			toRender = this.consoleData.subList(this.consoleData.size() - offset - console.length, this.consoleData.size() - offset);
+			realID = this.consoleData.size() - offset - console.length;
 		}
+		
+		consoleLine.setLabel(String.valueOf(realID + 1));
 		
 		for(int i = 0; i < this.console.length; i++) {
 			if(i < toRender.size()) {
 				Entry<String, Integer> entry = toRender.get(i);
 				
-				if(i != 0) {
-					this.console[i].setColor(entry.getValue()).setLabel(entry.getKey());
-				} else {
-					this.console[i].setColor(entry.getValue()).setLabel((realID + i + 1) + ": " + entry.getKey());
-				}
+				this.console[i].setColor(entry.getValue()).setLabel(entry.getKey());
 			} else {
 				this.console[i].setLabel(new String());
 			}
