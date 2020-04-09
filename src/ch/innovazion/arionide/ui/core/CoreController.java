@@ -147,7 +147,7 @@ public class CoreController {
 			Vector3f center = destination.getCenter();
 			float size = destination.getSize();
 			
-			user.setPosition(center.add(size * 0.5f, size * 0.125f, 0.0f));
+			user.setPosition(center.add(size * 0.75f, size * 0.45f, 0.0f));
 			
 			onDiscontinuityCrossed();
 			
@@ -158,9 +158,9 @@ public class CoreController {
 			requestTeleportation.getAndUpdate(x -> x < 0 ? x : x-1);
 		}
 		
-		if(requestFocus.compareAndSet(0, -1)) {
+		if(requestFocus.compareAndSet(0, -1)) {			
 			WorldElement focus = coreGeometry.getElementByID(requestedFocus);
-
+						
 			CodeManager manager = project.getStructureManager().getCodeManager();
 						
 			if(focus != null) {
@@ -354,7 +354,9 @@ public class CoreController {
 	}
 	
 	void onDiscontinuityCrossed() {
-		requestMenuReset.set(true);
+		if(requestFocus.get() == -1) {
+			requestMenuReset.set(true);
+		}
 		
 		try {
 			coreGeometry.processEventQueue();

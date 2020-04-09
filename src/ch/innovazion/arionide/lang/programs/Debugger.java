@@ -27,6 +27,7 @@ import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Language;
 import ch.innovazion.arionide.lang.Program;
+import ch.innovazion.arionide.lang.Skeleton;
 import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.project.Storage;
 
@@ -41,16 +42,24 @@ public class Debugger extends Program {
 
 	public void run(int rootStructure, ProgramIO io) {
 		ApplicationMemory memory = io.in(ApplicationMemory.class);
+		Skeleton skeleton = io.in(Skeleton.class);
 
 		io.log("Running program using built-in debugger.");
 		
-		if(memory != null) {
+		if(memory != null && skeleton != null) {
 			try {
 				Language lang = env.getLanguage();
 				
+				if(env.isManual().get()) {
+					env.setNextFrame(skeleton.getText().get(0));
+				}
+				
 				while(true) {
+					Callable callable = memory.textAt(2 * env.getProgramCounter().get());
+
 					if(env.isManual().get()) {
 						try {
+							env.setNextInstruction(callable);
 							env.getManualModeSemaphore().acquire();
 						} catch (InterruptedException e) {
 							break;
@@ -61,7 +70,6 @@ public class Debugger extends Program {
 						io.log("Timer step: " + env.readTimer());
 					}
 					
-					Callable callable = memory.textAt(2 * env.getProgramCounter().get());
 					Instruction instruction = lang.getInstructionSet().get(callable.getName());
 					
 					if(instruction != null) {
@@ -75,7 +83,7 @@ public class Debugger extends Program {
 				io.fatal(e.getMessage());
 			}
 		} else {
-			io.fatal("Cannot run debugger without having relocated the application skeleton");
+			io.fatal("Cannot run debugger without having built and relocated the application skeleton");
 		}
 		
 		io.log("Program execution terminated.");

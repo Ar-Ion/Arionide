@@ -32,7 +32,10 @@ import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.ClickEvent;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
+import ch.innovazion.arionide.events.TargetUpdateEvent;
+import ch.innovazion.arionide.events.TeleportEvent;
 import ch.innovazion.arionide.events.WheelEvent;
+import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.layout.LayoutManager;
@@ -57,6 +60,8 @@ public abstract class Environment implements EventHandler {
 	private final AtomicBoolean timerState = new AtomicBoolean();
 	
 	private final List<Peripheral> peripherals = new ArrayList<>();
+	
+	private AppManager manager;
 	
 	private Label pcLabel;
 	private Label clkLabel;
@@ -111,7 +116,9 @@ public abstract class Environment implements EventHandler {
 		}
 	}
 		
-	public Container create(AppManager manager, Bounds renderBounds, LayoutManager dedicatedLayoutManager) {			
+	public Container create(AppManager manager, Bounds renderBounds, LayoutManager dedicatedLayoutManager) {
+		this.manager = manager;
+		
 		manager.getEventDispatcher().registerHandler(this);
 		
 		Container container = new Container(null, dedicatedLayoutManager) {
@@ -186,7 +193,7 @@ public abstract class Environment implements EventHandler {
 					manualModeSemaphore.release();
 				}
 			} else if(click.isTargettingSignal("reset")) {
-				((ClickEvent) event).getTarget().getAppManager().getWorkspace().getProgramThread().reset();
+				manager.getWorkspace().getProgramThread().reset();
 				manualModeSemaphore.drainPermits();
 				programCounter.set(0);
 				clock.set(0);
@@ -238,6 +245,18 @@ public abstract class Environment implements EventHandler {
 	
 	public String readTimer() {
 		return formatTimestamp(clock.get() - timerStart);
+	}
+	
+	public void setNextInstruction(Callable target) {
+		if(manager != null) {
+			manager.getEventDispatcher().fire(new TargetUpdateEvent(target.getIdentifier()));
+		}
+	}
+	
+	public void setNextFrame(Callable target) {
+		if(manager != null) {
+			manager.getEventDispatcher().fire(new TeleportEvent(target.getIdentifier()));
+		}
 	}
 	
 	public Semaphore getManualModeSemaphore() {

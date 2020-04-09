@@ -90,6 +90,16 @@ public class CoreEventHandler implements EventHandler {
 					} else if(invalidate.shouldUpdateCurrentCode()) {
 						controller.invalidateCurrentCode();
 					}
+				} else if(event instanceof TeleportEvent) {
+					TeleportEvent teleport = (TeleportEvent) event;
+					
+					controller.requestTeleportation(teleport.getTarget());
+				} else if(event instanceof TargetUpdateEvent) {
+					TargetUpdateEvent targetUpdate = (TargetUpdateEvent) event;
+					
+					event.printOrigin();
+					
+					controller.requestFocus(targetUpdate.getTarget());
 				}
 				
 				if(controller.isActive()) {
@@ -158,14 +168,6 @@ public class CoreEventHandler implements EventHandler {
 							
 							action.abortDispatching();
 						}
-					} else if(event instanceof TargetUpdateEvent) {
-						TargetUpdateEvent targetUpdate = (TargetUpdateEvent) event;
-						
-						controller.requestFocus(targetUpdate.getTarget());
-					} else if(event instanceof TeleportEvent) {
-						TeleportEvent teleport = (TeleportEvent) event;
-						
-						controller.requestTeleportation(teleport.getTarget());
 					}
 				}
 			}
