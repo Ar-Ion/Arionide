@@ -25,7 +25,8 @@ public class RootMenu extends Menu {
 	
 	public static final String structureBrowser = "loadStructureBrowser";
 	public static final String codeBrowser = "loadCodeBrowser";
-	
+	public static final String genericUpdater = "loadGenericUpdater";
+
 	protected RootMenu(MenuManager manager) {
 		super(manager, "Loading menu...");
 	}
@@ -37,6 +38,9 @@ public class RootMenu extends Menu {
 			break;
 		case codeBrowser:
 			go("code");
+			break;
+		case genericUpdater:
+			go("generic");
 			break;
 		}
 	}

@@ -57,6 +57,7 @@ public class MenuHierarchy extends StateHierarchy {
 	protected RootMenu root;
 	protected StructureBrowser structureBrowser;
 	protected CodeBrowser codeBrowser;
+	protected GenericUpdater genericUpdater;
 
 	protected void registerStates(StateManager mgr) {
 		assert mgr instanceof MenuManager;
@@ -89,6 +90,9 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/code/edit/specify/variable", new VariableEditor(manager));
 		register("/code/edit/specify/variable/assign", new VariableAssigner(manager));
 		registerInformationUpdater("/code/edit/specify/variable/edit", manager, InformationUpdater::new, nestingDepth);
+		
+		register("/generic", genericUpdater = new GenericUpdater(manager));
+		registerInformationUpdater("/generic/information", manager, InformationUpdater::new, nestingDepth);
 	}
 	
 	private void registerInformationUpdater(String source, MenuManager manager, Function<MenuManager, InformationUpdater> supplier, int nesting) {
