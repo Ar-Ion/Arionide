@@ -142,31 +142,33 @@ public class RunView extends View implements EventHandler {
 				this.navigateTo(Views.code);
 			} else if(click.isTargetting(this, "setSource")) {
 				int sourceID = (int) click.getData()[0];
-
+				
 				Storage storage = getAppManager().getWorkspace().getCurrentProject().getStorage();
 				
-				this.source = storage.getStructures().get(sourceID);
+				this.source = storage.getStructures().get(storage.getHierarchy().get(sourceID).getID());
 				
-				Language lang = LanguageManager.get(source.getLanguage());
-				
-				lang.loadPrograms(storage);
+				if(source != null) {
+					Language lang = LanguageManager.get(source.getLanguage());
+					
+					lang.loadPrograms(storage);
 
-				environmentLayoutManager.reset();
-				
-				this.environment = lang.getEnvironment().create(getAppManager(), environmentContainer.getBounds(), environmentLayoutManager);
-				
-				environmentLayoutManager.compute();
-				environmentLayoutManager.apply();
-						
-				environment.setVisible(true);
-				
-				this.programs = lang.getPrograms();
-				
-				if(programs.size() > 0) {
-					this.program = programs.get(0);
+					environmentLayoutManager.reset();
+					
+					this.environment = lang.getEnvironment().create(getAppManager(), environmentContainer.getBounds(), environmentLayoutManager);
+					
+					environmentLayoutManager.compute();
+					environmentLayoutManager.apply();
+							
+					environment.setVisible(true);
+					
+					this.programs = lang.getPrograms();
+					
+					if(programs.size() > 0) {
+						this.program = programs.get(0);
+					}
+					
+					programSelector.setComponents(programs.stream().map(Program::getName).toArray(String[]::new));	
 				}
-				
-				programSelector.setComponents(programs.stream().map(Program::getName).toArray(String[]::new));
 			} else if(click.isTargetting(this, "setProgram")) {
 				this.program = programs.get((int) click.getData()[0]);
 			} else if(click.isTargetting(this, "run")) {

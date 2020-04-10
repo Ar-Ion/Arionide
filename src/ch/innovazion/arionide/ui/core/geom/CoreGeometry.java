@@ -66,11 +66,7 @@ public class CoreGeometry extends HierarchicalGeometry {
 			return;
 		} else if(nodes.size() == 1) {
 			Node node = nodes.get(0);
-			
-			System.out.println(node.getClass());
-			
-			System.out.println(node.getLabel());
-			
+
 			Vector3f position = new Vector3f(up).mul(nodePosition.dot(up)); // Projection along y
 			WorldElement element = factory.make(((128 << 24) | sourceID), node.getLabel(), node.getDisplayValue(), position.add(center), color, color, size, false);
 			
