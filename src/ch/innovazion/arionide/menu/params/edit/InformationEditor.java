@@ -23,10 +23,10 @@ package ch.innovazion.arionide.menu.params.edit;
 
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.InformationUpdater;
+import ch.innovazion.arionide.menu.params.NodeUpdater;
 import ch.innovazion.automaton.Inherit;
 
-public class InformationEditor extends InformationUpdater {
+public class InformationEditor extends NodeUpdater {
 
 	@Inherit
 	protected Parameter parameter; // If the parameter is mutable

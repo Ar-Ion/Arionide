@@ -23,19 +23,29 @@ package ch.innovazion.arionide.lang;
 
 import java.util.List;
 
+import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Specification;
+import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.project.StructureModel;
 
 public abstract class Instruction {
 	public String toString() {
-		return getStructureModel().getUniqueName();
+		return createStructureModel().getUniqueName();
+	}
+	
+	public Node getConstant(Specification spec, int id) {
+		return ((Information) spec.getParameters().get(id).getValue()).getRoot();
+	}
+	
+	public Variable getVariable(Specification spec, int id) {
+		return (Variable) spec.getParameters().get(id).getValue();
 	}
 	
 	public abstract void validate(Specification spec, List<String> validationErrors);
 	public abstract void evaluate(Environment env, Specification spec) throws EvaluationException;
 	public abstract Node assemble(Specification spec, Skeleton skeleton, List<String> assemblyErrors);
 	
-	public abstract StructureModel getStructureModel();
+	public abstract StructureModel createStructureModel();
 	public abstract int getLength(); // In bits
 }

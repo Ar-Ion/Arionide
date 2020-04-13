@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.lang.symbols.Variable;
@@ -70,7 +71,7 @@ public class ParameterCreator extends Menu {
 	public void onAction(String action) {
 		switch(action) {
 		case "Variable":
-			this.value = new Variable(parameter.getName(), new Information("Initial value"));
+			this.value = new Variable(parameter.getName(), new Node("Initial value"));
 			this.onUpdate = this::onUpdate;
 			this.frozen = false;
 			onUpdate(null);

@@ -218,4 +218,8 @@ public class Utils {
 	public static <T> Predicate<T> identityPredicate() {
 		return (nil) -> true;
 	}
+	
+	public static <T> Function<T, T> identityFunction() {
+		return a -> a;
+	}
 }

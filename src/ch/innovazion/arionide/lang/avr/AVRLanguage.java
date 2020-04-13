@@ -45,6 +45,7 @@ public class AVRLanguage extends Language {
 	protected void registerInstructions() {
 		registerShadowInstruction(this.entryPoint = new AVREntryPoint());
 		registerInstruction(new NoOperation());
+		registerInstruction(new RelativeJump());
 	}
 
 	protected short getVersionMajor() {

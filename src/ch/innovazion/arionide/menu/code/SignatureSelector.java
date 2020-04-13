@@ -26,6 +26,7 @@ import java.util.List;
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.TargetUpdateEvent;
 import ch.innovazion.arionide.lang.Instruction;
+import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.lang.symbols.Signature;
 import ch.innovazion.arionide.menu.Menu;
 import ch.innovazion.arionide.menu.MenuDescription;
@@ -51,7 +52,7 @@ public class SignatureSelector extends Menu {
 	}
 	
 	protected void onEnter() {
-		List<Signature> signatures = instruction.getStructureModel().getPossibleSignatures();
+		List<Signature> signatures = instruction.createStructureModel().getPossibleSignatures();
 		
 		setDynamicElements(signatures.stream().map(Signature::getName).toArray(String[]::new));
 		
@@ -62,8 +63,8 @@ public class SignatureSelector extends Menu {
 		super.updateCursor(cursor);
 			
 		if(target != null) {
-			List<Signature> signatures = instruction.getStructureModel().getPossibleSignatures();
-			this.description = new MenuDescription(signatures.get(id).getParameters().toArray(new String[0]));	
+			List<Signature> signatures = instruction.createStructureModel().getPossibleSignatures();
+			this.description = new MenuDescription(signatures.get(id).getParameters().stream().map(Parameter::toString).toArray(String[]::new));	
 		}
 	}
 	

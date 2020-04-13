@@ -46,7 +46,7 @@ import ch.innovazion.arionide.ui.overlay.Views;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
 
-public class InformationUpdater extends ParameterUpdater {
+public class NodeUpdater extends ParameterUpdater {
 
 	private InformationManager infoManager;
 	private List<Node> children;
@@ -59,7 +59,7 @@ public class InformationUpdater extends ParameterUpdater {
 	private Node currentNode;
 	private Node selectedNode;
 	
-	public InformationUpdater(MenuManager manager) {
+	public NodeUpdater(MenuManager manager) {
 		super(manager);
 	}
 	
@@ -173,7 +173,15 @@ public class InformationUpdater extends ParameterUpdater {
 		}		
 		
 		elements.add(null);
-		elements.addAll(Arrays.asList("Parent", "Label", "Destroy"));
+		
+		if(currentNode.getParent() != null) {
+			elements.add("Parent");
+		}
+		
+		if(!frozen) {
+			elements.add("Label");
+			elements.add("Destroy");
+		}
 		
 		setDynamicElements(elements.toArray(new String[0]));
 		

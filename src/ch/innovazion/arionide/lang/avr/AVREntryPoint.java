@@ -55,7 +55,7 @@ public class AVREntryPoint extends Instruction {
 		return new Node("Entry Point");
 	}
 
-	public StructureModel getStructureModel() {
+	public StructureModel createStructureModel() {
 		return model;
 	}
 

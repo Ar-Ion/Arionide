@@ -72,7 +72,7 @@ public abstract class InstructionAppender extends Menu {
 		
 		if(instructions != null && id >= numStaticElements && id < numStaticElements + instructions.size()) {
 			Instruction instr = instructions.get(id - numStaticElements);
-			generateDescription(instr.getStructureModel());	
+			generateDescription(instr.createStructureModel());	
 		} else {
 			this.description = new MenuDescription();
 		}
@@ -104,7 +104,7 @@ public abstract class InstructionAppender extends Menu {
 		this.instruction = instructions.get(instructionID);
 		this.previousIndex = project.getStructureManager().getCodeManager().getCurrentCode().indexOf(target.getIdentifier());
 						
-		if(instruction.getStructureModel().hasUniqueSignature()) {
+		if(instruction.createStructureModel().hasUniqueSignature()) {
 			dispatch(project.getStructureManager().getCodeManager().insertCode(previousIndex + 1, this.instruction, 0));
 			
 			int newTargetID = project.getStructureManager().getCodeManager().getCurrentCode().getID(previousIndex + 1);

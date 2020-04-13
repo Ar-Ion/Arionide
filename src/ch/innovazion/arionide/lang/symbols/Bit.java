@@ -23,6 +23,7 @@ package ch.innovazion.arionide.lang.symbols;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.stream.Stream;
 
 public class Bit implements Serializable {
 
@@ -60,5 +61,20 @@ public class Bit implements Serializable {
 		}
 				
 		return data;
+	}
+	
+	public static long toInteger(Bit[] bits) {
+		long output = 0L;
+		
+		for(Bit bit : bits) {
+			output <<= 1;
+			output |= bit.bit;
+		}
+		
+		return output;
+	}
+	
+	public static long toInteger(Stream<Bit> bits) {
+		return bits.mapToLong(Bit::getBit).reduce(0, (a, b) -> (a << 1) | b);
 	}
 }

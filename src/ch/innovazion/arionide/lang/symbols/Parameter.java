@@ -32,9 +32,26 @@ public class Parameter implements Serializable {
 	private ParameterValue value;
 	private boolean frozen = true;
 	
+	public Parameter(String name) {
+		this(name, new Information(name));
+	}
+	
 	public Parameter(String name, ParameterValue value) {
 		this.name = name;
 		this.value = value;
+	}
+	
+	public Parameter asConstant(Node value) {
+		Information information = new Information(name);
+		information.setRootNode(value);
+		this.value = information;
+		return this;
+	}
+	
+	public Parameter asVariable(Node value) {
+		Variable var = new Variable(name, value);
+		this.value = var;
+		return this;
 	}
 	
 	public String getName() {

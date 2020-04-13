@@ -82,7 +82,7 @@ public class CodeManager extends Manager {
 		int resolvedIndex = entryID + 1; // One for the entry point
 		
 		for(int i = 0; i < instructionIndex; i++) {
-			resolvedIndex += lang.getStandardInstructions().get(i).getStructureModel().getPossibleSignatures().size(); 
+			resolvedIndex += lang.getStandardInstructions().get(i).createStructureModel().getPossibleSignatures().size(); 
 			// Each signature takes one structure slot
 		}
 		
@@ -91,7 +91,7 @@ public class CodeManager extends Manager {
 		
 		Structure resolvedDefinition = getStructures().get(resolvedIndex);
 		
-		if(resolvedDefinition == null || !resolvedDefinition.getName().equals(instr.getStructureModel().getUniqueName())) {
+		if(resolvedDefinition == null || !resolvedDefinition.getName().equals(instr.createStructureModel().getUniqueName())) {
 			return new MessageEvent("Failed to retrieve the definition of this instruction... Try reinstalling the target language", MessageType.ERROR);
 		}
 						

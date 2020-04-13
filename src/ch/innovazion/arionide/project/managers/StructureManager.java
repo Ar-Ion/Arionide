@@ -236,7 +236,7 @@ public class StructureManager extends Manager {
 	 * Return the structure of the installed instruction (using the last signature)
 	 */
 	private Structure installInstruction(Instruction instr) {
-		int size = instr.getStructureModel().getPossibleSignatures().size();
+		int size = instr.createStructureModel().getPossibleSignatures().size();
 		
 		MutableStructure struct = null;
 		
@@ -244,7 +244,7 @@ public class StructureManager extends Manager {
 			int structID = allocator.allocStructure();
 			int specID = allocator.allocSpecification();
 			
-			struct = new MutableAtomicStructure(structID, specID, instr.getStructureModel(), i);
+			struct = new MutableAtomicStructure(structID, specID, instr.createStructureModel(), i);
 			getStructures().put(structID, struct);
 		}
 				

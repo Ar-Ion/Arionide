@@ -28,7 +28,7 @@ import ch.innovazion.arionide.menu.code.CodeEditor;
 import ch.innovazion.arionide.menu.code.DefaultInstructionAppender;
 import ch.innovazion.arionide.menu.code.OperatorAppender;
 import ch.innovazion.arionide.menu.code.SignatureSelector;
-import ch.innovazion.arionide.menu.params.InformationUpdater;
+import ch.innovazion.arionide.menu.params.NodeUpdater;
 import ch.innovazion.arionide.menu.params.ParameterCreator;
 import ch.innovazion.arionide.menu.params.ParameterEditor;
 import ch.innovazion.arionide.menu.params.ParameterSelector;
@@ -74,7 +74,7 @@ public class MenuHierarchy extends StateHierarchy {
 		registerInformationUpdater("/structure/edit/specify/constant", manager, InformationEditor::new, nestingDepth);
 		register("/structure/edit/specify/variable", new VariableEditor(manager));
 		register("/structure/edit/specify/variable/assign", new VariableAssigner(manager));
-		registerInformationUpdater("/structure/edit/specify/variable/edit", manager, InformationUpdater::new, nestingDepth);
+		registerInformationUpdater("/structure/edit/specify/variable/edit", manager, NodeUpdater::new, nestingDepth);
 		register("/structure/edit/comment", new CommentEditor(manager));
 		register("/structure/edit/language", new LanguageSelector(manager));
 		register("/structure/edit/tint", new TintSelector(manager));
@@ -89,13 +89,13 @@ public class MenuHierarchy extends StateHierarchy {
 		registerInformationUpdater("/code/edit/specify/constant", manager, InformationEditor::new, nestingDepth);
 		register("/code/edit/specify/variable", new VariableEditor(manager));
 		register("/code/edit/specify/variable/assign", new VariableAssigner(manager));
-		registerInformationUpdater("/code/edit/specify/variable/edit", manager, InformationUpdater::new, nestingDepth);
+		registerInformationUpdater("/code/edit/specify/variable/edit", manager, NodeUpdater::new, nestingDepth);
 		
 		register("/generic", genericUpdater = new GenericUpdater(manager));
-		registerInformationUpdater("/generic/information", manager, InformationUpdater::new, nestingDepth);
+		registerInformationUpdater("/generic/information", manager, NodeUpdater::new, nestingDepth);
 	}
 	
-	private void registerInformationUpdater(String source, MenuManager manager, Function<MenuManager, InformationUpdater> supplier, int nesting) {
+	private void registerInformationUpdater(String source, MenuManager manager, Function<MenuManager, NodeUpdater> supplier, int nesting) {
 		if(nesting > 0) {
 			register(source, supplier.apply(manager));
 			register(source + "/enum", new EnumerationEditor(manager));

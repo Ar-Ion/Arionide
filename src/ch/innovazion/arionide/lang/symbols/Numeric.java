@@ -39,6 +39,7 @@ public class Numeric extends AtomicValue {
 	
 	public Numeric(long num) {
 		super("number");
+		this.value = Long.toString(num);
 		this.data = Bit.fromInteger(BigInteger.valueOf(num), 64);
 	}
 	
@@ -56,7 +57,7 @@ public class Numeric extends AtomicValue {
 		
 		String type = value.length() >= 2 ? value.substring(0, 2) : "decimal";
 		int separator = value.indexOf(":");
-		int numBits = 0;
+		int numBits = data.length;
 				
 		if(separator > 0) {
 			numBits = Integer.parseInt(value.substring(separator));
@@ -69,19 +70,19 @@ public class Numeric extends AtomicValue {
 		switch(type) {
 			case "0b":
 				rawValue = value.substring(2, separator);
-				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(rawValue, 2)), numBits > 0 ? numBits : rawValue.length());
+				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(rawValue, 2)), Math.max(numBits, rawValue.length()));
 				break;
 			case "0x":
 				rawValue = value.substring(2, separator);
-				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(rawValue, 16)), numBits > 0 ? numBits : rawValue.length() * 4);
+				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(rawValue, 16)), Math.max(numBits, rawValue.length() * 4));
 				break;
 			case "$":
 				rawValue = value.substring(1, separator);
-				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(rawValue, 16)), numBits > 0 ? numBits : rawValue.length() * 4);
+				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(rawValue, 16)), Math.max(numBits, rawValue.length() * 4));
 				break;
 			default:
 				rawValue = value.substring(0, separator);
-				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(rawValue)), numBits > 0 ? numBits : 32);
+				data = Bit.fromInteger(BigInteger.valueOf(Long.parseLong(rawValue)), Math.max(numBits, 32));
 		}
 	}
 	

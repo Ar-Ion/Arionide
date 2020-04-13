@@ -35,14 +35,6 @@ import ch.innovazion.arionide.project.StructureModelFactory;
 import ch.innovazion.arionide.ui.ApplicationTints;
 
 public class NoOperation extends Instruction {
-
-	private final StructureModel model = StructureModelFactory
-			.draft("nop")
-			.withColor(ApplicationTints.getColorIDByName("Red"))
-			.withComment("Wait one cycle")
-			.beginSignature("default")
-			.endSignature()
-			.build();
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -57,8 +49,14 @@ public class NoOperation extends Instruction {
 		return new Numeric(0).cast(16);
 	}
 
-	public StructureModel getStructureModel() {
-		return model;
+	public StructureModel createStructureModel() {
+		return StructureModelFactory
+			.draft("nop")
+			.withColor(ApplicationTints.getColorIDByName("Red"))
+			.withComment("Wait one cycle")
+			.beginSignature("default")
+			.endSignature()
+			.build();
 	}
 
 	public int getLength() {

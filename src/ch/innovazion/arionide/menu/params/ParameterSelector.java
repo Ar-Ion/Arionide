@@ -115,9 +115,9 @@ public class ParameterSelector extends Menu {
 			this.frozen = parameter.isFrozen();
 			
 			if(value instanceof Variable) {
-				go("../variable");
+				go("variable");
 			} else if(value instanceof Information) {
-				go("../constant");
+				go("constant");
 			}
 		}
 	}

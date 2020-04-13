@@ -22,6 +22,7 @@
 package ch.innovazion.arionide.ui.core.geom;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -32,7 +33,10 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import ch.innovazion.arionide.debugging.IAm;
+import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.Reference;
+import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.CodeChain;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
@@ -44,8 +48,8 @@ public class CodeGeometry extends Geometry {
 	
 	private static final float relativeSize = 0.05f;
 	private static final float relativeDistance = 0.12f;
-	private static final float axisEntropy = 1.0f;
-	private static final float axisCorrection = 0.2f;
+	private static final float axisEntropy = 0.3f;
+	private static final float axisCorrection = 0.3f;
 	private static final float axisCorrectionFlexibility = 5.0f;
 
 	private WorldElement container;
@@ -84,71 +88,136 @@ public class CodeGeometry extends Geometry {
 	}
 	
 	private void build(WorldElement parent, List<? extends HierarchyElement> input, List<WorldElement> outputElements, List<WorldElement> outputSpecification, List<Connection> outputConnections, Map<Integer, Structure> mapping, float size) {
-		Vector3f axis = parent.getAxis();
+		Vector3f axis = new Vector3f(1.0f, 0.0f, 0.0f);
 		Vector3f position = parent.getCenter();
 		
 		WorldElement previous = null;
-				
-		for(HierarchyElement element : input) {
-			Structure struct = mapping.get(element.getID());
+
+		List<List<? extends HierarchyElement>> groups = new ArrayList<>();
+		int groupStart = 0;
+		
+		for(int i = 0; i < input.size(); i++) {
+			Structure struct = mapping.get(input.get(i).getID());
 						
 			if(struct != null) {
-				Vector4f color = new Vector4f(ApplicationTints.getColorByID(struct.getColorID()), 0.5f);
-				Vector4f spotColor = new Vector4f(ApplicationTints.getColorByID(struct.getSpotColorID()), 1.0f);
+				Specification spec = struct.getSpecification();
 				
-				/* Process instruction */
-				axis.normalize(parent.getSize() * relativeDistance);
-				
-				Vector3f current = this.factory.getAxisGenerator().get();
-				
-				factory.updateAxisGenerator(() -> current.cross(axis));
-				WorldElement output = this.factory.make(element.getID(), struct.getName(), struct.getComment(), new Vector3f(position), color, spotColor, size, struct.isAccessAllowed());
-				outputElements.add(output);
-				
-				/* Process connection to previous instruction */
-				if(previous != null) {
-					outputConnections.add(new Connection(previous, output));
+				for(Parameter param : spec.getParameters()) {
+					if(param.getValue() instanceof Reference) {
+						Reference ref = (Reference) param.getValue();
+						Callable target = ref.getTarget();
+						
+						if(target.getIdentifier() == parent.getID()) {
+							groups.add(input.subList(groupStart, i + 1));
+							groupStart = i + 1;
+						}
+					}
 				}
+			}
+		}
 				
-				previous = output;
+		if(groupStart < input.size()) {
+			groups.add(input.subList(groupStart, input.size()));
+		}
 				
-				/* Process specification */					
-				List<Parameter> specification = struct.getSpecification().getParameters();
-									
-				Vector3f specPos = new Vector3f(axis).cross(0.0f, 1.0f, 0.0f).normalize(size * 1.5f);
-				
-				Quaternionf specQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / specification.size(), new Vector3f(axis).normalize()));
-				
-				for(int i = 0; i < specification.size(); i++) {
-					Parameter param = specification.get(i);
+		float y = 0.0f;
+		
+		for(int i = 0; i < groups.size(); i++) {
+			List<? extends HierarchyElement> group = groups.get(i);
+			
+			Quaternionf mainQuaternion;
+			Vector3f rotatedVector;
+			float deltaHeight;
+
+			if(i < groups.size() - 1) {
+				mainQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / group.size(), new Vector3f(0.0f, 1.0f, 0.0f)));
+				rotatedVector = new Vector3f(1.25f * size, 0.0f, 0.0f);
+				deltaHeight = -parent.getSize() * relativeDistance / group.size();
+			} else {
+				mainQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / 16, new Vector3f(0.0f, 1.0f, 0.0f)));
+				rotatedVector = new Vector3f();
+				deltaHeight = (-0.75f * parent.getSize() - y) / group.size();
+			}
+			
+			for(int j = 0; j < group.size(); j++) {
+				HierarchyElement element = group.get(j);
+				Structure struct = mapping.get(element.getID());
+							
+				if(struct != null) {
 					
-					WorldElement specObject = this.factory.make((((i + 1) & 0x7F) << 24) | element.getID(), param.getName(), param.getDisplayValue(), new Vector3f(specPos).add(position), color, spotColor, size / 5.0f, struct.isAccessAllowed());
+					Vector4f color = new Vector4f(ApplicationTints.getColorByID(struct.getColorID()), 0.5f);
+					Vector4f spotColor = new Vector4f(ApplicationTints.getColorByID(struct.getSpotColorID()), 1.0f);
 					
-					outputSpecification.add(specObject);
-					outputConnections.add(new Connection(output, specObject));
+					/* Process instruction */
+					axis.normalize(parent.getSize() * relativeDistance);
 					
-					specPos.rotate(specQuaternion);
+					Vector3f current = this.factory.getAxisGenerator().get();
+					
+					factory.updateAxisGenerator(() -> current.cross(axis));
+					WorldElement output = this.factory.make(element.getID(), struct.getName(), struct.getComment(), new Vector3f(position), color, spotColor, size, struct.isAccessAllowed());
+					outputElements.add(output);
+					
+					/* Process connection to previous instruction */
+					if(previous != null) {
+						outputConnections.add(new Connection(previous, output));
+					}
+					
+					if(j == group.size() - 1) {
+						outputConnections.add(new Connection(output, outputElements.get(0)));
+					}
+					
+					previous = output;
+					
+					/* Process specification */					
+					List<Parameter> specification = struct.getSpecification().getParameters();
+										
+					Vector3f specPos = new Vector3f(axis).cross(0.0f, 1.0f, 0.0f).normalize(size * 1.5f);
+					
+					Quaternionf specQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / specification.size(), new Vector3f(axis).normalize()));
+					
+					for(int k = 0; k < specification.size(); k++) {
+						Parameter param = specification.get(k);
+						
+						WorldElement specObject = this.factory.make((((k + 1) & 0x7F) << 24) | element.getID(), param.getName(), param.getDisplayValue(), new Vector3f(specPos).add(position), color, spotColor, size / 5.0f, struct.isAccessAllowed());
+						
+						outputSpecification.add(specObject);
+						outputConnections.add(new Connection(output, specObject));
+						
+						specPos.rotate(specQuaternion);
+					}
+					
+					if(i < groups.size() - 1) {
+						rotatedVector.rotate(mainQuaternion);					
+						position.add(rotatedVector);
+					} else {
+						axis.rotate(mainQuaternion);
+						position.add(axis);
+						applyDerivation(axis, new Vector3f(position).sub(parent.getCenter()));
+					}
+					
+					applyDerivation(axis, new Vector3f(position).sub(parent.getCenter()));
+					
+					position.y = parent.getCenter().y - y;
+					y -= deltaHeight;
+					
+					/* Process children and apply transformation */
+					this.build(parent, element.getChildren(), outputElements, outputSpecification, outputConnections, mapping, size);
 				}
-				
-				/* Process children and apply transformation */
-				this.build(parent, element.getChildren(), outputElements, outputSpecification, outputConnections, mapping, size);
-				position.add(axis);
-				this.applyDerivation(axis, new Vector3f(position).sub(parent.getCenter()).div(parent.getSize()).mul(2.0f));
 			}
 		}
 	}
 	
 	private void applyDerivation(Vector3f axis, Vector3f relPos) {
-		double length = relPos.length();
+		float length = relPos.length() + axis.length();
 		
 		Random random = this.factory.getRandom();
 		
-		Vector3f entropy = new Vector3f(random.nextFloat() - 0.5f, random.nextFloat() - 0.5f, random.nextFloat() - 0.5f);
-		Vector3f correction = new Vector3f(axis).reflect(new Vector3f(relPos.negate().normalize()));
+		Vector3f entropy = new Vector3f(random.nextFloat() - 0.5f, 0.0f, random.nextFloat() - 0.5f);
+		Vector3f correction = new Vector3f(axis).reflect(new Vector3f(relPos).negate().normalize());
 		
 		entropy.normalize(axis.length() * axisEntropy);
 		correction.normalize(axis.length() * axisCorrection * (float) Math.pow(length, axisCorrectionFlexibility));
-
+		
 		axis.add(entropy);
 		axis.add(correction);
 	}
