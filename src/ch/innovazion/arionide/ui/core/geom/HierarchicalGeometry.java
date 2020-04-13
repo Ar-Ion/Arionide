@@ -23,6 +23,7 @@ package ch.innovazion.arionide.ui.core.geom;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
@@ -64,10 +65,11 @@ public abstract class HierarchicalGeometry extends Geometry {
 		this.factory.reset();
 
 		Map<Integer, Structure> metaData = storage.getStructures();
+		List<HierarchyElement> input = getHierarchyElements().stream().filter(e -> !metaData.get(e.getID()).isLambda()).collect(Collectors.toList());
 		
 		WorldElement main = this.factory.makeRandomTrivial();
-						
-		this.construct0(main, this.getHierarchyElements(), elements, metaData, initialSize);
+		
+		this.construct0(main, input, elements, metaData, initialSize);
 	}
 			
 	private void construct0(WorldElement parent, List<HierarchyElement> input, List<WorldElement> output, Map<Integer, Structure> metaData, float size) throws GeometryException {
