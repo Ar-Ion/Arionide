@@ -78,9 +78,10 @@ Inheritance diagram for ch.innovazion.arionide.lang.Instruction:</div>
 <div class="dyncontent">
 <div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction__inherit__graph.png" border="0" usemap="#ch_8innovazion_8arionide_8lang_8_instruction_inherit__map" alt="Inheritance graph"/></div>
 <map name="ch_8innovazion_8arionide_8lang_8_instruction_inherit__map" id="ch_8innovazion_8arionide_8lang_8_instruction_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,37,192,76"/>
+<area shape="rect" title=" " alt="" coords="5,68,192,107"/>
 <area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html" title=" " alt="" coords="240,5,448,44"/>
 <area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation.html" title=" " alt="" coords="240,68,448,107"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_relative_jump.html" title=" " alt="" coords="240,131,448,169"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -88,14 +89,18 @@ Inheritance diagram for ch.innovazion.arionide.lang.Instruction:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:abd6f7aae4c37289963d543c3f53a2a3a"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#abd6f7aae4c37289963d543c3f53a2a3a">toString</a> ()</td></tr>
 <tr class="separator:abd6f7aae4c37289963d543c3f53a2a3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a6c71b3d47c2726fa7d3d10933b2a31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a7a6c71b3d47c2726fa7d3d10933b2a31">getConstant</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html">Specification</a> spec, int id)</td></tr>
+<tr class="separator:a7a6c71b3d47c2726fa7d3d10933b2a31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99ffb8b94261b41f5466e61fca695b3e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_variable.html">Variable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a99ffb8b94261b41f5466e61fca695b3e">getVariable</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html">Specification</a> spec, int id)</td></tr>
+<tr class="separator:a99ffb8b94261b41f5466e61fca695b3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad21e8028e0fde57be3a5117816c8550d"><td class="memItemLeft" align="right" valign="top">abstract void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#ad21e8028e0fde57be3a5117816c8550d">validate</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html">Specification</a> spec, List&lt; String &gt; validationErrors)</td></tr>
 <tr class="separator:ad21e8028e0fde57be3a5117816c8550d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3f86c53f67cdad374d3ce8bdcbcadc1"><td class="memItemLeft" align="right" valign="top">abstract void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#af3f86c53f67cdad374d3ce8bdcbcadc1">evaluate</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html">Environment</a> env, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html">Specification</a> spec)  throws EvaluationException</td></tr>
 <tr class="separator:af3f86c53f67cdad374d3ce8bdcbcadc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9de3fb4b7247cba90e3e429d3028954"><td class="memItemLeft" align="right" valign="top">abstract <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#ac9de3fb4b7247cba90e3e429d3028954">assemble</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html">Specification</a> spec, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_skeleton.html">Skeleton</a> skeleton, List&lt; String &gt; assemblyErrors)</td></tr>
 <tr class="separator:ac9de3fb4b7247cba90e3e429d3028954"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79a3121bbbd45452a389d8e655f7e6d9"><td class="memItemLeft" align="right" valign="top">abstract <a class="el" href="classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html">StructureModel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a79a3121bbbd45452a389d8e655f7e6d9">getStructureModel</a> ()</td></tr>
-<tr class="separator:a79a3121bbbd45452a389d8e655f7e6d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a689572933e4d6b45bbd2bf956f627105"><td class="memItemLeft" align="right" valign="top">abstract <a class="el" href="classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html">StructureModel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a689572933e4d6b45bbd2bf956f627105">createStructureModel</a> ()</td></tr>
+<tr class="separator:a689572933e4d6b45bbd2bf956f627105"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38e51c8cd655343d0ec470e7ba783a68"><td class="memItemLeft" align="right" valign="top">abstract int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a38e51c8cd655343d0ec470e7ba783a68">getLength</a> ()</td></tr>
 <tr class="separator:a38e51c8cd655343d0ec470e7ba783a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -140,7 +145,34 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation.html#a47b1673c7b1a8f96faa12b459fcddb70">ch.innovazion.arionide.lang.avr.NoOperation</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#ad482c76c4008ff617194639b96cf4ac3">ch.innovazion.arionide.lang.avr.AVREntryPoint</a>.</p>
+<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#ad482c76c4008ff617194639b96cf4ac3">ch.innovazion.arionide.lang.avr.AVREntryPoint</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation.html#a47b1673c7b1a8f96faa12b459fcddb70">ch.innovazion.arionide.lang.avr.NoOperation</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_relative_jump.html#aab56f5917cec9674754ac059c1488938">ch.innovazion.arionide.lang.avr.RelativeJump</a>.</p>
+
+</div>
+</div>
+<a id="a689572933e4d6b45bbd2bf956f627105"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a689572933e4d6b45bbd2bf956f627105">&#9670;&nbsp;</a></span>createStructureModel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">abstract <a class="el" href="classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html">StructureModel</a> ch.innovazion.arionide.lang.Instruction.createStructureModel </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">abstract</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#aee1ba7d70b5af765b41b6956290ec6fb">ch.innovazion.arionide.lang.avr.AVREntryPoint</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation.html#ac3da04db03d8720eddb6ff70ffa516c0">ch.innovazion.arionide.lang.avr.NoOperation</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_relative_jump.html#a100a61e7c1c802cfb60f5e39e1499629">ch.innovazion.arionide.lang.avr.RelativeJump</a>.</p>
 
 </div>
 </div>
@@ -178,7 +210,44 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation.html#afc3c8f75d8cf6f7bd4afb96964340607">ch.innovazion.arionide.lang.avr.NoOperation</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#ab4ea27393bc6cb16b1ea0795ab5749fd">ch.innovazion.arionide.lang.avr.AVREntryPoint</a>.</p>
+<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#ab4ea27393bc6cb16b1ea0795ab5749fd">ch.innovazion.arionide.lang.avr.AVREntryPoint</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation.html#afc3c8f75d8cf6f7bd4afb96964340607">ch.innovazion.arionide.lang.avr.NoOperation</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_relative_jump.html#ae12f47dc81ed3839adccf4294d2ac367">ch.innovazion.arionide.lang.avr.RelativeJump</a>.</p>
+
+</div>
+</div>
+<a id="a7a6c71b3d47c2726fa7d3d10933b2a31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a6c71b3d47c2726fa7d3d10933b2a31">&#9670;&nbsp;</a></span>getConstant()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_node.html">Node</a> ch.innovazion.arionide.lang.Instruction.getConstant </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html">Specification</a>&#160;</td>
+          <td class="paramname"><em>spec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a7a6c71b3d47c2726fa7d3d10933b2a31_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a7a6c71b3d47c2726fa7d3d10933b2a31_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a7a6c71b3d47c2726fa7d3d10933b2a31_cgraph" id="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a7a6c71b3d47c2726fa7d3d10933b2a31_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,192,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html#ad95db81f83a8eb258445fa0b97a4c8bf" title=" " alt="" coords="240,5,479,44"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -205,34 +274,44 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation.html#a0acfe5489ff5a5aa1580f5166d5f8e4e">ch.innovazion.arionide.lang.avr.NoOperation</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#a1dd069ef09652a59c248a7fdda292780">ch.innovazion.arionide.lang.avr.AVREntryPoint</a>.</p>
+<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#a1dd069ef09652a59c248a7fdda292780">ch.innovazion.arionide.lang.avr.AVREntryPoint</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation.html#a0acfe5489ff5a5aa1580f5166d5f8e4e">ch.innovazion.arionide.lang.avr.NoOperation</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_relative_jump.html#a63c81fdfaf6447cfe285d51f68d3fe6c">ch.innovazion.arionide.lang.avr.RelativeJump</a>.</p>
 
 </div>
 </div>
-<a id="a79a3121bbbd45452a389d8e655f7e6d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79a3121bbbd45452a389d8e655f7e6d9">&#9670;&nbsp;</a></span>getStructureModel()</h2>
+<a id="a99ffb8b94261b41f5466e61fca695b3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99ffb8b94261b41f5466e61fca695b3e">&#9670;&nbsp;</a></span>getVariable()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">abstract <a class="el" href="classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html">StructureModel</a> ch.innovazion.arionide.lang.Instruction.getStructureModel </td>
+          <td class="memname"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_variable.html">Variable</a> ch.innovazion.arionide.lang.Instruction.getVariable </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html">Specification</a>&#160;</td>
+          <td class="paramname"><em>spec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">abstract</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-
-<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation.html#acc37d0eafa79e40e9425f401f52ccae5">ch.innovazion.arionide.lang.avr.NoOperation</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#a319cce6346acc38b2c10865ce94572cd">ch.innovazion.arionide.lang.avr.AVREntryPoint</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a99ffb8b94261b41f5466e61fca695b3e_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a99ffb8b94261b41f5466e61fca695b3e_cgraph" alt=""/></div>
+<map name="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a99ffb8b94261b41f5466e61fca695b3e_cgraph" id="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_a99ffb8b94261b41f5466e61fca695b3e_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,192,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html#ad95db81f83a8eb258445fa0b97a4c8bf" title=" " alt="" coords="240,5,479,44"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -255,13 +334,9 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_abd6f7aae4c37289963d543c3f53a2a3a_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_abd6f7aae4c37289963d543c3f53a2a3a_cgraph" alt=""/></div>
 <map name="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_abd6f7aae4c37289963d543c3f53a2a3a_cgraph" id="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction_abd6f7aae4c37289963d543c3f53a2a3a_cgraph">
-<area shape="rect" title=" " alt="" coords="5,163,192,201"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#ac9de3fb4b7247cba90e3e429d3028954" title=" " alt="" coords="253,5,439,44"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#af3f86c53f67cdad374d3ce8bdcbcadc1" title=" " alt="" coords="253,68,439,107"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a38e51c8cd655343d0ec470e7ba783a68" title=" " alt="" coords="253,131,439,169"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a79a3121bbbd45452a389d8e655f7e6d9" title=" " alt="" coords="248,193,444,232"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html#a7ef072f696c4dc2cf320b683569fa323" title=" " alt="" coords="240,256,452,295"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#ad21e8028e0fde57be3a5117816c8550d" title=" " alt="" coords="253,319,439,357"/>
+<area shape="rect" title=" " alt="" coords="5,37,192,76"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a689572933e4d6b45bbd2bf956f627105" title=" " alt="" coords="240,5,454,44"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html#a7ef072f696c4dc2cf320b683569fa323" title=" " alt="" coords="241,68,453,107"/>
 </map>
 </div>
 
@@ -301,7 +376,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation.html#a854868e6c6fdf9b4be2cfc31b55cbbdb">ch.innovazion.arionide.lang.avr.NoOperation</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#a32e4435e4d327c63a911198069ad7b61">ch.innovazion.arionide.lang.avr.AVREntryPoint</a>.</p>
+<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#a32e4435e4d327c63a911198069ad7b61">ch.innovazion.arionide.lang.avr.AVREntryPoint</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation.html#a854868e6c6fdf9b4be2cfc31b55cbbdb">ch.innovazion.arionide.lang.avr.NoOperation</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_relative_jump.html#a0fd6c95f1e0a807c0cb04410edafac84">ch.innovazion.arionide.lang.avr.RelativeJump</a>.</p>
 
 </div>
 </div>

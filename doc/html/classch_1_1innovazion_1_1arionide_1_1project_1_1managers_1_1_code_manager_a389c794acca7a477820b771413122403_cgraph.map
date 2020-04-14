@@ -1,8 +1,5 @@
 <map id="ch.innovazion.arionide.project.managers.CodeManager.getCurrentCode" name="ch.innovazion.arionide.project.managers.CodeManager.getCurrentCode">
-<area shape="rect" id="node1" title=" " alt="" coords="5,37,270,76"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager.html#a74c229a367243e22f63484fbef172168" title=" " alt="" coords="318,37,582,76"/>
-<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_manager.html#a108a33cfe192b76fb5f44b5fbcc004be" title=" " alt="" coords="662,5,863,44"/>
-<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack.html#a01354c30c3a9f3b0fd393817a35836f7" title=" " alt="" coords="630,68,895,107"/>
-<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_storage.html#a1eae0ab8b1ac35091fc5f4bcbecdff09" title=" " alt="" coords="974,5,1176,44"/>
-<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack.html#acb6854d13546b098249fbe94dc518def" title=" " alt="" coords="943,68,1207,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,12,270,51"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager.html#a74c229a367243e22f63484fbef172168" title=" " alt="" coords="318,12,582,51"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_contextual_manager.html#a8f67dd5e2517de17f16817327f760077" title=" " alt="" coords="630,5,895,57"/>
 </map>

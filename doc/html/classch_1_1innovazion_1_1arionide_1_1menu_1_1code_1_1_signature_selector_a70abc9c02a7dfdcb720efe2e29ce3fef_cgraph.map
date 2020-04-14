@@ -1,5 +1,7 @@
 <map id="ch.innovazion.arionide.menu.code.SignatureSelector.updateCursor" name="ch.innovazion.arionide.menu.code.SignatureSelector.updateCursor">
-<area shape="rect" id="node1" title=" " alt="" coords="5,37,233,76"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html#a530bd3072583a6e5ca47e30fa4666517" title=" " alt="" coords="281,5,529,44"/>
-<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a79a3121bbbd45452a389d8e655f7e6d9" title=" " alt="" coords="307,68,503,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,68,233,107"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a689572933e4d6b45bbd2bf956f627105" title=" " alt="" coords="298,5,512,44"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html#a530bd3072583a6e5ca47e30fa4666517" title=" " alt="" coords="281,68,529,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter.html#ab0b944c6704e999c7ba2bc56eaff2489" title=" " alt="" coords="285,131,524,169"/>
+<area shape="rect" id="node5" href="$interfacech_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_parameter_value.html#a41e032282ffe65b3b50f1fdf6099e96c" title=" " alt="" coords="577,131,816,169"/>
 </map>

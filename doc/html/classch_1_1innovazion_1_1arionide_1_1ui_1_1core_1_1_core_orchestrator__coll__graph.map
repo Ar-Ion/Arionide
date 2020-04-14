@@ -1,10 +1,10 @@
 <map id="ch.innovazion.arionide.ui.core.CoreOrchestrator" name="ch.innovazion.arionide.ui.core.CoreOrchestrator">
 <area shape="rect" id="node1" title=" " alt="" coords="2842,158,3043,197"/>
 <area shape="rect" id="node2" href="$interfacech_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_i_event_dispatcher.html" title=" " alt="" coords="728,7,1000,46"/>
-<area shape="rect" id="node24" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html" title=" " alt="" coords="1151,95,1346,134"/>
+<area shape="rect" id="node24" href="$classch_1_1innovazion_1_1arionide_1_1menu_1_1_menu_manager.html" title=" " alt="" coords="1151,97,1346,135"/>
 <area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_core_controller.html" title=" " alt="" coords="1627,495,1829,534"/>
-<area shape="rect" id="node23" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_user_controller.html" title=" " alt="" coords="2058,494,2260,533"/>
-<area shape="rect" id="node30" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_renderer.html" title=" " alt="" coords="2058,607,2260,646"/>
+<area shape="rect" id="node23" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_user_controller.html" title=" " alt="" coords="2058,485,2260,523"/>
+<area shape="rect" id="node30" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_renderer.html" title=" " alt="" coords="2058,602,2260,641"/>
 <area shape="rect" id="node4" title=" " alt="" coords="1197,394,1301,419"/>
 <area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_current_code_geometry.html" title=" " alt="" coords="1129,519,1368,558"/>
 <area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1_geometry.html" title=" " alt="" coords="763,506,965,545"/>
@@ -17,7 +17,7 @@
 <area shape="rect" id="node13" title=" " alt="" coords="296,569,567,607"/>
 <area shape="rect" id="node14" title=" " alt="" coords="269,443,594,482"/>
 <area shape="rect" id="node15" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_world_element.html" title=" " alt="" coords="1129,757,1368,795"/>
-<area shape="rect" id="node16" title=" " alt="" coords="814,717,914,742"/>
+<area shape="rect" id="node16" title=" " alt="" coords="814,709,914,734"/>
 <area shape="rect" id="node17" title=" " alt="" coords="829,766,899,791"/>
 <area shape="rect" id="node18" title=" " alt="" coords="829,445,899,470"/>
 <area shape="rect" id="node29" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer.html" title=" " alt="" coords="2524,779,2740,818"/>

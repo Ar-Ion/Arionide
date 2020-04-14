@@ -1,5 +1,6 @@
 <map id="ch.innovazion.arionide.lang.Instruction" name="ch.innovazion.arionide.lang.Instruction">
-<area shape="rect" id="node1" title=" " alt="" coords="5,37,192,76"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,68,192,107"/>
 <area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html" title=" " alt="" coords="240,5,448,44"/>
 <area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_no_operation.html" title=" " alt="" coords="240,68,448,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_relative_jump.html" title=" " alt="" coords="240,131,448,169"/>
 </map>

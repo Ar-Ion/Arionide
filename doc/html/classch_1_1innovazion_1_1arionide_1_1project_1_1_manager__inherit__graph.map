@@ -1,7 +1,12 @@
 <map id="ch.innovazion.arionide.project.Manager" name="ch.innovazion.arionide.project.Manager">
-<area shape="rect" id="node1" title=" " alt="" coords="5,100,207,139"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_code_manager.html" title=" " alt="" coords="293,5,558,44"/>
-<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_inheritance_manager.html" title=" " alt="" coords="293,68,558,107"/>
-<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html" title=" " alt="" coords="255,131,596,169"/>
-<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager.html" title=" " alt="" coords="293,193,558,232"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,265,207,304"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_contextual_manager.html" title=" " alt="" coords="255,203,519,241"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_inheritance_manager.html" title=" " alt="" coords="255,265,519,304"/>
+<area shape="rect" id="node10" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager.html" title=" " alt="" coords="255,328,519,367"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_constant_manager.html" title=" " alt="" coords="587,5,803,57"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_enumeration_manager.html" title=" " alt="" coords="567,81,823,133"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html" title=" " alt="" coords="576,157,814,209"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_reference_manager.html" title=" " alt="" coords="581,233,809,285"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager.html" title=" " alt="" coords="567,309,823,361"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_variable_manager.html" title=" " alt="" coords="587,385,803,437"/>
 </map>

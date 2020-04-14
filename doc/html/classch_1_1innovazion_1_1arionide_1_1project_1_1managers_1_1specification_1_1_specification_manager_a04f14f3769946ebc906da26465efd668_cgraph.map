@@ -1,5 +1,7 @@
 <map id="ch.innovazion.arionide.project.managers.specification.SpecificationManager.doForeachConnectedSpecification" name="ch.innovazion.arionide.project.managers.specification.SpecificationManager.doForeachConnectedSpecification">
-<area shape="rect" id="node1" title=" " alt="" coords="5,37,362,76"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_contextual_manager.html#a7150feb6fddca6502f54b154687d51ba" title=" " alt="" coords="410,5,751,44"/>
-<area shape="rect" id="node3" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure.html#a7bb77b0102032f5c56e6b989daf7c4df" title=" " alt="" coords="480,68,681,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,68,362,107"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_contextual_manager.html#a8f67dd5e2517de17f16817327f760077" title=" " alt="" coords="410,5,674,44"/>
+<area shape="rect" id="node3" href="$interfacech_1_1innovazion_1_1arionide_1_1project_1_1_structure.html#a7bb77b0102032f5c56e6b989daf7c4df" title=" " alt="" coords="441,68,643,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_manager.html#a89a4211cd18c077844b98d238c3a33ef" title=" " alt="" coords="441,131,643,169"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_storage.html#abc60d6b5904df50bc2da0786d230c896" title=" " alt="" coords="722,131,924,169"/>
 </map>

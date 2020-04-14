@@ -1,12 +1,8 @@
 <map id="ch.innovazion.arionide.lang.avr.AVRLanguage.registerInstructions" name="ch.innovazion.arionide.lang.avr.AVRLanguage.registerInstructions">
-<area shape="rect" id="node1" title=" " alt="" coords="5,163,229,201"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_language.html#ad5eab0150f759ca55bd4207e62f0d8f8" title=" " alt="" coords="301,131,491,169"/>
-<area shape="rect" id="node10" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_language.html#a54924742265f1ba1f6c6e5e8360c1a84" title=" " alt="" coords="277,193,515,232"/>
-<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#abd6f7aae4c37289963d543c3f53a2a3a" title=" " alt="" coords="563,163,750,201"/>
-<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#ac9de3fb4b7247cba90e3e429d3028954" title=" " alt="" coords="810,5,997,44"/>
-<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#af3f86c53f67cdad374d3ce8bdcbcadc1" title=" " alt="" coords="810,68,997,107"/>
-<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a38e51c8cd655343d0ec470e7ba783a68" title=" " alt="" coords="810,131,997,169"/>
-<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a79a3121bbbd45452a389d8e655f7e6d9" title=" " alt="" coords="806,193,1002,232"/>
-<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html#a7ef072f696c4dc2cf320b683569fa323" title=" " alt="" coords="798,256,1010,295"/>
-<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#ad21e8028e0fde57be3a5117816c8550d" title=" " alt="" coords="810,319,997,357"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,37,229,76"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_language.html#ad5eab0150f759ca55bd4207e62f0d8f8" title=" " alt="" coords="301,5,491,44"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_language.html#a54924742265f1ba1f6c6e5e8360c1a84" title=" " alt="" coords="277,68,515,107"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#abd6f7aae4c37289963d543c3f53a2a3a" title=" " alt="" coords="563,37,750,76"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a689572933e4d6b45bbd2bf956f627105" title=" " alt="" coords="798,5,1012,44"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html#a7ef072f696c4dc2cf320b683569fa323" title=" " alt="" coords="799,68,1011,107"/>
 </map>
