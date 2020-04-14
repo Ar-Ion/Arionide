@@ -54,8 +54,12 @@ public class ProgramThread extends WorkingThread {
 		return "Program execution thread";
 	}
 	
-	public void reset() {
+	public void terminate() {
 		interrupt();
+	}
+	
+	public boolean isRunning() {
+		return currentProgram.get() != null;
 	}
 
 	public boolean respawn(int attempt) {

@@ -145,7 +145,7 @@ public class Tab extends MultiComponent implements EventHandler {
 		
 		if(components.size() > 0) {
 			if(this.signal != null) {
-				this.getAppManager().getEventDispatcher().fire(new ClickEvent(this, this.signal, 0));
+				this.getAppManager().getEventDispatcher().fire(new ClickEvent(this, this.signal, this.activeComponent));
 			}
 		}
 	}

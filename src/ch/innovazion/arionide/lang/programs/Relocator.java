@@ -36,8 +36,11 @@ import ch.innovazion.arionide.project.Storage;
 
 public class Relocator extends Program {
 
-	public Relocator(Storage storage) {
+	private final long programMemorySize;
+	
+	public Relocator(Storage storage, int programMemorySize) {
 		super(storage);
+		this.programMemorySize = programMemorySize;
 	}
 	
 	public void run(int rootStructure, ProgramIO io) {
@@ -65,9 +68,7 @@ public class Relocator extends Program {
 					}
 				}
 			}
-			
-			System.out.println(text);
-			
+						
 			for(Node info : skeleton.getRodata()) {
 				data.put(skeleton.getRodataAddress(info), info);
 			}
@@ -80,7 +81,7 @@ public class Relocator extends Program {
 				data.put(skeleton.getDataAddress(info), info);
 			}
 						
-			io.out(new ApplicationMemory(text, data));
+			io.out(new ApplicationMemory(programMemorySize, text, data));
 			io.success("Relocation succeeded.");
 		} else {
 			io.fatal("Cannot run relocator without having built the application skeleton");

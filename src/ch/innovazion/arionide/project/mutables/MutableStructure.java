@@ -129,6 +129,6 @@ public abstract class MutableStructure implements Structure {
 	}
 	
 	public String toString() {
-		return "[Name: " + getName() + "; Comment: " + getComment() + "; Specification: [" + getSpecification() + "]]";
+		return "[ID: " + getIdentifier() + "; Name: " + getName() + "; Comment: " + getComment() + "; Specification: [" + getSpecification() + "]]";
 	}
 }

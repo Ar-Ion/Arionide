@@ -31,6 +31,8 @@ import ch.innovazion.arionide.lang.LanguageManager;
 import ch.innovazion.arionide.lang.Program;
 import ch.innovazion.arionide.lang.Skeleton;
 import ch.innovazion.arionide.lang.symbols.Callable;
+import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.lang.symbols.Reference;
@@ -81,15 +83,19 @@ public class SkeletonBuilder extends Program {
 				for(Parameter param : codeElement.getSpecification().getParameters()) {
 					ParameterValue value = param.getValue();
 					
-					if(value instanceof Reference) {
-						Reference ref = (Reference) value;
-						Callable nextTarget = ref.getTarget();
+					if(value instanceof Information) {
+						Node node = ((Information) value).getRoot();
 						
-						if(nextTarget != null) {
-							next.add(nextTarget);
-						} else {
-							io.error("Invalid reference: " + ref.toString() + " (" + target.getIdentifier() + ":" + codeElement.getIdentifier() + ")");
-							failure = true;
+						if(node instanceof Reference) {
+							Reference ref = (Reference) node;
+							Callable nextTarget = ref.getTarget();
+							
+							if(nextTarget != null) {
+								next.add(nextTarget);
+							} else {
+								io.error("Invalid reference: " + ref.toString() + " (" + target.getIdentifier() + ":" + codeElement.getIdentifier() + ")");
+								failure = true;
+							}
 						}
 					}
 				}
@@ -104,9 +110,7 @@ public class SkeletonBuilder extends Program {
 		for(Callable callable : next) {
 			build(callable, skeleton, instructionSet, io);
 		}
-		
-		System.out.println(skeleton.getText());
-		
+						
 		if(failure) {
 			io.error("Failed to build skeleton for structure '" + target.getName() + "' (" + target.getIdentifier() + ":?)");
 		} else {

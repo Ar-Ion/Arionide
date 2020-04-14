@@ -27,12 +27,17 @@ import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.lang.symbols.Node;
 
 public class ApplicationMemory {
+	
+	private final long size;
 	private final Map<Long, Callable> text;
 	private final Map<Long, Node> data;
 
-	public ApplicationMemory(Map<Long, Callable> text, Map<Long, Node> data) {
+	public ApplicationMemory(long size, Map<Long, Callable> text, Map<Long, Node> data) {
+		this.size = size;
 		this.text = text;
 		this.data = data;
+		
+		// dump();
 	}
 	
 	public Callable textAt(long address) throws EvaluationException {
@@ -48,6 +53,20 @@ public class ApplicationMemory {
 			return data.get(address);
 		} else {
 			throw new EvaluationException("Data segmentation fault at 0x" + Long.toHexString(address));	
+		}
+	}
+	
+	public void dump() {
+		for(long i = 0; i < size; i++) {
+			Object obj = text.get(i);
+			
+			if(obj == null) {
+				obj = data.get(i);
+			}
+			
+			if(obj != null) {
+				System.out.println(obj);
+			}
 		}
 	}
 }

@@ -63,6 +63,8 @@ public abstract class Environment implements EventHandler {
 	
 	private AppManager manager;
 	
+	private Bounds bounds;
+	
 	private Label pcLabel;
 	private Label clkLabel;
 	private Label timLabel;
@@ -115,11 +117,16 @@ public abstract class Environment implements EventHandler {
 			}
 		}
 	}
+	
+	public void init() {
+		manualModeSemaphore.drainPermits();
+	}
 		
 	public Container create(AppManager manager, Bounds renderBounds, LayoutManager dedicatedLayoutManager) {
 		this.manager = manager;
+		this.bounds = renderBounds;
 		
-		manager.getEventDispatcher().registerHandler(this);
+		manager.getEventDispatcher().registerHandler(this, 0.7f);
 		
 		Container container = new Container(null, dedicatedLayoutManager) {
 			public void drawComponents(AppDrawingContext context) {
@@ -193,7 +200,7 @@ public abstract class Environment implements EventHandler {
 					manualModeSemaphore.release();
 				}
 			} else if(click.isTargettingSignal("reset")) {
-				manager.getWorkspace().getProgramThread().reset();
+				manager.getWorkspace().getProgramThread().terminate();
 				manualModeSemaphore.drainPermits();
 				programCounter.set(0);
 				clock.set(0);
@@ -212,9 +219,12 @@ public abstract class Environment implements EventHandler {
 			}
 		} else if(event instanceof WheelEvent) {
 			WheelEvent wheel = (WheelEvent) event;
+					
+			boolean running = manager.getWorkspace().getProgramThread().isRunning();
 			
-			if(manualMode.get()) {
+			if(running && manualMode.get() && bounds != null && bounds.contains(wheel.getPoint())) {
 				manualModeSemaphore.release((int) Math.abs(wheel.getDelta()));
+				wheel.abortDispatching();
 			}
 		}
 	}

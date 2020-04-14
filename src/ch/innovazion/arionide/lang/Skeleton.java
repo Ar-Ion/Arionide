@@ -82,19 +82,19 @@ public class Skeleton {
 		return textMap.containsKey(target);
 	}
 	
-	public long getDataAddress(Node info) {
+	public Long getDataAddress(Node info) {
 		return dataMap.get(info);
 	}
 	
-	public long getRodataAddress(Node info) {
+	public Long getRodataAddress(Node info) {
 		return rodataMap.get(info);
 	}
 	
-	public long getBSSAddress(Node info) {
+	public Long getBSSAddress(Node info) {
 		return bssMap.get(info);
 	}
 	
-	public long getTextAddress(Callable target) {
+	public Long getTextAddress(Callable target) {
 		return textMap.get(target);
 	}
 	

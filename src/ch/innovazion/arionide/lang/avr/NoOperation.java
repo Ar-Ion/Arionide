@@ -40,7 +40,7 @@ public class NoOperation extends Instruction {
 		;
 	}
 
-	public void evaluate(Environment env, Specification spec) throws EvaluationException {
+	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {
 		env.getProgramCounter().incrementAndGet();
 		env.getClock().incrementAndGet();
 	}

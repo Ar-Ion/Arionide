@@ -28,6 +28,7 @@ import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Skeleton;
 import ch.innovazion.arionide.lang.symbols.Bit;
+import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Numeric;
 import ch.innovazion.arionide.lang.symbols.Parameter;
@@ -42,9 +43,36 @@ public class RelativeJump extends Instruction {
 		
 	}
 
-	public void evaluate(Environment env, Specification spec) throws EvaluationException {
-		Numeric offset = (Numeric) getConstant(spec, 0);
-		short offsetValue = (short) Bit.toInteger(offset.cast(16).getRawStream());
+	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {
+		Node param = getConstant(spec, 0);
+		
+		short offsetValue = 0;
+		
+		if(param instanceof Numeric) {
+			Numeric offset = (Numeric) param;
+			offsetValue = (short) Bit.toInteger(offset.cast(16).getRawStream());
+		} else if(param instanceof Reference) {
+			Reference ref = (Reference) param;
+			Callable target = ref.getTarget();
+			
+			if(target != null) {
+				Long address = skeleton.getTextAddress(target);
+				
+				if(address != null) {
+					long difference = address - 2 * env.getProgramCounter().get();
+					
+					if(Short.MIN_VALUE <= difference && difference <= Short.MAX_VALUE) {
+						offsetValue = (short) difference;
+					} else {
+						throw new EvaluationException("Relative address is out of bounds. Use jmp instead");
+					}
+				} else {
+					throw new EvaluationException("Reference address could not be retrieved");
+				}				
+			} else {
+				throw new EvaluationException("Target is undefined");
+			}
+		}
 		
 		env.getProgramCounter().addAndGet(1 + offsetValue);
 		env.getClock().incrementAndGet();

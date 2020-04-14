@@ -392,7 +392,7 @@ public class CoreController {
 		if(requestFocus.get() < 0) {
 			requestMenuReset.set(true);
 		}
-		
+				
 		try {
 			coreGeometry.processEventQueue();
 		} catch (GeometryException exception) {
@@ -401,8 +401,12 @@ public class CoreController {
 
 		List<CodeGeometry> buffer = new ArrayList<>();
 		List<WorldElement> geometry = coreGeometry.getElements();
-				
-		WorldElement current = coreGeometry.getElementByID(project.getStructureManager().getHostStack().getCurrent());
+		
+		int host = project.getStructureManager().getHostStack().getCurrent();
+		
+		project.getStructureManager().getCodeManager().setContext(host);
+		
+		WorldElement current = coreGeometry.getElementByID(host);
 		float characteristicLength;
 		
 		if(current != null) {

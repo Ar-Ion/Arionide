@@ -43,7 +43,7 @@ public abstract class Instruction {
 	}
 	
 	public abstract void validate(Specification spec, List<String> validationErrors);
-	public abstract void evaluate(Environment env, Specification spec) throws EvaluationException;
+	public abstract void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException;
 	public abstract Node assemble(Specification spec, Skeleton skeleton, List<String> assemblyErrors);
 	
 	public abstract StructureModel createStructureModel();

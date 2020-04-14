@@ -73,7 +73,7 @@ public class Debugger extends Program {
 					Instruction instruction = lang.getInstructionSet().get(callable.getName());
 					
 					if(instruction != null) {
-						instruction.evaluate(env, callable.getSpecification());
+						instruction.evaluate(env, callable.getSpecification(), skeleton);
 					} else {
 						io.fatal("Invalid instruction: " + callable.getName());
 						break;

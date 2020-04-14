@@ -38,7 +38,7 @@ public class AVRLanguage extends Language {
 		
 	protected void registerPrograms(Storage storage) {
 		registerProgram(new SkeletonBuilder(storage));
-		registerProgram(new Relocator(storage));
+		registerProgram(new Relocator(storage, 1 << 17)); // 128KB program memory
 		registerProgram(new Debugger(storage, env));
 	}
 	

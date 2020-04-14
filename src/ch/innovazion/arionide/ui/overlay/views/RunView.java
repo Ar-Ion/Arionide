@@ -173,8 +173,13 @@ public class RunView extends View implements EventHandler {
 				this.program = programs.get((int) click.getData()[0]);
 			} else if(click.isTargetting(this, "run")) {
 				if(source != null && program != null) {
-					
-					getAppManager().getWorkspace().getProgramThread().launch(program, source.getIdentifier(), programIO);
+					Language lang = LanguageManager.get(source.getLanguage());
+
+					if(getAppManager().getWorkspace().getProgramThread().launch(program, source.getIdentifier(), programIO)) {
+						lang.getEnvironment().init();
+					} else {
+						getAppManager().getEventDispatcher().fire(new MessageEvent("Another program is still running. Please terminate it first.", MessageType.ERROR));
+					}
 				} else {
 					getAppManager().getEventDispatcher().fire(new MessageEvent("Please first select a source structure and a program to run", MessageType.ERROR));
 				}
