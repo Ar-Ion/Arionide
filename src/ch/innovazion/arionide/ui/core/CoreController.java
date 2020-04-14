@@ -327,10 +327,11 @@ public class CoreController {
 		if(selection != null) {
 			List<WorldElement> code = this.mainCodeGeometry.getElements();
 			int id = selection.getID();
-
+			
 			if(code.contains(selection)) {				
 				if((id & 0xFF000000) == 0) {
 					Structure struct = project.getStorage().getStructures().get(id);
+					project.getStructureManager().getCodeManager().setContext(selection.getParent());
 					menu.selectCode(struct);
 				} else if((id & 0xFF000000) != 0) {
 					// In the case of a parameter
@@ -341,10 +342,9 @@ public class CoreController {
 			
 					if(struct != null) {							
 						Parameter param = struct.getSpecification().getParameters().get(paramID);
-					
+											
 						if(param != null) {
-							// TODO
-
+							menu.selectParameter(struct, param);
 						}
 					}
 				}
@@ -384,12 +384,12 @@ public class CoreController {
 				menu.selectStructure(struct);
 			}
 		} else {
-			menu.selectStructure(null);
+			this.selection = null;
 		}
 	}
 	
 	void onDiscontinuityCrossed() {
-		if(requestFocus.get() == -1) {
+		if(requestFocus.get() < 0) {
 			requestMenuReset.set(true);
 		}
 		

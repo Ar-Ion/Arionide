@@ -33,6 +33,7 @@ import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.project.managers.ContextualManager;
 import ch.innovazion.arionide.project.mutables.MutableActor;
 
 public class VariableManager extends ContextualManager<Variable> {

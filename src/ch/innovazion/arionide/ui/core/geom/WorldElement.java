@@ -32,6 +32,7 @@ public class WorldElement {
 	/* Data needed for tessellation, rendering and collision detection. */
 	
 	private final int id;
+	private int parentID;
 	private Vector3f center;
 	private Vector3f base;
 	private Vector3f axis;
@@ -43,8 +44,9 @@ public class WorldElement {
 	private Vector4f color;
 	private Vector4f spotColor;
 	
-	protected WorldElement(int id, String name, List<String> desc, Vector3f center, Vector3f base, Vector3f axis, Vector4f color, Vector4f spotColor, float size, boolean accessAllowed) {
+	protected WorldElement(int id, int parentID, String name, List<String> desc, Vector3f center, Vector3f base, Vector3f axis, Vector4f color, Vector4f spotColor, float size, boolean accessAllowed) {
 		this.id = id;
+		this.parentID = parentID;
 		this.name = name;
 		this.desc = desc;
 		this.center = center;
@@ -59,6 +61,7 @@ public class WorldElement {
 	public WorldElement recycle(int id, WorldElement target) {
 		assert this.id == id;
 		
+		target.parentID = parentID;
 		target.name = name;
 		target.desc = desc;
 		target.center = center;
@@ -78,6 +81,10 @@ public class WorldElement {
 	
 	public int getID() {
 		return this.id;
+	}
+	
+	public int getParent() {
+		return this.parentID;
 	}
 	
 	public Vector3f getCenter() {

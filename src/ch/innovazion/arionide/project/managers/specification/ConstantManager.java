@@ -32,6 +32,7 @@ import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.project.managers.ContextualManager;
 import ch.innovazion.arionide.project.mutables.MutableActor;
 
 

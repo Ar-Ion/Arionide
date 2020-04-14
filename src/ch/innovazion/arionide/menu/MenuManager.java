@@ -24,7 +24,10 @@ package ch.innovazion.arionide.menu;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.MenuEvent;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
+import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Node;
+import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.automaton.StateManager;
@@ -51,7 +54,7 @@ public class MenuManager extends StateManager {
 		hierarchy.structureBrowser.select(structure);
 	}
 	
-	public void selectCode(Structure code) {		
+	public void selectCode(Structure code) {
 		go("/");
 		triggerAction(RootMenu.codeBrowser);
 		
@@ -64,9 +67,27 @@ public class MenuManager extends StateManager {
 		
 		hierarchy.genericUpdater.setGenericTarget(actor);
 		hierarchy.genericUpdater.setGenericParameterValue(node);
+		hierarchy.genericUpdater.setGenericUpdateResponder(null);
 		hierarchy.genericUpdater.setGenericParameterFrozen(false);
-		
+
 		triggerAction("information");
+	}
+	
+	public void selectParameter(Structure target, Parameter param) {		
+		go("/");
+		triggerAction(RootMenu.genericUpdater);
+		
+		hierarchy.genericUpdater.setGenericTarget(target);
+		hierarchy.genericUpdater.setGenericParameter(param);
+		hierarchy.genericUpdater.setGenericParameterValue(param.getValue());
+		hierarchy.genericUpdater.setGenericUpdateResponder(null);
+		hierarchy.genericUpdater.setGenericParameterFrozen(param.isFrozen());
+				
+		if(param.getValue() instanceof Variable) {
+			triggerAction("variable");
+		} else if(param.getValue() instanceof Information) {
+			triggerAction("information");
+		}
 	}
 	
 	public void select(int cursor) {
@@ -82,7 +103,7 @@ public class MenuManager extends StateManager {
 	public void back() {
 		Menu menu = hierarchy.resolveCurrentState();
 		
-		if(menu != hierarchy.codeBrowser && menu != hierarchy.structureBrowser) {
+		if(menu != hierarchy.codeBrowser && menu != hierarchy.structureBrowser && menu != hierarchy.genericUpdater) {
 			go("..");
 		}
 	}

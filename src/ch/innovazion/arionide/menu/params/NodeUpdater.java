@@ -66,12 +66,13 @@ public class NodeUpdater extends ParameterUpdater {
 	protected void onEnter() {
 		super.onEnter();
 		updateCurrentNode(currentNode);
+
 	}
 	
 	protected void onRefresh(String identifier, Object prevValue) {
 		super.onRefresh(identifier, prevValue);
 				
-		if(identifier.equals("value")) {
+		if(identifier.equals("value")) {			
 			if(value instanceof Information) {
 				this.infoManager = getSpecificationManager().loadInformationManager(value);
 			} else if(value instanceof Node) {
@@ -87,6 +88,7 @@ public class NodeUpdater extends ParameterUpdater {
 				currentNode = infoManager.getRootNode();
 			} else {
 				go("..");
+				return;
 			}
 		}
 		

@@ -27,6 +27,7 @@ import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.lang.symbols.Enumeration;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.project.Storage;
+import ch.innovazion.arionide.project.managers.ContextualManager;
 
 public class EnumerationManager extends ContextualManager<Enumeration> {
 	protected EnumerationManager(Storage storage) {

@@ -33,6 +33,7 @@ import org.joml.Vector4f;
 
 import ch.innovazion.arionide.debugging.IAm;
 import ch.innovazion.arionide.lang.symbols.Callable;
+import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Specification;
@@ -46,8 +47,7 @@ import ch.innovazion.arionide.ui.core.Geometry;
 public class CodeGeometry extends Geometry {
 	
 	private static final float relativeSize = 0.05f;
-	private static final float relativeDistance = 0.12f;
-	private static final float axisEntropy = 0.3f;
+	private static final float axisEntropy = 0.1f;
 	private static final float axisCorrection = 0.3f;
 	private static final float axisCorrectionFlexibility = 5.0f;
 
@@ -80,14 +80,16 @@ public class CodeGeometry extends Geometry {
 		CodeChain chain = storage.getCode().get(this.container.getID());
 		
 		if(chain != null) {
-			this.build(this.container, chain.list(), elements, specification, connections, storage.getStructures(), this.container.getSize() * relativeSize);
+			this.build(container, container.getID(), chain.list(), elements, specification, connections, storage.getStructures(), this.container.getSize() * relativeSize);
 		}
 		
 		elements.addAll(specification); // So that one can iterate through the code with the wheel having to pass through an instruction's specification.
 	}
 	
-	private void build(WorldElement parent, List<? extends HierarchyElement> input, List<WorldElement> outputElements, List<WorldElement> outputSpecification, List<Connection> outputConnections, Map<Integer, Structure> mapping, float size) {
-		Vector3f position = parent.getCenter();
+	private void build(WorldElement parent, int containerID, List<? extends HierarchyElement> input, List<WorldElement> outputElements, List<WorldElement> outputSpecification, List<Connection> outputConnections, Map<Integer, Structure> mapping, float size) {
+		Vector3f basePosition = parent.getCenter().sub(parent.getAxis().normalize(2 * size));
+		
+		Vector3f position = new Vector3f(basePosition);
 		Vector3f axis = parent.getAxis();
 		WorldElement previous = null;
 
@@ -101,13 +103,17 @@ public class CodeGeometry extends Geometry {
 				Specification spec = struct.getSpecification();
 				
 				for(Parameter param : spec.getParameters()) {
-					if(param.getValue() instanceof Reference) {
-						Reference ref = (Reference) param.getValue();
-						Callable target = ref.getTarget();
+					if(param.getValue() instanceof Information) {
+						Information info = (Information) param.getValue();
 						
-						if(target.getIdentifier() == parent.getID()) {
-							groups.add(input.subList(groupStart, i + 1));
-							groupStart = i + 1;
+						if(info.getRoot() instanceof Reference) {
+							Reference ref = (Reference) info.getRoot();
+							Callable target = ref.getTarget();
+							
+							if(target != null && target.getIdentifier() == containerID) {
+								groups.add(input.subList(groupStart, i + 1));
+								groupStart = i + 1;
+							}
 						}
 					}
 				}
@@ -129,11 +135,11 @@ public class CodeGeometry extends Geometry {
 
 			if(i < groups.size() - 1) {
 				mainQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / group.size(), new Vector3f(0.0f, 1.0f, 0.0f)));
-				deltaHeight = -parent.getSize() * relativeDistance / group.size();
+				deltaHeight = -size / relativeSize / group.size();
 				spreadFactor = 0.5f;
 			} else {
 				mainQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / 16, new Vector3f(0.0f, 1.0f, 0.0f)));
-				deltaHeight = (-0.75f * parent.getSize() - y) / group.size();
+				deltaHeight = (-Math.min(group.size() / 16.0f, 0.75f) - y) * size / relativeSize / group.size();
 				spreadFactor = 1.25f;
 			}
 			
@@ -150,7 +156,7 @@ public class CodeGeometry extends Geometry {
 					Vector3f current = this.factory.getAxisGenerator().get();
 					
 					factory.updateAxisGenerator(() -> current.cross(axis));
-					WorldElement output = this.factory.make(element.getID(), struct.getName(), struct.getComment(), new Vector3f(position), color, spotColor, size, struct.isAccessAllowed());
+					WorldElement output = this.factory.make(element.getID(), containerID, struct.getName(), struct.getComment(), new Vector3f(position), color, spotColor, size, struct.isAccessAllowed());
 					outputElements.add(output);
 					
 					/* Process connection to previous instruction */
@@ -174,25 +180,28 @@ public class CodeGeometry extends Geometry {
 					for(int k = 0; k < specification.size(); k++) {
 						Parameter param = specification.get(k);
 						
-						WorldElement specObject = this.factory.make((((k + 1) & 0x7F) << 24) | element.getID(), param.getName(), param.getDisplayValue(), new Vector3f(specPos).add(position), color, spotColor, size / 3.0f, struct.isAccessAllowed());
+						WorldElement specObject = this.factory.make((((k + 1) & 0x7F) << 24) | element.getID(), containerID, param.getName(), param.getDisplayValue(), new Vector3f(specPos).add(position), color, spotColor, size / 3.0f, struct.isAccessAllowed());
 						
 						outputSpecification.add(specObject);
 						outputConnections.add(new Connection(output, specObject));
 						
 						specPos.rotate(specQuaternion);
-						
-						if(param.getValue() instanceof Reference) {
-							Reference ref = (Reference) param.getValue();
-							Callable target = ref.getTarget();
+												
+						if(param.getValue() instanceof Information) {
+							Information info = (Information) param.getValue();
 							
-							if(target != null) {
-								Structure refStruct = mapping.get(target.getIdentifier());
+							if(info.getRoot() instanceof Reference) {
+								Callable target = ((Reference) info.getRoot()).getTarget();
 								
-								if(refStruct.isLambda()) {
-									CodeChain chain = getProject().getStorage().getCode().get(target.getIdentifier());
+								if(target != null && target.getIdentifier() != container.getID()) {
+									Structure refStruct = mapping.get(target.getIdentifier());
 									
-									if(chain != null) {
-										this.build(specObject, chain.list(), outputElements, outputSpecification, outputConnections, mapping, size / 3.0f);
+									if(refStruct.isLambda()) {
+										CodeChain chain = getProject().getStorage().getCode().get(target.getIdentifier());
+																				
+										if(chain != null) {
+											build(specObject, target.getIdentifier(), chain.list(), outputElements, outputSpecification, outputConnections, mapping, size / 3.0f);
+										}
 									}
 								}
 							}
@@ -200,18 +209,18 @@ public class CodeGeometry extends Geometry {
 					}
 					
 					axis.normalize(2 * spreadFactor * size);
-					axis.rotate(mainQuaternion);
 					position.add(axis);
-					
-					position.y = parent.getCenter().y - y;
+					axis.rotate(mainQuaternion);
+
 					y -= deltaHeight;
+					position.y = basePosition.y - y;
 					
 					if(i == groups.size() - 1) {
 						applyDerivation(axis, new Vector3f(position).sub(parent.getCenter()));
 					}
 					
 					/* Process children and apply transformation */
-					this.build(parent, element.getChildren(), outputElements, outputSpecification, outputConnections, mapping, size);
+					this.build(parent, containerID, element.getChildren(), outputElements, outputSpecification, outputConnections, mapping, size);
 				}
 			}
 		}

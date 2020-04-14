@@ -60,8 +60,8 @@ public class StructureManager extends Manager {
 		
 		hostStack = new HostStructureStack();
 		allocator = new ResourceAllocator(project);
-		codeManager = new CodeManager(getStorage(), allocator, hostStack);
-		specManager = new SpecificationManager(getStorage(), allocator, hostStack);
+		codeManager = new CodeManager(getStorage(), allocator);
+		specManager = new SpecificationManager(getStorage(), allocator, this);
 		inheritanceManager = new InheritanceManager(getStorage());
 	}
 
@@ -88,9 +88,11 @@ public class StructureManager extends Manager {
 			saveCallGraph();
 			
 			MutableStructure actor = new MutableActor(structureID, allocator.allocSpecification());
+			MutableCodeChain chain = new MutableCodeChain();
+			
 			getStructures().put(structureID, actor);
-			getCode().put(structureID, new MutableCodeChain());
-
+			getCode().put(structureID, chain);
+			
 			MessageEvent message = rename(structureID, name);
 			
 			if(message.getMessageType() == MessageType.ERROR) {
@@ -100,15 +102,20 @@ public class StructureManager extends Manager {
 			Structure current = getStructures().get(hostStack.getCurrent());
 						
 			if(current != null) {
-				Language lang = LanguageManager.get(current.getLanguage());
-				actor.setLanguage(current.getLanguage());
-			
-				if(lang != null) {
-					hostStack.push(structureID);
-					getCodeManager().insertCode(0, lang.getEntryPoint(), 0);
-					hostStack.pop();
+				Integer entryID = getLanguages().get(current.getLanguage());
+							
+				if(entryID != null) {
+					actor.setLanguage(current.getLanguage());
 					
-					// Saving is delegated to insertCode
+					Structure entryCodeBase = getStructures().get(entryID);
+					
+					int entryStructID = allocator.allocStructure();
+					MutableCode code = new MutableCode(entryStructID, entryCodeBase);
+					
+					code.setLanguage(current.getLanguage());
+					
+					getStructures().put(entryStructID, code);
+					chain.getMutableList().add(new MutableHierarchyElement(entryStructID, new ArrayList<>()));
 				}
 			}
 			

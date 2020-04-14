@@ -28,6 +28,7 @@ import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 import ch.innovazion.arionide.project.Storage;
+import ch.innovazion.arionide.project.managers.ContextualManager;
 
 public class InformationManager extends ContextualManager<Information> {
 	protected InformationManager(Storage storage) {

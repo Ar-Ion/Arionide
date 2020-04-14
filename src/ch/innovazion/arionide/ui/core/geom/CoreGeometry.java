@@ -45,21 +45,21 @@ public class CoreGeometry extends HierarchicalGeometry {
 		return this.getProject().getStorage().getHierarchy();
 	}
 	
-	protected WorldElement constructElement(Structure struct, Vector3f position, float size, List<WorldElement> output) {
+	protected WorldElement constructElement(WorldElement parent, Structure struct, Vector3f position, float size, List<WorldElement> output) {
 		if(struct instanceof MutableActor) {
 			Actor actor = ((MutableActor) struct).getWrapper();
 			
 			float nodeSize = size / 40.0f;
 			
-			constructNodes(actor.getConstants().getNodes(), struct.getIdentifier(), position, new Vector3f(0.2f, 0.4f, 0.0f).mul(size), nodeSize, new Vector4f(ApplicationTints.getColorByName("Inchworm"), 0.5f), output);
-			constructNodes(actor.getProperties().getNodes(), struct.getIdentifier(), position, new Vector3f(0.2f, 0.5f, 0.0f).mul(size), nodeSize, new Vector4f(ApplicationTints.getColorByName("Cerulean"), 0.5f), output);
-			constructNodes(actor.getState().getNodes(), struct.getIdentifier(), position, new Vector3f(0.2f, 0.6f, 0.0f).mul(size), nodeSize, new Vector4f(ApplicationTints.getColorByName("Apricot"), 0.5f), output);
+			constructNodes(actor.getConstants().getNodes(), parent.getID(), struct.getIdentifier(), position, new Vector3f(0.2f, 0.4f, 0.0f).mul(size), nodeSize, new Vector4f(ApplicationTints.getColorByName("Inchworm"), 0.5f), output);
+			constructNodes(actor.getProperties().getNodes(), parent.getID(), struct.getIdentifier(), position, new Vector3f(0.2f, 0.5f, 0.0f).mul(size), nodeSize, new Vector4f(ApplicationTints.getColorByName("Cerulean"), 0.5f), output);
+			constructNodes(actor.getState().getNodes(), parent.getID(), struct.getIdentifier(), position, new Vector3f(0.2f, 0.6f, 0.0f).mul(size), nodeSize, new Vector4f(ApplicationTints.getColorByName("Apricot"), 0.5f), output);
 		}
 		
-		return super.constructElement(struct, position, size, output);
+		return super.constructElement(parent, struct, position, size, output);
 	}
 	
-	private void constructNodes(List<Node> nodes, int sourceID, Vector3f center, Vector3f nodePosition, float size, Vector4f color, List<WorldElement> output) {
+	private void constructNodes(List<Node> nodes, int parentID, int sourceID, Vector3f center, Vector3f nodePosition, float size, Vector4f color, List<WorldElement> output) {
 		Vector3f up = new Vector3f(0.0f, 1.0f, 0.0f);
 		
 		if(nodes.size() == 0) {
@@ -68,7 +68,7 @@ public class CoreGeometry extends HierarchicalGeometry {
 			Node node = nodes.get(0);
 
 			Vector3f position = new Vector3f(up).mul(nodePosition.dot(up)); // Projection along y
-			WorldElement element = factory.make(((128 << 24) | sourceID), node.getLabel(), node.getDisplayValue(), position.add(center), color, color, size, false);
+			WorldElement element = factory.make(((128 << 24) | sourceID), parentID, node.getLabel(), node.getDisplayValue(), position.add(center), color, color, size, false);
 			
 			output.add(element);
 			
@@ -80,7 +80,7 @@ public class CoreGeometry extends HierarchicalGeometry {
 		for(int i = 0; i < nodes.size(); i++) {
 			Node node = nodes.get(i);
 			
-			WorldElement element = factory.make((((i + 128) & 0xFF) << 24) | sourceID, node.getLabel(), node.getDisplayValue(), new Vector3f(nodePosition).add(center), color, color, size, false);
+			WorldElement element = factory.make((((i + 128) & 0xFF) << 24) | sourceID, parentID, node.getLabel(), node.getDisplayValue(), new Vector3f(nodePosition).add(center), color, color, size, false);
 			
 			output.add(element);
 			

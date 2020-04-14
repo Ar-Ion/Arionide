@@ -22,12 +22,11 @@
 package ch.innovazion.arionide.project.managers.specification;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Parameter;
@@ -36,32 +35,36 @@ import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.Structure;
-import ch.innovazion.arionide.project.managers.HostStructureStack;
-import ch.innovazion.arionide.project.managers.ResourceAllocator;
-import ch.innovazion.arionide.project.mutables.MutableActor;
-import ch.innovazion.arionide.project.mutables.MutableCodeChain;
-import ch.innovazion.arionide.project.mutables.MutableHierarchyElement;
+import ch.innovazion.arionide.project.managers.ContextualManager;
+import ch.innovazion.arionide.project.managers.StructureManager;
 import ch.innovazion.arionide.project.mutables.MutableStructure;
 
 public class ReferenceManager extends ContextualManager<Reference> {
 	
-	private final ResourceAllocator allocator;
-	private final HostStructureStack hostStack;
+	private final StructureManager structManager;
 	
-	protected ReferenceManager(Storage storage, ResourceAllocator allocator, HostStructureStack hostStack) {
+	protected ReferenceManager(Storage storage, StructureManager structManager) {
 		super(storage);
-		
-		this.allocator = allocator;
-		this.hostStack = hostStack;
+		this.structManager = structManager;
 	}
 	
-	public List<Callable> getAccessibleCallables(Structure parent) {
-		if(hostStack.getCurrent() == parent.getIdentifier()) {
-			List<MutableHierarchyElement> elements = getCurrentGeneration();
-			return elements.stream().map(HierarchyElement::getID).map(getStructures()::get).collect(Collectors.toList());
-		} else {
-			return Arrays.asList();
+	public List<Callable> getAccessibleCallables() {
+		List<HierarchyElement> elements = structManager.getCurrentGeneration(getStorage().getHierarchy());
+		List<Callable> output = new ArrayList<>();
+		
+		if(structManager.getHostStack().isEmpty()) {
+			output.add(getStructures().get(structManager.getHostStack().getCurrent()));
 		}
+		
+		for(HierarchyElement child : elements) {
+			Structure struct = getStructures().get(child.getID());
+			
+			if(!struct.isLambda()) {
+				output.add(struct);
+			}
+		}
+					
+		return output;
 	}
 
 	public List<String> getParameterNames() {
@@ -91,57 +94,22 @@ public class ReferenceManager extends ContextualManager<Reference> {
 	}
 	
 	public MessageEvent assignLambda() {
-		int structureID = allocator.allocStructure();
-		int specificationID = allocator.allocSpecification();
-		
-		List<MutableHierarchyElement> elements = getCurrentGeneration();
-
-		MutableHierarchyElement structure = new MutableHierarchyElement(structureID, new ArrayList<>());
-		
-		elements.add(structure);
-		saveHierarchy();
-		
-		MutableStructure actor = new MutableActor(structureID, specificationID);
-		
-		actor.setLambda(true);
-		
-		for(Parameter lazy : getContext().getLazyParameters()) {
-			actor.getSpecification().getParameters().add(lazy);
-		}
-		
-		getStructures().put(structureID, actor);
-		saveStructures();
-		
-		getCode().put(structureID, new MutableCodeChain());
-		saveCode();
-		
-		getContext().setTarget(actor);
-		
-		return success();
-	}
-	
-	private List<MutableHierarchyElement> getCurrentGeneration() {
-		List<Integer> parents = new ArrayList<>(hostStack.getStack());
-		List<MutableHierarchyElement> root = getHierarchy();
-		
-		Collections.reverse(parents);
-		
-		for(Integer id : parents) {
-			boolean found = false;
+		MessageEvent event = structManager.newStructure("Lambda (" + System.currentTimeMillis() + ")");
+		                                     
+		if(event.getMessageType() != MessageType.ERROR) {
+			List<HierarchyElement> generation = structManager.getCurrentGeneration(getStorage().getHierarchy());
+			HierarchyElement last = generation.get(generation.size() - 1);
+			MutableStructure struct = getStructures().get(last.getID());
+						
+			struct.setLambda(true);
 			
-			for(MutableHierarchyElement bro : root) {
-				if(bro.getID() == id) {
-					root = bro.getMutableChildren();
-					found = true;
-					break;
-				}
-			}
+			saveStructures();
 			
-			if(!found && id >= 0) {
-				return new ArrayList<>();
-			}
+			getContext().setTarget(struct);
+			
+			return success();
+		} else {
+			return event;
 		}
-		
-		return root;
 	}
 }

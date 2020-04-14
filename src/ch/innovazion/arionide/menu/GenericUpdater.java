@@ -10,7 +10,7 @@ import ch.innovazion.automaton.Export;
 public class GenericUpdater extends Menu {
 	
 	protected GenericUpdater(MenuManager manager) {
-		super(manager, "You should not see this");
+		super(manager);
 	}
 
 	@Export
@@ -40,10 +40,14 @@ public class GenericUpdater extends Menu {
 		this.value = value;
 	}
 	
+	public void setGenericUpdateResponder(Consumer<Void> onUpdate) {
+		this.onUpdate = onUpdate;
+	}
+	
 	public void setGenericParameterFrozen(boolean frozen) {
 		this.frozen = frozen;
 	}
-
+	
 	public void onAction(String action) {
 		go(action);
 	}

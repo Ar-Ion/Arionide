@@ -29,23 +29,22 @@ import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Language;
 import ch.innovazion.arionide.lang.LanguageManager;
 import ch.innovazion.arionide.project.CodeChain;
-import ch.innovazion.arionide.project.Manager;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.arionide.project.mutables.MutableCode;
 import ch.innovazion.arionide.project.mutables.MutableCodeChain;
 import ch.innovazion.arionide.project.mutables.MutableHierarchyElement;
 
-public class CodeManager extends Manager {
+public class CodeManager extends ContextualManager<Integer> {
 	
 	private final ResourceAllocator allocator;
-	private final HostStructureStack hostStack;
 	
-	protected CodeManager(Storage storage, ResourceAllocator allocator, HostStructureStack hostStack) {
+	protected CodeManager(Storage storage, ResourceAllocator allocator) {
 		super(storage);
 		
 		this.allocator = allocator;
-		this.hostStack = hostStack;
+		
+		setContext(-1);
 	}
 	
 	public MessageEvent resetCodeChain(int id) {
@@ -54,7 +53,7 @@ public class CodeManager extends Manager {
 	}
 	
 	public MessageEvent insertCode(int index, Instruction instr, int signatureID) {
-		Structure host = getStructures().get(hostStack.getCurrent());
+		Structure host = getStructures().get(getContext());
 		
 		if(host == null) {
 			return new MessageEvent("You have to be inside a structure to add instructions to the code", MessageType.ERROR);
@@ -125,26 +124,23 @@ public class CodeManager extends Manager {
 			return new MessageEvent("Cannot remove the entry point of this structure", MessageType.ERROR);
 		}
 
-	}
+	} 
 	
 	public boolean hasCode() {
-		return hostStack.getCurrent() != -1 && !getCurrentCode0().isAbstract();
+		return getContext() != -1 && !getCurrentCode0().isAbstract();
 	}
 	
 	public CodeChain getCurrentCode() {
 		return getCurrentCode0();
 	}
 
-	
 	private MutableCodeChain getCurrentCode0() {
-		synchronized(hostStack) {
-			MutableCodeChain chain = getCode().get(hostStack.getCurrent());	
-			
-			if(chain != null) {
-				return chain;
-			} else {
-				throw new IllegalStateException("The hoststack is inconsistent or the code section has been corrupted.");
-			}
+		MutableCodeChain chain = getCode().get(getContext());
+		
+		if(chain != null) {
+			return chain;
+		} else {
+			throw new IllegalStateException("Invalid context: Unable to fetch code for structure " + getContext());
 		}
 	}
 }

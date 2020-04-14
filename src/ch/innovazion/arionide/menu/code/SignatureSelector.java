@@ -69,7 +69,7 @@ public class SignatureSelector extends Menu {
 	}
 	
 	public void onAction(String action) {
-		dispatch(project.getStructureManager().getCodeManager().insertCode(this.previousIndex, this.instruction, id));
+		dispatch(project.getStructureManager().getCodeManager().insertCode(previousIndex + 1, instruction, id));
 		
 		int newTargetID = project.getStructureManager().getCodeManager().getCurrentCode().getID(previousIndex + 1);
 		this.target = project.getStorage().getStructures().get(newTargetID);

@@ -93,6 +93,9 @@ public class MenuHierarchy extends StateHierarchy {
 		
 		register("/generic", genericUpdater = new GenericUpdater(manager));
 		registerInformationUpdater("/generic/information", manager, NodeUpdater::new, nestingDepth);
+		register("/generic/variable", new VariableEditor(manager));
+		register("/generic/variable/assign", new VariableAssigner(manager));
+		registerInformationUpdater("/generic/variable/edit", manager, NodeUpdater::new, nestingDepth);
 	}
 	
 	private void registerInformationUpdater(String source, MenuManager manager, Function<MenuManager, NodeUpdater> supplier, int nesting) {

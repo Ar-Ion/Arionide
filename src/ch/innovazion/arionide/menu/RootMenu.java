@@ -28,7 +28,7 @@ public class RootMenu extends Menu {
 	public static final String genericUpdater = "loadGenericUpdater";
 
 	protected RootMenu(MenuManager manager) {
-		super(manager, "Loading menu...");
+		super(manager);
 	}
 
 	public void onAction(String action) {

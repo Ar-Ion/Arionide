@@ -95,6 +95,6 @@ public class ReferenceEditor extends ParameterUpdater {
 	}
 	
 	protected String getDescriptionTitle() {
-		return "Editing parameter '" + value.toString() + "' as a reference";
+		return "Editing reference";
 	}
 }

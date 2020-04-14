@@ -64,15 +64,22 @@ public abstract class HierarchicalGeometry extends Geometry {
 		
 		this.factory.reset();
 
-		Map<Integer, Structure> metaData = storage.getStructures();
-		List<HierarchyElement> input = getHierarchyElements().stream().filter(e -> !metaData.get(e.getID()).isLambda()).collect(Collectors.toList());
+		Map<Integer, Structure> structures = storage.getStructures();
+		List<HierarchyElement> input = getHierarchyElements();
+		
 		
 		WorldElement main = this.factory.makeRandomTrivial();
 		
-		this.construct0(main, input, elements, metaData, initialSize);
+		this.construct0(main, withoutLambdas(input, structures), elements, structures, initialSize);
 	}
+	
+	
+	private List<HierarchyElement> withoutLambdas(List<HierarchyElement> input, Map<Integer, Structure> structures) {
+		return input.stream().filter(e -> !structures.get(e.getID()).isLambda()).collect(Collectors.toList());
+	}
+	
 			
-	private void construct0(WorldElement parent, List<HierarchyElement> input, List<WorldElement> output, Map<Integer, Structure> metaData, float size) throws GeometryException {
+	private void construct0(WorldElement parent, List<HierarchyElement> input, List<WorldElement> output, Map<Integer, Structure> structures, float size) throws GeometryException {
 		if(input != null && input.size() > 0) {
 			Quaternionf quaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / (input.size() - (input.contains(HierarchyElement.dummy) ? 1 : 0)), parent.getAxis()));
 			Vector3f base = input.size() > 1 || parent.getID() != -1 ? parent.getBaseVector() : new Vector3f();
@@ -80,11 +87,11 @@ public abstract class HierarchicalGeometry extends Geometry {
 			for(HierarchyElement element : input) {
 				Vector3f position = new Vector3f(base.rotate(quaternion)).mul(this.relativeDistance * size / this.relativeSize).add(parent.getCenter());
 				
-				Structure structure = metaData.get(element.getID());
+				Structure structure = structures.get(element.getID());
 
-				if(structure != null && !structure.isLambda()) {
-					WorldElement object = constructElement(structure, position, size, output);
-					this.construct0(object, element.getChildren(), output, metaData, this.relativeSize * size);
+				if(structure != null) {
+					WorldElement object = constructElement(parent, structure, position, size, output);
+					this.construct0(object, withoutLambdas(element.getChildren(), structures), output, structures, this.relativeSize * size);
 				} else {
 					throw new GeometryException("Invalid element ID " + element.getID());
 				}
@@ -92,12 +99,12 @@ public abstract class HierarchicalGeometry extends Geometry {
 		}
 	}
 	
-	protected WorldElement constructElement(Structure struct, Vector3f position, float size, List<WorldElement> output) {
+	protected WorldElement constructElement(WorldElement parent, Structure struct, Vector3f position, float size, List<WorldElement> output) {
 		Vector4f color = new Vector4f(ApplicationTints.getColorByID(struct.getColorID()), 0.3f);
 		Vector4f spotColor = new Vector4f(ApplicationTints.getColorByID(struct.getSpotColorID()), 0.5f);
 		boolean access = struct.isAccessAllowed();
 		
-		WorldElement element = factory.make(struct.getIdentifier(), struct.getName(), struct.getComment(), position, color, spotColor, size, access);
+		WorldElement element = factory.make(struct.getIdentifier(), parent.getID(), struct.getName(), struct.getComment(), position, color, spotColor, size, access);
 		output.add(element);
 		return element;
 	}

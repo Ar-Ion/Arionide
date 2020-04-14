@@ -41,7 +41,7 @@ public class ReferenceAssigner extends ParameterUpdater {
 	protected void onEnter() {
 		super.onEnter();
 		this.refManager = getSpecificationManager().loadReferenceManager(value);
-		this.callables = refManager.getAccessibleCallables(target);
+		this.callables = refManager.getAccessibleCallables();
 		setDynamicElements(callables.stream().map(Callable::getName).toArray(String[]::new));
 	}
 
@@ -55,6 +55,8 @@ public class ReferenceAssigner extends ParameterUpdater {
 			dispatch(new GeometryInvalidateEvent(0));
 			updateParameter();
 		}
+		
+		go("..");
 	}
 	
 	protected String getDescriptionTitle() {

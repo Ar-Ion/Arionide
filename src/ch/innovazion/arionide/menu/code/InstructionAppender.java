@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
+import ch.innovazion.arionide.events.MessageEvent;
+import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.events.TargetUpdateEvent;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.symbols.Parameter;
@@ -105,16 +107,21 @@ public abstract class InstructionAppender extends Menu {
 		this.previousIndex = project.getStructureManager().getCodeManager().getCurrentCode().indexOf(target.getIdentifier());
 						
 		if(instruction.createStructureModel().hasUniqueSignature()) {
-			dispatch(project.getStructureManager().getCodeManager().insertCode(previousIndex + 1, this.instruction, 0));
+			MessageEvent event = project.getStructureManager().getCodeManager().insertCode(previousIndex + 1, this.instruction, 0);
 			
-			int newTargetID = project.getStructureManager().getCodeManager().getCurrentCode().getID(previousIndex + 1);
-			this.target = project.getStorage().getStructures().get(newTargetID);
-			
-			dispatch(new GeometryInvalidateEvent(0));
-			dispatch(new TargetUpdateEvent(target.getIdentifier()));
-			manager.selectCode(target);
-			
-			go("edit");
+			if(event.getMessageType() != MessageType.ERROR) {
+				int newTargetID = project.getStructureManager().getCodeManager().getCurrentCode().getID(previousIndex + 1);
+				this.target = project.getStorage().getStructures().get(newTargetID);
+				
+				dispatch(new GeometryInvalidateEvent(0));
+				dispatch(new TargetUpdateEvent(target.getIdentifier()));
+				manager.selectCode(target);
+				
+				go("edit");
+			} else {
+				dispatch(event);
+				return;
+			}
 		} else {
 			go("signature");
 		}
