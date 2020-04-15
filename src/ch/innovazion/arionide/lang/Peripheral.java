@@ -26,5 +26,6 @@ import ch.innovazion.arionide.ui.overlay.Container;
 public interface Peripheral {
 	public void sample();
 	public void createDisplay(Container display);
+	public String toString();
 	public String getUID();
 }

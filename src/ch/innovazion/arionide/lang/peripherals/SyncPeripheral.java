@@ -19,24 +19,28 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.lang.avr;
+package ch.innovazion.arionide.lang.peripherals;
 
 import ch.innovazion.arionide.lang.Environment;
-import ch.innovazion.arionide.lang.Language;
-import ch.innovazion.arionide.lang.avr.device.AVRSRAM;
+import ch.innovazion.arionide.lang.Peripheral;
 
-public class AVREnvironment extends Environment {
-
-	private final AVRLanguage lang;
+public abstract class SyncPeripheral implements Peripheral, Comparable<SyncPeripheral> {
 	
-	protected AVREnvironment(AVRLanguage lang) {
-		super(4000000000L);
-		this.lang = lang;
-		
-		registerPeripheral(new AVRSRAM(4096));
+	private final Environment env;
+	private final long vectorAddress;
+	
+	public SyncPeripheral(Environment env, long vectorAddress) {
+		this.env = env;
+		this.vectorAddress = vectorAddress;
 	}
 
-	public Language getLanguage() {
-		return lang;
+	protected void interrupt() {
+		env.syncInterrupt(vectorAddress);
 	}
+	
+    public int compareTo(SyncPeripheral other) {
+    	return Long.compare(vectorAddress, other.vectorAddress);
+    }
+    
+    public abstract void tick();
 }

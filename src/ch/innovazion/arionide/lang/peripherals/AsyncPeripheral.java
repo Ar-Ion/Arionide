@@ -24,15 +24,21 @@ package ch.innovazion.arionide.lang.peripherals;
 import ch.innovazion.arionide.lang.Environment;
 import ch.innovazion.arionide.lang.Peripheral;
 
-public abstract class AsyncPeripheral implements Peripheral {
+public abstract class AsyncPeripheral implements Peripheral, Comparable<AsyncPeripheral> {
 	
 	private final Environment env;
+	private final long vectorAddress;
 	
-	public AsyncPeripheral(Environment env) {
+	public AsyncPeripheral(Environment env, long vectorAddress) {
 		this.env = env;
+		this.vectorAddress = vectorAddress;
 	}
 
-	protected void interrupt(long address) {
-		env.interrupt(address);
+	protected void interrupt() {
+		env.asyncInterrupt(vectorAddress);
 	}
+	
+    public int compareTo(AsyncPeripheral other) {
+    	return Long.compare(vectorAddress, other.vectorAddress);
+    }
 }

@@ -35,6 +35,7 @@ import ch.innovazion.arionide.events.EventHandler;
 import ch.innovazion.arionide.events.TargetUpdateEvent;
 import ch.innovazion.arionide.events.TeleportEvent;
 import ch.innovazion.arionide.events.WheelEvent;
+import ch.innovazion.arionide.lang.peripherals.SyncPeripheral;
 import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.AppManager;
@@ -123,7 +124,7 @@ public abstract class Environment implements EventHandler {
 		controlSemaphore.drainPermits();
 	}
 	
-	public void interrupt(long address) {
+	public void asyncInterrupt(long address) {
 		if(interrupts.get()) {
 			boolean state = manualMode.getAndSet(true);
 			
@@ -135,6 +136,20 @@ public abstract class Environment implements EventHandler {
 			
 			manualMode.set(state);	// Restore state
 			controlSemaphore.release(); // Execute interrupt
+		}
+	}
+	
+	public void syncInterrupt(long address) {
+		if(interrupts.get()) {
+			programCounter.set(address);
+		}
+	}
+	
+	public void onInstructionTerminated() {
+		for(Peripheral peripheral : peripherals.values()) {
+			if(peripheral instanceof SyncPeripheral) {
+				((SyncPeripheral) peripheral).tick();
+			}
 		}
 	}
 		
@@ -159,10 +174,7 @@ public abstract class Environment implements EventHandler {
 		Point secondPoint = renderBounds.getSecondPoint();
 		
 		dedicatedLayoutManager.register(container, null, firstPoint.getX(), firstPoint.getY(), secondPoint.getX(), secondPoint.getY());
-		
-		float height = 0.9f / peripherals.size();
-		float y = 0.1f;
-		
+
 		container.add(this.pcLabel = new Label(container, new String()), 0.0f, 0.0f, 0.3f, 0.1f);
 		container.add(this.clkLabel = new Label(container, new String()), 0.4f, 0.0f, 0.6f, 0.1f);
 		container.add(this.timLabel = new Label(container, new String()), 0.7f, 0.0f, 0.9f, 0.1f);
@@ -170,12 +182,15 @@ public abstract class Environment implements EventHandler {
 		container.add(this.runModeButton = new Button(container, new String()).setSignal("toggleRunMode"), 0.4f, 0.1f, 0.6f, 0.15f);
 		container.add(this.timerStateButton = new Button(container, "Start").setSignal("toggleTimerState"), 0.7f, 0.1f, 0.79f, 0.15f);
 		container.add(this.timerStepButton = new Button(container, "Step").setSignal("timerStep"), 0.81f, 0.1f, 0.9f, 0.15f);
-
+		
+		float height = 0.75f / peripherals.size();
+		float y = 0.2f;
+		
 		for(Peripheral peripheral : peripherals.values()) {
 			Container display = new Container(container, dedicatedLayoutManager);
 
-			container.add(new Label(container, peripheral.getUID()), y, 0.0f, y + 0.2f * height, 1.0f);
-			container.add(display, 0.0f, y + 0.2f * height, 1.0f, y + height);
+			container.add(new Label(container, peripheral.toString()).setVisible(true), 0.0f, y, 1.0f, y + 0.2f * height);
+			container.add(display.setVisible(true), 0.0f, y + 0.2f * height, 1.0f, y + height);
 			
 			y += height;
 			

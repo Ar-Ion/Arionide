@@ -85,8 +85,12 @@ public class EEPROM implements Peripheral {
 		}
 	}
 
-	public String getUID() {
+	public String toString() {
 		return (memory.length / 1024) + "KB EEPROM memory";
+	}
+	
+	public String getUID() {
+		return "EEPROM";
 	}
 
 	public void sample() {

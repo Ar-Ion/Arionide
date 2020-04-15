@@ -51,9 +51,13 @@ public class SRAM implements Peripheral {
 	}
 
 	public String getUID() {
-		return (memory.length / 1024) + "KB SRAM memory";
+		return "SRAM";
 	}
 
+	public String toString() {
+		return (memory.length / 1024) + "KB SRAM memory";
+	}
+	
 	public void sample() {
 		
 	}
