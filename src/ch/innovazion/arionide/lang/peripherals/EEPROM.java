@@ -21,16 +21,25 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang.peripherals;
 
+import java.util.function.BinaryOperator;
+
 import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Peripheral;
 import ch.innovazion.arionide.ui.overlay.Container;
 import ch.innovazion.arionide.ui.overlay.components.Label;
 
-public class SRAM implements Peripheral {
+public class EEPROM implements Peripheral {
+	
+	private final int sectorSize;
+	private final int subSectorSize;
+	private final EEPROMType type;
 	
 	private final byte[] memory;
 	
-	public SRAM(int size) {
+	public EEPROM(int size, int numSectors, int numSubsectors, EEPROMType type) {
+		this.sectorSize = size / numSectors;
+		this.subSectorSize = size / numSubsectors;
+		this.type = type;
 		this.memory = new byte[size];
 	}
 	
@@ -38,20 +47,46 @@ public class SRAM implements Peripheral {
 		if(address >= 0 && address < memory.length) {
 			return memory[address];
 		} else {
-			throw new EvaluationException("Attempt to read from an invalid SRAM memory location: " + address);
+			throw new EvaluationException("Attempt to read from an invalid EEPROM memory location: " + address);
 		}
 	}
 	
 	public void set(int address, byte value) throws EvaluationException {
 		if(address >= 0 && address < memory.length) {
-			memory[address] = value;
+			memory[address] = type.reducer.apply(memory[address], value);
 		} else {
-			throw new EvaluationException("Attempt to write to an invalid SRAM memory location: " + address);
+			throw new EvaluationException("Attempt to write to an invalid EEPROM memory location: " + address);
+		}
+	}
+	
+	public void eraseAll() {
+		for(int i = 0; i < memory.length; i++) {
+			memory[i] = type.identity;
+		}
+	}
+	
+	public void eraseSector(int address) throws EvaluationException {
+		if(address >= 0 && address < memory.length) {
+			for(int i = address - address % sectorSize; i < sectorSize; i++) {
+				memory[i] = type.identity;
+			}
+		} else {
+			throw new EvaluationException("Attempt to erase the sector of an invalid EEPROM memory location: " + address);
+		}
+	}
+	
+	public void eraseSubsector(int address) throws EvaluationException {
+		if(address >= 0 && address < memory.length) {
+			for(int i = address - address % subSectorSize; i < subSectorSize; i++) {
+				memory[i] = type.identity;
+			}
+		} else {
+			throw new EvaluationException("Attempt to erase the subsector of an invalid EEPROM memory location: " + address);
 		}
 	}
 
 	public String getUID() {
-		return (memory.length / 1024) + "KB SRAM memory";
+		return (memory.length / 1024) + "KB EEPROM memory";
 	}
 
 	public void sample() {
@@ -59,6 +94,19 @@ public class SRAM implements Peripheral {
 	}
 
 	public void createDisplay(Container display) {
-		display.add(new Label(display, "This SRAM memory has no structure"), 0.0f, 0.0f, 1.0f, 1.0f);
+		display.add(new Label(display, "This EEPROM memory has no structure"), 0.0f, 0.0f, 1.0f, 1.0f);
+	}
+	
+	public static enum EEPROMType {
+		NAND((byte) 1, (a, b) -> (byte) (a & b)),
+		NOR((byte) 0, (a, b) -> (byte) (a | b));
+
+		private byte identity;
+		private BinaryOperator<Byte> reducer;
+		
+		private EEPROMType(byte identity, BinaryOperator<Byte> reducer) {
+			this.identity = identity;
+			this.reducer = reducer;
+		}
 	}
 }
