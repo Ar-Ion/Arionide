@@ -21,8 +21,8 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -53,13 +53,14 @@ public abstract class Environment implements EventHandler {
 	private final AtomicLong clock = new AtomicLong();
 	
 	private final AtomicBoolean manualMode = new AtomicBoolean();
-	private final Semaphore manualModeSemaphore = new Semaphore(0);
+	private final Semaphore controlSemaphore = new Semaphore(0);
+	private final AtomicBoolean interrupts = new AtomicBoolean();
 	
 	private long timerStart = 0L;
 	private final AtomicBoolean timerStepRequest = new AtomicBoolean();
 	private final AtomicBoolean timerState = new AtomicBoolean();
 	
-	private final List<Peripheral> peripherals = new ArrayList<>();
+	private final Map<String, Peripheral> peripherals = new LinkedHashMap<>();
 	
 	private AppManager manager;
 	
@@ -79,11 +80,11 @@ public abstract class Environment implements EventHandler {
 	}
 	
 	protected void registerPeripheral(Peripheral peripheral) {
-		peripherals.add(peripheral);
+		peripherals.put(peripheral.getUID(), peripheral);
 	}
 	
 	public void sample() {
-		peripherals.forEach(Peripheral::sample);
+		peripherals.values().forEach(Peripheral::sample);
 		
 		if(!timerState.get()) {
 			timerStart = clock.get();
@@ -119,7 +120,22 @@ public abstract class Environment implements EventHandler {
 	}
 	
 	public void init() {
-		manualModeSemaphore.drainPermits();
+		controlSemaphore.drainPermits();
+	}
+	
+	public void interrupt(long address) {
+		if(interrupts.get()) {
+			boolean state = manualMode.getAndSet(true);
+			
+			synchronized(controlSemaphore) {
+				controlSemaphore.drainPermits();
+				while(!controlSemaphore.hasQueuedThreads()); // Poll the termination of the last instruction
+				programCounter.set(address);
+			}
+			
+			manualMode.set(state);	// Restore state
+			controlSemaphore.release(); // Execute interrupt
+		}
 	}
 		
 	public Container create(AppManager manager, Bounds renderBounds, LayoutManager dedicatedLayoutManager) {
@@ -155,7 +171,7 @@ public abstract class Environment implements EventHandler {
 		container.add(this.timerStateButton = new Button(container, "Start").setSignal("toggleTimerState"), 0.7f, 0.1f, 0.79f, 0.15f);
 		container.add(this.timerStepButton = new Button(container, "Step").setSignal("timerStep"), 0.81f, 0.1f, 0.9f, 0.15f);
 
-		for(Peripheral peripheral : peripherals) {
+		for(Peripheral peripheral : peripherals.values()) {
 			Container display = new Container(container, dedicatedLayoutManager);
 
 			container.add(new Label(container, peripheral.getUID()), y, 0.0f, y + 0.2f * height, 1.0f);
@@ -193,15 +209,15 @@ public abstract class Environment implements EventHandler {
 				String mode = runModeButton.getText().toString().toLowerCase();
 				
 				if(mode.equals("manual")) {
-					manualModeSemaphore.drainPermits();
+					controlSemaphore.drainPermits();
 					manualMode.compareAndSet(false, true);
 				} else if(mode.equals("automatic")) {
 					manualMode.compareAndSet(true, false);
-					manualModeSemaphore.release();
+					controlSemaphore.release();
 				}
 			} else if(click.isTargettingSignal("reset")) {
 				manager.getWorkspace().getProgramThread().terminate();
-				manualModeSemaphore.drainPermits();
+				controlSemaphore.drainPermits();
 				programCounter.set(0);
 				clock.set(0);
 				timerStart = 0;
@@ -223,7 +239,10 @@ public abstract class Environment implements EventHandler {
 			boolean running = manager.getWorkspace().getProgramThread().isRunning();
 						
 			if(running && manualMode.get() && bounds != null && bounds.contains(wheel.getPoint())) {
-				manualModeSemaphore.release((int) Math.abs(wheel.getDelta()));
+				synchronized(controlSemaphore) {
+					controlSemaphore.release((int) Math.abs(wheel.getDelta()));	
+				}
+				
 				wheel.abortDispatching();
 			}
 		}
@@ -243,6 +262,15 @@ public abstract class Environment implements EventHandler {
 	
 	public AtomicLong getClock() {
 		return clock;
+	}
+	
+	public AtomicBoolean getInterrupts() {
+		return interrupts;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends Peripheral> T getPeripheral(String uid) {
+		return (T) peripherals.get(uid);
 	}
 
 	public AtomicBoolean isManual() {
@@ -270,7 +298,7 @@ public abstract class Environment implements EventHandler {
 	}
 	
 	public Semaphore getManualModeSemaphore() {
-		return manualModeSemaphore;
+		return controlSemaphore;
 	}
 	
 	public abstract Language getLanguage();

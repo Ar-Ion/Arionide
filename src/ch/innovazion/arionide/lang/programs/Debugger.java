@@ -55,11 +55,8 @@ public class Debugger extends Program {
 				}
 				
 				while(true) {
-					Callable callable = memory.textAt(2 * env.getProgramCounter().get());
-
 					if(env.isManual().get()) {
 						try {
-							env.setNextInstruction(callable);
 							env.getManualModeSemaphore().acquire();
 						} catch (InterruptedException e) {
 							break;
@@ -69,6 +66,9 @@ public class Debugger extends Program {
 					if(env.getTimerStepRequest().compareAndSet(true, false)) {
 						io.log("Timer step: " + env.readTimer());
 					}
+					
+					Callable callable = memory.textAt(2 * env.getProgramCounter().get());
+					env.setNextInstruction(callable);
 					
 					Instruction instruction = lang.getInstructionSet().get(callable.getName());
 					
