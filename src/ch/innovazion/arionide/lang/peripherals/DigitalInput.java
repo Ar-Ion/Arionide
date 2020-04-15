@@ -21,24 +21,67 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang.peripherals;
 
+import java.util.stream.Stream;
+
+import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Peripheral;
 import ch.innovazion.arionide.ui.overlay.Container;
+import ch.innovazion.arionide.ui.overlay.components.Button;
+import ch.innovazion.arionide.ui.overlay.components.Label;
 
 public class DigitalInput implements Peripheral {
 	
-	public DigitalInput(int pinCount) {
+	private final Button[] buttons;
+	
+	private final SRAM sram;
+	private final int pinCount;
+	private final int pinAddress;
+	
+	private Label state;
+	
+	public DigitalInput(SRAM sram, int pinCount, int pinAddress) {		
+		this.sram = sram;
+		this.pinCount = pinCount;
+		this.pinAddress = pinAddress;
 		
+		this.buttons = new Button[pinCount];
 	}
 	
 	public void sample() {
-		
+		if(state != null) {
+			int bits = Stream.of(buttons).map(Button::isPressed).mapToInt(b -> b ? 0 : 1).reduce((a, b) -> (a << 1) | b).orElse(0xFF); // Pull-up
+			
+			try {
+				sram.set(pinAddress, (byte) bits);
+			} catch (EvaluationException e) {
+				System.err.println("Invalid digital input pin address");
+			}
+			
+			state.setLabel("Encoded pin value: 0b" + String.format("%8s", Integer.toBinaryString(bits)).replace(" ", "0"));
+		}
 	}
 
 	public void createDisplay(Container display) {
+		float dimension = 1.0f / pinCount;
 		
+		for(int i = 0; i < pinCount; i++) {
+			Button button = new Button(display, "o");
+			button.setVisible(true);
+			button.setEnabled(true);
+			button.setBordered(false);
+			buttons[i] = button;
+			display.add(button, i * dimension, 0.1f, (i + 1) * dimension, 0.4f);
+		}
+		
+		display.add(this.state = new Label(display, new String()), 0.0f, 0.5f, 1.0f, 0.8f);
+		state.setVisible(true);
 	}
 
 	public String getUID() {
-		return "Button";
+		return "DigitalIn";
+	}
+	
+	public String toString() {
+		return "User digital input";
 	}
 }

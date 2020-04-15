@@ -34,9 +34,9 @@ public class SRAM implements Peripheral {
 		this.memory = new byte[size];
 	}
 	
-	public byte get(int address) throws EvaluationException {
+	public int getUnsigned(int address) throws EvaluationException {
 		if(address >= 0 && address < memory.length) {
-			return memory[address];
+			return Byte.toUnsignedInt(memory[address]);
 		} else {
 			throw new EvaluationException("Attempt to read from an invalid SRAM memory location: " + address);
 		}

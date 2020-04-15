@@ -21,25 +21,69 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang.peripherals;
 
+import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Peripheral;
 import ch.innovazion.arionide.ui.overlay.Container;
+import ch.innovazion.arionide.ui.overlay.components.Label;
 
 public class DigitalOutput implements Peripheral {
-
-	public DigitalOutput(int pinCount) {
+	
+	private final Label[] labels;
+	
+	private final SRAM sram;
+	private final int pinCount;
+	private final int pinAddress;
+	
+	private Label state;
+	
+	public DigitalOutput(SRAM sram, int pinCount, int pinAddress) {		
+		this.sram = sram;
+		this.pinCount = pinCount;
+		this.pinAddress = pinAddress;
 		
+		this.labels = new Label[pinCount];
 	}
 	
 	public void sample() {
-		
+		if(state != null) {
+			try {
+				int bits = sram.getUnsigned(pinAddress);
+				
+				state.setLabel("Encoded pin value: 0b" + String.format("%8s", Integer.toBinaryString(bits)).replace(" ", "0"));
+				
+				for(int i = 0; i < pinCount; i++) {
+					if(bits >> i == 0) {
+						labels[i].setAlpha(0xFF);
+					} else {
+						labels[i].setAlpha(0x7F);
+					}
+				}
+			} catch (EvaluationException e) {
+				System.err.println("Invalid digital output port address");
+			}
+		}
 	}
 
 	public void createDisplay(Container display) {
+		float dimension = 1.0f / pinCount;
 		
+		for(int i = 0; i < pinCount; i++) {
+			Label label = new Label(display, "o");
+			label.setVisible(true);
+			label.setEnabled(true);
+			labels[i] = label;
+			display.add(label, i * dimension, 0.1f, (i + 1) * dimension, 0.4f);
+		}
+		
+		display.add(this.state = new Label(display, new String()), 0.0f, 0.5f, 1.0f, 0.8f);
+		state.setVisible(true);
 	}
 
 	public String getUID() {
-		return null;
+		return "DigitalOut";
 	}
-
+	
+	public String toString() {
+		return "User digital output";
+	}
 }

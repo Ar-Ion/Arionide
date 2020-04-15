@@ -60,7 +60,7 @@ public class Button extends Label implements EventHandler, Deformable {
 	protected boolean hasFocus;
 	
 	private boolean hasBorders = true;
-	
+	private boolean pressed = false;
 	private boolean mouseOver = false;
 	
 	private int color = ApplicationTints.MAIN_COLOR;
@@ -149,6 +149,10 @@ public class Button extends Label implements EventHandler, Deformable {
 	public boolean isFocusable() {
 		return isEnabled() && isVisible();
 	}
+	
+	public boolean isPressed() {
+		return pressed;
+	}
 
 	public <T extends Event> void handleEvent(T event) {	
 		if(!isEnabled() || !isVisible() || getBounds() == null) {
@@ -180,7 +184,10 @@ public class Button extends Label implements EventHandler, Deformable {
 			
 			if(getBounds().contains(casted.getPoint())) {
 				if(casted.getType().equals(ActionType.PRESS)) {
+					pressed = true;
 					fireMouseClick();
+				} else if(casted.getType().equals(ActionType.RELEASE)) {
+					pressed = false;
 				}
 			}
 		} else if(event instanceof ValidateEvent) {

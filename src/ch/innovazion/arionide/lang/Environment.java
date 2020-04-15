@@ -175,21 +175,21 @@ public abstract class Environment implements EventHandler {
 		
 		dedicatedLayoutManager.register(container, null, firstPoint.getX(), firstPoint.getY(), secondPoint.getX(), secondPoint.getY());
 
-		container.add(this.pcLabel = new Label(container, new String()), 0.0f, 0.0f, 0.3f, 0.1f);
-		container.add(this.clkLabel = new Label(container, new String()), 0.4f, 0.0f, 0.6f, 0.1f);
-		container.add(this.timLabel = new Label(container, new String()), 0.7f, 0.0f, 0.9f, 0.1f);
+		container.add(this.pcLabel = new Label(container, new String()).setColor(0x00FFAA), 0.0f, 0.0f, 0.3f, 0.1f);
+		container.add(this.clkLabel = new Label(container, new String()).setColor(0x00FFAA), 0.4f, 0.0f, 0.6f, 0.1f);
+		container.add(this.timLabel = new Label(container, new String()).setColor(0x00FFAA), 0.7f, 0.0f, 0.9f, 0.1f);
 		container.add(this.resetButton = new Button(container, "Reset").setSignal("reset"), 0.0f, 0.1f, 0.3f, 0.15f);
 		container.add(this.runModeButton = new Button(container, new String()).setSignal("toggleRunMode"), 0.4f, 0.1f, 0.6f, 0.15f);
 		container.add(this.timerStateButton = new Button(container, "Start").setSignal("toggleTimerState"), 0.7f, 0.1f, 0.79f, 0.15f);
 		container.add(this.timerStepButton = new Button(container, "Step").setSignal("timerStep"), 0.81f, 0.1f, 0.9f, 0.15f);
 		
-		float height = 0.75f / peripherals.size();
+		float height = 0.8f / peripherals.size();
 		float y = 0.2f;
 		
 		for(Peripheral peripheral : peripherals.values()) {
 			Container display = new Container(container, dedicatedLayoutManager);
 
-			container.add(new Label(container, peripheral.toString()).setVisible(true), 0.0f, y, 1.0f, y + 0.2f * height);
+			container.add(new Label(container, peripheral.toString()).setColor(0x00FFAA).setVisible(true), 0.0f, y, 1.0f, y + 0.2f * height);
 			container.add(display.setVisible(true), 0.0f, y + 0.2f * height, 1.0f, y + height);
 			
 			y += height;

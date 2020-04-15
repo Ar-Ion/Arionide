@@ -22,18 +22,37 @@
 package ch.innovazion.arionide.lang.avr;
 
 import ch.innovazion.arionide.lang.Environment;
+import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Language;
 import ch.innovazion.arionide.lang.avr.device.AVRSRAM;
+import ch.innovazion.arionide.lang.peripherals.DigitalInput;
+import ch.innovazion.arionide.lang.peripherals.DigitalOutput;
+import ch.innovazion.arionide.lang.peripherals.SRAM;
 
 public class AVREnvironment extends Environment {
+	
+	private static final int IOBegin = 0x20;
 
 	private final AVRLanguage lang;
+	private final SRAM sram = new AVRSRAM(4096);
 	
 	protected AVREnvironment(AVRLanguage lang) {
 		super(4000000000L);
 		this.lang = lang;
+				
+		registerPeripheral(sram);
+		registerPeripheral(new DigitalInput(sram, 8, IOBegin + 0x16));
+		registerPeripheral(new DigitalOutput(sram, 8, IOBegin + 0x18));
+	}
+	
+	public void init() {
+		super.init();
 		
-		registerPeripheral(new AVRSRAM(4096));
+		try {
+			sram.set(IOBegin + 0x18, (byte) 0xFF);
+		} catch (EvaluationException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public Language getLanguage() {

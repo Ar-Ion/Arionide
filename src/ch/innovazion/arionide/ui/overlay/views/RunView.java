@@ -34,8 +34,6 @@ import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.ClickEvent;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
-import ch.innovazion.arionide.events.MessageEvent;
-import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.events.WheelEvent;
 import ch.innovazion.arionide.lang.Language;
