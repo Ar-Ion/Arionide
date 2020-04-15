@@ -24,8 +24,8 @@ package ch.innovazion.arionide.threading;
 public class DrawingThread extends UIThread {
 	
 	public void tick() {
-		if(this.getDrawingContext() != null) {
-			this.getDrawingContext().draw();
+		if(getDrawingContext() != null) {
+			getDrawingContext().draw();
 		}
 	}
 

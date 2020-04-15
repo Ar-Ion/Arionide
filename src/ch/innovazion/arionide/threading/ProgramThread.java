@@ -21,6 +21,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.threading;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import ch.innovazion.arionide.lang.Program;
@@ -29,14 +30,21 @@ import ch.innovazion.arionide.lang.programs.ProgramIO;
 public class ProgramThread extends WorkingThread {
 
 	private final AtomicReference<Program> currentProgram = new AtomicReference<>();
+	private final AtomicBoolean running = new AtomicBoolean(false);
 	private int currentTarget;
 	private ProgramIO currentIO;;
 	
 	public void tick() {
 		Program prog = currentProgram.getAndSet(null);
-		
+
 		if(prog != null) {
+			System.out.println("Launching program...");
+			
+			running.compareAndSet(false, true);
 			prog.run(currentTarget, currentIO);
+			running.compareAndSet(true, false);
+			
+			System.out.println("Program terminated");
 		}
 	}
 	
@@ -59,7 +67,7 @@ public class ProgramThread extends WorkingThread {
 	}
 	
 	public boolean isRunning() {
-		return currentProgram.get() != null;
+		return running.get();
 	}
 
 	public boolean respawn(int attempt) {

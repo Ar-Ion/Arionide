@@ -25,7 +25,7 @@ import ch.innovazion.arionide.ui.AppDrawingContext;
 
 public abstract class UIThread extends WorkingThread {
 	
-	private AppDrawingContext context;
+	private volatile AppDrawingContext context;
 	
 	public void setupManager(AppDrawingContext context) {
 		this.context = context;

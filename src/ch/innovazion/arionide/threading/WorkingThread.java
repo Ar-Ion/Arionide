@@ -27,25 +27,26 @@ public abstract class WorkingThread extends Thread {
 
 	private static final long CONTROL_DELAY = 200L;
 	
-	private boolean running = false;
-	private long initTime = System.currentTimeMillis();
-	private long ticks = 0;
+	private volatile boolean running = false;
+	private volatile long initTime = 0;
+	private volatile long ticks = 0;
 	
 	public void run() {
 		while(true) {
 			try {
-				while(this.running) {
-					this.resetTimer();
+				this.initTime = System.currentTimeMillis();
+				
+				while(running) {					
+					this.initTime = System.currentTimeMillis();
+
+					tick();
+					incrementTicks();
+
+					long delta = getRefreshDelay() - (System.currentTimeMillis() - initTime);
 					
-					this.tick();
-					
-					long delta = System.currentTimeMillis() - this.initTime + this.getRefreshDelay();
-										
-					if(delta > 0) {
-						Thread.sleep(delta);
+					if(delta > 1) {
+						Thread.sleep(delta - 1);
 					}
-					
-					this.incrementTicks();
 				}
 			
 				Thread.sleep(WorkingThread.CONTROL_DELAY);
@@ -57,10 +58,6 @@ public abstract class WorkingThread extends Thread {
 				Debug.exception(exception);
 			}
 		}
-	}
-	
-	protected void resetTimer() {
-		this.initTime = System.currentTimeMillis();
 	}
 	
 	public long pollTicks() {

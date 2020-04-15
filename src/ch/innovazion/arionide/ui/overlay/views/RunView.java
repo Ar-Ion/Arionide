@@ -45,6 +45,7 @@ import ch.innovazion.arionide.lang.programs.ProgramIO;
 import ch.innovazion.arionide.project.HierarchyElement;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.Structure;
+import ch.innovazion.arionide.threading.ProgramThread;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.AppManager;
 import ch.innovazion.arionide.ui.core.CoreController;
@@ -174,14 +175,20 @@ public class RunView extends View implements EventHandler {
 			} else if(click.isTargetting(this, "run")) {
 				if(source != null && program != null) {
 					Language lang = LanguageManager.get(source.getLanguage());
-
-					if(getAppManager().getWorkspace().getProgramThread().launch(program, source.getIdentifier(), programIO)) {
+					ProgramThread thread = getAppManager().getWorkspace().getProgramThread();
+					
+					
+					if(!thread.isRunning()) {
 						lang.getEnvironment().init();
+						
+						if(!thread.launch(program, source.getIdentifier(), programIO)) {
+							System.err.println("Failed to launch program");
+						}
 					} else {
-						getAppManager().getEventDispatcher().fire(new MessageEvent("Another program is still running. Please terminate it first.", MessageType.ERROR));
+						info("Another program is still running. Please terminate it first.", 0xFF0000);
 					}
 				} else {
-					getAppManager().getEventDispatcher().fire(new MessageEvent("Please first select a source structure and a program to run", MessageType.ERROR));
+					info("Please first select a source structure and a program to run", 0xFF0000);
 				}
 			} else if(click.isTargetting(this, "console")) {
 				int row = (int) click.getData()[0];

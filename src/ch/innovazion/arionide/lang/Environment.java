@@ -221,7 +221,7 @@ public abstract class Environment implements EventHandler {
 			WheelEvent wheel = (WheelEvent) event;
 					
 			boolean running = manager.getWorkspace().getProgramThread().isRunning();
-			
+						
 			if(running && manualMode.get() && bounds != null && bounds.contains(wheel.getPoint())) {
 				manualModeSemaphore.release((int) Math.abs(wheel.getDelta()));
 				wheel.abortDispatching();

@@ -220,7 +220,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	
 	public void draw() {
 		this.thread = (DrawingThread) Thread.currentThread();
-
+		
 		while(true) {
 			try {
 				Thread.sleep(100000);

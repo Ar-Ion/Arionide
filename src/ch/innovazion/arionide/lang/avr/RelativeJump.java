@@ -59,7 +59,7 @@ public class RelativeJump extends Instruction {
 				Long address = skeleton.getTextAddress(target);
 				
 				if(address != null) {
-					long difference = address - 2 * env.getProgramCounter().get();
+					long difference = address / 2 - env.getProgramCounter().get() - 1;
 					
 					if(Short.MIN_VALUE <= difference && difference <= Short.MAX_VALUE) {
 						offsetValue = (short) difference;
