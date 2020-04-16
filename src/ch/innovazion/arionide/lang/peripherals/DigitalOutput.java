@@ -47,7 +47,7 @@ public class DigitalOutput implements Peripheral {
 	public void sample() {
 		if(state != null) {
 			try {
-				int bits = sram.getUnsigned(pinAddress);
+				int bits = sram.get(pinAddress);
 				
 				state.setLabel("Encoded pin value: 0b" + String.format("%8s", Integer.toBinaryString(bits)).replace(" ", "0"));
 				

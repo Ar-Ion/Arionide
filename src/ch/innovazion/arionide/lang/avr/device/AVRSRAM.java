@@ -30,6 +30,16 @@ import ch.innovazion.arionide.ui.overlay.components.Label;
 
 public class AVRSRAM extends SRAM {
 	
+	public static final int SREG = 0x5F;
+	public static final int SPH = 0x5E;
+	public static final int SPL = 0x5D;
+	public static final int SP = 0x5D;
+	public static final int EIND = 0x5C;
+	public static final int RAMPZ = 0x5B;
+	public static final int RAMPY = 0x5A;
+	public static final int RAMPX = 0x59;
+	public static final int RAMPD = 0x58;
+	
 	private final AtomicBoolean readyForSampling = new AtomicBoolean(false);
 	
 	private Label[] registers = new Label[32];
@@ -62,16 +72,16 @@ public class AVRSRAM extends SRAM {
 		try {
 			if(readyForSampling.get()) {
 				for(int i = 0; i < 32; i++) {
-					registers[i].setLabel("0x" + pad2(Integer.toHexString(getUnsigned(i))));
+					registers[i].setLabel("0x" + pad2(Integer.toHexString(get(i))));
 				}
 				
-				sreg.setLabel("SREG: 0b" + pad8(Integer.toBinaryString(getUnsigned(0x5F))));
-				sp.setLabel("SP: 0x" + pad4(Integer.toHexString((getUnsigned(0x5E) << 8) | getUnsigned(0x5D))));
-				eind.setLabel("EIND: 0x" + pad2(Integer.toHexString(getUnsigned(0x5C))));
-				rampz.setLabel("RAMPZ: 0x" + pad2(Integer.toHexString(getUnsigned(0x5B))));
-				rampy.setLabel("RAMPY: 0x" + pad2(Integer.toHexString(getUnsigned(0x5A))));
-				rampx.setLabel("RAMPX: 0x" + pad2(Integer.toHexString(getUnsigned(0x59))));
-				rampd.setLabel("RAMPD: 0x" + pad2(Integer.toHexString(getUnsigned(0x58))));
+				sreg.setLabel("SREG: 0b" + pad8(Integer.toBinaryString(get(SREG))));
+				sp.setLabel("SP: 0x" + pad4(Integer.toHexString((get(SPH) << 8) | get(SPL))));
+				eind.setLabel("EIND: 0x" + pad2(Integer.toHexString(get(EIND))));
+				rampz.setLabel("RAMPZ: 0x" + pad2(Integer.toHexString(get(RAMPZ))));
+				rampy.setLabel("RAMPY: 0x" + pad2(Integer.toHexString(get(RAMPY))));
+				rampx.setLabel("RAMPX: 0x" + pad2(Integer.toHexString(get(RAMPX))));
+				rampd.setLabel("RAMPD: 0x" + pad2(Integer.toHexString(get(RAMPD))));
 			}
 		} catch (EvaluationException e) {
 			;

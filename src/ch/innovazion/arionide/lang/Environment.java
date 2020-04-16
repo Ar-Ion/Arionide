@@ -130,8 +130,14 @@ public abstract class Environment implements EventHandler {
 			
 			synchronized(controlSemaphore) {
 				controlSemaphore.drainPermits();
+				
 				while(!controlSemaphore.hasQueuedThreads()); // Poll the termination of the last instruction
-				programCounter.set(address);
+				
+				try {
+					executeInterrupt(address);
+				} catch (EvaluationException e) {
+					e.printStackTrace();
+				}
 			}
 			
 			manualMode.set(state);	// Restore state
@@ -141,8 +147,16 @@ public abstract class Environment implements EventHandler {
 	
 	public void syncInterrupt(long address) {
 		if(interrupts.get()) {
-			programCounter.set(address);
+			try {
+				executeInterrupt(address);
+			} catch (EvaluationException e) {
+				e.printStackTrace();
+			}
 		}
+	}
+	
+	protected void executeInterrupt(long address) throws EvaluationException {
+		programCounter.set(address);
 	}
 	
 	public void onInstructionTerminated() {

@@ -34,7 +34,7 @@ public class SRAM implements Peripheral {
 		this.memory = new byte[size];
 	}
 	
-	public int getUnsigned(int address) throws EvaluationException {
+	public int get(int address) throws EvaluationException {
 		if(address >= 0 && address < memory.length) {
 			return Byte.toUnsignedInt(memory[address]);
 		} else {
@@ -42,9 +42,9 @@ public class SRAM implements Peripheral {
 		}
 	}
 	
-	public void set(int address, byte value) throws EvaluationException {
+	public void set(int address, int value) throws EvaluationException {
 		if(address >= 0 && address < memory.length) {
-			memory[address] = value;
+			memory[address] = (byte) (value & 0xFF);
 		} else {
 			throw new EvaluationException("Attempt to write to an invalid SRAM memory location: " + address);
 		}
@@ -59,7 +59,7 @@ public class SRAM implements Peripheral {
 	}
 	
 	public void sample() {
-		
+		;
 	}
 
 	public void createDisplay(Container display) {

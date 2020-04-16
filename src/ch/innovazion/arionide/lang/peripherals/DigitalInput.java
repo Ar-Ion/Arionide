@@ -52,7 +52,7 @@ public class DigitalInput implements Peripheral {
 			int bits = Stream.of(buttons).map(Button::isPressed).mapToInt(b -> b ? 0 : 1).reduce((a, b) -> (a << 1) | b).orElse(0xFF); // Pull-up
 			
 			try {
-				sram.set(pinAddress, (byte) bits);
+				sram.set(pinAddress, bits);
 			} catch (EvaluationException e) {
 				System.err.println("Invalid digital input pin address");
 			}
