@@ -59,9 +59,7 @@ public class SkeletonBuilder extends Program {
 		}
 	}
 	
-	private void build(Callable target, Skeleton skeleton, Map<String, Instruction> instructionSet, ProgramIO io) {
-		io.log("Building skeleton for structure '" + target.getName() + "'");
-
+	private boolean build(Callable target, Skeleton skeleton, Map<String, Instruction> instructionSet, ProgramIO io) {
 		skeleton.registerData(getState(target.getIdentifier()));
 		skeleton.registerRodata(getConstants(target.getIdentifier()));
 		skeleton.registerBSS(getProperties(target.getIdentifier()));
@@ -91,7 +89,11 @@ public class SkeletonBuilder extends Program {
 							Callable nextTarget = ref.getTarget();
 							
 							if(nextTarget != null) {
-								next.add(nextTarget);
+								if(!skeleton.hasTextAddress(nextTarget)) {
+									next.add(nextTarget);
+								} else {
+									return true;
+								}
 							} else {
 								io.error("Invalid reference: " + ref.toString() + " (" + target.getIdentifier() + ":" + codeElement.getIdentifier() + ")");
 								failure = true;
@@ -108,13 +110,17 @@ public class SkeletonBuilder extends Program {
 		skeleton.registerText(target, length);
 		
 		for(Callable callable : next) {
-			build(callable, skeleton, instructionSet, io);
+			if(!build(callable, skeleton, instructionSet, io)) {
+				failure = true;
+			}
 		}
 						
 		if(failure) {
 			io.error("Failed to build skeleton for structure '" + target.getName() + "' (" + target.getIdentifier() + ":?)");
+			return false;
 		} else {
 			io.success("Skeleton built for structure '" + target.getName() + "'");
+			return true;
 		}
 	}
 	

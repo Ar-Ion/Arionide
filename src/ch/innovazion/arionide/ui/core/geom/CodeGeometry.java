@@ -22,6 +22,7 @@
 package ch.innovazion.arionide.ui.core.geom;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -109,7 +110,7 @@ public class CodeGeometry extends Geometry {
 						if(info.getRoot() instanceof Reference) {
 							Reference ref = (Reference) info.getRoot();
 							Callable target = ref.getTarget();
-							
+														
 							if(target != null && target.getIdentifier() == containerID) {
 								groups.add(input.subList(groupStart, i + 1));
 								groupStart = i + 1;
@@ -119,11 +120,10 @@ public class CodeGeometry extends Geometry {
 				}
 			}
 		}
-				
-		if(groupStart < input.size()) {
-			groups.add(input.subList(groupStart, input.size()));
-		}
-				
+		
+		// groups.add(input.subList(groupStart, input.size()));
+		groups.add(Arrays.asList());	
+		
 		float y = 0.0f;
 		
 		for(int i = 0; i < groups.size(); i++) {
@@ -135,7 +135,7 @@ public class CodeGeometry extends Geometry {
 
 			if(i < groups.size() - 1) {
 				mainQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / group.size(), new Vector3f(0.0f, 1.0f, 0.0f)));
-				deltaHeight = -size / relativeSize / group.size();
+				deltaHeight = -size / group.size();
 				spreadFactor = 0.5f;
 			} else {
 				mainQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / 16, new Vector3f(0.0f, 1.0f, 0.0f)));
@@ -208,7 +208,7 @@ public class CodeGeometry extends Geometry {
 						}
 					}
 					
-					axis.normalize(2 * spreadFactor * size);
+					axis.normalize(spreadFactor * size / relativeSize);
 					position.add(axis);
 					axis.rotate(mainQuaternion);
 

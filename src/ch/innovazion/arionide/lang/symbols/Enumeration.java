@@ -22,6 +22,7 @@
 package ch.innovazion.arionide.lang.symbols;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,7 @@ public class Enumeration extends AtomicValue {
 	private final List<String> nameMapping = new ArrayList<>();
 	private final Map<String, Node> possibleValues = new HashMap<>();
 
+	private String key;
 	private Node value;
 	
 	public Enumeration() {
@@ -70,6 +72,7 @@ public class Enumeration extends AtomicValue {
 	}
 	
 	public void setValue(String name) {
+		this.key = name;
 		this.value = possibleValues.get(name);
 	}
 	
@@ -87,12 +90,26 @@ public class Enumeration extends AtomicValue {
 		}
 	}
 	
+	public String getKey() {
+		if(key != null) {
+			return key;
+		} else if(!nameMapping.isEmpty()) {
+			return nameMapping.get(0);
+		} else {
+			throw new IllegalStateException("Empty enumerations cannot be resolved");
+		}
+	}
+	
 	public int getSize() {
 		if(value != null) {
 			return value.getSize();
 		} else {
 			return 0;
 		}
+	}
+	
+	public List<String> getDisplayValue() {
+		return Arrays.asList(getKey());
 	}
 	
 	protected Stream<Bit> getRawStream() {

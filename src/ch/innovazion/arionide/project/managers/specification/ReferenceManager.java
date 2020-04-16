@@ -51,8 +51,8 @@ public class ReferenceManager extends ContextualManager<Reference> {
 	public List<Callable> getAccessibleCallables() {
 		List<HierarchyElement> elements = structManager.getCurrentGeneration(getStorage().getHierarchy());
 		List<Callable> output = new ArrayList<>();
-		
-		if(structManager.getHostStack().isEmpty()) {
+				
+		if(!structManager.getHostStack().isEmpty()) {
 			output.add(getStructures().get(structManager.getHostStack().getCurrent()));
 		}
 		

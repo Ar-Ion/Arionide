@@ -41,10 +41,13 @@ public class ProgramThread extends WorkingThread {
 			System.out.println("Launching program...");
 			
 			running.compareAndSet(false, true);
-			prog.run(currentTarget, currentIO);
-			running.compareAndSet(true, false);
 			
-			System.out.println("Program terminated");
+			try {
+				prog.run(currentTarget, currentIO);
+			} finally {
+				running.compareAndSet(true, false);
+				System.out.println("Program terminated");
+			}
 		}
 	}
 	

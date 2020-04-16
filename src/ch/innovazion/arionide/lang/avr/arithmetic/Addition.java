@@ -38,7 +38,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class Add extends Instruction {
+public class Addition extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -46,23 +46,22 @@ public class Add extends Instruction {
 
 	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric r = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
+		Numeric r = (Numeric) ((Enumeration) getConstant(spec, 1)).getValue();
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
 		int rPtr = (int) Bit.toInteger(r.getRawStream());
 
+		int sreg = sram.get(AVRSRAM.SREG) & 0b11000000;
 		int dValue = sram.getRegister(dPtr);
 		int rValue = sram.getRegister(rPtr);
 		int value = (dValue + rValue) & 0xFF;
 		
 		sram.set(dPtr, value);
-		
-		int sreg = sram.get(AVRSRAM.SREG) & 0b11000000;
-		
+				
 		int h = (dValue >> 3) & (rValue >> 3) | (rValue >> 3) & ~(value >> 3) | ~(value >> 3) & (dValue >> 3);
-		int v = (dValue >> 7) & (rValue >> 7) & ~(rValue >> 7) | ~(dValue >> 7) & ~(rValue >> 7) & (rValue >> 7);
+		int v = (dValue >> 7) & (rValue >> 7) & ~(rValue >> 7) | ~(dValue >> 7) & ~(rValue >> 7) & (value >> 7);
 		int n = value >> 7;
 		int s = n ^ v;
 		int z = value == 0 ? 1 : 0;

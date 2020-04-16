@@ -81,7 +81,7 @@ public abstract class Environment implements EventHandler {
 	}
 	
 	protected void registerPeripheral(Peripheral peripheral) {
-		peripherals.put(peripheral.getUID(), peripheral);
+		peripherals.put(peripheral.getUID().toLowerCase(), peripheral);
 	}
 	
 	public void sample() {
@@ -299,7 +299,7 @@ public abstract class Environment implements EventHandler {
 	
 	@SuppressWarnings("unchecked")
 	public <T extends Peripheral> T getPeripheral(String uid) {
-		return (T) peripherals.get(uid);
+		return (T) peripherals.get(uid.toLowerCase());
 	}
 
 	public AtomicBoolean isManual() {

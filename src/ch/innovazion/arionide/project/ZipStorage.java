@@ -224,6 +224,7 @@ public class ZipStorage extends Storage {
 	}
 	
 	private synchronized void save(Path path, Object object) throws StorageException {
+		assert object != null;
 		assert object instanceof Serializable;
 
 		try(ObjectOutputStream output = new ObjectOutputStream(Files.newOutputStream(path, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING))) {

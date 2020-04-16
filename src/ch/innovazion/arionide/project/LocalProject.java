@@ -132,7 +132,7 @@ public class LocalProject implements Project {
 	}
 
 	@IAm("saving a project")
-	public void save() throws StorageException {
+	public void save() throws StorageException {		
 		try(OutputStream stream = Files.newOutputStream(this.storage.getMetaPath(), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)) {
 
 			this.verifyProtocol();

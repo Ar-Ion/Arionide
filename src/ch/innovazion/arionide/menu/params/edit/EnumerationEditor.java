@@ -52,11 +52,9 @@ public class EnumerationEditor extends ParameterUpdater {
 		if(!frozen) {
 			elements.add("Add element");
 			elements.add("Remove element");
+			elements.add(null);
+			elements.addAll(enumManager.getNames());
 		}
-		
-		elements.add(null);
-		
-		elements.addAll(enumManager.getNames());
 		
 		setDynamicElements(elements.toArray(new String[0]));
 	}
