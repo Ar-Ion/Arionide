@@ -19,7 +19,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.lang.avr;
+package ch.innovazion.arionide.lang.avr.bitwise;
 
 import java.util.List;
 
@@ -28,20 +28,27 @@ import ch.innovazion.arionide.lang.Environment;
 import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Skeleton;
+import ch.innovazion.arionide.lang.avr.device.AVRSRAM;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Numeric;
 import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
-import ch.innovazion.arionide.ui.ApplicationTints;
 
-public class NoOperation extends Instruction {
+public class CarrySet extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
 	}
 
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
+		AVRSRAM sram = env.getPeripheral("sram");
+		
+		int aPtr = AVRSRAM.SREG;
+		int dValue = 0b00000001;
+				
+		sram.set(aPtr, sram.get(aPtr) | dValue);
+				
 		env.getProgramCounter().incrementAndGet();
 		env.getClock().incrementAndGet();
 	}
@@ -52,9 +59,9 @@ public class NoOperation extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("nop")
-			.withColor(ApplicationTints.getColorIDByName("Red"))
-			.withComment("Wait one cycle")
+			.draft("sec")
+			.withColor(0.44f)
+			.withComment("Sets the carry bit in the SREG register")
 			.beginSignature("default")
 			.endSignature()
 			.build();

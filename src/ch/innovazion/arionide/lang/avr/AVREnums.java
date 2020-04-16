@@ -36,10 +36,17 @@ public class AVREnums {
 	public static final Enumeration DISP_POINTER = new Enumeration();
 	public static final Enumeration LPM_POINTER = new Enumeration();
 	public static final Enumeration ADDRESS_MASK = new Enumeration();
+	public static final Enumeration OR_BIT_MASK = new Enumeration();
+	public static final Enumeration AND_BIT_MASK = new Enumeration();
 
 	static {
 		for(int i = 0; i < 32; i++) {
 			REGISTER.addPossibleValue(new Numeric(i).cast(8).label("R" + i));
+			
+			if(i < 8) {
+				OR_BIT_MASK.addPossibleValue(new Numeric(~(1 << i)).label(String.valueOf(i)));
+				AND_BIT_MASK.addPossibleValue(new Numeric(1 << i).label(String.valueOf(i)));
+			}
 			
 			if(i < 16) {
 				LOW_REGISTER.addPossibleValue(new Numeric(i).cast(8).label("R" + i));

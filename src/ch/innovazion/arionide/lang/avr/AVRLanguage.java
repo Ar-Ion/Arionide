@@ -26,6 +26,7 @@ import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Language;
 import ch.innovazion.arionide.lang.avr.arithmetic.Add;
 import ch.innovazion.arionide.lang.avr.arithmetic.AddWithCarry;
+import ch.innovazion.arionide.lang.avr.bitwise.NoOperation;
 import ch.innovazion.arionide.lang.programs.Debugger;
 import ch.innovazion.arionide.lang.programs.Relocator;
 import ch.innovazion.arionide.lang.programs.SkeletonBuilder;
