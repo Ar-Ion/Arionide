@@ -26,10 +26,18 @@ import ch.innovazion.arionide.lang.symbols.Numeric;
 
 public class AVREnums {
 	public static final Enumeration REGISTER = new Enumeration();
-	
+	public static final Enumeration LOW_REGISTER = new Enumeration();
+	public static final Enumeration HIGH_REGISTER = new Enumeration();
+
 	static {
 		for(int i = 0; i < 32; i++) {
 			REGISTER.addPossibleValue("R" + i, new Numeric(i).cast(8));
+			
+			if(i < 16) {
+				LOW_REGISTER.addPossibleValue("R" + i, new Numeric(i).cast(8));
+			} else {
+				HIGH_REGISTER.addPossibleValue("R" + i, new Numeric(i).cast(8));
+			}
 		}
 	}
 }

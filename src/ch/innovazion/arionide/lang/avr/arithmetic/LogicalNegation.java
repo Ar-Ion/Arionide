@@ -38,7 +38,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class LogicalAdditionImmediate extends Instruction {
+public class LogicalNegation extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -46,24 +46,23 @@ public class LogicalAdditionImmediate extends Instruction {
 
 	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric k = (Numeric) getConstant(spec, 1);
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
 
-		int sreg = sram.get(AVRSRAM.SREG) & 0b11100001;
+		int sreg = sram.get(AVRSRAM.SREG) & 0b11100000;
 		int dValue = sram.getRegister(dPtr);
-		int kValue = (int) Bit.toInteger(k.getRawStream());
-		int value = (dValue | kValue) & 0xFF;
+		int value = (-dValue) & 0xFF;
 		
 		sram.set(dPtr, value);
 				
 		int n = value >> 7;
 		int s = n;
 		int z = value == 0 ? 1 : 0;
+		int c = 1;
 		
-		int mask = ((s & 1) << 4) | ((n & 1) << 2) | ((z & 1) << 1);
+		int mask = ((s & 1) << 4) | ((n & 1) << 2) | ((z & 1) << 1) | (c & 1);
 		
 		sram.set(AVRSRAM.SREG, sreg | mask);
 		
@@ -77,12 +76,11 @@ public class LogicalAdditionImmediate extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("ori")
-			.withColor(0.17f)
-			.withComment("Computes the logical conjunction of a register with an immediate value")
+			.draft("neg")
+			.withColor(0.22f)
+			.withComment("Performs a two's complement on a register")
 			.beginSignature("default")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Addend").asConstant(new Numeric(0)))
+			.withParameter(new Parameter("Register").asConstant(AVREnums.REGISTER))
 			.endSignature()
 			.build();
 	}

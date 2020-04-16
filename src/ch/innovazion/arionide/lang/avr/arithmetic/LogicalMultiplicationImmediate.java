@@ -81,7 +81,7 @@ public class LogicalMultiplicationImmediate extends Instruction {
 			.withColor(0.19f)
 			.withComment("Computes the logical disjunction of a register with an immediate value")
 			.beginSignature("default")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.REGISTER))
+			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
 			.withParameter(new Parameter("Factor").asConstant(new Numeric(0)))
 			.endSignature()
 			.build();

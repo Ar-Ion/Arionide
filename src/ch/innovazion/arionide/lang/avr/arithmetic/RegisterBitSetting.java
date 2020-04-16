@@ -38,7 +38,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class LogicalAdditionImmediate extends Instruction {
+public class RegisterBitSetting extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -77,12 +77,12 @@ public class LogicalAdditionImmediate extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("ori")
-			.withColor(0.17f)
-			.withComment("Computes the logical conjunction of a register with an immediate value")
+			.draft("sbr")
+			.withColor(0.23f)
+			.withComment("Sets the specified bits in the register")
 			.beginSignature("default")
 			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Addend").asConstant(new Numeric(0)))
+			.withParameter(new Parameter("Mask").asConstant(new Numeric(0)))
 			.endSignature()
 			.build();
 	}

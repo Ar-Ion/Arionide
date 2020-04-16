@@ -38,7 +38,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class SubtractImmediate extends Instruction {
+public class SubtractionImmediateWithCarry extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -55,7 +55,7 @@ public class SubtractImmediate extends Instruction {
 		int sreg = sram.get(AVRSRAM.SREG) & 0b11000000;
 		int dValue = sram.getRegister(dPtr);
 		int kValue = (int) Bit.toInteger(k.getRawStream());
-		int value = (dValue - kValue) & 0xFF;
+		int value = (dValue - kValue - (sreg & 1)) & 0xFF;
 		
 		sram.set(dPtr, value);
 				
@@ -80,11 +80,11 @@ public class SubtractImmediate extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("subi")
-			.withColor(0.13f)
-			.withComment("Subtract an immediate value from a register without the carry flag")
+			.draft("sbci")
+			.withColor(0.15f)
+			.withComment("Subtract an immediate value from a register with the carry flag")
 			.beginSignature("default")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.REGISTER))
+			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
 			.withParameter(new Parameter("Subtrahend").asConstant(new Numeric(0)))
 			.endSignature()
 			.build();

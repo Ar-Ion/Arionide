@@ -38,7 +38,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class LogicalAdditionImmediate extends Instruction {
+public class Test extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -46,18 +46,13 @@ public class LogicalAdditionImmediate extends Instruction {
 
 	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric k = (Numeric) getConstant(spec, 1);
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
 
 		int sreg = sram.get(AVRSRAM.SREG) & 0b11100001;
-		int dValue = sram.getRegister(dPtr);
-		int kValue = (int) Bit.toInteger(k.getRawStream());
-		int value = (dValue | kValue) & 0xFF;
-		
-		sram.set(dPtr, value);
+		int value = sram.getRegister(dPtr);
 				
 		int n = value >> 7;
 		int s = n;
@@ -77,12 +72,11 @@ public class LogicalAdditionImmediate extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("ori")
-			.withColor(0.17f)
-			.withComment("Computes the logical conjunction of a register with an immediate value")
+			.draft("tst")
+			.withColor(0.27f)
+			.withComment("Tests if a register is zero or less")
 			.beginSignature("default")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Addend").asConstant(new Numeric(0)))
+			.withParameter(new Parameter("Register").asConstant(AVREnums.REGISTER))
 			.endSignature()
 			.build();
 	}
