@@ -70,8 +70,9 @@ public class Parameter implements Serializable {
 		this.value = value;
 	}
 	
-	public void setFrozen(boolean frozen) {
+	public Parameter setFrozen(boolean frozen) {
 		this.frozen = frozen;
+		return this;
 	}
 	
 	public boolean isFrozen() {

@@ -29,6 +29,7 @@ import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 
 public class AVREnums {
 	public static final Enumeration REGISTER = new Enumeration();
+	public static final Enumeration IO = new Enumeration();
 	public static final Enumeration LOW_REGISTER = new Enumeration();
 	public static final Enumeration HIGH_REGISTER = new Enumeration();
 	public static final Enumeration POINTER = new Enumeration();
@@ -45,6 +46,26 @@ public class AVREnums {
 			}
 		}
 		
+		IO.addPossibleValue(new Numeric(AVRSRAM.DDRA).label("DDRA"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.DDRB).label("DDRB"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.DDRC).label("DDRC"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.DDRD).label("DDRD"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.DDRE).label("DDRE"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.DDRF).label("DDRF"));
+		
+		IO.addPossibleValue(new Numeric(AVRSRAM.PORTA).label("PORTA"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.PORTB).label("PORTB"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.PORTC).label("PORTC"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.PORTD).label("PORTD"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.PORTE).label("PORTE"));
+
+		IO.addPossibleValue(new Numeric(AVRSRAM.PINA).label("PINA"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.PINB).label("PINB"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.PINC).label("PINC"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.PIND).label("PIND"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.PINE).label("PINE"));
+		IO.addPossibleValue(new Numeric(AVRSRAM.PINF).label("PINF"));
+
 		try {
 			POINTER.addPossibleValue(new Node("X").connect(new Numeric(AVRSRAM.X).label("register")).connect(new Numeric(0).label("increment")));
 			POINTER.addPossibleValue(new Node("Y").connect(new Numeric(AVRSRAM.Y).label("register")).connect(new Numeric(0).label("increment")));

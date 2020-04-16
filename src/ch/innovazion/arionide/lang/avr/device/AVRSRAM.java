@@ -43,6 +43,31 @@ public class AVRSRAM extends SRAM {
 	public static final int RAMPY = 0x5A;
 	public static final int RAMPX = 0x59;
 	public static final int RAMPD = 0x58;
+
+	public static final int DDRA = 0x1A;
+	public static final int PORTA = 0x1B;
+	public static final int PINA = 0x19;
+
+	public static final int DDRB = 0x17;
+	public static final int PORTB = 0x18;
+	public static final int PINB = 0x16;
+
+	public static final int DDRC = 0x14;
+	public static final int PORTC = 0x15;
+	public static final int PINC = 0x13;
+
+	public static final int DDRD = 0x11;
+	public static final int PORTD = 0x12;
+	public static final int PIND = 0x10;
+
+	public static final int DDRE = 0x02;
+	public static final int PORTE = 0x03;
+	public static final int PINE = 0x01;
+
+	public static final int DDRF = 0x61;
+	public static final int PINF = 0x00;
+
+
 	
 	public static final int REG_BEGIN = 0x00;
 	public static final int IO_BEGIN = 0x20;
