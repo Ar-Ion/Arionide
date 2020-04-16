@@ -21,44 +21,15 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang.avr;
 
-import ch.innovazion.arionide.lang.Environment;
-import ch.innovazion.arionide.lang.EvaluationException;
-import ch.innovazion.arionide.lang.Language;
-import ch.innovazion.arionide.lang.avr.device.AVRSRAM;
-import ch.innovazion.arionide.lang.peripherals.DigitalInput;
-import ch.innovazion.arionide.lang.peripherals.DigitalOutput;
+import ch.innovazion.arionide.lang.symbols.Enumeration;
+import ch.innovazion.arionide.lang.symbols.Numeric;
 
-public class AVREnvironment extends Environment {
-
-	private final AVRLanguage lang;
-	private final AVRSRAM sram = new AVRSRAM(4096);
+public class AVREnums {
+	public static final Enumeration REGISTER = new Enumeration();
 	
-	protected AVREnvironment(AVRLanguage lang) {
-		super(4000000000L);
-		this.lang = lang;
-				
-		registerPeripheral(sram);
-		registerPeripheral(new DigitalInput(sram, 8, AVRSRAM.IO_BEGIN + 0x16));
-		registerPeripheral(new DigitalOutput(sram, 8, AVRSRAM.IO_BEGIN + 0x18));
-	}
-	
-	public void init() {
-		super.init();
-		
-		try {
-			sram.set(AVRSRAM.IO_BEGIN + 0x18, 0xFF);
-		} catch (EvaluationException e) {
-			e.printStackTrace();
+	static {
+		for(int i = 0; i < 32; i++) {
+			REGISTER.addPossibleValue("R" + i, new Numeric(i).cast(8));
 		}
-	}
-
-	public Language getLanguage() {
-		return lang;
-	}
-	
-	
-	protected void executeInterrupt(long address) throws EvaluationException {
-		sram.pushWord((int) getProgramCounter().get());
-		super.executeInterrupt(address);
 	}
 }

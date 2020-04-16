@@ -51,8 +51,12 @@ public class Enumeration extends AtomicValue {
 	 * Those two methods should be accessed by a parameter creator
 	 */
 	public void addPossibleValue(String name) {
+		addPossibleValue(name, new Node(name));
+	}
+	
+	public void addPossibleValue(String name, Node value) {
 		nameMapping.add(name);
-		possibleValues.put(name, new Node(name));
+		possibleValues.put(name, value);
 	}
 	
 	public void removePossibleValue(String name) {

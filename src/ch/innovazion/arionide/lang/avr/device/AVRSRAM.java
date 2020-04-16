@@ -40,6 +40,12 @@ public class AVRSRAM extends SRAM {
 	public static final int RAMPX = 0x59;
 	public static final int RAMPD = 0x58;
 	
+	public static final int REG_BEGIN = 0x00;
+	public static final int IO_BEGIN = 0x20;
+	public static final int EXT_IO_BEGIN = 0x60;
+	public static final int INT_SRAM_END = 0xF00; // exclusive
+	public static final int SRAM_END = 0x20000; // exclusive
+	
 	private final AtomicBoolean readyForSampling = new AtomicBoolean(false);
 	
 	private Label[] registers = new Label[32];
@@ -122,5 +128,73 @@ public class AVRSRAM extends SRAM {
 		rampd.setVisible(true);
 		
 		readyForSampling.set(true);
+	}
+	
+	public void push(int value) throws EvaluationException {
+		int sp = getWord(AVRSRAM.SP);
+		set(sp, value);
+		setWord(AVRSRAM.SP, sp - 1);
+	}
+	
+	public int pop() throws EvaluationException {
+		int sp = getWord(AVRSRAM.SP);
+		setWord(AVRSRAM.SP, sp + 1);
+		return get(sp + 1);
+	}
+	
+	public void pushWord(int value) throws EvaluationException {
+		int sp = getWord(AVRSRAM.SP);
+		setWord(sp - 1, value);
+		setWord(AVRSRAM.SP, sp - 2);
+	}
+	
+	public int popWord() throws EvaluationException {
+		int sp = getWord(AVRSRAM.SP);
+		setWord(AVRSRAM.SP, sp + 2);
+		return getWord(sp + 1);
+	}
+	
+	public int getWord(int lowAddr) throws EvaluationException {
+		int low = get(lowAddr);
+		int high = get(lowAddr + 1);
+		
+		return (high << 8) | low;
+	}
+	
+	public void setWord(int lowAddr, int value) throws EvaluationException {
+		set(lowAddr, value & 0xFF);
+		set(lowAddr + 1, (value >> 8) & 0xFF);
+	}
+	
+	public int getRegister(int id) throws EvaluationException {
+		return get(REG_BEGIN + id);
+	}
+
+	public int getIO(int id) throws EvaluationException {
+		return get(IO_BEGIN + id);
+	}
+	
+	public int getExtIO(int id) throws EvaluationException {
+		return get(EXT_IO_BEGIN + id);
+	}
+	
+	public int getData(int address) throws EvaluationException {
+		return get(address);
+	}
+	
+	public void setRegister(int id, int value) throws EvaluationException {
+		set(REG_BEGIN + id, value);
+	}
+
+	public void setIO(int id, int value) throws EvaluationException {
+		set(IO_BEGIN + id, value);
+	}
+	
+	public void setExtIO(int id, int value) throws EvaluationException {
+		set(EXT_IO_BEGIN + id, value);
+	}
+	
+	public void setData(int address, int value) throws EvaluationException {
+		set(address, value);
 	}
 }
