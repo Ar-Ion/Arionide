@@ -74,14 +74,14 @@ public class Relocator extends Program {
 			}
 			
 			for(Node info : skeleton.getBSS()) {
-				data.put(skeleton.getBSSAddress(info), info);
+				data.put(skeleton.getBSSAddress(info), info.clone());
 			}
 			
 			for(Node info : skeleton.getData()) {
-				data.put(skeleton.getDataAddress(info), info);
+				data.put(skeleton.getDataAddress(info), info.clone());
 			}
 						
-			io.out(new ApplicationMemory(programMemorySize, text, data));
+			io.out(new ApplicationMemory(skeleton, programMemorySize, text, data));
 			io.success("Relocation succeeded.");
 		} else {
 			io.fatal("Cannot run relocator without having built the application skeleton");

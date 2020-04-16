@@ -28,11 +28,13 @@ import ch.innovazion.arionide.lang.symbols.Node;
 
 public class ApplicationMemory {
 	
+	private final Skeleton skeleton;
 	private final long size;
 	private final Map<Long, Callable> text;
 	private final Map<Long, Node> data;
 
-	public ApplicationMemory(long size, Map<Long, Callable> text, Map<Long, Node> data) {
+	public ApplicationMemory(Skeleton skeleton, long size, Map<Long, Callable> text, Map<Long, Node> data) {
+		this.skeleton = skeleton;
 		this.size = size;
 		this.text = text;
 		this.data = data;
@@ -54,6 +56,10 @@ public class ApplicationMemory {
 		} else {
 			throw new EvaluationException("Data segmentation fault at 0x" + Long.toHexString(address));	
 		}
+	}
+	
+	public Skeleton getSkeleton() {
+		return skeleton;
 	}
 	
 	public void dump() {

@@ -23,6 +23,7 @@ package ch.innovazion.arionide.lang.avr.arithmetic;
 
 import java.util.List;
 
+import ch.innovazion.arionide.lang.ApplicationMemory;
 import ch.innovazion.arionide.lang.Environment;
 import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Instruction;
@@ -44,9 +45,29 @@ public class LogicalDisjunctionImmediate extends Instruction {
 		;
 	}
 
-	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {		
+	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric k = (Numeric) getConstant(spec, 1);
+		Numeric k;
+		
+		if(spec.getParameters().size() < 2) {
+			k = (Numeric) getConstant(spec, 1);
+		} else {
+			Long virtual = programMemory.getSkeleton().getDataAddress(getVariable(spec, 1));
+			String addressMask = ((Enumeration) getConstant(spec, 0)).getKey();
+
+			if(virtual != null) {
+				if(addressMask.equalsIgnoreCase("low")) {
+					virtual &= 0xFF;
+				} else if(addressMask.equalsIgnoreCase("high")) {
+					virtual >>>= 8;
+					virtual &= 0xFF;
+				}
+				
+				k = new Numeric(virtual);
+			} else {
+				throw new EvaluationException("Unable to find data variable");
+			}
+		}
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		
@@ -80,9 +101,14 @@ public class LogicalDisjunctionImmediate extends Instruction {
 			.draft("andi")
 			.withColor(0.19f)
 			.withComment("Computes the logical disjunction of a register with an immediate value")
-			.beginSignature("default")
+			.beginSignature("Immediate")
 			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
 			.withParameter(new Parameter("Factor").asConstant(new Numeric(0)))
+			.endSignature()
+			.beginSignature("Variable")
+			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
+			.withParameter(new Parameter("Factor").asVariable(new Numeric(0)))
+			.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
 			.endSignature()
 			.build();
 	}

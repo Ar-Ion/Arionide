@@ -23,6 +23,7 @@ package ch.innovazion.arionide.lang.avr;
 
 import java.util.List;
 
+import ch.innovazion.arionide.lang.ApplicationMemory;
 import ch.innovazion.arionide.lang.Environment;
 import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Instruction;
@@ -43,9 +44,9 @@ public class RelativeJump extends Instruction {
 		
 	}
 
-	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {
+	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
 		Node param = getConstant(spec, 0);
-		
+
 		short offsetValue = 0;
 		
 		if(param instanceof Numeric) {
@@ -56,7 +57,7 @@ public class RelativeJump extends Instruction {
 			Callable target = ref.getTarget();
 			
 			if(target != null) {
-				Long address = skeleton.getTextAddress(target);
+				Long address = programMemory.getSkeleton().getTextAddress(target);
 				
 				if(address != null) {
 					long difference = address / 2 - env.getProgramCounter().get() - 1;

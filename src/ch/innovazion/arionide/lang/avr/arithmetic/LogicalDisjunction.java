@@ -23,6 +23,7 @@ package ch.innovazion.arionide.lang.avr.arithmetic;
 
 import java.util.List;
 
+import ch.innovazion.arionide.lang.ApplicationMemory;
 import ch.innovazion.arionide.lang.Environment;
 import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Instruction;
@@ -44,7 +45,7 @@ public class LogicalDisjunction extends Instruction {
 		;
 	}
 
-	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {		
+	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
 		Numeric r = (Numeric) ((Enumeration) getConstant(spec, 1)).getValue();
 

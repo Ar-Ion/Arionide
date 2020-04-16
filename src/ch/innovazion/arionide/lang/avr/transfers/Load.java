@@ -23,6 +23,7 @@ package ch.innovazion.arionide.lang.avr.transfers;
 
 import java.util.List;
 
+import ch.innovazion.arionide.lang.ApplicationMemory;
 import ch.innovazion.arionide.lang.Environment;
 import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Instruction;
@@ -45,7 +46,7 @@ public class Load extends Instruction {
 		;
 	}
 
-	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {
+	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
 		Node pointerInfo = (Node) ((Enumeration) getConstant(spec, 1)).getValue();
 
@@ -69,7 +70,7 @@ public class Load extends Instruction {
 				env.getClock().incrementAndGet();
 			}
 			
-			if(spec.getParameters().size() > 1) {
+			if(spec.getParameters().size() > 2) {
 				Numeric q = (Numeric) getConstant(spec, 2);
 				address += (int) Bit.toInteger(q.getRawStream());
 				env.getClock().incrementAndGet();

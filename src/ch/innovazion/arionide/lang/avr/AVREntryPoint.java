@@ -23,6 +23,7 @@ package ch.innovazion.arionide.lang.avr;
 
 import java.util.List;
 
+import ch.innovazion.arionide.lang.ApplicationMemory;
 import ch.innovazion.arionide.lang.Environment;
 import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Instruction;
@@ -47,7 +48,7 @@ public class AVREntryPoint extends Instruction {
 		;
 	}
 
-	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {
+	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
 		;
 	}
 

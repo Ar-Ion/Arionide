@@ -34,6 +34,8 @@ public class AVREnums {
 	public static final Enumeration HIGH_REGISTER = new Enumeration();
 	public static final Enumeration POINTER = new Enumeration();
 	public static final Enumeration DISP_POINTER = new Enumeration();
+	public static final Enumeration LPM_POINTER = new Enumeration();
+	public static final Enumeration ADDRESS_MASK = new Enumeration();
 
 	static {
 		for(int i = 0; i < 32; i++) {
@@ -79,8 +81,14 @@ public class AVREnums {
 			
 			DISP_POINTER.addPossibleValue(new Node("Y").connect(new Numeric(AVRSRAM.Y).label("register")).connect(new Numeric(0).label("increment")));
 			DISP_POINTER.addPossibleValue(new Node("Z").connect(new Numeric(AVRSRAM.Z).label("register")).connect(new Numeric(0).label("increment")));
+		
+			LPM_POINTER.addPossibleValue(new Node("Z").connect(new Numeric(AVRSRAM.Z).label("register")).connect(new Numeric(0).label("increment")));
+			LPM_POINTER.addPossibleValue(new Node("Z+").connect(new Numeric(AVRSRAM.Z).label("register")).connect(new Numeric(+1).label("increment")));
 		} catch(SymbolResolutionException e) {
 			e.printStackTrace();
 		}
+		
+		ADDRESS_MASK.addPossibleValue("Low");
+		ADDRESS_MASK.addPossibleValue("High");
 	}
 }
