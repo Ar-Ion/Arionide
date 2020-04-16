@@ -21,23 +21,45 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang.avr;
 
+import ch.innovazion.arionide.lang.avr.device.AVRSRAM;
 import ch.innovazion.arionide.lang.symbols.Enumeration;
+import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Numeric;
+import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 
 public class AVREnums {
 	public static final Enumeration REGISTER = new Enumeration();
 	public static final Enumeration LOW_REGISTER = new Enumeration();
 	public static final Enumeration HIGH_REGISTER = new Enumeration();
+	public static final Enumeration POINTER = new Enumeration();
+	public static final Enumeration DISP_POINTER = new Enumeration();
 
 	static {
 		for(int i = 0; i < 32; i++) {
-			REGISTER.addPossibleValue("R" + i, new Numeric(i).cast(8));
+			REGISTER.addPossibleValue(new Numeric(i).cast(8).label("R" + i));
 			
 			if(i < 16) {
-				LOW_REGISTER.addPossibleValue("R" + i, new Numeric(i).cast(8));
+				LOW_REGISTER.addPossibleValue(new Numeric(i).cast(8).label("R" + i));
 			} else {
-				HIGH_REGISTER.addPossibleValue("R" + i, new Numeric(i).cast(8));
+				HIGH_REGISTER.addPossibleValue(new Numeric(i).cast(8).label("R" + i));
 			}
+		}
+		
+		try {
+			POINTER.addPossibleValue(new Node("X").connect(new Numeric(AVRSRAM.X).label("register")).connect(new Numeric(0).label("increment")));
+			POINTER.addPossibleValue(new Node("Y").connect(new Numeric(AVRSRAM.Y).label("register")).connect(new Numeric(0).label("increment")));
+			POINTER.addPossibleValue(new Node("Z").connect(new Numeric(AVRSRAM.Z).label("register")).connect(new Numeric(0).label("increment")));
+			POINTER.addPossibleValue(new Node("X+").connect(new Numeric(AVRSRAM.X).label("register")).connect(new Numeric(+1).label("increment")));
+			POINTER.addPossibleValue(new Node("Y+").connect(new Numeric(AVRSRAM.Y).label("register")).connect(new Numeric(+1).label("increment")));
+			POINTER.addPossibleValue(new Node("Z+").connect(new Numeric(AVRSRAM.Z).label("register")).connect(new Numeric(+1).label("increment")));
+			POINTER.addPossibleValue(new Node("X-").connect(new Numeric(AVRSRAM.X).label("register")).connect(new Numeric(-1).label("increment")));
+			POINTER.addPossibleValue(new Node("Y-").connect(new Numeric(AVRSRAM.Y).label("register")).connect(new Numeric(-1).label("increment")));
+			POINTER.addPossibleValue(new Node("Z-").connect(new Numeric(AVRSRAM.Z).label("register")).connect(new Numeric(-1).label("increment")));
+			
+			DISP_POINTER.addPossibleValue(new Node("Y").connect(new Numeric(AVRSRAM.Y).label("register")).connect(new Numeric(0).label("increment")));
+			DISP_POINTER.addPossibleValue(new Node("Z").connect(new Numeric(AVRSRAM.Z).label("register")).connect(new Numeric(0).label("increment")));
+		} catch(SymbolResolutionException e) {
+			e.printStackTrace();
 		}
 	}
 }

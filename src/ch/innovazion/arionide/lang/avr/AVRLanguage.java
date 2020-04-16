@@ -24,8 +24,8 @@ package ch.innovazion.arionide.lang.avr;
 import ch.innovazion.arionide.lang.Environment;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Language;
-import ch.innovazion.arionide.lang.avr.arithmetic.Addition;
-import ch.innovazion.arionide.lang.avr.arithmetic.AdditionWithCarry;
+import ch.innovazion.arionide.lang.avr.arithmetic.Add;
+import ch.innovazion.arionide.lang.avr.arithmetic.AddWithCarry;
 import ch.innovazion.arionide.lang.programs.Debugger;
 import ch.innovazion.arionide.lang.programs.Relocator;
 import ch.innovazion.arionide.lang.programs.SkeletonBuilder;
@@ -48,8 +48,8 @@ public class AVRLanguage extends Language {
 		registerShadowInstruction(this.entryPoint = new AVREntryPoint());
 		registerInstruction(new NoOperation());
 		registerInstruction(new RelativeJump());
-		registerInstruction(new Addition());
-		registerInstruction(new AdditionWithCarry());
+		registerInstruction(new Add());
+		registerInstruction(new AddWithCarry());
 	}
 
 	protected short getVersionMajor() {

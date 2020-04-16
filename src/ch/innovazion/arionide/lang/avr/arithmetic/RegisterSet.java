@@ -38,7 +38,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class AdditionWithCarry extends Instruction {
+public class RegisterSet extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -46,30 +46,11 @@ public class AdditionWithCarry extends Instruction {
 
 	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric r = (Numeric) ((Enumeration) getConstant(spec, 1)).getValue();
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
-		int rPtr = (int) Bit.toInteger(r.getRawStream());
-
-		int sreg = sram.get(AVRSRAM.SREG) & 0b11000000;
-		int dValue = sram.getRegister(dPtr);
-		int rValue = sram.getRegister(rPtr);
-		int value = (dValue + rValue + (sreg & 1)) & 0xFF;
-		
-		sram.set(dPtr, value);
-		
-		int h = (dValue >> 3) & (rValue >> 3) | (rValue >> 3) & ~(value >> 3) | ~(value >> 3) & (dValue >> 3);
-		int v = (dValue >> 7) & (rValue >> 7) & ~(rValue >> 7) | ~(dValue >> 7) & ~(rValue >> 7) & (value >> 7);
-		int n = value >> 7;
-		int s = n ^ v;
-		int z = value == 0 ? 1 : 0;
-		int c = (dValue >> 7) & (rValue >> 7) | (rValue >> 7) & ~(value >> 7) | ~(value >> 7) & (dValue >> 7);
-		
-		int mask = ((h & 1) << 5) | ((s & 1) << 4) | ((v & 1) << 3) | ((n & 1) << 2) | ((z & 1) << 1) | (c & 1);
-		
-		sram.set(AVRSRAM.SREG, sreg | mask);
+		sram.set(dPtr, 0xFF);
 		
 		env.getProgramCounter().incrementAndGet();
 		env.getClock().incrementAndGet();
@@ -81,12 +62,11 @@ public class AdditionWithCarry extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("adc")
-			.withColor(0.11f)
-			.withComment("Add two registers with the carry flag")
+			.draft("ser")
+			.withColor(0.29f)
+			.withComment("Sets a register to 0xFF")
 			.beginSignature("default")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.REGISTER))
-			.withParameter(new Parameter("Addend").asConstant(AVREnums.REGISTER))
+			.withParameter(new Parameter("Register").asConstant(AVREnums.HIGH_REGISTER))
 			.endSignature()
 			.build();
 	}

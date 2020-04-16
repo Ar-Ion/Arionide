@@ -19,7 +19,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.lang.avr.arithmetic;
+package ch.innovazion.arionide.lang.avr.transfers;
 
 import java.util.List;
 
@@ -35,22 +35,58 @@ import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Numeric;
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.lang.symbols.Specification;
+import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class RegisterSetting extends Instruction {
+public class Load extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
 	}
 
-	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {		
+	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
+		Node pointerInfo = (Node) ((Enumeration) getConstant(spec, 1)).getValue();
 
-		AVRSRAM sram = env.getPeripheral("sram");
-		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
-		sram.set(dPtr, 0xFF);
+		
+		try {
+			AVRSRAM sram = env.getPeripheral("sram");
+
+			Numeric register = (Numeric) pointerInfo.resolve("register");
+			Numeric increment = (Numeric) pointerInfo.resolve("increment");
+			
+			int registerID = (int) Bit.toInteger(register.getRawStream());
+			int incrementValue = (int) Bit.toInteger(increment.getRawStream());
+			
+			int address = sram.getWord(registerID);
+			
+			if(incrementValue < 0) { // Pre-decrement
+				address += incrementValue;
+				sram.setWord(registerID, address);	
+				env.getClock().incrementAndGet();
+				env.getClock().incrementAndGet();
+			}
+			
+			if(spec.getParameters().size() > 1) {
+				Numeric q = (Numeric) getConstant(spec, 2);
+				address += (int) Bit.toInteger(q.getRawStream());
+				env.getClock().incrementAndGet();
+			}
+			
+			int value = sram.getData(address);
+			
+			sram.set(dPtr, value);
+			
+			if(incrementValue > 0) { // Post-increment
+				address += incrementValue;
+				sram.setWord(registerID, address);
+				env.getClock().incrementAndGet();
+			}
+		} catch (SymbolResolutionException e) {
+			throw new EvaluationException("Corrupted pointer enum. Check 'AVREnums.java'");
+		}
 		
 		env.getProgramCounter().incrementAndGet();
 		env.getClock().incrementAndGet();
@@ -62,11 +98,17 @@ public class RegisterSetting extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("ser")
-			.withColor(0.29f)
-			.withComment("Sets a register to 0xFF")
-			.beginSignature("default")
-			.withParameter(new Parameter("Register").asConstant(AVREnums.HIGH_REGISTER))
+			.draft("ld")
+			.withColor(0.3f)
+			.withComment("Loads a value from the SRAM into a register")
+			.beginSignature("Standard addressing")
+				.withParameter(new Parameter("Destination").asConstant(AVREnums.REGISTER))
+				.withParameter(new Parameter("Pointer").asConstant(AVREnums.POINTER))
+			.endSignature()
+			.beginSignature("Displacement addressing")
+				.withParameter(new Parameter("Destination").asConstant(AVREnums.REGISTER))
+				.withParameter(new Parameter("Pointer").asConstant(AVREnums.DISP_POINTER))
+				.withParameter(new Parameter("Displacement").asConstant(new Numeric(0)))
 			.endSignature()
 			.build();
 	}

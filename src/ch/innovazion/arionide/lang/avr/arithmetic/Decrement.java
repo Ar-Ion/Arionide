@@ -38,7 +38,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class LogicalAddition extends Instruction {
+public class Decrement extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -46,25 +46,23 @@ public class LogicalAddition extends Instruction {
 
 	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric r = (Numeric) ((Enumeration) getConstant(spec, 1)).getValue();
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
-		int rPtr = (int) Bit.toInteger(r.getRawStream());
 
 		int sreg = sram.get(AVRSRAM.SREG) & 0b11100001;
 		int dValue = sram.getRegister(dPtr);
-		int rValue = sram.getRegister(rPtr);
-		int value = (dValue | rValue) & 0xFF;
+		int value = (dValue - 1) & 0xFF;
 		
 		sram.set(dPtr, value);
 				
 		int n = value >> 7;
 		int s = n;
 		int z = value == 0 ? 1 : 0;
+		int v = value == 0x7F ? 1 : 0;
 		
-		int mask = ((s & 1) << 4) | ((n & 1) << 2) | ((z & 1) << 1);
+		int mask =  ((s & 1) << 4) | ((v << 3) & 1) | ((n & 1) << 2) | ((z & 1) << 1);
 		
 		sram.set(AVRSRAM.SREG, sreg | mask);
 		
@@ -78,12 +76,11 @@ public class LogicalAddition extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("or")
-			.withColor(0.16f)
-			.withComment("Computes the logical conjunction of two registers")
+			.draft("dec")
+			.withColor(0.26f)
+			.withComment("Decrements a register")
 			.beginSignature("default")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.REGISTER))
-			.withParameter(new Parameter("Addend").asConstant(AVREnums.REGISTER))
+			.withParameter(new Parameter("Register").asConstant(AVREnums.REGISTER))
 			.endSignature()
 			.build();
 	}

@@ -38,7 +38,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class RegisterBitClearing extends Instruction {
+public class LogicalDisjunction extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -46,16 +46,17 @@ public class RegisterBitClearing extends Instruction {
 
 	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric k = (Numeric) getConstant(spec, 1);
+		Numeric r = (Numeric) ((Enumeration) getConstant(spec, 1)).getValue();
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
+		int rPtr = (int) Bit.toInteger(r.getRawStream());
 
 		int sreg = sram.get(AVRSRAM.SREG) & 0b11100001;
 		int dValue = sram.getRegister(dPtr);
-		int kValue = (int) Bit.toInteger(k.getRawStream());
-		int value = (dValue & ~kValue) & 0xFF;
+		int rValue = sram.getRegister(rPtr);
+		int value = (dValue & rValue) & 0xFF;
 		
 		sram.set(dPtr, value);
 				
@@ -77,12 +78,12 @@ public class RegisterBitClearing extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("cbr")
-			.withColor(0.24f)
-			.withComment("Clears the specified bits in the register")
+			.draft("and")
+			.withColor(0.18f)
+			.withComment("Computes the logical disjunction of two registers")
 			.beginSignature("default")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Mask").asConstant(new Numeric(0)))
+			.withParameter(new Parameter("Destination").asConstant(AVREnums.REGISTER))
+			.withParameter(new Parameter("Factor").asConstant(AVREnums.REGISTER))
 			.endSignature()
 			.build();
 	}

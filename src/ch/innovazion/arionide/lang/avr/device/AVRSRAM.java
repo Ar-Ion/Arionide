@@ -30,6 +30,10 @@ import ch.innovazion.arionide.ui.overlay.components.Label;
 
 public class AVRSRAM extends SRAM {
 	
+	public static final int X = 0x1A;
+	public static final int Y = 0x1C;
+	public static final int Z = 0x1E;
+
 	public static final int SREG = 0x5F;
 	public static final int SPH = 0x5E;
 	public static final int SPL = 0x5D;

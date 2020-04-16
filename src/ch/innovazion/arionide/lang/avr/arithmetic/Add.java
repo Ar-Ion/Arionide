@@ -38,7 +38,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class Subtraction extends Instruction {
+public class Add extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -56,16 +56,16 @@ public class Subtraction extends Instruction {
 		int sreg = sram.get(AVRSRAM.SREG) & 0b11000000;
 		int dValue = sram.getRegister(dPtr);
 		int rValue = sram.getRegister(rPtr);
-		int value = (dValue - rValue) & 0xFF;
+		int value = (dValue + rValue) & 0xFF;
 		
 		sram.set(dPtr, value);
 				
-		int h = ~(dValue >> 3) & (rValue >> 3) | (rValue >> 3) & (value >> 3) | (value >> 3) & ~(dValue >> 3);
-		int v = (dValue >> 7) & ~(rValue >> 7) & ~(rValue >> 7) | ~(dValue >> 7) & (rValue >> 7) & (value >> 7);
+		int h = (dValue >> 3) & (rValue >> 3) | (rValue >> 3) & ~(value >> 3) | ~(value >> 3) & (dValue >> 3);
+		int v = (dValue >> 7) & (rValue >> 7) & ~(rValue >> 7) | ~(dValue >> 7) & ~(rValue >> 7) & (value >> 7);
 		int n = value >> 7;
 		int s = n ^ v;
 		int z = value == 0 ? 1 : 0;
-		int c = ~(dValue >> 7) & (rValue >> 7) | (rValue >> 7) & (value >> 7) | (value >> 7) & ~(dValue >> 7);
+		int c = (dValue >> 7) & (rValue >> 7) | (rValue >> 7) & ~(value >> 7) | ~(value >> 7) & (dValue >> 7);
 		
 		int mask = ((h & 1) << 5) | ((s & 1) << 4) | ((v & 1) << 3) | ((n & 1) << 2) | ((z & 1) << 1) | (c & 1);
 		
@@ -81,12 +81,12 @@ public class Subtraction extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("sub")
-			.withColor(0.12f)
-			.withComment("Subtract two registers without the carry flag")
+			.draft("add")
+			.withColor(0.1f)
+			.withComment("Add two registers without the carry flag")
 			.beginSignature("default")
 			.withParameter(new Parameter("Destination").asConstant(AVREnums.REGISTER))
-			.withParameter(new Parameter("Subtrahend").asConstant(AVREnums.REGISTER))
+			.withParameter(new Parameter("Addend").asConstant(AVREnums.REGISTER))
 			.endSignature()
 			.build();
 	}

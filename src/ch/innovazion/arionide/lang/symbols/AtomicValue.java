@@ -35,11 +35,11 @@ public abstract class AtomicValue extends Node {
 		super(parent);
 	}
 
-	public synchronized void connect(Node value) throws SymbolResolutionException {
+	public synchronized Node connect(Node value) throws SymbolResolutionException {
 		throw new SymbolResolutionException("Cannot connect information to an atomic value");
 	}
 	
-	public synchronized void disconnect(Node value) throws SymbolResolutionException {
+	public synchronized Node disconnect(Node value) throws SymbolResolutionException {
 		throw new SymbolResolutionException("Cannot disconnect information from an atomic value");
 	}
 	

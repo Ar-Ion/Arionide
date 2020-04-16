@@ -60,11 +60,12 @@ public class Node implements ParameterValue {
 		this.parent = null;
 	}
 	
-	public synchronized void connect(Node value) throws SymbolResolutionException {
+	public synchronized Node connect(Node value) throws SymbolResolutionException {
 		connect(value, linearMap.size());
+		return this;
 	}
 	
-	public synchronized void connect(Node value, int position) throws SymbolResolutionException {
+	public synchronized Node connect(Node value, int position) throws SymbolResolutionException {
 		if(value != null) {
 			if(!symbolicMap.containsKey(value.name)) {
 				value.parent = this;
@@ -83,9 +84,11 @@ public class Node implements ParameterValue {
 		} else {
 			throw new SymbolResolutionException("Unable to connect an empty value to " + String.join("; ", getDisplayValue()));
 		}
+		
+		return this;
 	}
 	
-	public synchronized void disconnect(Node value) throws SymbolResolutionException {
+	public synchronized Node disconnect(Node value) throws SymbolResolutionException {
 		if(value != null) {
 			value.parent = null;
 			
@@ -99,6 +102,8 @@ public class Node implements ParameterValue {
 		} else {
 			throw new SymbolResolutionException("Unable to disconnect an empty value from " + String.join("; ", getDisplayValue()));
 		}
+		
+		return this;
 	}
 	
 	public synchronized Node resolve(int id) throws SymbolResolutionException {
@@ -160,12 +165,14 @@ public class Node implements ParameterValue {
 		}
 	}
 	
-	public void label(String name) {
+	public Node label(String name) {
 		String oldName = this.name;
 		this.name = (name != null && !name.isEmpty()) ? name : "lambda";
 		this.path = computePath();
 		notifyLabelUpdate(oldName);
 		notifyPathUpdate();
+		
+		return this;
 	}
 	
 	private String computePath() {

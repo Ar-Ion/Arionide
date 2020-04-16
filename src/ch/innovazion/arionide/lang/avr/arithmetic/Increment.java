@@ -38,7 +38,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class SubtractionImmediate extends Instruction {
+public class Increment extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -46,27 +46,23 @@ public class SubtractionImmediate extends Instruction {
 
 	public void evaluate(Environment env, Specification spec, Skeleton skeleton) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric k = (Numeric) getConstant(spec, 1);
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
 
-		int sreg = sram.get(AVRSRAM.SREG) & 0b11000000;
+		int sreg = sram.get(AVRSRAM.SREG) & 0b11100001;
 		int dValue = sram.getRegister(dPtr);
-		int kValue = (int) Bit.toInteger(k.getRawStream());
-		int value = (dValue - kValue) & 0xFF;
+		int value = (dValue + 1) & 0xFF;
 		
 		sram.set(dPtr, value);
 				
-		int h = ~(dValue >> 3) & (kValue >> 3) | (kValue >> 3) & (value >> 3) | (value >> 3) & ~(dValue >> 3);
-		int v = (dValue >> 7) & ~(kValue >> 7) & ~(kValue >> 7) | ~(dValue >> 7) & (kValue >> 7) & (value >> 7);
 		int n = value >> 7;
-		int s = n ^ v;
+		int s = n;
 		int z = value == 0 ? 1 : 0;
-		int c = ~(dValue >> 7) & (kValue >> 7) | (kValue >> 7) & (value >> 7) | (value >> 7) & ~(dValue >> 7);
+		int v = value == 0x80 ? 1 : 0;
 		
-		int mask = ((h & 1) << 5) | ((s & 1) << 4) | ((v & 1) << 3) | ((n & 1) << 2) | ((z & 1) << 1) | (c & 1);
+		int mask =  ((s & 1) << 4) | ((v << 3) & 1) | ((n & 1) << 2) | ((z & 1) << 1);
 		
 		sram.set(AVRSRAM.SREG, sreg | mask);
 		
@@ -80,12 +76,11 @@ public class SubtractionImmediate extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("subi")
-			.withColor(0.13f)
-			.withComment("Subtract an immediate value from a register without the carry flag")
+			.draft("inc")
+			.withColor(0.25f)
+			.withComment("Increments a register")
 			.beginSignature("default")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Subtrahend").asConstant(new Numeric(0)))
+			.withParameter(new Parameter("Register").asConstant(AVREnums.REGISTER))
 			.endSignature()
 			.build();
 	}
