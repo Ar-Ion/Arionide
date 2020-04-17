@@ -90,7 +90,7 @@ public class SkipIfIOBitSet extends Instruction {
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
 			.draft("sbis")
-			.withColor(0.73f)
+			.withColor(0.72f)
 			.withComment("Skips the next instruction if a bit in the I/O space is one")
 			.beginSignature("default")
 			.withParameter(new Parameter("Register").asConstant(AVREnums.REGISTER))

@@ -117,7 +117,7 @@ public class BranchIfSREGBitSet extends Instruction {
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
 			.draft("brbs")
-			.withColor(0.75f)
+			.withColor(0.74f)
 			.withComment("Branches if the specified is one in SREG")
 			.beginSignature("Using offset")
 				.withParameter(new Parameter("Bit number").asConstant(AVREnums.AND_BIT_MASK))

@@ -90,7 +90,7 @@ public class SkipIfIOBitClear extends Instruction {
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
 			.draft("sbic")
-			.withColor(0.72f)
+			.withColor(0.73f)
 			.withComment("Skips the next instruction if a bit in the I/O space is zero")
 			.beginSignature("default")
 			.withParameter(new Parameter("Register").asConstant(AVREnums.REGISTER))
