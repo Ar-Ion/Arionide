@@ -19,7 +19,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.lang.avr;
+package ch.innovazion.arionide.lang.avr.bitwise;
 
 import java.util.List;
 
@@ -28,72 +28,61 @@ import ch.innovazion.arionide.lang.Environment;
 import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Skeleton;
+import ch.innovazion.arionide.lang.avr.AVREnums;
+import ch.innovazion.arionide.lang.avr.device.AVRSRAM;
 import ch.innovazion.arionide.lang.symbols.Bit;
-import ch.innovazion.arionide.lang.symbols.Callable;
+import ch.innovazion.arionide.lang.symbols.Enumeration;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Numeric;
 import ch.innovazion.arionide.lang.symbols.Parameter;
-import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class RelativeJump extends Instruction {
+public class RotateRight extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
-		
+		;
 	}
 
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
-		Node param = getConstant(spec, 0);
+		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
 
-		short offsetValue = 0;
+		AVRSRAM sram = env.getPeripheral("sram");
 		
-		if(param instanceof Numeric) {
-			Numeric offset = (Numeric) param;
-			offsetValue = (short) Bit.toInteger(offset.cast(16).getRawStream());
-		} else if(param instanceof Reference) {
-			Reference ref = (Reference) param;
-			Callable target = ref.getTarget();
-			
-			if(target != null) {
-				Long address = programMemory.getSkeleton().getTextAddress(target);
-				
-				if(address != null) {
-					long difference = address / 2 - env.getProgramCounter().get() - 1;
-					
-					if(Short.MIN_VALUE <= difference && difference <= Short.MAX_VALUE) {
-						offsetValue = (short) difference;
-					} else {
-						throw new EvaluationException("Relative address is out of bounds. Use jmp instead");
-					}
-				} else {
-					throw new EvaluationException("Reference address could not be retrieved");
-				}				
-			} else {
-				throw new EvaluationException("Target is undefined");
-			}
-		}
+		int dPtr = (int) Bit.toInteger(d.getRawStream());
+
+		int sreg = sram.get(AVRSRAM.SREG) & 0b11100000;
+		int dValue = sram.getRegister(dPtr);
+		int value = ((dValue >> 1) | ((sreg & 1) << 7)) & 0xFF;
 		
-		env.getProgramCounter().addAndGet(1 + offsetValue);
-		env.getClock().incrementAndGet();
+		sram.set(dPtr, value);
+		
+		int n = value >> 7;
+		int c = dValue;
+		int v = n ^ c;
+		int s = n ^ v;
+		int z = value == 0 ? 1 : 0;
+		
+		int mask = ((s & 1) << 4) | ((v & 1) << 3) | ((n & 1) << 2) | ((z & 1) << 1) | (c & 1);
+		
+		sram.set(AVRSRAM.SREG, sreg | mask);
+		
+		env.getProgramCounter().incrementAndGet();
 		env.getClock().incrementAndGet();
 	}
 
 	public Node assemble(Specification spec, Skeleton skeleton, List<String> assemblyErrors) {
-		return new Numeric(0);
+		return new Numeric(0).cast(16);
 	}
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("rjmp")
-			.withColor(0.2f)
-			.withComment("Performs a relative jump (±2KB)")
-			.beginSignature("Using offset")
-			.withParameter(new Parameter("Offset").asConstant(new Numeric(0).cast(16)))
-			.endSignature()
-			.beginSignature("Using reference")
-			.withParameter(new Parameter("Target").asConstant(new Reference()))
+			.draft("ror")
+			.withColor(0.64f)
+			.withComment("Rotates the content of a register one bit to the right")
+			.beginSignature("default")
+			.withParameter(new Parameter("Register").asConstant(AVREnums.REGISTER))
 			.endSignature()
 			.build();
 	}
