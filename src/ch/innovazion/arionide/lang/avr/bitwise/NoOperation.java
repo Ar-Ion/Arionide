@@ -33,7 +33,6 @@ import ch.innovazion.arionide.lang.symbols.Numeric;
 import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
-import ch.innovazion.arionide.ui.ApplicationTints;
 
 public class NoOperation extends Instruction {
 	
@@ -53,7 +52,7 @@ public class NoOperation extends Instruction {
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
 			.draft("nop")
-			.withColor(ApplicationTints.getColorIDByName("Red"))
+			.withColor(0.68f)
 			.withComment("Wait one cycle")
 			.beginSignature("default")
 			.endSignature()

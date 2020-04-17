@@ -59,6 +59,7 @@ public class AVREnvironment extends Environment {
 	
 	protected void executeInterrupt(long address) throws EvaluationException {
 		sram.pushWord((int) getProgramCounter().get());
+		sram.set(AVRSRAM.SREG, sram.get(AVRSRAM.SREG) & 0b01111111);	
 		super.executeInterrupt(address);
 	}
 }
