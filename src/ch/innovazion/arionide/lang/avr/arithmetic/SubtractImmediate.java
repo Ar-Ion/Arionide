@@ -49,11 +49,11 @@ public class SubtractImmediate extends Instruction {
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
 		Numeric k;
 		
-		if(spec.getParameters().size() < 2) {
+		if(spec.getParameters().size() <= 2) {
 			k = (Numeric) getConstant(spec, 1);
 		} else {
 			Long virtual = programMemory.getSkeleton().getDataAddress(getVariable(spec, 1));
-			String addressMask = ((Enumeration) getConstant(spec, 0)).getKey();
+			String addressMask = ((Enumeration) getConstant(spec, 2)).getKey();
 
 			if(virtual != null) {
 				if(addressMask.equalsIgnoreCase("low")) {

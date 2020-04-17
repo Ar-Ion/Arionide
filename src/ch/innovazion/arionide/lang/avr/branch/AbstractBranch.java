@@ -26,7 +26,7 @@ public abstract class AbstractBranch extends Instruction {
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
 		long offsetValue = 0;
 		
-		if(spec.getParameters().size() < 2) {
+		if(spec.getParameters().size() <= 1) {
 			Node param = getConstant(spec, 0);
 
 			if(param instanceof Numeric) {
@@ -49,8 +49,8 @@ public abstract class AbstractBranch extends Instruction {
 				}
 			}
 		} else {
-			Long virtual = programMemory.getSkeleton().getDataAddress(getVariable(spec, 1));
-			String addressMask = ((Enumeration) getConstant(spec, 0)).getKey();
+			Long virtual = programMemory.getSkeleton().getDataAddress(getVariable(spec, 0));
+			String addressMask = ((Enumeration) getConstant(spec, 1)).getKey();
 
 			if(virtual != null) {
 				if(addressMask.equalsIgnoreCase("low")) {

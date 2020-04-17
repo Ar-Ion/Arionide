@@ -19,7 +19,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.lang.avr.transfers;
+package ch.innovazion.arionide.lang.avr.branch;
 
 import java.util.List;
 
@@ -31,26 +31,47 @@ import ch.innovazion.arionide.lang.Skeleton;
 import ch.innovazion.arionide.lang.avr.AVREnums;
 import ch.innovazion.arionide.lang.avr.device.AVRSRAM;
 import ch.innovazion.arionide.lang.symbols.Bit;
+import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.lang.symbols.Enumeration;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Numeric;
 import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.Reference;
 import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class LoadImmediate extends Instruction {
-	
+public class BranchIfSREGBitClear extends Instruction {
 	public void validate(Specification spec, List<String> validationErrors) {
-		;
+		
 	}
 
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
-		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric k;
+		Numeric m = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
+		long offsetValue = 0;
 		
 		if(spec.getParameters().size() <= 2) {
-			k = (Numeric) getConstant(spec, 1);
+			Node param = getConstant(spec, 1);
+
+			if(param instanceof Numeric) {
+				Numeric offset = (Numeric) param;
+				offsetValue = Bit.toInteger(offset.cast(16).getRawStream());
+			} else if(param instanceof Reference) {
+				Reference ref = (Reference) param;
+				Callable target = ref.getTarget();
+				
+				if(target != null) {
+					Long address = programMemory.getSkeleton().getTextAddress(target);
+					
+					if(address != null) {
+						offsetValue = address / 2 - env.getProgramCounter().get() - 1;
+					} else {
+						throw new EvaluationException("Reference address could not be retrieved");
+					}				
+				} else {
+					throw new EvaluationException("Target is undefined");
+				}
+			}
 		} else {
 			Long virtual = programMemory.getSkeleton().getDataAddress(getVariable(spec, 1));
 			String addressMask = ((Enumeration) getConstant(spec, 2)).getKey();
@@ -63,21 +84,30 @@ public class LoadImmediate extends Instruction {
 					virtual &= 0xFF;
 				}
 				
-				k = new Numeric(virtual);
+				offsetValue = virtual;
 			} else {
 				throw new EvaluationException("Unable to find data variable");
 			}
 		}
-
+		
 		AVRSRAM sram = env.getPeripheral("sram");
 		
-		int dPtr = (int) Bit.toInteger(d.getRawStream());
-		int kValue = (int) Bit.toInteger(k.getRawStream());
-
-		sram.setRegister(dPtr, kValue);
+		int sregPtr = AVRSRAM.SREG;
+		int mValue = (int) Bit.toInteger(m.getRawStream());
+				
 		
-		env.getProgramCounter().incrementAndGet();
-		env.getClock().incrementAndGet();
+		if(-64 <= offsetValue && offsetValue < 64) {
+			if((sram.get(sregPtr) | mValue) == 0) {
+				env.getProgramCounter().addAndGet(1 + offsetValue);
+				env.getClock().incrementAndGet();
+				env.getClock().incrementAndGet();
+			} else {
+				env.getProgramCounter().incrementAndGet();
+				env.getClock().incrementAndGet();
+			}
+		} else {
+			throw new EvaluationException("Relative address is out of bounds");
+		}
 	}
 
 	public Node assemble(Specification spec, Skeleton skeleton, List<String> assemblyErrors) {
@@ -86,17 +116,21 @@ public class LoadImmediate extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("ldi")
-			.withColor(0.31f)
-			.withComment("Loads an immediate value into a register")
-			.beginSignature("Using immediate")
-			.withParameter(new Parameter("Register").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Value").asConstant(new Numeric(0)))
+			.draft("brbs")
+			.withColor(0.74f)
+			.withComment("Branches if the specified is zero in SREG")
+			.beginSignature("Using offset")
+				.withParameter(new Parameter("Bit number").asConstant(AVREnums.AND_BIT_MASK))
+				.withParameter(new Parameter("Offset").asConstant(new Numeric(0)))
 			.endSignature()
-			.beginSignature("Using variable")
-			.withParameter(new Parameter("Register").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Value").asVariable(new Numeric(0)))
-			.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
+			.beginSignature("Using variable offset")
+				.withParameter(new Parameter("Bit number").asConstant(AVREnums.AND_BIT_MASK))
+				.withParameter(new Parameter("Offset").asVariable(new Numeric(0)))
+				.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
+			.endSignature()
+			.beginSignature("Using reference")
+				.withParameter(new Parameter("Bit number").asConstant(AVREnums.AND_BIT_MASK))
+				.withParameter(new Parameter("Target").asConstant(new Reference()))
 			.endSignature()
 			.build();
 	}
