@@ -39,7 +39,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class LogicalAdd extends Instruction {
+public class LogicalConjunctionImmediate extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -47,17 +47,36 @@ public class LogicalAdd extends Instruction {
 
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric r = (Numeric) ((Enumeration) getConstant(spec, 1)).getValue();
+		Numeric k;
+		
+		if(spec.getParameters().size() <= 2) {
+			k = (Numeric) getConstant(spec, 1);
+		} else {
+			Long virtual = programMemory.getSkeleton().getDataAddress(getVariable(spec, 1));
+			String addressMask = ((Enumeration) getConstant(spec, 2)).getKey();
+
+			if(virtual != null) {
+				if(addressMask.equalsIgnoreCase("low")) {
+					virtual &= 0xFF;
+				} else if(addressMask.equalsIgnoreCase("high")) {
+					virtual >>>= 8;
+					virtual &= 0xFF;
+				}
+				
+				k = new Numeric(virtual);
+			} else {
+				throw new EvaluationException("Unable to find data variable");
+			}
+		}
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
-		int rPtr = (int) Bit.toInteger(r.getRawStream());
 
 		int sreg = sram.get(AVRSRAM.SREG) & 0b11100001;
 		int dValue = sram.getRegister(dPtr);
-		int rValue = sram.getRegister(rPtr);
-		int value = (dValue | rValue) & 0xFF;
+		int kValue = (int) Bit.toInteger(k.getRawStream());
+		int value = (dValue | kValue) & 0xFF;
 		
 		sram.set(dPtr, value);
 				
@@ -79,12 +98,17 @@ public class LogicalAdd extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("or")
-			.withColor(0.16f)
-			.withComment("Computes the logical conjunction of two registers")
-			.beginSignature("default")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.REGISTER))
-			.withParameter(new Parameter("Addend").asConstant(AVREnums.REGISTER))
+			.draft("ori")
+			.withColor(0.17f)
+			.withComment("Computes the logical conjunction of a register with an immediate value")
+			.beginSignature("Using immediate")
+			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
+			.withParameter(new Parameter("Addend").asConstant(new Numeric(0)))
+			.endSignature()
+			.beginSignature("Using variable")
+			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
+			.withParameter(new Parameter("Addend").asVariable(new Numeric(0)))
+			.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
 			.endSignature()
 			.build();
 	}

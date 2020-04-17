@@ -1,24 +1,3 @@
-/*******************************************************************************
- * This file is part of Arionide.
- *
- * Arionide is an IDE used to conceive applications and algorithms in a three-dimensional environment. 
- * It is the work of Arion Zimmermann for his final high-school project at Calvin College (Geneva, Switzerland).
- * Copyright (C) 2016-2020 Innovazion. All rights reserved.
- *
- * Arionide is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Arionide is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with Arionide.  If not, see <http://www.gnu.org/licenses/>.
- *
- * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
- *******************************************************************************/
 package ch.innovazion.arionide.lang.avr.bitwise;
 
 import java.util.List;
@@ -39,24 +18,27 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class Swap extends Instruction {
+public class TLoadBit extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
 	}
 
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
-		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-
 		AVRSRAM sram = env.getPeripheral("sram");
 		
-		int dPtr = (int) Bit.toInteger(d.getRawStream());
+		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
+		Numeric m = (Numeric) ((Enumeration) getConstant(spec, 1)).getValue();
 
-		int dValue = sram.getRegister(dPtr);
-		int value = ((dValue << 4) | (dValue >>> 4)) & 0xFF;
+		int sreg = sram.get(AVRSRAM.SREG);
 		
-		sram.set(dPtr, value);
-
+		int dPtr = (int) Bit.toInteger(d.getRawStream());
+		int dValue = sram.getRegister(dPtr);
+		int mValue = (int) Bit.toInteger(m.getRawStream());
+		int tFlag = (sreg >> 6) != 0 ? 1 : 0;
+				
+		sram.set(dPtr, (dValue & mValue) | tFlag);
+		
 		env.getProgramCounter().incrementAndGet();
 		env.getClock().incrementAndGet();
 	}
@@ -67,11 +49,12 @@ public class Swap extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("swap")
-			.withColor(0.65f)
-			.withComment("Swaps the high and low nibbles in a register")
+			.draft("bld")
+			.withColor(0.67f)
+			.withComment("Loads the T flag of SREG into the specified bit of a register")
 			.beginSignature("default")
-			.withParameter(new Parameter("Register").asConstant(AVREnums.REGISTER))
+			.withParameter(new Parameter("Destination", AVREnums.REGISTER))
+			.withParameter(new Parameter("Bit number", AVREnums.OR_BIT_MASK))
 			.endSignature()
 			.build();
 	}
