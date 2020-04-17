@@ -87,7 +87,7 @@ public class LoadImmediate extends Instruction {
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
 			.draft("ldi")
-			.withColor(0.31f)
+			.withColor(0.30f)
 			.withComment("Loads an immediate value into a register")
 			.beginSignature("Using immediate")
 			.withParameter(new Parameter("Register").asConstant(AVREnums.HIGH_REGISTER))

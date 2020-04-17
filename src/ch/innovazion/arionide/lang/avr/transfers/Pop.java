@@ -36,54 +36,24 @@ import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Numeric;
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.lang.symbols.Specification;
-import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class Store extends Instruction {
+public class Pop extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
 	}
 
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
-		Numeric r = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Node pointerInfo = (Node) ((Enumeration) getConstant(spec, 1)).getValue();
-
-		int rPtr = (int) Bit.toInteger(r.getRawStream());
+		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
 		
-		try {
-			AVRSRAM sram = env.getPeripheral("sram");
+		AVRSRAM sram = env.getPeripheral("sram");
 
-			Numeric register = (Numeric) pointerInfo.resolve("register");
-			Numeric increment = (Numeric) pointerInfo.resolve("increment");
-			
-			int registerID = (int) Bit.toInteger(register.getRawStream());
-			int incrementValue = (int) Bit.toInteger(increment.getRawStream());
-			
-			int address = sram.getWord(registerID);
-			
-			if(incrementValue < 0) { // Pre-decrement
-				address += incrementValue;
-				sram.setWord(registerID, address);	
-			}
-			
-			if(spec.getParameters().size() > 2) {
-				Numeric q = (Numeric) getConstant(spec, 2);
-				address += (int) Bit.toInteger(q.getRawStream());
-			}
-			
-			int value = sram.getRegister(rPtr);
-			
-			sram.setData(address, value);
-			
-			if(incrementValue > 0) { // Post-increment
-				address += incrementValue;
-				sram.setWord(registerID, address);
-			}
-		} catch (SymbolResolutionException e) {
-			throw new EvaluationException("Corrupted pointer enum. Check 'AVREnums.java'");
-		}
+		int dPtr = (int) Bit.toInteger(d.getRawStream());
+		int value = sram.pop();
+		
+		sram.setRegister(dPtr, value);
 		
 		env.getProgramCounter().incrementAndGet();
 		env.getClock().incrementAndGet();
@@ -96,17 +66,11 @@ public class Store extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("st")
-			.withColor(0.31f)
-			.withComment("Stores a value from a register into the SRAM")
-			.beginSignature("Standard addressing")
-				.withParameter(new Parameter("Pointer").asConstant(AVREnums.POINTER))
-				.withParameter(new Parameter("Source").asConstant(AVREnums.REGISTER))
-			.endSignature()
-			.beginSignature("Displacement addressing")
-				.withParameter(new Parameter("Pointer").asConstant(AVREnums.DISP_POINTER))
-				.withParameter(new Parameter("Displacement").asConstant(new Numeric(0)))
-				.withParameter(new Parameter("Source").asConstant(AVREnums.REGISTER))
+			.draft("pop")
+			.withColor(0.33f)
+			.withComment("Pops the last of the stack and stores it into a register")
+			.beginSignature("default")
+				.withParameter(new Parameter("Register").asConstant(AVREnums.REGISTER))
 			.endSignature()
 			.build();
 	}
