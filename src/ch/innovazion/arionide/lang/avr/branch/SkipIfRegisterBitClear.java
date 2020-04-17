@@ -19,7 +19,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.lang.avr.arithmetic;
+package ch.innovazion.arionide.lang.avr.branch;
 
 import java.util.List;
 
@@ -31,6 +31,7 @@ import ch.innovazion.arionide.lang.Skeleton;
 import ch.innovazion.arionide.lang.avr.AVREnums;
 import ch.innovazion.arionide.lang.avr.device.AVRSRAM;
 import ch.innovazion.arionide.lang.symbols.Bit;
+import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.lang.symbols.Enumeration;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Numeric;
@@ -39,7 +40,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class SubtractImmediateWithCarry extends Instruction {
+public class SkipIfRegisterBitClear extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -47,50 +48,33 @@ public class SubtractImmediateWithCarry extends Instruction {
 
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric k;
-		
-		if(spec.getParameters().size() < 2) {
-			k = (Numeric) getConstant(spec, 1);
-		} else {
-			Long virtual = programMemory.getSkeleton().getDataAddress(getVariable(spec, 1));
-			String addressMask = ((Enumeration) getConstant(spec, 0)).getKey();
-
-			if(virtual != null) {
-				if(addressMask.equalsIgnoreCase("low")) {
-					virtual &= 0xFF;
-				} else if(addressMask.equalsIgnoreCase("high")) {
-					virtual >>>= 8;
-					virtual &= 0xFF;
-				}
-				
-				k = new Numeric(virtual);
-			} else {
-				throw new EvaluationException("Unable to find data variable");
-			}
-		}
+		Numeric m = (Numeric) getConstant(spec, 1);
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
 
-		int sreg = sram.get(AVRSRAM.SREG) & 0b11000000;
 		int dValue = sram.getRegister(dPtr);
-		int kValue = (int) Bit.toInteger(k.getRawStream());
-		int value = (dValue - kValue - (sreg & 1)) & 0xFF;
+		int mValue = (int) Bit.toInteger(m.getRawStream());
 		
-		sram.set(dPtr, value);
-				
-		int h = ~(dValue >> 3) & (kValue >> 3) | (kValue >> 3) & (value >> 3) | (value >> 3) & ~(dValue >> 3);
-		int v = (dValue >> 7) & ~(kValue >> 7) & ~(kValue >> 7) | ~(dValue >> 7) & (kValue >> 7) & (value >> 7);
-		int n = value >> 7;
-		int s = n ^ v;
-		int z = value == 0 ? 1 : 0;
-		int c = ~(dValue >> 7) & (kValue >> 7) | (kValue >> 7) & (value >> 7) | (value >> 7) & ~(dValue >> 7);
-		
-		int mask = ((h & 1) << 5) | ((s & 1) << 4) | ((v & 1) << 3) | ((n & 1) << 2) | ((z & 1) << 1) | (c & 1);
-		
-		sram.set(AVRSRAM.SREG, sreg | mask);
-		
+		if((dValue & mValue) == 0) {
+			// Skip
+			Callable next = programMemory.textAt(2 * (env.getProgramCounter().get() + 1));
+			Instruction instr = env.getLanguage().getInstructionSet().get(next.getName());
+			
+			if(instr.getLength() == 2) {
+				env.getProgramCounter().incrementAndGet();
+				env.getClock().incrementAndGet();
+			} else if(instr.getLength() == 4) {
+				env.getProgramCounter().incrementAndGet();
+				env.getProgramCounter().incrementAndGet();
+				env.getClock().incrementAndGet();
+				env.getClock().incrementAndGet();
+			} else {
+				throw new EvaluationException("Skip-instructions do not specify a behaviour for instructions different than one or two words long");
+			}
+		}
+
 		env.getProgramCounter().incrementAndGet();
 		env.getClock().incrementAndGet();
 	}
@@ -101,17 +85,12 @@ public class SubtractImmediateWithCarry extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("sbci")
-			.withColor(0.15f)
-			.withComment("Subtract an immediate value from a register with the carry flag")
-			.beginSignature("Using immediate")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Subtrahend").asConstant(new Numeric(0)))
-			.endSignature()
-			.beginSignature("Using variable")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Factor").asVariable(new Numeric(0)))
-			.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
+			.draft("sbrc")
+			.withColor(0.7f)
+			.withComment("Skips the next instruction if a bit of a register is zero")
+			.beginSignature("default")
+			.withParameter(new Parameter("Register").asConstant(AVREnums.REGISTER))
+			.withParameter(new Parameter("Bit number").asConstant(AVREnums.AND_BIT_MASK))
 			.endSignature()
 			.build();
 	}

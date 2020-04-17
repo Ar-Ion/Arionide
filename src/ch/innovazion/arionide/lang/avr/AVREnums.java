@@ -95,6 +95,7 @@ public class AVREnums {
 			e.printStackTrace();
 		}
 		
+		ADDRESS_MASK.addPossibleValue("None");
 		ADDRESS_MASK.addPossibleValue("Low");
 		ADDRESS_MASK.addPossibleValue("High");
 	}
