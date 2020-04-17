@@ -21,10 +21,12 @@
  *******************************************************************************/
 var searchData=
 [
-  ['newprojectview_2ejava_2976',['NewProjectView.java',['../_new_project_view_8java.html',1,'']]],
-  ['node_2ejava_2977',['Node.java',['../_node_8java.html',1,'']]],
-  ['nodeupdater_2ejava_2978',['NodeUpdater.java',['../_node_updater_8java.html',1,'']]],
-  ['nooperation_2ejava_2979',['NoOperation.java',['../_no_operation_8java.html',1,'']]],
-  ['notransformationalgorithm_2ejava_2980',['NoTransformationAlgorithm.java',['../_no_transformation_algorithm_8java.html',1,'']]],
-  ['numeric_2ejava_2981',['Numeric.java',['../_numeric_8java.html',1,'']]]
+  ['negativeclear_2ejava_3388',['NegativeClear.java',['../_negative_clear_8java.html',1,'']]],
+  ['negativeset_2ejava_3389',['NegativeSet.java',['../_negative_set_8java.html',1,'']]],
+  ['newprojectview_2ejava_3390',['NewProjectView.java',['../_new_project_view_8java.html',1,'']]],
+  ['node_2ejava_3391',['Node.java',['../_node_8java.html',1,'']]],
+  ['nodeupdater_2ejava_3392',['NodeUpdater.java',['../_node_updater_8java.html',1,'']]],
+  ['nooperation_2ejava_3393',['NoOperation.java',['../_no_operation_8java.html',1,'']]],
+  ['notransformationalgorithm_2ejava_3394',['NoTransformationAlgorithm.java',['../_no_transformation_algorithm_8java.html',1,'']]],
+  ['numeric_2ejava_3395',['Numeric.java',['../_numeric_8java.html',1,'']]]
 ];

@@ -100,8 +100,8 @@ Collaboration diagram for ch.innovazion.arionide.lang.avr.AVREntryPoint:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a32e4435e4d327c63a911198069ad7b61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#a32e4435e4d327c63a911198069ad7b61">validate</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html">Specification</a> spec, List&lt; String &gt; validationErrors)</td></tr>
 <tr class="separator:a32e4435e4d327c63a911198069ad7b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4ea27393bc6cb16b1ea0795ab5749fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#ab4ea27393bc6cb16b1ea0795ab5749fd">evaluate</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html">Environment</a> env, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html">Specification</a> spec)  throws EvaluationException </td></tr>
-<tr class="separator:ab4ea27393bc6cb16b1ea0795ab5749fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a515f67a863ab8fbae03b397a5f201e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#a3a515f67a863ab8fbae03b397a5f201e">evaluate</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment.html">Environment</a> env, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html">Specification</a> spec, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_application_memory.html">ApplicationMemory</a> programMemory)  throws EvaluationException </td></tr>
+<tr class="separator:a3a515f67a863ab8fbae03b397a5f201e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad482c76c4008ff617194639b96cf4ac3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#ad482c76c4008ff617194639b96cf4ac3">assemble</a> (<a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html">Specification</a> spec, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_skeleton.html">Skeleton</a> skeleton, List&lt; String &gt; assemblyErrors)</td></tr>
 <tr class="separator:ad482c76c4008ff617194639b96cf4ac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee1ba7d70b5af765b41b6956290ec6fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1project_1_1_structure_model.html">StructureModel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_entry_point.html#aee1ba7d70b5af765b41b6956290ec6fb">createStructureModel</a> ()</td></tr>
@@ -177,8 +177,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ab4ea27393bc6cb16b1ea0795ab5749fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4ea27393bc6cb16b1ea0795ab5749fd">&#9670;&nbsp;</a></span>evaluate()</h2>
+<a id="a3a515f67a863ab8fbae03b397a5f201e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a515f67a863ab8fbae03b397a5f201e">&#9670;&nbsp;</a></span>evaluate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,7 +193,13 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_specification.html">Specification</a>&#160;</td>
-          <td class="paramname"><em>spec</em>&#160;</td>
+          <td class="paramname"><em>spec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_application_memory.html">ApplicationMemory</a>&#160;</td>
+          <td class="paramname"><em>programMemory</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -203,7 +209,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#af3f86c53f67cdad374d3ce8bdcbcadc1">ch.innovazion.arionide.lang.Instruction</a>.</p>
+<p>Reimplemented from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html#a0c0d670374a89031521cf3156cb51fc8">ch.innovazion.arionide.lang.Instruction</a>.</p>
 
 </div>
 </div>

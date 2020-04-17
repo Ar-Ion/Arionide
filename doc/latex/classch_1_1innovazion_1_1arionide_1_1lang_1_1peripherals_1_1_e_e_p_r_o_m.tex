@@ -1,0 +1,183 @@
+\hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m}{}\doxysection{ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+OM Class Reference}
+\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m}\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+
+
+Inheritance diagram for ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+OM\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=272pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+OM\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{enumch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_1_1_e_e_p_r_o_m_type}{E\+E\+P\+R\+O\+M\+Type}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a45fb1d9fc706d1291f441880bfd64b98}{E\+E\+P\+R\+OM}} (int size, int num\+Sectors, int num\+Subsectors, \mbox{\hyperlink{enumch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_1_1_e_e_p_r_o_m_type}{E\+E\+P\+R\+O\+M\+Type}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_aa14137ee7efd7c8fefb78131348ba2c6}{type}})
+\item 
+byte \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a79194938b0091ff9645150c8fe8459f2}{get}} (int address)  throws Evaluation\+Exception 
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_acaad15da5e403c6d110baa3a446448b1}{set}} (int address, byte value)  throws Evaluation\+Exception 
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a8be0fd2fa3d82fa3382d028913266c90}{erase\+All}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_ab434fc66abd4d2fe0fdda5bbbeecf63f}{erase\+Sector}} (int address)  throws Evaluation\+Exception 
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a8ec25a231fba0e3d031b41b3721c85ac}{erase\+Subsector}} (int address)  throws Evaluation\+Exception 
+\item 
+String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a50835d476374fa0a4e03e5316e496028}{to\+String}} ()
+\item 
+String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_ac489b93910f5e658701689ce2446a44a}{get\+U\+ID}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a2659b029f8a962488eca6e79e01b7eda}{sample}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a4ed1ba15108503f884d08574e7f5b50e}{create\+Display}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container}{Container}} display)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a7fb1782d83fd247c7b02000412d48bc6}{sector\+Size}}
+\item 
+final int \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_ae36e5d4b2a1188d67d6688c31ee0780b}{sub\+Sector\+Size}}
+\item 
+final \mbox{\hyperlink{enumch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_1_1_e_e_p_r_o_m_type}{E\+E\+P\+R\+O\+M\+Type}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_aa14137ee7efd7c8fefb78131348ba2c6}{type}}
+\item 
+final byte\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a9eecbb66f746128abb4286ef29cfc45c}{memory}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a45fb1d9fc706d1291f441880bfd64b98}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a45fb1d9fc706d1291f441880bfd64b98}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!EEPROM@{EEPROM}}
+\index{EEPROM@{EEPROM}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{EEPROM()}{EEPROM()}}
+{\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+E\+E\+P\+R\+OM (\begin{DoxyParamCaption}\item[{int}]{size,  }\item[{int}]{num\+Sectors,  }\item[{int}]{num\+Subsectors,  }\item[{\mbox{\hyperlink{enumch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_1_1_e_e_p_r_o_m_type}{E\+E\+P\+R\+O\+M\+Type}}}]{type }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a4ed1ba15108503f884d08574e7f5b50e}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a4ed1ba15108503f884d08574e7f5b50e}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!createDisplay@{createDisplay}}
+\index{createDisplay@{createDisplay}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{createDisplay()}{createDisplay()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+create\+Display (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container}{Container}}}]{display }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral_a13aeb1a79a7488c112e709a580258e95}{ch.\+innovazion.\+arionide.\+lang.\+Peripheral}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a4ed1ba15108503f884d08574e7f5b50e_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a8be0fd2fa3d82fa3382d028913266c90}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a8be0fd2fa3d82fa3382d028913266c90}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!eraseAll@{eraseAll}}
+\index{eraseAll@{eraseAll}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{eraseAll()}{eraseAll()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+erase\+All (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_ab434fc66abd4d2fe0fdda5bbbeecf63f}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_ab434fc66abd4d2fe0fdda5bbbeecf63f}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!eraseSector@{eraseSector}}
+\index{eraseSector@{eraseSector}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{eraseSector()}{eraseSector()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+erase\+Sector (\begin{DoxyParamCaption}\item[{int}]{address }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_evaluation_exception}{Evaluation\+Exception}}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a8ec25a231fba0e3d031b41b3721c85ac}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a8ec25a231fba0e3d031b41b3721c85ac}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!eraseSubsector@{eraseSubsector}}
+\index{eraseSubsector@{eraseSubsector}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{eraseSubsector()}{eraseSubsector()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+erase\+Subsector (\begin{DoxyParamCaption}\item[{int}]{address }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_evaluation_exception}{Evaluation\+Exception}}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a79194938b0091ff9645150c8fe8459f2}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a79194938b0091ff9645150c8fe8459f2}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!get@{get}}
+\index{get@{get}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily byte ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+get (\begin{DoxyParamCaption}\item[{int}]{address }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_evaluation_exception}{Evaluation\+Exception}}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_ac489b93910f5e658701689ce2446a44a}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_ac489b93910f5e658701689ce2446a44a}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!getUID@{getUID}}
+\index{getUID@{getUID}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{getUID()}{getUID()}}
+{\footnotesize\ttfamily String ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+get\+U\+ID (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral_a69d38af2dae1220a5997b00b57eabf48}{ch.\+innovazion.\+arionide.\+lang.\+Peripheral}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a2659b029f8a962488eca6e79e01b7eda}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a2659b029f8a962488eca6e79e01b7eda}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!sample@{sample}}
+\index{sample@{sample}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{sample()}{sample()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+sample (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral_a21194dc3871e78db0fe9b473d4f0ce59}{ch.\+innovazion.\+arionide.\+lang.\+Peripheral}}.
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_acaad15da5e403c6d110baa3a446448b1}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_acaad15da5e403c6d110baa3a446448b1}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!set@{set}}
+\index{set@{set}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+set (\begin{DoxyParamCaption}\item[{int}]{address,  }\item[{byte}]{value }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_evaluation_exception}{Evaluation\+Exception}}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a50835d476374fa0a4e03e5316e496028}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a50835d476374fa0a4e03e5316e496028}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!toString@{toString}}
+\index{toString@{toString}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily String ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral_a8f001600768b4a2db8efc1a385162983}{ch.\+innovazion.\+arionide.\+lang.\+Peripheral}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a9eecbb66f746128abb4286ef29cfc45c}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a9eecbb66f746128abb4286ef29cfc45c}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!memory@{memory}}
+\index{memory@{memory}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{memory}{memory}}
+{\footnotesize\ttfamily final byte \mbox{[}$\,$\mbox{]} ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+memory\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a7fb1782d83fd247c7b02000412d48bc6}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_a7fb1782d83fd247c7b02000412d48bc6}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!sectorSize@{sectorSize}}
+\index{sectorSize@{sectorSize}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{sectorSize}{sectorSize}}
+{\footnotesize\ttfamily final int ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+sector\+Size\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_ae36e5d4b2a1188d67d6688c31ee0780b}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_ae36e5d4b2a1188d67d6688c31ee0780b}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!subSectorSize@{subSectorSize}}
+\index{subSectorSize@{subSectorSize}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{subSectorSize}{subSectorSize}}
+{\footnotesize\ttfamily final int ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+sub\+Sector\+Size\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_aa14137ee7efd7c8fefb78131348ba2c6}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_aa14137ee7efd7c8fefb78131348ba2c6}} 
+\index{ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}!type@{type}}
+\index{type@{type}!ch.innovazion.arionide.lang.peripherals.EEPROM@{ch.innovazion.arionide.lang.peripherals.EEPROM}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{enumch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m_1_1_e_e_p_r_o_m_type}{E\+E\+P\+R\+O\+M\+Type}} ch.\+innovazion.\+arionide.\+lang.\+peripherals.\+E\+E\+P\+R\+O\+M.\+type\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/ch/innovazion/arionide/lang/peripherals/\mbox{\hyperlink{_e_e_p_r_o_m_8java}{E\+E\+P\+R\+O\+M.\+java}}\end{DoxyCompactItemize}

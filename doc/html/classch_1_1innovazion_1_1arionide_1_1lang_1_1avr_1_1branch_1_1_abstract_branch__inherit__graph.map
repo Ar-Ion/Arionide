@@ -1,0 +1,24 @@
+<map id="ch.innovazion.arionide.lang.avr.branch.AbstractBranch" name="ch.innovazion.arionide.lang.avr.branch.AbstractBranch">
+<area shape="rect" id="node1" title=" " alt="" coords="240,601,493,640"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_carry_clear.html" title=" " alt="" coords="541,5,793,44"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_carry_set.html" title=" " alt="" coords="541,68,793,107"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_equal.html" title=" " alt="" coords="541,131,793,169"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_greater_or_equal.html" title=" " alt="" coords="541,193,793,232"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_half_carry_clear.html" title=" " alt="" coords="541,256,793,295"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_half_carry_set.html" title=" " alt="" coords="541,319,793,357"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_interrupts_disabled.html" title=" " alt="" coords="541,381,793,420"/>
+<area shape="rect" id="node10" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_interrupts_enabled.html" title=" " alt="" coords="541,444,793,483"/>
+<area shape="rect" id="node11" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_less.html" title=" " alt="" coords="541,507,793,545"/>
+<area shape="rect" id="node12" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_lower.html" title=" " alt="" coords="541,569,793,608"/>
+<area shape="rect" id="node13" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_minus.html" title=" " alt="" coords="541,632,793,671"/>
+<area shape="rect" id="node14" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_not_equal.html" title=" " alt="" coords="541,695,793,733"/>
+<area shape="rect" id="node15" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_overflow_clear.html" title=" " alt="" coords="541,757,793,796"/>
+<area shape="rect" id="node16" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_overflow_set.html" title=" " alt="" coords="541,820,793,859"/>
+<area shape="rect" id="node17" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_plus.html" title=" " alt="" coords="541,883,793,921"/>
+<area shape="rect" id="node18" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_same_or_higher.html" title=" " alt="" coords="541,945,793,984"/>
+<area shape="rect" id="node19" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_t_clear.html" title=" " alt="" coords="541,1008,793,1047"/>
+<area shape="rect" id="node20" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_branch_if_t_set.html" title=" " alt="" coords="541,1071,793,1109"/>
+<area shape="rect" id="node21" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_relative_call.html" title=" " alt="" coords="541,1133,793,1172"/>
+<area shape="rect" id="node22" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1branch_1_1_relative_jump.html" title=" " alt="" coords="541,1196,793,1235"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1_instruction.html" title=" " alt="" coords="5,601,192,640"/>
+</map>

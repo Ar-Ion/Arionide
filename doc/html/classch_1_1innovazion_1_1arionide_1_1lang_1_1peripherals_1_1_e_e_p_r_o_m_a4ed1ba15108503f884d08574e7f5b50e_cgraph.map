@@ -1,0 +1,8 @@
+<map id="ch.innovazion.arionide.lang.peripherals.EEPROM.createDisplay" name="ch.innovazion.arionide.lang.peripherals.EEPROM.createDisplay">
+<area shape="rect" id="node1" title=" " alt="" coords="5,124,262,163"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container.html#a5fc94d855f106e615a029533f0f395fc" title=" " alt="" coords="310,124,527,163"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_component.html#a6797c323866a5d656aa70fc6e78afda1" title=" " alt="" coords="580,29,797,68"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager.html#a3d00c2f35a8ca7a00f38f722545d1378" title=" " alt="" coords="584,92,793,131"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager.html#ae4100ffe56b9f90d3f937b70c26692fb" title=" " alt="" coords="583,155,794,193"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1_focus_manager.html#a9c3e1a89a35268c4361570e910315920" title=" " alt="" coords="575,217,802,256"/>
+</map>

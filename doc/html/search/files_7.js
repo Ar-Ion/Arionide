@@ -21,11 +21,13 @@
  *******************************************************************************/
 var searchData=
 [
-  ['hermitesplinealgorithm_2ejava_2910',['HermiteSplineAlgorithm.java',['../_hermite_spline_algorithm_8java.html',1,'']]],
-  ['hierarchicalgeometry_2ejava_2911',['HierarchicalGeometry.java',['../_hierarchical_geometry_8java.html',1,'']]],
-  ['hierarchyelement_2ejava_2912',['HierarchyElement.java',['../_hierarchy_element_8java.html',1,'']]],
-  ['historyelement_2ejava_2913',['HistoryElement.java',['../_history_element_8java.html',1,'']]],
-  ['hoststructurechangeobserver_2ejava_2914',['HostStructureChangeObserver.java',['../_host_structure_change_observer_8java.html',1,'']]],
-  ['hoststructurestack_2ejava_2915',['HostStructureStack.java',['../_host_structure_stack_8java.html',1,'']]],
-  ['hyperbolicsymmetryalgorithm_2ejava_2916',['HyperbolicSymmetryAlgorithm.java',['../_hyperbolic_symmetry_algorithm_8java.html',1,'']]]
+  ['halfcarryclear_2ejava_3302',['HalfCarryClear.java',['../_half_carry_clear_8java.html',1,'']]],
+  ['halfcarryset_2ejava_3303',['HalfCarrySet.java',['../_half_carry_set_8java.html',1,'']]],
+  ['hermitesplinealgorithm_2ejava_3304',['HermiteSplineAlgorithm.java',['../_hermite_spline_algorithm_8java.html',1,'']]],
+  ['hierarchicalgeometry_2ejava_3305',['HierarchicalGeometry.java',['../_hierarchical_geometry_8java.html',1,'']]],
+  ['hierarchyelement_2ejava_3306',['HierarchyElement.java',['../_hierarchy_element_8java.html',1,'']]],
+  ['historyelement_2ejava_3307',['HistoryElement.java',['../_history_element_8java.html',1,'']]],
+  ['hoststructurechangeobserver_2ejava_3308',['HostStructureChangeObserver.java',['../_host_structure_change_observer_8java.html',1,'']]],
+  ['hoststructurestack_2ejava_3309',['HostStructureStack.java',['../_host_structure_stack_8java.html',1,'']]],
+  ['hyperbolicsymmetryalgorithm_2ejava_3310',['HyperbolicSymmetryAlgorithm.java',['../_hyperbolic_symmetry_algorithm_8java.html',1,'']]]
 ];

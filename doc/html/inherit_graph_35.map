@@ -1,3 +1,12 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_contextual_manager.html" title=" " alt="" coords="5,5,270,44"/>
+<area shape="rect" id="node1" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1_manager.html" title=" " alt="" coords="5,225,207,264"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_contextual_manager.html" title=" " alt="" coords="255,163,519,201"/>
+<area shape="rect" id="node9" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_inheritance_manager.html" title=" " alt="" coords="255,225,519,264"/>
+<area shape="rect" id="node10" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_structure_manager.html" title=" " alt="" coords="255,288,519,327"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_constant_manager.html" title=" " alt="" coords="567,5,909,44"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_enumeration_manager.html" title=" " alt="" coords="567,68,909,107"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_information_manager.html" title=" " alt="" coords="567,131,909,169"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_reference_manager.html" title=" " alt="" coords="567,193,909,232"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_specification_manager.html" title=" " alt="" coords="567,256,909,295"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1specification_1_1_variable_manager.html" title=" " alt="" coords="567,319,909,357"/>
 </map>

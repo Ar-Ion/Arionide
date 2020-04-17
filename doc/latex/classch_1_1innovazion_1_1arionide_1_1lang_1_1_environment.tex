@@ -24,6 +24,14 @@ Collaboration diagram for ch.\+innovazion.\+arionide.\+lang.\+Environment\+:
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a1de143569ec6c9f51f99e90f4aeee4c2}{sample}} ()
 \item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_ac9228c4e21c531782029594560c06b8e}{init}} ()
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a8fa03d4d11909a9b7fa015f29fc01056}{async\+Interrupt}} (long address)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a4410f64d551592f8899f99897b0e775b}{sync\+Interrupt}} (long address)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a970400ce0d7b616364461671d936c3e3}{on\+Instruction\+Terminated}} ()
+\item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_container}{Container}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acce11996a861ecaa3355d4218e539530}{create}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager}{App\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a0f585360eacb06a32e068eaead4ea819}{manager}}, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds}{Bounds}} render\+Bounds, \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1layout_1_1_layout_manager}{Layout\+Manager}} dedicated\+Layout\+Manager)
 \item 
 Set$<$ Class$<$? extends \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1events_1_1_event}{Event}} $>$ $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acfc27c78b5b9bde88d9f4a8d114ff692}{get\+Handleable\+Events}} ()
@@ -33,6 +41,8 @@ String \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environmen
 Atomic\+Long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a3b71c125b9ba5aa0a18faf9b52022ac6}{get\+Program\+Counter}} ()
 \item 
 Atomic\+Long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a7e55620655aaedb1d366622d9b3bd5dd}{get\+Clock}} ()
+\item 
+Atomic\+Boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a489fbdb463e5f37ff866926d6b208448}{get\+Interrupts}} ()
 \item 
 Atomic\+Boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_ae99b221f7ccafe49ef61e0f1127c76e2}{is\+Manual}} ()
 \item 
@@ -54,6 +64,8 @@ abstract \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_language
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a7e4b564d56ae4a951fd76311cae1ccaa}{Environment}} (long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a789de76432c95ce887b419722a17687c}{frequency}})
 \item 
 void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_ae597e10f8584d7bf0a9a51fc7010e8df}{register\+Peripheral}} (\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral}{Peripheral}} peripheral)
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_af973e745b99dd63af6c891dcec63978f}{execute\+Interrupt}} (long address)  throws Evaluation\+Exception 
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
@@ -66,7 +78,9 @@ final Atomic\+Long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_
 \item 
 final Atomic\+Boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a2a759d9b5164c4af1d84a6fbf6192f96}{manual\+Mode}} = new Atomic\+Boolean()
 \item 
-final Semaphore \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a2d38ef0a048048762ecfd102450ebdbc}{manual\+Mode\+Semaphore}} = new Semaphore(0)
+final Semaphore \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a8f2e058ef41f079f50de9d0226fc2303}{control\+Semaphore}} = new Semaphore(0)
+\item 
+final Atomic\+Boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_afff78c3394a3d9aa749733a2ea6d9f79}{interrupts}} = new Atomic\+Boolean()
 \item 
 long \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_ab596fb8342b2a96a1b9f0dd6bc2fa81a}{timer\+Start}} = 0L
 \item 
@@ -74,9 +88,11 @@ final Atomic\+Boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang
 \item 
 final Atomic\+Boolean \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a5aecf67327384d06cf42f7075544263b}{timer\+State}} = new Atomic\+Boolean()
 \item 
-final List$<$ \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral}{Peripheral}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a9ea1146f137d47be2feea78cccdb81ae}{peripherals}} = new Array\+List$<$$>$()
+final Map$<$ String, \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral}{Peripheral}} $>$ \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a2ad04f1780d711674c54650e26a75661}{peripherals}} = new Linked\+Hash\+Map$<$$>$()
 \item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1_app_manager}{App\+Manager}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a0f585360eacb06a32e068eaead4ea819}{manager}}
+\item 
+\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds}{Bounds}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_ac988a5e0f0d67c1c1545e0641fdda4e8}{bounds}}
 \item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label}{Label}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a914e323daf99dbc6816b1b10ec052163}{pc\+Label}}
 \item 
@@ -104,6 +120,20 @@ final List$<$ \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1
 
 
 \doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a8fa03d4d11909a9b7fa015f29fc01056}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a8fa03d4d11909a9b7fa015f29fc01056}} 
+\index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!asyncInterrupt@{asyncInterrupt}}
+\index{asyncInterrupt@{asyncInterrupt}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
+\doxysubsubsection{\texorpdfstring{asyncInterrupt()}{asyncInterrupt()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+Environment.\+async\+Interrupt (\begin{DoxyParamCaption}\item[{long}]{address }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a8fa03d4d11909a9b7fa015f29fc01056_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acce11996a861ecaa3355d4218e539530}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acce11996a861ecaa3355d4218e539530}} 
 \index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!create@{create}}
 \index{create@{create}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
@@ -117,6 +147,16 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acce11996a861ecaa3355d4218e539530_cgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_af973e745b99dd63af6c891dcec63978f}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_af973e745b99dd63af6c891dcec63978f}} 
+\index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!executeInterrupt@{executeInterrupt}}
+\index{executeInterrupt@{executeInterrupt}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
+\doxysubsubsection{\texorpdfstring{executeInterrupt()}{executeInterrupt()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+Environment.\+execute\+Interrupt (\begin{DoxyParamCaption}\item[{long}]{address }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_evaluation_exception}{Evaluation\+Exception}}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a2806283ebfc7e4e92aa9680b9b20493c}{ch.\+innovazion.\+arionide.\+lang.\+avr.\+A\+V\+R\+Environment}}.
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_afb937d1a2c3956656e76ae683cc61ae2}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_afb937d1a2c3956656e76ae683cc61ae2}} 
 \index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!formatTimestamp@{formatTimestamp}}
 \index{formatTimestamp@{formatTimestamp}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
@@ -146,6 +186,12 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_acfc27c78b5b9bde88d9f4a8d114ff692_cgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a489fbdb463e5f37ff866926d6b208448}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a489fbdb463e5f37ff866926d6b208448}} 
+\index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!getInterrupts@{getInterrupts}}
+\index{getInterrupts@{getInterrupts}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
+\doxysubsubsection{\texorpdfstring{getInterrupts()}{getInterrupts()}}
+{\footnotesize\ttfamily Atomic\+Boolean ch.\+innovazion.\+arionide.\+lang.\+Environment.\+get\+Interrupts (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a5f89b244500df596c48d76e14bb9df64}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a5f89b244500df596c48d76e14bb9df64}} 
 \index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!getLanguage@{getLanguage}}
 \index{getLanguage@{getLanguage}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
@@ -174,11 +220,27 @@ Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1a
 \doxysubsubsection{\texorpdfstring{getTimerStepRequest()}{getTimerStepRequest()}}
 {\footnotesize\ttfamily Atomic\+Boolean ch.\+innovazion.\+arionide.\+lang.\+Environment.\+get\+Timer\+Step\+Request (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_ac9228c4e21c531782029594560c06b8e}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_ac9228c4e21c531782029594560c06b8e}} 
+\index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!init@{init}}
+\index{init@{init}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+Environment.\+init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented in \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a64b23875deae7b6ffae99c6d5e4e200e}{ch.\+innovazion.\+arionide.\+lang.\+avr.\+A\+V\+R\+Environment}}.
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_ae99b221f7ccafe49ef61e0f1127c76e2}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_ae99b221f7ccafe49ef61e0f1127c76e2}} 
 \index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!isManual@{isManual}}
 \index{isManual@{isManual}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
 \doxysubsubsection{\texorpdfstring{isManual()}{isManual()}}
 {\footnotesize\ttfamily Atomic\+Boolean ch.\+innovazion.\+arionide.\+lang.\+Environment.\+is\+Manual (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a970400ce0d7b616364461671d936c3e3}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a970400ce0d7b616364461671d936c3e3}} 
+\index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!onInstructionTerminated@{onInstructionTerminated}}
+\index{onInstructionTerminated@{onInstructionTerminated}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
+\doxysubsubsection{\texorpdfstring{onInstructionTerminated()}{onInstructionTerminated()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+Environment.\+on\+Instruction\+Terminated (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a9cb322bd854d95e4a4c12dac32f3bdff}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a9cb322bd854d95e4a4c12dac32f3bdff}} 
 \index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!readTimer@{readTimer}}
@@ -199,6 +261,14 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{registerPeripheral()}{registerPeripheral()}}
 {\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+Environment.\+register\+Peripheral (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral}{Peripheral}}}]{peripheral }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_ae597e10f8584d7bf0a9a51fc7010e8df_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a1de143569ec6c9f51f99e90f4aeee4c2}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a1de143569ec6c9f51f99e90f4aeee4c2}} 
 \index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!sample@{sample}}
 \index{sample@{sample}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
@@ -238,9 +308,29 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a79f4586d6501d301fa8f8ea47aa646bc_cgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a4410f64d551592f8899f99897b0e775b}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a4410f64d551592f8899f99897b0e775b}} 
+\index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!syncInterrupt@{syncInterrupt}}
+\index{syncInterrupt@{syncInterrupt}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
+\doxysubsubsection{\texorpdfstring{syncInterrupt()}{syncInterrupt()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+Environment.\+sync\+Interrupt (\begin{DoxyParamCaption}\item[{long}]{address }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a4410f64d551592f8899f99897b0e775b_cgraph}
+\end{center}
+\end{figure}
 
 
 \doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_ac988a5e0f0d67c1c1545e0641fdda4e8}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_ac988a5e0f0d67c1c1545e0641fdda4e8}} 
+\index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!bounds@{bounds}}
+\index{bounds@{bounds}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
+\doxysubsubsection{\texorpdfstring{bounds}{bounds}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1topology_1_1_bounds}{Bounds}} ch.\+innovazion.\+arionide.\+lang.\+Environment.\+bounds\hspace{0.3cm}{\ttfamily [private]}}
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_aeebc144d809ad8aec45bd6a5fc1994e6}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_aeebc144d809ad8aec45bd6a5fc1994e6}} 
 \index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!clkLabel@{clkLabel}}
 \index{clkLabel@{clkLabel}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
@@ -253,11 +343,23 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{clock}{clock}}
 {\footnotesize\ttfamily final Atomic\+Long ch.\+innovazion.\+arionide.\+lang.\+Environment.\+clock = new Atomic\+Long()\hspace{0.3cm}{\ttfamily [private]}}
 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a8f2e058ef41f079f50de9d0226fc2303}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a8f2e058ef41f079f50de9d0226fc2303}} 
+\index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!controlSemaphore@{controlSemaphore}}
+\index{controlSemaphore@{controlSemaphore}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
+\doxysubsubsection{\texorpdfstring{controlSemaphore}{controlSemaphore}}
+{\footnotesize\ttfamily final Semaphore ch.\+innovazion.\+arionide.\+lang.\+Environment.\+control\+Semaphore = new Semaphore(0)\hspace{0.3cm}{\ttfamily [private]}}
+
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a789de76432c95ce887b419722a17687c}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a789de76432c95ce887b419722a17687c}} 
 \index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!frequency@{frequency}}
 \index{frequency@{frequency}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
 \doxysubsubsection{\texorpdfstring{frequency}{frequency}}
 {\footnotesize\ttfamily final long ch.\+innovazion.\+arionide.\+lang.\+Environment.\+frequency\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_afff78c3394a3d9aa749733a2ea6d9f79}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_afff78c3394a3d9aa749733a2ea6d9f79}} 
+\index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!interrupts@{interrupts}}
+\index{interrupts@{interrupts}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
+\doxysubsubsection{\texorpdfstring{interrupts}{interrupts}}
+{\footnotesize\ttfamily final Atomic\+Boolean ch.\+innovazion.\+arionide.\+lang.\+Environment.\+interrupts = new Atomic\+Boolean()\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a0f585360eacb06a32e068eaead4ea819}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a0f585360eacb06a32e068eaead4ea819}} 
 \index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!manager@{manager}}
@@ -271,23 +373,17 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{manualMode}{manualMode}}
 {\footnotesize\ttfamily final Atomic\+Boolean ch.\+innovazion.\+arionide.\+lang.\+Environment.\+manual\+Mode = new Atomic\+Boolean()\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a2d38ef0a048048762ecfd102450ebdbc}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a2d38ef0a048048762ecfd102450ebdbc}} 
-\index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!manualModeSemaphore@{manualModeSemaphore}}
-\index{manualModeSemaphore@{manualModeSemaphore}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
-\doxysubsubsection{\texorpdfstring{manualModeSemaphore}{manualModeSemaphore}}
-{\footnotesize\ttfamily final Semaphore ch.\+innovazion.\+arionide.\+lang.\+Environment.\+manual\+Mode\+Semaphore = new Semaphore(0)\hspace{0.3cm}{\ttfamily [private]}}
-
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a914e323daf99dbc6816b1b10ec052163}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a914e323daf99dbc6816b1b10ec052163}} 
 \index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!pcLabel@{pcLabel}}
 \index{pcLabel@{pcLabel}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
 \doxysubsubsection{\texorpdfstring{pcLabel}{pcLabel}}
 {\footnotesize\ttfamily \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label}{Label}} ch.\+innovazion.\+arionide.\+lang.\+Environment.\+pc\+Label\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a9ea1146f137d47be2feea78cccdb81ae}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a9ea1146f137d47be2feea78cccdb81ae}} 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a2ad04f1780d711674c54650e26a75661}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a2ad04f1780d711674c54650e26a75661}} 
 \index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!peripherals@{peripherals}}
 \index{peripherals@{peripherals}!ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}}
 \doxysubsubsection{\texorpdfstring{peripherals}{peripherals}}
-{\footnotesize\ttfamily final List$<$\mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral}{Peripheral}}$>$ ch.\+innovazion.\+arionide.\+lang.\+Environment.\+peripherals = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily final Map$<$String, \mbox{\hyperlink{interfacech_1_1innovazion_1_1arionide_1_1lang_1_1_peripheral}{Peripheral}}$>$ ch.\+innovazion.\+arionide.\+lang.\+Environment.\+peripherals = new Linked\+Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a72e54ebaaff8d809f4e8644eaba0da10}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a72e54ebaaff8d809f4e8644eaba0da10}} 
 \index{ch.innovazion.arionide.lang.Environment@{ch.innovazion.arionide.lang.Environment}!programCounter@{programCounter}}

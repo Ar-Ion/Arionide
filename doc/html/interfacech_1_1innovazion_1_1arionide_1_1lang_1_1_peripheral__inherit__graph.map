@@ -1,4 +1,10 @@
 <map id="ch.innovazion.arionide.lang.Peripheral" name="ch.innovazion.arionide.lang.Peripheral">
-<area shape="rect" id="node1" title=" " alt="" coords="59,5,246,44"/>
-<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_s_r_a_m.html" title=" " alt="" coords="5,92,300,117"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,163,192,201"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_async_peripheral.html" title=" " alt="" coords="259,5,516,44"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_digital_input.html" title=" " alt="" coords="259,68,516,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_digital_output.html" title=" " alt="" coords="259,131,516,169"/>
+<area shape="rect" id="node5" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_e_e_p_r_o_m.html" title=" " alt="" coords="259,193,516,232"/>
+<area shape="rect" id="node6" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_s_r_a_m.html" title=" " alt="" coords="240,256,535,281"/>
+<area shape="rect" id="node8" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_sync_peripheral.html" title=" " alt="" coords="259,305,516,344"/>
+<area shape="rect" id="node7" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1device_1_1_a_v_r_s_r_a_m.html" title=" " alt="" coords="583,249,833,288"/>
 </map>

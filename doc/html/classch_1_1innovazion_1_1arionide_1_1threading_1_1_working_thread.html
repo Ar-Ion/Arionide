@@ -68,7 +68,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread-members.html">List of all members</a>  </div>
@@ -122,19 +121,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3979e2af050b5e03ca103d7db23eae55"><td class="memItemLeft" align="right" valign="top">abstract boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#a3979e2af050b5e03ca103d7db23eae55">respawn</a> (int attempt)</td></tr>
 <tr class="separator:a3979e2af050b5e03ca103d7db23eae55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a9ce7f13871342a93a488b2a7db5a255e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#a9ce7f13871342a93a488b2a7db5a255e">resetTimer</a> ()</td></tr>
-<tr class="separator:a9ce7f13871342a93a488b2a7db5a255e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a035b24a4853ec568ff0173a7ba876c66"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#a035b24a4853ec568ff0173a7ba876c66">running</a> = false</td></tr>
-<tr class="separator:a035b24a4853ec568ff0173a7ba876c66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84bd0167db717a7e40e8dcb7894e8e85"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#a84bd0167db717a7e40e8dcb7894e8e85">initTime</a> = System.currentTimeMillis()</td></tr>
-<tr class="separator:a84bd0167db717a7e40e8dcb7894e8e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca6f4ab69811fe5c873f2a4c060a4e77"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#aca6f4ab69811fe5c873f2a4c060a4e77">ticks</a> = 0</td></tr>
-<tr class="separator:aca6f4ab69811fe5c873f2a4c060a4e77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec669f08dac25ce298de22041a6d925f"><td class="memItemLeft" align="right" valign="top">volatile boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#aec669f08dac25ce298de22041a6d925f">running</a> = false</td></tr>
+<tr class="separator:aec669f08dac25ce298de22041a6d925f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa36c15945f3bcc86ea6c2dc3dab50036"><td class="memItemLeft" align="right" valign="top">volatile long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#aa36c15945f3bcc86ea6c2dc3dab50036">initTime</a> = 0</td></tr>
+<tr class="separator:aa36c15945f3bcc86ea6c2dc3dab50036"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d98992f53e7305c81cd567a76e64c5a"><td class="memItemLeft" align="right" valign="top">volatile long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#a5d98992f53e7305c81cd567a76e64c5a">ticks</a> = 0</td></tr>
+<tr class="separator:a5d98992f53e7305c81cd567a76e64c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
@@ -165,7 +159,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread.html#a17791b42a5ba327473bd81738308d041">ch.innovazion.arionide.threading.UserHelpingThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#adc0790bf9d8b71df0906ff4ff20d929e">ch.innovazion.arionide.threading.ProgramThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_event_dispatching_thread.html#adf1d8bbc57d60c791b066fb006954438">ch.innovazion.arionide.threading.EventDispatchingThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_drawing_thread.html#a2bee0d38b687ade6e6b71c5bd02a6290">ch.innovazion.arionide.threading.DrawingThread</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_updating_thread.html#a462b022ac8d1862e07bd214651a74813">ch.innovazion.arionide.threading.UpdatingThread</a>.</p>
+<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#adc0790bf9d8b71df0906ff4ff20d929e">ch.innovazion.arionide.threading.ProgramThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread.html#a17791b42a5ba327473bd81738308d041">ch.innovazion.arionide.threading.UserHelpingThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_event_dispatching_thread.html#adf1d8bbc57d60c791b066fb006954438">ch.innovazion.arionide.threading.EventDispatchingThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_drawing_thread.html#a2bee0d38b687ade6e6b71c5bd02a6290">ch.innovazion.arionide.threading.DrawingThread</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_updating_thread.html#a462b022ac8d1862e07bd214651a74813">ch.innovazion.arionide.threading.UpdatingThread</a>.</p>
 
 </div>
 </div>
@@ -192,7 +186,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread.html#afc86c63b2e802b748e5defbd42f94d70">ch.innovazion.arionide.threading.UserHelpingThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#a0391121294454db0ae660299759f830a">ch.innovazion.arionide.threading.ProgramThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_event_dispatching_thread.html#a92b6325cf2d422b256d6dea99cdff481">ch.innovazion.arionide.threading.EventDispatchingThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_drawing_thread.html#a52cbb10138feed615afda18e1f56f55e">ch.innovazion.arionide.threading.DrawingThread</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_updating_thread.html#a9ffd6b4753740c545d5f79df7fb01275">ch.innovazion.arionide.threading.UpdatingThread</a>.</p>
+<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#a0391121294454db0ae660299759f830a">ch.innovazion.arionide.threading.ProgramThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread.html#afc86c63b2e802b748e5defbd42f94d70">ch.innovazion.arionide.threading.UserHelpingThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_event_dispatching_thread.html#a92b6325cf2d422b256d6dea99cdff481">ch.innovazion.arionide.threading.EventDispatchingThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_drawing_thread.html#a52cbb10138feed615afda18e1f56f55e">ch.innovazion.arionide.threading.DrawingThread</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_updating_thread.html#a9ffd6b4753740c545d5f79df7fb01275">ch.innovazion.arionide.threading.UpdatingThread</a>.</p>
 
 </div>
 </div>
@@ -247,31 +241,6 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a9ce7f13871342a93a488b2a7db5a255e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ce7f13871342a93a488b2a7db5a255e">&#9670;&nbsp;</a></span>resetTimer()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ch.innovazion.arionide.threading.WorkingThread.resetTimer </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a3979e2af050b5e03ca103d7db23eae55"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3979e2af050b5e03ca103d7db23eae55">&#9670;&nbsp;</a></span>respawn()</h2>
 
@@ -296,7 +265,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread.html#aef0a496586a481107273449d57b95f30">ch.innovazion.arionide.threading.UserHelpingThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#a29bda3633e229eba380daf38b5c1fe0e">ch.innovazion.arionide.threading.ProgramThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_event_dispatching_thread.html#ad2874c4aec9bcc1c07e773a6a5843e89">ch.innovazion.arionide.threading.EventDispatchingThread</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_u_i_thread.html#a122df9907cc7d36853b46ccc491e0272">ch.innovazion.arionide.threading.UIThread</a>.</p>
+<p>Reimplemented in <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#a29bda3633e229eba380daf38b5c1fe0e">ch.innovazion.arionide.threading.ProgramThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_user_helping_thread.html#aef0a496586a481107273449d57b95f30">ch.innovazion.arionide.threading.UserHelpingThread</a>, <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_event_dispatching_thread.html#ad2874c4aec9bcc1c07e773a6a5843e89">ch.innovazion.arionide.threading.EventDispatchingThread</a>, and <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_u_i_thread.html#a122df9907cc7d36853b46ccc491e0272">ch.innovazion.arionide.threading.UIThread</a>.</p>
 
 </div>
 </div>
@@ -319,12 +288,11 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread_aafdd00096d4337bd57cfb0d113bf4306_cgraph.png" border="0" usemap="#classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread_aafdd00096d4337bd57cfb0d113bf4306_cgraph" alt=""/></div>
 <map name="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread_aafdd00096d4337bd57cfb0d113bf4306_cgraph" id="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread_aafdd00096d4337bd57cfb0d113bf4306_cgraph">
-<area shape="rect" title=" " alt="" coords="5,399,222,437"/>
+<area shape="rect" title=" " alt="" coords="5,368,222,407"/>
 <area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1debugging_1_1_debug.html#ace044edb52cdb2c8f149d4d8026c49be" title=" " alt="" coords="270,273,494,312"/>
 <area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#a975e0ffe100fe78f5009322e24f85c7d" title=" " alt="" coords="274,336,491,375"/>
 <area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#ab40e173021c25eba7e673086f9de6ad4" title=" " alt="" coords="274,399,491,437"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#a9ce7f13871342a93a488b2a7db5a255e" title=" " alt="" coords="274,461,491,500"/>
-<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#a0f13e1911f910b85a5e92e5a6eded7f3" title=" " alt="" coords="274,524,491,563"/>
+<area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#a0f13e1911f910b85a5e92e5a6eded7f3" title=" " alt="" coords="274,461,491,500"/>
 <area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1debugging_1_1_debug.html#a3f8981c136c02e547e86ab91013b1a24" title=" " alt="" coords="557,93,781,132"/>
 <area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_view.html#a8048c1edf1547875722d40df119ed3d2" title=" " alt="" coords="561,211,778,249"/>
 <area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1_views.html#a32654c52837c1f8a60b582a898816413" title=" " alt="" coords="561,273,778,312"/>
@@ -413,8 +381,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a84bd0167db717a7e40e8dcb7894e8e85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84bd0167db717a7e40e8dcb7894e8e85">&#9670;&nbsp;</a></span>initTime</h2>
+<a id="aa36c15945f3bcc86ea6c2dc3dab50036"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa36c15945f3bcc86ea6c2dc3dab50036">&#9670;&nbsp;</a></span>initTime</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -423,7 +391,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">long ch.innovazion.arionide.threading.WorkingThread.initTime = System.currentTimeMillis()</td>
+          <td class="memname">volatile long ch.innovazion.arionide.threading.WorkingThread.initTime = 0</td>
         </tr>
       </table>
   </td>
@@ -435,8 +403,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a035b24a4853ec568ff0173a7ba876c66"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a035b24a4853ec568ff0173a7ba876c66">&#9670;&nbsp;</a></span>running</h2>
+<a id="aec669f08dac25ce298de22041a6d925f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec669f08dac25ce298de22041a6d925f">&#9670;&nbsp;</a></span>running</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -445,7 +413,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">boolean ch.innovazion.arionide.threading.WorkingThread.running = false</td>
+          <td class="memname">volatile boolean ch.innovazion.arionide.threading.WorkingThread.running = false</td>
         </tr>
       </table>
   </td>
@@ -457,8 +425,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="aca6f4ab69811fe5c873f2a4c060a4e77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca6f4ab69811fe5c873f2a4c060a4e77">&#9670;&nbsp;</a></span>ticks</h2>
+<a id="a5d98992f53e7305c81cd567a76e64c5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d98992f53e7305c81cd567a76e64c5a">&#9670;&nbsp;</a></span>ticks</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -467,7 +435,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">long ch.innovazion.arionide.threading.WorkingThread.ticks = 0</td>
+          <td class="memname">volatile long ch.innovazion.arionide.threading.WorkingThread.ticks = 0</td>
         </tr>
       </table>
   </td>

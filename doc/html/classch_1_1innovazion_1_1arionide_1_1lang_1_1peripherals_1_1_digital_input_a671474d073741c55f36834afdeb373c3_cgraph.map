@@ -1,0 +1,7 @@
+<map id="ch.innovazion.arionide.lang.peripherals.DigitalInput.sample" name="ch.innovazion.arionide.lang.peripherals.DigitalInput.sample">
+<area shape="rect" id="node1" title=" " alt="" coords="5,68,262,107"/>
+<area shape="rect" id="node2" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_button.html#a9ba0af7421c508a1e67263e543db64c4" title=" " alt="" coords="310,5,603,44"/>
+<area shape="rect" id="node3" href="$classch_1_1innovazion_1_1arionide_1_1lang_1_1peripherals_1_1_s_r_a_m.html#a32fc81b8e62d87f892fa38f1d200b579" title=" " alt="" coords="328,68,585,107"/>
+<area shape="rect" id="node4" href="$classch_1_1innovazion_1_1arionide_1_1ui_1_1overlay_1_1components_1_1_label.html#a848534201c4030d6d9e6112f823b04db" title=" " alt="" coords="310,131,603,169"/>
+<area shape="rect" id="node5" href="$interfacech_1_1innovazion_1_1arionide_1_1ui_1_1render_1_1_text.html#a89be25cb521ad7278a820035d44d9bd7" title=" " alt="" coords="651,131,865,169"/>
+</map>

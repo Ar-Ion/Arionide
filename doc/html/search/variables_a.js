@@ -21,5 +21,6 @@
  *******************************************************************************/
 var searchData=
 [
-  ['keycode_4669',['keycode',['../classch_1_1innovazion_1_1arionide_1_1events_1_1_write_event.html#a46779aed493ea4b4ac10a483b7a827cc',1,'ch::innovazion::arionide::events::WriteEvent']]]
+  ['key_5171',['key',['../classch_1_1innovazion_1_1arionide_1_1lang_1_1symbols_1_1_enumeration.html#a10ab15f897971e8343eb6cf04dad1291',1,'ch::innovazion::arionide::lang::symbols::Enumeration']]],
+  ['keycode_5172',['keycode',['../classch_1_1innovazion_1_1arionide_1_1events_1_1_write_event.html#a46779aed493ea4b4ac10a483b7a827cc',1,'ch::innovazion::arionide::events::WriteEvent']]]
 ];

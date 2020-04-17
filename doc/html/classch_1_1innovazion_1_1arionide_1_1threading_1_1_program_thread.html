@@ -89,13 +89,14 @@ Collaboration diagram for ch.innovazion.arionide.threading.ProgramThread:</div>
 <div class="dyncontent">
 <div class="center"><img src="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread__coll__graph.png" border="0" usemap="#ch_8innovazion_8arionide_8threading_8_program_thread_coll__map" alt="Collaboration graph"/></div>
 <map name="ch_8innovazion_8arionide_8threading_8_program_thread_coll__map" id="ch_8innovazion_8arionide_8threading_8_program_thread_coll__map">
-<area shape="rect" title=" " alt="" coords="731,68,948,107"/>
+<area shape="rect" title=" " alt="" coords="731,100,948,139"/>
 <area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html" title=" " alt="" coords="328,5,545,44"/>
 <area shape="rect" title=" " alt="" coords="62,12,126,37"/>
 <area shape="rect" title=" " alt="" coords="287,68,587,107"/>
 <area shape="rect" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1programs_1_1_program_i_o.html" title=" " alt="" coords="313,131,560,169"/>
 <area shape="rect" title=" " alt="" coords="8,109,180,135"/>
 <area shape="rect" title=" " alt="" coords="5,159,182,197"/>
+<area shape="rect" title=" " alt="" coords="381,193,492,219"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -109,8 +110,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0391121294454db0ae660299759f830a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc0790bf9d8b71df0906ff4ff20d929e"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#adc0790bf9d8b71df0906ff4ff20d929e">getDescriptor</a> ()</td></tr>
 <tr class="separator:adc0790bf9d8b71df0906ff4ff20d929e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa68932c0dce34f40462b702a0c1c6df3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#aa68932c0dce34f40462b702a0c1c6df3">reset</a> ()</td></tr>
-<tr class="separator:aa68932c0dce34f40462b702a0c1c6df3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70d2bc9eb299b00b11f3a57a206a7862"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#a70d2bc9eb299b00b11f3a57a206a7862">terminate</a> ()</td></tr>
+<tr class="separator:a70d2bc9eb299b00b11f3a57a206a7862"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfa7c6d51355b91b7997779f649d5d64"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#adfa7c6d51355b91b7997779f649d5d64">isRunning</a> ()</td></tr>
+<tr class="separator:adfa7c6d51355b91b7997779f649d5d64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29bda3633e229eba380daf38b5c1fe0e"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#a29bda3633e229eba380daf38b5c1fe0e">respawn</a> (int attempt)</td></tr>
 <tr class="separator:a29bda3633e229eba380daf38b5c1fe0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html">ch.innovazion.arionide.threading.WorkingThread</a></td></tr>
@@ -129,16 +132,12 @@ Public Member Functions</h2></td></tr>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a2ac7312297fa97046ac3634915da5cdd"><td class="memItemLeft" align="right" valign="top">final AtomicReference&lt; <a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1_program.html">Program</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#a2ac7312297fa97046ac3634915da5cdd">currentProgram</a> = new AtomicReference&lt;&gt;()</td></tr>
 <tr class="separator:a2ac7312297fa97046ac3634915da5cdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5a011af254b9ee43e14905a24cf1ada"><td class="memItemLeft" align="right" valign="top">final AtomicBoolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#ac5a011af254b9ee43e14905a24cf1ada">running</a> = new AtomicBoolean(false)</td></tr>
+<tr class="separator:ac5a011af254b9ee43e14905a24cf1ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19d60aadbd9012e199055e30612b8848"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#a19d60aadbd9012e199055e30612b8848">currentTarget</a></td></tr>
 <tr class="separator:a19d60aadbd9012e199055e30612b8848"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae11a4f9cbd352db251b771fa3fa3ad8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1lang_1_1programs_1_1_program_i_o.html">ProgramIO</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_program_thread.html#ae11a4f9cbd352db251b771fa3fa3ad8a">currentIO</a></td></tr>
 <tr class="separator:ae11a4f9cbd352db251b771fa3fa3ad8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_methods_classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html">ch.innovazion.arionide.threading.WorkingThread</a></td></tr>
-<tr class="memitem:a9ce7f13871342a93a488b2a7db5a255e inherit pro_methods_classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#a9ce7f13871342a93a488b2a7db5a255e">resetTimer</a> ()</td></tr>
-<tr class="separator:a9ce7f13871342a93a488b2a7db5a255e inherit pro_methods_classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="adc0790bf9d8b71df0906ff4ff20d929e"></a>
@@ -179,6 +178,23 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="adfa7c6d51355b91b7997779f649d5d64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfa7c6d51355b91b7997779f649d5d64">&#9670;&nbsp;</a></span>isRunning()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">boolean ch.innovazion.arionide.threading.ProgramThread.isRunning </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a83eaecf75ad3166d48eb9f51069186ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a83eaecf75ad3166d48eb9f51069186ad">&#9670;&nbsp;</a></span>launch()</h2>
 
@@ -213,23 +229,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="aa68932c0dce34f40462b702a0c1c6df3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa68932c0dce34f40462b702a0c1c6df3">&#9670;&nbsp;</a></span>reset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ch.innovazion.arionide.threading.ProgramThread.reset </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a29bda3633e229eba380daf38b5c1fe0e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a29bda3633e229eba380daf38b5c1fe0e">&#9670;&nbsp;</a></span>respawn()</h2>
 
@@ -247,6 +246,23 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="classch_1_1innovazion_1_1arionide_1_1threading_1_1_working_thread.html#a3979e2af050b5e03ca103d7db23eae55">ch.innovazion.arionide.threading.WorkingThread</a>.</p>
+
+</div>
+</div>
+<a id="a70d2bc9eb299b00b11f3a57a206a7862"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70d2bc9eb299b00b11f3a57a206a7862">&#9670;&nbsp;</a></span>terminate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ch.innovazion.arionide.threading.ProgramThread.terminate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -334,6 +350,28 @@ Here is the call graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">int ch.innovazion.arionide.threading.ProgramThread.currentTarget</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac5a011af254b9ee43e14905a24cf1ada"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5a011af254b9ee43e14905a24cf1ada">&#9670;&nbsp;</a></span>running</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">final AtomicBoolean ch.innovazion.arionide.threading.ProgramThread.running = new AtomicBoolean(false)</td>
         </tr>
       </table>
   </td>

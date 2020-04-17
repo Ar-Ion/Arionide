@@ -21,12 +21,14 @@
  *******************************************************************************/
 var searchData=
 [
-  ['handlercontainer_2498',['HandlerContainer',['../classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container.html',1,'ch::innovazion::arionide::events::dispatching::MainEventDispatcher']]],
-  ['hermitesplinealgorithm_2499',['HermiteSplineAlgorithm',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_hermite_spline_algorithm.html',1,'ch::innovazion::arionide::ui::animations']]],
-  ['hierarchicalgeometry_2500',['HierarchicalGeometry',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry.html',1,'ch::innovazion::arionide::ui::core::geom']]],
-  ['hierarchyelement_2501',['HierarchyElement',['../interfacech_1_1innovazion_1_1arionide_1_1project_1_1_hierarchy_element.html',1,'ch::innovazion::arionide::project']]],
-  ['historyelement_2502',['HistoryElement',['../interfacech_1_1innovazion_1_1arionide_1_1project_1_1_history_element.html',1,'ch::innovazion::arionide::project']]],
-  ['hoststructurechangeobserver_2503',['HostStructureChangeObserver',['../interfacech_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_change_observer.html',1,'ch::innovazion::arionide::project::managers']]],
-  ['hoststructurestack_2504',['HostStructureStack',['../classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack.html',1,'ch::innovazion::arionide::project::managers']]],
-  ['hyperbolicsymmetryalgorithm_2505',['HyperbolicSymmetryAlgorithm',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_hyperbolic_symmetry_algorithm.html',1,'ch::innovazion::arionide::ui::animations']]]
+  ['halfcarryclear_2797',['HalfCarryClear',['../classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1bitwise_1_1_half_carry_clear.html',1,'ch::innovazion::arionide::lang::avr::bitwise']]],
+  ['halfcarryset_2798',['HalfCarrySet',['../classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1bitwise_1_1_half_carry_set.html',1,'ch::innovazion::arionide::lang::avr::bitwise']]],
+  ['handlercontainer_2799',['HandlerContainer',['../classch_1_1innovazion_1_1arionide_1_1events_1_1dispatching_1_1_main_event_dispatcher_1_1_handler_container.html',1,'ch::innovazion::arionide::events::dispatching::MainEventDispatcher']]],
+  ['hermitesplinealgorithm_2800',['HermiteSplineAlgorithm',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_hermite_spline_algorithm.html',1,'ch::innovazion::arionide::ui::animations']]],
+  ['hierarchicalgeometry_2801',['HierarchicalGeometry',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1geom_1_1_hierarchical_geometry.html',1,'ch::innovazion::arionide::ui::core::geom']]],
+  ['hierarchyelement_2802',['HierarchyElement',['../interfacech_1_1innovazion_1_1arionide_1_1project_1_1_hierarchy_element.html',1,'ch::innovazion::arionide::project']]],
+  ['historyelement_2803',['HistoryElement',['../interfacech_1_1innovazion_1_1arionide_1_1project_1_1_history_element.html',1,'ch::innovazion::arionide::project']]],
+  ['hoststructurechangeobserver_2804',['HostStructureChangeObserver',['../interfacech_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_change_observer.html',1,'ch::innovazion::arionide::project::managers']]],
+  ['hoststructurestack_2805',['HostStructureStack',['../classch_1_1innovazion_1_1arionide_1_1project_1_1managers_1_1_host_structure_stack.html',1,'ch::innovazion::arionide::project::managers']]],
+  ['hyperbolicsymmetryalgorithm_2806',['HyperbolicSymmetryAlgorithm',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1animations_1_1_hyperbolic_symmetry_algorithm.html',1,'ch::innovazion::arionide::ui::animations']]]
 ];

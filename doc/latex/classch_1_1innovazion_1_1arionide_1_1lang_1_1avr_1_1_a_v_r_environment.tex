@@ -22,17 +22,23 @@ Collaboration diagram for ch.\+innovazion.\+arionide.\+lang.\+avr.\+A\+V\+R\+Env
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a64b23875deae7b6ffae99c6d5e4e200e}{init}} ()
+\item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_language}{Language}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_adc3be1b78649f94c5b4e29597e131b52}{get\+Language}} ()
 \end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a4913010b375cb66a41f132039b4e262e}{A\+V\+R\+Environment}} (\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_language}{A\+V\+R\+Language}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a548287f0318f09d118e3b0dae288f413}{lang}})
+\item 
+void \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a2806283ebfc7e4e92aa9680b9b20493c}{execute\+Interrupt}} (long address)  throws Evaluation\+Exception 
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
 final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_language}{A\+V\+R\+Language}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a548287f0318f09d118e3b0dae288f413}{lang}}
+\item 
+final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1device_1_1_a_v_r_s_r_a_m}{A\+V\+R\+S\+R\+AM}} \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a57b6e88c5c9767c939ef145a88eea360}{sram}} = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1device_1_1_a_v_r_s_r_a_m}{A\+V\+R\+S\+R\+AM}}(4096)
 \end{DoxyCompactItemize}
 
 
@@ -43,9 +49,35 @@ final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_
 \doxysubsubsection{\texorpdfstring{AVREnvironment()}{AVREnvironment()}}
 {\footnotesize\ttfamily ch.\+innovazion.\+arionide.\+lang.\+avr.\+A\+V\+R\+Environment.\+A\+V\+R\+Environment (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_language}{A\+V\+R\+Language}}}]{lang }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a4913010b375cb66a41f132039b4e262e_cgraph}
+\end{center}
+\end{figure}
 
 
 \doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a2806283ebfc7e4e92aa9680b9b20493c}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a2806283ebfc7e4e92aa9680b9b20493c}} 
+\index{ch.innovazion.arionide.lang.avr.AVREnvironment@{ch.innovazion.arionide.lang.avr.AVREnvironment}!executeInterrupt@{executeInterrupt}}
+\index{executeInterrupt@{executeInterrupt}!ch.innovazion.arionide.lang.avr.AVREnvironment@{ch.innovazion.arionide.lang.avr.AVREnvironment}}
+\doxysubsubsection{\texorpdfstring{executeInterrupt()}{executeInterrupt()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+avr.\+A\+V\+R\+Environment.\+execute\+Interrupt (\begin{DoxyParamCaption}\item[{long}]{address }\end{DoxyParamCaption}) throws \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_evaluation_exception}{Evaluation\+Exception}}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_af973e745b99dd63af6c891dcec63978f}{ch.\+innovazion.\+arionide.\+lang.\+Environment}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a2806283ebfc7e4e92aa9680b9b20493c_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_adc3be1b78649f94c5b4e29597e131b52}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_adc3be1b78649f94c5b4e29597e131b52}} 
 \index{ch.innovazion.arionide.lang.avr.AVREnvironment@{ch.innovazion.arionide.lang.avr.AVREnvironment}!getLanguage@{getLanguage}}
 \index{getLanguage@{getLanguage}!ch.innovazion.arionide.lang.avr.AVREnvironment@{ch.innovazion.arionide.lang.avr.AVREnvironment}}
@@ -56,6 +88,24 @@ final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_
 
 Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_a5f89b244500df596c48d76e14bb9df64}{ch.\+innovazion.\+arionide.\+lang.\+Environment}}.
 
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a64b23875deae7b6ffae99c6d5e4e200e}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a64b23875deae7b6ffae99c6d5e4e200e}} 
+\index{ch.innovazion.arionide.lang.avr.AVREnvironment@{ch.innovazion.arionide.lang.avr.AVREnvironment}!init@{init}}
+\index{init@{init}!ch.innovazion.arionide.lang.avr.AVREnvironment@{ch.innovazion.arionide.lang.avr.AVREnvironment}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void ch.\+innovazion.\+arionide.\+lang.\+avr.\+A\+V\+R\+Environment.\+init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1_environment_ac9228c4e21c531782029594560c06b8e}{ch.\+innovazion.\+arionide.\+lang.\+Environment}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a64b23875deae7b6ffae99c6d5e4e200e_cgraph}
+\end{center}
+\end{figure}
 
 
 \doxysubsection{Member Data Documentation}
@@ -64,6 +114,12 @@ Reimplemented from \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_
 \index{lang@{lang}!ch.innovazion.arionide.lang.avr.AVREnvironment@{ch.innovazion.arionide.lang.avr.AVREnvironment}}
 \doxysubsubsection{\texorpdfstring{lang}{lang}}
 {\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_language}{A\+V\+R\+Language}} ch.\+innovazion.\+arionide.\+lang.\+avr.\+A\+V\+R\+Environment.\+lang\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a57b6e88c5c9767c939ef145a88eea360}\label{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1_a_v_r_environment_a57b6e88c5c9767c939ef145a88eea360}} 
+\index{ch.innovazion.arionide.lang.avr.AVREnvironment@{ch.innovazion.arionide.lang.avr.AVREnvironment}!sram@{sram}}
+\index{sram@{sram}!ch.innovazion.arionide.lang.avr.AVREnvironment@{ch.innovazion.arionide.lang.avr.AVREnvironment}}
+\doxysubsubsection{\texorpdfstring{sram}{sram}}
+{\footnotesize\ttfamily final \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1device_1_1_a_v_r_s_r_a_m}{A\+V\+R\+S\+R\+AM}} ch.\+innovazion.\+arionide.\+lang.\+avr.\+A\+V\+R\+Environment.\+sram = new \mbox{\hyperlink{classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1device_1_1_a_v_r_s_r_a_m}{A\+V\+R\+S\+R\+AM}}(4096)\hspace{0.3cm}{\ttfamily [private]}}
 
 
 

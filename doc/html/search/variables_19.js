@@ -21,7 +21,7 @@
  *******************************************************************************/
 var searchData=
 [
-  ['z_5028',['z',['../classch_1_1innovazion_1_1arionide_1_1coders_1_1_camera_info.html#a702a33ecb28a2396101cd8b644c8ee49',1,'ch::innovazion::arionide::coders::CameraInfo']]],
-  ['zfar_5029',['zFar',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer.html#ac059ed5e324ce8797f342baf034bdcb9',1,'ch::innovazion::arionide::ui::core::gl::GLRenderer']]],
-  ['znear_5030',['zNear',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer.html#a6c945025515a87b906264a408af375bd',1,'ch::innovazion::arionide::ui::core::gl::GLRenderer']]]
+  ['z_5570',['z',['../classch_1_1innovazion_1_1arionide_1_1coders_1_1_camera_info.html#a702a33ecb28a2396101cd8b644c8ee49',1,'ch.innovazion.arionide.coders.CameraInfo.z()'],['../classch_1_1innovazion_1_1arionide_1_1lang_1_1avr_1_1device_1_1_a_v_r_s_r_a_m.html#ad946f99bc485c39ec6a32f522c527c6b',1,'ch.innovazion.arionide.lang.avr.device.AVRSRAM.Z()']]],
+  ['zfar_5571',['zFar',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer.html#ac059ed5e324ce8797f342baf034bdcb9',1,'ch::innovazion::arionide::ui::core::gl::GLRenderer']]],
+  ['znear_5572',['zNear',['../classch_1_1innovazion_1_1arionide_1_1ui_1_1core_1_1gl_1_1_g_l_renderer.html#a6c945025515a87b906264a408af375bd',1,'ch::innovazion::arionide::ui::core::gl::GLRenderer']]]
 ];
