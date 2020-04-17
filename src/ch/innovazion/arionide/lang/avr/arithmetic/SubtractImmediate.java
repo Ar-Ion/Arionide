@@ -81,7 +81,7 @@ public class SubtractImmediate extends Instruction {
 		sram.set(dPtr, value);
 				
 		int h = ~(dValue >> 3) & (kValue >> 3) | (kValue >> 3) & (value >> 3) | (value >> 3) & ~(dValue >> 3);
-		int v = (dValue >> 7) & ~(kValue >> 7) & ~(kValue >> 7) | ~(dValue >> 7) & (kValue >> 7) & (value >> 7);
+		int v = (dValue >> 7) & ~(kValue >> 7) & ~(value >> 7) | ~(dValue >> 7) & (kValue >> 7) & (value >> 7);
 		int n = value >> 7;
 		int s = n ^ v;
 		int z = value == 0 ? 1 : 0;
@@ -105,13 +105,13 @@ public class SubtractImmediate extends Instruction {
 			.withColor(0.13f)
 			.withComment("Subtract an immediate value from a register without the carry flag")
 			.beginSignature("Using immediate")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Subtrahend").asConstant(new Numeric(0)))
+				.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
+				.withParameter(new Parameter("Subtrahend").asConstant(new Numeric(0)))
 			.endSignature()
 			.beginSignature("Using variable")
 			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Subtrahend").asVariable(new Numeric(0)))
-			.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
+				.withParameter(new Parameter("Subtrahend").asVariable(new Numeric(0)))
+				.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
 			.endSignature()
 			.build();
 	}

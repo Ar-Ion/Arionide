@@ -73,18 +73,19 @@ public class SubtractImmediateWithCarry extends Instruction {
 		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
 
-		int sreg = sram.get(AVRSRAM.SREG) & 0b11000000;
+		int sregOrig = sram.get(AVRSRAM.SREG);
+		int sreg = sregOrig & 0b11000000;
 		int dValue = sram.getRegister(dPtr);
 		int kValue = (int) Bit.toInteger(k.getRawStream());
-		int value = (dValue - kValue - (sreg & 1)) & 0xFF;
+		int value = (dValue - kValue - (sregOrig & 1)) & 0xFF;
 		
 		sram.set(dPtr, value);
 				
 		int h = ~(dValue >> 3) & (kValue >> 3) | (kValue >> 3) & (value >> 3) | (value >> 3) & ~(dValue >> 3);
-		int v = (dValue >> 7) & ~(kValue >> 7) & ~(kValue >> 7) | ~(dValue >> 7) & (kValue >> 7) & (value >> 7);
+		int v = (dValue >> 7) & ~(kValue >> 7) & ~(value >> 7) | ~(dValue >> 7) & (kValue >> 7) & (value >> 7);
 		int n = value >> 7;
 		int s = n ^ v;
-		int z = value == 0 ? 1 : 0;
+		int z = (value == 0 ? 1 : 0) | (sregOrig >> 1);
 		int c = ~(dValue >> 7) & (kValue >> 7) | (kValue >> 7) & (value >> 7) | (value >> 7) & ~(dValue >> 7);
 		
 		int mask = ((h & 1) << 5) | ((s & 1) << 4) | ((v & 1) << 3) | ((n & 1) << 2) | ((z & 1) << 1) | (c & 1);
@@ -105,13 +106,13 @@ public class SubtractImmediateWithCarry extends Instruction {
 			.withColor(0.15f)
 			.withComment("Subtract an immediate value from a register with the carry flag")
 			.beginSignature("Using immediate")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Subtrahend").asConstant(new Numeric(0)))
+				.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
+				.withParameter(new Parameter("Subtrahend").asConstant(new Numeric(0)))
 			.endSignature()
 			.beginSignature("Using variable")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Factor").asVariable(new Numeric(0)))
-			.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
+				.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
+				.withParameter(new Parameter("Subtrahend").asVariable(new Numeric(0)))
+				.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
 			.endSignature()
 			.build();
 	}

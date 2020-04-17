@@ -19,7 +19,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.lang.avr.arithmetic;
+package ch.innovazion.arionide.lang.avr.branch;
 
 import java.util.List;
 
@@ -31,6 +31,7 @@ import ch.innovazion.arionide.lang.Skeleton;
 import ch.innovazion.arionide.lang.avr.AVREnums;
 import ch.innovazion.arionide.lang.avr.device.AVRSRAM;
 import ch.innovazion.arionide.lang.symbols.Bit;
+import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.lang.symbols.Enumeration;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Numeric;
@@ -39,7 +40,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class AddWithCarry extends Instruction {
+public class CompareSkipIfEqual extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -47,32 +48,34 @@ public class AddWithCarry extends Instruction {
 
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric r = (Numeric) ((Enumeration) getConstant(spec, 1)).getValue();
+		Numeric r = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
 		int rPtr = (int) Bit.toInteger(r.getRawStream());
 
-		int sregOrig = sram.get(AVRSRAM.SREG);
-		int sreg = sregOrig & 0b11000000;
 		int dValue = sram.getRegister(dPtr);
 		int rValue = sram.getRegister(rPtr);
-		int value = (dValue + rValue + (sregOrig & 1)) & 0xFF;
 		
-		sram.set(dPtr, value);
-		
-		int h = (dValue >> 3) & (rValue >> 3) | (rValue >> 3) & ~(value >> 3) | ~(value >> 3) & (dValue >> 3);
-		int v = (dValue >> 7) & (rValue >> 7) & ~(value >> 7) | ~(dValue >> 7) & ~(rValue >> 7) & (value >> 7);
-		int n = value >> 7;
-		int s = n ^ v;
-		int z = value == 0 ? 1 : 0;
-		int c = (dValue >> 7) & (rValue >> 7) | (rValue >> 7) & ~(value >> 7) | ~(value >> 7) & (dValue >> 7);
-		
-		int mask = ((h & 1) << 5) | ((s & 1) << 4) | ((v & 1) << 3) | ((n & 1) << 2) | ((z & 1) << 1) | (c & 1);
-		
-		sram.set(AVRSRAM.SREG, sreg | mask);
-		
+		if(dValue == rValue) {
+			// Skip
+			Callable next = programMemory.textAt(2 * (env.getProgramCounter().get() + 1));
+			Instruction instr = env.getLanguage().getInstructionSet().get(next.getName());
+			
+			if(instr.getLength() == 2) {
+				env.getProgramCounter().incrementAndGet();
+				env.getClock().incrementAndGet();
+			} else if(instr.getLength() == 4) {
+				env.getProgramCounter().incrementAndGet();
+				env.getProgramCounter().incrementAndGet();
+				env.getClock().incrementAndGet();
+				env.getClock().incrementAndGet();
+			} else {
+				throw new EvaluationException("Skip-instructions do not specify a behaviour for instructions different than one or two words long");
+			}
+		}
+
 		env.getProgramCounter().incrementAndGet();
 		env.getClock().incrementAndGet();
 	}
@@ -83,12 +86,12 @@ public class AddWithCarry extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("adc")
-			.withColor(0.11f)
-			.withComment("Add two registers with the carry flag")
+			.draft("cpse")
+			.withColor(0.97f)
+			.withComment("Skips the next instruction if the two registers have equal content")
 			.beginSignature("default")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.REGISTER))
-			.withParameter(new Parameter("Addend").asConstant(AVREnums.REGISTER))
+			.withParameter(new Parameter("Register 1").asConstant(AVREnums.REGISTER))
+			.withParameter(new Parameter("Register 2").asConstant(AVREnums.REGISTER))
 			.endSignature()
 			.build();
 	}

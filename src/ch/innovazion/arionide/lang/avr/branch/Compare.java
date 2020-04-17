@@ -19,7 +19,7 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.lang.avr.arithmetic;
+package ch.innovazion.arionide.lang.avr.branch;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;
 
-public class AddWithCarry extends Instruction {
+public class Compare extends Instruction {
 	
 	public void validate(Specification spec, List<String> validationErrors) {
 		;
@@ -54,20 +54,17 @@ public class AddWithCarry extends Instruction {
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
 		int rPtr = (int) Bit.toInteger(r.getRawStream());
 
-		int sregOrig = sram.get(AVRSRAM.SREG);
-		int sreg = sregOrig & 0b11000000;
+		int sreg = sram.get(AVRSRAM.SREG) & 0b11000000;
 		int dValue = sram.getRegister(dPtr);
 		int rValue = sram.getRegister(rPtr);
-		int value = (dValue + rValue + (sregOrig & 1)) & 0xFF;
-		
-		sram.set(dPtr, value);
-		
-		int h = (dValue >> 3) & (rValue >> 3) | (rValue >> 3) & ~(value >> 3) | ~(value >> 3) & (dValue >> 3);
-		int v = (dValue >> 7) & (rValue >> 7) & ~(value >> 7) | ~(dValue >> 7) & ~(rValue >> 7) & (value >> 7);
+		int value = (dValue - rValue) & 0xFF;
+						
+		int h = ~(dValue >> 3) & (rValue >> 3) | (rValue >> 3) & (value >> 3) | (value >> 3) & ~(dValue >> 3);
+		int v = (dValue >> 7) & ~(rValue >> 7) & ~(value >> 7) | ~(dValue >> 7) & (rValue >> 7) & (value >> 7);
 		int n = value >> 7;
 		int s = n ^ v;
 		int z = value == 0 ? 1 : 0;
-		int c = (dValue >> 7) & (rValue >> 7) | (rValue >> 7) & ~(value >> 7) | ~(value >> 7) & (dValue >> 7);
+		int c = ~(dValue >> 7) & (rValue >> 7) | (rValue >> 7) & (value >> 7) | (value >> 7) & ~(dValue >> 7);
 		
 		int mask = ((h & 1) << 5) | ((s & 1) << 4) | ((v & 1) << 3) | ((n & 1) << 2) | ((z & 1) << 1) | (c & 1);
 		
@@ -83,12 +80,12 @@ public class AddWithCarry extends Instruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("adc")
-			.withColor(0.11f)
-			.withComment("Add two registers with the carry flag")
+			.draft("cp")
+			.withColor(0.98f)
+			.withComment("Compares two registers")
 			.beginSignature("default")
-			.withParameter(new Parameter("Destination").asConstant(AVREnums.REGISTER))
-			.withParameter(new Parameter("Addend").asConstant(AVREnums.REGISTER))
+			.withParameter(new Parameter("Register 1").asConstant(AVREnums.REGISTER))
+			.withParameter(new Parameter("Register 2").asConstant(AVREnums.REGISTER))
 			.endSignature()
 			.build();
 	}

@@ -62,7 +62,7 @@ public class Subtract extends Instruction {
 		sram.set(dPtr, value);
 				
 		int h = ~(dValue >> 3) & (rValue >> 3) | (rValue >> 3) & (value >> 3) | (value >> 3) & ~(dValue >> 3);
-		int v = (dValue >> 7) & ~(rValue >> 7) & ~(rValue >> 7) | ~(dValue >> 7) & (rValue >> 7) & (value >> 7);
+		int v = (dValue >> 7) & ~(rValue >> 7) & ~(value >> 7) | ~(dValue >> 7) & (rValue >> 7) & (value >> 7);
 		int n = value >> 7;
 		int s = n ^ v;
 		int z = value == 0 ? 1 : 0;

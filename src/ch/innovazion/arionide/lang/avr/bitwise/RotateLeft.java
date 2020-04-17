@@ -52,9 +52,10 @@ public class RotateLeft extends Instruction {
 		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
 
-		int sreg = sram.get(AVRSRAM.SREG) & 0b11000000;
+		int sregOrig = sram.get(AVRSRAM.SREG);
+		int sreg = sregOrig & 0b11000000;
 		int dValue = sram.getRegister(dPtr);
-		int value = ((dValue << 1) | (sreg & 1)) & 0xFF;
+		int value = ((dValue << 1) | (sregOrig & 1)) & 0xFF;
 		
 		sram.set(dPtr, value);
 		
