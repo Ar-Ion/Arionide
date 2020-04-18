@@ -82,7 +82,7 @@ public class MenuManager extends StateManager {
 		hierarchy.genericUpdater.setGenericParameterValue(param.getValue());
 		hierarchy.genericUpdater.setGenericUpdateResponder(null);
 		hierarchy.genericUpdater.setGenericParameterFrozen(param.isFrozen());
-				
+		
 		if(param.getValue() instanceof Variable) {
 			triggerAction("variable");
 		} else if(param.getValue() instanceof Information) {

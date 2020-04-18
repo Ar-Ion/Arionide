@@ -229,7 +229,7 @@ public class StructureManager extends Manager {
 	/*
 	 *  Returns the structure of the entry point
 	 */
-	private Structure installLanguage(Language lang) {
+	private Structure installLanguage(Language lang) {		
 		if(lang != null) {
 			Structure entry = installInstruction(lang.getEntryPoint());
 			lang.getStandardInstructions().forEach(this::installInstruction);

@@ -22,7 +22,6 @@
 package ch.innovazion.arionide.ui.core.geom;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -48,9 +47,9 @@ import ch.innovazion.arionide.ui.core.Geometry;
 public class CodeGeometry extends Geometry {
 	
 	private static final float relativeSize = 0.05f;
-	private static final float axisEntropy = 0.1f;
-	private static final float axisCorrection = 0.3f;
-	private static final float axisCorrectionFlexibility = 5.0f;
+	private static final float axisEntropy = 0.3f;
+	private static final float axisCorrection = 0.5f;
+	private static final float axisCorrectionFlexibility = 2.0f;
 
 	private WorldElement container;
 	
@@ -121,9 +120,8 @@ public class CodeGeometry extends Geometry {
 			}
 		}
 		
-		// groups.add(input.subList(groupStart, input.size()));
-		groups.add(Arrays.asList());	
-		
+		groups.add(input.subList(groupStart, input.size()));
+				
 		float y = 0.0f;
 		
 		for(int i = 0; i < groups.size(); i++) {
@@ -140,7 +138,7 @@ public class CodeGeometry extends Geometry {
 			} else {
 				mainQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / 16, new Vector3f(0.0f, 1.0f, 0.0f)));
 				deltaHeight = (-Math.min(group.size() / 16.0f, 0.75f) - y) * size / relativeSize / group.size();
-				spreadFactor = 1.25f;
+				spreadFactor = 0.1f;
 			}
 			
 			for(int j = 0; j < group.size(); j++) {

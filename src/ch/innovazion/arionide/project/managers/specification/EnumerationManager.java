@@ -59,8 +59,12 @@ public class EnumerationManager extends ContextualManager<Enumeration> {
 	}
 	
 	public MessageEvent assign(String name) {
-		getContext().setValue(name);
-		saveCode();
-		return success();
+		if(getContext().getNames().contains(name)) {
+			getContext().setValue(name);
+			saveCode();
+			return success();	
+		} else {
+			return warn();
+		}
 	}
 }

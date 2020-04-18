@@ -45,8 +45,12 @@ public class Enumeration extends AtomicValue {
 	
 	private Enumeration(Enumeration parent) {
 		super(parent);
+		
 		nameMapping.addAll(parent.nameMapping);
 		possibleValues.putAll(parent.possibleValues);
+				
+		key = parent.key;
+		value = parent.value;
 	}
 	
 	/*
@@ -80,7 +84,7 @@ public class Enumeration extends AtomicValue {
 		return Collections.unmodifiableList(nameMapping);
 	}
 	
-	public Node getValue() {
+	public Node getValue() {		
 		if(value != null) {
 			return value;
 		} else if(!nameMapping.isEmpty()) {

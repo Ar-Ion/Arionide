@@ -51,7 +51,7 @@ public class Load extends Instruction {
 		Node pointerInfo = (Node) ((Enumeration) getConstant(spec, 1)).getValue();
 
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
-		
+
 		try {
 			AVRSRAM sram = env.getPeripheral("sram");
 

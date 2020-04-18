@@ -21,10 +21,7 @@
  *******************************************************************************/
 package ch.innovazion.arionide.project.managers;
 
-import java.io.IOException;
-
 import ch.innovazion.arionide.coders.Coder;
-import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.project.Project;
 
 public class ResourceAllocator {
@@ -46,13 +43,7 @@ public class ResourceAllocator {
 	private int alloc(String object) {
 		int id = this.project.getProperty(object, Coder.integerDecoder).intValue();
 		this.project.setProperty(object, (long) id + 1, Coder.integerEncoder); // Increment generator
-		
-		try {
-			this.project.save();
-		} catch (IOException exception) {
-			Debug.exception(exception);
-		}
-		
+
 		return id;
 	}
 	

@@ -88,7 +88,7 @@ public class Numeric extends AtomicValue {
 	
 	public Numeric cast(int length) {
 		Bit[] buffer = new Bit[length];
-		System.arraycopy(data, 0, buffer, 0, length);
+		System.arraycopy(data, data.length - length, buffer, 0, length);
 		this.data = buffer;
 		return this;
 	}
@@ -102,7 +102,7 @@ public class Numeric extends AtomicValue {
 	}
 
 	public List<String> getDisplayValue() {
-		return Arrays.asList(value + " (" + data.length + " bit(s))");
+		return Arrays.asList(value + " (" + getSize() + " bit(s))");
 	}
 	
 	public Numeric clone() {

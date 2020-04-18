@@ -23,7 +23,6 @@ package ch.innovazion.arionide.ui.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -287,7 +286,7 @@ public class CoreController {
 	}
 	
 	void onLeftClick() {
-		WorldElement focus = user.getFocus();
+		/*WorldElement focus = user.getFocus();
 		
 		if(focus != null) {
 			List<WorldElement> elements = this.mainCodeGeometry.getElements();
@@ -315,7 +314,7 @@ public class CoreController {
 				
 				return;
 			}
-		}
+		}*/
 			
 		this.binding = false;
 		menu.click();

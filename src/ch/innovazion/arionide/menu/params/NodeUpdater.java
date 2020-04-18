@@ -66,7 +66,6 @@ public class NodeUpdater extends ParameterUpdater {
 	protected void onEnter() {
 		super.onEnter();
 		updateCurrentNode(currentNode);
-
 	}
 	
 	protected void onRefresh(String identifier, Object prevValue) {
@@ -75,6 +74,7 @@ public class NodeUpdater extends ParameterUpdater {
 		if(identifier.equals("value")) {			
 			if(value instanceof Information) {
 				this.infoManager = getSpecificationManager().loadInformationManager(value);
+				updateCurrentNode(null);
 			} else if(value instanceof Node) {
 				this.infoManager = getSpecificationManager().loadInformationManager(null);
 				updateCurrentNode((Node) value);

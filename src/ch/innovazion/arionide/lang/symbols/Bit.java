@@ -70,7 +70,7 @@ public class Bit implements Serializable {
 			output <<= 1;
 			output |= bit.bit;
 		}
-		
+				
 		return output;
 	}
 	

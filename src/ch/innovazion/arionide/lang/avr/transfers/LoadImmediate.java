@@ -48,7 +48,7 @@ public class LoadImmediate extends Instruction {
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
 		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
 		Numeric k;
-		
+				
 		if(spec.getParameters().size() <= 2) {
 			k = (Numeric) getConstant(spec, 1);
 		} else {
@@ -73,7 +73,7 @@ public class LoadImmediate extends Instruction {
 		
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
 		int kValue = (int) Bit.toInteger(k.getRawStream());
-
+		
 		sram.setRegister(dPtr, kValue);
 		
 		env.getProgramCounter().incrementAndGet();

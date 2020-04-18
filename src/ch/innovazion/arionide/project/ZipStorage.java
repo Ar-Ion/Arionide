@@ -224,15 +224,16 @@ public class ZipStorage extends Storage {
 	}
 	
 	private synchronized void save(Path path, Object object) throws StorageException {
-		assert object != null;
-		assert object instanceof Serializable;
-
-		try(ObjectOutputStream output = new ObjectOutputStream(Files.newOutputStream(path, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING))) {
-			output.writeObject(object);
-		} catch (IOException exception) {
-			throw new StorageException("Unable to save resource", exception);
+		if(object != null) {
+			assert object instanceof Serializable;
+	
+			try(ObjectOutputStream output = new ObjectOutputStream(Files.newOutputStream(path, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING))) {
+				output.writeObject(object);
+			} catch (IOException exception) {
+				throw new StorageException("Unable to save resource", exception);
+			}
+			
+			location.setLastModified(System.currentTimeMillis());
 		}
-		
-		location.setLastModified(System.currentTimeMillis());
 	}
 }
