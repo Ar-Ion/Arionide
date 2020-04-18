@@ -55,27 +55,29 @@ public class Debugger extends Program {
 				}
 				
 				while(true) {
-					if(env.isManual().get()) {
-						try {
+					try {
+						if(env.isManual().get()) {
 							env.getManualModeSemaphore().acquire();
-						} catch (InterruptedException e) {
+						}
+						
+						if(env.getTimerStepRequest().compareAndSet(true, false)) {
+							io.log("Timer step: " + env.readTimer());
+						}
+						
+						Callable callable = memory.textAt(2 * env.getProgramCounter().get());
+						env.setNextInstruction(callable);
+						
+						Instruction instruction = lang.getInstructionSet().get(callable.getName());
+						
+						if(instruction != null) {
+							instruction.evaluate(env, callable.getSpecification(), memory);
+						} else {
+							io.fatal("Invalid instruction: " + callable.getName());
 							break;
 						}
-					}
-					
-					if(env.getTimerStepRequest().compareAndSet(true, false)) {
-						io.log("Timer step: " + env.readTimer());
-					}
-					
-					Callable callable = memory.textAt(2 * env.getProgramCounter().get());
-					env.setNextInstruction(callable);
-					
-					Instruction instruction = lang.getInstructionSet().get(callable.getName());
-					
-					if(instruction != null) {
-						instruction.evaluate(env, callable.getSpecification(), memory);
-					} else {
-						io.fatal("Invalid instruction: " + callable.getName());
+						
+						Thread.sleep(5);
+					} catch (InterruptedException e) {
 						break;
 					}
 				}

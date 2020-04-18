@@ -48,6 +48,7 @@ public class CodeEditor extends Menu {
 		case "Delete":
 			dispatch(project.getStructureManager().getCodeManager().deleteCode(target.getIdentifier()));
 			dispatch(new GeometryInvalidateEvent(0));
+			go("..");
 			break;
 		case "Append":
 			go("append");

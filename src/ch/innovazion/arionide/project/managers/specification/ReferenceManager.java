@@ -59,9 +59,9 @@ public class ReferenceManager extends ContextualManager<Reference> {
 		for(HierarchyElement child : elements) {
 			Structure struct = getStructures().get(child.getID());
 			
-			if(!struct.isLambda()) {
+			//if(!struct.isLambda()) {
 				output.add(struct);
-			}
+			//}
 		}
 					
 		return output;

@@ -133,14 +133,16 @@ public class CodeGeometry extends Geometry {
 
 			if(i < groups.size() - 1) {
 				mainQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / group.size(), new Vector3f(0.0f, 1.0f, 0.0f)));
-				deltaHeight = -size / group.size();
+				deltaHeight = -2 * size / group.size();
 				spreadFactor = 0.5f;
 			} else {
 				mainQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / 16, new Vector3f(0.0f, 1.0f, 0.0f)));
-				deltaHeight = (-Math.min(group.size() / 16.0f, 0.75f) - y) * size / relativeSize / group.size();
+				deltaHeight = (-Math.min(group.size() / 8.0f, 0.75f) - y) * size / relativeSize / group.size();
 				spreadFactor = 0.1f;
 			}
 			
+			axis.rotateY(-Geometry.PI / 3);
+				
 			for(int j = 0; j < group.size(); j++) {
 				HierarchyElement element = group.get(j);
 				Structure struct = mapping.get(element.getID());
@@ -162,7 +164,7 @@ public class CodeGeometry extends Geometry {
 						outputConnections.add(new Connection(previous, output));
 						
 						if(i < groups.size() - 1 && j == group.size() - 1) {
-							outputConnections.add(new Connection(output, outputElements.get(0)));
+							outputConnections.add(new Connection(output, outputElements.get(outputElements.size() - j - 1)));
 						}
 					}
 					
@@ -191,7 +193,7 @@ public class CodeGeometry extends Geometry {
 							if(info.getRoot() instanceof Reference) {
 								Callable target = ((Reference) info.getRoot()).getTarget();
 								
-								if(target != null && target.getIdentifier() != container.getID()) {
+								if(target != null && target.getIdentifier() != containerID) {
 									Structure refStruct = mapping.get(target.getIdentifier());
 									
 									if(refStruct.isLambda()) {
@@ -207,7 +209,8 @@ public class CodeGeometry extends Geometry {
 					}
 					
 					axis.normalize(spreadFactor * size / relativeSize);
-					position.add(axis);
+					position.sub(axis);
+					
 					axis.rotate(mainQuaternion);
 
 					y -= deltaHeight;

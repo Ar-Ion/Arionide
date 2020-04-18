@@ -173,9 +173,9 @@ public abstract class Environment implements EventHandler {
 		
 		manager.getEventDispatcher().registerHandler(this, 0.7f);
 		
-		Container container = new Container(null, dedicatedLayoutManager) {
+		Container container = new Container(null, dedicatedLayoutManager) {			
 			public void drawComponents(AppDrawingContext context) {
-				sample();
+				sample();				
 				super.drawComponents(context);
 			}
 			
@@ -247,6 +247,7 @@ public abstract class Environment implements EventHandler {
 			} else if(click.isTargettingSignal("reset")) {
 				manager.getWorkspace().getProgramThread().terminate();
 				controlSemaphore.drainPermits();
+				manualMode.compareAndSet(false, true);
 				programCounter.set(0);
 				clock.set(0);
 				timerStart = 0;

@@ -38,15 +38,15 @@ public class AVREnvironment extends Environment {
 		this.lang = lang;
 				
 		registerPeripheral(sram);
-		registerPeripheral(new DigitalInput(sram, 8, AVRSRAM.IO_BEGIN + 0x16));
-		registerPeripheral(new DigitalOutput(sram, 8, AVRSRAM.IO_BEGIN + 0x18));
+		registerPeripheral(new DigitalInput(sram, 8, AVRSRAM.IO_BEGIN + AVRSRAM.PINB));
+		registerPeripheral(new DigitalOutput(sram, 8, AVRSRAM.IO_BEGIN + AVRSRAM.PORTB));
 	}
 	
 	public void init() {
 		super.init();
 		
 		try {
-			sram.set(AVRSRAM.IO_BEGIN + 0x18, 0xFF);
+			sram.set(AVRSRAM.IO_BEGIN + AVRSRAM.PORTB, 0xFF);
 		} catch (EvaluationException e) {
 			e.printStackTrace();
 		}
