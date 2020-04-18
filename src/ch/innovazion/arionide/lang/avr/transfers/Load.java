@@ -109,7 +109,7 @@ public class Load extends Instruction {
 			.beginSignature("Displacement addressing")
 				.withParameter(new Parameter("Destination").asConstant(AVREnums.REGISTER))
 				.withParameter(new Parameter("Pointer").asConstant(AVREnums.DISP_POINTER))
-				.withParameter(new Parameter("Displacement").asConstant(new Numeric(0)))
+				.withParameter(new Parameter("Displacement").asConstant(new Numeric(0).cast(6)))
 			.endSignature()
 			.build();
 	}

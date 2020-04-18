@@ -24,7 +24,7 @@ package ch.innovazion.arionide.menu.params.assign;
 import java.util.List;
 
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
-import ch.innovazion.arionide.lang.symbols.Constant;
+import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.menu.MenuManager;
 import ch.innovazion.arionide.menu.params.ParameterUpdater;
@@ -44,8 +44,13 @@ public class ConstantAssigner extends ParameterUpdater {
 	protected void onEnter() {
 		super.onEnter();
 		
-		this.constManager = getSpecificationManager().loadConstantManager(value);
-		this.constants = constManager.getConstants(target);
+		if(value instanceof Node) {
+			this.constManager = getSpecificationManager().loadConstantManager(value);
+		} else if(value instanceof Information) {
+			this.constManager = getSpecificationManager().loadConstantManager(null);
+		}
+		
+		this.constants = constManager.getConstants();
 		
 		setDynamicElements(constants.stream().map(Node::getLabel).toArray(String[]::new));
 	}
@@ -57,7 +62,13 @@ public class ConstantAssigner extends ParameterUpdater {
 					   .setResponder(this::createConstant)
 					   .stackOnto(Views.code);
 		} else if(id != 1) {
-			dispatch(constManager.assign((Constant) constants.get(id - 2)));
+			dispatch(constManager.assign((Node) constants.get(id - 2)));
+			
+			if(value instanceof Information) {
+				((Information) value).setRootNode(constManager.getContext());
+			}
+			
+			dispatch(new GeometryInvalidateEvent(2));
 			this.value = constManager.getContext();
 			updateParameter();
 		}
@@ -68,9 +79,16 @@ public class ConstantAssigner extends ParameterUpdater {
 	}
 	
 	private void createConstant(String name) {
-		dispatch(constManager.createAndAssign(target, name));
+		dispatch(constManager.createAndAssign(name, (Node) value));
+		
+		if(value instanceof Information) {
+			((Information) value).setRootNode(constManager.getContext());
+		}
+		
 		dispatch(new GeometryInvalidateEvent(2));
 		this.value = constManager.getContext();
+		updateParameter();
+		
 		go(".");
 	}
 }

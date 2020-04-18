@@ -106,11 +106,11 @@ public class CompareImmediate extends Instruction {
 			.withComment("Compares a register with an immediate value")
 			.beginSignature("Using immediate")
 				.withParameter(new Parameter("Register").asConstant(AVREnums.HIGH_REGISTER))
-				.withParameter(new Parameter("Value").asConstant(new Numeric(0)))
+				.withParameter(new Parameter("Value").asConstant(new Numeric(0).cast(8)))
 			.endSignature()
 			.beginSignature("Using variable")
 				.withParameter(new Parameter("Register").asConstant(AVREnums.HIGH_REGISTER))
-				.withParameter(new Parameter("Value").asVariable(new Numeric(0)))
+				.withParameter(new Parameter("Value").asVariable(new Numeric(0).cast(8)))
 				.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
 			.endSignature()
 			.build();

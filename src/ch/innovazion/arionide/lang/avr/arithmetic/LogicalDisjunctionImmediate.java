@@ -103,11 +103,11 @@ public class LogicalDisjunctionImmediate extends Instruction {
 			.withComment("Computes the logical disjunction of a register with an immediate value")
 			.beginSignature("Using immediate")
 			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Factor").asConstant(new Numeric(0)))
+			.withParameter(new Parameter("Factor").asConstant(new Numeric(0).cast(8)))
 			.endSignature()
 			.beginSignature("Using variable")
 			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Factor").asVariable(new Numeric(0)))
+			.withParameter(new Parameter("Factor").asVariable(new Numeric(0).cast(8)))
 			.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
 			.endSignature()
 			.build();

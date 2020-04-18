@@ -85,6 +85,10 @@ public class GLText extends GLShape implements Text {
 	
 	public void render() {
 		if(this.bounds != null && this.entry != null) {
+			if(entry.isInvalidated()) {
+				prepareGL();
+			}
+			
 			Scalar scalar = this.affine.getScalar();
 			Translation translation = this.affine.getTranslation();
 			

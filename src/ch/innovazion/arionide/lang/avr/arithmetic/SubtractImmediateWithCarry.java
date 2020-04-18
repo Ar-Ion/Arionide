@@ -107,11 +107,11 @@ public class SubtractImmediateWithCarry extends Instruction {
 			.withComment("Subtract an immediate value from a register with the carry flag")
 			.beginSignature("Using immediate")
 				.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-				.withParameter(new Parameter("Subtrahend").asConstant(new Numeric(0)))
+				.withParameter(new Parameter("Subtrahend").asConstant(new Numeric(0).cast(8)))
 			.endSignature()
 			.beginSignature("Using variable")
 				.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-				.withParameter(new Parameter("Subtrahend").asVariable(new Numeric(0)))
+				.withParameter(new Parameter("Subtrahend").asVariable(new Numeric(0).cast(8)))
 				.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
 			.endSignature()
 			.build();

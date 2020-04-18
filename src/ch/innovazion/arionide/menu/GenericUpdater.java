@@ -38,6 +38,9 @@ public class GenericUpdater extends Menu {
 	protected Structure target;
 	
 	@Export
+	protected boolean frozen;
+	
+	@Export
 	protected Parameter parameter;
 	
 	@Export
@@ -45,9 +48,6 @@ public class GenericUpdater extends Menu {
 	
 	@Export
 	protected Consumer<Void> onUpdate;
-	
-	@Export
-	protected boolean frozen;
 	
 	public void setGenericTarget(Structure target) {
 		this.target = target;

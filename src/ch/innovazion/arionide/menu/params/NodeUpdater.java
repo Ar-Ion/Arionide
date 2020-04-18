@@ -30,7 +30,6 @@ import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.symbols.AtomicValue;
-import ch.innovazion.arionide.lang.symbols.Constant;
 import ch.innovazion.arionide.lang.symbols.Enumeration;
 import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.InvalidValueException;
@@ -82,9 +81,9 @@ public class NodeUpdater extends ParameterUpdater {
 		}
 	}
 	
-	private void updateCurrentNode(Node currentNode) {
+	private void updateCurrentNode(Node currentNode) {		
 		if(currentNode == null) {
-			if(infoManager != null) {
+			if(infoManager != null && infoManager.hasContext()) {
 				currentNode = infoManager.getRootNode();
 			} else {
 				go("..");
@@ -134,15 +133,6 @@ public class NodeUpdater extends ParameterUpdater {
 			}
 			
 			this.separator = elements.size();
-		} else if(currentNode instanceof Constant) {
-			elements.add("Set constant");
-
-			if(!frozen) {
-				elements.add(null);
-				elements.addAll(Arrays.asList("As node", "As number", "As text", "As enumeration", "As variable", "As reference"));
-			}
-			
-			this.separator = elements.size();
 		} else if(currentNode instanceof Variable) {
 			elements.add("Setup variable");
 
@@ -174,6 +164,8 @@ public class NodeUpdater extends ParameterUpdater {
 			}
 		}		
 		
+		elements.add("From constant");
+		
 		elements.add(null);
 		
 		if(currentNode.getParent() != null) {
@@ -202,19 +194,16 @@ public class NodeUpdater extends ParameterUpdater {
 				reassignAsNode();
 				break;
 			case "As number":
-			case "Set number":
 				reassignAsParseable(Numeric::new);
 				break;
+			case "Set number":
+				setParseable();
+				break;
 			case "As text":
-			case "Set text":
 				reassignAsParseable(Text::new);
 				break;
-			case "As constant":
-				reassignAsConstant();
-				break;
-			case "Setup constant":
-				this.value = currentNode;
-				go("const");
+			case "Set text":
+				setParseable();
 				break;
 			case "As variable":
 				reassignAsVariable();
@@ -236,6 +225,13 @@ public class NodeUpdater extends ParameterUpdater {
 			case "Setup enumeration":
 				this.value = currentNode;
 				go("enum");
+				break;
+			case "From constant":
+				if(currentNode.getParent() != null) {
+					this.value = currentNode;
+				}
+				
+				go("const");
 				break;
 			case "Parent":
 				back();
@@ -295,18 +291,6 @@ public class NodeUpdater extends ParameterUpdater {
 		go("enum");
 	}
 	
-	private void reassignAsConstant() {
-		Constant constant = new Constant();
-		dispatch(infoManager.assign(currentNode, constant));
-		dispatch(new GeometryInvalidateEvent(0));
-		
-		updateCurrentNode(constant);
-		updateParameter();
-		
-		this.value = constant;
-		go("const");
-	}
-	
 	private void reassignAsVariable() {
 		Variable variable = new Variable();
 		dispatch(infoManager.assign(currentNode, variable));
@@ -333,7 +317,7 @@ public class NodeUpdater extends ParameterUpdater {
 	
 	private void reassignAsParseable(Supplier<Node> valueAllocator) {
 		Views.input.setText("Please enter the value of the information")
-				   .setPlaceholder("Information value")
+				   .setPlaceholder("Value")
 				   .setResponder(rawValue -> reassignParseable0(rawValue, valueAllocator))
 				   .stackOnto(Views.code);
 	}
@@ -346,6 +330,24 @@ public class NodeUpdater extends ParameterUpdater {
 			dispatch(infoManager.assign(currentNode, value));
 			dispatch(new GeometryInvalidateEvent(0));
 			updateCurrentNode(value);
+		} catch (InvalidValueException e) {
+			dispatch(new MessageEvent(e.getMessage(), MessageType.ERROR));
+		}
+				
+		updateParameter();
+	}
+	
+	private void setParseable() {
+		Views.input.setText("Please enter the value of the information")
+				   .setPlaceholder("Value")
+				   .setResponder(this::setParseable0)
+				   .stackOnto(Views.code);
+	}
+	
+	private void setParseable0(String rawValue) {		
+		try {
+			currentNode.parse(rawValue);
+			dispatch(new GeometryInvalidateEvent(0));
 		} catch (InvalidValueException e) {
 			dispatch(new MessageEvent(e.getMessage(), MessageType.ERROR));
 		}

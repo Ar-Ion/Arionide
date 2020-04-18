@@ -45,7 +45,7 @@ public class VariableAssigner extends ParameterUpdater {
 		super.onEnter();
 		
 		this.varManager = getSpecificationManager().loadVariableManager(value);
-		this.variables = varManager.getVariables(target);
+		this.variables = varManager.getVariables();
 		
 		setDynamicElements(variables.stream().map(Node::getLabel).toArray(String[]::new));
 	}
@@ -67,7 +67,7 @@ public class VariableAssigner extends ParameterUpdater {
 	}
 	
 	private void createVariable(String name) {
-		dispatch(varManager.createAndBind(target, name));
+		dispatch(varManager.createAndBind(name));
 		dispatch(new GeometryInvalidateEvent(2));
 		go(".");
 	}

@@ -34,14 +34,21 @@ import ch.innovazion.arionide.lang.symbols.Variable;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.arionide.project.managers.ContextualManager;
+import ch.innovazion.arionide.project.managers.StructureManager;
 import ch.innovazion.arionide.project.mutables.MutableActor;
 
 public class VariableManager extends ContextualManager<Variable> {
-	protected VariableManager(Storage storage) {
+	
+	private final StructureManager structManager;
+	
+	protected VariableManager(Storage storage, StructureManager structManager) {
 		super(storage);
+		this.structManager = structManager;
 	}
 	
-	public List<Node> getState(Structure parent) {
+	public List<Node> getState() {
+		Structure parent = structManager.getCurrentStructure();
+
 		if(parent instanceof MutableActor) {
 			return ((MutableActor) parent).getWrapper().getState().getNodes();
 		} else {
@@ -49,7 +56,9 @@ public class VariableManager extends ContextualManager<Variable> {
 		}
 	}
 	
-	public List<Node> getProps(Structure parent) {
+	public List<Node> getProps() {
+		Structure parent = structManager.getCurrentStructure();
+
 		if(parent instanceof MutableActor) {
 			return ((MutableActor) parent).getWrapper().getProperties().getNodes();
 		} else {
@@ -57,11 +66,13 @@ public class VariableManager extends ContextualManager<Variable> {
 		}
 	}
 	
-	public List<Node> getVariables(Structure parent) {
-		return Stream.concat(getState(parent).stream(), getProps(parent).stream()).collect(Collectors.toList());
+	public List<Node> getVariables() {
+		return Stream.concat(getState().stream(), getProps().stream()).collect(Collectors.toList());
 	}
 	
-	public MessageEvent createAndBind(Structure parent, String name) {
+	public MessageEvent createAndBind(String name) {
+		Structure parent = structManager.getCurrentStructure();
+
 		if(parent instanceof MutableActor) {
 			Variable var = new Variable();
 			
@@ -87,7 +98,9 @@ public class VariableManager extends ContextualManager<Variable> {
 		return success();
 	}
 
-	public MessageEvent delete(Structure parent, String name) {
+	public MessageEvent delete(String name) {
+		Structure parent = structManager.getCurrentStructure();
+
 		if(parent instanceof MutableActor) {
 			try {
 				Node state = ((MutableActor) parent).getWrapper().getState();
@@ -105,7 +118,9 @@ public class VariableManager extends ContextualManager<Variable> {
 		}
 	}
 	
-	public MessageEvent rename(Structure parent, String currentName, String newName) {
+	public MessageEvent rename(String currentName, String newName) {
+		Structure parent = structManager.getCurrentStructure();
+
 		if(parent instanceof MutableActor) {
 			try {
 				Node state = ((MutableActor) parent).getWrapper().getState();

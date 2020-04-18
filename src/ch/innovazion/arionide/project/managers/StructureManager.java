@@ -334,6 +334,16 @@ public class StructureManager extends Manager {
 		return specManager;
 	}
 	
+	public Structure getCurrentStructure() {
+		int id = hostStack.getCurrent();
+		
+		if(id >= 0) {
+			return getStructures().get(id);
+		} else {
+			return null;
+		}
+	}
+	
 	private List<MutableHierarchyElement> getMutableCurrentGeneration() {
 		return getCurrentGeneration0(getHierarchy(), hostStack.getStack(), MutableHierarchyElement::getMutableChildren);
 	}

@@ -108,10 +108,10 @@ public abstract class AbstractBranch extends Instruction {
 	public StructureModel createStructureModel() {
 		return getModelDraft()
 			.beginSignature("Using offset")
-				.withParameter(new Parameter("Offset").asConstant(new Numeric(0)))
+				.withParameter(new Parameter("Offset").asConstant(new Numeric(0).cast(8)))
 			.endSignature()
 			.beginSignature("Using variable offset")
-				.withParameter(new Parameter("Offset").asVariable(new Numeric(0)))
+				.withParameter(new Parameter("Offset").asVariable(new Numeric(0).cast(8)))
 				.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
 			.endSignature()
 			.beginSignature("Using reference")

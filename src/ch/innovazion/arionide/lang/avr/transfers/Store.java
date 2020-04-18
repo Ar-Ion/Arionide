@@ -105,7 +105,7 @@ public class Store extends Instruction {
 			.endSignature()
 			.beginSignature("Displacement addressing")
 				.withParameter(new Parameter("Pointer").asConstant(AVREnums.DISP_POINTER))
-				.withParameter(new Parameter("Displacement").asConstant(new Numeric(0)))
+				.withParameter(new Parameter("Displacement").asConstant(new Numeric(0).cast(6)))
 				.withParameter(new Parameter("Source").asConstant(AVREnums.REGISTER))
 			.endSignature()
 			.build();

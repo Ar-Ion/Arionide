@@ -23,7 +23,6 @@ package ch.innovazion.arionide.lang.programs;
 
 import ch.innovazion.arionide.lang.ApplicationMemory;
 import ch.innovazion.arionide.lang.Environment;
-import ch.innovazion.arionide.lang.EvaluationException;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Language;
 import ch.innovazion.arionide.lang.Program;
@@ -76,12 +75,14 @@ public class Debugger extends Program {
 							break;
 						}
 						
+						env.getClock().incrementAndGet();
+						
 						Thread.sleep(5);
-					} catch (InterruptedException e) {
+					} catch (Exception e) {
 						break;
 					}
 				}
-			} catch (EvaluationException e) {
+			} catch (Exception e) {
 				io.fatal(e.getMessage());
 			}
 		} else {

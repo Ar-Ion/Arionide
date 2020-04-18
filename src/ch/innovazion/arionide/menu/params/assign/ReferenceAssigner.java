@@ -35,7 +35,7 @@ public class ReferenceAssigner extends ParameterUpdater {
 	private List<Callable> callables;
 	
 	public ReferenceAssigner(MenuManager manager) {
-		super(manager, "<Lambda>");
+		super(manager, "Lambda", null);
 	}
 	
 	protected void onEnter() {

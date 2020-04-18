@@ -27,12 +27,12 @@ import java.util.List;
 import ch.innovazion.arionide.events.MessageEvent;
 import ch.innovazion.arionide.events.MessageType;
 import ch.innovazion.arionide.lang.symbols.AtomicValue;
-import ch.innovazion.arionide.lang.symbols.Constant;
 import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 import ch.innovazion.arionide.project.Storage;
 import ch.innovazion.arionide.project.Structure;
 import ch.innovazion.arionide.project.managers.ContextualManager;
+import ch.innovazion.arionide.project.managers.StructureManager;
 import ch.innovazion.arionide.project.mutables.MutableActor;
 
 
@@ -41,12 +41,18 @@ import ch.innovazion.arionide.project.mutables.MutableActor;
  * Inheritance principle was discarded for this design because too many small things must be changed
  * between the implementations. Code would have been unreadable, I think.
  */
-public class ConstantManager extends ContextualManager<Constant> {
-	protected ConstantManager(Storage storage) {
+public class ConstantManager extends ContextualManager<Node> {
+	
+	private final StructureManager structManager;
+	
+	protected ConstantManager(Storage storage, StructureManager structManager) {
 		super(storage);
+		this.structManager = structManager;
 	}
 	
-	public List<Node> getConstants(Structure parent) {
+	public List<Node> getConstants() {
+		Structure parent = structManager.getCurrentStructure();
+		
 		if(parent instanceof MutableActor) {
 			return ((MutableActor) parent).getWrapper().getConstants().getNodes();
 		} else {
@@ -55,12 +61,14 @@ public class ConstantManager extends ContextualManager<Constant> {
 	}
 	
 	// Following code from VariableManager.java
-	public MessageEvent createAndAssign(Structure parent, String name) {
+	public MessageEvent createAndAssign(String name, Node model) {
+		Structure parent = structManager.getCurrentStructure();
+
 		if(parent instanceof MutableActor) {
-			Constant constant = new Constant();
+			Node constant = model.clone();
 			
 			constant.label(name);
-			
+						
 			try {
 				((MutableActor) parent).getWrapper().getConstants().connect(constant);
 			} catch (SymbolResolutionException e) {
@@ -73,7 +81,9 @@ public class ConstantManager extends ContextualManager<Constant> {
 		}
 	}
 
-	public MessageEvent delete(Structure parent, String name) {
+	public MessageEvent delete(String name) {
+		Structure parent = structManager.getCurrentStructure();
+
 		if(parent instanceof MutableActor) {
 			try {
 				Node state = ((MutableActor) parent).getWrapper().getConstants();
@@ -91,7 +101,9 @@ public class ConstantManager extends ContextualManager<Constant> {
 		}
 	}
 	
-	public MessageEvent rename(Structure parent, String currentName, String newName) {
+	public MessageEvent rename(String currentName, String newName) {
+		Structure parent = structManager.getCurrentStructure();
+
 		if(parent instanceof MutableActor) {
 			try {
 				Node state = ((MutableActor) parent).getWrapper().getConstants();
@@ -110,28 +122,28 @@ public class ConstantManager extends ContextualManager<Constant> {
 	}
 	
 	// From InformationManager.java
-	public MessageEvent assign(Constant newValue) {
+	public MessageEvent assign(Node newValue) {
 		try {
-			Constant prevValue = getContext();
-			Node parent = prevValue.getParent();
-
-			if(parent != null) {
-				if(parent instanceof AtomicValue) {
-					return new MessageEvent("Cannot assign a value to an atomic information", MessageType.ERROR);
+			if(hasContext()) {
+				Node prevValue = getContext();
+				Node parent = prevValue.getParent();
+	
+				if(prevValue != null && parent != null) {
+					if(parent instanceof AtomicValue) {
+						return new MessageEvent("Cannot assign a value to an atomic information", MessageType.ERROR);
+					}
+					
+					newValue.label(prevValue.getLabel());
+									
+					int index = parent.indexOf(prevValue);
+					parent.disconnect(prevValue);
+					parent.connect(newValue, index);
 				}
-				
-				newValue.label(prevValue.getLabel());
-								
-				int index = parent.indexOf(prevValue);
-				parent.disconnect(prevValue);
-				parent.connect(newValue, index);
-				
-				setContext(newValue);
-				
-				return success();
-			} else {
-				return warn();
 			}
+			
+			setContext(newValue);
+
+			return success();
 		} catch (SymbolResolutionException exception) {
 			return new MessageEvent(exception.getMessage(), MessageType.ERROR);
 		}

@@ -26,6 +26,8 @@ public class GLTextCacheEntry extends TextCacheEntry {
 	private final int vao;
 	private final int[] freeables;
 	
+	private boolean invalidated = false;
+	
 	protected GLTextCacheEntry(float width, float height, int count, int vao, int[] freeables) {
 		super(width, height, count);
 		this.vao = vao;
@@ -34,6 +36,14 @@ public class GLTextCacheEntry extends TextCacheEntry {
 	
 	protected int getVAO() {
 		return this.vao;
+	}
+	
+	protected void invalidate() {
+		invalidated = true;
+	}
+	
+	public boolean isInvalidated() {
+		return invalidated;
 	}
 	
 	protected int[] getFreeableResources() {

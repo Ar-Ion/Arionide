@@ -24,9 +24,9 @@ package ch.innovazion.arionide.project.managers.specification;
 import java.util.function.Consumer;
 
 import ch.innovazion.arionide.events.MessageEvent;
-import ch.innovazion.arionide.lang.symbols.Constant;
 import ch.innovazion.arionide.lang.symbols.Enumeration;
 import ch.innovazion.arionide.lang.symbols.Information;
+import ch.innovazion.arionide.lang.symbols.Node;
 import ch.innovazion.arionide.lang.symbols.Parameter;
 import ch.innovazion.arionide.lang.symbols.ParameterValue;
 import ch.innovazion.arionide.lang.symbols.Reference;
@@ -50,8 +50,8 @@ public class SpecificationManager extends ContextualManager<Specification> {
 		super(storage);
 		
 		this.informationManager = new InformationManager(storage);
-		this.constantManager = new ConstantManager(storage);
-		this.variableManager = new VariableManager(storage);
+		this.constantManager = new ConstantManager(storage, structManager);
+		this.variableManager = new VariableManager(storage, structManager);
 		this.referenceManager = new ReferenceManager(storage, structManager);
 		this.enumManager = new EnumerationManager(storage);
 	}
@@ -138,7 +138,7 @@ public class SpecificationManager extends ContextualManager<Specification> {
 	}
 	
 	public ConstantManager loadConstantManager(ParameterValue value) {
-		constantManager.setContext((Constant) value);
+		constantManager.setContext((Node) value);
 		return constantManager;
 	}
 	

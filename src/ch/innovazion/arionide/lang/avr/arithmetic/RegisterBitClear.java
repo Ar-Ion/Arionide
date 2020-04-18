@@ -83,7 +83,7 @@ public class RegisterBitClear extends Instruction {
 			.withComment("Clears the specified bits in the register")
 			.beginSignature("default")
 			.withParameter(new Parameter("Destination").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Mask").asConstant(new Numeric(0)))
+			.withParameter(new Parameter("Mask").asConstant(new Numeric(0).cast(8)))
 			.endSignature()
 			.build();
 	}

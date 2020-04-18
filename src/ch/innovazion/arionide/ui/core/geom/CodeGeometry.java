@@ -173,14 +173,14 @@ public class CodeGeometry extends Geometry {
 					/* Process specification */					
 					List<Parameter> specification = struct.getSpecification().getParameters();
 										
-					Vector3f specPos = new Vector3f(axis).cross(0.0f, 1.0f, 0.0f).normalize(size * 1.5f);
+					Vector3f specPos = new Vector3f(axis).cross(0.0f, 1.0f, 0.0f).normalize(size * 3.0f);
 					
 					Quaternionf specQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / specification.size(), new Vector3f(axis).normalize()));
 					
 					for(int k = 0; k < specification.size(); k++) {
 						Parameter param = specification.get(k);
 						
-						WorldElement specObject = this.factory.make((((k + 1) & 0x7F) << 24) | element.getID(), containerID, param.getName(), param.getDisplayValue(), new Vector3f(specPos).add(position), color, spotColor, size / 3.0f, struct.isAccessAllowed());
+						WorldElement specObject = this.factory.make((((k + 1) & 0x7F) << 24) | element.getID(), containerID, param.getName(), param.getDisplayValue(), new Vector3f(specPos).add(position), color, spotColor, size / 1.5f, struct.isAccessAllowed());
 						
 						outputSpecification.add(specObject);
 						outputConnections.add(new Connection(output, specObject));
@@ -200,7 +200,7 @@ public class CodeGeometry extends Geometry {
 										CodeChain chain = getProject().getStorage().getCode().get(target.getIdentifier());
 																				
 										if(chain != null) {
-											build(specObject, target.getIdentifier(), chain.list(), outputElements, outputSpecification, outputConnections, mapping, size / 3.0f);
+											build(specObject, target.getIdentifier(), chain.list(), outputElements, outputSpecification, outputConnections, mapping, size / 1.5f);
 										}
 									}
 								}

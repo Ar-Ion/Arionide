@@ -53,15 +53,12 @@ public class ReferenceManager extends ContextualManager<Reference> {
 		List<Callable> output = new ArrayList<>();
 				
 		if(!structManager.getHostStack().isEmpty()) {
-			output.add(getStructures().get(structManager.getHostStack().getCurrent()));
+			output.add(structManager.getCurrentStructure());
 		}
 		
 		for(HierarchyElement child : elements) {
 			Structure struct = getStructures().get(child.getID());
-			
-			//if(!struct.isLambda()) {
-				output.add(struct);
-			//}
+			output.add(struct);
 		}
 					
 		return output;

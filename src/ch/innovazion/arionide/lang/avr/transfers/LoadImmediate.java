@@ -91,11 +91,11 @@ public class LoadImmediate extends Instruction {
 			.withComment("Loads an immediate value into a register")
 			.beginSignature("Using immediate")
 			.withParameter(new Parameter("Register").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Value").asConstant(new Numeric(0)))
+			.withParameter(new Parameter("Value").asConstant(new Numeric(0).cast(8)))
 			.endSignature()
 			.beginSignature("Using variable")
 			.withParameter(new Parameter("Register").asConstant(AVREnums.HIGH_REGISTER))
-			.withParameter(new Parameter("Value").asVariable(new Numeric(0)))
+			.withParameter(new Parameter("Value").asVariable(new Numeric(0).cast(8)))
 			.withParameter(new Parameter("Address mask").asConstant(AVREnums.ADDRESS_MASK))
 			.endSignature()
 			.build();

@@ -40,7 +40,7 @@ import ch.innovazion.arionide.ui.topology.Translation;
 
 public class GLFontRenderer implements FontRenderer {
 	
-	private static final int CACHE_CAPACITY = 1024;
+	private static final int CACHE_CAPACITY = 512;
 	
 	
 	private final Map<String, GLTextCacheEntry> cache = new LinkedHashMap<String, GLTextCacheEntry>(CACHE_CAPACITY, 0.75f, true) {
@@ -48,6 +48,7 @@ public class GLFontRenderer implements FontRenderer {
 
 		protected boolean removeEldestEntry(Map.Entry<String, GLTextCacheEntry> eldest) {
 			if(this.size() > CACHE_CAPACITY) {
+				eldest.getValue().invalidate();
 				Trash.instance().throwAway(GLFontRenderer.this.getTrashable(eldest.getValue()));
 				return true;
 			} else {
