@@ -19,47 +19,39 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.params.assign;
+package ch.innovazion.arionide.lang.avr.special;
 
 import java.util.List;
 
-import ch.innovazion.arionide.events.GeometryInvalidateEvent;
-import ch.innovazion.arionide.lang.symbols.Callable;
-import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.ParameterUpdater;
-import ch.innovazion.arionide.project.managers.specification.ReferenceManager;
+import ch.innovazion.arionide.lang.ApplicationMemory;
+import ch.innovazion.arionide.lang.Environment;
+import ch.innovazion.arionide.lang.EvaluationException;
+import ch.innovazion.arionide.lang.SpecialInstruction;
+import ch.innovazion.arionide.lang.symbols.Numeric;
+import ch.innovazion.arionide.lang.symbols.Parameter;
+import ch.innovazion.arionide.lang.symbols.Specification;
+import ch.innovazion.arionide.project.StructureModel;
+import ch.innovazion.arionide.project.StructureModelFactory;
+import ch.innovazion.arionide.ui.ApplicationTints;
 
-public class ReferenceAssigner extends ParameterUpdater {
-
-	private ReferenceManager refManager;
-	private List<Callable> callables;
+public class Organize extends SpecialInstruction {
 	
-	public ReferenceAssigner(MenuManager manager) {
-		super(manager, "Lambda");
-	}
-	
-	protected void onEnter() {
-		super.onEnter();
-		this.refManager = getSpecificationManager().loadReferenceManager(value);
-		this.callables = refManager.getAccessibleCallables();
-		setDynamicElements(callables.stream().map(Callable::getName).toArray(String[]::new));
+	public void validate(Specification spec, List<String> validationErrors) {
+		;
 	}
 
-	public void onAction(String action) {
-		if(id == 0) {
-			dispatch(refManager.assignLambda());
-			dispatch(new GeometryInvalidateEvent(2));
-			updateParameter();
-		} else {
-			dispatch(refManager.assignCallable(callables.get(id - 1)));
-			dispatch(new GeometryInvalidateEvent(0));
-			updateParameter();
-		}
-		
-		go("..");
+	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
+		;
 	}
-	
-	protected String getDescriptionTitle() {
-		return "Assigning a reference";
+
+	public StructureModel createStructureModel() {
+		return StructureModelFactory
+			.draft("Organize")
+			.withColor(ApplicationTints.getColorIDByName("Black"))
+			.withComment("Places the following instructions at the given address")
+			.beginSignature("default")
+			.withParameter(new Parameter("Address").asConstant(new Numeric(0).cast(16)))
+			.endSignature()
+			.build();
 	}
 }

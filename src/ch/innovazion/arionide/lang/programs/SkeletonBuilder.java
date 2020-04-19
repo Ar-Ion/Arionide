@@ -30,6 +30,7 @@ import ch.innovazion.arionide.lang.Language;
 import ch.innovazion.arionide.lang.LanguageManager;
 import ch.innovazion.arionide.lang.Program;
 import ch.innovazion.arionide.lang.Skeleton;
+import ch.innovazion.arionide.lang.SpecialInstruction;
 import ch.innovazion.arionide.lang.symbols.Callable;
 import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Node;
@@ -59,7 +60,7 @@ public class SkeletonBuilder extends Program {
 		}
 	}
 	
-	private boolean build(Callable target, Skeleton skeleton, Map<String, Instruction> instructionSet, ProgramIO io) {
+	protected boolean build(Callable target, Skeleton skeleton, Map<String, Instruction> instructionSet, ProgramIO io) {
 		skeleton.registerData(getState(target.getIdentifier()));
 		skeleton.registerRodata(getConstants(target.getIdentifier()));
 		skeleton.registerBSS(getProperties(target.getIdentifier()));
@@ -76,30 +77,34 @@ public class SkeletonBuilder extends Program {
 			Instruction instr = instructionSet.get(codeElement.getName());
 			
 			if(instr != null) {
-				length += instr.getLength();
-				
-				for(Parameter param : codeElement.getSpecification().getParameters()) {
-					ParameterValue value = param.getValue();
+				if(!(instr instanceof SpecialInstruction)) {
+					length += instr.getLength();
 					
-					if(value instanceof Information) {
-						Node node = ((Information) value).getRoot();
+					for(Parameter param : codeElement.getSpecification().getParameters()) {
+						ParameterValue value = param.getValue();
 						
-						if(node instanceof Reference) {
-							Reference ref = (Reference) node;
-							Callable nextTarget = ref.getTarget();
+						if(value instanceof Information) {
+							Node node = ((Information) value).getRoot();
 							
-							if(nextTarget != null) {
-								if(!skeleton.hasTextAddress(nextTarget)) {
-									next.add(nextTarget);
+							if(node instanceof Reference) {
+								Reference ref = (Reference) node;
+								Callable nextTarget = ref.getTarget();
+								
+								if(nextTarget != null) {
+									if(!skeleton.hasTextAddress(nextTarget)) {
+										next.add(nextTarget);
+									} else {
+										return true;
+									}
 								} else {
-									return true;
+									io.error("Invalid reference: " + ref.toString() + " (" + target.getIdentifier() + ":" + codeElement.getIdentifier() + ")");
+									failure = true;
 								}
-							} else {
-								io.error("Invalid reference: " + ref.toString() + " (" + target.getIdentifier() + ":" + codeElement.getIdentifier() + ")");
-								failure = true;
 							}
 						}
 					}
+				} else {
+					processSpecialInstruction(codeElement, skeleton, instructionSet, io);
 				}
 			} else {
 				io.error("Invalid instruction: " + codeElement.toString() + " (" + target.getIdentifier() + ":" + codeElement.getIdentifier() + ")");
@@ -122,6 +127,10 @@ public class SkeletonBuilder extends Program {
 			io.success("Skeleton built for structure '" + target.getName() + "'");
 			return true;
 		}
+	}
+	
+	protected void processSpecialInstruction(Callable callable, Skeleton skeleton, Map<String, Instruction> instructionSet, ProgramIO io) {
+		
 	}
 	
 	public String getName() {

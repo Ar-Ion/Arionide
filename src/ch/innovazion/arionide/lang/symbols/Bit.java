@@ -29,9 +29,12 @@ public class Bit implements Serializable {
 
 	private static final long serialVersionUID = 3232953289986528460L;
 	
+	public static final Bit ZERO = new Bit(0);
+	public static final Bit ONE = new Bit(1);
+	
 	private final int bit;
 	
-	public Bit(int bit) {
+	private Bit(int bit) {
 		this.bit = bit != 0 ? 1 : 0;
 	}
 	
@@ -57,7 +60,7 @@ public class Bit implements Serializable {
 		Bit[] data = new Bit[bits];
 
 		for(int i = 0; i < bits; i++) {
-			data[i] = new Bit(integer.and(BigInteger.ONE.shiftLeft(bits - i - 1)).intValue());
+			data[i] = valueOf(integer.and(BigInteger.ONE.shiftLeft(bits - i - 1)).intValue());
 		}
 				
 		return data;
@@ -76,5 +79,9 @@ public class Bit implements Serializable {
 	
 	public static long toInteger(Stream<Bit> bits) {
 		return bits.mapToLong(Bit::getBit).reduce(0, (a, b) -> (a << 1) | b);
+	}
+	
+	public static Bit valueOf(int bit) {
+		return bit == 0 ? ZERO : ONE;
 	}
 }

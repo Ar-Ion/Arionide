@@ -44,9 +44,14 @@ public class ProgramThread extends WorkingThread {
 			
 			try {
 				prog.run(currentTarget, currentIO);
+			} catch(Exception err) {
+				err.printStackTrace();
+			} catch(StackOverflowError err) {
+				err.printStackTrace();
 			} finally {
 				running.compareAndSet(true, false);
 				System.out.println("Program terminated");
+				System.gc();
 			}
 		}
 	}

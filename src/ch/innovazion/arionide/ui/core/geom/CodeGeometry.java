@@ -80,18 +80,20 @@ public class CodeGeometry extends Geometry {
 		CodeChain chain = storage.getCode().get(this.container.getID());
 		
 		if(chain != null) {
-			this.build(container, container.getID(), chain.list(), elements, specification, connections, storage.getStructures(), this.container.getSize() * relativeSize);
+			this.build(container, container.getID(), 1.0f, chain.list(), elements, specification, connections, storage.getStructures(), this.container.getSize() * relativeSize);
 		}
 		
 		elements.addAll(specification); // So that one can iterate through the code with the wheel having to pass through an instruction's specification.
 	}
 	
-	private void build(WorldElement parent, int containerID, List<? extends HierarchyElement> input, List<WorldElement> outputElements, List<WorldElement> outputSpecification, List<Connection> outputConnections, Map<Integer, Structure> mapping, float size) {
+	private void build(WorldElement parent, int containerID, float height, List<? extends HierarchyElement> input, List<WorldElement> outputElements, List<WorldElement> outputSpecification, List<Connection> outputConnections, Map<Integer, Structure> mapping, float size) {
 		Vector3f basePosition = parent.getCenter().sub(parent.getAxis().normalize(2 * size));
 		
 		Vector3f position = new Vector3f(basePosition);
 		Vector3f axis = parent.getAxis();
 		WorldElement previous = null;
+		
+		axis.normalize();
 
 		List<List<? extends HierarchyElement>> groups = new ArrayList<>();
 		int groupStart = 0;
@@ -121,9 +123,9 @@ public class CodeGeometry extends Geometry {
 		}
 		
 		groups.add(input.subList(groupStart, input.size()));
-				
-		float y = 0.0f;
 		
+		float y = 0.0f;
+						
 		for(int i = 0; i < groups.size(); i++) {
 			List<? extends HierarchyElement> group = groups.get(i);
 			
@@ -133,12 +135,12 @@ public class CodeGeometry extends Geometry {
 
 			if(i < groups.size() - 1) {
 				mainQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / group.size(), new Vector3f(0.0f, 1.0f, 0.0f)));
-				deltaHeight = -2 * size / group.size();
-				spreadFactor = 0.5f;
+				deltaHeight = -3 * size / group.size();
+				spreadFactor = 2.0f;
 			} else {
 				mainQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / 16, new Vector3f(0.0f, 1.0f, 0.0f)));
-				deltaHeight = (-Math.min(group.size() / 8.0f, 0.75f) - y) * size / relativeSize / group.size();
-				spreadFactor = 0.1f;
+				deltaHeight = (-Math.min(group.size() / 8.0f, 0.5f) - y) * height * size / relativeSize / group.size();
+				spreadFactor = 1.0f;
 			}
 			
 			axis.rotateY(-Geometry.PI / 3);
@@ -173,7 +175,7 @@ public class CodeGeometry extends Geometry {
 					/* Process specification */					
 					List<Parameter> specification = struct.getSpecification().getParameters();
 										
-					Vector3f specPos = new Vector3f(axis).cross(0.0f, 1.0f, 0.0f).normalize(size * 3.0f);
+					Vector3f specPos = new Vector3f(axis).cross(0.0f, 1.0f, 0.0f).normalize(size * 2.0f);
 					
 					Quaternionf specQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / specification.size(), new Vector3f(axis).normalize()));
 					
@@ -200,7 +202,7 @@ public class CodeGeometry extends Geometry {
 										CodeChain chain = getProject().getStorage().getCode().get(target.getIdentifier());
 																				
 										if(chain != null) {
-											build(specObject, target.getIdentifier(), chain.list(), outputElements, outputSpecification, outputConnections, mapping, size / 1.5f);
+											build(specObject, target.getIdentifier(), 1 - y / (height * size / relativeSize), chain.list(), outputElements, outputSpecification, outputConnections, mapping, size / 1.5f);
 										}
 									}
 								}
@@ -208,7 +210,7 @@ public class CodeGeometry extends Geometry {
 						}
 					}
 					
-					axis.normalize(spreadFactor * size / relativeSize);
+					axis.normalize(spreadFactor * size * 2.0f);
 					position.sub(axis);
 					
 					axis.rotate(mainQuaternion);
@@ -221,7 +223,7 @@ public class CodeGeometry extends Geometry {
 					}
 					
 					/* Process children and apply transformation */
-					this.build(parent, containerID, element.getChildren(), outputElements, outputSpecification, outputConnections, mapping, size);
+					this.build(parent, containerID, 1 - y / (height * size / relativeSize), element.getChildren(), outputElements, outputSpecification, outputConnections, mapping, size);
 				}
 			}
 		}

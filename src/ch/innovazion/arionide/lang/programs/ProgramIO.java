@@ -36,28 +36,28 @@ public class ProgramIO {
 		consoles.add(output);
 	}
 	
-	void error(String message) {
+	public void error(String message) {
 		consoles.forEach(c -> c.accept("Error: " + message, 0xAA0000));
 	}
 	
-	void fatal(String message) {
+	public void fatal(String message) {
 		consoles.forEach(c -> c.accept("Fatal: " + message, 0xFF0000));
 	}
 	
-	void log(String message) {
+	public void log(String message) {
 		consoles.forEach(c -> c.accept(message, 0xFFFFFF));
 	}
 	
-	void success(String message) {
+	public void success(String message) {
 		consoles.forEach(c -> c.accept(message, 0x00FF00));
 	}
 	
 	@SuppressWarnings("unchecked")
-	<T> T in(Class<T> clazz) {
+	public <T> T in(Class<T> clazz) {
 		return (T) storage.get(clazz);
 	}
 	
-	void out(Object obj) {
+	public void out(Object obj) {
 		storage.put(obj.getClass(), obj);
 	}
 }

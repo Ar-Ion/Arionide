@@ -232,6 +232,7 @@ public class StructureManager extends Manager {
 	private Structure installLanguage(Language lang) {		
 		if(lang != null) {
 			Structure entry = installInstruction(lang.getEntryPoint());
+			lang.getOperators().forEach(this::installInstruction);
 			lang.getStandardInstructions().forEach(this::installInstruction);
 			return entry;
 		} else {

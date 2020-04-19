@@ -19,47 +19,19 @@
  *
  * The copy of the GNU General Public License can be found in the 'LICENSE.txt' file inside the src directory or inside the JAR archive.
  *******************************************************************************/
-package ch.innovazion.arionide.menu.params.assign;
+package ch.innovazion.arionide.lang;
 
 import java.util.List;
 
-import ch.innovazion.arionide.events.GeometryInvalidateEvent;
-import ch.innovazion.arionide.lang.symbols.Callable;
-import ch.innovazion.arionide.menu.MenuManager;
-import ch.innovazion.arionide.menu.params.ParameterUpdater;
-import ch.innovazion.arionide.project.managers.specification.ReferenceManager;
+import ch.innovazion.arionide.lang.symbols.Node;
+import ch.innovazion.arionide.lang.symbols.Specification;
 
-public class ReferenceAssigner extends ParameterUpdater {
-
-	private ReferenceManager refManager;
-	private List<Callable> callables;
-	
-	public ReferenceAssigner(MenuManager manager) {
-		super(manager, "Lambda");
+public abstract class SpecialInstruction extends Instruction {
+	public Node assemble(Specification spec, Skeleton skeleton, List<String> assemblyErrors) {
+		return new Node("Empty");
 	}
-	
-	protected void onEnter() {
-		super.onEnter();
-		this.refManager = getSpecificationManager().loadReferenceManager(value);
-		this.callables = refManager.getAccessibleCallables();
-		setDynamicElements(callables.stream().map(Callable::getName).toArray(String[]::new));
-	}
-
-	public void onAction(String action) {
-		if(id == 0) {
-			dispatch(refManager.assignLambda());
-			dispatch(new GeometryInvalidateEvent(2));
-			updateParameter();
-		} else {
-			dispatch(refManager.assignCallable(callables.get(id - 1)));
-			dispatch(new GeometryInvalidateEvent(0));
-			updateParameter();
-		}
 		
-		go("..");
-	}
-	
-	protected String getDescriptionTitle() {
-		return "Assigning a reference";
+	public int getLength() {
+		return 0;
 	}
 }

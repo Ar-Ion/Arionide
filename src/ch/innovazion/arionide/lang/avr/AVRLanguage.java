@@ -103,6 +103,10 @@ import ch.innovazion.arionide.lang.avr.branch.SkipIfIOBitClear;
 import ch.innovazion.arionide.lang.avr.branch.SkipIfIOBitSet;
 import ch.innovazion.arionide.lang.avr.branch.SkipIfRegisterBitClear;
 import ch.innovazion.arionide.lang.avr.branch.SkipIfRegisterBitSet;
+import ch.innovazion.arionide.lang.avr.programs.AVRSkeletonBuilder;
+import ch.innovazion.arionide.lang.avr.special.Block;
+import ch.innovazion.arionide.lang.avr.special.Break;
+import ch.innovazion.arionide.lang.avr.special.Organize;
 import ch.innovazion.arionide.lang.avr.transfers.Input;
 import ch.innovazion.arionide.lang.avr.transfers.Load;
 import ch.innovazion.arionide.lang.avr.transfers.LoadImmediate;
@@ -114,7 +118,6 @@ import ch.innovazion.arionide.lang.avr.transfers.Push;
 import ch.innovazion.arionide.lang.avr.transfers.Store;
 import ch.innovazion.arionide.lang.programs.Debugger;
 import ch.innovazion.arionide.lang.programs.Relocator;
-import ch.innovazion.arionide.lang.programs.SkeletonBuilder;
 import ch.innovazion.arionide.project.Storage;
 
 public class AVRLanguage extends Language {
@@ -125,13 +128,17 @@ public class AVRLanguage extends Language {
 	private Instruction entryPoint = new AVREntryPoint();
 		
 	protected void registerPrograms(Storage storage) {
-		registerProgram(new SkeletonBuilder(storage));
+		registerProgram(new AVRSkeletonBuilder(storage));
 		registerProgram(new Relocator(storage, 1 << 17)); // 128KB program memory
 		registerProgram(new Debugger(storage, env));
 	}
 	
 	protected void registerInstructions() {
 		registerShadowInstruction(this.entryPoint = new AVREntryPoint());
+		
+		registerOperator(new Block());
+		registerOperator(new Break());
+		registerOperator(new Organize());
 
 		registerInstruction(new Add());
 		registerInstruction(new AddWithCarry());

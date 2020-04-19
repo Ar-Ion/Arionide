@@ -71,18 +71,30 @@ public class CodeManager extends ContextualManager<Integer> {
 			return new MessageEvent("Specified language does not seem to be installed in the structure... Try reinstalling the target language", MessageType.ERROR);
 		}
 				
-		int instructionIndex = lang.getStandardInstructions().indexOf(instr);
+		int instructionIndex = lang.getOperators().indexOf(instr);
+		int resolvedIndex = entryID + 1; // One for the entry point
+		
+		if(instructionIndex < 0) {
+			instructionIndex = lang.getStandardInstructions().indexOf(instr);
+
+			for(Instruction operator : lang.getOperators()) {
+				resolvedIndex += operator.createStructureModel().getPossibleSignatures().size(); 
+				// Each signature takes one structure slot
+			}
+			
+			for(int i = 0; i < instructionIndex; i++) {
+				resolvedIndex += lang.getStandardInstructions().get(i).createStructureModel().getPossibleSignatures().size(); 
+				// Each signature takes one structure slot
+			}
+		} else {
+			for(int i = 0; i < instructionIndex; i++) {
+				resolvedIndex += lang.getOperators().get(i).createStructureModel().getPossibleSignatures().size(); 
+				// Each signature takes one structure slot
+			}
+		}
 		
 		if(instructionIndex < 0) {
 			return new MessageEvent("Invalid instruction for the target language", MessageType.ERROR);
-		}
-		
-		
-		int resolvedIndex = entryID + 1; // One for the entry point
-		
-		for(int i = 0; i < instructionIndex; i++) {
-			resolvedIndex += lang.getStandardInstructions().get(i).createStructureModel().getPossibleSignatures().size(); 
-			// Each signature takes one structure slot
 		}
 		
 		resolvedIndex += signatureID; // Final offset

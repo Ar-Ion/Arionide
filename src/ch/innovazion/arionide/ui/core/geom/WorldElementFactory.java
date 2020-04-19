@@ -122,9 +122,8 @@ public class WorldElementFactory {
 		return () -> getRandomNormalized(random);
 	}
 	
-	// It is """Random""": not uniform (more likely to generate a vertical vector)
 	private static Vector3f getRandomNormalized(Random random) {
-		return new Vector3f(random.nextFloat() - 0.5f, random.nextFloat() * 2.0f, random.nextFloat() - 0.5f).normalize();
+		return new Vector3f(random.nextFloat() - 0.5f, 0.0f, random.nextFloat() - 0.5f).normalize();
 	}
 	
 	protected static WorldElement makeTrivial() {

@@ -88,8 +88,21 @@ public class Numeric extends AtomicValue {
 	
 	public Numeric cast(int length) {
 		Bit[] buffer = new Bit[length];
-		System.arraycopy(data, data.length - length, buffer, 0, length);
+		
+		if(length < data.length) {
+			System.arraycopy(data, data.length - length, buffer, 0, length);
+		} else if(length > data.length) {
+			System.arraycopy(data, 0, buffer, length - data.length, data.length);
+			
+			if(data[0].getBit() == 1) { // Sign extension
+				for(int i = 0; i < length - data.length; i++) {
+					buffer[i] = Bit.ONE;
+				}
+			}
+		}
+		
 		this.data = buffer;
+				
 		return this;
 	}
 	

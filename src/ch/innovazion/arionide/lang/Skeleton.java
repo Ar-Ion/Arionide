@@ -66,6 +66,15 @@ public class Skeleton {
 		textLength += length;
 	}
 	
+	public boolean setTextCursor(long cursor) {
+		if(textLength <= cursor) {
+			textLength = cursor;
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public boolean hasData(Node info) {
 		return dataMap.containsKey(info);
 	}
