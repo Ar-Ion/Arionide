@@ -100,6 +100,16 @@ public class MenuManager extends StateManager {
 		menu.onAction(menu.selection);
 	}
 	
+	public void setSearching(boolean searching) {
+		Menu menu = hierarchy.resolveCurrentState();
+		menu.setSearching(searching);
+	}
+	
+	public void search(String like) {
+		Menu menu = hierarchy.resolveCurrentState();
+		menu.updateCursor(like);
+	}
+	
 	public void back() {
 		Menu menu = hierarchy.resolveCurrentState();
 		

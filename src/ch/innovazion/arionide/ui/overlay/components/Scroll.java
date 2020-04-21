@@ -174,7 +174,10 @@ public class Scroll extends Tab {
 	}
 	
 	public Tab setActiveComponent(int id) {
-		return super.setActiveComponent(id + cycle);
+		int deltaTime = Math.max(200, Math.min(500, Math.abs(activeComponent - id - cycle) * 20));
+		super.setActiveComponent(id + cycle);
+		animation.startAnimation(deltaTime, new LinkedList<>(originalBounds.subList(numElements - activeComponent, 2 * numElements - activeComponent)));
+		return this;
 	}
 	
 	public void setCyclicComponents(String... tabs) {

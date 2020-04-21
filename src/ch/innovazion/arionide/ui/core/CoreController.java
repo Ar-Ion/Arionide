@@ -388,10 +388,10 @@ public class CoreController {
 	}
 	
 	void onDiscontinuityCrossed() {
-		if(requestFocus.get() < 0) {
+		if(requestFocus.get() != 1) { // Was < 0 before
 			requestMenuReset.set(true);
 		}
-				
+						
 		try {
 			coreGeometry.processEventQueue();
 		} catch (GeometryException exception) {

@@ -268,6 +268,10 @@ public class UserController {
 		this.generalAcceleration = initialAcceleration;
 	}
 	
+	public void resetMotion() {
+		acceleration.set(0.0f);
+	}
+	
 	protected void moveX(int factor) {
 		acceleration.x = factor * generalAcceleration;
 	}

@@ -96,7 +96,6 @@ public class CoreEventHandler implements EventHandler {
 					controller.requestTeleportation(teleport.getTarget());
 				} else if(event instanceof TargetUpdateEvent) {
 					TargetUpdateEvent targetUpdate = (TargetUpdateEvent) event;
-										
 					controller.requestFocus(targetUpdate.getTarget());
 				}
 				

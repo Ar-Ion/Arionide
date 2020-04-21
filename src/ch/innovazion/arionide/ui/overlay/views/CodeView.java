@@ -69,6 +69,9 @@ public class CodeView extends View implements EventHandler {
 	private Project currentProject;
 	private Menu currentMenu;
 	
+	private boolean searching = false;
+	private StringBuilder searchString;
+	
 	public CodeView(AppManager appManager, LayoutManager layoutManager) {
 		super(appManager, layoutManager);
 		
@@ -96,7 +99,7 @@ public class CodeView extends View implements EventHandler {
 			this.add(menuDescription[i], 0.0f, 0.85f - height * (i + 1), 1.0f, 0.85f - height * i);
 		}
 		
-		this.getAppManager().getEventDispatcher().registerHandler(this);
+		this.getAppManager().getEventDispatcher().registerHandler(this, 0.8f);
 	}
 	
 	public void viewWillAppear() {
@@ -179,24 +182,52 @@ public class CodeView extends View implements EventHandler {
 		} else if(event instanceof ScrollEvent) {
 			ScrollEvent scroll = (ScrollEvent) event;
 			
-			if(scroll.isTargetting(this)) {
+			if(scroll.isTargetting(this) && currentMenu != null) {
 				controller.getMenuManager().select(scroll.getSubComponentID());
 				syncMenuDescription();
 			}
 		} else if(event instanceof PressureEvent) {
 			PressureEvent pressure = ((PressureEvent) event);
 			
-			if(currentMenu != null && pressure.isDown()) {
-				switch(pressure.getKeycode())  {
-				case KeyEvent.VK_ESCAPE:
-					controller.getMenuManager().back();
-					event.abortDispatching();
-					break;
-				case KeyEvent.VK_UP:
-					currentMenu.up();
-					break;
-				case KeyEvent.VK_DOWN:
-					currentMenu.down();
+			if(searching) {
+				event.abortDispatching();
+			}
+			
+			if(currentMenu != null) {
+				if(pressure.isDown()) {
+					switch(pressure.getKeycode())  {
+					case KeyEvent.VK_ESCAPE:
+						controller.getMenuManager().back();
+						event.abortDispatching();
+						break;
+					case KeyEvent.VK_UP:
+						currentMenu.up();
+						break;
+					case KeyEvent.VK_DOWN:
+						currentMenu.down();
+						break;
+					case KeyEvent.VK_ALT:
+						if(!searching) {
+							this.searching = true;
+							this.searchString = new StringBuilder();
+							controller.getMenuManager().setSearching(true);
+							controller.getUserController().resetMotion();
+						}
+						break;				
+					}
+				} else {
+					if(searching) {
+						if(pressure.getKeycode() == KeyEvent.VK_ALT) {
+							this.searching = false;
+							controller.getMenuManager().setSearching(false);
+						} else {
+							searchString.append(pressure.getChar());
+							controller.getMenuManager().search(searchString.toString().toLowerCase());
+							menu.setActiveComponent(currentMenu.getCursor());
+							
+							syncMenuDescription();
+						}
+					}
 				}
 			}
 		}

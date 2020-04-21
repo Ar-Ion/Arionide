@@ -23,9 +23,12 @@ package ch.innovazion.arionide.menu;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.Event;
+import ch.innovazion.arionide.events.MenuEvent;
 import ch.innovazion.arionide.project.Project;
 import ch.innovazion.automaton.Export;
 import ch.innovazion.automaton.Inherit;
@@ -36,9 +39,13 @@ public abstract class Menu extends State {
 	private final MenuManager manager;
 	
 	private final String[] staticElements;
-	private String[] elements;
+	private TreeMap<String, Integer> sortedDynamicElements;
 	
-
+	private String[] sortedElements;
+	private String[] naturalElements;
+	
+	private boolean searching;
+	
 
 	protected int cursor;
 	protected int id;
@@ -60,34 +67,88 @@ public abstract class Menu extends State {
 		this.manager = manager;
 		
 		this.staticElements = elements;
-		this.elements = elements;
+		this.naturalElements = elements;
+		this.sortedElements = elements;
 		
 		ensureNonEmpty();
 		updateCursor(0);
 	}
 	
 	private void ensureNonEmpty() {
-		if(elements.length == 0) {
-			elements = new String[] { "<Empty>" };
+		if(naturalElements.length == 0) {
+			naturalElements = new String[] { "<Empty>" };
+		}
+		
+		if(sortedElements.length == 0) {
+			sortedElements = new String[] { "<Empty>" };
 		}
 	}
 	
 	protected List<String> getActions() {
-		return Arrays.asList(elements);
+		if(searching) {
+			return Arrays.asList(sortedElements);
+		} else {
+			return Arrays.asList(naturalElements);
+		}
 	}
 	
 	protected void setDynamicElements(String... dynamicElements) {
-		elements = Utils.combine(String.class, staticElements, dynamicElements);
+		this.sortedDynamicElements = new TreeMap<>((a, b) -> a.toString().toLowerCase().compareTo(b.toString().toLowerCase()));
+		
+		for(int i = 0; i < dynamicElements.length; i++) {
+			if(dynamicElements[i] != null) {
+				sortedDynamicElements.putIfAbsent(dynamicElements[i], i);
+			}
+		}
+		
+		this.naturalElements = Utils.combine(String.class, staticElements, dynamicElements);
+		this.sortedElements = Utils.combine(String.class, staticElements, sortedDynamicElements.keySet().toArray(new String[0]));
+		
 		ensureNonEmpty();
+		
+		manager.refresh(this);
 	}
 	
 	protected void onEnter() {
 		manager.refresh(this);
 	}
 	
+	protected void setSearching(boolean searching) {
+		if(sortedDynamicElements != null) {
+			this.searching = searching;
+	
+			if(id >= staticElements.length) {
+				if(searching) {
+					updateCursor(getSortedID(naturalElements[id]));
+				} else {
+					updateCursor(id);
+				}
+			}
+			
+			dispatch(new MenuEvent(this));
+		}
+	}
+	
+	protected void updateCursor(String like) {
+		if(searching) {
+			updateCursor(getSortedID(like));
+		}
+	}
+	
 	protected void updateCursor(int cursor) {
 		this.cursor = cursor;
-		
+
+		if(searching) {
+			computeID(sortedElements); // Computes the element index with respect to the sorted array
+			id = getNaturalID(sortedElements[id]); // And remaps it to the natural array
+		} else {
+			computeID(naturalElements);
+		}
+			
+		this.selection = naturalElements[id];
+	}
+	
+	private void computeID(String[] elements) {
 		if(isCyclic()) {
 			id = cursor % elements.length;
 		} else if(cursor < elements.length && cursor >= 0) {
@@ -95,8 +156,20 @@ public abstract class Menu extends State {
 		} else {
 			id = 0;
 		}
+	}
+	
+	private int getSortedID(String element) {
+		SortedMap<String, Integer> head = sortedDynamicElements.headMap(element);
 		
-		selection = elements[id];
+		if(!head.isEmpty()) {
+			return staticElements.length + head.size();
+		} else {
+			return staticElements.length;
+		}
+	}
+	
+	private int getNaturalID(String element) {
+		return staticElements.length + sortedDynamicElements.floorEntry(element).getValue();
 	}
 	
 	protected void dispatch(Event event) {
