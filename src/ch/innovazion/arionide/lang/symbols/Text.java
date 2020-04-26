@@ -59,7 +59,7 @@ public class Text extends Node {
 		return realValue.length;
 	}
 
-	protected Stream<Bit> getRawStream() {
+	public Stream<Bit> getRawStream() {
 		return Stream.of(realValue);
 	}
 	

@@ -48,8 +48,8 @@ public class TStoreBit extends Instruction {
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
 		AVRSRAM sram = env.getPeripheral("sram");
 		
-		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric m = (Numeric) ((Enumeration) getConstant(spec, 1)).getValue();
+		Node d = ((Enumeration) getConstant(spec, 0)).getValue();
+		Node m = ((Enumeration) getConstant(spec, 1)).getValue();
 
 		int dPtr = (int) Bit.toInteger(d.getRawStream());
 		int mValue = (int) Bit.toInteger(m.getRawStream());

@@ -46,8 +46,8 @@ public class RegisterBitSet extends Instruction {
 	}
 
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
-		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric k = (Numeric) getConstant(spec, 1);
+		Node d = ((Enumeration) getConstant(spec, 0)).getValue();
+		Node k = getConstant(spec, 1);
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		

@@ -46,7 +46,7 @@ public class Organize extends SpecialInstruction {
 
 	public StructureModel createStructureModel() {
 		return StructureModelFactory
-			.draft("Organize")
+			.draft("org")
 			.withColor(ApplicationTints.getColorIDByName("Black"))
 			.withComment("Places the following instructions at the given address")
 			.beginSignature("default")

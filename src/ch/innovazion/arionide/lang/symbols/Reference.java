@@ -150,7 +150,7 @@ public class Reference extends AtomicValue {
 		return 0;
 	}
 
-	protected Stream<Bit> getRawStream() {
+	public Stream<Bit> getRawStream() {
 		return targetID.getRawStream();
 	}
 	

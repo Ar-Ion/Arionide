@@ -46,8 +46,8 @@ public class Subtract extends Instruction {
 	}
 
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
-		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric r = (Numeric) ((Enumeration) getConstant(spec, 1)).getValue();
+		Node d = ((Enumeration) getConstant(spec, 0)).getValue();
+		Node r = ((Enumeration) getConstant(spec, 1)).getValue();
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		

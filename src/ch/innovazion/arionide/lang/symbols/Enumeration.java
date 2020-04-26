@@ -116,7 +116,7 @@ public class Enumeration extends AtomicValue {
 		return Arrays.asList(getKey());
 	}
 	
-	protected Stream<Bit> getRawStream() {
+	public Stream<Bit> getRawStream() {
 		return getValue().getRawStream();
 	}
 

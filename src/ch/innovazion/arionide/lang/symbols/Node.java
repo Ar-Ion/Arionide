@@ -226,7 +226,7 @@ public class Node implements ParameterValue {
 		return String.join(", ", getDisplayValue());
 	}
 	 
-	protected Stream<Bit> getRawStream() {
+	public Stream<Bit> getRawStream() {
 		return linearMap.stream().map(Node::getRawStream).reduce(Stream::concat).orElse(Stream.of());
 	}
 	

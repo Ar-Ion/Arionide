@@ -107,6 +107,7 @@ import ch.innovazion.arionide.lang.avr.programs.AVRSkeletonBuilder;
 import ch.innovazion.arionide.lang.avr.special.Block;
 import ch.innovazion.arionide.lang.avr.special.Break;
 import ch.innovazion.arionide.lang.avr.special.Organize;
+import ch.innovazion.arionide.lang.avr.special.Spacer;
 import ch.innovazion.arionide.lang.avr.transfers.Input;
 import ch.innovazion.arionide.lang.avr.transfers.Load;
 import ch.innovazion.arionide.lang.avr.transfers.LoadImmediate;
@@ -137,6 +138,7 @@ public class AVRLanguage extends Language {
 		registerShadowInstruction(this.entryPoint = new AVREntryPoint());
 		
 		registerOperator(new Block());
+		registerOperator(new Spacer());
 		registerOperator(new Break());
 		registerOperator(new Organize());
 

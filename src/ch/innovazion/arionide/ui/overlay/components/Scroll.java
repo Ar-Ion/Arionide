@@ -30,6 +30,7 @@ import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.DragEvent;
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.InvalidateLayoutEvent;
+import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.events.ScrollEvent;
 import ch.innovazion.arionide.events.WheelEvent;
 import ch.innovazion.arionide.ui.animations.Animation;
@@ -45,7 +46,7 @@ public class Scroll extends Tab {
 
 	private boolean doubleFocusSystem = false;
 	private boolean globalWheelListening = true;
-	
+		
 	private int numElements = 0;
 	private int cycle = 0;
 	
@@ -200,6 +201,6 @@ public class Scroll extends Tab {
 	}
 	
 	public Set<Class<? extends Event>> getHandleableEvents() {
-		return Utils.combine(super.getHandleableEvents(), WheelEvent.class, DragEvent.class);
+		return Utils.combine(super.getHandleableEvents(), WheelEvent.class, DragEvent.class, PressureEvent.class);
 	}
 }

@@ -46,8 +46,8 @@ public class SREGBitClear extends Instruction {
 	}
 
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
-		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-
+		Node d = ((Enumeration) getConstant(spec, 0)).getValue();
+		
 		AVRSRAM sram = env.getPeripheral("sram");
 		
 		int aPtr = AVRSRAM.SREG;

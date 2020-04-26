@@ -51,7 +51,7 @@ public abstract class AtomicValue extends Node {
 		throw new SymbolResolutionException("Cannot resolve symbols from an atomic value");
 	}
 	
-	protected abstract Stream<Bit> getRawStream();
+	public abstract Stream<Bit> getRawStream();
 	public abstract int getSize();
 	public abstract AtomicValue clone();
 }

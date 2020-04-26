@@ -46,8 +46,8 @@ public class IOBitSet extends Instruction {
 	}
 
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
-		Numeric a = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 1)).getValue();
+		Node a = ((Enumeration) getConstant(spec, 0)).getValue();
+		Node d = ((Enumeration) getConstant(spec, 1)).getValue();
 
 		AVRSRAM sram = env.getPeripheral("sram");
 		

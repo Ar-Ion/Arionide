@@ -46,11 +46,11 @@ public class LogicalDisjunctionImmediate extends Instruction {
 	}
 
 	public void evaluate(Environment env, Specification spec, ApplicationMemory programMemory) throws EvaluationException {		
-		Numeric d = (Numeric) ((Enumeration) getConstant(spec, 0)).getValue();
-		Numeric k;
+		Node d = ((Enumeration) getConstant(spec, 0)).getValue();
+		Node k;
 		
 		if(spec.getParameters().size() <= 2) {
-			k = (Numeric) getConstant(spec, 1);
+			k = getConstant(spec, 1);
 		} else {
 			Long virtual = programMemory.getSkeleton().getDataAddress(getVariable(spec, 1));
 			String addressMask = ((Enumeration) getConstant(spec, 2)).getKey();

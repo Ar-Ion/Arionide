@@ -103,7 +103,7 @@ public class CodeView extends View implements EventHandler {
 	}
 	
 	public void viewWillAppear() {
-		setupFocusCycle(2, 3, 5, 0);
+		setupFocusCycle(4, 3, 1, 2, 5);
 		currentProject = getAppManager().getWorkspace().getCurrentProject();
 	}
 	
@@ -199,6 +199,9 @@ public class CodeView extends View implements EventHandler {
 					case KeyEvent.VK_ESCAPE:
 						controller.getMenuManager().back();
 						event.abortDispatching();
+						break;
+					case KeyEvent.VK_ENTER:
+						controller.getMenuManager().click();
 						break;
 					case KeyEvent.VK_UP:
 						currentMenu.up();
