@@ -129,27 +129,33 @@ public class CodeGeometry extends Geometry {
 		for(int i = 0; i < groups.size(); i++) {
 			List<? extends HierarchyElement> group = groups.get(i);
 			
+			axis.rotateY(-Geometry.PI / 3);
+
 			Quaternionf mainQuaternion;
 			float deltaHeight;
 			float spreadFactor;
+			Vector3f meanaxis = new Vector3f(axis);
 
 			if(i < groups.size() - 1) {
 				mainQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / group.size(), new Vector3f(0.0f, 1.0f, 0.0f)));
+				meanaxis.rotateY(Geometry.PI * 2.0f / group.size());
 				deltaHeight = -3 * size / group.size();
 				spreadFactor = 2.0f;
 			} else {
 				mainQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / 16, new Vector3f(0.0f, 1.0f, 0.0f)));
+				meanaxis.rotateY(Geometry.PI * 2.0f / 16.0f);
 				deltaHeight = (-Math.min(group.size() / 8.0f, 0.5f) - y) * height * size / relativeSize / group.size();
 				spreadFactor = 1.0f;
 			}
+						
 			
-			axis.rotateY(-Geometry.PI / 3);
-				
 			for(int j = 0; j < group.size(); j++) {
 				HierarchyElement element = group.get(j);
 				Structure struct = mapping.get(element.getID());
 							
 				if(struct != null) {
+					
+					meanaxis.rotate(mainQuaternion);
 					
 					Vector4f color = new Vector4f(ApplicationTints.getColorByID(struct.getColorID()), 0.5f);
 					Vector4f spotColor = new Vector4f(ApplicationTints.getColorByID(struct.getSpotColorID()), 1.0f);
@@ -175,7 +181,7 @@ public class CodeGeometry extends Geometry {
 					/* Process specification */					
 					List<Parameter> specification = struct.getSpecification().getParameters();
 										
-					Vector3f specPos = new Vector3f(axis).cross(0.0f, 1.0f, 0.0f).normalize(size * 2.0f);
+					Vector3f specPos = new Vector3f(meanaxis).cross(0.0f, 1.0f, 0.0f).normalize(size * 2.0f);
 					
 					Quaternionf specQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / specification.size(), new Vector3f(axis).normalize()));
 					
@@ -212,7 +218,7 @@ public class CodeGeometry extends Geometry {
 					
 					axis.normalize(spreadFactor * size * 2.0f);
 					position.sub(axis);
-					
+										
 					axis.rotate(mainQuaternion);
 
 					y -= deltaHeight;

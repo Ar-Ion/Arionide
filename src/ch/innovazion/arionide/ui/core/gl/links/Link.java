@@ -60,7 +60,8 @@ public class Link extends BufferObject<LinkContext, LinkSettings> {
 	}
 
 	protected void renderObject(GL4 gl) {
-		gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * layers * (layers - 1), GL4.GL_UNSIGNED_INT, 0);		
+		gl.glDrawElements(GL4.GL_TRIANGLE_STRIP, 4 * layers * (layers - 1), GL4.GL_UNSIGNED_INT, 0);	
+		gl.glDrawElements(GL4.GL_LINE_STRIP, 4 * layers * (layers - 1), GL4.GL_UNSIGNED_INT, 0);		
 	}
 
 	protected List<BufferGenerator> getGenerators() {

@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -101,7 +102,7 @@ public class GLRenderer extends Renderer {
 	private final Structure[] structures = qualities.stream().map(Structure::new).toArray(Structure[]::new);
 	private final GeneralStructureSettings jointStructureSettings = Utils.bind(GeneralStructureSettings.class, Stream.of(structures).map(Structure::getSettings).toArray(GeneralStructureSettings[]::new));
 	
-	private final Link link = new Link(32);
+	private final Link link = new Link(8);
 	
 	private final FBOFrame fx = new FBOFrame();
 	
@@ -377,16 +378,30 @@ public class GLRenderer extends Renderer {
 		float scale = (float) LinkTessellator.getModelScaleFactor(minSize * (1 + eigenvector.y * eigenvector.y / Math.sqrt(1 - eigenvector.y * eigenvector.y) / sqrt2) / sqrt2); // Most of this was found empirically
 		
 		Vector3f origin = new Vector3f(first).add(new Vector3f(eigenvector).mul(distanceFromCenter1));
-		Matrix4f model = new Matrix4f(new Vector4f(eigenvector.mul(length / scale), 0.0f), new Vector4f(planeSpan, 0.0f), new Vector4f(planeNormal, 0.0f), new Vector4f(origin.sub(controller.getTranslationVector()), 1.0f));
+		Matrix4f model = new Matrix4f();
 		Vector3f delta = controller.getUserController().getPosition().sub(origin);
 
-		float angle = delta.angle(unitVector);
+		Vector3f projected = new Vector3f(eigenvector).mul(delta.dot(eigenvector)); // Project along x-z plane
+		delta.sub(projected);
 		
-		if(angle > Math.ulp(0.0f)) {
-			model.rotate(Geometry.PI + angle, new Vector3f(1.0f, 0.0f, 0.0f)); // For vertices sorting
+		model.translate(new Vector3f(origin.sub(controller.getTranslationVector())));
+		
+		
+		float angle = delta.angle(planeSpan);
+
+		if(delta.y < 0) {
+			angle *= -1; // Invert angle for 2 quarters of the trigonometric circle
+		}
+				
+		if(Math.abs(angle) > Math.ulp(0.0f)) {
+			Quaternionf axis = new Quaternionf();
+			axis.rotateAxis(Geometry.PI / 2 + angle, eigenvector);
+			model.rotate(axis); // For vertices sorting
 		}
 		
+		Matrix4f basisTransform = new Matrix4f(new Vector4f(new Vector3f(eigenvector).mul(length / scale), 0.0f), new Vector4f(planeSpan, 0.0f), new Vector4f(planeNormal, 0.0f), new Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
 		
+		model.mul(basisTransform);
 		model.scale(scale);
 				
 		loadMatrix(model, modelData);
