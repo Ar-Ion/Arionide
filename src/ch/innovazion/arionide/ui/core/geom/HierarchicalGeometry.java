@@ -100,7 +100,7 @@ public abstract class HierarchicalGeometry extends Geometry {
 	}
 	
 	protected WorldElement constructElement(WorldElement parent, Structure struct, Vector3f position, float size, List<WorldElement> output) {
-		Vector4f color = new Vector4f(ApplicationTints.getColorByID(struct.getColorID()), 0.3f);
+		Vector4f color = new Vector4f(ApplicationTints.getColorByID(struct.getColorID()), 0.5f);
 		Vector4f spotColor = new Vector4f(ApplicationTints.getColorByID(struct.getSpotColorID()), 0.5f);
 		boolean access = struct.isAccessAllowed();
 		

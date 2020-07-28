@@ -44,7 +44,8 @@ public class ApplicationTints {
 	public static final int PLACEHOLDER_COLOR = 0xFFFFFF;
 	public static final int PLACEHOLDER_ALPHA = 0x6F;
 	public static final int WHITE = 0xFFFFFF;
-	
+	public static final int BLACK = 0x000000;
+
 	private static final List<String> names = new ArrayList<>();
 	private static final List<Vector3f> colors = new ArrayList<>();
 

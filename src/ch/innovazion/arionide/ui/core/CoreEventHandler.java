@@ -33,6 +33,7 @@ import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.EventHandler;
 import ch.innovazion.arionide.events.GeometryInvalidateEvent;
 import ch.innovazion.arionide.events.MoveEvent;
+import ch.innovazion.arionide.events.MoveType;
 import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.events.ProjectCloseEvent;
 import ch.innovazion.arionide.events.ProjectEvent;
@@ -53,11 +54,13 @@ public class CoreEventHandler implements EventHandler {
 	private static final int worldToggle = KeyEvent.VK_R;
 	private static final int spawnKey = KeyEvent.VK_C;
 	
-	private static final float mouseSensibility = 0.0001f;
+	private static final float mouseSensibility = 0.0005f;
 	
 	private final CoreController controller;
 	
 	private boolean isControlDown = false;
+	
+	private Point lastMousePosition = new Point();
 		
 	public CoreEventHandler(CoreController controller) {
 		this.controller = controller;
@@ -102,10 +105,15 @@ public class CoreEventHandler implements EventHandler {
 				if(controller.isActive()) {
 					if(event instanceof MoveEvent) {
 						if(controller.isActive()) {
-							Point position = ((MoveEvent) event).getPoint();
-							
-							controller.updateYaw((position.getX() - 1.0f) * mouseSensibility);
-							controller.updatePitch((1.0f - position.getY()) * mouseSensibility);
+							MoveEvent move = (MoveEvent) event;
+							Point position = move.getPoint();
+
+							if(move.getType() != MoveType.RESET) {
+								controller.updateYaw((position.getX() - lastMousePosition.getX()) * mouseSensibility);
+								controller.updatePitch((-position.getY() + lastMousePosition.getY()) * mouseSensibility);
+							}														
+
+							lastMousePosition = position;
 							
 							controller.onMove();
 							

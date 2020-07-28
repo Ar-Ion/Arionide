@@ -156,7 +156,7 @@ public class CodeGeometry extends Geometry {
 				if(struct != null) {
 					
 					meanaxis.rotate(mainQuaternion);
-					
+
 					Vector4f color = new Vector4f(ApplicationTints.getColorByID(struct.getColorID()), 0.5f);
 					Vector4f spotColor = new Vector4f(ApplicationTints.getColorByID(struct.getSpotColorID()), 1.0f);
 					
@@ -164,8 +164,23 @@ public class CodeGeometry extends Geometry {
 					Vector3f current = this.factory.getAxisGenerator().get();
 					
 					factory.updateAxisGenerator(() -> current.cross(axis));
-					WorldElement output = this.factory.make(element.getID(), containerID, struct.getName(), struct.getComment(), new Vector3f(position), color, spotColor, size, struct.isAccessAllowed());
+
+					WorldElement output;
+					
+					if(struct.getColorID() == ApplicationTints.getColorIDByName("Black")) {
+						Vector4f prevColor = previous != null ? previous.getColor() : color;
+						Vector4f nextColor = j + 1 < group.size() ? new Vector4f(ApplicationTints.getColorByID(mapping.get(group.get(j + 1).getID()).getColorID()), 0.5f) : color;
+						
+						color = prevColor.add(nextColor).mul(0.5f);
+						color.w = 0.3f;
+						
+						output = this.factory.make(element.getID(), containerID, "", struct.getComment(), new Vector3f(position), color, spotColor, size, struct.isAccessAllowed());
+					} else {
+						output = this.factory.make(element.getID(), containerID, struct.getName(), struct.getComment(), new Vector3f(position), color, spotColor, size, struct.isAccessAllowed());
+					}
+					
 					outputElements.add(output);
+
 					
 					/* Process connection to previous instruction */
 					if(previous != null) {

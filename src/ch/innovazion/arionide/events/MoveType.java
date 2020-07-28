@@ -22,5 +22,5 @@
 package ch.innovazion.arionide.events;
 
 public enum MoveType {
-	MOVE, DRAG, ENTER, EXIT
+	MOVE, DRAG, ENTER, EXIT, RESET
 }

@@ -57,7 +57,9 @@ public class Stars extends BufferObject<StarsContext, StarsSettings> {
 	}
 
 	protected void renderObject(GL4 gl) {
+		gl.glDisable(GL4.GL_DEPTH_TEST);
 		gl.glDrawArrays(GL4.GL_POINTS, 0, count);
+		gl.glEnable(GL4.GL_DEPTH_TEST);
 	}
 
 	protected List<BufferGenerator> getGenerators() {

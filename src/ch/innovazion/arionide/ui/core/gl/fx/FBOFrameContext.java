@@ -30,6 +30,7 @@ public class FBOFrameContext implements Context {
 	private final int positionAttribute;
 	private final int colorTextureUniform;
 	private final int depthTextureUniform;
+	private final int flareTextureUniform;
 	private final int currentToPreviousViewportMatrixUniform;
 	private final int lightPositionUniform;
 	private final int exposureUniform;
@@ -40,6 +41,7 @@ public class FBOFrameContext implements Context {
 		
 		this.colorTextureUniform = gl.glGetUniformLocation(shader, "colorTexture");
 		this.depthTextureUniform = gl.glGetUniformLocation(shader, "depthTexture");
+		this.flareTextureUniform = gl.glGetUniformLocation(shader, "flareTexture");
 		this.currentToPreviousViewportMatrixUniform = gl.glGetUniformLocation(shader, "currentToPreviousViewportMatrix");
 		this.lightPositionUniform = gl.glGetUniformLocation(shader, "lightPosition");
 		this.exposureUniform = gl.glGetUniformLocation(shader, "exposure");
@@ -56,6 +58,10 @@ public class FBOFrameContext implements Context {
 
 	protected int getDepthTextureUniform() {
 		return depthTextureUniform;
+	}
+	
+	protected int getFlareTextureUniform() {
+		return flareTextureUniform;
 	}
 
 	protected int getCurrentToPreviousViewportMatrixUniform() {

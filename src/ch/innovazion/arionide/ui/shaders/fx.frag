@@ -3,6 +3,7 @@
 #define MOTION_BLUR
 #define LIGHT_ADAPTATION
 #define GOD_RAYS
+#define LENS_FLARE
 #define SUN
 
 precision highp float;
@@ -18,10 +19,10 @@ const int blurSamples = 64;
 const vec3 minColor = vec3(0.0001);
 
 /* God rays */
-const float decay = 1.02;
+const float decay = 1.01;
 const float density = 0.74;
 const float weight = 5.65;
-const int godRaysSamples = 32;
+const int godRaysSamples = 64;
 
 uniform float exposure;
 uniform vec2 lightPosition;
@@ -34,6 +35,7 @@ const float strength = 5.5;
 /* Common */
 uniform sampler2D colorTexture;
 uniform sampler2D depthTexture;
+uniform sampler2D flareTexture;
 uniform mat4 currentToPreviousViewportMatrix;
 
 /* Shader data */
@@ -53,7 +55,7 @@ void lightAdaptation() {
 
 	float adaptationFactor = min(1.2, lightDistanceFromCenter);
 
-	fragColor *= max(adaptationFactor, getLuma(fragColor.rgb));
+	fragColor *= max(min(1.0, adaptationFactor), getLuma(fragColor.rgb));
 }
 
 vec4 fxaa(vec2 coords) {
@@ -236,7 +238,22 @@ vec4 motionBlur() {
     return result / contributions;
 }
 
-vec4 godRays() {
+void lens_flare() {
+    float ratio = pixelSize.y / pixelSize.x;
+    vec2 deltaLight = lightPosition - vec2(0.5);
+    
+    vec2 transformed = (textureCoords - vec2(0.5)) * vec2(-0.3, 0.08) / deltaLight + vec2(0.5);
+    float flareIntensity = min(1.0, pow(abs(deltaLight.x * deltaLight.y), 0.5) * pow(length(textureCoords - lightPosition), 3.0));
+
+    if(length(deltaLight) > 0.5) {
+        flareIntensity *= exp(0.5 - length(deltaLight));
+    }
+    
+    vec4 flare = texture(flareTexture, transformed);
+    fragColor += flare * flare.w * flareIntensity;
+}
+
+void godRays() {
 	float factor = 1.0;
 	float lightDistanceFromCenter = length(lightPosition - vec2(0.5, 0.5));
 
@@ -255,7 +272,7 @@ vec4 godRays() {
 		illumination *= decay;
 	}
 
-	return color * exposure * factor;
+	fragColor += color * exposure * factor;
 }
 
 void sun() {
@@ -282,6 +299,10 @@ void main() {
         fragColor = fxaa(textureCoords);
     #endif
     
+    #ifdef LENS_FLARE
+        lens_flare();
+    #endif
+    
     #ifdef SUN
         sun();
         
@@ -291,6 +312,6 @@ void main() {
     #endif
 
     #ifdef GOD_RAYS
-		fragColor += godRays();
+		godRays();
     #endif
 }

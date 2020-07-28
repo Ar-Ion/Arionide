@@ -26,6 +26,8 @@ import java.nio.Buffer;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL4;
 
+import ch.innovazion.arionide.resources.Resources;
+
 public abstract class RenderableObject<C extends Context, S extends Settings> implements Renderable {
 	
 	private final S settings;
@@ -53,7 +55,7 @@ public abstract class RenderableObject<C extends Context, S extends Settings> im
 		renderObject(gl);
 	}
 	
-	public void init(GL4 gl, C context, StaticAllocator allocator) {
+	public void init(GL4 gl, C context, StaticAllocator allocator, Resources resources) {
 		ensureNotInitialized();
 		
 		this.gl = gl;

@@ -21,13 +21,21 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.core.gl.fx;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import org.joml.Vector2f;
 
 import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.util.texture.TextureData;
+import com.jogamp.opengl.util.texture.TextureIO;
 
+import ch.innovazion.arionide.debugging.Debug;
+import ch.innovazion.arionide.resources.Resources;
 import ch.innovazion.arionide.ui.core.gl.RenderableObject;
 import ch.innovazion.arionide.ui.core.gl.StaticAllocator;
 
@@ -38,16 +46,27 @@ public class FBOFrame extends RenderableObject<FBOFrameContext, FBOFrameSettings
 																      -1.0f, -1.0f, 
 																	   1.0f, -1.0f });
 	
+	private TextureData lensFlare;
+	
 	private int fbo = -1;
 	private int colorBuffer = -1;
 	private int depthBuffer = -1;
+	private int flareBuffer = -1;
 	
 	public FBOFrame() {
 		super(new FBOFrameSettings());
 	}
 	
-	public void init(GL4 gl, FBOFrameContext context, StaticAllocator allocator) {
-		super.init(gl, context, allocator);
+	public void init(GL4 gl, FBOFrameContext context, StaticAllocator allocator, Resources resources) {
+		super.init(gl, context, allocator, resources);
+		
+		try {
+			InputStream stream = new FileInputStream(resources.getResource("lens-flare"));
+			this.lensFlare = TextureIO.newTextureData(GLProfile.get(GLProfile.GL4), stream, false, TextureIO.PNG);
+			stream.close();
+		} catch (IOException exception) {
+			Debug.exception(exception);
+		}
 		
 		IntBuffer buffer = IntBuffer.allocate(1);
 		gl.glGenFramebuffers(1, buffer);
@@ -56,12 +75,12 @@ public class FBOFrame extends RenderableObject<FBOFrameContext, FBOFrameSettings
 		gl.glBindFramebuffer(GL4.GL_FRAMEBUFFER, fbo);
 		gl.glDrawBuffer(GL4.GL_COLOR_ATTACHMENT0);
 
-		IntBuffer textures = IntBuffer.allocate(2);
-		gl.glGenTextures(2, textures);
+		IntBuffer textures = IntBuffer.allocate(3);
+		gl.glGenTextures(3, textures);
 		
 		this.colorBuffer = textures.get();
 		this.depthBuffer = textures.get();
-		
+		this.flareBuffer = textures.get();
 		
 		// TODO use texture allocator
 		gl.glActiveTexture(GL4.GL_TEXTURE2);
@@ -80,6 +99,18 @@ public class FBOFrame extends RenderableObject<FBOFrameContext, FBOFrameSettings
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, depthBuffer);
 		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_DEPTH_COMPONENT, 1, 1, 0, GL4.GL_DEPTH_COMPONENT, GL4.GL_FLOAT, null);
 		
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
+		
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, 0);
+
+		
+		gl.glActiveTexture(GL4.GL_TEXTURE4);
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, flareBuffer);
+		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, 954, 863, 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, lensFlare.getBuffer());
+
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR);
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
@@ -132,7 +163,11 @@ public class FBOFrame extends RenderableObject<FBOFrameContext, FBOFrameSettings
 		gl.glActiveTexture(GL4.GL_TEXTURE3);
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, depthBuffer);
 		gl.glUniform1i(context.getDepthTextureUniform(), 3);
-				
+
+		gl.glActiveTexture(GL4.GL_TEXTURE4);
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, flareBuffer);
+		gl.glUniform1i(context.getFlareTextureUniform(), 4);
+		
 		gl.glUniformMatrix4fv(context.getCurrentToPreviousViewportMatrixUniform(), 1, false, settings.getC2PVM());
 		gl.glUniform2f(context.getLightPositionUniform(), lightPosition.x, lightPosition.y);
 		gl.glUniform1f(context.getExposureUniform(), settings.getExposure());

@@ -81,7 +81,7 @@ public class CoreController {
 	
 	private Vector3f translationVector = new Vector3f();
 	private Vector3f glPosition = new Vector3f();
-
+	
 	
 	public CoreController() {		
 		this.user = new UserController(this);
@@ -191,7 +191,7 @@ public class CoreController {
 		
 	public void updateUserDynamics() {
 		HostStructureStack stack = project.getStructureManager().getHostStack();
-
+		
 		user.updatePhysics();
 		user.detectCollisions(stack, coreGeometry, mainCodeGeometry);
 		user.detectFocus(stack, coreGeometry, mainCodeGeometry);
@@ -547,7 +547,7 @@ public class CoreController {
 	public Vector3f getTranslationVector() {
 		return new Vector3f(translationVector);
 	}
-	
+
 	public RenderingScene getCurrentScene() {
 		return scene;
 	}

@@ -297,15 +297,24 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		this.dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.DRAG));
 	}
 
-	public void mouseMoved(MouseEvent event) {
-		dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.MOVE));
-	
+	public void mouseMoved(MouseEvent event) {	
 		if(orchestrator.getController().isActive()) {
-			window.warpPointer(window.getWidth() / 2, window.getHeight() / 2);
 			window.setPointerVisible(false);
+			window.confinePointer(true);
+			
+			int deltaX = window.getWidth() / 4;
+			int deltaY = window.getHeight() / 4;
+			
+			if(event.getX() > window.getWidth() - deltaX || event.getX() < deltaX || event.getY() > window.getHeight() - deltaY || event.getY() < deltaY) {
+				window.warpPointer(window.getWidth() / 2, window.getHeight() / 2);
+				dispatcher.fire(new MoveEvent(new Point(1.0f, 1.0f), MoveType.RESET));
+				return;
+			}
 		} else {
 			window.setPointerVisible(true);
 		}
+		
+		dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.MOVE));
 	}
 	
 	public void mouseWheelMoved(MouseEvent event) {

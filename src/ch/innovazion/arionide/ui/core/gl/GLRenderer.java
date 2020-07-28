@@ -38,6 +38,7 @@ import com.jogamp.opengl.GLContext;
 
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.debugging.Debug;
+import ch.innovazion.arionide.resources.Resources;
 import ch.innovazion.arionide.ui.AppDrawingContext;
 import ch.innovazion.arionide.ui.ApplicationTints;
 import ch.innovazion.arionide.ui.OpenGLContext;
@@ -80,7 +81,7 @@ public class GLRenderer extends Renderer {
 	
 	private static final float fov = (float) Math.toRadians(60.0f);
 	
-	private static final float skyDistance = 32.0f * HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN;
+	private static final float skyDistance = 64.0f * HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN;
 		
 		
 	private final FloatBuffer modelData = FloatBuffer.allocate(16);
@@ -102,7 +103,7 @@ public class GLRenderer extends Renderer {
 	private final Structure[] structures = qualities.stream().map(Structure::new).toArray(Structure[]::new);
 	private final GeneralStructureSettings jointStructureSettings = Utils.bind(GeneralStructureSettings.class, Stream.of(structures).map(Structure::getSettings).toArray(GeneralStructureSettings[]::new));
 	
-	private final Link link = new Link(8);
+	private final Link link = new Link(32);
 	
 	private final FBOFrame fx = new FBOFrame();
 	
@@ -115,12 +116,12 @@ public class GLRenderer extends Renderer {
 	private float zNear = 1.0f * HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN;
 	private float zFar = 100.0f * HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN;
 	
-	private Vector3f sun = new Vector3f(0.0f, 2 * skyDistance, 0.0f);
+	private Vector3f sun = new Vector3f(0.0f, 1.0f, 1.0f).normalize(skyDistance);
 	
 	private int structuresShader;
 	private int spaceShader;
 	private int fxShader;
-
+	
 	public GLRenderer(CoreController controller) {
 		super(controller);
 	}
@@ -131,6 +132,8 @@ public class GLRenderer extends Renderer {
 		OpenGLContext glContext = (OpenGLContext) context;
 		GL4 gl = glContext.getRenderer();
 		
+		Resources resources = context.getResources();
+		
 		this.initShaders(gl);
 				
 		allocator.generate(gl);
@@ -139,21 +142,21 @@ public class GLRenderer extends Renderer {
 		this.clearDepth.put(0, 1.0f);
 
 		StarsContext starsContext = new StarsContext(gl, spaceShader);
-		smallStars.init(gl, starsContext, allocator);
-		bigStars.init(gl, starsContext, allocator);
+		smallStars.init(gl, starsContext, allocator, resources);
+		bigStars.init(gl, starsContext, allocator, resources);
 		
 		StructureContext structureContext = new StructureContext(gl, structuresShader);
 		
 		for(Structure structure : structures) {
-			structure.init(gl, structureContext, allocator);
+			structure.init(gl, structureContext, allocator, resources);
 		}
 		
 		LinkContext linkContext = new LinkContext(gl, structuresShader);
-		link.init(gl, linkContext, allocator);
+		link.init(gl, linkContext, allocator, resources);
 		
 		if(fxEnabled) {
 			FBOFrameContext fxContext = new FBOFrameContext(gl, fxShader);
-			fx.init(gl, fxContext, allocator);
+			fx.init(gl, fxContext, allocator, resources);
 		}
 	}
 	
@@ -419,7 +422,7 @@ public class GLRenderer extends Renderer {
 		
 		/* Load sun position in screen coords */
 		
-		if(controller.getUserController().getPitch() > 0.0f) {
+		if(controller.getUserController().getPitch() > 0) {
 			Vector3f user = controller.getUserController().getPosition();
 			Vector2f point = this.getHVCFrom3D(new Vector3f(this.sun).add(user.x, 0, user.z), this.projectionMatrix).add(0.5f, 0.5f);
 			fx.getSettings().setLightPosition(point);
