@@ -242,11 +242,24 @@ void lens_flare() {
     float ratio = pixelSize.y / pixelSize.x;
     vec2 deltaLight = lightPosition - vec2(0.5);
     
-    vec2 transformed = (textureCoords - vec2(0.5)) * vec2(-0.3, 0.08) / deltaLight + vec2(0.5);
-    float flareIntensity = min(1.0, pow(abs(deltaLight.x * deltaLight.y), 0.5) * pow(length(textureCoords - lightPosition), 3.0));
+    vec2 axis = normalize(vec2(-1 * ratio, 1));
+    
+    float cosAngle = dot(normalize(deltaLight), axis);
+    float sinAngle = sqrt(1 - cosAngle * cosAngle);
+    float dilatation = 6*length(deltaLight);
+    
+    if(deltaLight.y * axis.x < deltaLight.x * axis.y) {
+        sinAngle *= -1; // Sign correction to compensate the dot product
+    }
+    
+    mat2 transformationMatrix = mat2(cosAngle, -sinAngle, sinAngle, cosAngle);
+    
+    vec2 transformed = mat2(cosAngle, -sinAngle, sinAngle, cosAngle) * ((textureCoords - vec2(0.5)) * vec2(ratio, 1) / dilatation);
+    transformed += vec2(0.5);
+    float flareIntensity = min(1.0, pow(length(textureCoords - lightPosition), 2.0));
 
-    if(length(deltaLight) > 0.5) {
-        flareIntensity *= exp(0.5 - length(deltaLight));
+    if(dilatation > 2) {
+        flareIntensity *= exp(2 - dilatation);
     }
     
     vec4 flare = texture(flareTexture, transformed);
