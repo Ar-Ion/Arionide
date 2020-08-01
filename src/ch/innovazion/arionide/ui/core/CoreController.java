@@ -237,7 +237,7 @@ public class CoreController {
 			CameraInfo info = project.getProperty("user", Coder.cameraDecoder);
 						
 			user.setPosition(new Vector3f(info.getX(), info.getY(), info.getZ()));
-			
+						
 			user.updateYaw(info.getYaw());
 			user.updatePitch(info.getPitch());
 		}
@@ -281,7 +281,7 @@ public class CoreController {
 		if(isActive() && scene == RenderingScene.HIERARCHY) {
 			Vector3f position = user.getPosition();
 			CameraInfo info = new CameraInfo(position.x, position.y, position.z, user.getYaw(), user.getPitch());
-			project.setProperty("player", info, Coder.cameraEncoder);
+			project.setProperty("user", info, Coder.cameraEncoder);
 		}
 	}
 	

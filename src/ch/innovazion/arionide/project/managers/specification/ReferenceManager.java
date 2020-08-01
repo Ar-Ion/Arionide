@@ -91,22 +91,25 @@ public class ReferenceManager extends ContextualManager<Reference> {
 	}
 	
 	public MessageEvent assignLambda() {
-		MessageEvent event = structManager.newStructure("Lambda (" + System.currentTimeMillis() + ")");
+		String lambdaName = this.structManager.getCurrentStructure().getName();
+		
+		MessageEvent event;
+		int i = 0;
+		
+		do {
+			event = structManager.newStructure("Lambda (" + lambdaName + "#" + i + ")");
+		} while(event.getMessageType() != MessageType.ERROR);
 		                                     
-		if(event.getMessageType() != MessageType.ERROR) {
-			List<HierarchyElement> generation = structManager.getCurrentGeneration(getStorage().getHierarchy());
-			HierarchyElement last = generation.get(generation.size() - 1);
-			MutableStructure struct = getStructures().get(last.getID());
-						
-			struct.setLambda(true);
-			
-			saveStructures();
-			
-			getContext().setTarget(struct);
-			
-			return success();
-		} else {
-			return event;
-		}
+		List<HierarchyElement> generation = structManager.getCurrentGeneration(getStorage().getHierarchy());
+		HierarchyElement last = generation.get(generation.size() - 1);
+		MutableStructure struct = getStructures().get(last.getID());
+					
+		struct.setLambda(true);
+		
+		saveStructures();
+		
+		getContext().setTarget(struct);
+		
+		return success();
 	}
 }

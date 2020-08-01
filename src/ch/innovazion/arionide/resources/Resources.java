@@ -46,7 +46,9 @@ public class Resources {
 		this.resources.add("font-bitmap");
 		this.resources.add("font-meta");
 		this.resources.add("edge");
-		this.resources.add("lens-flare");
+		this.resources.add("lens-flare-0");
+		this.resources.add("lens-flare-1");
+		this.resources.add("lens-flare-2");
 
 		this.installResources();
 	}

@@ -61,7 +61,7 @@ public class FBOFrame extends RenderableObject<FBOFrameContext, FBOFrameSettings
 		super.init(gl, context, allocator, resources);
 		
 		try {
-			InputStream stream = new FileInputStream(resources.getResource("lens-flare"));
+			InputStream stream = new FileInputStream(resources.getResource("lens-flare-1"));
 			this.lensFlare = TextureIO.newTextureData(GLProfile.get(GLProfile.GL4), stream, false, TextureIO.PNG);
 			stream.close();
 		} catch (IOException exception) {
@@ -109,7 +109,7 @@ public class FBOFrame extends RenderableObject<FBOFrameContext, FBOFrameSettings
 		
 		gl.glActiveTexture(GL4.GL_TEXTURE4);
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, flareBuffer);
-		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, 954, 863, 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, lensFlare.getBuffer());
+		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, lensFlare.getWidth(), lensFlare.getHeight(), 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, lensFlare.getBuffer());
 
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR);
 		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);

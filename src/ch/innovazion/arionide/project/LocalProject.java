@@ -87,7 +87,7 @@ public class LocalProject implements Project {
 		if(!this.properties.isEmpty()) {
 			return;
 		}
-		
+				
 		try {
 			byte[] data = Files.readAllBytes(this.storage.getMetaPath());
 			
@@ -107,7 +107,7 @@ public class LocalProject implements Project {
 				
 				startIndex = endIndex + 1;
 			}
-			
+						
 			this.verifyProtocol();
 		} catch (Exception exception) {
 			throw new StorageException("Failed to load project metadata", exception);

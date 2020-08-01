@@ -48,7 +48,7 @@ public class ReferenceAssigner extends ParameterUpdater {
 	public void onAction(String action) {
 		if(id == 0) {
 			dispatch(refManager.assignLambda());
-			dispatch(new GeometryInvalidateEvent(2));
+			dispatch(new GeometryInvalidateEvent(1));
 			updateParameter();
 		} else {
 			dispatch(refManager.assignCallable(callables.get(id - 1)));

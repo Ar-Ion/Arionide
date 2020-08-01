@@ -27,6 +27,17 @@ const int godRaysSamples = 64;
 uniform float exposure;
 uniform vec2 lightPosition;
 
+/* Lens flare */
+/*
+*** Flare 0 ***
+
+const vec2 flareAxis = vec2(-1.0, 1.0);
+const float flareDilatationFactor = 6.0;
+*/
+
+const vec2 flareAxis = vec2(-1.0, 1.8);
+const float flareDilatationFactor = 6;
+
 /* Sun */
 const float concentration = 2.5;
 const float sunSize = 0.15;
@@ -242,11 +253,11 @@ void lens_flare() {
     float ratio = pixelSize.y / pixelSize.x;
     vec2 deltaLight = lightPosition - vec2(0.5);
     
-    vec2 axis = normalize(vec2(-1 * ratio, 1));
+    vec2 axis = normalize(vec2(ratio, 1) * flareAxis);
     
     float cosAngle = dot(normalize(deltaLight), axis);
     float sinAngle = sqrt(1 - cosAngle * cosAngle);
-    float dilatation = 6*length(deltaLight);
+    float dilatation = flareDilatationFactor * length(deltaLight);
     
     if(deltaLight.y * axis.x < deltaLight.x * axis.y) {
         sinAngle *= -1; // Sign correction to compensate the dot product
