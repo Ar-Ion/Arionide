@@ -28,16 +28,16 @@ import ch.innovazion.arionide.lang.symbols.Numeric;
 import ch.innovazion.arionide.lang.symbols.SymbolResolutionException;
 
 public class AVREnums {
-	public static final Enumeration REGISTER = new Enumeration();
-	public static final Enumeration IO = new Enumeration();
-	public static final Enumeration LOW_REGISTER = new Enumeration();
-	public static final Enumeration HIGH_REGISTER = new Enumeration();
-	public static final Enumeration POINTER = new Enumeration();
-	public static final Enumeration DISP_POINTER = new Enumeration();
-	public static final Enumeration LPM_POINTER = new Enumeration();
-	public static final Enumeration ADDRESS_MASK = new Enumeration();
-	public static final Enumeration OR_BIT_MASK = new Enumeration();
-	public static final Enumeration AND_BIT_MASK = new Enumeration();
+	public static final Enumeration REGISTER = new Enumeration("Register");
+	public static final Enumeration IO = new Enumeration("IO Register");
+	public static final Enumeration LOW_REGISTER = new Enumeration("Low register");
+	public static final Enumeration HIGH_REGISTER = new Enumeration("High register");
+	public static final Enumeration POINTER = new Enumeration("Pointer");
+	public static final Enumeration DISP_POINTER = new Enumeration("Displacement pointer");
+	public static final Enumeration LPM_POINTER = new Enumeration("LPM pointer");
+	public static final Enumeration ADDRESS_MASK = new Enumeration("Address mask");
+	public static final Enumeration OR_BIT_MASK = new Enumeration("OR Bit mask");
+	public static final Enumeration AND_BIT_MASK = new Enumeration("AND Bit mask");
 
 	static {
 		for(int i = 0; i < 32; i++) {

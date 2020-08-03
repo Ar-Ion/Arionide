@@ -38,9 +38,13 @@ public class Enumeration extends AtomicValue {
 
 	private String key;
 	private Node value;
-	
+
 	public Enumeration() {
 		super("Enumeration");
+	}
+
+	public Enumeration(String name) {
+		super(name);
 	}
 	
 	private Enumeration(Enumeration parent) {
@@ -113,7 +117,7 @@ public class Enumeration extends AtomicValue {
 	}
 	
 	public List<String> getDisplayValue() {
-		return Arrays.asList(getKey());
+		return Arrays.asList(getDisplayName(), getKey());
 	}
 	
 	public Stream<Bit> getRawStream() {

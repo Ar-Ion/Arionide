@@ -146,15 +146,19 @@ public class CoreController {
 		if(requestTeleportation.compareAndSet(0, -1)) {
 			WorldElement destination = coreGeometry.getElementByID(requestedDestination);
 			
-			Vector3f center = destination.getCenter();
-			float size = destination.getSize();
-			
-			user.setPosition(center.add(size * 0.75f, size * 0.45f, 0.0f));
-			
-			onDiscontinuityCrossed();
-			
-			if(requestFocus.compareAndSet(-1, 1)) {
-				requestedFocus = -1; // Focus on the first code element
+			if(destination != null) {
+				Vector3f center = destination.getCenter();
+				float size = destination.getSize();
+				
+				user.setPosition(center.add(size * 0.75f, size * 0.45f, 0.0f));
+				
+				onDiscontinuityCrossed();
+				
+				if(requestFocus.compareAndSet(-1, 1)) {
+					requestedFocus = -1; // Focus on the first code element
+				}
+			} else {
+				System.err.println("Teleportation destination not found: " + requestedDestination);
 			}
 		} else {
 			requestTeleportation.getAndUpdate(x -> x < 0 ? x : x-1);
@@ -181,10 +185,12 @@ public class CoreController {
 		}
 		
 		if(requestMenuReset.compareAndSet(true, false)) {
+			menu.go("/");
+			
 			if(project.getStructureManager().getCodeManager().hasCode()) {
-				menu.selectCode(null);
+				// menu.selectCode(null); This feature is a bit annoying
 			} else {
-				menu.selectStructure(null);
+				// menu.selectStructure(null);
 			}
 		}
 	}
@@ -384,6 +390,7 @@ public class CoreController {
 			}
 		} else {
 			this.selection = null;
+			menu.go("/");
 		}
 	}
 	

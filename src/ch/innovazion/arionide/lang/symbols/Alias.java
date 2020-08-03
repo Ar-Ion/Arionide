@@ -53,6 +53,11 @@ public class Alias implements ParameterValue {
 		return resolved;
 	}
 		
+	
+	public String getDisplayName() {
+		return "An unimplemented alias";
+	}
+	
 	public List<String> getDisplayValue() {
 		return Arrays.asList(alias);
 	}

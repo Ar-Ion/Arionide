@@ -48,6 +48,6 @@ public class EnumerationAssigner extends ParameterUpdater {
 	}
 	
 	protected String getDescriptionTitle() {
-		return "Assigning an enumeration";
+		return "Selecting a value for " + value.getDisplayName();
 	}
 }

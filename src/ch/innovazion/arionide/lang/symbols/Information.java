@@ -49,6 +49,10 @@ public class Information implements ParameterValue {
 		return root.getDisplayValue();
 	}
 	
+	public String getDisplayName() {
+		return root.getDisplayName();
+	}
+	
 	public String toString() {
 		return root.toString();
 	}

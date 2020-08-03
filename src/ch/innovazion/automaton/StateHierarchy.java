@@ -58,7 +58,7 @@ public abstract class StateHierarchy {
 	protected State resolveCurrentState() {
 		String combined = composePath(path);
 		
-		State current = states.get(combined);
+		State current = states.get(combined.replace(":", "/"));
 		
 		if(current != null) {
 			return current;

@@ -218,8 +218,12 @@ public class Node implements ParameterValue {
 		return getRawStream().toArray(Bit[]::new);
 	}
 	
+	public String getDisplayName() {
+		return getPath();
+	}
+	
 	public List<String> getDisplayValue() {
-		return Arrays.asList(getLabel() + " (" + getNumElements() + " element(s), " + size + " bit(s))");
+		return Arrays.asList(getDisplayName() + " (" + getNumElements() + " element(s), " + size + " bit(s))");
 	}
 	
 	public String toString() {

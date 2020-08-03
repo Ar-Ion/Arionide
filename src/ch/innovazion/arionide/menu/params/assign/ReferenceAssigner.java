@@ -60,6 +60,6 @@ public class ReferenceAssigner extends ParameterUpdater {
 	}
 	
 	protected String getDescriptionTitle() {
-		return "Assigning a reference";
+		return "Assigning " + value.getDisplayName() + " as a reference";
 	}
 }

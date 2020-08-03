@@ -63,7 +63,7 @@ public class VariableAssigner extends ParameterUpdater {
 	}
 	
 	protected String getDescriptionTitle() {
-		return "Assigning a variable";
+		return "Assigning a variable for " + value.getDisplayName();
 	}
 	
 	private void createVariable(String name) {

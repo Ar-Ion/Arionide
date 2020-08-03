@@ -56,6 +56,10 @@ public class Actor implements ParameterValue {
 		return actions;
 	}
 	
+	public String getDisplayName() {
+		return "An unimplemented actor";
+	}
+	
 	public List<String> getDisplayValue() {
 		return Arrays.asList("");
 	}

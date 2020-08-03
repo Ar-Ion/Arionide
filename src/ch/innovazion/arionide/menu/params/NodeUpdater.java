@@ -95,17 +95,15 @@ public class NodeUpdater extends ParameterUpdater {
 		this.children = currentNode.getNodes();
 		
 		List<String> elements = new ArrayList<>();
-		
+				
 		boolean frozen = this.frozen;
 		
 		if(value instanceof Node) {
 			Node current = (Node) value;
-			
-			do {
-				frozen |= currentNode.equals(current);
-			} while((current = current.getParent()) != null);
+			while((current = current.getParent()) != null);
+			frozen |= currentNode.equals(current); // Freeze root nodes
 		}
-				
+		
 		if(currentNode instanceof Numeric) {
 			elements.add("Set number");
 			
@@ -124,30 +122,33 @@ public class NodeUpdater extends ParameterUpdater {
 			}
 			
 			this.separator = elements.size();
-		} else if(currentNode instanceof Enumeration) {
-			elements.add("Setup enumeration");
-		
+		} else if(currentNode instanceof Enumeration) {		
 			if(!frozen) {
+				elements.add("Setup enumeration");
 				elements.add(null);
 				elements.addAll(Arrays.asList("As node", "As number", "As text", "As constant", "As variable", "As reference"));
+			} else {
+				elements.add("Select element");
 			}
 			
 			this.separator = elements.size();
 		} else if(currentNode instanceof Variable) {
-			elements.add("Setup variable");
-
 			if(!frozen) {
+				elements.add("Setup variable");
 				elements.add(null);
 				elements.addAll(Arrays.asList("As node", "As number", "As text", "As constant", "As enumeration", "As reference"));
+			} else {
+				elements.add("Select variable");
 			}
 			
 			this.separator = elements.size();
 		} else if(currentNode instanceof Reference) {
-			elements.add("Setup reference");
-
 			if(!frozen) {
+				elements.add("Setup reference");
 				elements.add(null);
 				elements.addAll(Arrays.asList("As node", "As number", "As text", "As enumeration", "As constant", "As variable"));
+			} else {
+				elements.add("Select reference");
 			}
 			
 			this.separator = elements.size();
@@ -212,6 +213,10 @@ public class NodeUpdater extends ParameterUpdater {
 				this.value = currentNode;
 				go("var");
 				break;
+			case "Select variable":
+				this.value = currentNode;
+				go("var:assign");
+				break;
 			case "As reference":
 				reassignAsReference();
 				break;
@@ -219,12 +224,20 @@ public class NodeUpdater extends ParameterUpdater {
 				this.value = currentNode;
 				go("ref");
 				break;
+			case "Select reference":
+				this.value = currentNode;
+				go("ref:assign");
+				break;
 			case "As enumeration":
 				reassignAsEnumeration();
 				break;
 			case "Setup enumeration":
 				this.value = currentNode;
 				go("enum");
+				break;
+			case "Select element":
+				this.value = currentNode;
+				go("enum:assign");
 				break;
 			case "From constant":
 				if(currentNode.getParent() != null) {
@@ -371,12 +384,14 @@ public class NodeUpdater extends ParameterUpdater {
 	private void destroy() {
 		if(currentNode.getParent() != null) {
 			dispatch(infoManager.destroy(currentNode));
-			dispatch(new GeometryInvalidateEvent(0));
+			dispatch(new GeometryInvalidateEvent(2));
 			updateParameter();
 			back();	
 		} else if(infoManager.hasContext()) {
 			updateCurrentNode(infoManager.reset());
 			updateParameter();
+		} else {
+			System.err.println("Failed to destroy node '" + currentNode.getPath() + "'");
 		}
 	}
 	

@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface ParameterValue extends Serializable {
+	public String getDisplayName();
 	public List<String> getDisplayValue();
 	public ParameterValue clone();
 }

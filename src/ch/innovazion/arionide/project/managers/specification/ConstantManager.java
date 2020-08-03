@@ -74,7 +74,7 @@ public class ConstantManager extends ContextualManager<Node> {
 			} catch (SymbolResolutionException e) {
 				return new MessageEvent("Unable to connect a new variable to the structure's state", MessageType.ERROR);
 			}
-						
+
 			return assign(constant);
 		} else {
 			return new MessageEvent("This structure does not support variables", MessageType.ERROR);

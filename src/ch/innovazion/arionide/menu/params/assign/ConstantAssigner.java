@@ -68,21 +68,23 @@ public class ConstantAssigner extends ParameterUpdater {
 				((Information) value).setRootNode(constManager.getContext());
 			}
 			
-			dispatch(new GeometryInvalidateEvent(2));
+			dispatch(new GeometryInvalidateEvent(0));
 			this.value = constManager.getContext();
 			updateParameter();
 		}
 	}
 	
 	protected String getDescriptionTitle() {
-		return "Assigning a constant";
+		return "Assigning a constant value to " + value.getDisplayName();
 	}
 	
 	private void createConstant(String name) {
-		dispatch(constManager.createAndAssign(name, (Node) value));
-		
 		if(value instanceof Information) {
-			((Information) value).setRootNode(constManager.getContext());
+			Information casted = (Information) value;
+			dispatch(constManager.createAndAssign(name, casted.getRoot()));
+			casted.setRootNode(constManager.getContext());
+		} else {
+			dispatch(constManager.createAndAssign(name, (Node) value));
 		}
 		
 		dispatch(new GeometryInvalidateEvent(2));

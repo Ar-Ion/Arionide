@@ -62,7 +62,7 @@ public class ReferenceEditor extends ParameterUpdater {
 	}
 	
 	public void onAction(String action) {
-		if(id < 3) {
+		if(id < 4) {
 			switch(action) {
 			case "Assign":
 				go("assign");
@@ -80,7 +80,7 @@ public class ReferenceEditor extends ParameterUpdater {
 				break;
 			}
 		} else {
-			this.value = refManager.getValue(id - 3);
+			this.value = refManager.getValue(id - 4);
 			go("edit");
 		}
 	}
