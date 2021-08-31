@@ -7,6 +7,8 @@
 #define LENS_FLARE
 #define SUN
 
+#define PI 3.14159265
+
 
 /* FXAA */
 const vec3 lumaVector = vec3(0.299, 0.587, 0.114);
@@ -15,7 +17,7 @@ const float quality[] = float[](1.0, 1.0, 1.0, 1.0, 1.0, 1.5, 2.0, 2.0, 2.0, 2.0
 uniform vec2 pixelSize;
 
 /* Motion blur */
-const int blurSamples = 64;
+const int blurSamples = 16;
 const vec3 minColor = vec3(0.0001);
 
 uniform float renderTime;
@@ -45,9 +47,14 @@ const float concentration = 2.5;
 const float sunSize = 0.15;
 const float strength = 5.5;
 
-/* Bloom */
+/* Fast Bloom */
 const mat3 kernel = mat3(0.0625, 0.125, 0.0625, 0.125, 0.25, 0.125, 0.0625, 0.125, 0.0625);
 const vec3 unity = vec3(1.0, 1.0, 1.0);
+
+/* Bloom */
+const int bloomStrength = 16; // O(n^2)
+const int bloomUndersampling = 4; // O(n^-2)
+const float bloomVariance = 0.125 * bloomStrength * bloomStrength;
 
 /* Common */
 uniform sampler2D colorTexture;
@@ -75,7 +82,7 @@ void lightAdaptation() {
 	fragColor *= max(min(1.0, adaptationFactor), getLuma(fragColor.rgb));
 }
 
-void bloom() {
+void fbloom() {
     vec4 center = texture(colorTexture, textureCoords);
     vec4 up = textureOffset(colorTexture, textureCoords, ivec2(0, 1));
     vec4 down = textureOffset(colorTexture, textureCoords, ivec2(0, -1));
@@ -95,6 +102,26 @@ void bloom() {
     float bConvolved = dot(bMatrix * kernel * unity, unity);
 
     fragColor.rgb += 0.5 * (vec3(1.0, 1.0, 1.0) - fragColor.rgb) * vec3(rConvolved, gConvolved, bConvolved);
+}
+
+void bloom() {
+    vec4 totalColor = vec4(0.0);
+    float totalWeight = 0.0;
+    
+    for(int x = -bloomStrength; x <= bloomStrength; x += bloomUndersampling) {
+        float line = 0.0;
+        
+        for(int y = -bloomStrength; y <= bloomStrength; y += bloomUndersampling) {
+            vec4 color = texture(colorTexture, textureCoords + pixelSize * ivec2(x, y));
+            float weight = exp(-(x*x+y*y)/2/bloomVariance)/2/PI/bloomVariance;
+            
+            totalWeight += weight;
+            totalColor += color * weight;
+        }
+    }
+    
+    //fragColor.rgb += totalColor / weight;
+    fragColor += (1 - fragColor) * totalColor / totalWeight;
 }
 
 vec4 fxaa(vec2 coords) {
@@ -372,6 +399,7 @@ void main() {
     #endif
     
     #ifdef BLOOM
+        //fbloom();
         bloom();
     #endif
 }
