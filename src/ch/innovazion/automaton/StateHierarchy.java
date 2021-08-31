@@ -57,9 +57,9 @@ public abstract class StateHierarchy {
 	
 	protected State resolveCurrentState() {
 		String combined = composePath(path);
-		
+				
 		State current = states.get(combined.replace(":", "/"));
-		
+				
 		if(current != null) {
 			return current;
 		} else {
@@ -93,6 +93,10 @@ public abstract class StateHierarchy {
 						resolved.push(component);
 					}
 				}
+			}
+			
+			if(resolved.isEmpty()) {
+				resolved.add(new String()); // Ensures the existence of a "root" element
 			}
 			
 			return resolved;
@@ -137,7 +141,7 @@ public abstract class StateHierarchy {
 			path += '/';
 			path += component;
 		}
-		
+				
 		if(components.size() > 1) {
 			return path.substring(1);
 		} else {
