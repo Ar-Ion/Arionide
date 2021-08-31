@@ -53,6 +53,8 @@ public class FBOFrame extends RenderableObject<FBOFrameContext, FBOFrameSettings
 	private int depthBuffer = -1;
 	private int flareBuffer = -1;
 	
+	private long lastUpdate = System.nanoTime();
+	
 	public FBOFrame() {
 		super(new FBOFrameSettings());
 	}
@@ -155,6 +157,8 @@ public class FBOFrame extends RenderableObject<FBOFrameContext, FBOFrameSettings
 	protected void update(GL4 gl, FBOFrameContext context, FBOFrameSettings settings) {
 		Vector2f lightPosition = settings.getLightPosition();
 		Vector2f pixelSize = settings.getPixelSize();
+		float renderTime = (System.nanoTime() - lastUpdate) / 1e6f;
+		lastUpdate = System.nanoTime();
 
 		gl.glActiveTexture(GL4.GL_TEXTURE2);
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, colorBuffer);
@@ -172,6 +176,7 @@ public class FBOFrame extends RenderableObject<FBOFrameContext, FBOFrameSettings
 		gl.glUniform2f(context.getLightPositionUniform(), lightPosition.x, lightPosition.y);
 		gl.glUniform1f(context.getExposureUniform(), settings.getExposure());
 		gl.glUniform2f(context.getPixelSizeUniform(), pixelSize.x, pixelSize.y);
+		gl.glUniform1f(context.getRenderTimeUniform(), renderTime);
 	}
 
 	protected void renderObject(GL4 gl) {

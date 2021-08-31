@@ -35,7 +35,8 @@ public class FBOFrameContext implements Context {
 	private final int lightPositionUniform;
 	private final int exposureUniform;
 	private final int pixelSizeUniform;
-	
+	private final int renderTimeUniform;
+
 	public FBOFrameContext(GL4 gl, int shader) {
 		this.positionAttribute = gl.glGetAttribLocation(shader, "position");
 		
@@ -46,6 +47,7 @@ public class FBOFrameContext implements Context {
 		this.lightPositionUniform = gl.glGetUniformLocation(shader, "lightPosition");
 		this.exposureUniform = gl.glGetUniformLocation(shader, "exposure");
 		this.pixelSizeUniform = gl.glGetUniformLocation(shader, "pixelSize");
+		this.renderTimeUniform = gl.glGetUniformLocation(shader, "renderTime");
 	}
 		
 	protected int getPositionAttribute() {
@@ -78,5 +80,9 @@ public class FBOFrameContext implements Context {
 
 	protected int getPixelSizeUniform() {
 		return pixelSizeUniform;
+	}
+	
+	protected int getRenderTimeUniform() {
+		return renderTimeUniform;
 	}
 }

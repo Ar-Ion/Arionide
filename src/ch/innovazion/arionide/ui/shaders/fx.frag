@@ -3,10 +3,10 @@
 #define MOTION_BLUR
 #define LIGHT_ADAPTATION
 #define GOD_RAYS
+#define BLOOM
 #define LENS_FLARE
 #define SUN
 
-precision highp float;
 
 /* FXAA */
 const vec3 lumaVector = vec3(0.299, 0.587, 0.114);
@@ -17,6 +17,8 @@ uniform vec2 pixelSize;
 /* Motion blur */
 const int blurSamples = 64;
 const vec3 minColor = vec3(0.0001);
+
+uniform float renderTime;
 
 /* God rays */
 const float decay = 1.01;
@@ -43,6 +45,10 @@ const float concentration = 2.5;
 const float sunSize = 0.15;
 const float strength = 5.5;
 
+/* Bloom */
+const mat3 kernel = mat3(0.0625, 0.125, 0.0625, 0.125, 0.25, 0.125, 0.0625, 0.125, 0.0625);
+const vec3 unity = vec3(1.0, 1.0, 1.0);
+
 /* Common */
 uniform sampler2D colorTexture;
 uniform sampler2D depthTexture;
@@ -67,6 +73,28 @@ void lightAdaptation() {
 	float adaptationFactor = min(1.2, lightDistanceFromCenter);
 
 	fragColor *= max(min(1.0, adaptationFactor), getLuma(fragColor.rgb));
+}
+
+void bloom() {
+    vec4 center = texture(colorTexture, textureCoords);
+    vec4 up = textureOffset(colorTexture, textureCoords, ivec2(0, 1));
+    vec4 down = textureOffset(colorTexture, textureCoords, ivec2(0, -1));
+    vec4 left = textureOffset(colorTexture, textureCoords, ivec2(-1, 0));
+    vec4 right = textureOffset(colorTexture, textureCoords, ivec2(1, 0));
+    vec4 nw = textureOffset(colorTexture, textureCoords, ivec2(-1, 1));
+    vec4 ne = textureOffset(colorTexture, textureCoords, ivec2(1, 1));
+    vec4 sw = textureOffset(colorTexture, textureCoords, ivec2(-1, -1));
+    vec4 se = textureOffset(colorTexture, textureCoords, ivec2(1, -1));
+
+    mat3 rMatrix = mat3(nw.r, up.r, ne.r, left.r, center.r, right.r, sw.r, down.r, se.r);
+    mat3 gMatrix = mat3(nw.g, up.g, ne.g, left.g, center.g, right.g, sw.g, down.g, se.g);
+    mat3 bMatrix = mat3(nw.b, up.b, ne.b, left.b, center.b, right.b, sw.b, down.b, se.b);
+
+    float rConvolved = dot(rMatrix * kernel * unity, unity);
+    float gConvolved = dot(gMatrix * kernel * unity, unity);
+    float bConvolved = dot(bMatrix * kernel * unity, unity);
+
+    fragColor.rgb += 0.5 * (vec3(1.0, 1.0, 1.0) - fragColor.rgb) * vec3(rConvolved, gConvolved, bConvolved);
 }
 
 vec4 fxaa(vec2 coords) {
@@ -217,24 +245,28 @@ vec4 fxaa(vec2 coords) {
 	return texture(colorTexture, coords);
 }
 
-dvec4 normalizeHVC(dvec4 hvc) {
-	return dvec4(hvc.xyz / hvc.w, 1.0);
+vec4 normalizeHVC(vec4 hvc) {
+	return vec4(hvc.xyz / hvc.w, 1.0);
 }
 
 vec4 motionBlur() {
-	double z = texture(depthTexture, textureCoords).r;
+	float z = texture(depthTexture, textureCoords).r;
 
-	dvec4 viewportPosition = dvec4(textureCoords.x * 2 - 1, textureCoords.y * 2 - 1, sqrt(z), 1.0);
-	dvec4 previousViewportPosition = normalizeHVC(currentToPreviousViewportMatrix * viewportPosition);
+	vec4 viewportPosition = vec4(textureCoords.x * 2 - 1, textureCoords.y * 2 - 1, sqrt(z), 1.0);
+	vec4 previousViewportPosition = normalizeHVC(currentToPreviousViewportMatrix * viewportPosition);
 
-	dvec2 velocity = previousViewportPosition.xy - viewportPosition.xy;
+	vec2 velocity = (previousViewportPosition.xy - viewportPosition.xy) / renderTime * 20.0f;
+    
+    if(length(velocity) < 0.05f) {
+        velocity = vec2(0.0f, 0.0f);
+    }
 
     vec4 result = vec4(0.0);
 
     float contributions = 0.0;
 
     for (int i = 0; i < blurSamples; i++) {
-    	vec4 color = fxaa(textureCoords + vec2(velocity) * (float(i) / float(blurSamples - 1) - 0.5));
+    	vec4 color = fxaa(textureCoords + velocity * (float(i) / float(blurSamples - 1) - 0.5));
 
     	if(length(color.rgb) < length(minColor)) {
     		color.rgb = minColor;
@@ -337,5 +369,9 @@ void main() {
 
     #ifdef GOD_RAYS
 		godRays();
+    #endif
+    
+    #ifdef BLOOM
+        bloom();
     #endif
 }
