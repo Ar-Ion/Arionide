@@ -161,7 +161,7 @@ public class Button extends Label implements EventHandler, Deformable {
 		
 		if(event instanceof MoveEvent) {
 			MoveEvent casted = (MoveEvent) event;
-			
+						
 			if(getBounds().contains(casted.getPoint())) {
 				if(!mouseOver) {
 					mouseOver = true;

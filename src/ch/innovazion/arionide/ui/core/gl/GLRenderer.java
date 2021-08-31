@@ -543,7 +543,10 @@ public class GLRenderer extends Renderer {
 		this.bounds = bounds;
 		
 		GL4 gl = (GL4) GLContext.getCurrentGL();
-		fx.resizeBuffers(gl, bounds.getWidthAsInt(), bounds.getHeightAsInt());
+		
+		if(fxEnabled) {
+			fx.resizeBuffers(gl, bounds.getWidthAsInt(), bounds.getHeightAsInt());
+		}
 	}
 	
 	public void updateCamera() {

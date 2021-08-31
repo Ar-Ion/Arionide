@@ -21,6 +21,9 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui;
 
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.geom.AffineTransform;
 import java.nio.FloatBuffer;
 import java.util.Set;
 
@@ -144,7 +147,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	public void init(GLAutoDrawable arg0) {
 		this.gl = window.getGL().getGL4();
 		
-		gl.glHint(GL4.GL_GENERATE_MIPMAP_HINT, GL4.GL_NICEST);
+		//gl.glHint(GL4.GL_GENERATE_MIPMAP_HINT, GL4.GL_NICEST);
 		
 		Trash.init(new GLTrashContext(gl));
 		
@@ -278,6 +281,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	}
 
 	public void mousePressed(MouseEvent event) {
+		System.out.println("Press");
 		this.dispatcher.fire(new ActionEvent(this.getEventOrigin(event), event.getButton(), ActionType.PRESS));
 	}
 
@@ -297,23 +301,24 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		this.dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.DRAG));
 	}
 
+
 	public void mouseMoved(MouseEvent event) {	
 		if(orchestrator.getController().isActive()) {
 			window.setPointerVisible(false);
 			window.confinePointer(true);
-			
+						
 			int deltaX = window.getWidth() / 4;
 			int deltaY = window.getHeight() / 4;
-			
-			if(event.getX() > window.getWidth() - deltaX || event.getX() < deltaX || event.getY() > window.getHeight() - deltaY || event.getY() < deltaY) {
-				window.warpPointer(window.getWidth() / 2, window.getHeight() / 2);
+
+			if(event.getX() / getTransform()[0] > window.getWidth() - deltaX || event.getX() / getTransform()[0]  < deltaX || event.getY() / getTransform()[1]  > window.getHeight() - deltaY || event.getY() / getTransform()[1] < deltaY) {
+				window.warpPointer((int) (getTransform()[0] * window.getWidth() / 2), (int) (getTransform()[1] * window.getHeight() / 2));
 				dispatcher.fire(new MoveEvent(new Point(1.0f, 1.0f), MoveType.RESET));
 				return;
 			}
 		} else {
 			window.setPointerVisible(true);
 		}
-		
+				
 		dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.MOVE));
 	}
 	
@@ -325,8 +330,15 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		this.dispatcher.fire(new WheelEvent(this.getEventOrigin(event), rotation * AppDrawingContext.MOUSE_WHEEL_SENSIBILITY));
 	}
 	
+	private float[] getTransform() {
+		final GraphicsConfiguration gfxConfig = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+        final AffineTransform transform = gfxConfig.getDefaultTransform();
+        return new float[] { (float) transform.getScaleX(), (float) transform.getScaleY() };
+	}
+	
 	private Point getEventOrigin(MouseEvent event) {
-		return new Point(2.0f * event.getX() / this.window.getWidth(), 2.0f * event.getY() / this.window.getHeight());
+
+		return new Point(2.0f / getTransform()[0] * event.getX() / this.window.getWidth(), 2.0f / getTransform()[1] * event.getY() / this.window.getHeight());
 	}
 
 	public void keyTyped(KeyEvent e) {

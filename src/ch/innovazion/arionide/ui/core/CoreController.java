@@ -499,11 +499,15 @@ public class CoreController {
 	}
 	
 	void updateYaw(float radiansPerUnitLength) {
-		user.updateYaw(radiansPerUnitLength * bounds.getWidth());
+		if(bounds != null) {
+			user.updateYaw(radiansPerUnitLength * bounds.getWidth());
+		}
 	}
 	
 	void updatePitch(float radiansPerUnitLength) {
-		user.updatePitch(radiansPerUnitLength * bounds.getHeight());
+		if(bounds != null) {
+			user.updatePitch(radiansPerUnitLength * bounds.getHeight());
+		}
 	}
 	
 	void accelerate(double rate) {

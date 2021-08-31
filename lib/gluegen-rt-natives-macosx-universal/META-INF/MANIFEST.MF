@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.10.5
+Created-By: 11.0.3+7 (AdoptOpenJDK)
+Application-Name: GlueGen Run-Time
+Specification-Title: GlueGen Java Bindings Generator
+Specification-Version: 2.4
+Specification-Vendor: JogAmp Community
+Implementation-Title: GlueGen Run-Time
+Implementation-Version: 2.4.0-rc-20210111
+Implementation-Build: 2.4-b938-20210111
+Implementation-Branch: origin/master
+Implementation-Commit: 0b441cfc14947b1c8cabdc87705ae95a0afec4d9
+Implementation-SHA-Sources: f2ac91d5ae0217ec0e3073f0c0210dacc2cf1f0f32
+ 6d0b4db7f0c1491afcc58d
+Implementation-SHA-Classes: ed9b47cddf3dfd80b0f8f06472d115736bdc538f72
+ e3ba6ac5a9246e72ab54f8
+Implementation-SHA-Classes-this: 0
+Implementation-SHA-Natives: e665dac3f562d9c94fa5e36e5a4e0b529ba2049ac0
+ a4e24adc8b01bfa299ff34
+Implementation-SHA-Natives-this: e665dac3f562d9c94fa5e36e5a4e0b529ba20
+ 49ac0a4e24adc8b01bfa299ff34
+Implementation-Vendor: JogAmp Community
+Implementation-Vendor-Id: com.jogamp
+Implementation-URL: http://jogamp.org/
+Extension-Name: jogamp.nativetag.common
+Trusted-Library: true
+Permissions: all-permissions
+Application-Library-Allowable-Codebase: *
+Codebase: *.jogamp.org
+

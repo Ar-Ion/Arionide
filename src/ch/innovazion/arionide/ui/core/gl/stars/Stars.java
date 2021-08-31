@@ -50,7 +50,6 @@ public class Stars extends BufferObject<StarsContext, StarsSettings> {
 
 	protected void update(GL4 gl, StarsContext context, StarsSettings settings) {
 		gl.glPointSize(settings.getSize());
-		
 		gl.glUniformMatrix4fv(context.getModelUniform(), 1, false, settings.getModel());
 		gl.glUniformMatrix4fv(context.getViewUniform(), 1, false, settings.getView());
 		gl.glUniformMatrix4fv(context.getProjectionUniform(), 1, false, settings.getProjection());

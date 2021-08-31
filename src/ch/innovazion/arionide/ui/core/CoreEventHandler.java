@@ -108,7 +108,7 @@ public class CoreEventHandler implements EventHandler {
 						if(controller.isActive()) {
 							MoveEvent move = (MoveEvent) event;
 							Point position = move.getPoint();
-
+							
 							if(move.getType() != MoveType.RESET) {
 								controller.updateYaw((position.getX() - lastMousePosition.getX()) * mouseSensibility);
 								controller.updatePitch((-position.getY() + lastMousePosition.getY()) * mouseSensibility);
