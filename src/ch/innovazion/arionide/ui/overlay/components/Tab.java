@@ -177,7 +177,9 @@ public class Tab extends MultiComponent implements EventHandler {
 		this.borders.updateAlpha(layering.getCurrentAlpha());
 		this.borders.updateLightCenter(new Point(this.shadow, y));
 		
-		getParent().getPreferedRenderingSystem(context).renderLater(this.borders);
+		if(components.size() > 0) {
+			getParent().getPreferedRenderingSystem(context).renderLater(this.borders);
+		}
 
 		int i = 0;
 		
