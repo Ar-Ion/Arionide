@@ -24,5 +24,4 @@ package ch.innovazion.arionide.ui.render.font;
 public interface TextTessellator {
 	public int getWidth(String input);
 	public int getHeight(String input);
-	public Metrics getMetrics();
 }

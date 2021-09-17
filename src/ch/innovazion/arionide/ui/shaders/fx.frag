@@ -18,7 +18,6 @@ uniform vec2 pixelSize;
 
 /* Motion blur */
 const int blurSamples = 16;
-const vec3 minColor = vec3(0.0001);
 
 uniform float renderTime;
 
@@ -67,7 +66,7 @@ in vec2 textureCoords;
 out vec4 fragColor;
 
 float getLuma(vec3 color) {
-	return sqrt(dot(color, lumaVector));
+	return dot(color, lumaVector);
 }
 
 float getLuma(vec4 color) {
@@ -279,27 +278,22 @@ vec4 normalizeHVC(vec4 hvc) {
 vec4 motionBlur() {
 	float z = texture(depthTexture, textureCoords).r;
 
-	vec4 viewportPosition = vec4(textureCoords.x * 2 - 1, textureCoords.y * 2 - 1, sqrt(z), 1.0);
+	vec4 viewportPosition = vec4(textureCoords.x * 2 - 1, textureCoords.y * 2 - 1, z*z, 1.0);
 	vec4 previousViewportPosition = normalizeHVC(currentToPreviousViewportMatrix * viewportPosition);
 
-	vec2 velocity = (previousViewportPosition.xy - viewportPosition.xy) / renderTime * 20.0f;
+	vec2 velocity = (viewportPosition.xy - previousViewportPosition.xy) / renderTime * 20.0f;
     
     if(length(velocity) < 0.05f) {
         velocity = vec2(0.0f, 0.0f);
     }
+    
+    vec4 result = fxaa(textureCoords);
+    float contributions = 1.0;
 
-    vec4 result = vec4(0.0);
+    for (int i = 1; i < blurSamples; i++) {
+    	vec4 color = fxaa(textureCoords + velocity * float(i) / float(blurSamples - 1));
 
-    float contributions = 0.0;
-
-    for (int i = 0; i < blurSamples; i++) {
-    	vec4 color = fxaa(textureCoords + velocity * (float(i) / float(blurSamples - 1) - 0.5));
-
-    	if(length(color.rgb) < length(minColor)) {
-    		color.rgb = minColor;
-    	}
-
-    	float weight = pow(length(color.rgb), 0.3);
+    	float weight = pow(getLuma(color), 0.3) / sqrt(i);
 
     	result += color * weight;
 		contributions += weight;
@@ -360,7 +354,6 @@ void godRays() {
 
 void sun() {
     vec4 color = texture(colorTexture, textureCoords);
-
     float ratio = pixelSize.y / pixelSize.x;
     
     vec2 transformed = textureCoords - vec2(0.5, 0.5);

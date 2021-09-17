@@ -116,7 +116,7 @@ public class GLRenderer extends Renderer {
 	private float zNear = 1.0f * HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN;
 	private float zFar = 100.0f * HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN;
 	
-	private Vector3f sun = new Vector3f(0.0f, 1.0f, 1.0f).normalize(skyDistance);
+	private final Vector3f sun = new Vector3f(0.0f, 1.0f, 1.0f).normalize(skyDistance);
 	
 	private int structuresShader;
 	private int spaceShader;
@@ -421,10 +421,10 @@ public class GLRenderer extends Renderer {
 		gl.glUseProgram(this.fxShader);
 		
 		/* Load sun position in screen coords */
-		
 		if(controller.getUserController().getPitch() > 0) {
 			Vector3f user = controller.getUserController().getPosition();
-			Vector2f point = this.getHVCFrom3D(new Vector3f(this.sun).add(user.x, 0, user.z), this.projectionMatrix).add(0.5f, 0.5f);
+			Vector2f point = this.getHVCFrom3D(new Vector3f(this.sun), this.projectionMatrix).add(1.0f, 1.0f).mul(0.5f);
+			
 			fx.getSettings().setLightPosition(point);
 		} else {
 			fx.getSettings().setLightPosition(new Vector2f(-666.0f, -666.0f));

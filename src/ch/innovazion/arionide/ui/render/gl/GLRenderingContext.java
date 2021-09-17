@@ -26,6 +26,9 @@ import com.jogamp.opengl.GL4;
 import ch.innovazion.arionide.resources.Resources;
 import ch.innovazion.arionide.ui.render.RenderingContext;
 import ch.innovazion.arionide.ui.render.font.GLFontRenderer;
+import ch.innovazion.arionide.ui.render.font.latex.GLLatexRenderer;
+import ch.innovazion.arionide.ui.render.font.latex.GLLatexRenderer;
+import ch.innovazion.arionide.ui.render.font.latex.GLLatexRenderer;
 
 public abstract class GLRenderingContext implements RenderingContext {
 	
@@ -48,12 +51,12 @@ public abstract class GLRenderingContext implements RenderingContext {
 	
 	protected abstract int getShaderID();
 	
-	public static void init(GL4 gl, Resources resources, GLFontRenderer fontRenderer) {
+	public static void init(GL4 gl, Resources resources, GLFontRenderer fontRenderer, GLLatexRenderer latexRenderer) {
 		polygon = new GLPolygonContext(gl);
 		unedgedRectangle = new GLUnedgedRectangleContext(gl);
 		edge = new GLEdgeContext(gl, resources);
 		cursor = new GLCursorContext(gl);
-		text = new GLTextContext(gl, fontRenderer);
+		text = new GLTextContext(gl, fontRenderer, latexRenderer);
 		circle = new GLCircleContext(gl, edge);
 	}
 }
