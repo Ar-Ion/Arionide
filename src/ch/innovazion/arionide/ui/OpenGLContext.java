@@ -71,6 +71,7 @@ import ch.innovazion.arionide.ui.render.PrimitiveType;
 import ch.innovazion.arionide.ui.render.font.FontRenderer;
 import ch.innovazion.arionide.ui.render.font.FontResources;
 import ch.innovazion.arionide.ui.render.font.GLFontRenderer;
+import ch.innovazion.arionide.ui.render.font.latex.GLLatexRenderer;
 import ch.innovazion.arionide.ui.render.gl.GLRenderingContext;
 import ch.innovazion.arionide.ui.topology.Bounds;
 import ch.innovazion.arionide.ui.topology.Point;
@@ -97,7 +98,8 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	private CoreOrchestrator orchestrator;
 	private Resources resources;
 	private GLFontRenderer fontRenderer;
-	
+	private GLLatexRenderer latexRenderer;
+
 	private GL4 gl;
 	
 	private Cursor theCursor;
@@ -134,10 +136,11 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		
 		try {
 			this.fontRenderer = new GLFontRenderer(new FontResources(this.resources));
+			this.latexRenderer = new GLLatexRenderer();
 		} catch (Exception exception) {
 			Debug.exception(exception);
 		}
-		
+				
 		this.theManager.initUI(workspace, resources, orchestrator, manager);
 	
 		this.window.setVisible(true);
@@ -153,7 +156,9 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 		
 		orchestrator.orchestrateInitialisation(this);
 		
-		GLRenderingContext.init(gl, resources, fontRenderer);
+		GLRenderingContext.init(gl, resources, fontRenderer, latexRenderer);
+		
+		gl.setSwapInterval(1);
 		
 		coreSystem.registerPrimitive(PrimitiveType.POLYGON, GLRenderingContext.polygon);
 		coreSystem.registerPrimitive(PrimitiveType.UNEDGED_RECT, GLRenderingContext.unedgedRectangle);

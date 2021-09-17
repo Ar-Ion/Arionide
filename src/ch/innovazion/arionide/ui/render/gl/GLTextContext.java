@@ -26,21 +26,27 @@ import java.nio.IntBuffer;
 import com.jogamp.opengl.GL4;
 
 import ch.innovazion.arionide.ui.render.font.GLFontRenderer;
+import ch.innovazion.arionide.ui.render.font.latex.GLLatexRenderer;
 
 public class GLTextContext extends GLShapeContext {
+	
+	public static final int NUM_LATEX_TEXTURES = 9;
 		
 	private final GLFontRenderer fontRenderer;
+	private final GLLatexRenderer latexRenderer;
 	
 	private int sampler;
 
-	public GLTextContext(GL4 gl, GLFontRenderer fontRenderer) {
+	public GLTextContext(GL4 gl, GLFontRenderer fontRenderer, GLLatexRenderer latexRenderer) {
 		super(gl);
+		
 		this.fontRenderer = fontRenderer;
+		this.latexRenderer = latexRenderer;
 
 		this.sampler = gl.glGetUniformLocation(this.getShaderID(), "bitmap");
 		
-		IntBuffer texture = IntBuffer.allocate(1);
-		gl.glGenTextures(1, texture);
+		IntBuffer texture = IntBuffer.allocate(1 + NUM_LATEX_TEXTURES);
+		gl.glGenTextures(1 + NUM_LATEX_TEXTURES, texture);
 		
 		this.fontRenderer.initRenderer(gl, this.getShaderID(), texture.get(0), this.getTranslationUniform(), this.getScaleUniform());
 	}

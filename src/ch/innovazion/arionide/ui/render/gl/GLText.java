@@ -21,6 +21,9 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.render.gl;
 
+import java.math.BigInteger;
+
+import ch.innovazion.arionide.ui.render.Identification;
 import ch.innovazion.arionide.ui.render.PrimitiveType;
 import ch.innovazion.arionide.ui.render.Text;
 import ch.innovazion.arionide.ui.render.font.GLTextCacheEntry;
@@ -35,12 +38,19 @@ public class GLText extends GLShape implements Text {
 	private Affine affine = new Affine();
 	private String text = new String();
 	private GLTextCacheEntry entry = null;
+	private boolean isLatex;
 	
 	private Affine renderTransformation = new Affine();
 	
 	public GLText(String text, int rgb, int alpha) {
+		this(text, rgb, alpha, false);
+	}
+	
+	
+	public GLText(String text, int rgb, int alpha, boolean isLatex) {
 		super(rgb, alpha);
 		this.text = text;
+		this.isLatex = isLatex;
 	}
 
 	protected void prepareGL() {
@@ -72,6 +82,10 @@ public class GLText extends GLShape implements Text {
 		return PrimitiveType.TEXT;
 	}
 
+	public BigInteger getStateFingerprint() {
+		return Identification.generateFingerprint(super.getStateFingerprint(), this.isLatex ? 1 : 0);
+	}
+	
 	public void updateProperty(int identifier) {
 		switch(identifier) {
 			case GLShapeContext.SCALE_IDENTIFIER:
@@ -97,7 +111,11 @@ public class GLText extends GLShape implements Text {
 			float width = this.bounds.getWidth() * scalar.getScaleX();
 			float height = this.bounds.getHeight();
 
-			this.renderTransformation = this.getContext().getFontRenderer().renderString(this.getContext().getGL(), this.entry, new Bounds(x, y, width, height));
+			if(isLatex) {
+				
+			} else {
+				this.renderTransformation = this.getContext().getFontRenderer().renderString(this.getContext().getGL(), this.entry, new Bounds(x, y, width, height));
+			}
 		}
 	}
 	
