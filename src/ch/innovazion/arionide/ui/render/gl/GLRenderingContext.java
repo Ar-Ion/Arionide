@@ -32,6 +32,7 @@ public abstract class GLRenderingContext implements RenderingContext {
 	public static GLPolygonContext polygon;
 	public static GLUnedgedRectangleContext unedgedRectangle;
 	public static GLEdgeContext edge;
+	public static GLCircleContext circle;
 	public static GLCursorContext cursor;
 	public static GLTextContext text;
 	
@@ -53,5 +54,6 @@ public abstract class GLRenderingContext implements RenderingContext {
 		edge = new GLEdgeContext(gl, resources);
 		cursor = new GLCursorContext(gl);
 		text = new GLTextContext(gl, fontRenderer);
+		circle = new GLCircleContext(gl, edge);
 	}
 }
