@@ -240,6 +240,10 @@ public class GLFontRenderer implements FontRenderer {
 		
 		return new Affine(scalar, translation);
 	}
+	
+	public int getTextureID() {
+		return 1;
+	}
 		
 	public GLTextTessellator getTessellator() {
 		return this.tessellator;

@@ -23,10 +23,12 @@ package ch.innovazion.arionide.ui.render.gl;
 
 import java.math.BigInteger;
 
+import com.jogamp.opengl.GL4;
+
 import ch.innovazion.arionide.ui.render.Identification;
 import ch.innovazion.arionide.ui.render.PrimitiveType;
 import ch.innovazion.arionide.ui.render.Text;
-import ch.innovazion.arionide.ui.render.font.GLTextCacheEntry;
+import ch.innovazion.arionide.ui.render.font.latex.GLLatexCacheEntry;
 import ch.innovazion.arionide.ui.topology.Affine;
 import ch.innovazion.arionide.ui.topology.Bounds;
 import ch.innovazion.arionide.ui.topology.Scalar;
@@ -37,7 +39,6 @@ public class GLText extends GLShape implements Text {
 	private Bounds bounds = null;
 	private Affine affine = new Affine();
 	private String text = new String();
-	private GLTextCacheEntry entry = null;
 	private boolean isLatex;
 	
 	private Affine renderTransformation = new Affine();
@@ -54,7 +55,7 @@ public class GLText extends GLShape implements Text {
 	}
 
 	protected void prepareGL() {
-		this.entry = this.getContext().getFontRenderer().fetch(this.getContext().getGL(), this.text);
+
 	}
 	
 	public void updateBounds(Bounds newBounds) {
@@ -83,11 +84,24 @@ public class GLText extends GLShape implements Text {
 	}
 
 	public BigInteger getStateFingerprint() {
-		return Identification.generateFingerprint(super.getStateFingerprint(), this.isLatex ? 1 : 0);
+		return Identification.generateFingerprint(super.getStateFingerprint(), this.isLatex ? 1 : -1);
 	}
 	
 	public void updateProperty(int identifier) {
+		GLTextContext context = this.getContext();
+		GL4 gl = context.getGL();
+		
 		switch(identifier) {
+			case GLTextContext.USE_LATEX_IDENTIFIER:
+				if(isLatex) {
+					System.out.println("Using latex");
+					GLLatexCacheEntry entry = context.getLatexRenderer().getCacheEntry(text);
+					gl.glUniform1i(context.getSamplerUniform(), entry.getTextureID());
+				} else {
+					gl.glUniform1i(context.getSamplerUniform(), 1);	
+				}
+				
+				break;
 			case GLShapeContext.SCALE_IDENTIFIER:
 				break;
 			case GLShapeContext.TRANSLATION_IDENTIFIER:
@@ -98,11 +112,7 @@ public class GLText extends GLShape implements Text {
 	}
 	
 	public void render() {
-		if(this.bounds != null && this.entry != null) {
-			if(entry.isInvalidated()) {
-				prepareGL();
-			}
-			
+		if(this.bounds != null) {
 			Scalar scalar = this.affine.getScalar();
 			Translation translation = this.affine.getTranslation();
 			
@@ -112,9 +122,9 @@ public class GLText extends GLShape implements Text {
 			float height = this.bounds.getHeight();
 
 			if(isLatex) {
-				
+				this.renderTransformation = this.getContext().getLatexRenderer().renderString(this.getContext().getGL(), text, new Bounds(x, y, width, height));
 			} else {
-				this.renderTransformation = this.getContext().getFontRenderer().renderString(this.getContext().getGL(), this.entry, new Bounds(x, y, width, height));
+				this.renderTransformation = this.getContext().getFontRenderer().renderString(this.getContext().getGL(), text, new Bounds(x, y, width, height));
 			}
 		}
 	}

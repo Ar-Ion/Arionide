@@ -59,8 +59,7 @@ public class GLUnedgedRectangle extends GLPolygon {
 	}
 	
 	public BigInteger getStateFingerprint() {
-		return Identification.generateFingerprint(super.getStateFingerprint(),
-				this.radius.hashCode());
+		return Identification.generateFingerprint(super.getStateFingerprint(), this.radius.hashCode());
 	}
 	
 	public PrimitiveType getType() {

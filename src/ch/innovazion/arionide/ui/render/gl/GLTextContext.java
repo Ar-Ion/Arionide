@@ -21,16 +21,21 @@
  *******************************************************************************/
 package ch.innovazion.arionide.ui.render.gl;
 
+import java.math.BigInteger;
 import java.nio.IntBuffer;
 
 import com.jogamp.opengl.GL4;
 
+import ch.innovazion.arionide.ui.render.Identification;
 import ch.innovazion.arionide.ui.render.font.GLFontRenderer;
 import ch.innovazion.arionide.ui.render.font.latex.GLLatexRenderer;
 
 public class GLTextContext extends GLShapeContext {
 	
+	public static final int USE_LATEX_IDENTIFIER = SCHEME_SIZE + 0;	
 	public static final int NUM_LATEX_TEXTURES = 9;
+	
+	private static final BigInteger[] scheme = Identification.makeScheme(SCHEME_SIZE + 1);
 		
 	private final GLFontRenderer fontRenderer;
 	private final GLLatexRenderer latexRenderer;
@@ -50,14 +55,17 @@ public class GLTextContext extends GLShapeContext {
 		
 		this.fontRenderer.initRenderer(gl, this.getShaderID(), texture.get(0), this.getTranslationUniform(), this.getScaleUniform());
 	}
-	
-	public void enter() {
-		super.enter();
-		this.getGL().glUniform1i(this.sampler, 1);
-	}
-	
+
 	public void onAspectRatioUpdate(float newRatio) {
 		this.fontRenderer.windowRatioChanged(newRatio);
+	}
+	
+	public BigInteger[] getIdentificationScheme() {
+		return scheme;
+	}
+	
+	public int getSamplerUniform() {
+		return this.sampler;
 	}
 
 	public String getVertexShader() {
@@ -70,5 +78,9 @@ public class GLTextContext extends GLShapeContext {
 	
 	public GLFontRenderer getFontRenderer() {
 		return this.fontRenderer;
+	}
+	
+	public GLLatexRenderer getLatexRenderer() {
+		return this.latexRenderer;
 	}
 }
