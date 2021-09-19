@@ -38,14 +38,19 @@ public class UserController {
 	
 	private static final float initialAcceleration = 0.005f * HierarchicalGeometry.MAKE_THE_UNIVERSE_GREAT_AGAIN;
 	private static final float spaceFriction = 0.075f;
+	private static final float cameraFriction = 0.75f;
 	private static final float timeResolution = 0.00000005f;
+	private static final float cameraSpeedGain = 2.0f;
+	private static final float maxCameraSpeed = 0.5f;
 
 	
 	private final CoreController core;
 	
 	private WorldElement focus;
-		
+	
+	private float dyaw = 0.0f;
 	private float yaw = 0.0f;
+	private float dpitch = 0.0f;
 	private float pitch = 0.0f;
 	private Vector3f position = new Vector3f();
 	private Vector3f velocity = new Vector3f();
@@ -105,12 +110,17 @@ public class UserController {
 		lastPositionUpdate += deltaTime;
 		
 		Vector3f acceleration = new Vector3f(this.acceleration).mul(deltaTime * timeResolution);
+		
+		yaw += dyaw * deltaTime * timeResolution * cameraSpeedGain;
+		pitch += dpitch * deltaTime * timeResolution * cameraSpeedGain;
 						
 		velocity.x += Math.sin(yaw) * acceleration.x - Math.cos(yaw) * acceleration.z;
 		velocity.y += acceleration.y;
 		velocity.z += -Math.cos(yaw) * acceleration.x - Math.sin(yaw) * acceleration.z;
 				
 		velocity.mul(1.0f - spaceFriction * deltaTime * timeResolution);
+		dyaw *= 1.0f - cameraFriction * deltaTime * timeResolution;
+		dpitch *= 1.0f - cameraFriction * deltaTime * timeResolution;
 										
 		position.add(new Vector3f(velocity).mul(deltaTime * timeResolution));
 	}
@@ -246,7 +256,9 @@ public class UserController {
 	protected void setPosition(Vector3f newPosition) {
 		position.set(newPosition);
 		
+		dyaw = 0.0f;
 		yaw = 0.0f;
+		dpitch = 0.0f;
 		pitch = 0.0f;
 	}
 	
@@ -254,7 +266,9 @@ public class UserController {
 		if(!core.getHostStack().isEmpty()) {				
 			Vector3f focus = element.getCenter().sub(position).normalize();
 			
+			dyaw = 0.0f;
 			yaw = Geometry.PI - (float) Math.atan2(focus.x, focus.z);
+			dpitch = 0.0f;
 			pitch = (float) Math.asin(focus.y);	
 		}
 	}
@@ -285,11 +299,15 @@ public class UserController {
 	}
 	
 	protected void updateYaw(float radians) {
-		yaw += radians;
+		if(Math.abs(dyaw) < maxCameraSpeed) {
+			dyaw += radians;
+		}
 	}
 	
 	protected void updatePitch(float radians) {
-		pitch += radians;
+		if(Math.abs(dpitch) < maxCameraSpeed) {
+			dpitch += radians;
+		}
 	}
 	
 	protected void normaliseCameraQuaternion() {
