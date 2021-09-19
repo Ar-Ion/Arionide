@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -58,15 +59,16 @@ public class LatexBackend extends Thread {
 						filename += String.format("%02x", b);
 			        }
 					
-					File base = File.createTempFile(filename, null);
-					File latex = new File(base.getAbsolutePath() + ".tex");
-					File texture = new File(base.getAbsolutePath() + ".png");
+					File dir = Files.createTempDirectory("arionide").toFile();
+					dir.mkdirs();
+					File latex = new File(dir, filename + ".tex");
+					File texture = new File(dir, filename + ".png");
 					
 					createLatexFile(latex, input);
 
-					ProcessBuilder pb = new ProcessBuilder("/Library/TeX/texbin/latexmk", "-shell-escape", latex.getAbsolutePath());
+					ProcessBuilder pb = new ProcessBuilder("/Library/TeX/texbin/latex", "-shell-escape", latex.getAbsolutePath());
 					pb.environment().put("PATH", System.getenv("PATH") + ":/usr/local/bin:/Library/TeX/texbin");
-					pb.directory(latex.getParentFile());
+					pb.directory(dir);
 					pb.inheritIO();
 					Process process = pb.start();
 					
@@ -88,17 +90,15 @@ public class LatexBackend extends Thread {
 					try {
 						File output = loadQueue.remove(process.getKey());
 						
-						System.out.println(output);
 						InputStream stream = new FileInputStream(output);
 						TextureData texture = TextureIO.newTextureData(GLProfile.get(GLProfile.GL4), stream, false, TextureIO.PNG);
 						
 						textureCache.put(process.getKey(), texture);
 						
+						it2.remove();
 					} catch (IOException exception) {
 						Debug.exception(exception);
 					}
-							
-					it2.remove();
 				}
 			}
 			
@@ -108,7 +108,10 @@ public class LatexBackend extends Thread {
 	
 	private void createLatexFile(File latex, String input) throws IOException, NoSuchAlgorithmException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(latex));
-		writer.write("\\documentclass[convert]{standalone}\n");
+		writer.write("\\documentclass[convert={density=1200}]{standalone}\n");
+		writer.write("\\usepackage{xcolor}\n");
+		writer.write("\\pagecolor{black}\n");
+		writer.write("\\color{white}\n");
 		writer.write("\\begin{document}\n");
 		writer.write(input + "\n");
 		writer.write("\\end{document}\n");

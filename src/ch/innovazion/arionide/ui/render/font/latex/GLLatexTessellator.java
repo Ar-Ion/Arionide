@@ -48,8 +48,10 @@ public class GLLatexTessellator implements GLTextTessellator {
 		if(texture == null) {
 			return null;
 		}
+		
+		float width = texture.getWidth() / texture.getHeight();
 	
-		Bounds verticesBounds = new Bounds(-1.0f, -1.0f, 2.0f, 2.0f);
+		Bounds verticesBounds = new Bounds(-0.5f * width, -1.0f, width, 2.0f);
 		Bounds uvBounds = new Bounds(0.0f, 0.0f, 1.0f, 1.0f);
 		
 		Buffer vertices = new GLBounds(verticesBounds, false).allocDataBuffer(8).putNorth().putSouth().getDataBuffer().flip();

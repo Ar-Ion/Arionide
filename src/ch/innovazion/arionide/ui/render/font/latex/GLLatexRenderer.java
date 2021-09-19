@@ -1,20 +1,13 @@
 package ch.innovazion.arionide.ui.render.font.latex;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.jogamp.opengl.GL4;
-import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.texture.TextureData;
-import com.jogamp.opengl.util.texture.TextureIO;
 
-import ch.innovazion.arionide.debugging.Debug;
 import ch.innovazion.arionide.ui.render.font.GLTextCacheEntry;
 import ch.innovazion.arionide.ui.render.font.GLTextRenderer;
 import ch.innovazion.arionide.ui.render.font.TessellationOutput;
@@ -53,13 +46,11 @@ public class GLLatexRenderer extends GLTextRenderer implements LatexRenderer {
 		for(int i = 0; i < GL_CACHE_CAPACITY; i++) {
 			gl.glActiveTexture(GL_BASE_TEXTURE + i);
 			gl.glBindTexture(GL4.GL_TEXTURE_2D, textures[i]);
-	
-			//gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, 0, 0, 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, null);
-			
+				
 			gl.glGenerateMipmap(GL4.GL_TEXTURE_2D);
 			
-			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
-			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
+			//gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
+			//gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
 			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR_MIPMAP_LINEAR);
 			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);
 		}
@@ -90,22 +81,10 @@ public class GLLatexRenderer extends GLTextRenderer implements LatexRenderer {
 		
 		gl.glBindTexture(GL4.GL_TEXTURE_2D, textures[textureID]);
 		gl.glActiveTexture(GL_BASE_TEXTURE + textureID);
+		
+		gl.glPixelStorei(GL4.GL_UNPACK_ALIGNMENT, 1);
+		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGB, data.getWidth(), data.getHeight(), 0, GL4.GL_RGB, GL4.GL_UNSIGNED_BYTE, data.getBuffer());
 
-		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGB, data.getWidth(), data.getHeight()-1, 0, GL4.GL_RGB, GL4.GL_UNSIGNED_BYTE, data.getBuffer());
-		
-		
-		//gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGB, data.getWidth(), data.getHeight()-1, 0, GL4.GL_RGB, GL4.GL_UNSIGNED_BYTE, data.getBuffer());
-		//gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGBA, lensFlare.getWidth(), lensFlare.getHeight(), 0, GL4.GL_RGBA, GL4.GL_UNSIGNED_BYTE, lensFlare.getBuffer());
-
-		gl.glGenerateMipmap(GL4.GL_TEXTURE_2D);
-		
-		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
-		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
-		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR_MIPMAP_LINEAR);
-		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);
-		
-		gl.glBindTexture(GL4.GL_TEXTURE_2D,	0);
-		
 		return new GLTextCacheEntry(tess.getWidth(), tess.getHeight(), tess.getCount(), vao, BASE_TEXTURE + textureID, new int[] {verticesBuffer, uvBuffer});
 	}
 	
