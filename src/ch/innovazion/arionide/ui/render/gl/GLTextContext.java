@@ -33,8 +33,12 @@ import ch.innovazion.arionide.ui.render.font.latex.GLLatexRenderer;
 public class GLTextContext extends GLShapeContext {
 	
 	public static final int USE_LATEX_IDENTIFIER = SCHEME_SIZE + 0;	
-	public static final int NUM_LATEX_TEXTURES = 9;
+	public static final int NUM_LATEX_TEXTURES = GLLatexRenderer.GL_CACHE_CAPACITY;
 	
+	public static final int FETCH_CACHE_ACTION_IDENTIFIER = 0x2;
+	public static final int UPDATE_TEXTURE_ACTION_IDENTIFIER = 0x4;
+
+
 	private static final BigInteger[] scheme = Identification.makeScheme(SCHEME_SIZE + 1);
 		
 	private final GLFontRenderer fontRenderer;
@@ -53,7 +57,12 @@ public class GLTextContext extends GLShapeContext {
 		IntBuffer texture = IntBuffer.allocate(1 + NUM_LATEX_TEXTURES);
 		gl.glGenTextures(1 + NUM_LATEX_TEXTURES, texture);
 		
-		this.fontRenderer.initRenderer(gl, this.getShaderID(), texture.get(0), this.getTranslationUniform(), this.getScaleUniform());
+		int fontTexture = texture.get();
+		int[] latexTextures = new int[NUM_LATEX_TEXTURES];
+		texture.get(latexTextures, 0, NUM_LATEX_TEXTURES);
+		
+		this.fontRenderer.initRenderer(gl, this.getShaderID(), fontTexture, this.getTranslationUniform(), this.getScaleUniform());
+		this.latexRenderer.initRenderer(gl, this.getShaderID(), latexTextures, this.getTranslationUniform(), this.getScaleUniform());
 	}
 
 	public void onAspectRatioUpdate(float newRatio) {

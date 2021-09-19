@@ -24,18 +24,24 @@ package ch.innovazion.arionide.ui.render.font;
 public class GLTextCacheEntry extends TextCacheEntry {
 	
 	private final int vao;
+	private final int textureID;
 	private final int[] freeables;
 	
 	private boolean invalidated = false;
 	
-	protected GLTextCacheEntry(float width, float height, int count, int vao, int[] freeables) {
+	public GLTextCacheEntry(float width, float height, int count, int vao, int textureID, int[] freeables) {
 		super(width, height, count);
 		this.vao = vao;
+		this.textureID = textureID;
 		this.freeables = freeables;
 	}
 	
 	protected int getVAO() {
 		return this.vao;
+	}
+	
+	public int getTextureID() {
+		return this.textureID;
 	}
 	
 	protected void invalidate() {

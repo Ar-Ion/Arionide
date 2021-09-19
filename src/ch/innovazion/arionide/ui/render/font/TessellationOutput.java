@@ -31,7 +31,7 @@ public class TessellationOutput {
 	private final float height;
 	private final int count; // number of chars
 	
-	protected TessellationOutput(Buffer vertices, Buffer uv, float width, float height, int count) {
+	public TessellationOutput(Buffer vertices, Buffer uv, float width, float height, int count) {
 		this.vertices = vertices;
 		this.uv = uv;
 		this.width = width;

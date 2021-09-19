@@ -28,7 +28,7 @@ import com.jogamp.opengl.GL4;
 import ch.innovazion.arionide.ui.render.Identification;
 import ch.innovazion.arionide.ui.render.PrimitiveType;
 import ch.innovazion.arionide.ui.render.Text;
-import ch.innovazion.arionide.ui.render.font.latex.GLLatexCacheEntry;
+import ch.innovazion.arionide.ui.render.font.GLTextCacheEntry;
 import ch.innovazion.arionide.ui.topology.Affine;
 import ch.innovazion.arionide.ui.topology.Bounds;
 import ch.innovazion.arionide.ui.topology.Scalar;
@@ -92,18 +92,10 @@ public class GLText extends GLShape implements Text {
 	}
 	
 	public void updateProperty(int identifier) {
-		GLTextContext context = this.getContext();
-		GL4 gl = context.getGL();
-		
 		switch(identifier) {
 			case GLTextContext.USE_LATEX_IDENTIFIER:
-				if(isLatex) {
-					GLLatexCacheEntry entry = context.getLatexRenderer().getCacheEntry(text);
-					gl.glUniform1i(context.getSamplerUniform(), entry.getTextureID());
-				} else {
-					gl.glUniform1i(context.getSamplerUniform(), 1);	
-				}
-				
+				requestAction(GLTextContext.FETCH_CACHE_ACTION_IDENTIFIER);
+				requestAction(GLTextContext.UPDATE_TEXTURE_ACTION_IDENTIFIER);
 				break;
 			case GLShapeContext.SCALE_IDENTIFIER:
 				break;
@@ -111,6 +103,40 @@ public class GLText extends GLShape implements Text {
 				break;
 			default:
 				super.updateProperty(identifier);
+		}
+	}
+	
+	public void processAction(int identifier) {
+		GLTextContext context = this.getContext();
+		GL4 gl = context.getGL();
+		GLTextCacheEntry entry = null;
+
+		switch(identifier) {
+			case GLTextContext.FETCH_CACHE_ACTION_IDENTIFIER:				
+				if(isLatex) {
+					entry = getContext().getLatexRenderer().fetch(gl, text);
+				} else {
+					entry = getContext().getFontRenderer().fetch(gl, text);	
+				}
+
+				if(entry != null && !entry.isInvalidated()) {
+					clearAction(GLTextContext.FETCH_CACHE_ACTION_IDENTIFIER);
+				}
+				
+				break;
+			case GLTextContext.UPDATE_TEXTURE_ACTION_IDENTIFIER:			
+				if(isLatex) {
+					entry = context.getLatexRenderer().getCacheEntry(text);
+				} else {
+					entry = context.getFontRenderer().getCacheEntry(text);
+				}
+				
+				if(entry != null && !entry.isInvalidated()) {
+					gl.glUniform1i(context.getSamplerUniform(), entry.getTextureID());
+					clearAction(GLTextContext.UPDATE_TEXTURE_ACTION_IDENTIFIER);
+				}
+			default: 
+				super.processAction(identifier);
 		}
 	}
 	
