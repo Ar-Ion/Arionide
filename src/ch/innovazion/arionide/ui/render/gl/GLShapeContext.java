@@ -74,6 +74,8 @@ public abstract class GLShapeContext extends GLRenderingContext {
 			
 			gl.glLinkProgram(this.shader);
 			
+			gl.glUseProgram(this.shader);
+			
 			this.position = gl.glGetAttribLocation(this.shader, "position");
 
 			this.rgb = gl.glGetUniformLocation(this.shader, "rgb");

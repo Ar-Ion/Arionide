@@ -69,7 +69,7 @@ public class GLTextContext extends GLShapeContext {
 	}
 
 	public String getVertexShader() {
-		return "text.vert";
+		return "textured.vert";
 	}
 
 	public String getFragmentShader() {

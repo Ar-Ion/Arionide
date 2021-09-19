@@ -78,10 +78,14 @@ public class GLEdgeContext extends GLPolygonContext {
 			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_NEAREST);
 			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_NEAREST);
 			
-			gl.glUniform1i(sampler, 1);
+			gl.glUniform1i(sampler, getTextureID());
 		} catch (GLException | IOException exception) {
 			Debug.exception(exception);
 		}
+	}
+	
+	protected int getTextureID() {
+		return 0;
 	}
 	
 	public BigInteger[] getIdentificationScheme() {
