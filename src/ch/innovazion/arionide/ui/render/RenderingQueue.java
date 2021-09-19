@@ -29,7 +29,7 @@ public class RenderingQueue extends PriorityQueue<Primitive> {
 	private static final long serialVersionUID = -4699975414525922255L;
 
 	private final RenderingContext context;
-	private BigInteger trace = BigInteger.ZERO;
+	private BigInteger trace = Identification.randomTrace(32);
 	
 	protected RenderingQueue(RenderingContext context) {
 		this.context = context;

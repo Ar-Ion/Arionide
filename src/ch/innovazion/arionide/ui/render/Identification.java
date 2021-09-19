@@ -22,6 +22,7 @@
 package ch.innovazion.arionide.ui.render;
 
 import java.math.BigInteger;
+import java.util.Random;
 import java.util.function.BinaryOperator;
 import java.util.stream.IntStream;
 
@@ -34,6 +35,8 @@ public class Identification {
 	private static final BigInteger partitionMask = BigInteger.ONE.shiftLeft(PARTITION_SIZE).subtract(BigInteger.ONE);
 	private static final BinaryOperator<BigInteger> shor = (a, b) -> (a.shiftLeft(PARTITION_SIZE).or(b));
 	
+	private static final Random rand = new Random();
+	
 	public static BigInteger[] makeScheme(int size) {
 		BigInteger[] scheme = new BigInteger[size];
 		
@@ -44,11 +47,16 @@ public class Identification {
 		return scheme;
 	}
 	
+	
+	public static BigInteger randomTrace(int partitions) {
+		return rand.longs(partitions).mapToObj(BigInteger::valueOf).reduce(shor).orElse(BigInteger.ZERO);
+	}
+	
 	public static BigInteger generateFingerprint(int... fields) {
 		return generateFingerprint(BigInteger.ZERO, fields);
 	}
 	
 	public static BigInteger generateFingerprint(BigInteger parent, int... fields) {
-		return shor.apply(parent, IntStream.of(fields).mapToLong(Utils::convertToUnsignedLong).mapToObj(BigInteger::valueOf).reduce(shor).orElse(BigInteger.ZERO));
+		return parent.shiftLeft(PARTITION_SIZE * fields.length).or(IntStream.of(fields).mapToLong(Utils::convertToUnsignedLong).mapToObj(BigInteger::valueOf).reduce(shor).orElse(BigInteger.ZERO));
 	}
 }
