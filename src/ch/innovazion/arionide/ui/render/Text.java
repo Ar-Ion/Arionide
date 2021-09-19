@@ -25,5 +25,6 @@ import ch.innovazion.arionide.ui.topology.Affine;
 
 public interface Text extends Shape {
 	public void updateText(String newText);
+	public void setLatexEnabled(boolean latex);
 	public Affine getRenderTransformation();
 }

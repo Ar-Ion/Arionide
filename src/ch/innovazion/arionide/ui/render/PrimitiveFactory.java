@@ -50,7 +50,11 @@ public class PrimitiveFactory {
 	}
 
 	public Text newText(String text, int rgb, int alpha) {		
-		return new GLText(text, rgb, alpha);
+		return this.newText(text, rgb, alpha, false);
+	}
+	
+	public Text newText(String text, int rgb, int alpha, boolean latex) {		
+		return new GLText(text, rgb, alpha, latex);
 	}
 	
 	public Shape newRectangle() {

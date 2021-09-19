@@ -58,6 +58,10 @@ public class GLText extends GLShape implements Text {
 
 	}
 	
+	public void setLatexEnabled(boolean latex) {
+		this.isLatex = latex;
+	}
+	
 	public void updateBounds(Bounds newBounds) {
 		this.bounds = newBounds;
 	}
@@ -84,7 +88,7 @@ public class GLText extends GLShape implements Text {
 	}
 
 	public BigInteger getStateFingerprint() {
-		return Identification.generateFingerprint(super.getStateFingerprint(), this.isLatex ? 1 : -1);
+		return Identification.generateFingerprint(super.getStateFingerprint(), this.isLatex ? 1 : 0);
 	}
 	
 	public void updateProperty(int identifier) {
@@ -94,7 +98,6 @@ public class GLText extends GLShape implements Text {
 		switch(identifier) {
 			case GLTextContext.USE_LATEX_IDENTIFIER:
 				if(isLatex) {
-					System.out.println("Using latex");
 					GLLatexCacheEntry entry = context.getLatexRenderer().getCacheEntry(text);
 					gl.glUniform1i(context.getSamplerUniform(), entry.getTextureID());
 				} else {

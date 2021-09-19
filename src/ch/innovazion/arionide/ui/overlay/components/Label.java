@@ -74,6 +74,11 @@ public class Label extends Component implements Enlightenable {
 		return this;
 	}
 	
+	public Label setLatexEnabled(boolean latex) {
+		this.text.setLatexEnabled(latex);
+		return this;
+	}
+	
 	public void requestAlphaUpdate(int alpha) {
 		this.setAlpha(alpha);
 	}
