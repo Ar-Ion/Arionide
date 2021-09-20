@@ -15,8 +15,8 @@ import ch.innovazion.arionide.ui.render.font.TessellationOutput;
 public class GLLatexRenderer extends GLTextRenderer implements LatexRenderer {
 	
 	public static final int GL_CACHE_CAPACITY = 16; // Limited by maximum number of hardware textures
-	private static final int GL_BASE_TEXTURE = GL4.GL_TEXTURE3;
-	private static final int BASE_TEXTURE = 3;
+	private static final int GL_BASE_TEXTURE = GL4.GL_TEXTURE5;
+	private static final int BASE_TEXTURE = 5;
 	private static final int TEXTURE_CACHE_CAPACITY = 64; // Limited by RAM capacity
 	
 	private static final Map<String, TextureData> textureCache = Collections.synchronizedMap(new LinkedHashMap<String, TextureData>(TEXTURE_CACHE_CAPACITY, 0.75f, true) {
@@ -42,19 +42,6 @@ public class GLLatexRenderer extends GLTextRenderer implements LatexRenderer {
 
 	public void initRenderer(GL4 gl, int shader, int[] textures, int translationUniform, int scaleUniform) {
 		this.textures = textures;
-		
-		for(int i = 0; i < GL_CACHE_CAPACITY; i++) {
-			gl.glActiveTexture(GL_BASE_TEXTURE + i);
-			gl.glBindTexture(GL4.GL_TEXTURE_2D, textures[i]);
-				
-			gl.glGenerateMipmap(GL4.GL_TEXTURE_2D);
-			
-			//gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
-			//gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
-			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR_MIPMAP_LINEAR);
-			gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);
-		}
-
 		super.initRenderer(gl, shader, translationUniform, scaleUniform);
 	}
 	
@@ -79,12 +66,16 @@ public class GLLatexRenderer extends GLTextRenderer implements LatexRenderer {
 		
 		assert data != null;
 		
-		gl.glBindTexture(GL4.GL_TEXTURE_2D, textures[textureID]);
 		gl.glActiveTexture(GL_BASE_TEXTURE + textureID);
-		
+		gl.glBindTexture(GL4.GL_TEXTURE_2D, textures[textureID]);
 		gl.glPixelStorei(GL4.GL_UNPACK_ALIGNMENT, 1);
 		gl.glTexImage2D(GL4.GL_TEXTURE_2D, 0, GL4.GL_RGB, data.getWidth(), data.getHeight(), 0, GL4.GL_RGB, GL4.GL_UNSIGNED_BYTE, data.getBuffer());
-
+		gl.glGenerateMipmap(GL4.GL_TEXTURE_2D);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_BORDER);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_BORDER);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR_MIPMAP_LINEAR);
+		gl.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MAG_FILTER, GL4.GL_LINEAR);
+		
 		return new GLTextCacheEntry(tess.getWidth(), tess.getHeight(), tess.getCount(), vao, BASE_TEXTURE + textureID, new int[] {verticesBuffer, uvBuffer});
 	}
 	

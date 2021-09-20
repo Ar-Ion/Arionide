@@ -32,11 +32,10 @@ import ch.innovazion.arionide.ui.render.font.latex.GLLatexRenderer;
 
 public class GLTextContext extends GLShapeContext {
 	
-	public static final int USE_LATEX_IDENTIFIER = SCHEME_SIZE + 0;	
+	public static final int TEXTURE_IDENTIFIER = SCHEME_SIZE + 0;	
 	public static final int NUM_LATEX_TEXTURES = GLLatexRenderer.GL_CACHE_CAPACITY;
 	
 	public static final int FETCH_CACHE_ACTION_IDENTIFIER = 0x2;
-	public static final int UPDATE_TEXTURE_ACTION_IDENTIFIER = 0x4;
 
 
 	private static final BigInteger[] scheme = Identification.makeScheme(SCHEME_SIZE + 1);

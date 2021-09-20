@@ -52,6 +52,7 @@ public class GLText extends GLShape implements Text {
 		super(rgb, alpha);
 		this.text = text;
 		this.isLatex = isLatex;
+		requestAction(GLTextContext.FETCH_CACHE_ACTION_IDENTIFIER);
 	}
 
 	protected void prepareGL() {
@@ -60,6 +61,7 @@ public class GLText extends GLShape implements Text {
 	
 	public void setLatexEnabled(boolean latex) {
 		this.isLatex = latex;
+		requestAction(GLTextContext.FETCH_CACHE_ACTION_IDENTIFIER);
 	}
 	
 	public void updateBounds(Bounds newBounds) {
@@ -88,14 +90,37 @@ public class GLText extends GLShape implements Text {
 	}
 
 	public BigInteger getStateFingerprint() {
-		return Identification.generateFingerprint(super.getStateFingerprint(), this.isLatex ? 1 : 0);
+		return Identification.generateFingerprint(super.getStateFingerprint(), getTextureID());
+	}
+	
+	private int getTextureID() {
+		GLTextCacheEntry entry = null;
+
+		if(isLatex) {
+			entry = getContext().getLatexRenderer().getCacheEntry(text);
+		} else {
+			entry = getContext().getFontRenderer().getCacheEntry(text);	
+		}
+		
+		if(entry != null) {
+			return entry.getTextureID();
+		} else {
+			return -1;
+		}
 	}
 	
 	public void updateProperty(int identifier) {
+		GLTextContext context = this.getContext();
+		GL4 gl = context.getGL();
+		
 		switch(identifier) {
-			case GLTextContext.USE_LATEX_IDENTIFIER:
-				requestAction(GLTextContext.FETCH_CACHE_ACTION_IDENTIFIER);
-				requestAction(GLTextContext.UPDATE_TEXTURE_ACTION_IDENTIFIER);
+			case GLTextContext.TEXTURE_IDENTIFIER:
+				int textureID = getTextureID();
+				
+				if(textureID != -1) {
+					gl.glUniform1i(context.getSamplerUniform(), textureID);
+				}
+				
 				break;
 			case GLShapeContext.SCALE_IDENTIFIER:
 				break;
@@ -114,9 +139,9 @@ public class GLText extends GLShape implements Text {
 		switch(identifier) {
 			case GLTextContext.FETCH_CACHE_ACTION_IDENTIFIER:				
 				if(isLatex) {
-					entry = getContext().getLatexRenderer().fetch(gl, text);
+					entry = context.getLatexRenderer().fetch(gl, text);
 				} else {
-					entry = getContext().getFontRenderer().fetch(gl, text);	
+					entry = context.getFontRenderer().fetch(gl, text);	
 				}
 
 				if(entry != null && !entry.isInvalidated()) {
@@ -124,17 +149,6 @@ public class GLText extends GLShape implements Text {
 				}
 				
 				break;
-			case GLTextContext.UPDATE_TEXTURE_ACTION_IDENTIFIER:			
-				if(isLatex) {
-					entry = context.getLatexRenderer().getCacheEntry(text);
-				} else {
-					entry = context.getFontRenderer().getCacheEntry(text);
-				}
-				
-				if(entry != null && !entry.isInvalidated()) {
-					gl.glUniform1i(context.getSamplerUniform(), entry.getTextureID());
-					clearAction(GLTextContext.UPDATE_TEXTURE_ACTION_IDENTIFIER);
-				}
 			default: 
 				super.processAction(identifier);
 		}

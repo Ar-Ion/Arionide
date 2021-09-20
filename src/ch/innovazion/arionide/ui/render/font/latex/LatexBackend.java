@@ -44,10 +44,19 @@ public class LatexBackend extends Thread {
 	}
 	
 	public void run() {
+		File dir = null;
+		
+		try {
+			dir = Files.createTempDirectory("arionide").toFile();
+			dir.mkdirs();
+		} catch (IOException exception) {
+			Debug.exception(exception);
+		}
+		
 		while(true) {		
 			Iterator<String> it = inputQueue.iterator();
 			
-			while(it.hasNext()) {
+			if(it.hasNext() && processQueue.isEmpty()) {
 				try {
 					String input = it.next();
 					
@@ -59,8 +68,6 @@ public class LatexBackend extends Thread {
 						filename += String.format("%02x", b);
 			        }
 					
-					File dir = Files.createTempDirectory("arionide").toFile();
-					dir.mkdirs();
 					File latex = new File(dir, filename + ".tex");
 					File texture = new File(dir, filename + ".png");
 					
@@ -83,7 +90,7 @@ public class LatexBackend extends Thread {
 			
 			Iterator<Entry<String, Process>> it2 = processQueue.entrySet().iterator();
 			
-			while(it2.hasNext()) {
+			if(it2.hasNext()) {
 				Entry<String, Process> process = it2.next();
 				
 				if(!process.getValue().isAlive() && process.getValue().exitValue() == 0) {

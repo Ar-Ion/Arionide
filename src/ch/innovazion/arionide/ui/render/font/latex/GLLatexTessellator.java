@@ -57,6 +57,6 @@ public class GLLatexTessellator implements GLTextTessellator {
 		Buffer vertices = new GLBounds(verticesBounds, false).allocDataBuffer(8).putNorth().putSouth().getDataBuffer().flip();
 		Buffer textures = new GLBounds(uvBounds, false).allocDataBuffer(8).putNorth().putSouth().getDataBuffer().flip();
 
-		return new TessellationOutput(vertices, textures, 1.0f, 1.0f, 1);
+		return new TessellationOutput(vertices, textures, width, 2.0f, 1);
 	}
 }
