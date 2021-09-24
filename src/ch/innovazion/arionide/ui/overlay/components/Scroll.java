@@ -26,10 +26,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
+import com.jogamp.newt.event.KeyEvent;
+
 import ch.innovazion.arionide.Utils;
 import ch.innovazion.arionide.events.DragEvent;
 import ch.innovazion.arionide.events.Event;
-import ch.innovazion.arionide.events.InvalidateLayoutEvent;
 import ch.innovazion.arionide.events.PressureEvent;
 import ch.innovazion.arionide.events.ScrollEvent;
 import ch.innovazion.arionide.events.WheelEvent;
@@ -136,7 +137,19 @@ public class Scroll extends Tab {
 			if(this.getBounds().contains(drag.getAnchor())) {				
 				this.commitDelta((int) (-2 * MOUSE_DRAG_SENSIBILITY * this.getComponents().size() / this.getBounds().getWidth() * (int) Utils.fakeComplexPower(drag.getDeltaX(), MOUSE_DRAG_ACCELERATION)));
 			}
-		} else if(event instanceof InvalidateLayoutEvent) {
+		} else if(event instanceof PressureEvent) {
+			PressureEvent pressure = (PressureEvent) event;
+			
+			System.out.println(pressure.getKeycode());
+			
+			if(pressure.isDown()) {
+				if(pressure.getKeycode() == KeyEvent.VK_RIGHT) {
+					this.commitDelta(1);
+				} else if(pressure.getKeycode() == KeyEvent.VK_LEFT) {
+					this.commitDelta(-1);
+				}
+			}
+		} else {
 			super.handleEvent(event);
 		}
 	}
