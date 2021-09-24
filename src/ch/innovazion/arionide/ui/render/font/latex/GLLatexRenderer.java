@@ -1,6 +1,5 @@
 package ch.innovazion.arionide.ui.render.font.latex;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -35,6 +34,7 @@ public class GLLatexRenderer extends GLTextRenderer implements LatexRenderer {
 	private final LatexBackend backend = new LatexBackend(textureCache);
 	
 	private int[] textures;
+	private int numTextures = 0;
 	
 	public GLLatexRenderer() {
 		super(new GLLatexTessellator(textureCache), GL_CACHE_CAPACITY);
@@ -61,7 +61,7 @@ public class GLLatexRenderer extends GLTextRenderer implements LatexRenderer {
 		
 		synchronized(textureCache) {
 			data = textureCache.get(str);
-			textureID = new ArrayList<>(textureCache.keySet()).indexOf(str);
+			textureID = numTextures++ % GL_CACHE_CAPACITY;
 		}
 		
 		assert data != null;

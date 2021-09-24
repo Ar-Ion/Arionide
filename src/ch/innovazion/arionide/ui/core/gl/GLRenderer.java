@@ -420,10 +420,13 @@ public class GLRenderer extends Renderer {
 	private void setupFX(GL4 gl) {
 		gl.glUseProgram(this.fxShader);
 		
+		// Black magic
+		Matrix4f proj = new Matrix4f().perspective(fov, 1.0f, zNear, zFar);
+		
 		/* Load sun position in screen coords */
 		if(controller.getUserController().getPitch() > 0) {
 			Vector3f user = controller.getUserController().getPosition();
-			Vector2f point = this.getHVCFrom3D(new Vector3f(this.sun), this.projectionMatrix).add(1.0f, 1.0f).mul(0.5f);
+			Vector2f point = this.getHVCFrom3D(new Vector3f(this.sun).add(user), proj).add(1.0f, 1.0f).mul(0.5f);
 			
 			fx.getSettings().setLightPosition(point);
 		} else {

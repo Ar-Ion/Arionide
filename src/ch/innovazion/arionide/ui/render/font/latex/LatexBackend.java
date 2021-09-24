@@ -56,7 +56,7 @@ public class LatexBackend extends Thread {
 		while(true) {		
 			Iterator<String> it = inputQueue.iterator();
 			
-			if(it.hasNext() && processQueue.isEmpty()) {
+			if(it.hasNext()) {
 				try {
 					String input = it.next();
 					
@@ -100,12 +100,15 @@ public class LatexBackend extends Thread {
 						InputStream stream = new FileInputStream(output);
 						TextureData texture = TextureIO.newTextureData(GLProfile.get(GLProfile.GL4), stream, false, TextureIO.PNG);
 						
-						textureCache.put(process.getKey(), texture);
+						synchronized(textureCache) {
+							textureCache.put(process.getKey(), texture);
+						}
 						
 						it2.remove();
 					} catch (IOException exception) {
 						Debug.exception(exception);
 					}
+					
 				}
 			}
 			
@@ -115,7 +118,7 @@ public class LatexBackend extends Thread {
 	
 	private void createLatexFile(File latex, String input) throws IOException, NoSuchAlgorithmException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(latex));
-		writer.write("\\documentclass[convert={density=1200}]{standalone}\n");
+		writer.write("\\documentclass[convert={density=600}]{standalone}\n");
 		writer.write("\\usepackage{xcolor}\n");
 		writer.write("\\pagecolor{black}\n");
 		writer.write("\\color{white}\n");

@@ -125,12 +125,8 @@ public class Utils {
 		} 
 	}
 	
-	public static long convertToUnsignedLong(int in) {
-		if(in < 0) {
-			return (1 << 32) | -in;
-		} else {
-			return in;
-		}
+	public static long convertToUnsigned(int in) {		
+		return in > 0 ? in : (long) (in & 0x7FFFFFFF) | (1L << 31);
 	}
 	
 	public static Application getLayout2GL() {

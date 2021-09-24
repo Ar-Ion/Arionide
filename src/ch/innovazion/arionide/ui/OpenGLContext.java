@@ -286,7 +286,6 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	}
 
 	public void mousePressed(MouseEvent event) {
-		System.out.println("Press");
 		this.dispatcher.fire(new ActionEvent(this.getEventOrigin(event), event.getButton(), ActionType.PRESS));
 	}
 
@@ -322,6 +321,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 			}
 		} else {
 			window.setPointerVisible(true);
+			window.confinePointer(false);
 		}
 				
 		dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.MOVE));

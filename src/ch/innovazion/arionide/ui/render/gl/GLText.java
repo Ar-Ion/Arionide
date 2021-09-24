@@ -101,7 +101,7 @@ public class GLText extends GLShape implements Text {
 		} else {
 			entry = getContext().getFontRenderer().getCacheEntry(text);	
 		}
-		
+				
 		if(entry != null) {
 			return entry.getTextureID();
 		} else {
@@ -116,7 +116,7 @@ public class GLText extends GLShape implements Text {
 		switch(identifier) {
 			case GLTextContext.TEXTURE_IDENTIFIER:
 				int textureID = getTextureID();
-				
+								
 				if(textureID != -1) {
 					gl.glUniform1i(context.getSamplerUniform(), textureID);
 				}
@@ -137,7 +137,8 @@ public class GLText extends GLShape implements Text {
 		GLTextCacheEntry entry = null;
 
 		switch(identifier) {
-			case GLTextContext.FETCH_CACHE_ACTION_IDENTIFIER:				
+			case GLTextContext.FETCH_CACHE_ACTION_IDENTIFIER:		
+				
 				if(isLatex) {
 					entry = context.getLatexRenderer().fetch(gl, text);
 				} else {

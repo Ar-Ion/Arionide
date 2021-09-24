@@ -57,6 +57,6 @@ public class Identification {
 	}
 	
 	public static BigInteger generateFingerprint(BigInteger parent, int... fields) {
-		return parent.shiftLeft(PARTITION_SIZE * fields.length).or(IntStream.of(fields).mapToLong(Utils::convertToUnsignedLong).mapToObj(BigInteger::valueOf).reduce(shor).orElse(BigInteger.ZERO));
+		return parent.shiftLeft(PARTITION_SIZE * fields.length).or(IntStream.of(fields).mapToLong(Utils::convertToUnsigned).mapToObj(BigInteger::valueOf).reduce(shor).orElse(BigInteger.ZERO));
 	}
 }
