@@ -94,7 +94,7 @@ public class Utils {
 		
 		return (alpha << 24) | rgb;
 	}
-	
+
 	public static void checkColorRange(String colorName, int color) {		
 		if(checkUnsignedByteOverflow(color)) {
 			throw new IllegalArgumentException(colorName + " out of range: " + color);

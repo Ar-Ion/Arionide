@@ -214,7 +214,7 @@ public class ApplicationTints {
 		addColor("Blue-Gray", 0xC8C8CD);
 		addColor("White", 0xFFFFFF);
 	}
-			
+	
 	private static void addColor(String name, int color) {
 		names.add(name);
 		colors.add(new Vector3f(Utils.getRed(color) / 255.0f, Utils.getGreen(color) / 255.0f, Utils.getBlue(color) / 255.0f));
@@ -227,7 +227,7 @@ public class ApplicationTints {
 	public static List<String> getColorNames() {
 		return names;
 	}
-	
+		
 	public static int getColorIDByName(String id) {
 		return names.indexOf(id);
 	}

@@ -412,7 +412,7 @@ public class GLRenderer extends Renderer {
 
 		settings.setAmbientFactor(0.5f);
 		settings.setColor(color);
-
+  
 		
 		link.render();
 	}
@@ -420,9 +420,9 @@ public class GLRenderer extends Renderer {
 	private void setupFX(GL4 gl) {
 		gl.glUseProgram(this.fxShader);
 		
-		// Black magic
-		Matrix4f proj = new Matrix4f().perspective(fov, 1.0f, zNear, zFar);
+		Matrix4f proj = new Matrix4f().perspective(fov, this.bounds.getWidth() / this.bounds.getHeight(), zNear, zFar);
 		
+		// Black magic		
 		/* Load sun position in screen coords */
 		if(controller.getUserController().getPitch() > 0) {
 			Vector3f user = controller.getUserController().getPosition();
@@ -461,8 +461,7 @@ public class GLRenderer extends Renderer {
 	}
 	
 	private void renderLabels(AppDrawingContext context, List<WorldElement> elements) {
-		// Construct a new perspective with a null near plane (I don't know why it has to be null ?!)
-		Matrix4f proj = new Matrix4f().perspective(fov, this.bounds.getWidth() / this.bounds.getHeight(), 0.0f, 1.0f);
+		Matrix4f proj = new Matrix4f().perspective(fov, this.bounds.getWidth() / this.bounds.getHeight(), zNear, zFar);
 		
 		Vector3f translation = controller.getTranslationVector();
 		int currentID = controller.getHostStack().getCurrent();
@@ -485,30 +484,27 @@ public class GLRenderer extends Renderer {
 			
 			/* World ==> Screen-space calculation */
 			Vector3f mainSpaceAnchor = element.getCenter().add(0.0f, 2.0f * element.getSize(), 0.0f).sub(translation);
-			Vector3f subSpaceAnchor = element.getCenter().sub(0.0f, element.getSize(), 0.0f).sub(translation);
+			Vector3f subSpaceAnchor = element.getCenter().add(0.0f, 0.75f * element.getSize(), 0.0f).sub(translation);
 
 			boolean renderMain = this.checkRenderability(mainSpaceAnchor);
 			boolean renderSub = this.checkRenderability(subSpaceAnchor);
-			
-			float height = -1.0f;
-			
+						
 			if(renderMain && element.getName() != null) {
 				Vector2f screenAnchor = this.getHVCFrom3D(mainSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
-				height = 1.0f - this.getHVCFrom3D(element.getCenter().sub(translation).add(0.0f, element.getSize(), 0.0f), proj).mul(1.0f).add(screenAnchor).y;
+				float height = 1.0f - this.getHVCFrom3D(element.getCenter().sub(translation).add(0.0f, element.getSize(), 0.0f), proj).add(screenAnchor).y;
 				
 				this.renderLabel(context, Arrays.asList(element.getName()), ApplicationTints.WHITE, alpha, screenAnchor, height);
 			}
 			
 			if(renderSub && element.getDescription() != null) {
 				List<String> description = element.getDescription();
-									
-				Vector2f screenAnchor = this.getHVCFrom3D(subSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
-
-				if(height < 0.0f) { // Avoid double calculation (considering both heights approximately the same: lim(dist(player, object) -> infty) {dh -> 0})
-					height = 1.0f - this.getHVCFrom3D(element.getCenter().sub(translation).add(0.0f, element.getSize(), 0.0f), proj).mul(1.0f).add(screenAnchor).y;
-				}
 				
-				this.renderLabel(context, description, ApplicationTints.COMMENT_COLOR, alpha, screenAnchor, height * 0.3f);
+				Vector2f screenAnchor = this.getHVCFrom3D(subSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
+				float height = 1.0f - this.getHVCFrom3D(element.getCenter().sub(translation).sub(0.0f, 0.5f * element.getSize(), 0.0f), proj).add(screenAnchor).y;
+						
+				Vector4f invertedColor = new Vector4f(1.0f).sub(element.getColor());
+				int invertedRGB = Utils.packRGB((int) (invertedColor.x * 255.0f), (int) (invertedColor.y * 255.0f), (int) (invertedColor.z * 255.0f));
+				this.renderLabel(context, description, invertedRGB, alpha, screenAnchor, height * 0.25f);
 			}
 			
 			gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);

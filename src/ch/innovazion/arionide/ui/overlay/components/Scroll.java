@@ -139,9 +139,7 @@ public class Scroll extends Tab {
 			}
 		} else if(event instanceof PressureEvent) {
 			PressureEvent pressure = (PressureEvent) event;
-			
-			System.out.println(pressure.getKeycode());
-			
+						
 			if(pressure.isDown()) {
 				if(pressure.getKeycode() == KeyEvent.VK_RIGHT) {
 					this.commitDelta(1);

@@ -211,7 +211,7 @@ public class Input extends Button implements EventHandler {
 				this.cursorPosition = 0;
 				this.highlighted = false;
 			}
-			
+
 			this.dispatch(code, pressure.getChar(), pressure.getModifiers(), !noSeek);
 			
 			if(this.cursorPosition < 0) {
@@ -231,6 +231,9 @@ public class Input extends Button implements EventHandler {
 			this.dispatchDeletion(code, modifiers > 0);
 		} else if(seek) {
 			this.dispatchSeek(code);
+		} else if(code == KeyEvent.VK_7 && (modifiers & (KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK)) != 0 && (modifiers & KeyEvent.SHIFT_MASK) != 0) {
+			this.text.insert(this.cursorPosition, '\\');
+			this.cursorPosition++;
 		} else if(FontRenderer.CHARSET.indexOf(ch) >= 0) {
 			this.text.insert(this.cursorPosition, ch);
 			this.cursorPosition++;

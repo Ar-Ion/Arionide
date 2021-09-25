@@ -165,7 +165,7 @@ public class CodeView extends View implements EventHandler {
 			List<String> elements = controller.getMenuManager().getAvailableActions();
 			
 			synchronized(elements) {
-				List<Component> components = elements.stream().filter(s -> !s.isEmpty()).map(menu.getGenerator()).collect(Collectors.toList());
+				List<Component> components = elements.stream().filter(s -> s != null && !s.isEmpty()).map(menu.getGenerator()).collect(Collectors.toList());
 				
 				if(currentMenu.isCyclic() && elements.size() > 1) {
 					menu.setCyclicComponents(elements.toArray(new String[0]));		

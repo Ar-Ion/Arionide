@@ -23,6 +23,6 @@ package ch.innovazion.arionide.ui.render.font;
 
 public interface FontRenderer extends TextRenderer {
 	
-	public static final String CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!№;%:?*()_+-=.,/|\\\"'@#$^&{}[]°§<>≤≥";
+	public static final String CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!№;%:?*()_+-=.,/|\\\"'@#$^&{}[]°§<>≤≥ ";
 	public static final int MAX_CHARS = 256;
 }

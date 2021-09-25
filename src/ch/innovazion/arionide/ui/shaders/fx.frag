@@ -356,11 +356,7 @@ void sun() {
     vec4 color = texture(colorTexture, textureCoords);
     float ratio = pixelSize.y / pixelSize.x;
     
-    vec2 transformed = textureCoords - vec2(0.5, 0.5);
-    transformed.x *= ratio;
-    transformed += vec2(0.5, 0.5);
-    
-    float lightDistanceFromCenter = length(lightPosition - transformed);
+    float lightDistanceFromCenter = length((lightPosition - textureCoords) * vec2(sqrt(ratio), 1.0/sqrt(ratio)));
     float brightness = pow(lightDistanceFromCenter / sunSize, -concentration);
     
     float factor = 1.0 - pow(strength, -brightness);
