@@ -21,9 +21,11 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang.avr;
 
+import ch.innovazion.arionide.lang.Block;
 import ch.innovazion.arionide.lang.Environment;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Language;
+import ch.innovazion.arionide.lang.Spacer;
 import ch.innovazion.arionide.lang.avr.arithmetic.Add;
 import ch.innovazion.arionide.lang.avr.arithmetic.AddWithCarry;
 import ch.innovazion.arionide.lang.avr.arithmetic.Decrement;
@@ -104,10 +106,8 @@ import ch.innovazion.arionide.lang.avr.branch.SkipIfIOBitSet;
 import ch.innovazion.arionide.lang.avr.branch.SkipIfRegisterBitClear;
 import ch.innovazion.arionide.lang.avr.branch.SkipIfRegisterBitSet;
 import ch.innovazion.arionide.lang.avr.programs.AVRSkeletonBuilder;
-import ch.innovazion.arionide.lang.avr.special.Block;
 import ch.innovazion.arionide.lang.avr.special.Break;
 import ch.innovazion.arionide.lang.avr.special.Organize;
-import ch.innovazion.arionide.lang.avr.special.Spacer;
 import ch.innovazion.arionide.lang.avr.transfers.Input;
 import ch.innovazion.arionide.lang.avr.transfers.Load;
 import ch.innovazion.arionide.lang.avr.transfers.LoadImmediate;

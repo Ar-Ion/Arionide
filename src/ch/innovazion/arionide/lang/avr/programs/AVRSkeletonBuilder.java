@@ -2,9 +2,9 @@ package ch.innovazion.arionide.lang.avr.programs;
 
 import java.util.Map;
 
+import ch.innovazion.arionide.lang.Block;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Skeleton;
-import ch.innovazion.arionide.lang.avr.special.Block;
 import ch.innovazion.arionide.lang.avr.special.Organize;
 import ch.innovazion.arionide.lang.programs.ProgramIO;
 import ch.innovazion.arionide.lang.programs.SkeletonBuilder;

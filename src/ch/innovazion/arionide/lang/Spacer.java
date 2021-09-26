@@ -1,11 +1,7 @@
-package ch.innovazion.arionide.lang.avr.special;
+package ch.innovazion.arionide.lang;
 
 import java.util.List;
 
-import ch.innovazion.arionide.lang.ApplicationMemory;
-import ch.innovazion.arionide.lang.Environment;
-import ch.innovazion.arionide.lang.EvaluationException;
-import ch.innovazion.arionide.lang.SpecialInstruction;
 import ch.innovazion.arionide.lang.symbols.Specification;
 import ch.innovazion.arionide.project.StructureModel;
 import ch.innovazion.arionide.project.StructureModelFactory;

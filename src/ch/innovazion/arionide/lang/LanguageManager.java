@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import ch.innovazion.arionide.lang.avr.AVRLanguage;
+import ch.innovazion.arionide.lang.notek.NotekLanguage;
 
 public class LanguageManager {
 	
@@ -36,6 +37,7 @@ public class LanguageManager {
 	
 	static {
 		register("AVR", new AVRLanguage());
+		register("Notek", new NotekLanguage());
 	}
 	
 	

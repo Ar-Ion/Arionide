@@ -21,9 +21,11 @@
  *******************************************************************************/
 package ch.innovazion.arionide.lang.notek;
 
+import ch.innovazion.arionide.lang.Block;
 import ch.innovazion.arionide.lang.Environment;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Language;
+import ch.innovazion.arionide.lang.Spacer;
 import ch.innovazion.arionide.project.Storage;
 
 public class NotekLanguage extends Language {
@@ -39,6 +41,9 @@ public class NotekLanguage extends Language {
 	
 	protected void registerInstructions() {
 		registerShadowInstruction(this.entryPoint = new NotekEntryPoint());
+		
+		registerOperator(new Spacer());
+		registerOperator(new Block());
 	}
 
 	protected short getVersionMajor() {
