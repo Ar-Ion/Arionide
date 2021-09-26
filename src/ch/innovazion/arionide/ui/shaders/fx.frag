@@ -1,7 +1,7 @@
 #version 400
 
 #define MOTION_BLUR
-#define LIGHT_ADAPTATION
+//#define LIGHT_ADAPTATION
 #define GOD_RAYS
 #define BLOOM
 #define LENS_FLARE
@@ -38,7 +38,7 @@ const vec2 flareAxis = vec2(-1.0, 1.0);
 const float flareDilatationFactor = 6.0;
 */
 
-const vec2 flareAxis = vec2(-1.0, 1.8);
+const vec2 flareAxis = vec2(-1.0, 1.2);
 const float flareDilatationFactor = 6;
 
 /* Sun */
@@ -278,7 +278,7 @@ vec4 normalizeHVC(vec4 hvc) {
 vec4 motionBlur() {
 	float z = texture(depthTexture, textureCoords).r;
 
-	vec4 viewportPosition = vec4(textureCoords.x * 2 - 1, textureCoords.y * 2 - 1, z*z, 1.0);
+	vec4 viewportPosition = vec4(textureCoords.x * 2 - 1, textureCoords.y * 2 - 1, z, 1.0);
 	vec4 previousViewportPosition = normalizeHVC(currentToPreviousViewportMatrix * viewportPosition);
 
 	vec2 velocity = (viewportPosition.xy - previousViewportPosition.xy) / renderTime * 20.0f;
@@ -304,9 +304,9 @@ vec4 motionBlur() {
 
 void lens_flare() {
     float ratio = pixelSize.y / pixelSize.x;
-    vec2 deltaLight = lightPosition - vec2(0.5);
+    vec2 deltaLight = (lightPosition - vec2(0.5)) * vec2(ratio, 1.0);
     
-    vec2 axis = normalize(vec2(ratio, 1) * flareAxis);
+    vec2 axis = normalize(flareAxis);
     
     float cosAngle = dot(normalize(deltaLight), axis);
     float sinAngle = sqrt(1 - cosAngle * cosAngle);
@@ -320,7 +320,7 @@ void lens_flare() {
     
     vec2 transformed = mat2(cosAngle, -sinAngle, sinAngle, cosAngle) * ((textureCoords - vec2(0.5)) * vec2(ratio, 1) / dilatation);
     transformed += vec2(0.5);
-    float flareIntensity = min(1.0, pow(length(textureCoords - lightPosition), 2.0));
+    float flareIntensity = min(1.0, pow(1.5*length(textureCoords - lightPosition), 2.0));
 
     if(dilatation > 2) {
         flareIntensity *= exp(2 - dilatation);
@@ -349,17 +349,18 @@ void godRays() {
 		illumination *= decay;
 	}
 
-	fragColor += color * exposure * factor;
+	fragColor += (1 - fragColor) * color * exposure * factor;
 }
 
 void sun() {
     vec4 color = texture(colorTexture, textureCoords);
+    float z = texture(depthTexture, textureCoords).r;
     float ratio = pixelSize.y / pixelSize.x;
     
-    float lightDistanceFromCenter = length((lightPosition - textureCoords) * vec2(sqrt(ratio), 1.0/sqrt(ratio)));
+    float lightDistanceFromCenter = length((lightPosition - textureCoords) * vec2(ratio, 1.0));
     float brightness = pow(lightDistanceFromCenter / sunSize, -concentration);
     
-    float factor = 1.0 - pow(strength, -brightness);
+    float factor = (1.0 - pow(strength, -brightness)) * max(0.75, pow(z, 16));
 
     fragColor += (1 - fragColor) * factor * max(1 - color.a, 1 - pow(getLuma(color), 3.5));
 }
