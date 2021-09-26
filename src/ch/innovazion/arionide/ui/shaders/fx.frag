@@ -51,8 +51,8 @@ const mat3 kernel = mat3(0.0625, 0.125, 0.0625, 0.125, 0.25, 0.125, 0.0625, 0.12
 const vec3 unity = vec3(1.0, 1.0, 1.0);
 
 /* Bloom */
-const int bloomStrength = 16; // O(n^2)
-const int bloomUndersampling = 4; // O(n^-2)
+const int bloomStrength = 8; // O(n^2)
+const int bloomUndersampling = 2; // O(n^-2)
 const float bloomVariance = 0.125 * bloomStrength * bloomStrength;
 
 /* Common */
