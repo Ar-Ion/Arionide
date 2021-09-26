@@ -306,7 +306,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	}
 
 
-	public void mouseMoved(MouseEvent event) {	
+	public void mouseMoved(MouseEvent event) {
 		if(orchestrator.getController().isActive()) {
 			window.setPointerVisible(false);
 			window.confinePointer(true);
@@ -314,7 +314,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 			int deltaX = window.getWidth() / 4;
 			int deltaY = window.getHeight() / 4;
 
-			if(event.getX() / getTransform()[0] > window.getWidth() - deltaX || event.getX() / getTransform()[0]  < deltaX || event.getY() / getTransform()[1]  > window.getHeight() - deltaY || event.getY() / getTransform()[1] < deltaY) {
+			if(event.getX() / getTransform()[0] > window.getWidth() - deltaX || event.getX() / getTransform()[0] < deltaX || event.getY() / getTransform()[1]  > window.getHeight() - deltaY || event.getY() / getTransform()[1] < deltaY) {
 				window.warpPointer((int) (getTransform()[0] * window.getWidth() / 2), (int) (getTransform()[1] * window.getHeight() / 2));
 				dispatcher.fire(new MoveEvent(new Point(1.0f, 1.0f), MoveType.RESET));
 				return;
@@ -323,7 +323,7 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 			window.setPointerVisible(true);
 			window.confinePointer(false);
 		}
-				
+						
 		dispatcher.fire(new MoveEvent(this.getEventOrigin(event), MoveType.MOVE));
 	}
 	
@@ -342,7 +342,6 @@ public class OpenGLContext implements AppDrawingContext, GLEventListener, KeyLis
 	}
 	
 	private Point getEventOrigin(MouseEvent event) {
-
 		return new Point(2.0f / getTransform()[0] * event.getX() / this.window.getWidth(), 2.0f / getTransform()[1] * event.getY() / this.window.getHeight());
 	}
 

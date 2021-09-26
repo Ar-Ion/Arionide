@@ -299,13 +299,13 @@ public class UserController {
 	}
 	
 	protected void updateYaw(float radians) {
-		if(Math.abs(dyaw) < maxCameraSpeed) {
+		if(Math.abs(dyaw + radians) < maxCameraSpeed) {
 			dyaw += radians;
 		}
 	}
 	
 	protected void updatePitch(float radians) {
-		if(Math.abs(dpitch) < maxCameraSpeed) {
+		if(Math.abs(dpitch + radians) < maxCameraSpeed) {
 			dpitch += radians;
 		}
 	}

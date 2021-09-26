@@ -474,7 +474,7 @@ public class CoreController {
 	
 	void toggleActivity() {
 		active = !active;
-		
+				
 		if(!active) {
 			user.moveX(0);
 			user.moveY(0);

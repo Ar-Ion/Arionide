@@ -67,6 +67,11 @@ public class InputPromptView extends PromptView {
 		return this;
 	}
 	
+	public InputPromptView setInput(String text) {
+		input.setText(text);
+		return this;
+	}
+	
 	public InputPromptView setPlaceholder(String placeholder) {
 		input.setPlaceholder(placeholder);
 		return this;

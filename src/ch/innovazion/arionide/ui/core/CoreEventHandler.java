@@ -110,8 +110,13 @@ public class CoreEventHandler implements EventHandler {
 							Point position = move.getPoint();
 							
 							if(move.getType() != MoveType.RESET) {
-								controller.updateYaw((position.getX() - lastMousePosition.getX()) * mouseSensibility);
-								controller.updatePitch((-position.getY() + lastMousePosition.getY()) * mouseSensibility);
+								double distance = Math.sqrt((position.getX() - lastMousePosition.getX()) * (position.getX() - lastMousePosition.getX()) +
+															(position.getY() - lastMousePosition.getY()) * (position.getY() - lastMousePosition.getY()));
+								
+								if(distance < 0.1) {
+									controller.updateYaw((position.getX() - lastMousePosition.getX()) * mouseSensibility);
+									controller.updatePitch(-(position.getY() - lastMousePosition.getY()) * mouseSensibility);
+								}
 							}														
 
 							lastMousePosition = position;

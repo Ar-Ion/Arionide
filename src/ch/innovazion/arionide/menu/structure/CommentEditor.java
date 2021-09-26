@@ -74,6 +74,7 @@ public class CommentEditor extends Menu {
 		}
 		
 		Views.input.setText(action)
+				   .setInput(placeholder)
 				   .setPlaceholder(placeholder)
 				   .setResponder(this::onLineUpdate)
 				   .stackOnto(Views.code);

@@ -159,12 +159,12 @@ public class Scroll extends Tab {
 		
 		activeComponent += delta;
 		
-		if(activeComponent >= numElements) {
+		if(numElements != 0 && activeComponent >= numElements) {
 			commitDelta(-1);
 			return;
 		}
 		
-		if(activeComponent < 0) {
+		if(numElements != 0 && activeComponent < 0) {
 			commitDelta(1);
 			return;
 		}
