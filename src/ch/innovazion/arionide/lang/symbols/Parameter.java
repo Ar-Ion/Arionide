@@ -30,15 +30,22 @@ public class Parameter implements Serializable {
 
 	private String name;
 	private ParameterValue value;
-	private boolean frozen = true;
+	private boolean frozen;
+	private boolean textOnly;
 	
 	public Parameter(String name) {
 		this(name, new Information(name));
 	}
 	
 	public Parameter(String name, ParameterValue value) {
+		this(name, value, false, false);
+	}
+	
+	private Parameter(String name, ParameterValue value, boolean frozen, boolean textOnly) {
 		this.name = name;
 		this.value = value;
+		this.frozen = frozen;
+		this.textOnly = textOnly;
 	}
 	
 	public Parameter asConstant(Node value) {
@@ -70,6 +77,15 @@ public class Parameter implements Serializable {
 		this.value = value;
 	}
 	
+	public Parameter setTextOnly(boolean textOnly) {
+		this.textOnly = textOnly;
+		return this;
+	}
+	
+	public boolean isTextOnly() {
+		return textOnly;
+	}
+	
 	public Parameter setFrozen(boolean frozen) {
 		this.frozen = frozen;
 		return this;
@@ -97,6 +113,6 @@ public class Parameter implements Serializable {
 	}
 	
 	public Parameter clone() {
-		return new Parameter(name, value.clone());
+		return new Parameter(name, value.clone(), frozen, textOnly);
 	}
 }

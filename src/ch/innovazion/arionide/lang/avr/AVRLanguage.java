@@ -246,6 +246,10 @@ public class AVRLanguage extends Language {
 	public String getVendorUID() {
 		return "Atmel Corp. (Microchip Technology)";
 	}
+	
+	public String getName() {
+		return "AVR";
+	}
 
 	public Instruction getEntryPoint() {
 		return entryPoint;

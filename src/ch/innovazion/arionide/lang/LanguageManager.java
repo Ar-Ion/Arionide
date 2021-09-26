@@ -36,14 +36,14 @@ public class LanguageManager {
 	
 	
 	static {
-		register("AVR", new AVRLanguage());
-		register("Notek", new NotekLanguage());
+		register(new AVRLanguage());
+		register(new NotekLanguage());
 	}
 	
 	
-	private static void register(String name, Language lang) {
-		names.add(name);
-		languages.put(name, lang);
+	private static void register(Language lang) {
+		names.add(lang.getName());
+		languages.put(lang.getName(), lang);
 	}
 	
 	public static List<String> getAvailableLanguages() {

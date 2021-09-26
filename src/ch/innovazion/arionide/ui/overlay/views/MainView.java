@@ -86,7 +86,7 @@ public class MainView extends View implements EventHandler {
 		
 		this.setBorderColor(ApplicationTints.MAIN_COLOR);
 		
-		this.add(new Label(this, "Home").setLatexEnabled(true).enclose(this.commons), 0.0f, 0.05f, 1.0f, 0.2f);
+		this.add(new Label(this, "Home").enclose(this.commons), 0.0f, 0.05f, 1.0f, 0.2f);
 		
 		this.add(new Button(this, "Undefined").enclose(this.body).enclose(this.page), 0.1f, 0.23f, 0.9f, 0.33f);
 		this.add(new Button(this, "Undefined").enclose(this.body).enclose(this.page), 0.1f, 0.38f, 0.9f, 0.48f);

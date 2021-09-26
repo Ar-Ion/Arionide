@@ -209,7 +209,7 @@ public class CodeView extends View implements EventHandler {
 					case KeyEvent.VK_DOWN:
 						currentMenu.down();
 						break;
-					case KeyEvent.VK_ALT:
+					case KeyEvent.VK_CONTROL:
 						if(!searching) {
 							this.searching = true;
 							this.searchString = new StringBuilder();
@@ -220,7 +220,7 @@ public class CodeView extends View implements EventHandler {
 					}
 				} else {
 					if(searching) {
-						if(pressure.getKeycode() == KeyEvent.VK_ALT) {
+						if(pressure.getKeycode() == KeyEvent.VK_CONTROL) {
 							this.searching = false;
 							controller.getMenuManager().setSearching(false);
 						} else {

@@ -108,6 +108,7 @@ public abstract class Language implements Serializable {
 	protected abstract short getVersionMajor();
 	protected abstract short getVersionMinor();
 	public abstract String getVendorUID();
+	public abstract String getName();
 	
 	public abstract Instruction getEntryPoint();
 	

@@ -165,7 +165,7 @@ public class GLText extends GLShape implements Text {
 			float width = this.bounds.getWidth() * scalar.getScaleX();
 			float height = this.bounds.getHeight();
 
-			if(isLatex || text.startsWith("\\tex")) {
+			if(isLatex) {
 				this.renderTransformation = this.getContext().getLatexRenderer().renderString(this.getContext().getGL(), text.replace("\\tex", ""), new Bounds(x, y, width, height));
 			} else {
 				this.renderTransformation = this.getContext().getFontRenderer().renderString(this.getContext().getGL(), text, new Bounds(x, y, width, height));

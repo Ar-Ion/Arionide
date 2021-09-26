@@ -58,6 +58,18 @@ public class StructureModel {
 	public boolean hasUniqueSignature() {
 		return signatures.size() == 1;
 	}
+	
+	public boolean isTextOnly() {
+		if(!signatures.isEmpty()) {
+			List<Parameter> params = signatures.get(0).getParameters();
+			
+			if(!params.isEmpty()) {
+				return params.get(0).isTextOnly();
+			}
+		}
+		
+		return false;
+	}
 
 	public List<Parameter> getSignature(int signatureID) {
 		return getPossibleSignatures().get(signatureID).getParameters();

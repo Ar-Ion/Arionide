@@ -195,7 +195,7 @@ public class Input extends Button implements EventHandler {
 		
 		if(this.hasFocus && (event instanceof PressureEvent)) {
 			PressureEvent pressure = (PressureEvent) event;
-			
+						
 			event.abortDispatching();
 			
 			if(pressure.isUp()) {

@@ -26,6 +26,7 @@ import ch.innovazion.arionide.lang.Environment;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Language;
 import ch.innovazion.arionide.lang.Spacer;
+import ch.innovazion.arionide.lang.notek.logical.Assume;
 import ch.innovazion.arionide.project.Storage;
 
 public class NotekLanguage extends Language {
@@ -44,6 +45,8 @@ public class NotekLanguage extends Language {
 		
 		registerOperator(new Spacer());
 		registerOperator(new Block());
+		
+		registerInstruction(new Assume());
 	}
 
 	protected short getVersionMajor() {
@@ -56,6 +59,10 @@ public class NotekLanguage extends Language {
 
 	public String getVendorUID() {
 		return "Innovazion";
+	}
+	
+	public String getName() {
+		return "Notek";
 	}
 
 	public Instruction getEntryPoint() {

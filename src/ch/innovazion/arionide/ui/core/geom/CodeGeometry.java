@@ -193,6 +193,11 @@ public class CodeGeometry extends Geometry {
 					
 					previous = output;
 					
+					/* Skip specification if the structure is text-only */
+					if(struct.getSpecification().isTextOnly()) {
+						continue;
+					}
+					
 					/* Process specification */					
 					List<Parameter> specification = struct.getSpecification().getParameters();
 										
@@ -202,7 +207,7 @@ public class CodeGeometry extends Geometry {
 					
 					for(int k = 0; k < specification.size(); k++) {
 						Parameter param = specification.get(k);
-						
+												
 						WorldElement specObject = this.factory.make((((k + 1) & 0x7F) << 24) | element.getID(), containerID, param.getName(), param.getDisplayValue(), new Vector3f(specPos).add(position), color, spotColor, size / 1.5f, struct.isAccessAllowed());
 						
 						outputSpecification.add(specObject);

@@ -117,7 +117,11 @@ public abstract class InstructionAppender extends Menu {
 				dispatch(new TargetUpdateEvent(target.getIdentifier()));
 				manager.selectCode(target);
 				
-				go("edit");
+				if(!instruction.createStructureModel().isTextOnly()) {
+					go("edit");
+				} else {
+					go("comment");
+				}
 			} else {
 				dispatch(event);
 				return;

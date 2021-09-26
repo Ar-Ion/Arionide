@@ -54,4 +54,12 @@ public class Specification implements Serializable, Cloneable {
 	public boolean hasSameOrigin(Specification other) {
 		return other.id == this.id;
 	}
+	
+	public boolean isTextOnly() {
+		if(!parameters.isEmpty()) {
+			return parameters.get(0).isTextOnly();
+		}
+		
+		return false;
+	}
 }

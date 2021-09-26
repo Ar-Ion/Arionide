@@ -54,7 +54,11 @@ public class CodeEditor extends Menu {
 			go("append");
 			break;
 		case "Specify":
-			go("specify");
+			if(!target.getSpecification().isTextOnly()) {
+				go("specify");
+			} else {
+				go("../comment");
+			}
 			break;
 		default:
 			throw new IllegalArgumentException();

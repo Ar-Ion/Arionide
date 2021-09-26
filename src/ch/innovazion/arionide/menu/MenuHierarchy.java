@@ -81,6 +81,7 @@ public class MenuHierarchy extends StateHierarchy {
 		
 		register("/code", codeBrowser = new CodeBrowser(manager));
 		register("/code/edit", new CodeEditor(manager));
+		register("/code/comment", new CommentEditor(manager));
 		register("/code/edit/append", new DefaultInstructionAppender(manager));
 		register("/code/edit/append/signature", new SignatureSelector(manager));
 		register("/code/edit/append/operator", new OperatorAppender(manager));

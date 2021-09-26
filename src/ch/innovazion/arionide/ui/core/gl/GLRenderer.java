@@ -500,7 +500,7 @@ public class GLRenderer extends Renderer {
 				List<String> description = element.getDescription();
 				
 				Vector2f screenAnchor = this.getHVCFrom3D(subSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
-				float height = 1.0f - this.getHVCFrom3D(element.getCenter().sub(translation).sub(0.0f, 0.5f * element.getSize(), 0.0f), proj).add(screenAnchor).y;
+				float height = 1.0f - this.getHVCFrom3D(element.getCenter().sub(translation).sub(0.0f, 0.75f * element.getSize(), 0.0f), proj).add(screenAnchor).y;
 						
 				Vector4f invertedColor = new Vector4f(1.0f).sub(element.getColor());
 				int invertedRGB = Utils.packRGB((int) (invertedColor.x * 255.0f), (int) (invertedColor.y * 255.0f), (int) (invertedColor.z * 255.0f));
@@ -518,7 +518,9 @@ public class GLRenderer extends Renderer {
 
 			for(String label : labels) {
 				if(screenAnchor.x + dimensions.x > 0  && y + dimensions.y > 0 && screenAnchor.x < 2.0f && y < 2.0f) {
-					Text text = PrimitiveFactory.instance().newText(label, color, alpha);
+					boolean latex = label.startsWith("$");
+							
+					Text text = PrimitiveFactory.instance().newText(label, color, alpha, latex);
 					text.updateBounds(new Bounds(screenAnchor.x, y, dimensions.x, dimensions.y));
 					text.prepare(); // Although updating the bounds already toggles the "reprepare" bit, this may be useful for further implementations...
 					context.getRenderingSystem().renderDirect(text);

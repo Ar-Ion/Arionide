@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Function;
 
 import ch.innovazion.arionide.events.MessageEvent;
@@ -163,21 +164,16 @@ public class StructureManager extends Manager {
 			if(element.getID() == id) {
 				if(language != null) {
 					Language lang = LanguageManager.get(language);
-					Integer installationPoint = getLanguages().get(language);
 					Structure entryCodeBase = null;
 					
-					if(installationPoint == null) {
-						System.out.println("Installing language " + language + " onto project...");
-						
-						try {
-							entryCodeBase = installLanguage(lang);
-							getLanguages().put(language, entryCodeBase.getIdentifier()); // Register language in the project root
-						} catch(Exception e) {
-							e.printStackTrace();
-							return new MessageEvent("Failed to install language " + lang, MessageType.ERROR);
-						}
-					} else {
-						entryCodeBase = getStructures().get(installationPoint);
+					System.out.println("Installing language " + language + " onto project...");
+					
+					try {
+						entryCodeBase = installLanguage(lang);
+						getLanguages().put(language, entryCodeBase.getIdentifier()); // Register language in the project root
+					} catch(Exception e) {
+						e.printStackTrace();
+						return new MessageEvent("Failed to install language " + lang, MessageType.ERROR);
 					}
 					
 					setLanguage(element, language, entryCodeBase);
@@ -231,6 +227,16 @@ public class StructureManager extends Manager {
 	 */
 	private Structure installLanguage(Language lang) {		
 		if(lang != null) {
+			// Let's first uninstall the language if it is already installed
+			Iterator<Entry<Integer, MutableStructure>> it = getStructures().entrySet().iterator();
+			
+			while(it.hasNext()) {
+				if(it.next().getValue().getLanguage() == lang.getName()) {
+					it.remove();
+				}
+			}
+			
+			// Then, install the language
 			Structure entry = installInstruction(lang.getEntryPoint());
 			lang.getOperators().forEach(this::installInstruction);
 			lang.getStandardInstructions().forEach(this::installInstruction);
