@@ -79,7 +79,7 @@ public class Parameter implements Serializable {
 	
 	public Parameter setTextOnly(boolean textOnly) {
 		this.textOnly = textOnly;
-		return this;
+		return asConstant(new Text());
 	}
 	
 	public boolean isTextOnly() {

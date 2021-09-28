@@ -203,9 +203,8 @@ public class StructureManager extends Manager {
 		
 		entryPointInfo.setLanguage(language);
 		
-		chain.getMutableList().add(entryPoint);
-		
 		getStructures().put(entryInstanceID, entryPointInfo);	
+		chain.getMutableList().add(entryPoint);
 		getCode().put(currentID, chain);
 		
 		
@@ -227,16 +226,6 @@ public class StructureManager extends Manager {
 	 */
 	private Structure installLanguage(Language lang) {		
 		if(lang != null) {
-			// Let's first uninstall the language if it is already installed
-			Iterator<Entry<Integer, MutableStructure>> it = getStructures().entrySet().iterator();
-			
-			while(it.hasNext()) {
-				if(it.next().getValue().getLanguage() == lang.getName()) {
-					it.remove();
-				}
-			}
-			
-			// Then, install the language
 			Structure entry = installInstruction(lang.getEntryPoint());
 			lang.getOperators().forEach(this::installInstruction);
 			lang.getStandardInstructions().forEach(this::installInstruction);

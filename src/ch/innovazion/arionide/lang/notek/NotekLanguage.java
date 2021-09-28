@@ -26,7 +26,14 @@ import ch.innovazion.arionide.lang.Environment;
 import ch.innovazion.arionide.lang.Instruction;
 import ch.innovazion.arionide.lang.Language;
 import ch.innovazion.arionide.lang.Spacer;
+import ch.innovazion.arionide.lang.notek.literal.Comment;
 import ch.innovazion.arionide.lang.notek.logical.Assume;
+import ch.innovazion.arionide.lang.notek.logical.EsGilt;
+import ch.innovazion.arionide.lang.notek.logical.IfAndOnlyIf;
+import ch.innovazion.arionide.lang.notek.logical.Implies;
+import ch.innovazion.arionide.lang.notek.logical.Let;
+import ch.innovazion.arionide.lang.notek.logical.Suppose;
+import ch.innovazion.arionide.lang.notek.logical.Use;
 import ch.innovazion.arionide.project.Storage;
 
 public class NotekLanguage extends Language {
@@ -47,6 +54,14 @@ public class NotekLanguage extends Language {
 		registerOperator(new Block());
 		
 		registerInstruction(new Assume());
+		registerInstruction(new EsGilt());
+		registerInstruction(new IfAndOnlyIf());
+		registerInstruction(new Implies());
+		registerInstruction(new Let());
+		registerInstruction(new Suppose());
+		registerInstruction(new Use());
+		
+		registerInstruction(new Comment());
 	}
 
 	protected short getVersionMajor() {

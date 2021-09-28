@@ -75,7 +75,7 @@ public abstract class HierarchicalGeometry extends Geometry {
 	
 	
 	private List<HierarchyElement> withoutLambdas(List<HierarchyElement> input, Map<Integer, Structure> structures) {
-		return input.stream().filter(e -> !structures.get(e.getID()).isLambda()).collect(Collectors.toList());
+		return input.stream().filter(e -> structures.containsKey(e.getID())).filter(e -> !structures.get(e.getID()).isLambda()).collect(Collectors.toList());
 	}
 	
 			

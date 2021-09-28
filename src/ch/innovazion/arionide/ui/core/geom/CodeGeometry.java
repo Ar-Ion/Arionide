@@ -194,41 +194,40 @@ public class CodeGeometry extends Geometry {
 					previous = output;
 					
 					/* Skip specification if the structure is text-only */
-					if(struct.getSpecification().isTextOnly()) {
-						continue;
-					}
+					if(!struct.getSpecification().isTextOnly()) {
 					
-					/* Process specification */					
-					List<Parameter> specification = struct.getSpecification().getParameters();
-										
-					Vector3f specPos = new Vector3f(meanaxis).cross(0.0f, 1.0f, 0.0f).normalize(size * 2.0f);
-					
-					Quaternionf specQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / specification.size(), new Vector3f(axis).normalize()));
-					
-					for(int k = 0; k < specification.size(); k++) {
-						Parameter param = specification.get(k);
-												
-						WorldElement specObject = this.factory.make((((k + 1) & 0x7F) << 24) | element.getID(), containerID, param.getName(), param.getDisplayValue(), new Vector3f(specPos).add(position), color, spotColor, size / 1.5f, struct.isAccessAllowed());
+						/* Process specification */					
+						List<Parameter> specification = struct.getSpecification().getParameters();
+											
+						Vector3f specPos = new Vector3f(meanaxis).cross(0.0f, 1.0f, 0.0f).normalize(size * 2.0f);
 						
-						outputSpecification.add(specObject);
-						outputConnections.add(new Connection(output, specObject));
+						Quaternionf specQuaternion = new Quaternionf(new AxisAngle4f(Geometry.PI * 2.0f / specification.size(), new Vector3f(axis).normalize()));
 						
-						specPos.rotate(specQuaternion);
-												
-						if(param.getValue() instanceof Information) {
-							Information info = (Information) param.getValue();
+						for(int k = 0; k < specification.size(); k++) {
+							Parameter param = specification.get(k);
+													
+							WorldElement specObject = this.factory.make((((k + 1) & 0x7F) << 24) | element.getID(), containerID, param.getName(), param.getDisplayValue(), new Vector3f(specPos).add(position), color, spotColor, size / 1.5f, struct.isAccessAllowed());
 							
-							if(info.getRoot() instanceof Reference) {
-								Callable target = ((Reference) info.getRoot()).getTarget();
+							outputSpecification.add(specObject);
+							outputConnections.add(new Connection(output, specObject));
+							
+							specPos.rotate(specQuaternion);
+													
+							if(param.getValue() instanceof Information) {
+								Information info = (Information) param.getValue();
 								
-								if(target != null && target.getIdentifier() != containerID) {
-									Structure refStruct = mapping.get(target.getIdentifier());
+								if(info.getRoot() instanceof Reference) {
+									Callable target = ((Reference) info.getRoot()).getTarget();
 									
-									if(refStruct.isLambda()) {
-										CodeChain chain = getProject().getStorage().getCode().get(target.getIdentifier());
-																				
-										if(chain != null) {
-											build(specObject, target.getIdentifier(), 1 - y / (height * size / relativeSize), chain.list(), outputElements, outputSpecification, outputConnections, mapping, size / 1.5f);
+									if(target != null && target.getIdentifier() != containerID) {
+										Structure refStruct = mapping.get(target.getIdentifier());
+										
+										if(refStruct.isLambda()) {
+											CodeChain chain = getProject().getStorage().getCode().get(target.getIdentifier());
+																					
+											if(chain != null) {
+												build(specObject, target.getIdentifier(), 1 - y / (height * size / relativeSize), chain.list(), outputElements, outputSpecification, outputConnections, mapping, size / 1.5f);
+											}
 										}
 									}
 								}

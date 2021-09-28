@@ -227,13 +227,23 @@ public class Input extends Button implements EventHandler {
 	}
 	
 	public boolean dispatch(int code, char ch, int modifiers, boolean seek) {
+		String specialChars = "≠±“#Ç[]|{}";
+		int specialID = code - KeyEvent.VK_0;
+		
+		if(specialID >= 0 && specialID <= 9 && (modifiers & (KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK)) != 0 && (modifiers & KeyEvent.SHIFT_MASK) == 0) {
+			ch = specialChars.charAt(specialID);
+		} else if(code == KeyEvent.VK_7 && (modifiers & (KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK)) != 0 && (modifiers & KeyEvent.SHIFT_MASK) != 0) {
+			ch = '\\';
+		} else if(code == KeyEvent.VK_EQUALS && modifiers == 0) {
+			ch = '^';
+		}
+		
+		
+		System.out.println(code + " -> " + ch + " / " + modifiers);
 		if(code == KeyEvent.VK_BACK_SPACE || code == KeyEvent.VK_DELETE) {
 			this.dispatchDeletion(code, modifiers > 0);
 		} else if(seek) {
 			this.dispatchSeek(code);
-		} else if(code == KeyEvent.VK_7 && (modifiers & (KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK)) != 0 && (modifiers & KeyEvent.SHIFT_MASK) != 0) {
-			this.text.insert(this.cursorPosition, '\\');
-			this.cursorPosition++;
 		} else if(FontRenderer.CHARSET.indexOf(ch) >= 0) {
 			this.text.insert(this.cursorPosition, ch);
 			this.cursorPosition++;

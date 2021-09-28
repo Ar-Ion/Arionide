@@ -41,7 +41,7 @@ public class StructureModelFactory {
 		
 		private List<Signature> signatures = new ArrayList<>();
 		private List<String> comment = new ArrayList<>();
-		private int colorID = ApplicationTints.getColorIDByName("White");
+		private int colorID = ApplicationTints.getColorIDByName("Outer Space");
 		private int spotColorID = ApplicationTints.getColorIDByName("White");
 		
 		private String signatureName;
