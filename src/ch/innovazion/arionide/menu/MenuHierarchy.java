@@ -57,6 +57,7 @@ public class MenuHierarchy extends StateHierarchy {
 	protected RootMenu root;
 	protected StructureBrowser structureBrowser;
 	protected CodeBrowser codeBrowser;
+	protected CodeEditor codeEditor;
 	protected GenericUpdater genericUpdater;
 
 	protected void registerStates(StateManager mgr) {
@@ -80,7 +81,7 @@ public class MenuHierarchy extends StateHierarchy {
 		register("/structure/edit/tint", new TintSelector(manager));
 		
 		register("/code", codeBrowser = new CodeBrowser(manager));
-		register("/code/edit", new CodeEditor(manager));
+		register("/code/edit", codeEditor = new CodeEditor(manager));
 		register("/code/comment", new CommentEditor(manager));
 		register("/code/edit/append", new DefaultInstructionAppender(manager));
 		register("/code/edit/append/signature", new SignatureSelector(manager));

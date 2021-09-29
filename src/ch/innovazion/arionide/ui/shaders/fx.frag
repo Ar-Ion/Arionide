@@ -1,6 +1,6 @@
 #version 400
 
-#define MOTION_BLUR
+//#define MOTION_BLUR
 //#define LIGHT_ADAPTATION
 #define GOD_RAYS
 #define BLOOM

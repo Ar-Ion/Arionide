@@ -46,10 +46,10 @@ import ch.innovazion.arionide.ui.core.Geometry;
 
 public class CodeGeometry extends Geometry {
 	
-	private static final float relativeSize = 0.05f;
-	private static final float axisEntropy = 0.3f;
-	private static final float axisCorrection = 0.5f;
-	private static final float axisCorrectionFlexibility = 2.0f;
+	private static final float relativeSize = 0.1f;
+	private static final float axisEntropy = 0.5f;
+	private static final float axisCorrection = 3.0f;
+	private static final float axisCorrectionFlexibility = 0.5f;
 
 	private WorldElement container;
 	
@@ -240,8 +240,9 @@ public class CodeGeometry extends Geometry {
 										
 					axis.rotate(mainQuaternion);
 
+					/*
 					y -= deltaHeight;
-					position.y = basePosition.y - y;
+					position.y = basePosition.y - y;*/
 					
 					if(i == groups.size() - 1) {
 						applyDerivation(axis, new Vector3f(position).sub(parent.getCenter()));
@@ -257,13 +258,14 @@ public class CodeGeometry extends Geometry {
 	private void applyDerivation(Vector3f axis, Vector3f relPos) {
 		float length = relPos.length() + axis.length();
 		
+		System.out.println(relPos);
 		Random random = this.factory.getRandom();
 		
 		Vector3f entropy = new Vector3f(random.nextFloat() - 0.5f, 0.0f, random.nextFloat() - 0.5f);
 		Vector3f correction = new Vector3f(axis).reflect(new Vector3f(relPos).negate().normalize());
 		
 		entropy.normalize(axis.length() * axisEntropy);
-		correction.normalize(axis.length() * axisCorrection * (float) Math.pow(length, axisCorrectionFlexibility));
+		correction.normalize(axis.length() * axisCorrection * (float) Math.pow(length / relativeSize, axisCorrectionFlexibility));
 		
 		axis.add(entropy);
 		axis.add(correction);

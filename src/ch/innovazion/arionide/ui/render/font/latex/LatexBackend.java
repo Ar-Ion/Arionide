@@ -105,6 +105,8 @@ public class LatexBackend extends Thread {
 						}
 						
 						it2.remove();
+						
+						System.out.println("Loaded LaTeX texture at " + output.getAbsolutePath());
 					} catch (IOException exception) {
 						Debug.exception(exception);
 					}
@@ -120,6 +122,8 @@ public class LatexBackend extends Thread {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(latex));
 		writer.write("\\documentclass[convert={density=600}]{standalone}\n");
 		writer.write("\\usepackage{xcolor}\n");
+		writer.write("\\usepackage{amsfonts}\n");
+		writer.write("\\usepackage{braket}\n");
 		writer.write("\\pagecolor{black}\n");
 		writer.write("\\color{white}\n");
 		writer.write("\\begin{document}\n");

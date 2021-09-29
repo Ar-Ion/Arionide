@@ -164,21 +164,26 @@ public class CoreController {
 			requestTeleportation.getAndUpdate(x -> x < 0 ? x : x-1);
 		}
 		
-		if(requestFocus.compareAndSet(0, -1)) {			
-			WorldElement focus = coreGeometry.getElementByID(requestedFocus);
-						
-			CodeManager manager = project.getStructureManager().getCodeManager();
-						
-			if(focus != null) {
-				this.selection = focus;
-			} else if(manager.hasCode()) {
-				manager.getCurrentCode().list().stream().findFirst().ifPresent((e) -> {
-					this.selection = mainCodeGeometry.getElementByID(requestedFocus);
-				});
-			}
-			
-			if(selection != null) {
-				user.setFocus(selection);
+		if(requestFocus.compareAndSet(0, -1)) {	
+			if(requestedFocus < 0) {
+				this.selection = null;
+				menu.go("/");
+			} else {
+				WorldElement focus = coreGeometry.getElementByID(requestedFocus);
+							
+				CodeManager manager = project.getStructureManager().getCodeManager();
+							
+				if(focus != null) {
+					this.selection = focus;
+				} else if(manager.hasCode()) {
+					manager.getCurrentCode().list().stream().findFirst().ifPresent((e) -> {
+						this.selection = mainCodeGeometry.getElementByID(requestedFocus);
+					});
+				}
+				
+				if(selection != null) {
+					user.setFocus(selection);
+				}
 			}
 		} else {
 			requestFocus.getAndUpdate(x -> x < 0 ? x : x-1);
@@ -321,9 +326,25 @@ public class CoreController {
 				return;
 			}
 		}*/
-			
-		this.binding = false;
-		menu.click();
+						
+		if(menu.getAvailableActions().stream().filter(e -> !e.isEmpty()).count() == 0) {
+			WorldElement focus = user.getFocus();
+
+			if(focus != null) {
+				List<WorldElement> elements = this.mainCodeGeometry.getElements();
+				int id = focus.getID();
+				
+				if(elements.contains(focus) && (id & 0xFF000000) == 0) {
+					this.selection = focus;
+					Structure struct = project.getStorage().getStructures().get(id);
+					project.getStructureManager().getCodeManager().setContext(selection.getParent());
+					menu.selectCode(struct);
+				}
+			}
+		} else {
+			this.binding = false;
+			menu.click();
+		}
 	}
 	
 	void onRightClick() {
@@ -337,7 +358,10 @@ public class CoreController {
 				if((id & 0xFF000000) == 0) {
 					Structure struct = project.getStorage().getStructures().get(id);
 					project.getStructureManager().getCodeManager().setContext(selection.getParent());
-					menu.selectCode(struct);
+					
+					if(struct.getSpecification().isTextOnly()) {
+						menu.specifyCode(struct);
+					}
 				} else if((id & 0xFF000000) != 0) {
 					// In the case of a parameter
 					int instructionID = selection.getID() & 0xFFFFFF;

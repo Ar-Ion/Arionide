@@ -66,6 +66,7 @@ public class GLTextContext extends GLShapeContext {
 
 	public void onAspectRatioUpdate(float newRatio) {
 		this.fontRenderer.windowRatioChanged(newRatio);
+		this.latexRenderer.windowRatioChanged(newRatio);
 	}
 	
 	public BigInteger[] getIdentificationScheme() {

@@ -49,14 +49,20 @@ public class GLLatexTessellator implements GLTextTessellator {
 			return null;
 		}
 		
-		float width = texture.getWidth() / texture.getHeight();
+		int width = texture.getWidth();
+		int height = texture.getHeight();
+		
+		int mainDimension = Math.max(width, height);
+		
+		float halfFactor = 1.0f / mainDimension;
+		float factor = 2.0f * halfFactor;
 	
-		Bounds verticesBounds = new Bounds(-0.5f * width, -1.0f, width, 2.0f);
+		Bounds verticesBounds = new Bounds(-halfFactor * width, -halfFactor * height, factor * width, factor * height);
 		Bounds uvBounds = new Bounds(0.0f, 0.0f, 1.0f, 1.0f);
 		
 		Buffer vertices = new GLBounds(verticesBounds, false).allocDataBuffer(8).putNorth().putSouth().getDataBuffer().flip();
 		Buffer textures = new GLBounds(uvBounds, false).allocDataBuffer(8).putNorth().putSouth().getDataBuffer().flip();
 
-		return new TessellationOutput(vertices, textures, width, 2.0f, 1);
+		return new TessellationOutput(vertices, textures, 0.75f * factor * width, 0.75f * factor * height, 1);
 	}
 }

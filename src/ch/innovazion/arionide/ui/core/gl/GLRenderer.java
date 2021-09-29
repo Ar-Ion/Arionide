@@ -482,38 +482,44 @@ public class GLRenderer extends Renderer {
 			
 			GL4 gl = ((OpenGLContext) context).getRenderer();
 			
+			long subSpaceElements = element.getDescription().stream().filter(e -> !e.isBlank()).count();
+			
+			Vector3f firstAnchor = element.getCenter().add(0.0f, -0.4f * element.getSize(), 0.0f).sub(translation);
+			Vector3f secondAnchor = element.getCenter().add(0.0f, 0.4f * element.getSize(), 0.0f).sub(translation);
+			float width = Math.abs(getHVCFrom3D(secondAnchor, proj).y - getHVCFrom3D(firstAnchor, proj).y); // Assumes height is similar to width
+					
 			/* World ==> Screen-space calculation */
-			Vector3f mainSpaceAnchor = element.getCenter().add(0.0f, 2.0f * element.getSize(), 0.0f).sub(translation);
+			Vector3f mainSpaceAnchor = element.getCenter().add(0.0f, 1.5f * element.getSize(), 0.0f).sub(translation);
 			Vector3f subSpaceAnchor = element.getCenter().add(0.0f, 0.75f * element.getSize(), 0.0f).sub(translation);
 
 			boolean renderMain = this.checkRenderability(mainSpaceAnchor);
 			boolean renderSub = this.checkRenderability(subSpaceAnchor);
 						
 			if(renderMain && element.getName() != null) {
-				Vector2f screenAnchor = this.getHVCFrom3D(mainSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
-				float height = 1.0f - this.getHVCFrom3D(element.getCenter().sub(translation).add(0.0f, element.getSize(), 0.0f), proj).add(screenAnchor).y;
+				Vector2f screenAnchor = this.getHVCFrom3D(mainSpaceAnchor, proj).mul(1.0f, -1.0f).add(1.0f - width/2, 1.0f);
+				float height = 1.0f - this.getHVCFrom3D(element.getCenter().sub(translation).add(0.0f, 1.0f * element.getSize(), 0.0f), proj).add(screenAnchor).y;
 				
-				this.renderLabel(context, Arrays.asList(element.getName()), ApplicationTints.WHITE, alpha, screenAnchor, height);
+				this.renderLabel(context, Arrays.asList(element.getName()), ApplicationTints.WHITE, alpha, screenAnchor, width, height);
 			}
 			
 			if(renderSub && element.getDescription() != null) {
 				List<String> description = element.getDescription();
 				
-				Vector2f screenAnchor = this.getHVCFrom3D(subSpaceAnchor, proj).mul(1.0f, -1.0f).add(0.75f, 1.0f);
+				Vector2f screenAnchor = this.getHVCFrom3D(subSpaceAnchor, proj).mul(1.0f, -1.0f).add(1.0f - width/2, 1.0f);
 				float height = 1.0f - this.getHVCFrom3D(element.getCenter().sub(translation).sub(0.0f, 0.75f * element.getSize(), 0.0f), proj).add(screenAnchor).y;
 						
 				Vector4f invertedColor = new Vector4f(1.0f).sub(element.getColor());
 				int invertedRGB = Utils.packRGB((int) (invertedColor.x * 255.0f), (int) (invertedColor.y * 255.0f), (int) (invertedColor.z * 255.0f));
-				this.renderLabel(context, description, invertedRGB, alpha, screenAnchor, height * 0.25f);
+				this.renderLabel(context, description, invertedRGB, alpha, screenAnchor, width, height / subSpaceElements);
 			}
 			
 			gl.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
 		}
 	}
 	
-	private void renderLabel(AppDrawingContext context, List<String> labels, int color, int alpha, Vector2f screenAnchor, float height) {
+	private void renderLabel(AppDrawingContext context, List<String> labels, int color, int alpha, Vector2f screenAnchor, float width, float height) {
 		if(height > 0.01f) {
-			Vector2f dimensions = new Vector2f(0.5f, height);
+			Vector2f dimensions = new Vector2f(width, height);
 			float y = screenAnchor.y;
 
 			for(String label : labels) {
@@ -524,6 +530,13 @@ public class GLRenderer extends Renderer {
 					text.updateBounds(new Bounds(screenAnchor.x, y, dimensions.x, dimensions.y));
 					text.prepare(); // Although updating the bounds already toggles the "reprepare" bit, this may be useful for further implementations...
 					context.getRenderingSystem().renderDirect(text);
+					
+					if(!latex) { // Make it bold
+						Text bold = PrimitiveFactory.instance().newText(label, color, alpha, latex);
+						bold.updateBounds(new Bounds(screenAnchor.x + 3.0f / bounds.getWidth(), y, dimensions.x, dimensions.y));
+						bold.prepare(); // Although updating the bounds already toggles the "reprepare" bit, this may be useful for further implementations...
+						context.getRenderingSystem().renderDirect(bold);
+					}
 					
 					y += height;
 				}

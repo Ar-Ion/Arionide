@@ -64,7 +64,7 @@ public class Text extends Node {
 	}
 	
 	public List<String> getDisplayValue() {
-		return Arrays.asList("'" + textValue + "'");
+		return Arrays.asList(textValue);
 	}
 	
 	public Text clone() {

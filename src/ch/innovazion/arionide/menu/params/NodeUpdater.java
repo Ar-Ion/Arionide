@@ -352,6 +352,7 @@ public class NodeUpdater extends ParameterUpdater {
 	
 	private void setParseable() {
 		Views.input.setText("Please enter the value of the information")
+				   .setInput(String.join(", ", value.getDisplayValue()))
 				   .setPlaceholder("Value")
 				   .setResponder(this::setParseable0)
 				   .stackOnto(Views.code);

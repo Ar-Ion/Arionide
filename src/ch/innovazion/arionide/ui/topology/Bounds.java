@@ -198,4 +198,16 @@ public class Bounds implements Set {
 	public String toString() {
 		return this.p1 + "; " + this.p2;
 	}
+	
+	
+	public static Bounds stretch(Bounds input, float factor) {
+		Point p1 = input.getFirstPoint();
+		Point p2 = input.getSecondPoint();
+		Point center = input.getCenter();
+		
+		p1 = new Point((p1.getX() - center.getX()) * factor + center.getX(), (p1.getY() - center.getY()) * factor + center.getY());
+		p2 = new Point((p2.getX() - center.getX()) * factor + center.getX(), (p2.getY() - center.getY()) * factor + center.getY());
+	
+		return new Bounds(p1, p2);
+	}
 }

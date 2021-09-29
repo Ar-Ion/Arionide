@@ -92,10 +92,13 @@ public abstract class Browser extends Menu {
 				description.add(param.toString());
 			}
 			
-			description.spacer();
 			
-			for(String comment : target.getComment()) {
-				description.add(comment);
+			if(!target.getSpecification().isTextOnly()) {
+				description.spacer();
+				
+				for(String comment : target.getComment()) {
+					description.add(comment);
+				}
 			}
 		}
 	}

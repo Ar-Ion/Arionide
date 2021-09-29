@@ -36,6 +36,7 @@ public class GLLine extends GLPolygon {
 	}
 	
 	public void renderPolygon() {
+		this.getContext().getGL().glLineWidth(8.0f);
 		this.getContext().getGL().glDrawArrays(GL4.GL_LINES, 0, 2);
 	}
 }

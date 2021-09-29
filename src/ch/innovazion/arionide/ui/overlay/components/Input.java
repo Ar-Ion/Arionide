@@ -238,8 +238,6 @@ public class Input extends Button implements EventHandler {
 			ch = '^';
 		}
 		
-		
-		System.out.println(code + " -> " + ch + " / " + modifiers);
 		if(code == KeyEvent.VK_BACK_SPACE || code == KeyEvent.VK_DELETE) {
 			this.dispatchDeletion(code, modifiers > 0);
 		} else if(seek) {

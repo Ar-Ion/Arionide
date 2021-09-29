@@ -23,6 +23,7 @@ package ch.innovazion.arionide.menu;
 
 import ch.innovazion.arionide.events.Event;
 import ch.innovazion.arionide.events.MenuEvent;
+import ch.innovazion.arionide.events.TargetUpdateEvent;
 import ch.innovazion.arionide.events.dispatching.IEventDispatcher;
 import ch.innovazion.arionide.lang.symbols.Information;
 import ch.innovazion.arionide.lang.symbols.Node;
@@ -59,6 +60,17 @@ public class MenuManager extends StateManager {
 		triggerAction(RootMenu.codeBrowser);
 		
 		hierarchy.codeBrowser.select(code);
+		triggerAction("42");
+	}
+	
+	public void specifyCode(Structure code) {
+		go("/");
+		
+		triggerAction(RootMenu.codeBrowser);
+		
+		hierarchy.codeBrowser.select(code);
+		triggerAction("42");
+		triggerAction("Specify"); // This looks so much like dark magic. Should improve architecture.
 	}
 	
 	public void selectNode(Structure actor, Node node) {		
@@ -115,6 +127,8 @@ public class MenuManager extends StateManager {
 		
 		if(menu != hierarchy.codeBrowser && menu != hierarchy.structureBrowser && menu != hierarchy.genericUpdater) {
 			go("..");
+		} else {
+			dispatch(new TargetUpdateEvent(-1));
 		}
 	}
 	

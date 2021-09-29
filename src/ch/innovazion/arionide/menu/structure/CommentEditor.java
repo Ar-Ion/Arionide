@@ -49,6 +49,8 @@ public class CommentEditor extends Menu {
 
 		List<String> comment = target.getComment();
 		
+		this.updateCursor(0);
+		
 		for(int i = 0; i < 4; i++) {
 			if(i < comment.size() && !comment.get(i).isEmpty()) {
 				description.add(comment.get(i));
@@ -88,6 +90,8 @@ public class CommentEditor extends Menu {
 		} while(copy.size() <= id);
 		
 		copy.set(id, line);
+		
+		this.updateCursor(cursor + 1);
 		
 		dispatch(project.getStructureManager().setComment(target.getIdentifier(), copy));
 		go(".");

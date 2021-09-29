@@ -152,8 +152,8 @@ public class Scroll extends Tab {
 		}
 	}
 	
-	private void commitDelta(int delta) {
-		if(delta == 0) {
+	private void commitDelta(int delta) {		
+		if(delta == 0 || numElements == 0) {
 			return;
 		}
 		

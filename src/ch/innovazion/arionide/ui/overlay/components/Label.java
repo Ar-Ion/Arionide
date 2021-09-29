@@ -54,7 +54,7 @@ public class Label extends Component implements Enlightenable {
 	
 	public Label setBounds(Bounds bounds) {
 		super.setBounds(bounds);
-		this.text.updateBounds(bounds);
+		this.text.updateBounds(Bounds.stretch(bounds, 1.0f)); // With padding
 		return this;
 	}
 	
